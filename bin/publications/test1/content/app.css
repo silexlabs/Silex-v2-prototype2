@@ -1,0 +1,92 @@
+body{
+	font-family: Verdana, Arial;
+	font-size: 14pt;
+    margin: 0;
+    padding: 0;
+    background-color: grey;
+    overflow: auto;
+}
+
+.main-container{
+    width: 100%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    overflow: hidden;
+}
+.popup-container{
+    left: 50px;
+    right: 150px;
+    top: 50px;
+    height: 200px;
+    padding: 50px;
+    position: absolute;
+}
+.popup1 {
+    position: absolute;
+    margin: 20px;
+    background-color: lightgrey;
+    z-index: 9999;
+    border: 1px solid #999;
+    border-radius: 15px;
+}
+.LinkClosePage{
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.email-form-text-input{
+    width: 100%;
+    display: block;
+}
+.email-form-error-message{
+    background-color: red;
+}
+.email-form-success-message{
+    color: green;
+}
+
+.SoundOn{
+    position: absolute;
+    left: 250px;
+    z-index: 10;
+}
+.SoundOff{
+    position: absolute;
+    left: 260px;
+    z-index: 10;
+}
+.page2-3{
+    z-index: 9;
+}
+.Page{
+    display: none;
+}
+.LinkToPage{
+    position: absolute;
+    z-index: 10;
+}
+.Layer{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.Layer object{
+    width: 100%;
+    height: 100%;
+    top: 0;
+    z-index: 0;
+}
+.next{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+}
+.previous{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 10;
+}

@@ -6,3 +6,17 @@
 -D slpdebug
 -D disableEmbedHtml
 -D noAutoStart
+-D SilexClientSide
+-D stopOnError
+
+--next
+
+-php ../bin/libs/silex/silex.php
+-cp ../../SLPlayer/src/
+-cp ../../Cocktail/src/
+--remap js:cocktail
+-main org.silex.core.Silex
+#-D slpdebug
+#-D disableEmbedHtml
+#-D noAutoStart
+-D SilexServerSide

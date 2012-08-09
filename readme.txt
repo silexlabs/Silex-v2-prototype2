@@ -1,3 +1,8 @@
+** To do **
+
+* split Silex::new into smaller methods
+* ServerConfig class and defaultPublication in Silex::new
+* SLExtend - Init plugins in Silex::new
 ** About Silex **
 
 Silex is used to produce websites directly in the browser.
