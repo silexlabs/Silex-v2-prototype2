@@ -36,7 +36,7 @@ class cocktail_core_dom_NodeBase extends cocktail_core_event_EventCallback {
 					$_g = 0;
 					while($_g < $length) {
 						$i = $_g++;
-						if($this->parentNode->childNodes[$i] == $this) {
+						if(($this->parentNode->childNodes[$i] === $this)) {
 							return $this->parentNode->childNodes[$i + 1];
 						}
 						unset($i);

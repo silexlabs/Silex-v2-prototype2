@@ -10,6 +10,7 @@ class org_silex_core_Silex {
 	static $CONFIG_PUBLICATION_BODY = "PublicationBody";
 	static $PUBLICATIONS_FOLDER = "publications/";
 	static $PUBLICATION_HTML_FILE = "content/index.html";
+	static $LOADER_SCRIPT_PATH = "loader.js";
 	static $config;
 	static $publicationName;
 	static $initialPageName;
@@ -36,6 +37,10 @@ class org_silex_core_Silex {
 		if(org_silex_core_Silex::$initialPageName !== "") {
 			org_silex_core_Silex::$config = org_silex_core_Silex::setConfig(cocktail_Lib::get_document(), "InitialPageName", org_silex_core_Silex::$initialPageName);
 		}
+		$node = cocktail_Lib::get_document()->createElement("script");
+		$node->setAttribute("src", "loader.js");
+		$head = _hx_array_get(cocktail_Lib::get_document()->getElementsByTagName("head"), 0);
+		$head->appendChild($node);
 		org_slplayer_core_Application::init(null, null);
 		php_Lib::hprint(cocktail_Lib::get_document()->documentElement->get_innerHTML());
 	}

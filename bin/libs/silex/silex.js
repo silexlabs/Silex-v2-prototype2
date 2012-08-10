@@ -1979,19 +1979,16 @@ org.silex.core.Silex.config = null;
 org.silex.core.Silex.publicationName = null;
 org.silex.core.Silex.initialPageName = null;
 org.silex.core.Silex.main = function() {
-	haxe.Timer.delay(org.silex.core.Silex.doAfterDomInit,1000);
-	haxe.Log.trace("- " + Std.string(js.Lib.document.body),{ fileName : "Silex.hx", lineNumber : 90, className : "org.silex.core.Silex", methodName : "main"});
+	haxe.Log.trace("Silex starting",{ fileName : "Silex.hx", lineNumber : 93, className : "org.silex.core.Silex", methodName : "main"});
+	js.Lib.window.onload = org.silex.core.Silex.doAfterDomInit;
 }
-org.silex.core.Silex.doAfterDomInit = function() {
-	haxe.Log.trace("Silex starting",{ fileName : "Silex.hx", lineNumber : 93, className : "org.silex.core.Silex", methodName : "doAfterDomInit"});
+org.silex.core.Silex.doAfterDomInit = function(e) {
+	haxe.Log.trace("- " + Std.string(js.Lib.document.body),{ fileName : "Silex.hx", lineNumber : 97, className : "org.silex.core.Silex", methodName : "doAfterDomInit"});
 	org.silex.core.Silex.config = org.silex.core.Silex.loadConfig(js.Lib.document);
 	org.silex.core.Silex.initialPageName = org.silex.core.Silex.config.get("InitialPageName");
 	org.silex.core.Silex.publicationName = org.silex.core.Silex.config.get("PublicationName");
-	haxe.Log.trace("- " + Std.string(js.Lib.document.body) + " - " + Std.string(org.silex.core.Silex.config),{ fileName : "Silex.hx", lineNumber : 104, className : "org.silex.core.Silex", methodName : "doAfterDomInit"});
+	haxe.Log.trace("- " + Std.string(js.Lib.document.body) + " - " + Std.string(org.silex.core.Silex.config),{ fileName : "Silex.hx", lineNumber : 108, className : "org.silex.core.Silex", methodName : "doAfterDomInit"});
 	js.Lib.document.body.innerHTML = StringTools.htmlUnescape(org.silex.core.Silex.config.get("PublicationBody"));
-	haxe.Timer.delay(org.silex.core.Silex.doAfterBodyInit,1000);
-}
-org.silex.core.Silex.doAfterBodyInit = function() {
 	org.slplayer.core.Application.init();
 }
 org.silex.core.Silex.setConfig = function(document,metaName,metaValue) {
@@ -2184,10 +2181,11 @@ org.slplayer.core = {}
 org.slplayer.core.Application = function(id,args) {
 	this.dataObject = args;
 	this.id = id;
+	this.nodesIdSequence = 0;
 	this.registeredComponents = new Array();
 	this.nodeToCmpInstances = new Hash();
 	this.metaParameters = new Hash();
-	haxe.Log.trace("new SLPlayer instance built",{ fileName : "Application.hx", lineNumber : 100, className : "org.slplayer.core.Application", methodName : "new"});
+	haxe.Log.trace("new SLPlayer instance built",{ fileName : "Application.hx", lineNumber : 106, className : "org.slplayer.core.Application", methodName : "new"});
 };
 $hxClasses["org.slplayer.core.Application"] = org.slplayer.core.Application;
 $hxExpose(org.slplayer.core.Application, "silex");
@@ -2199,12 +2197,13 @@ org.slplayer.core.Application.generateUniqueId = function() {
 	return haxe.Md5.encode(HxOverrides.dateStr(new Date()) + Std.string(Std.random(new Date().getTime() | 0)));
 }
 org.slplayer.core.Application.init = function(appendTo,args) {
-	haxe.Log.trace("SLPlayer init() called with appendTo=" + Std.string(appendTo) + " and args=" + Std.string(args),{ fileName : "Application.hx", lineNumber : 188, className : "org.slplayer.core.Application", methodName : "init"});
+	haxe.Log.trace("SLPlayer init() called with appendTo=" + Std.string(appendTo) + " and args=" + Std.string(args),{ fileName : "Application.hx", lineNumber : 194, className : "org.slplayer.core.Application", methodName : "init"});
 	var newId = org.slplayer.core.Application.generateUniqueId();
-	haxe.Log.trace("New SLPlayer id created : " + newId,{ fileName : "Application.hx", lineNumber : 195, className : "org.slplayer.core.Application", methodName : "init"});
+	haxe.Log.trace("New SLPlayer id created : " + newId,{ fileName : "Application.hx", lineNumber : 201, className : "org.slplayer.core.Application", methodName : "init"});
 	var newInstance = new org.slplayer.core.Application(newId,args);
-	haxe.Log.trace("setting ref to SLPlayer instance " + newId,{ fileName : "Application.hx", lineNumber : 201, className : "org.slplayer.core.Application", methodName : "init"});
+	haxe.Log.trace("setting ref to SLPlayer instance " + newId,{ fileName : "Application.hx", lineNumber : 207, className : "org.slplayer.core.Application", methodName : "init"});
 	org.slplayer.core.Application.instances.set(newId,newInstance);
+	newInstance.launch(appendTo);
 	js.Lib.window.onload = function(e) {
 		newInstance.launch(appendTo);
 	};
@@ -2243,7 +2242,8 @@ org.slplayer.core.Application.prototype = {
 		var nodeId = node.getAttribute("data-" + "slpid");
 		var associatedCmps;
 		if(nodeId != null) associatedCmps = this.nodeToCmpInstances.get(nodeId); else {
-			nodeId = org.slplayer.core.Application.generateUniqueId();
+			this.nodesIdSequence++;
+			nodeId = Std.string(this.nodesIdSequence);
 			node.setAttribute("data-" + "slpid",nodeId);
 			associatedCmps = new List();
 		}
@@ -2251,7 +2251,7 @@ org.slplayer.core.Application.prototype = {
 		this.nodeToCmpInstances.set(nodeId,associatedCmps);
 	}
 	,callInitOnComponents: function() {
-		haxe.Log.trace("call Init On Components",{ fileName : "Application.hx", lineNumber : 390, className : "org.slplayer.core.Application", methodName : "callInitOnComponents"});
+		haxe.Log.trace("call Init On Components",{ fileName : "Application.hx", lineNumber : 398, className : "org.slplayer.core.Application", methodName : "callInitOnComponents"});
 		var $it0 = this.nodeToCmpInstances.iterator();
 		while( $it0.hasNext() ) {
 			var l = $it0.next();
@@ -2263,17 +2263,17 @@ org.slplayer.core.Application.prototype = {
 		}
 	}
 	,createComponentsOfType: function(componentClassName,args) {
-		haxe.Log.trace("Creating " + componentClassName + "...",{ fileName : "Application.hx", lineNumber : 260, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
+		haxe.Log.trace("Creating " + componentClassName + "...",{ fileName : "Application.hx", lineNumber : 268, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 		var componentClass = Type.resolveClass(componentClassName);
 		if(componentClass == null) {
 			var rslErrMsg = "ERROR cannot resolve " + componentClassName;
 			throw rslErrMsg;
 			return;
 		}
-		haxe.Log.trace(componentClassName + " class resolved ",{ fileName : "Application.hx", lineNumber : 277, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
+		haxe.Log.trace(componentClassName + " class resolved ",{ fileName : "Application.hx", lineNumber : 285, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 		if(org.slplayer.component.ui.DisplayObject.isDisplayObject(componentClass)) {
 			var classTag = this.getUnconflictedClassTag(componentClassName);
-			haxe.Log.trace("searching now for class tag = " + classTag,{ fileName : "Application.hx", lineNumber : 285, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
+			haxe.Log.trace("searching now for class tag = " + classTag,{ fileName : "Application.hx", lineNumber : 293, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 			var taggedNodes = new Array();
 			var taggedNodesCollection = this.htmlRootElement.getElementsByClassName(classTag);
 			var _g1 = 0, _g = taggedNodesCollection.length;
@@ -2282,7 +2282,7 @@ org.slplayer.core.Application.prototype = {
 				taggedNodes.push(taggedNodesCollection[nodeCnt]);
 			}
 			if(componentClassName != classTag) {
-				haxe.Log.trace("searching now for class tag = " + componentClassName,{ fileName : "Application.hx", lineNumber : 298, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
+				haxe.Log.trace("searching now for class tag = " + componentClassName,{ fileName : "Application.hx", lineNumber : 306, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 				taggedNodesCollection = this.htmlRootElement.getElementsByClassName(componentClassName);
 				var _g1 = 0, _g = taggedNodesCollection.length;
 				while(_g1 < _g) {
@@ -2290,20 +2290,20 @@ org.slplayer.core.Application.prototype = {
 					taggedNodes.push(taggedNodesCollection[nodeCnt]);
 				}
 			}
-			haxe.Log.trace("taggedNodes = " + taggedNodes.length,{ fileName : "Application.hx", lineNumber : 309, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
+			haxe.Log.trace("taggedNodes = " + taggedNodes.length,{ fileName : "Application.hx", lineNumber : 317, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 			var _g = 0;
 			while(_g < taggedNodes.length) {
 				var node = taggedNodes[_g];
 				++_g;
 				var newDisplayObject;
 				newDisplayObject = Type.createInstance(componentClass,[node,this.id]);
-				haxe.Log.trace("Successfuly created instance of " + componentClassName,{ fileName : "Application.hx", lineNumber : 324, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
+				haxe.Log.trace("Successfuly created instance of " + componentClassName,{ fileName : "Application.hx", lineNumber : 332, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 			}
 		} else {
-			haxe.Log.trace("Try to create an instance of " + componentClassName + " non visual component",{ fileName : "Application.hx", lineNumber : 344, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
+			haxe.Log.trace("Try to create an instance of " + componentClassName + " non visual component",{ fileName : "Application.hx", lineNumber : 352, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 			var cmpInstance = null;
 			if(args != null) cmpInstance = Type.createInstance(componentClass,[args]); else cmpInstance = Type.createInstance(componentClass,[]);
-			haxe.Log.trace("Successfuly created instance of " + componentClassName,{ fileName : "Application.hx", lineNumber : 360, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
+			haxe.Log.trace("Successfuly created instance of " + componentClassName,{ fileName : "Application.hx", lineNumber : 368, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 			if(cmpInstance != null && js.Boot.__instanceof(cmpInstance,org.slplayer.component.ISLPlayerComponent)) cmpInstance.initSLPlayerComponent(this.id);
 		}
 	}
@@ -2340,24 +2340,24 @@ org.slplayer.core.Application.prototype = {
 	,initHtmlRootElementContent: function() {
 	}
 	,launch: function(appendTo) {
-		haxe.Log.trace("Launching SLPlayer id " + this.id + " on " + Std.string(appendTo),{ fileName : "Application.hx", lineNumber : 112, className : "org.slplayer.core.Application", methodName : "launch"});
+		haxe.Log.trace("Launching SLPlayer id " + this.id + " on " + Std.string(appendTo),{ fileName : "Application.hx", lineNumber : 118, className : "org.slplayer.core.Application", methodName : "launch"});
 		if(appendTo != null) {
-			haxe.Log.trace("setting htmlRootElement to " + Std.string(appendTo),{ fileName : "Application.hx", lineNumber : 118, className : "org.slplayer.core.Application", methodName : "launch"});
+			haxe.Log.trace("setting htmlRootElement to " + Std.string(appendTo),{ fileName : "Application.hx", lineNumber : 124, className : "org.slplayer.core.Application", methodName : "launch"});
 			this.htmlRootElement = appendTo;
 		}
 		if(this.htmlRootElement == null || this.htmlRootElement.nodeType != js.Lib.document.body.nodeType) {
-			haxe.Log.trace("setting htmlRootElement to Lib.document.body " + Std.string(js.Lib.document.body),{ fileName : "Application.hx", lineNumber : 127, className : "org.slplayer.core.Application", methodName : "launch"});
+			haxe.Log.trace("setting htmlRootElement to Lib.document.body",{ fileName : "Application.hx", lineNumber : 133, className : "org.slplayer.core.Application", methodName : "launch"});
 			this.htmlRootElement = js.Lib.document.body;
 		}
 		if(this.htmlRootElement == null) {
-			haxe.Log.trace("ERROR windows.document.body is null => You are trying to start your application while the document loading is probably not complete yet." + " To fix that, add the noAutoStart option to your slplayer application and control the application startup with: window.onload = function() { myApplication.init() };",{ fileName : "Application.hx", lineNumber : 135, className : "org.slplayer.core.Application", methodName : "launch"});
+			haxe.Log.trace("ERROR windows.document.body is null => You are trying to start your application while the document loading is probably not complete yet." + " To fix that, add the noAutoStart option to your slplayer application and control the application startup with: window.onload = function() { myApplication.init() };",{ fileName : "Application.hx", lineNumber : 141, className : "org.slplayer.core.Application", methodName : "launch"});
 			return;
 		}
 		this.initHtmlRootElementContent();
 		this.initMetaParameters();
 		this.registerComponentsforInit();
 		this.initComponents();
-		haxe.Log.trace("SLPlayer id " + this.id + " launched !",{ fileName : "Application.hx", lineNumber : 156, className : "org.slplayer.core.Application", methodName : "launch"});
+		haxe.Log.trace("SLPlayer id " + this.id + " launched !",{ fileName : "Application.hx", lineNumber : 162, className : "org.slplayer.core.Application", methodName : "launch"});
 	}
 	,getMetaParameter: function(metaParamKey) {
 		return this.metaParameters.get(metaParamKey);
@@ -2367,6 +2367,7 @@ org.slplayer.core.Application.prototype = {
 	,dataObject: null
 	,htmlRootElement: null
 	,nodeToCmpInstances: null
+	,nodesIdSequence: null
 	,id: null
 	,__class__: org.slplayer.core.Application
 }
@@ -2448,6 +2449,7 @@ org.silex.core.Silex.CONFIG_PUBLICATION_NAME = "PublicationName";
 org.silex.core.Silex.CONFIG_PUBLICATION_BODY = "PublicationBody";
 org.silex.core.Silex.PUBLICATIONS_FOLDER = "publications/";
 org.silex.core.Silex.PUBLICATION_HTML_FILE = "content/index.html";
+org.silex.core.Silex.LOADER_SCRIPT_PATH = "loader.js";
 org.silex.transitions.TransitionBase.__meta__ = { obj : { tagNameFilter : ["div"]}};
 org.silex.transitions.TransitionData.EVENT_TYPE_REQUEST = "transitionEventTypeRequest";
 org.silex.transitions.TransitionData.EVENT_TYPE_STARTED = "transitionEventTypeStarted";

@@ -60,6 +60,10 @@ class Silex {
 	 */
 	public static inline var PUBLICATION_HTML_FILE:String = "content/index.html";
 	/**
+	 * constant, path and file names
+	 */
+	public static inline var LOADER_SCRIPT_PATH:String = "loader.js";
+	/**
 	 * configuration of this publication
 	 */
 	static public var config:Hash<String>;
@@ -86,11 +90,15 @@ class Silex {
 	 * Open the default page or the page designated by the deeplink
 	 */
 	static public function main() {
-		haxe.Timer.delay(doAfterDomInit, 1000);
-		trace("- "+Lib.document.body);
-	}
-	static private function doAfterDomInit(){
 		trace("Silex starting");
+		Lib.window.onload = init;
+	}
+	/**
+	 * Method to call if this class is not defined as the application entry point
+	 * Otherwise it is automatically called by main
+	 */
+	static public function init(unused:Dynamic=null){
+		trace("- "+Lib.document.body);
 
 		// bug in nme:		
 		config = loadConfig(Lib.document);
@@ -101,13 +109,10 @@ class Silex {
 		// retrieve publicationName
 		publicationName = config.get(CONFIG_PUBLICATION_NAME);
 
-		trace("- "+Lib.document.body+" - "+config);
+		// set the body of the publication if it is provided in the meta
+		if (config.exists(CONFIG_PUBLICATION_BODY))
+			Lib.document.body.innerHTML = StringTools.htmlUnescape(config.get(CONFIG_PUBLICATION_BODY));
 
-		Lib.document.body.innerHTML = StringTools.htmlUnescape(config.get(CONFIG_PUBLICATION_BODY));
-
-		haxe.Timer.delay(doAfterBodyInit, 1000);
-	}
-	static private function doAfterBodyInit(){
 		// init SLPlayer components
 		Application.init();
 	}
@@ -175,6 +180,13 @@ class Silex {
 		// set initial page 
 		if (initialPageName != "")
 				config = setConfig(Lib.document, CONFIG_INITIAL_PAGE_NAME, initialPageName);
+
+		// add loader script
+		var node = Lib.document.createElement("script");
+		node.setAttribute("src", LOADER_SCRIPT_PATH);
+		var head = Lib.document.getElementsByTagName("head")[0];
+		head.appendChild(node);
+
 
 //		trace(Lib.document.body.innerHTML);
 //		trace("-----------------------------------------------------------------");

@@ -45,6 +45,14 @@ class LinkBase extends DisplayObject{
 	 */
 	public static inline var CONFIG_TRANSITION_IS_REVERSED:String = "data-transition-is-reversed";
 	/**
+	 * value of the href attribute without the #
+	 */
+	public var linkName:String;
+	/**
+	 * value of the target attribute 
+	 */
+	public var targetAttr:Null<String>;
+	/**
 	 * store the html attribute value
 	 * determines which transition to apply 
 	 */
@@ -55,30 +63,29 @@ class LinkBase extends DisplayObject{
 	 */
 	public function new(rootElement:HtmlDom, SLPId:String) {
 		super(rootElement, SLPId);
-		rootElement.onclick = onClick;
+		rootElement.addEventListener("click", onClick, false);
+
+		// retrieve the name of our link 
+		if (rootElement.getAttribute(CONFIG_PAGE_NAME_ATTR) != null){
+			linkName = rootElement.getAttribute(CONFIG_PAGE_NAME_ATTR);
+			// removes the URL before the deep link
+			linkName = linkName.substr(linkName.indexOf("#")+1);
+		}
+		else {
+			trace("Warning: the link has no href atribute ("+rootElement+")");
+		}
+
+		// retrieve the target attr of our link 
+		if (rootElement.getAttribute(CONFIG_TARGET_ATTR) != null){
+			targetAttr = rootElement.getAttribute(CONFIG_TARGET_ATTR);
+		}
+
 	}
 	/**
 	 * user clicked the link
 	 * do an action to the pages corresponding to our link
 	 */
 	private function onClick(e:Event){
-		// retrieve the name of our link 
-		var linkName : String;
-		if (Reflect.hasField(rootElement, CONFIG_PAGE_NAME_ATTR) || Reflect.field(rootElement, CONFIG_PAGE_NAME_ATTR) != null){
-			linkName = Reflect.field(rootElement, CONFIG_PAGE_NAME_ATTR);
-			// removes the URL before the deep link
-			linkName = linkName.substr(linkName.indexOf("#")+1);
-		}
-		else throw("error, the link has no href atribute ("+rootElement+")");
-
-		trace("LinkBase onClick "+linkName+" - "+CONFIG_TRANSITION_IS_REVERSED+ " -- "+rootElement.getAttribute(CONFIG_TRANSITION_IS_REVERSED));
-
-		// retrieve the target attr of our link 
-		var targetAttr:Null<String> = null;
-		if (rootElement.getAttribute(CONFIG_TARGET_ATTR) != null){
-			targetAttr = rootElement.getAttribute(CONFIG_TARGET_ATTR);
-		}
-
 		// values for the transition
 		transitionData = new TransitionData(
 			null, 

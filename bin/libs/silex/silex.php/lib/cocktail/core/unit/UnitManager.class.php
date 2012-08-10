@@ -2510,7 +2510,7 @@ class cocktail_core_unit_UnitManager {
 						unset($val);
 					}
 				}
-				$tr = cocktail_core_style_TransitionProperty::_list($arrayProperties);
+				$tr = cocktail_core_style_TransitionProperty::cssList($arrayProperties);
 			}
 		}
 		return $tr;
