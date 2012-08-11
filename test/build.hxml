@@ -1,0 +1,12 @@
+-php config/test.php
+-cp ../src/
+-cp ../../SLPlayer/src/
+-cp ../../Cocktail/src/
+--remap js:cocktail
+-main config.Test
+-D SilexServerSide
+-lib utest
+
+#-D slpdebug
+#-D disableEmbedHtml
+#-D noAutoStart
