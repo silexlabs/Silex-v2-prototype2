@@ -69,21 +69,7 @@ class org_slplayer_core_Application {
 			$»it2 = $l->iterator();
 			while($»it2->hasNext()) {
 				$c = $»it2->next();
-				try {
-					$c->init();
-				}catch(Exception $»e) {
-					$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
-					$unknown = $_ex_;
-					{
-						haxe_Log::trace("ERROR while trying to call init() on a " . Type::getClassName(Type::getClass($c)) . ": " . Std::string($unknown), _hx_anonymous(array("fileName" => "Application.hx", "lineNumber" => 416, "className" => "org.slplayer.core.Application", "methodName" => "callInitOnComponents")));
-						$excptArr = haxe_Stack::exceptionStack();
-						if($excptArr->length > 0) {
-							haxe_Log::trace(haxe_Stack::toString(haxe_Stack::exceptionStack()), _hx_anonymous(array("fileName" => "Application.hx", "lineNumber" => 420, "className" => "org.slplayer.core.Application", "methodName" => "callInitOnComponents")));
-						}
-						unset($excptArr);
-					}
-				}
-				unset($unknown);
+				$c->init();
 			}
 		}
 	}
@@ -91,7 +77,7 @@ class org_slplayer_core_Application {
 		$componentClass = Type::resolveClass($componentClassName);
 		if($componentClass === null) {
 			$rslErrMsg = "ERROR cannot resolve " . $componentClassName;
-			haxe_Log::trace($rslErrMsg, _hx_anonymous(array("fileName" => "Application.hx", "lineNumber" => 279, "className" => "org.slplayer.core.Application", "methodName" => "createComponentsOfType")));
+			throw new HException($rslErrMsg);
 			return;
 		}
 		if(org_slplayer_component_ui_DisplayObject::isDisplayObject($componentClass)) {
@@ -123,41 +109,16 @@ class org_slplayer_core_Application {
 					$node = $taggedNodes[$_g];
 					++$_g;
 					$newDisplayObject = null;
-					try {
-						$newDisplayObject = Type::createInstance($componentClass, new _hx_array(array($node, $this->id)));
-					}catch(Exception $»e) {
-						$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
-						$unknown = $_ex_;
-						{
-							haxe_Log::trace("ERROR while creating " . $componentClassName . ": " . Std::string($unknown), _hx_anonymous(array("fileName" => "Application.hx", "lineNumber" => 339, "className" => "org.slplayer.core.Application", "methodName" => "createComponentsOfType")));
-							$excptArr = haxe_Stack::exceptionStack();
-							if($excptArr->length > 0) {
-								haxe_Log::trace(haxe_Stack::toString(haxe_Stack::exceptionStack()), _hx_anonymous(array("fileName" => "Application.hx", "lineNumber" => 343, "className" => "org.slplayer.core.Application", "methodName" => "createComponentsOfType")));
-							}
-							unset($excptArr);
-						}
-					}
-					unset($unknown,$node,$newDisplayObject);
+					$newDisplayObject = Type::createInstance($componentClass, new _hx_array(array($node, $this->id)));
+					unset($node,$newDisplayObject);
 				}
 			}
 		} else {
 			$cmpInstance = null;
-			try {
-				if($args !== null) {
-					$cmpInstance = Type::createInstance($componentClass, new _hx_array(array($args)));
-				} else {
-					$cmpInstance = Type::createInstance($componentClass, new _hx_array(array()));
-				}
-			}catch(Exception $»e) {
-				$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
-				$unknown = $_ex_;
-				{
-					haxe_Log::trace("ERROR while creating " . $componentClassName . ": " . Std::string($unknown), _hx_anonymous(array("fileName" => "Application.hx", "lineNumber" => 375, "className" => "org.slplayer.core.Application", "methodName" => "createComponentsOfType")));
-					$excptArr = haxe_Stack::exceptionStack();
-					if($excptArr->length > 0) {
-						haxe_Log::trace(haxe_Stack::toString(haxe_Stack::exceptionStack()), _hx_anonymous(array("fileName" => "Application.hx", "lineNumber" => 379, "className" => "org.slplayer.core.Application", "methodName" => "createComponentsOfType")));
-					}
-				}
+			if($args !== null) {
+				$cmpInstance = Type::createInstance($componentClass, new _hx_array(array($args)));
+			} else {
+				$cmpInstance = Type::createInstance($componentClass, new _hx_array(array()));
 			}
 			if($cmpInstance !== null && Std::is($cmpInstance, _hx_qtype("org.slplayer.component.ISLPlayerComponent"))) {
 				$cmpInstance->initSLPlayerComponent($this->id);
@@ -183,21 +144,15 @@ class org_slplayer_core_Application {
 	}
 	public function initMetaParameters() {
 	}
-	public function initHtmlRootElementContent() {
-		$this->htmlRootElement->set_innerHTML(org_slplayer_core_Application::$_htmlBody);
-	}
-	public function launch($appendTo = null) {
-		if($appendTo !== null) {
-			$this->htmlRootElement = $appendTo;
-		}
+	public function init($appendTo = null) {
+		$this->htmlRootElement = $appendTo;
 		if($this->htmlRootElement === null || $this->htmlRootElement->get_nodeType() !== cocktail_Lib::get_document()->body->get_nodeType()) {
 			$this->htmlRootElement = cocktail_Lib::get_document()->body;
 		}
 		if($this->htmlRootElement === null) {
-			haxe_Log::trace("ERROR could not set Application's root element.", _hx_anonymous(array("fileName" => "Application.hx", "lineNumber" => 144, "className" => "org.slplayer.core.Application", "methodName" => "launch")));
+			haxe_Log::trace("ERROR could not set Application's root element.", _hx_anonymous(array("fileName" => "Application.hx", "lineNumber" => 187, "className" => "org.slplayer.core.Application", "methodName" => "init")));
 			return;
 		}
-		$this->initHtmlRootElementContent();
 		$this->initMetaParameters();
 		$this->registerComponentsforInit();
 		$this->initComponents();
@@ -227,21 +182,17 @@ class org_slplayer_core_Application {
 	static function get($SLPId) {
 		return org_slplayer_core_Application::$instances->get($SLPId);
 	}
-	static function generateUniqueId() {
-		return haxe_Md5::encode(Date::now()->toString() . Std::string(Std::random(intval(Date::now()->getTime()))));
+	static function main() {
 	}
-	static function init($appendTo = null, $args = null) {
+	static function createApplication($args = null) {
 		$newId = org_slplayer_core_Application::generateUniqueId();
 		$newInstance = new org_slplayer_core_Application($newId, $args);
 		org_slplayer_core_Application::$instances->set($newId, $newInstance);
-		$newInstance->launch($appendTo);
-		$newInstance->launch($appendTo);
+		return $newInstance;
 	}
-	static function main() {
-		org_slplayer_core_Application::init(null, null);
+	static function generateUniqueId() {
+		return haxe_Md5::encode(Date::now()->toString() . Std::string(Std::random(intval(Date::now()->getTime()))));
 	}
-	static $_htmlBody;
 	function __toString() { return 'org.slplayer.core.Application'; }
 }
 org_slplayer_core_Application::$instances = new Hash();
-org_slplayer_core_Application::$_htmlBody = haxe_Unserializer::run("y0:");

@@ -4,6 +4,42 @@
 		"selected_items":
 		[
 			[
+				"p",
+				"defaultPublication"
+			],
+			[
+				"con",
+				"configNodes"
+			],
+			[
+				"node",
+				"nodeValue"
+			],
+			[
+				"firs",
+				"firstChild"
+			],
+			[
+				"confi",
+				"configFile"
+			],
+			[
+				"fi",
+				"firstChild"
+			],
+			[
+				"Li",
+				"Lib	cs"
+			],
+			[
+				"conf",
+				"configFile"
+			],
+			[
+				"pu",
+				"public"
+			],
+			[
 				"html",
 				"htmlEscape"
 			],
@@ -132,18 +168,58 @@
 	"buffers":
 	[
 		{
-			"file": "xmlconfig/Test.hx",
+			"file": "build.hxml",
 			"settings":
 			{
-				"buffer_size": 0,
+				"buffer_size": 200,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "xmlconfig/build.hxml",
+			"file": "config/Test.hx",
 			"settings":
 			{
-				"buffer_size": 199,
+				"buffer_size": 877,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/config/Config.hx",
+			"settings":
+			{
+				"buffer_size": 1704,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "config/data/server-config.xml.php",
+			"settings":
+			{
+				"buffer_size": 128,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/config/ServerConfig.hx",
+			"settings":
+			{
+				"buffer_size": 1770,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "config/data/server-config-write.xml.php",
+			"settings":
+			{
+				"buffer_size": 127,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "config/data/server-config-tmp.xml.php",
+			"settings":
+			{
+				"buffer_size": 127,
 				"line_ending": "Unix"
 			}
 		}
@@ -176,6 +252,13 @@
 	},
 	"file_history":
 	[
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/core/Silex.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/config/data/server-config-tmp.xml.php",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/config/ServerConfig.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/config/data/server-config.php.xml",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/config/server-config.php.xml",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/xmlconfig/Test.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/xmlconfig/build.hxml",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/libs/silex/silex.js",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/components/Page.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/test1/content/index.html",
@@ -187,7 +270,6 @@
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/index.html",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/build.hxml",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/tests/xmlconfig/Test.hx",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/core/Silex.hx",
 		"/Users/lexa/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
 		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/core/Application.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/components/Page.hx",
@@ -315,18 +397,44 @@
 			[
 				{
 					"buffer": 0,
-					"file": "xmlconfig/Test.hx",
+					"file": "build.hxml",
 					"settings":
 					{
-						"buffer_size": 0,
+						"buffer_size": 200,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								200,
+								200
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HaXe/Hxml.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "config/Test.hx",
+					"settings":
+					{
+						"buffer_size": 877,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								551,
+								551
 							]
 						],
 						"settings":
@@ -341,24 +449,132 @@
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "xmlconfig/build.hxml",
+					"buffer": 2,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/config/Config.hx",
 					"settings":
 					{
-						"buffer_size": 199,
+						"buffer_size": 1704,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								29,
-								29
+								1571,
+								1571
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HaXe/Hxml.tmLanguage"
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 51.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "config/data/server-config.xml.php",
+					"settings":
+					{
+						"buffer_size": 128,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								122,
+								122
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/XML/XML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/config/ServerConfig.hx",
+					"settings":
+					{
+						"buffer_size": 1770,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1551,
+								1551
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 442.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "config/data/server-config-write.xml.php",
+					"settings":
+					{
+						"buffer_size": 127,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								127,
+								127
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "config/data/server-config-tmp.xml.php",
+					"settings":
+					{
+						"buffer_size": 127,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								78,
+								78
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -400,6 +616,10 @@
 		]
 	},
 	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 220.0
+	},
 	"replace":
 	{
 		"height": 64.0

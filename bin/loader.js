@@ -25,14 +25,15 @@ function startSilexFlash(){
 
 }
 function swfobjectLoaded(){
-	swfobject.embedSWF("myContent.swf", "flashContainer", "300", "120", "9.0.0");
+	// TODO: flashvars with the dody
+	swfobject.embedSWF("libs/silex/silex.swf", "flashContainer", "100%", "400", "10.2.0");
 }
 
 var _hasHtml5 = hasHtml5();
 
-_hasHtml5 = false;
-
+// flash or html version
 if (_hasHtml5)
 	startSilexJs();
-else
+// debug only 
+//else
 	startSilexFlash();

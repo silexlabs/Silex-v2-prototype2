@@ -2,51 +2,48 @@
 
 class org_silex_core_Silex {
 	public function __construct(){}
-	static $CONFIG_TAG = "meta";
-	static $CONFIG_NAME_ATTR = "name";
-	static $CONFIG_VALUE_ATTR = "content";
 	static $CONFIG_INITIAL_PAGE_NAME = "InitialPageName";
 	static $CONFIG_PUBLICATION_NAME = "PublicationName";
 	static $CONFIG_PUBLICATION_BODY = "PublicationBody";
 	static $PUBLICATIONS_FOLDER = "publications/";
 	static $PUBLICATION_HTML_FILE = "content/index.html";
 	static $LOADER_SCRIPT_PATH = "loader.js";
-	static $config;
 	static $publicationName;
 	static $initialPageName;
 	static function main() {
+		$application = org_slplayer_core_Application::createApplication(null);
+		$serverConfig = new org_silex_config_ServerConfig(null);
 		$urlParamsString = php_Web::getParamsString();
 		$params = _hx_explode("/", _hx_array_get(_hx_explode("&", $urlParamsString), 0));
-		if($params->length === 0) {
-			org_silex_core_Silex::$publicationName = "";
-			org_silex_core_Silex::$initialPageName = "";
-		} else {
-			if($params->length === 1) {
-				org_silex_core_Silex::$publicationName = $params[0];
-				org_silex_core_Silex::$initialPageName = "";
+		haxe_Log::trace("Silex loading " . Std::string($params) . " - " . Std::string(Type::typeof($params[0])), _hx_anonymous(array("fileName" => "Silex.hx", "lineNumber" => 127, "className" => "org.silex.core.Silex", "methodName" => "main")));
+		if($params->length === 1) {
+			if($params[0] === "") {
+				org_silex_core_Silex::$publicationName = $serverConfig->defaultPublication;
 			} else {
 				org_silex_core_Silex::$publicationName = $params[0];
-				org_silex_core_Silex::$initialPageName = $params[1];
 			}
+			org_silex_core_Silex::$initialPageName = "";
+		} else {
+			org_silex_core_Silex::$publicationName = $params[0];
+			org_silex_core_Silex::$initialPageName = $params[1];
 		}
 		$htmlContent = sys_io_File::getContent("publications/" . org_silex_core_Silex::$publicationName . "/" . "content/index.html");
 		cocktail_Lib::get_document()->documentElement->set_innerHTML($htmlContent);
-		org_silex_core_Silex::$config = org_silex_core_Silex::loadConfig(cocktail_Lib::get_document());
-		org_silex_core_Silex::$config = org_silex_core_Silex::setConfig(cocktail_Lib::get_document(), "PublicationName", org_silex_core_Silex::$publicationName);
-		org_silex_core_Silex::$config = org_silex_core_Silex::setConfig(cocktail_Lib::get_document(), "PublicationBody", StringTools::htmlEscape(cocktail_Lib::get_document()->body->get_innerHTML()));
+		org_silex_core_Silex::setConfig(cocktail_Lib::get_document(), "PublicationName", org_silex_core_Silex::$publicationName);
+		org_silex_core_Silex::setConfig(cocktail_Lib::get_document(), "PublicationBody", StringTools::htmlEscape(cocktail_Lib::get_document()->body->get_innerHTML()));
 		if(org_silex_core_Silex::$initialPageName !== "") {
-			org_silex_core_Silex::$config = org_silex_core_Silex::setConfig(cocktail_Lib::get_document(), "InitialPageName", org_silex_core_Silex::$initialPageName);
+			org_silex_core_Silex::setConfig(cocktail_Lib::get_document(), "InitialPageName", org_silex_core_Silex::$initialPageName);
 		}
 		$node = cocktail_Lib::get_document()->createElement("script");
 		$node->setAttribute("src", "loader.js");
 		$head = _hx_array_get(cocktail_Lib::get_document()->getElementsByTagName("head"), 0);
 		$head->appendChild($node);
-		org_slplayer_core_Application::init(null, null);
+		$application->init(null);
 		php_Lib::hprint(cocktail_Lib::get_document()->documentElement->get_innerHTML());
 	}
 	static function setConfig($document, $metaName, $metaValue) {
 		$res = new Hash();
-		$metaTags = $document->getElementsByTagName("meta");
+		$metaTags = $document->getElementsByTagName("META");
 		$found = false;
 		{
 			$_g1 = 0; $_g = $metaTags->length;
@@ -73,24 +70,6 @@ class org_silex_core_Silex {
 			$head = _hx_array_get($document->getElementsByTagName("head"), 0);
 			$head->appendChild($node);
 			$res->set($metaName, $metaValue);
-		}
-		return $res;
-	}
-	static function loadConfig($document) {
-		$res = new Hash();
-		$metaTags = $document->getElementsByTagName("meta");
-		{
-			$_g1 = 0; $_g = $metaTags->length;
-			while($_g1 < $_g) {
-				$idxNode = $_g1++;
-				$node = $metaTags[$idxNode];
-				$configName = $node->getAttribute("name");
-				$configValue = $node->getAttribute("content");
-				if($configName !== null && $configValue !== null) {
-					$res->set($configName, $configValue);
-				}
-				unset($node,$idxNode,$configValue,$configName);
-			}
 		}
 		return $res;
 	}

@@ -1608,17 +1608,54 @@ js.Lib.setErrorHandler = function(f) {
 }
 var org = {}
 org.silex = {}
-org.silex.components = {}
-org.silex.components.LayerStatus = $hxClasses["org.silex.components.LayerStatus"] = { __ename__ : ["org","silex","components","LayerStatus"], __constructs__ : ["visible","hidden","notInitialized"] }
-org.silex.components.LayerStatus.visible = ["visible",0];
-org.silex.components.LayerStatus.visible.toString = $estr;
-org.silex.components.LayerStatus.visible.__enum__ = org.silex.components.LayerStatus;
-org.silex.components.LayerStatus.hidden = ["hidden",1];
-org.silex.components.LayerStatus.hidden.toString = $estr;
-org.silex.components.LayerStatus.hidden.__enum__ = org.silex.components.LayerStatus;
-org.silex.components.LayerStatus.notInitialized = ["notInitialized",2];
-org.silex.components.LayerStatus.notInitialized.toString = $estr;
-org.silex.components.LayerStatus.notInitialized.__enum__ = org.silex.components.LayerStatus;
+org.silex.core = {}
+org.silex.core.Silex = function() { }
+$hxClasses["org.silex.core.Silex"] = org.silex.core.Silex;
+org.silex.core.Silex.__name__ = ["org","silex","core","Silex"];
+org.silex.core.Silex.publicationName = null;
+org.silex.core.Silex.initialPageName = null;
+org.silex.core.Silex.main = function() {
+	haxe.Log.trace("Silex starting",{ fileName : "Silex.hx", lineNumber : 78, className : "org.silex.core.Silex", methodName : "main"});
+	js.Lib.window.onload = org.silex.core.Silex.init;
+}
+org.silex.core.Silex.init = function(unused) {
+	haxe.Log.trace("- " + Std.string(js.Lib.document.body),{ fileName : "Silex.hx", lineNumber : 86, className : "org.silex.core.Silex", methodName : "init"});
+	var application = org.slplayer.core.Application.createApplication();
+	org.silex.core.Silex.initialPageName = application.getMetaParameter("InitialPageName");
+	org.silex.core.Silex.publicationName = application.getMetaParameter("PublicationName");
+	var publicationBody = application.getMetaParameter("PublicationBody");
+	if(publicationBody != null) js.Lib.document.body.innerHTML = StringTools.htmlUnescape(application.getMetaParameter("PublicationBody"));
+	application.init();
+}
+org.silex.core.Silex.setConfig = function(document,metaName,metaValue) {
+	var res = new Hash();
+	var metaTags = document.getElementsByTagName("META");
+	var found = false;
+	var _g1 = 0, _g = metaTags.length;
+	while(_g1 < _g) {
+		var idxNode = _g1++;
+		var node = metaTags[idxNode];
+		var configName = node.getAttribute("name");
+		var configValue = node.getAttribute("content");
+		if(configName != null && configValue != null) {
+			if(configName == metaName) {
+				configValue = metaValue;
+				node.setAttribute("content",metaValue);
+				found = true;
+			}
+			res.set(configName,configValue);
+		}
+	}
+	if(!found) {
+		var node = document.createElement("meta");
+		node.setAttribute("name",metaName);
+		node.setAttribute("content",metaValue);
+		var head = document.getElementsByTagName("head")[0];
+		head.appendChild(node);
+		res.set(metaName,metaValue);
+	}
+	return res;
+}
 org.slplayer = {}
 org.slplayer.component = {}
 org.slplayer.component.ISLPlayerComponent = function() { }
@@ -1629,6 +1666,36 @@ org.slplayer.component.ISLPlayerComponent.prototype = {
 	,SLPlayerInstanceId: null
 	,__class__: org.slplayer.component.ISLPlayerComponent
 }
+org.slplayer.component.SLPlayerComponent = function() { }
+$hxClasses["org.slplayer.component.SLPlayerComponent"] = org.slplayer.component.SLPlayerComponent;
+org.slplayer.component.SLPlayerComponent.__name__ = ["org","slplayer","component","SLPlayerComponent"];
+org.slplayer.component.SLPlayerComponent.initSLPlayerComponent = function(component,SLPlayerInstanceId) {
+	component.SLPlayerInstanceId = SLPlayerInstanceId;
+}
+org.slplayer.component.SLPlayerComponent.getSLPlayer = function(component) {
+	return org.slplayer.core.Application.get(component.SLPlayerInstanceId);
+}
+org.slplayer.component.SLPlayerComponent.checkRequiredParameters = function(cmpClass,elt) {
+	var requires = haxe.rtti.Meta.getType(cmpClass).requires;
+	if(requires == null) return;
+	var _g = 0;
+	while(_g < requires.length) {
+		var r = requires[_g];
+		++_g;
+		if(elt.getAttribute(Std.string(r)) == null || StringTools.trim(elt.getAttribute(Std.string(r))) == "") throw Std.string(r) + " parameter is required for " + Type.getClassName(cmpClass);
+	}
+}
+org.slplayer.component.layer = {}
+org.slplayer.component.layer.LayerStatus = $hxClasses["org.slplayer.component.layer.LayerStatus"] = { __ename__ : ["org","slplayer","component","layer","LayerStatus"], __constructs__ : ["visible","hidden","notInitialized"] }
+org.slplayer.component.layer.LayerStatus.visible = ["visible",0];
+org.slplayer.component.layer.LayerStatus.visible.toString = $estr;
+org.slplayer.component.layer.LayerStatus.visible.__enum__ = org.slplayer.component.layer.LayerStatus;
+org.slplayer.component.layer.LayerStatus.hidden = ["hidden",1];
+org.slplayer.component.layer.LayerStatus.hidden.toString = $estr;
+org.slplayer.component.layer.LayerStatus.hidden.__enum__ = org.slplayer.component.layer.LayerStatus;
+org.slplayer.component.layer.LayerStatus.notInitialized = ["notInitialized",2];
+org.slplayer.component.layer.LayerStatus.notInitialized.toString = $estr;
+org.slplayer.component.layer.LayerStatus.notInitialized.__enum__ = org.slplayer.component.layer.LayerStatus;
 org.slplayer.component.ui = {}
 org.slplayer.component.ui.IDisplayObject = function() { }
 $hxClasses["org.slplayer.component.ui.IDisplayObject"] = org.slplayer.component.ui.IDisplayObject;
@@ -1670,48 +1737,48 @@ org.slplayer.component.ui.DisplayObject.prototype = {
 	,SLPlayerInstanceId: null
 	,__class__: org.slplayer.component.ui.DisplayObject
 }
-org.silex.components.Layer = function(rootElement,SLPId) {
+org.slplayer.component.layer.Layer = function(rootElement,SLPId) {
 	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
 	this.isListeningHide = false;
 	this.isListeningShow = false;
-	this.status = org.silex.components.LayerStatus.notInitialized;
+	this.status = org.slplayer.component.layer.LayerStatus.notInitialized;
 	this.childrenArray = new Array();
 	this.styleAttrDisplay = rootElement.style.display;
 };
-$hxClasses["org.silex.components.Layer"] = org.silex.components.Layer;
-org.silex.components.Layer.__name__ = ["org","silex","components","Layer"];
-org.silex.components.Layer.__super__ = org.slplayer.component.ui.DisplayObject;
-org.silex.components.Layer.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
+$hxClasses["org.slplayer.component.layer.Layer"] = org.slplayer.component.layer.Layer;
+org.slplayer.component.layer.Layer.__name__ = ["org","slplayer","component","layer","Layer"];
+org.slplayer.component.layer.Layer.__super__ = org.slplayer.component.ui.DisplayObject;
+org.slplayer.component.layer.Layer.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
 	doShow: function(nullIfCalledDirectly) {
 		if(this.isListeningShow == false) return;
 		this.isListeningShow = false;
-		haxe.Log.trace("doShow " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 210, className : "org.silex.components.Layer", methodName : "doShow"});
+		haxe.Log.trace("doShow " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 242, className : "org.slplayer.component.layer.Layer", methodName : "doShow"});
 		if(nullIfCalledDirectly != null) this.rootElement.removeEventListener("transitionEventTypeEnded",$bind(this,this.doShow),false);
 	}
 	,show: function(transitionData) {
-		if(this.status != org.silex.components.LayerStatus.visible) {
-			this.status = org.silex.components.LayerStatus.visible;
+		if(this.status != org.slplayer.component.layer.LayerStatus.visible) {
+			this.status = org.slplayer.component.layer.LayerStatus.visible;
 			this.rootElement.style.display = this.styleAttrDisplay;
-			haxe.Log.trace("Transition started SHOW " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 166, className : "org.silex.components.Layer", methodName : "show"});
+			haxe.Log.trace("Transition started SHOW " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 191, className : "org.slplayer.component.layer.Layer", methodName : "show"});
 			while(this.childrenArray.length > 0) {
 				var element = this.childrenArray.shift();
 				this.rootElement.appendChild(element);
 				if(element.tagName != null && (element.tagName.toLowerCase() == "audio" || element.tagName.toLowerCase() == "video")) try {
 					if(element.autoplay == true) element.play();
-					element.muted = org.silex.components.SoundOn.isMuted;
+					element.muted = org.slplayer.component.sound.SoundOn.isMuted;
 				} catch( e ) {
-					haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 184, className : "org.silex.components.Layer", methodName : "show"});
+					haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 213, className : "org.slplayer.component.layer.Layer", methodName : "show"});
 				}
 			}
 			this.isListeningShow = true;
 			if(this.detectTransition(transitionData)) this.rootElement.addEventListener("transitionEventTypeEnded",$bind(this,this.doShow),false); else this.doShow(null);
-		} else haxe.Log.trace("Transition - Already visible " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 201, className : "org.silex.components.Layer", methodName : "show"});
+		} else haxe.Log.trace("Transition - Already visible " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 232, className : "org.slplayer.component.layer.Layer", methodName : "show"});
 	}
 	,doHide: function(nullIfCalledDirectly) {
 		if(this.isListeningHide == false) return;
 		this.isListeningHide = false;
 		if(nullIfCalledDirectly != null) this.rootElement.removeEventListener("transitionEventTypeEnded",$bind(this,this.doHide),false);
-		haxe.Log.trace("doHide " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 129, className : "org.silex.components.Layer", methodName : "doHide"});
+		haxe.Log.trace("doHide " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 148, className : "org.slplayer.component.layer.Layer", methodName : "doHide"});
 		while(this.rootElement.childNodes.length > 0) {
 			var element = this.rootElement.childNodes[0];
 			this.rootElement.removeChild(element);
@@ -1720,29 +1787,28 @@ org.silex.components.Layer.prototype = $extend(org.slplayer.component.ui.Display
 				element.pause();
 				element.currentTime = 0;
 			} catch( e ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 146, className : "org.silex.components.Layer", methodName : "doHide"});
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 168, className : "org.slplayer.component.layer.Layer", methodName : "doHide"});
 			}
 		}
 		this.rootElement.style.display = "none";
 	}
 	,hide: function(transitionData) {
-		if(this.status != org.silex.components.LayerStatus.hidden) {
-			haxe.Log.trace("Transition started HIDE " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 98, className : "org.silex.components.Layer", methodName : "hide"});
-			this.status = org.silex.components.LayerStatus.hidden;
+		if(this.status != org.slplayer.component.layer.LayerStatus.hidden) {
+			haxe.Log.trace("Transition started HIDE " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 111, className : "org.slplayer.component.layer.Layer", methodName : "hide"});
+			this.status = org.slplayer.component.layer.LayerStatus.hidden;
 			this.isListeningHide = true;
 			if(this.detectTransition(transitionData)) this.rootElement.addEventListener("transitionEventTypeEnded",$bind(this,this.doHide),false); else this.doHide(null);
-		} else haxe.Log.trace("Transition - Already hidden " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 114, className : "org.silex.components.Layer", methodName : "hide"});
+		} else haxe.Log.trace("Transition - Already hidden " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 130, className : "org.slplayer.component.layer.Layer", methodName : "hide"});
 	}
 	,onTransitionStarted: function(event) {
-		haxe.Log.trace("Layer - detected transition " + Std.string(event),{ fileName : "Layer.hx", lineNumber : 89, className : "org.silex.components.Layer", methodName : "onTransitionStarted"});
+		haxe.Log.trace("Layer - detected transition " + Std.string(event),{ fileName : "Layer.hx", lineNumber : 99, className : "org.slplayer.component.layer.Layer", methodName : "onTransitionStarted"});
 		this.hasTransitionStarted = true;
 	}
 	,detectTransition: function(transitionData) {
 		this.rootElement.addEventListener("transitionEventTypeStarted",$bind(this,this.onTransitionStarted),false);
 		this.hasTransitionStarted = false;
-		var event = js.Lib.document.createEvent("Event");
-		event.initEvent("transitionEventTypeRequest",true,true);
-		event.data = transitionData;
+		var event = js.Lib.document.createEvent("CustomEvent");
+		event.initCustomEvent("transitionEventTypeRequest",true,true,transitionData);
 		this.rootElement.dispatchEvent(event);
 		this.rootElement.removeEventListener("transitionEventTypeStarted",$bind(this,this.onTransitionStarted),false);
 		return this.hasTransitionStarted;
@@ -1753,16 +1819,21 @@ org.silex.components.Layer.prototype = $extend(org.slplayer.component.ui.Display
 	,childrenArray: null
 	,isListeningShow: null
 	,isListeningHide: null
-	,__class__: org.silex.components.Layer
+	,__class__: org.slplayer.component.layer.Layer
 });
-org.silex.components.LinkBase = function(rootElement,SLPId) {
+org.slplayer.component.layer.LinkBase = function(rootElement,SLPId) {
 	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
-	rootElement.onclick = $bind(this,this.onClick);
+	rootElement.addEventListener("click",$bind(this,this.onClick),false);
+	if(rootElement.getAttribute("href") != null) {
+		this.linkName = StringTools.trim(rootElement.getAttribute("href"));
+		this.linkName = HxOverrides.substr(this.linkName,this.linkName.indexOf("#") + 1,null);
+	} else haxe.Log.trace("Warning: the link has no href atribute (" + Std.string(rootElement) + ")",{ fileName : "LinkBase.hx", lineNumber : 79, className : "org.slplayer.component.layer.LinkBase", methodName : "new"});
+	if(rootElement.getAttribute("target") != null) this.targetAttr = StringTools.trim(rootElement.getAttribute("target"));
 };
-$hxClasses["org.silex.components.LinkBase"] = org.silex.components.LinkBase;
-org.silex.components.LinkBase.__name__ = ["org","silex","components","LinkBase"];
-org.silex.components.LinkBase.__super__ = org.slplayer.component.ui.DisplayObject;
-org.silex.components.LinkBase.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
+$hxClasses["org.slplayer.component.layer.LinkBase"] = org.slplayer.component.layer.LinkBase;
+org.slplayer.component.layer.LinkBase.__name__ = ["org","slplayer","component","layer","LinkBase"];
+org.slplayer.component.layer.LinkBase.__super__ = org.slplayer.component.ui.DisplayObject;
+org.slplayer.component.layer.LinkBase.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
 	linkToPage: function(page,targetAttr) {
 	}
 	,linkToPagesWithName: function(linkName,targetAttr) {
@@ -1771,7 +1842,7 @@ org.silex.components.LinkBase.prototype = $extend(org.slplayer.component.ui.Disp
 		while(_g1 < _g) {
 			var pageIdx = _g1++;
 			if(pages[pageIdx].getAttribute("name") == linkName) {
-				var pageInstances = org.slplayer.core.Application.get(this.SLPlayerInstanceId).getAssociatedComponents(pages[pageIdx],org.silex.components.Page);
+				var pageInstances = this.getSLPlayer().getAssociatedComponents(pages[pageIdx],org.slplayer.component.layer.Page);
 				var $it0 = pageInstances.iterator();
 				while( $it0.hasNext() ) {
 					var page = $it0.next();
@@ -1782,55 +1853,49 @@ org.silex.components.LinkBase.prototype = $extend(org.slplayer.component.ui.Disp
 		}
 	}
 	,onClick: function(e) {
-		var linkName;
-		if(Reflect.hasField(this.rootElement,"href") || Reflect.field(this.rootElement,"href") != null) {
-			linkName = Reflect.field(this.rootElement,"href");
-			linkName = HxOverrides.substr(linkName,linkName.indexOf("#") + 1,null);
-		} else throw "error, the link has no href atribute (" + Std.string(this.rootElement) + ")";
-		haxe.Log.trace("LinkBase onClick " + linkName + " - " + "data-transition-is-reversed" + " -- " + this.rootElement.getAttribute("data-transition-is-reversed"),{ fileName : "LinkBase.hx", lineNumber : 74, className : "org.silex.components.LinkBase", methodName : "onClick"});
-		var targetAttr = null;
-		if(this.rootElement.getAttribute("target") != null) targetAttr = this.rootElement.getAttribute("target");
-		this.transitionData = new org.silex.transitions.TransitionData(null,this.rootElement.getAttribute("data-transition-duration"),this.rootElement.getAttribute("data-transition-timing-function"),this.rootElement.getAttribute("data-transition-delay"),this.rootElement.getAttribute("data-transition-is-reversed") == "true");
-		this.linkToPagesWithName(linkName,targetAttr);
+		this.transitionData = new org.slplayer.component.transition.TransitionData(null,StringTools.trim(this.rootElement.getAttribute("data-transition-duration")),StringTools.trim(this.rootElement.getAttribute("data-transition-timing-function")),StringTools.trim(this.rootElement.getAttribute("data-transition-delay")),this.rootElement.getAttribute("data-transition-is-reversed") == null);
+		this.linkToPagesWithName(this.linkName,this.targetAttr);
 	}
 	,transitionData: null
-	,__class__: org.silex.components.LinkBase
+	,targetAttr: null
+	,linkName: null
+	,__class__: org.slplayer.component.layer.LinkBase
 });
-org.silex.components.LinkClosePage = function(rootElement,SLPId) {
-	org.silex.components.LinkBase.call(this,rootElement,SLPId);
+org.slplayer.component.layer.LinkClosePage = function(rootElement,SLPId) {
+	org.slplayer.component.layer.LinkBase.call(this,rootElement,SLPId);
 };
-$hxClasses["org.silex.components.LinkClosePage"] = org.silex.components.LinkClosePage;
-org.silex.components.LinkClosePage.__name__ = ["org","silex","components","LinkClosePage"];
-org.silex.components.LinkClosePage.__super__ = org.silex.components.LinkBase;
-org.silex.components.LinkClosePage.prototype = $extend(org.silex.components.LinkBase.prototype,{
+$hxClasses["org.slplayer.component.layer.LinkClosePage"] = org.slplayer.component.layer.LinkClosePage;
+org.slplayer.component.layer.LinkClosePage.__name__ = ["org","slplayer","component","layer","LinkClosePage"];
+org.slplayer.component.layer.LinkClosePage.__super__ = org.slplayer.component.layer.LinkBase;
+org.slplayer.component.layer.LinkClosePage.prototype = $extend(org.slplayer.component.layer.LinkBase.prototype,{
 	linkToPage: function(page,targetAttr) {
 		page.close(this.transitionData);
 	}
-	,__class__: org.silex.components.LinkClosePage
+	,__class__: org.slplayer.component.layer.LinkClosePage
 });
-org.silex.components.LinkToPage = function(rootElement,SLPId) {
-	org.silex.components.LinkBase.call(this,rootElement,SLPId);
+org.slplayer.component.layer.LinkToPage = function(rootElement,SLPId) {
+	org.slplayer.component.layer.LinkBase.call(this,rootElement,SLPId);
 };
-$hxClasses["org.silex.components.LinkToPage"] = org.silex.components.LinkToPage;
-org.silex.components.LinkToPage.__name__ = ["org","silex","components","LinkToPage"];
-org.silex.components.LinkToPage.__super__ = org.silex.components.LinkBase;
-org.silex.components.LinkToPage.prototype = $extend(org.silex.components.LinkBase.prototype,{
+$hxClasses["org.slplayer.component.layer.LinkToPage"] = org.slplayer.component.layer.LinkToPage;
+org.slplayer.component.layer.LinkToPage.__name__ = ["org","slplayer","component","layer","LinkToPage"];
+org.slplayer.component.layer.LinkToPage.__super__ = org.slplayer.component.layer.LinkBase;
+org.slplayer.component.layer.LinkToPage.prototype = $extend(org.slplayer.component.layer.LinkBase.prototype,{
 	linkToPage: function(page,targetAttr) {
 		page.open(this.transitionData,targetAttr != "_top");
 	}
-	,__class__: org.silex.components.LinkToPage
+	,__class__: org.slplayer.component.layer.LinkToPage
 });
-org.silex.components.Page = function(rootElement,SLPId) {
+org.slplayer.component.layer.Page = function(rootElement,SLPId) {
 	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
 	this.name = rootElement.getAttribute("name");
 	if(this.name == null || this.name == "") throw "Pages have to have a 'name' attribute";
 };
-$hxClasses["org.silex.components.Page"] = org.silex.components.Page;
-org.silex.components.Page.__name__ = ["org","silex","components","Page"];
-org.silex.components.Page.__super__ = org.slplayer.component.ui.DisplayObject;
-org.silex.components.Page.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
+$hxClasses["org.slplayer.component.layer.Page"] = org.slplayer.component.layer.Page;
+org.slplayer.component.layer.Page.__name__ = ["org","slplayer","component","layer","Page"];
+org.slplayer.component.layer.Page.__super__ = org.slplayer.component.ui.DisplayObject;
+org.slplayer.component.layer.Page.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
 	close: function(transitionData,preventCloseByClassName) {
-		transitionData.type = org.silex.transitions.TransitionType.hide;
+		transitionData.type = org.slplayer.component.transition.TransitionType.hide;
 		if(preventCloseByClassName == null) preventCloseByClassName = new Array();
 		var nodes = js.Lib.document.getElementsByClassName(this.name);
 		var _g1 = 0, _g = nodes.length;
@@ -1842,29 +1907,29 @@ org.silex.components.Page.prototype = $extend(org.slplayer.component.ui.DisplayO
 			while(_g2 < preventCloseByClassName.length) {
 				var className = preventCloseByClassName[_g2];
 				++_g2;
-				if(org.silex.core.DomTools.hasClass(layerNode,className)) {
+				if(org.slplayer.util.DomTools.hasClass(layerNode,className)) {
 					hasForbiddenClass = true;
 					break;
 				}
 			}
 			if(!hasForbiddenClass) {
-				var layerInstances = org.slplayer.core.Application.get(this.SLPlayerInstanceId).getAssociatedComponents(layerNode,org.silex.components.Layer);
+				var layerInstances = this.getSLPlayer().getAssociatedComponents(layerNode,org.slplayer.component.layer.Layer);
 				var $it0 = layerInstances.iterator();
 				while( $it0.hasNext() ) {
 					var layerInstance = $it0.next();
-					(js.Boot.__cast(layerInstance , org.silex.components.Layer)).hide(transitionData);
+					(js.Boot.__cast(layerInstance , org.slplayer.component.layer.Layer)).hide(transitionData);
 				}
 			}
 		}
 	}
 	,doOpen: function(transitionData) {
-		transitionData.type = org.silex.transitions.TransitionType.show;
+		transitionData.type = org.slplayer.component.transition.TransitionType.show;
 		var nodes = js.Lib.document.getElementsByClassName(this.name);
 		var _g1 = 0, _g = nodes.length;
 		while(_g1 < _g) {
 			var idxLayerNode = _g1++;
 			var layerNode = nodes[idxLayerNode];
-			var layerInstances = org.slplayer.core.Application.get(this.SLPlayerInstanceId).getAssociatedComponents(layerNode,org.silex.components.Layer);
+			var layerInstances = this.getSLPlayer().getAssociatedComponents(layerNode,org.slplayer.component.layer.Layer);
 			var $it0 = layerInstances.iterator();
 			while( $it0.hasNext() ) {
 				var layerInstance = $it0.next();
@@ -1878,7 +1943,7 @@ org.silex.components.Page.prototype = $extend(org.slplayer.component.ui.DisplayO
 		while(_g1 < _g) {
 			var idxPageNode = _g1++;
 			var pageNode = nodes[idxPageNode];
-			var pageInstances = org.slplayer.core.Application.get(this.SLPlayerInstanceId).getAssociatedComponents(pageNode,org.silex.components.Page);
+			var pageInstances = this.getSLPlayer().getAssociatedComponents(pageNode,org.slplayer.component.layer.Page);
 			var $it0 = pageInstances.iterator();
 			while( $it0.hasNext() ) {
 				var pageInstance = $it0.next();
@@ -1892,9 +1957,9 @@ org.silex.components.Page.prototype = $extend(org.slplayer.component.ui.DisplayO
 		this.doOpen(transitionData);
 	}
 	,doAfterDomInit: function() {
-		if(org.silex.core.Silex.config.get("InitialPageName") == this.name) {
-			haxe.Log.trace("Open home page '" + this.name + "'",{ fileName : "Page.hx", lineNumber : 55, className : "org.silex.components.Page", methodName : "doAfterDomInit"});
-			var transitionData = new org.silex.transitions.TransitionData(org.silex.transitions.TransitionType.show,"0.01s");
+		if(this.getSLPlayer().getMetaParameter("InitialPageName") == this.name) {
+			haxe.Log.trace("Open home page '" + this.name + "'",{ fileName : "Page.hx", lineNumber : 68, className : "org.slplayer.component.layer.Page", methodName : "doAfterDomInit"});
+			var transitionData = new org.slplayer.component.transition.TransitionData(org.slplayer.component.transition.TransitionType.show,"0.01s");
 			this.open(transitionData);
 		}
 	}
@@ -1903,23 +1968,24 @@ org.silex.components.Page.prototype = $extend(org.slplayer.component.ui.DisplayO
 	}
 	,name: null
 	,displayName: null
-	,__class__: org.silex.components.Page
+	,__class__: org.slplayer.component.layer.Page
 });
-org.silex.components.SoundOn = function(rootElement,SLPId) {
+org.slplayer.component.sound = {}
+org.slplayer.component.sound.SoundOn = function(rootElement,SLPId) {
 	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
 	rootElement.onclick = $bind(this,this.onClick);
 };
-$hxClasses["org.silex.components.SoundOn"] = org.silex.components.SoundOn;
-org.silex.components.SoundOn.__name__ = ["org","silex","components","SoundOn"];
-org.silex.components.SoundOn.mute = function(doMute) {
-	haxe.Log.trace("Sound mute " + Std.string(doMute),{ fileName : "SoundOn.hx", lineNumber : 46, className : "org.silex.components.SoundOn", methodName : "mute"});
+$hxClasses["org.slplayer.component.sound.SoundOn"] = org.slplayer.component.sound.SoundOn;
+org.slplayer.component.sound.SoundOn.__name__ = ["org","slplayer","component","sound","SoundOn"];
+org.slplayer.component.sound.SoundOn.mute = function(doMute) {
+	haxe.Log.trace("Sound mute " + Std.string(doMute),{ fileName : "SoundOn.hx", lineNumber : 54, className : "org.slplayer.component.sound.SoundOn", methodName : "mute"});
 	var audioTags = js.Lib.document.getElementsByTagName("audio");
 	var _g1 = 0, _g = audioTags.length;
 	while(_g1 < _g) {
 		var idx = _g1++;
 		audioTags[idx].muted = doMute;
 	}
-	org.silex.components.SoundOn.isMuted = doMute;
+	org.slplayer.component.sound.SoundOn.isMuted = doMute;
 	var soundOffButtons = js.Lib.document.getElementsByClassName("SoundOff");
 	var soundOnButtons = js.Lib.document.getElementsByClassName("SoundOn");
 	var _g1 = 0, _g = soundOffButtons.length;
@@ -1933,186 +1999,38 @@ org.silex.components.SoundOn.mute = function(doMute) {
 		if(!doMute) soundOnButtons[idx].style.visibility = "hidden"; else soundOnButtons[idx].style.visibility = "visible";
 	}
 }
-org.silex.components.SoundOn.__super__ = org.slplayer.component.ui.DisplayObject;
-org.silex.components.SoundOn.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
+org.slplayer.component.sound.SoundOn.__super__ = org.slplayer.component.ui.DisplayObject;
+org.slplayer.component.sound.SoundOn.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
 	onClick: function(e) {
-		org.silex.components.SoundOn.mute(false);
+		org.slplayer.component.sound.SoundOn.mute(false);
 	}
 	,init: function() {
-		org.silex.components.SoundOn.mute(false);
+		org.slplayer.component.sound.SoundOn.mute(false);
 	}
-	,__class__: org.silex.components.SoundOn
+	,__class__: org.slplayer.component.sound.SoundOn
 });
-org.silex.components.SoundOff = function(rootElement,SLPId) {
-	org.silex.components.SoundOn.call(this,rootElement,SLPId);
+org.slplayer.component.sound.SoundOff = function(rootElement,SLPId) {
+	org.slplayer.component.sound.SoundOn.call(this,rootElement,SLPId);
 };
-$hxClasses["org.silex.components.SoundOff"] = org.silex.components.SoundOff;
-org.silex.components.SoundOff.__name__ = ["org","silex","components","SoundOff"];
-org.silex.components.SoundOff.__super__ = org.silex.components.SoundOn;
-org.silex.components.SoundOff.prototype = $extend(org.silex.components.SoundOn.prototype,{
+$hxClasses["org.slplayer.component.sound.SoundOff"] = org.slplayer.component.sound.SoundOff;
+org.slplayer.component.sound.SoundOff.__name__ = ["org","slplayer","component","sound","SoundOff"];
+org.slplayer.component.sound.SoundOff.__super__ = org.slplayer.component.sound.SoundOn;
+org.slplayer.component.sound.SoundOff.prototype = $extend(org.slplayer.component.sound.SoundOn.prototype,{
 	onClick: function(e) {
-		haxe.Log.trace("Sound onClick",{ fileName : "SoundOff.hx", lineNumber : 21, className : "org.silex.components.SoundOff", methodName : "onClick"});
-		org.silex.components.SoundOn.mute(true);
+		haxe.Log.trace("Sound onClick",{ fileName : "SoundOff.hx", lineNumber : 23, className : "org.slplayer.component.sound.SoundOff", methodName : "onClick"});
+		org.slplayer.component.sound.SoundOn.mute(true);
 	}
-	,__class__: org.silex.components.SoundOff
+	,__class__: org.slplayer.component.sound.SoundOff
 });
-org.silex.core = {}
-org.silex.core.DomTools = function() { }
-$hxClasses["org.silex.core.DomTools"] = org.silex.core.DomTools;
-org.silex.core.DomTools.__name__ = ["org","silex","core","DomTools"];
-org.silex.core.DomTools.toggleClass = function(element,className) {
-	if(org.silex.core.DomTools.hasClass(element,className)) org.silex.core.DomTools.removeClass(element,className); else org.silex.core.DomTools.addClass(element,className);
-}
-org.silex.core.DomTools.addClass = function(element,className) {
-	if(!org.silex.core.DomTools.hasClass(element,className)) element.className += " " + className;
-}
-org.silex.core.DomTools.removeClass = function(element,className) {
-	if(org.silex.core.DomTools.hasClass(element,className)) element.className = StringTools.replace(element.className,className,"");
-}
-org.silex.core.DomTools.hasClass = function(element,className) {
-	return element.className.indexOf(className) > -1;
-}
-org.silex.core.Silex = function() { }
-$hxClasses["org.silex.core.Silex"] = org.silex.core.Silex;
-org.silex.core.Silex.__name__ = ["org","silex","core","Silex"];
-org.silex.core.Silex.config = null;
-org.silex.core.Silex.publicationName = null;
-org.silex.core.Silex.initialPageName = null;
-org.silex.core.Silex.main = function() {
-	haxe.Log.trace("Silex starting",{ fileName : "Silex.hx", lineNumber : 93, className : "org.silex.core.Silex", methodName : "main"});
-	js.Lib.window.onload = org.silex.core.Silex.doAfterDomInit;
-}
-org.silex.core.Silex.doAfterDomInit = function(e) {
-	haxe.Log.trace("- " + Std.string(js.Lib.document.body),{ fileName : "Silex.hx", lineNumber : 97, className : "org.silex.core.Silex", methodName : "doAfterDomInit"});
-	org.silex.core.Silex.config = org.silex.core.Silex.loadConfig(js.Lib.document);
-	org.silex.core.Silex.initialPageName = org.silex.core.Silex.config.get("InitialPageName");
-	org.silex.core.Silex.publicationName = org.silex.core.Silex.config.get("PublicationName");
-	haxe.Log.trace("- " + Std.string(js.Lib.document.body) + " - " + Std.string(org.silex.core.Silex.config),{ fileName : "Silex.hx", lineNumber : 108, className : "org.silex.core.Silex", methodName : "doAfterDomInit"});
-	js.Lib.document.body.innerHTML = StringTools.htmlUnescape(org.silex.core.Silex.config.get("PublicationBody"));
-	org.slplayer.core.Application.init();
-}
-org.silex.core.Silex.setConfig = function(document,metaName,metaValue) {
-	var res = new Hash();
-	var metaTags = document.getElementsByTagName("meta");
-	var found = false;
-	var _g1 = 0, _g = metaTags.length;
-	while(_g1 < _g) {
-		var idxNode = _g1++;
-		var node = metaTags[idxNode];
-		var configName = node.getAttribute("name");
-		var configValue = node.getAttribute("content");
-		if(configName != null && configValue != null) {
-			if(configName == metaName) {
-				configValue = metaValue;
-				node.setAttribute("content",metaValue);
-				found = true;
-			}
-			res.set(configName,configValue);
-		}
-	}
-	if(!found) {
-		var node = document.createElement("meta");
-		node.setAttribute("name",metaName);
-		node.setAttribute("content",metaValue);
-		var head = document.getElementsByTagName("head")[0];
-		head.appendChild(node);
-		res.set(metaName,metaValue);
-	}
-	return res;
-}
-org.silex.core.Silex.loadConfig = function(document) {
-	var res = new Hash();
-	var metaTags = document.getElementsByTagName("meta");
-	var _g1 = 0, _g = metaTags.length;
-	while(_g1 < _g) {
-		var idxNode = _g1++;
-		var node = metaTags[idxNode];
-		var configName = node.getAttribute("name");
-		var configValue = node.getAttribute("content");
-		if(configName != null && configValue != null) res.set(configName,configValue);
-	}
-	return res;
-}
-org.silex.transitions = {}
-org.silex.transitions.TransitionBase = function(rootElement,SLPId) {
-	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
-	this.onEndCallback = $bind(this,this.onEnd);
-	this.isListening = false;
-	rootElement.addEventListener("transitionEventTypeRequest",$bind(this,this.onTransitionEventTypeRequest),false);
-};
-$hxClasses["org.silex.transitions.TransitionBase"] = org.silex.transitions.TransitionBase;
-org.silex.transitions.TransitionBase.__name__ = ["org","silex","transitions","TransitionBase"];
-org.silex.transitions.TransitionBase.__super__ = org.slplayer.component.ui.DisplayObject;
-org.silex.transitions.TransitionBase.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
-	removeEvents: function() {
-		if(this.isListening) {
-			this.isListening = false;
-			this.rootElement.removeEventListener("transitionend",this.onEndCallback,false);
-			this.rootElement.removeEventListener("transitionEnd",this.onEndCallback,false);
-			this.rootElement.removeEventListener("webkitTransitionEnd",this.onEndCallback,false);
-			this.rootElement.removeEventListener("oTransitionEnd",this.onEndCallback,false);
-			this.rootElement.removeEventListener("MSTransitionEnd",this.onEndCallback,false);
-		}
-	}
-	,addEvents: function() {
-		if(this.isListening == false) {
-			this.isListening = true;
-			this.rootElement.addEventListener("transitionend",this.onEndCallback,false);
-			this.rootElement.addEventListener("transitionEnd",this.onEndCallback,false);
-			this.rootElement.addEventListener("webkitTransitionEnd",this.onEndCallback,false);
-			this.rootElement.addEventListener("oTransitionEnd",this.onEndCallback,false);
-			this.rootElement.addEventListener("MSTransitionEnd",this.onEndCallback,false);
-		}
-	}
-	,onEnd: function(e) {
-		if(this.isListening) {
-			var event = js.Lib.document.createEvent("Event");
-			event.initEvent("transitionEventTypeEnded",true,true);
-			this.rootElement.dispatchEvent(event);
-		}
-		this.removeEvents();
-	}
-	,applyTransitionParams: function(transitionProperty,newPropertyValue,transitionDuration,transitionTimingFunction,transitionDelay) {
-		this.rootElement.style.transitionProperty = transitionProperty;
-		this.rootElement.style.transitionDuration = transitionDuration;
-		this.rootElement.style.transitionTimingFunction = transitionTimingFunction;
-		this.rootElement.style.transitionDelay = transitionDelay;
-		this.rootElement.style.MozTransitionProperty = transitionProperty;
-		this.rootElement.style.MozTransitionDuration = transitionDuration;
-		this.rootElement.style.MozTransitionTimingFunction = transitionTimingFunction;
-		this.rootElement.style.MozTransitionDelay = transitionDelay;
-		this.rootElement.style.webkitTransitionProperty = transitionProperty;
-		this.rootElement.style.webkitTransitionDuration = transitionDuration;
-		this.rootElement.style.webkitTransitionTimingFunction = transitionTimingFunction;
-		this.rootElement.style.webkitTransitionDelay = transitionDelay;
-		this.rootElement.style.oTransitionProperty = transitionProperty;
-		this.rootElement.style.oTransitionDuration = transitionDuration;
-		this.rootElement.style.oTransitionTimingFunction = transitionTimingFunction;
-		this.rootElement.style.oTransitionDelay = transitionDelay;
-		this.rootElement.style[transitionProperty] = newPropertyValue;
-	}
-	,onTransitionEventTypeRequest: function(event) {
-		this.addEvents();
-		var transitionData = event.data;
-		this.start(transitionData);
-		var event1 = js.Lib.document.createEvent("Event");
-		event1.initEvent("transitionEventTypeStarted",true,true);
-		this.rootElement.dispatchEvent(event1);
-	}
-	,start: function(transitionData) {
-	}
-	,onEndCallback: null
-	,isListening: null
-	,__class__: org.silex.transitions.TransitionBase
-});
-org.silex.transitions.TransitionType = $hxClasses["org.silex.transitions.TransitionType"] = { __ename__ : ["org","silex","transitions","TransitionType"], __constructs__ : ["show","hide"] }
-org.silex.transitions.TransitionType.show = ["show",0];
-org.silex.transitions.TransitionType.show.toString = $estr;
-org.silex.transitions.TransitionType.show.__enum__ = org.silex.transitions.TransitionType;
-org.silex.transitions.TransitionType.hide = ["hide",1];
-org.silex.transitions.TransitionType.hide.toString = $estr;
-org.silex.transitions.TransitionType.hide.__enum__ = org.silex.transitions.TransitionType;
-org.silex.transitions.TransitionData = function(transitionType,transitionDuration,transitionTimingFunction,transitionDelay,transitionIsReversed) {
+org.slplayer.component.transition = {}
+org.slplayer.component.transition.TransitionType = $hxClasses["org.slplayer.component.transition.TransitionType"] = { __ename__ : ["org","slplayer","component","transition","TransitionType"], __constructs__ : ["show","hide"] }
+org.slplayer.component.transition.TransitionType.show = ["show",0];
+org.slplayer.component.transition.TransitionType.show.toString = $estr;
+org.slplayer.component.transition.TransitionType.show.__enum__ = org.slplayer.component.transition.TransitionType;
+org.slplayer.component.transition.TransitionType.hide = ["hide",1];
+org.slplayer.component.transition.TransitionType.hide.toString = $estr;
+org.slplayer.component.transition.TransitionType.hide.__enum__ = org.slplayer.component.transition.TransitionType;
+org.slplayer.component.transition.TransitionData = function(transitionType,transitionDuration,transitionTimingFunction,transitionDelay,transitionIsReversed) {
 	if(transitionIsReversed == null) transitionIsReversed = false;
 	if(transitionDelay == null) transitionDelay = "0";
 	if(transitionTimingFunction == null) transitionTimingFunction = "linear";
@@ -2123,59 +2041,15 @@ org.silex.transitions.TransitionData = function(transitionType,transitionDuratio
 	this.delay = transitionDelay;
 	this.isReversed = transitionIsReversed;
 };
-$hxClasses["org.silex.transitions.TransitionData"] = org.silex.transitions.TransitionData;
-org.silex.transitions.TransitionData.__name__ = ["org","silex","transitions","TransitionData"];
-org.silex.transitions.TransitionData.prototype = {
+$hxClasses["org.slplayer.component.transition.TransitionData"] = org.slplayer.component.transition.TransitionData;
+org.slplayer.component.transition.TransitionData.__name__ = ["org","slplayer","component","transition","TransitionData"];
+org.slplayer.component.transition.TransitionData.prototype = {
 	isReversed: null
 	,type: null
 	,delay: null
 	,timingFunction: null
 	,duration: null
-	,__class__: org.silex.transitions.TransitionData
-}
-org.silex.transitions.TransitionLeftToRight = function(rootElement,SLPId) {
-	org.silex.transitions.TransitionBase.call(this,rootElement,SLPId);
-	this.styleAttrPosition = rootElement.style.position;
-	rootElement.style.left = "0px";
-};
-$hxClasses["org.silex.transitions.TransitionLeftToRight"] = org.silex.transitions.TransitionLeftToRight;
-org.silex.transitions.TransitionLeftToRight.__name__ = ["org","silex","transitions","TransitionLeftToRight"];
-org.silex.transitions.TransitionLeftToRight.__super__ = org.silex.transitions.TransitionBase;
-org.silex.transitions.TransitionLeftToRight.prototype = $extend(org.silex.transitions.TransitionBase.prototype,{
-	onEnd: function(e) {
-		org.silex.transitions.TransitionBase.prototype.onEnd.call(this,e);
-		this.rootElement.style.position = this.styleAttrPosition;
-	}
-	,start: function(transitionData) {
-		org.silex.transitions.TransitionBase.prototype.start.call(this,transitionData);
-		this.rootElement.style.position = "absolute";
-		var left;
-		if(transitionData.type == org.silex.transitions.TransitionType.show) left = 0; else left = js.Lib.window.innerWidth;
-		if(transitionData.isReversed) left = -left;
-		haxe.Log.trace("Start transition left2right " + Std.string(transitionData) + " => " + left,{ fileName : "TransitionLeftToRight.hx", lineNumber : 48, className : "org.silex.transitions.TransitionLeftToRight", methodName : "start"});
-		this.applyTransitionParams("left",left + "px",transitionData.duration,transitionData.timingFunction,transitionData.delay);
-	}
-	,styleAttrPosition: null
-	,__class__: org.silex.transitions.TransitionLeftToRight
-});
-org.slplayer.component.SLPlayerComponent = function() { }
-$hxClasses["org.slplayer.component.SLPlayerComponent"] = org.slplayer.component.SLPlayerComponent;
-org.slplayer.component.SLPlayerComponent.__name__ = ["org","slplayer","component","SLPlayerComponent"];
-org.slplayer.component.SLPlayerComponent.initSLPlayerComponent = function(component,SLPlayerInstanceId) {
-	component.SLPlayerInstanceId = SLPlayerInstanceId;
-}
-org.slplayer.component.SLPlayerComponent.getSLPlayer = function(component) {
-	return org.slplayer.core.Application.get(component.SLPlayerInstanceId);
-}
-org.slplayer.component.SLPlayerComponent.checkRequiredParameters = function(cmpClass,elt) {
-	var requires = haxe.rtti.Meta.getType(cmpClass).requires;
-	if(requires == null) return;
-	var _g = 0;
-	while(_g < requires.length) {
-		var r = requires[_g];
-		++_g;
-		if(elt.getAttribute(Std.string(r)) == null || StringTools.trim(elt.getAttribute(Std.string(r))) == "") throw Std.string(r) + " parameter is required for " + Type.getClassName(cmpClass);
-	}
+	,__class__: org.slplayer.component.transition.TransitionData
 }
 org.slplayer.core = {}
 org.slplayer.core.Application = function(id,args) {
@@ -2185,7 +2059,6 @@ org.slplayer.core.Application = function(id,args) {
 	this.registeredComponents = new Array();
 	this.nodeToCmpInstances = new Hash();
 	this.metaParameters = new Hash();
-	haxe.Log.trace("new SLPlayer instance built",{ fileName : "Application.hx", lineNumber : 106, className : "org.slplayer.core.Application", methodName : "new"});
 };
 $hxClasses["org.slplayer.core.Application"] = org.slplayer.core.Application;
 $hxExpose(org.slplayer.core.Application, "silex");
@@ -2193,22 +2066,16 @@ org.slplayer.core.Application.__name__ = ["org","slplayer","core","Application"]
 org.slplayer.core.Application.get = function(SLPId) {
 	return org.slplayer.core.Application.instances.get(SLPId);
 }
+org.slplayer.core.Application.main = function() {
+}
+org.slplayer.core.Application.createApplication = function(args) {
+	var newId = org.slplayer.core.Application.generateUniqueId();
+	var newInstance = new org.slplayer.core.Application(newId,args);
+	org.slplayer.core.Application.instances.set(newId,newInstance);
+	return newInstance;
+}
 org.slplayer.core.Application.generateUniqueId = function() {
 	return haxe.Md5.encode(HxOverrides.dateStr(new Date()) + Std.string(Std.random(new Date().getTime() | 0)));
-}
-org.slplayer.core.Application.init = function(appendTo,args) {
-	haxe.Log.trace("SLPlayer init() called with appendTo=" + Std.string(appendTo) + " and args=" + Std.string(args),{ fileName : "Application.hx", lineNumber : 194, className : "org.slplayer.core.Application", methodName : "init"});
-	var newId = org.slplayer.core.Application.generateUniqueId();
-	haxe.Log.trace("New SLPlayer id created : " + newId,{ fileName : "Application.hx", lineNumber : 201, className : "org.slplayer.core.Application", methodName : "init"});
-	var newInstance = new org.slplayer.core.Application(newId,args);
-	haxe.Log.trace("setting ref to SLPlayer instance " + newId,{ fileName : "Application.hx", lineNumber : 207, className : "org.slplayer.core.Application", methodName : "init"});
-	org.slplayer.core.Application.instances.set(newId,newInstance);
-	newInstance.launch(appendTo);
-	js.Lib.window.onload = function(e) {
-		newInstance.launch(appendTo);
-	};
-}
-org.slplayer.core.Application.main = function() {
 }
 org.slplayer.core.Application.prototype = {
 	getUnconflictedClassTag: function(displayObjectClassName) {
@@ -2251,7 +2118,6 @@ org.slplayer.core.Application.prototype = {
 		this.nodeToCmpInstances.set(nodeId,associatedCmps);
 	}
 	,callInitOnComponents: function() {
-		haxe.Log.trace("call Init On Components",{ fileName : "Application.hx", lineNumber : 398, className : "org.slplayer.core.Application", methodName : "callInitOnComponents"});
 		var $it0 = this.nodeToCmpInstances.iterator();
 		while( $it0.hasNext() ) {
 			var l = $it0.next();
@@ -2263,17 +2129,14 @@ org.slplayer.core.Application.prototype = {
 		}
 	}
 	,createComponentsOfType: function(componentClassName,args) {
-		haxe.Log.trace("Creating " + componentClassName + "...",{ fileName : "Application.hx", lineNumber : 268, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 		var componentClass = Type.resolveClass(componentClassName);
 		if(componentClass == null) {
 			var rslErrMsg = "ERROR cannot resolve " + componentClassName;
 			throw rslErrMsg;
 			return;
 		}
-		haxe.Log.trace(componentClassName + " class resolved ",{ fileName : "Application.hx", lineNumber : 285, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 		if(org.slplayer.component.ui.DisplayObject.isDisplayObject(componentClass)) {
 			var classTag = this.getUnconflictedClassTag(componentClassName);
-			haxe.Log.trace("searching now for class tag = " + classTag,{ fileName : "Application.hx", lineNumber : 293, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 			var taggedNodes = new Array();
 			var taggedNodesCollection = this.htmlRootElement.getElementsByClassName(classTag);
 			var _g1 = 0, _g = taggedNodesCollection.length;
@@ -2282,7 +2145,6 @@ org.slplayer.core.Application.prototype = {
 				taggedNodes.push(taggedNodesCollection[nodeCnt]);
 			}
 			if(componentClassName != classTag) {
-				haxe.Log.trace("searching now for class tag = " + componentClassName,{ fileName : "Application.hx", lineNumber : 306, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 				taggedNodesCollection = this.htmlRootElement.getElementsByClassName(componentClassName);
 				var _g1 = 0, _g = taggedNodesCollection.length;
 				while(_g1 < _g) {
@@ -2290,20 +2152,16 @@ org.slplayer.core.Application.prototype = {
 					taggedNodes.push(taggedNodesCollection[nodeCnt]);
 				}
 			}
-			haxe.Log.trace("taggedNodes = " + taggedNodes.length,{ fileName : "Application.hx", lineNumber : 317, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 			var _g = 0;
 			while(_g < taggedNodes.length) {
 				var node = taggedNodes[_g];
 				++_g;
 				var newDisplayObject;
 				newDisplayObject = Type.createInstance(componentClass,[node,this.id]);
-				haxe.Log.trace("Successfuly created instance of " + componentClassName,{ fileName : "Application.hx", lineNumber : 332, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 			}
 		} else {
-			haxe.Log.trace("Try to create an instance of " + componentClassName + " non visual component",{ fileName : "Application.hx", lineNumber : 352, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 			var cmpInstance = null;
 			if(args != null) cmpInstance = Type.createInstance(componentClass,[args]); else cmpInstance = Type.createInstance(componentClass,[]);
-			haxe.Log.trace("Successfuly created instance of " + componentClassName,{ fileName : "Application.hx", lineNumber : 368, className : "org.slplayer.core.Application", methodName : "createComponentsOfType"});
 			if(cmpInstance != null && js.Boot.__instanceof(cmpInstance,org.slplayer.component.ISLPlayerComponent)) cmpInstance.initSLPlayerComponent(this.id);
 		}
 	}
@@ -2320,44 +2178,31 @@ org.slplayer.core.Application.prototype = {
 		this.registeredComponents.push({ classname : componentClassName, args : args});
 	}
 	,registerComponentsforInit: function() {
-		org.silex.components.SoundOff;
-		this.registerComponent("org.silex.components.SoundOff");
-		org.silex.components.Layer;
-		this.registerComponent("org.silex.components.Layer");
-		org.silex.transitions.TransitionLeftToRight;
-		this.registerComponent("org.silex.transitions.TransitionLeftToRight");
-		org.silex.components.LinkClosePage;
-		this.registerComponent("org.silex.components.LinkClosePage");
-		org.silex.components.LinkToPage;
-		this.registerComponent("org.silex.components.LinkToPage");
-		org.silex.components.SoundOn;
-		this.registerComponent("org.silex.components.SoundOn");
-		org.silex.components.Page;
-		this.registerComponent("org.silex.components.Page");
+		org.slplayer.component.layer.LinkToPage;
+		this.registerComponent("org.slplayer.component.layer.LinkToPage");
+		org.slplayer.component.sound.SoundOff;
+		this.registerComponent("org.slplayer.component.sound.SoundOff");
+		org.slplayer.component.layer.LinkClosePage;
+		this.registerComponent("org.slplayer.component.layer.LinkClosePage");
+		org.slplayer.component.layer.Page;
+		this.registerComponent("org.slplayer.component.layer.Page");
+		org.slplayer.component.layer.Layer;
+		this.registerComponent("org.slplayer.component.layer.Layer");
+		org.slplayer.component.sound.SoundOn;
+		this.registerComponent("org.slplayer.component.sound.SoundOn");
 	}
 	,initMetaParameters: function() {
 	}
-	,initHtmlRootElementContent: function() {
-	}
-	,launch: function(appendTo) {
-		haxe.Log.trace("Launching SLPlayer id " + this.id + " on " + Std.string(appendTo),{ fileName : "Application.hx", lineNumber : 118, className : "org.slplayer.core.Application", methodName : "launch"});
-		if(appendTo != null) {
-			haxe.Log.trace("setting htmlRootElement to " + Std.string(appendTo),{ fileName : "Application.hx", lineNumber : 124, className : "org.slplayer.core.Application", methodName : "launch"});
-			this.htmlRootElement = appendTo;
-		}
-		if(this.htmlRootElement == null || this.htmlRootElement.nodeType != js.Lib.document.body.nodeType) {
-			haxe.Log.trace("setting htmlRootElement to Lib.document.body",{ fileName : "Application.hx", lineNumber : 133, className : "org.slplayer.core.Application", methodName : "launch"});
-			this.htmlRootElement = js.Lib.document.body;
-		}
+	,init: function(appendTo) {
+		this.htmlRootElement = appendTo;
+		if(this.htmlRootElement == null || this.htmlRootElement.nodeType != js.Lib.document.body.nodeType) this.htmlRootElement = js.Lib.document.body;
 		if(this.htmlRootElement == null) {
-			haxe.Log.trace("ERROR windows.document.body is null => You are trying to start your application while the document loading is probably not complete yet." + " To fix that, add the noAutoStart option to your slplayer application and control the application startup with: window.onload = function() { myApplication.init() };",{ fileName : "Application.hx", lineNumber : 141, className : "org.slplayer.core.Application", methodName : "launch"});
+			haxe.Log.trace("ERROR Lib.document.body is null => You are trying to start your application while the document loading is probably not complete yet." + " To fix that, add the noAutoStart option to your slplayer application and control the application startup with: window.onload = function() { myApplication.init() };",{ fileName : "Application.hx", lineNumber : 184, className : "org.slplayer.core.Application", methodName : "init"});
 			return;
 		}
-		this.initHtmlRootElementContent();
 		this.initMetaParameters();
 		this.registerComponentsforInit();
 		this.initComponents();
-		haxe.Log.trace("SLPlayer id " + this.id + " launched !",{ fileName : "Application.hx", lineNumber : 162, className : "org.slplayer.core.Application", methodName : "launch"});
 	}
 	,getMetaParameter: function(metaParamKey) {
 		return this.metaParameters.get(metaParamKey);
@@ -2370,6 +2215,48 @@ org.slplayer.core.Application.prototype = {
 	,nodesIdSequence: null
 	,id: null
 	,__class__: org.slplayer.core.Application
+}
+org.slplayer.util = {}
+org.slplayer.util.DomTools = function() { }
+$hxClasses["org.slplayer.util.DomTools"] = org.slplayer.util.DomTools;
+org.slplayer.util.DomTools.__name__ = ["org","slplayer","util","DomTools"];
+org.slplayer.util.DomTools.getElementsByAttribute = function(elt,attr,value) {
+	var childElts = elt.getElementsByTagName("*");
+	var filteredChildElts = new Array();
+	var _g1 = 0, _g = childElts.length;
+	while(_g1 < _g) {
+		var cCount = _g1++;
+		if(childElts[cCount].getAttribute(attr) != null && (value == "*" || childElts[cCount].getAttribute(attr) == value)) filteredChildElts.push(childElts[cCount]);
+	}
+	return filteredChildElts;
+}
+org.slplayer.util.DomTools.getSingleElement = function(rootElement,className,required) {
+	if(required == null) required = true;
+	var domElements = rootElement.getElementsByClassName(className);
+	if(domElements != null && domElements.length == 1) return domElements[0]; else {
+		if(required) throw "Error: search for the element with class name \"" + className + "\" gave " + domElements.length + " results";
+		return null;
+	}
+}
+org.slplayer.util.DomTools.inspectTrace = function(obj) {
+	var _g = 0, _g1 = Reflect.fields(obj);
+	while(_g < _g1.length) {
+		var prop = _g1[_g];
+		++_g;
+		haxe.Log.trace("- " + prop + " = " + Std.string(Reflect.field(obj,prop)),{ fileName : "DomTools.hx", lineNumber : 80, className : "org.slplayer.util.DomTools", methodName : "inspectTrace"});
+	}
+}
+org.slplayer.util.DomTools.toggleClass = function(element,className) {
+	if(org.slplayer.util.DomTools.hasClass(element,className)) org.slplayer.util.DomTools.removeClass(element,className); else org.slplayer.util.DomTools.addClass(element,className);
+}
+org.slplayer.util.DomTools.addClass = function(element,className) {
+	if(!org.slplayer.util.DomTools.hasClass(element,className)) element.className += " " + className;
+}
+org.slplayer.util.DomTools.removeClass = function(element,className) {
+	if(org.slplayer.util.DomTools.hasClass(element,className)) element.className = StringTools.replace(element.className,className,"");
+}
+org.slplayer.util.DomTools.hasClass = function(element,className) {
+	return element.className.indexOf(className) > -1;
 }
 function $iterator(o) { if( o instanceof Array ) return function() { return HxOverrides.iter(o); }; return typeof(o.iterator) == 'function' ? $bind(o,o.iterator) : o.iterator; };
 var $_;
@@ -2422,43 +2309,40 @@ haxe.Template.expr_int = new EReg("^[0-9]+$","");
 haxe.Template.expr_float = new EReg("^([+-]?)(?=\\d|,\\d)\\d*(,\\d*)?([Ee]([+-]?\\d+))?$","");
 haxe.Template.globals = { };
 js.Lib.onerror = null;
-org.silex.components.Layer.__meta__ = { obj : { tagNameFilter : ["div"]}};
-org.silex.components.LinkBase.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.silex.components.LinkBase.CONFIG_PAGE_NAME_ATTR = "href";
-org.silex.components.LinkBase.CONFIG_TARGET_ATTR = "target";
-org.silex.components.LinkBase.CONFIG_TRANSITION_DURATION = "data-transition-duration";
-org.silex.components.LinkBase.CONFIG_TRANSITION_TIMING_FUNCTION = "data-transition-timing-function";
-org.silex.components.LinkBase.CONFIG_TRANSITION_DELAY = "data-transition-delay";
-org.silex.components.LinkBase.CONFIG_TRANSITION_IS_REVERSED = "data-transition-is-reversed";
-org.silex.components.LinkClosePage.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.silex.components.LinkToPage.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.silex.components.LinkToPage.CONFIG_TARGET_IS_POPUP = "_top";
-org.silex.components.Page.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.silex.components.Page.CLASS_NAME = "Page";
-org.silex.components.Page.CONFIG_NAME_ATTR = "name";
-org.silex.components.SoundOn.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.silex.components.SoundOn.CLASS_NAME = "SoundOn";
-org.silex.components.SoundOn.isMuted = false;
-org.silex.components.SoundOff.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.silex.components.SoundOff.CLASS_NAME = "SoundOff";
-org.silex.core.Silex.CONFIG_TAG = "meta";
-org.silex.core.Silex.CONFIG_NAME_ATTR = "name";
-org.silex.core.Silex.CONFIG_VALUE_ATTR = "content";
 org.silex.core.Silex.CONFIG_INITIAL_PAGE_NAME = "InitialPageName";
 org.silex.core.Silex.CONFIG_PUBLICATION_NAME = "PublicationName";
 org.silex.core.Silex.CONFIG_PUBLICATION_BODY = "PublicationBody";
 org.silex.core.Silex.PUBLICATIONS_FOLDER = "publications/";
 org.silex.core.Silex.PUBLICATION_HTML_FILE = "content/index.html";
 org.silex.core.Silex.LOADER_SCRIPT_PATH = "loader.js";
-org.silex.transitions.TransitionBase.__meta__ = { obj : { tagNameFilter : ["div"]}};
-org.silex.transitions.TransitionData.EVENT_TYPE_REQUEST = "transitionEventTypeRequest";
-org.silex.transitions.TransitionData.EVENT_TYPE_STARTED = "transitionEventTypeStarted";
-org.silex.transitions.TransitionData.EVENT_TYPE_ENDED = "transitionEventTypeEnded";
-org.silex.transitions.TransitionData.LINEAR = "linear";
-org.silex.transitions.TransitionData.EASE = "ease";
-org.silex.transitions.TransitionData.EASE_IN = "ease-in";
-org.silex.transitions.TransitionData.EASE_OUT = "ease-out";
-org.silex.transitions.TransitionData.EASE_IN_OUT = "ease-in-out";
+org.slplayer.component.layer.Layer.__meta__ = { obj : { tagNameFilter : ["div"]}};
+org.slplayer.component.layer.LinkBase.__meta__ = { obj : { tagNameFilter : ["a"]}};
+org.slplayer.component.layer.LinkBase.CONFIG_PAGE_NAME_ATTR = "href";
+org.slplayer.component.layer.LinkBase.CONFIG_TARGET_ATTR = "target";
+org.slplayer.component.layer.LinkBase.CONFIG_TRANSITION_DURATION = "data-transition-duration";
+org.slplayer.component.layer.LinkBase.CONFIG_TRANSITION_TIMING_FUNCTION = "data-transition-timing-function";
+org.slplayer.component.layer.LinkBase.CONFIG_TRANSITION_DELAY = "data-transition-delay";
+org.slplayer.component.layer.LinkBase.CONFIG_TRANSITION_IS_REVERSED = "data-transition-is-reversed";
+org.slplayer.component.layer.LinkClosePage.__meta__ = { obj : { tagNameFilter : ["a"]}};
+org.slplayer.component.layer.LinkToPage.__meta__ = { obj : { tagNameFilter : ["a"]}};
+org.slplayer.component.layer.LinkToPage.CONFIG_TARGET_IS_POPUP = "_top";
+org.slplayer.component.layer.Page.__meta__ = { obj : { tagNameFilter : ["a"]}};
+org.slplayer.component.layer.Page.CLASS_NAME = "Page";
+org.slplayer.component.layer.Page.CONFIG_NAME_ATTR = "name";
+org.slplayer.component.layer.Page.CONFIG_INITIAL_PAGE_NAME = "InitialPageName";
+org.slplayer.component.sound.SoundOn.__meta__ = { obj : { tagNameFilter : ["a"]}};
+org.slplayer.component.sound.SoundOn.CLASS_NAME = "SoundOn";
+org.slplayer.component.sound.SoundOn.isMuted = false;
+org.slplayer.component.sound.SoundOff.__meta__ = { obj : { tagNameFilter : ["a"]}};
+org.slplayer.component.sound.SoundOff.CLASS_NAME = "SoundOff";
+org.slplayer.component.transition.TransitionData.EVENT_TYPE_REQUEST = "transitionEventTypeRequest";
+org.slplayer.component.transition.TransitionData.EVENT_TYPE_STARTED = "transitionEventTypeStarted";
+org.slplayer.component.transition.TransitionData.EVENT_TYPE_ENDED = "transitionEventTypeEnded";
+org.slplayer.component.transition.TransitionData.LINEAR = "linear";
+org.slplayer.component.transition.TransitionData.EASE = "ease";
+org.slplayer.component.transition.TransitionData.EASE_IN = "ease-in";
+org.slplayer.component.transition.TransitionData.EASE_OUT = "ease-out";
+org.slplayer.component.transition.TransitionData.EASE_IN_OUT = "ease-in-out";
 org.slplayer.core.Application.SLPID_ATTR_NAME = "slpid";
 org.slplayer.core.Application.instances = new Hash();
 org.silex.core.Silex.main();
