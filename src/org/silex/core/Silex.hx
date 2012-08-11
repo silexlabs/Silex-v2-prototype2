@@ -8,6 +8,10 @@ import js.Dom;
 // Imports
 //////////////////////////////////////////////////
 
+TO DO : 
+replace Silex.config.get(xxxx)
+by getSLPlayer().getMetaParameter(xxxx ) 
+
 
 import org.slplayer.core.Application;
 #if SilexClientSide
@@ -114,7 +118,7 @@ class Silex {
 			Lib.document.body.innerHTML = StringTools.htmlUnescape(config.get(CONFIG_PUBLICATION_BODY));
 
 		// init SLPlayer components
-		Application.init();
+		Application.createApplication().init();
 	}
 #end
 #if SilexServerSide
