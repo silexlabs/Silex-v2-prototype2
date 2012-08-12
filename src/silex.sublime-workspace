@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"String",
+				"StringTools"
+			],
+			[
+				"param",
+				"paramName"
+			],
+			[
 				"p",
 				"PublicationName"
 			],
@@ -143,7 +151,7 @@
 			"file": "org/silex/core/Silex.hx",
 			"settings":
 			{
-				"buffer_size": 7581,
+				"buffer_size": 8544,
 				"line_ending": "Unix"
 			}
 		},
@@ -175,7 +183,15 @@
 			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/loader.js",
 			"settings":
 			{
-				"buffer_size": 881,
+				"buffer_size": 1875,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/readme.txt",
+			"settings":
+			{
+				"buffer_size": 2304,
 				"line_ending": "Unix"
 			}
 		}
@@ -265,6 +281,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"setConfig",
+			"inner",
+			"setConfig",
+			"getConfig",
+			"application.getMetaParameter",
+			"setConfig",
 			"application.init",
 			"getslplayer",
 			"meta",
@@ -351,7 +373,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 5,
 			"sheets":
 			[
 				{
@@ -359,15 +381,15 @@
 					"file": "org/silex/core/Silex.hx",
 					"settings":
 					{
-						"buffer_size": 7581,
+						"buffer_size": 8544,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3675,
-								3675
+								2474,
+								2474
 							]
 						],
 						"settings":
@@ -377,7 +399,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1996.0,
+						"translation.y": 1384.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -448,8 +470,8 @@
 						"selection":
 						[
 							[
-								651,
-								651
+								62,
+								62
 							]
 						],
 						"settings":
@@ -468,15 +490,15 @@
 					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/loader.js",
 					"settings":
 					{
-						"buffer_size": 881,
+						"buffer_size": 1875,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								802,
-								802
+								1583,
+								1583
 							]
 						],
 						"settings":
@@ -485,7 +507,35 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 306.0,
+						"translation.y": 629.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/readme.txt",
+					"settings":
+					{
+						"buffer_size": 2304,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1679,
+								1679
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 408.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

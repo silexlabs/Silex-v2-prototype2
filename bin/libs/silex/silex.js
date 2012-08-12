@@ -1619,12 +1619,16 @@ org.silex.core.Silex.main = function() {
 	js.Lib.window.onload = org.silex.core.Silex.init;
 }
 org.silex.core.Silex.init = function(unused) {
-	haxe.Log.trace("- " + Std.string(js.Lib.document.body),{ fileName : "Silex.hx", lineNumber : 86, className : "org.silex.core.Silex", methodName : "init"});
+	haxe.Log.trace("- " + Std.string(js.Lib.document.body),{ fileName : "Silex.hx", lineNumber : 91, className : "org.silex.core.Silex", methodName : "init"});
 	var application = org.slplayer.core.Application.createApplication();
-	org.silex.core.Silex.initialPageName = application.getMetaParameter("InitialPageName");
-	org.silex.core.Silex.publicationName = application.getMetaParameter("PublicationName");
-	var publicationBody = application.getMetaParameter("PublicationBody");
-	if(publicationBody != null) js.Lib.document.body.innerHTML = StringTools.htmlUnescape(application.getMetaParameter("PublicationBody"));
+	org.silex.core.Silex.initialPageName = org.silex.core.Silex.getConfig(js.Lib.document,"initialPageName");
+	org.silex.core.Silex.publicationName = org.silex.core.Silex.getConfig(js.Lib.document,"publicationName");
+	var publicationBody = org.silex.core.Silex.getConfig(js.Lib.document,"publicationBody");
+	if(publicationBody != null) {
+		var node = js.Lib.document.createElement("DIV");
+		node.innerHTML = StringTools.htmlUnescape(org.silex.core.Silex.getConfig(js.Lib.document,"publicationBody"));
+		js.Lib.document.body.appendChild(node);
+	}
 	application.init();
 }
 org.silex.core.Silex.setConfig = function(document,metaName,metaValue) {
@@ -1655,6 +1659,18 @@ org.silex.core.Silex.setConfig = function(document,metaName,metaValue) {
 		res.set(metaName,metaValue);
 	}
 	return res;
+}
+org.silex.core.Silex.getConfig = function(document,name) {
+	var metaTags = document.getElementsByTagName("meta");
+	var _g1 = 0, _g = metaTags.length;
+	while(_g1 < _g) {
+		var idxNode = _g1++;
+		var node = metaTags[idxNode];
+		var configName = node.getAttribute("name");
+		var configValue = node.getAttribute("content");
+		if(configName == name) return configValue;
+	}
+	return null;
 }
 org.slplayer = {}
 org.slplayer.component = {}
@@ -2309,9 +2325,9 @@ haxe.Template.expr_int = new EReg("^[0-9]+$","");
 haxe.Template.expr_float = new EReg("^([+-]?)(?=\\d|,\\d)\\d*(,\\d*)?([Ee]([+-]?\\d+))?$","");
 haxe.Template.globals = { };
 js.Lib.onerror = null;
-org.silex.core.Silex.CONFIG_INITIAL_PAGE_NAME = "InitialPageName";
-org.silex.core.Silex.CONFIG_PUBLICATION_NAME = "PublicationName";
-org.silex.core.Silex.CONFIG_PUBLICATION_BODY = "PublicationBody";
+org.silex.core.Silex.CONFIG_INITIAL_PAGE_NAME = "initialPageName";
+org.silex.core.Silex.CONFIG_PUBLICATION_NAME = "publicationName";
+org.silex.core.Silex.CONFIG_PUBLICATION_BODY = "publicationBody";
 org.silex.core.Silex.PUBLICATIONS_FOLDER = "publications/";
 org.silex.core.Silex.PUBLICATION_HTML_FILE = "content/index.html";
 org.silex.core.Silex.LOADER_SCRIPT_PATH = "loader.js";

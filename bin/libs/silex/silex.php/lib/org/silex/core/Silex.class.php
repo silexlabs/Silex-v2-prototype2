@@ -2,9 +2,9 @@
 
 class org_silex_core_Silex {
 	public function __construct(){}
-	static $CONFIG_INITIAL_PAGE_NAME = "InitialPageName";
-	static $CONFIG_PUBLICATION_NAME = "PublicationName";
-	static $CONFIG_PUBLICATION_BODY = "PublicationBody";
+	static $CONFIG_INITIAL_PAGE_NAME = "initialPageName";
+	static $CONFIG_PUBLICATION_NAME = "publicationName";
+	static $CONFIG_PUBLICATION_BODY = "publicationBody";
 	static $PUBLICATIONS_FOLDER = "publications/";
 	static $PUBLICATION_HTML_FILE = "content/index.html";
 	static $LOADER_SCRIPT_PATH = "loader.js";
@@ -15,7 +15,7 @@ class org_silex_core_Silex {
 		$serverConfig = new org_silex_config_ServerConfig(null);
 		$urlParamsString = php_Web::getParamsString();
 		$params = _hx_explode("/", _hx_array_get(_hx_explode("&", $urlParamsString), 0));
-		haxe_Log::trace("Silex loading " . Std::string($params) . " - " . Std::string(Type::typeof($params[0])), _hx_anonymous(array("fileName" => "Silex.hx", "lineNumber" => 127, "className" => "org.silex.core.Silex", "methodName" => "main")));
+		haxe_Log::trace("Silex loading " . Std::string($params) . " - " . Std::string(Type::typeof($params[0])), _hx_anonymous(array("fileName" => "Silex.hx", "lineNumber" => 143, "className" => "org.silex.core.Silex", "methodName" => "main")));
 		if($params->length === 1) {
 			if($params[0] === "") {
 				org_silex_core_Silex::$publicationName = $serverConfig->defaultPublication;
@@ -29,10 +29,10 @@ class org_silex_core_Silex {
 		}
 		$htmlContent = sys_io_File::getContent("publications/" . org_silex_core_Silex::$publicationName . "/" . "content/index.html");
 		cocktail_Lib::get_document()->documentElement->set_innerHTML($htmlContent);
-		org_silex_core_Silex::setConfig(cocktail_Lib::get_document(), "PublicationName", org_silex_core_Silex::$publicationName);
-		org_silex_core_Silex::setConfig(cocktail_Lib::get_document(), "PublicationBody", StringTools::htmlEscape(cocktail_Lib::get_document()->body->get_innerHTML()));
+		org_silex_core_Silex::setConfig(cocktail_Lib::get_document(), "publicationName", org_silex_core_Silex::$publicationName);
+		org_silex_core_Silex::setConfig(cocktail_Lib::get_document(), "publicationBody", StringTools::htmlEscape(cocktail_Lib::get_document()->body->get_innerHTML()));
 		if(org_silex_core_Silex::$initialPageName !== "") {
-			org_silex_core_Silex::setConfig(cocktail_Lib::get_document(), "InitialPageName", org_silex_core_Silex::$initialPageName);
+			org_silex_core_Silex::setConfig(cocktail_Lib::get_document(), "initialPageName", org_silex_core_Silex::$initialPageName);
 		}
 		$node = cocktail_Lib::get_document()->createElement("script");
 		$node->setAttribute("src", "loader.js");
@@ -72,6 +72,23 @@ class org_silex_core_Silex {
 			$res->set($metaName, $metaValue);
 		}
 		return $res;
+	}
+	static function getConfig($document, $name) {
+		$metaTags = $document->getElementsByTagName("meta");
+		{
+			$_g1 = 0; $_g = $metaTags->length;
+			while($_g1 < $_g) {
+				$idxNode = $_g1++;
+				$node = $metaTags[$idxNode];
+				$configName = $node->getAttribute("name");
+				$configValue = $node->getAttribute("content");
+				if($configName === $name) {
+					return $configValue;
+				}
+				unset($node,$idxNode,$configValue,$configName);
+			}
+		}
+		return null;
 	}
 	function __toString() { return 'org.silex.core.Silex'; }
 }

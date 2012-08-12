@@ -31,15 +31,15 @@ class Silex {
 	/**
 	 * constant, name of attribute
 	 */
-	public static inline var CONFIG_INITIAL_PAGE_NAME:String = "InitialPageName";
+	public static inline var CONFIG_INITIAL_PAGE_NAME:String = "initialPageName";
 	/**
 	 * constant, name of attribute
 	 */
-	public static inline var CONFIG_PUBLICATION_NAME:String = "PublicationName";
+	public static inline var CONFIG_PUBLICATION_NAME:String = "publicationName";
 	/**
 	 * constant, name of attribute
 	 */
-	public static inline var CONFIG_PUBLICATION_BODY:String = "PublicationBody";
+	public static inline var CONFIG_PUBLICATION_BODY:String = "publicationBody";
 	/**
 	 * constant, path and file names
 	 */
@@ -76,7 +76,12 @@ class Silex {
 	 */
 	static public function main() {
 		trace("Silex starting");
+		// workaround, bug https://github.com/silexlabs/Cocktail/issues/207
+	#if js
 		Lib.window.onload = init;
+	#else
+		init();
+	#end
 	}
 	/**
 	 * Method to call if this class is not defined as the application entry point
@@ -88,17 +93,28 @@ class Silex {
 		// create an SLPlayer app
 		var application = Application.createApplication();
 
+	#if flash
+		// init the document with non empty body, workaround see  https://github.com/silexlabs/Cocktail/issues/208
+		Lib.document.documentElement.innerHTML = "<html><head></head><body></body></html>";
+		// retrieve config data from flashvars, add all flashvars to the meta
+		var params:Dynamic<String> = flash.Lib.current.loaderInfo.parameters;
+		for (paramName in Reflect.fields(params)){
+			setConfig(Lib.document, paramName, StringTools.urlDecode(Reflect.field(params, paramName)));
+		}
+	#end
 		// retrieve initialPageName
-		initialPageName = application.getMetaParameter(CONFIG_INITIAL_PAGE_NAME);
+		initialPageName = getConfig(Lib.document, CONFIG_INITIAL_PAGE_NAME);
 		
 		// retrieve publicationName
-		publicationName = application.getMetaParameter(CONFIG_PUBLICATION_NAME);
+		publicationName = getConfig(Lib.document, CONFIG_PUBLICATION_NAME);
 
 		// set the body of the publication if it is provided in the meta
-		var publicationBody = application.getMetaParameter(CONFIG_PUBLICATION_BODY);
-		if (publicationBody != null)
-			Lib.document.body.innerHTML = StringTools.htmlUnescape(application.getMetaParameter(CONFIG_PUBLICATION_BODY));
-
+		var publicationBody = getConfig(Lib.document, CONFIG_PUBLICATION_BODY);
+		if (publicationBody != null){
+			var node = Lib.document.createElement("DIV");
+			node.innerHTML = StringTools.htmlUnescape(getConfig(Lib.document, CONFIG_PUBLICATION_BODY));
+			Lib.document.body.appendChild(node);
+		}
 		// init SLPlayer components
 		application.init();
 	}
@@ -150,10 +166,6 @@ class Silex {
 			// page name is either "" or the 1st element
 			initialPageName = params[1];
 		}
-		// default publication
-		//if (publicationName == "")
-		//	publicationName = serverConfig.defaultPublication;
-
 		// Load HTML data
 		var htmlContent:String = File.getContent(PUBLICATIONS_FOLDER + publicationName + "/" + PUBLICATION_HTML_FILE);
 		//trace("- "+initialPageName+" - "+params);
@@ -173,16 +185,13 @@ class Silex {
 		// add loader script
 		var node = Lib.document.createElement("script");
 		node.setAttribute("src", LOADER_SCRIPT_PATH);
+		
 		var head = Lib.document.getElementsByTagName("head")[0];
 		head.appendChild(node);
 
 
-//		trace(Lib.document.body.innerHTML);
-//		trace("-----------------------------------------------------------------");
 		// init SLPayer
 		application.init();
-//		trace(Lib.document.body.innerHTML);
-//		trace("-----------------------------------------------------------------");
 
 		// Output the code to load Silex client in Javascript or in Flash version 
 		php.Lib.print(Lib.document.documentElement.innerHTML);
@@ -193,6 +202,7 @@ class Silex {
 	 */
 	static public function setConfig(document:Document, metaName:String, metaValue:String):Hash<String>{
 		var res:Hash<String> = new Hash();
+		//trace("setConfig META TAG "+metaName+" = " +metaValue);
 
 		// retrieve all config tags (the meta tags)
 		var metaTags:HtmlCollection<HtmlDom> = document.getElementsByTagName("META");
@@ -230,20 +240,40 @@ class Silex {
 	/**
 	 * Load Silex config from HTML head/meta tags
 	 */
-/*	static public function loadConfig(document:Document):Hash<String>{
-		var res:Hash<String> = new Hash();
-
+	static public function getConfig(document:Document, name:String):Null<String>{
 		// retrieve all config tags (the meta tags)
-		var metaTags:HtmlCollection<HtmlDom> = document.getElementsByTagName(CONFIG_TAG);
+		var metaTags:HtmlCollection<HtmlDom> = document.getElementsByTagName("meta");
 
 		// for each config element, store the name/value pair
 		for (idxNode in 0...metaTags.length){
 			var node = metaTags[idxNode];
-			var configName = node.getAttribute(CONFIG_NAME_ATTR);
-			var configValue = node.getAttribute(CONFIG_VALUE_ATTR);
+			var configName = node.getAttribute("name");
+			var configValue = node.getAttribute("content");
+			if (configName==name)
+				return configValue;
+		}
+		return null;
+	}
+
+	/**
+	 * Load Silex config from HTML head/meta tags
+	 * Store the config in the static config object
+	 */
+/*	static public function loadConfig(document:Document):Hash<String>{
+		var res:Hash<String> = new Hash();
+
+		// retrieve all config tags (the meta tags)
+		var metaTags:HtmlCollection<HtmlDom> = document.getElementsByTagName("meta");
+
+		// for each config element, store the name/value pair
+		for (idxNode in 0...metaTags.length){
+			var node = metaTags[idxNode];
+			var configName = node.getAttribute("name");
+			var configValue = node.getAttribute("content");
 			if (configName!=null && configValue!=null)
 				res.set(configName, configValue);
 		}
 		return res;
 	}
-*/}
+*/
+}
