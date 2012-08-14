@@ -9,6 +9,7 @@ import js.Dom;
 //////////////////////////////////////////////////
 
 import org.slplayer.core.Application;
+import org.slplayer.component.navigation.Page;
 #if SilexClientSide
 #end
 
@@ -28,10 +29,6 @@ import org.silex.config.ServerConfig;
  * TODO: should not be a static class, and should be sandboxed
  */
 class Silex {
-	/**
-	 * constant, name of attribute
-	 */
-	public static inline var CONFIG_INITIAL_PAGE_NAME:String = "initialPageName";
 	/**
 	 * constant, name of attribute
 	 */
@@ -103,7 +100,7 @@ class Silex {
 		}
 	#end
 		// retrieve initialPageName
-		initialPageName = getConfig(Lib.document, CONFIG_INITIAL_PAGE_NAME);
+		initialPageName = getConfig(Lib.document, Page.CONFIG_INITIAL_PAGE_NAME);
 		
 		// retrieve publicationName
 		publicationName = getConfig(Lib.document, CONFIG_PUBLICATION_NAME);
