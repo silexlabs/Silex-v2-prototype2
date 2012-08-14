@@ -73,23 +73,21 @@ class Silex {
 	 * Open the default page or the page designated by the deeplink
 	 */
 	static public function main() {
-		trace("Silex starting");
 		// workaround, bug https://github.com/silexlabs/Cocktail/issues/207
-/*		
+/**/
 	#if js
 		Lib.window.onload = init;
 	#else
 		init();
 	#end
 /**/		
-		init();
+//		init();
 	}
 	/**
 	 * Method to call if this class is not defined as the application entry point
 	 * Otherwise it is automatically called by main
 	 */
 	static public function init(unused:Dynamic=null){
-		trace("- "+Lib.document.body);
 
 		// create an SLPlayer app
 		var application = Application.createApplication();
@@ -142,35 +140,28 @@ class Silex {
 		var urlParamsString:String = Web.getParamsString();
 		var params:Array<String> = (urlParamsString.split("&")[0]).split("/");
 
-		trace("Silex loading "+params+" - "+Type.typeof(params[0]));
+		// get the publication name from the URL
+		// page name is either "" or the 1st element
+		publicationName = params[0];
+		// default value
+		if (publicationName == ""){
+			publicationName = serverConfig.defaultPublication;
+		}
 
-
-		// extracts the publication name
+		// get the initial page name from the URL
 		// case of 		http://my.domain.com/
 		// case of 		http://my.domain.com/?/my.page
 		if (params.length == 1){
-			// publication name is either "" or the 1st element
-			if (params[0] == ""){
-				// all default params
-				publicationName = serverConfig.defaultPublication;
-			}
-			else{
-				publicationName = params[0];
-			}
 			// default value
 			initialPageName = "";
 		}
 		// case of 		http://my.domain.com/?my.site/my.page
 		else {
-			// publication name is either "" or the 1st element
-			publicationName = params[0];
-
 			// page name is either "" or the 1st element
 			initialPageName = params[1];
 		}
 		// Load HTML data
 		var htmlContent:String = File.getContent(PUBLICATIONS_FOLDER + publicationName + "/" + PUBLICATION_HTML_FILE);
-		//trace("- "+initialPageName+" - "+params);
 		//Lib.document.innerHTML = "<html><head></head><body><p>test</p></body></html>";
 		Lib.document.innerHTML = htmlContent;
 

@@ -1570,11 +1570,9 @@ org.silex.core.Silex.__name__ = ["org","silex","core","Silex"];
 org.silex.core.Silex.publicationName = null;
 org.silex.core.Silex.initialPageName = null;
 org.silex.core.Silex.main = function() {
-	console.log("Silex starting");
-	org.silex.core.Silex.init();
+	js.Lib.window.onload = org.silex.core.Silex.init;
 }
 org.silex.core.Silex.init = function(unused) {
-	console.log("- " + Std.string(js.Lib.document.body));
 	var application = org.slplayer.core.Application.createApplication();
 	org.silex.core.Silex.initialPageName = org.slplayer.util.DomTools.getMeta("initialPageName");
 	org.silex.core.Silex.publicationName = org.slplayer.util.DomTools.getMeta("publicationName");
