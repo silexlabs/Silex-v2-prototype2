@@ -71,5 +71,5 @@ var _hasHtml5 = hasHtml5();
 if (_hasHtml5)
 	startSilexJs();
 // debug only 
-//else
+else
 	startSilexFlash();

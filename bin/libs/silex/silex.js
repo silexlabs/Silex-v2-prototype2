@@ -839,15 +839,6 @@ Type.allEnums = function(e) {
 	return all;
 }
 var haxe = {}
-haxe.Log = function() { }
-$hxClasses["haxe.Log"] = haxe.Log;
-haxe.Log.__name__ = ["haxe","Log"];
-haxe.Log.trace = function(v,infos) {
-	js.Boot.__trace(v,infos);
-}
-haxe.Log.clear = function() {
-	js.Boot.__clear_trace();
-}
 haxe.Md5 = function() {
 };
 $hxClasses["haxe.Md5"] = haxe.Md5;
@@ -1400,42 +1391,6 @@ haxe.Template.prototype = {
 	,expr: null
 	,__class__: haxe.Template
 }
-haxe.Timer = function(time_ms) {
-	var me = this;
-	this.id = window.setInterval(function() {
-		me.run();
-	},time_ms);
-};
-$hxClasses["haxe.Timer"] = haxe.Timer;
-haxe.Timer.__name__ = ["haxe","Timer"];
-haxe.Timer.delay = function(f,time_ms) {
-	var t = new haxe.Timer(time_ms);
-	t.run = function() {
-		t.stop();
-		f();
-	};
-	return t;
-}
-haxe.Timer.measure = function(f,pos) {
-	var t0 = haxe.Timer.stamp();
-	var r = f();
-	haxe.Log.trace(haxe.Timer.stamp() - t0 + "s",pos);
-	return r;
-}
-haxe.Timer.stamp = function() {
-	return new Date().getTime() / 1000;
-}
-haxe.Timer.prototype = {
-	run: function() {
-	}
-	,stop: function() {
-		if(this.id == null) return;
-		window.clearInterval(this.id);
-		this.id = null;
-	}
-	,id: null
-	,__class__: haxe.Timer
-}
 haxe.rtti = {}
 haxe.rtti.Meta = function() { }
 $hxClasses["haxe.rtti.Meta"] = haxe.rtti.Meta;
@@ -1615,62 +1570,21 @@ org.silex.core.Silex.__name__ = ["org","silex","core","Silex"];
 org.silex.core.Silex.publicationName = null;
 org.silex.core.Silex.initialPageName = null;
 org.silex.core.Silex.main = function() {
-	haxe.Log.trace("Silex starting",{ fileName : "Silex.hx", lineNumber : 78, className : "org.silex.core.Silex", methodName : "main"});
-	js.Lib.window.onload = org.silex.core.Silex.init;
+	console.log("Silex starting");
+	org.silex.core.Silex.init();
 }
 org.silex.core.Silex.init = function(unused) {
-	haxe.Log.trace("- " + Std.string(js.Lib.document.body),{ fileName : "Silex.hx", lineNumber : 91, className : "org.silex.core.Silex", methodName : "init"});
+	console.log("- " + Std.string(js.Lib.document.body));
 	var application = org.slplayer.core.Application.createApplication();
-	org.silex.core.Silex.initialPageName = org.silex.core.Silex.getConfig(js.Lib.document,"initialPageName");
-	org.silex.core.Silex.publicationName = org.silex.core.Silex.getConfig(js.Lib.document,"publicationName");
-	var publicationBody = org.silex.core.Silex.getConfig(js.Lib.document,"publicationBody");
+	org.silex.core.Silex.initialPageName = org.slplayer.util.DomTools.getMeta("initialPageName");
+	org.silex.core.Silex.publicationName = org.slplayer.util.DomTools.getMeta("publicationName");
+	var publicationBody = org.slplayer.util.DomTools.getMeta("publicationBody");
 	if(publicationBody != null) {
 		var node = js.Lib.document.createElement("DIV");
-		node.innerHTML = StringTools.htmlUnescape(org.silex.core.Silex.getConfig(js.Lib.document,"publicationBody"));
+		node.innerHTML = StringTools.htmlUnescape(org.slplayer.util.DomTools.getMeta("publicationBody"));
 		js.Lib.document.body.appendChild(node);
 	}
 	application.init();
-}
-org.silex.core.Silex.setConfig = function(document,metaName,metaValue) {
-	var res = new Hash();
-	var metaTags = document.getElementsByTagName("META");
-	var found = false;
-	var _g1 = 0, _g = metaTags.length;
-	while(_g1 < _g) {
-		var idxNode = _g1++;
-		var node = metaTags[idxNode];
-		var configName = node.getAttribute("name");
-		var configValue = node.getAttribute("content");
-		if(configName != null && configValue != null) {
-			if(configName == metaName) {
-				configValue = metaValue;
-				node.setAttribute("content",metaValue);
-				found = true;
-			}
-			res.set(configName,configValue);
-		}
-	}
-	if(!found) {
-		var node = document.createElement("meta");
-		node.setAttribute("name",metaName);
-		node.setAttribute("content",metaValue);
-		var head = document.getElementsByTagName("head")[0];
-		head.appendChild(node);
-		res.set(metaName,metaValue);
-	}
-	return res;
-}
-org.silex.core.Silex.getConfig = function(document,name) {
-	var metaTags = document.getElementsByTagName("meta");
-	var _g1 = 0, _g = metaTags.length;
-	while(_g1 < _g) {
-		var idxNode = _g1++;
-		var node = metaTags[idxNode];
-		var configName = node.getAttribute("name");
-		var configValue = node.getAttribute("content");
-		if(configName == name) return configValue;
-	}
-	return null;
 }
 org.slplayer = {}
 org.slplayer.component = {}
@@ -1701,17 +1615,17 @@ org.slplayer.component.SLPlayerComponent.checkRequiredParameters = function(cmpC
 		if(elt.getAttribute(Std.string(r)) == null || StringTools.trim(elt.getAttribute(Std.string(r))) == "") throw Std.string(r) + " parameter is required for " + Type.getClassName(cmpClass);
 	}
 }
-org.slplayer.component.layer = {}
-org.slplayer.component.layer.LayerStatus = $hxClasses["org.slplayer.component.layer.LayerStatus"] = { __ename__ : ["org","slplayer","component","layer","LayerStatus"], __constructs__ : ["visible","hidden","notInitialized"] }
-org.slplayer.component.layer.LayerStatus.visible = ["visible",0];
-org.slplayer.component.layer.LayerStatus.visible.toString = $estr;
-org.slplayer.component.layer.LayerStatus.visible.__enum__ = org.slplayer.component.layer.LayerStatus;
-org.slplayer.component.layer.LayerStatus.hidden = ["hidden",1];
-org.slplayer.component.layer.LayerStatus.hidden.toString = $estr;
-org.slplayer.component.layer.LayerStatus.hidden.__enum__ = org.slplayer.component.layer.LayerStatus;
-org.slplayer.component.layer.LayerStatus.notInitialized = ["notInitialized",2];
-org.slplayer.component.layer.LayerStatus.notInitialized.toString = $estr;
-org.slplayer.component.layer.LayerStatus.notInitialized.__enum__ = org.slplayer.component.layer.LayerStatus;
+org.slplayer.component.navigation = {}
+org.slplayer.component.navigation.LayerStatus = $hxClasses["org.slplayer.component.navigation.LayerStatus"] = { __ename__ : ["org","slplayer","component","navigation","LayerStatus"], __constructs__ : ["visible","hidden","notInitialized"] }
+org.slplayer.component.navigation.LayerStatus.visible = ["visible",0];
+org.slplayer.component.navigation.LayerStatus.visible.toString = $estr;
+org.slplayer.component.navigation.LayerStatus.visible.__enum__ = org.slplayer.component.navigation.LayerStatus;
+org.slplayer.component.navigation.LayerStatus.hidden = ["hidden",1];
+org.slplayer.component.navigation.LayerStatus.hidden.toString = $estr;
+org.slplayer.component.navigation.LayerStatus.hidden.__enum__ = org.slplayer.component.navigation.LayerStatus;
+org.slplayer.component.navigation.LayerStatus.notInitialized = ["notInitialized",2];
+org.slplayer.component.navigation.LayerStatus.notInitialized.toString = $estr;
+org.slplayer.component.navigation.LayerStatus.notInitialized.__enum__ = org.slplayer.component.navigation.LayerStatus;
 org.slplayer.component.ui = {}
 org.slplayer.component.ui.IDisplayObject = function() { }
 $hxClasses["org.slplayer.component.ui.IDisplayObject"] = org.slplayer.component.ui.IDisplayObject;
@@ -1753,29 +1667,29 @@ org.slplayer.component.ui.DisplayObject.prototype = {
 	,SLPlayerInstanceId: null
 	,__class__: org.slplayer.component.ui.DisplayObject
 }
-org.slplayer.component.layer.Layer = function(rootElement,SLPId) {
+org.slplayer.component.navigation.Layer = function(rootElement,SLPId) {
 	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
 	this.isListeningHide = false;
 	this.isListeningShow = false;
-	this.status = org.slplayer.component.layer.LayerStatus.notInitialized;
+	this.status = org.slplayer.component.navigation.LayerStatus.notInitialized;
 	this.childrenArray = new Array();
 	this.styleAttrDisplay = rootElement.style.display;
 };
-$hxClasses["org.slplayer.component.layer.Layer"] = org.slplayer.component.layer.Layer;
-org.slplayer.component.layer.Layer.__name__ = ["org","slplayer","component","layer","Layer"];
-org.slplayer.component.layer.Layer.__super__ = org.slplayer.component.ui.DisplayObject;
-org.slplayer.component.layer.Layer.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
+$hxClasses["org.slplayer.component.navigation.Layer"] = org.slplayer.component.navigation.Layer;
+org.slplayer.component.navigation.Layer.__name__ = ["org","slplayer","component","navigation","Layer"];
+org.slplayer.component.navigation.Layer.__super__ = org.slplayer.component.ui.DisplayObject;
+org.slplayer.component.navigation.Layer.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
 	doShow: function(nullIfCalledDirectly) {
 		if(this.isListeningShow == false) return;
 		this.isListeningShow = false;
-		haxe.Log.trace("doShow " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 242, className : "org.slplayer.component.layer.Layer", methodName : "doShow"});
+		console.log("doShow " + this.rootElement.className);
 		if(nullIfCalledDirectly != null) this.rootElement.removeEventListener("transitionEventTypeEnded",$bind(this,this.doShow),false);
 	}
 	,show: function(transitionData) {
-		if(this.status != org.slplayer.component.layer.LayerStatus.visible) {
-			this.status = org.slplayer.component.layer.LayerStatus.visible;
+		if(this.status != org.slplayer.component.navigation.LayerStatus.visible) {
+			this.status = org.slplayer.component.navigation.LayerStatus.visible;
 			this.rootElement.style.display = this.styleAttrDisplay;
-			haxe.Log.trace("Transition started SHOW " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 191, className : "org.slplayer.component.layer.Layer", methodName : "show"});
+			console.log("Transition started SHOW " + this.rootElement.className);
 			while(this.childrenArray.length > 0) {
 				var element = this.childrenArray.shift();
 				this.rootElement.appendChild(element);
@@ -1783,18 +1697,18 @@ org.slplayer.component.layer.Layer.prototype = $extend(org.slplayer.component.ui
 					if(element.autoplay == true) element.play();
 					element.muted = org.slplayer.component.sound.SoundOn.isMuted;
 				} catch( e ) {
-					haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 213, className : "org.slplayer.component.layer.Layer", methodName : "show"});
+					console.log("Layer error: could not access audio or video element");
 				}
 			}
 			this.isListeningShow = true;
 			if(this.detectTransition(transitionData)) this.rootElement.addEventListener("transitionEventTypeEnded",$bind(this,this.doShow),false); else this.doShow(null);
-		} else haxe.Log.trace("Transition - Already visible " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 232, className : "org.slplayer.component.layer.Layer", methodName : "show"});
+		} else console.log("Transition - Already visible " + this.rootElement.className);
 	}
 	,doHide: function(nullIfCalledDirectly) {
 		if(this.isListeningHide == false) return;
 		this.isListeningHide = false;
 		if(nullIfCalledDirectly != null) this.rootElement.removeEventListener("transitionEventTypeEnded",$bind(this,this.doHide),false);
-		haxe.Log.trace("doHide " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 148, className : "org.slplayer.component.layer.Layer", methodName : "doHide"});
+		console.log("doHide " + this.rootElement.className);
 		while(this.rootElement.childNodes.length > 0) {
 			var element = this.rootElement.childNodes[0];
 			this.rootElement.removeChild(element);
@@ -1803,21 +1717,21 @@ org.slplayer.component.layer.Layer.prototype = $extend(org.slplayer.component.ui
 				element.pause();
 				element.currentTime = 0;
 			} catch( e ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 168, className : "org.slplayer.component.layer.Layer", methodName : "doHide"});
+				console.log("Layer error: could not access audio or video element");
 			}
 		}
 		this.rootElement.style.display = "none";
 	}
 	,hide: function(transitionData) {
-		if(this.status != org.slplayer.component.layer.LayerStatus.hidden) {
-			haxe.Log.trace("Transition started HIDE " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 111, className : "org.slplayer.component.layer.Layer", methodName : "hide"});
-			this.status = org.slplayer.component.layer.LayerStatus.hidden;
+		if(this.status != org.slplayer.component.navigation.LayerStatus.hidden) {
+			console.log("Transition started HIDE " + this.rootElement.className);
+			this.status = org.slplayer.component.navigation.LayerStatus.hidden;
 			this.isListeningHide = true;
 			if(this.detectTransition(transitionData)) this.rootElement.addEventListener("transitionEventTypeEnded",$bind(this,this.doHide),false); else this.doHide(null);
-		} else haxe.Log.trace("Transition - Already hidden " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 130, className : "org.slplayer.component.layer.Layer", methodName : "hide"});
+		} else console.log("Transition - Already hidden " + this.rootElement.className);
 	}
 	,onTransitionStarted: function(event) {
-		haxe.Log.trace("Layer - detected transition " + Std.string(event),{ fileName : "Layer.hx", lineNumber : 99, className : "org.slplayer.component.layer.Layer", methodName : "onTransitionStarted"});
+		console.log("Layer - detected transition " + Std.string(event));
 		this.hasTransitionStarted = true;
 	}
 	,detectTransition: function(transitionData) {
@@ -1835,21 +1749,21 @@ org.slplayer.component.layer.Layer.prototype = $extend(org.slplayer.component.ui
 	,childrenArray: null
 	,isListeningShow: null
 	,isListeningHide: null
-	,__class__: org.slplayer.component.layer.Layer
+	,__class__: org.slplayer.component.navigation.Layer
 });
-org.slplayer.component.layer.LinkBase = function(rootElement,SLPId) {
+org.slplayer.component.navigation.LinkBase = function(rootElement,SLPId) {
 	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
 	rootElement.addEventListener("click",$bind(this,this.onClick),false);
 	if(rootElement.getAttribute("href") != null) {
 		this.linkName = StringTools.trim(rootElement.getAttribute("href"));
 		this.linkName = HxOverrides.substr(this.linkName,this.linkName.indexOf("#") + 1,null);
-	} else haxe.Log.trace("Warning: the link has no href atribute (" + Std.string(rootElement) + ")",{ fileName : "LinkBase.hx", lineNumber : 79, className : "org.slplayer.component.layer.LinkBase", methodName : "new"});
-	if(rootElement.getAttribute("target") != null) this.targetAttr = StringTools.trim(rootElement.getAttribute("target"));
+	} else console.log("Warning: the link has no href atribute (" + Std.string(rootElement) + ")");
+	if(rootElement.getAttribute("target") != null && StringTools.trim(rootElement.getAttribute("target")) != "") this.targetAttr = StringTools.trim(rootElement.getAttribute("target"));
 };
-$hxClasses["org.slplayer.component.layer.LinkBase"] = org.slplayer.component.layer.LinkBase;
-org.slplayer.component.layer.LinkBase.__name__ = ["org","slplayer","component","layer","LinkBase"];
-org.slplayer.component.layer.LinkBase.__super__ = org.slplayer.component.ui.DisplayObject;
-org.slplayer.component.layer.LinkBase.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
+$hxClasses["org.slplayer.component.navigation.LinkBase"] = org.slplayer.component.navigation.LinkBase;
+org.slplayer.component.navigation.LinkBase.__name__ = ["org","slplayer","component","navigation","LinkBase"];
+org.slplayer.component.navigation.LinkBase.__super__ = org.slplayer.component.ui.DisplayObject;
+org.slplayer.component.navigation.LinkBase.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
 	linkToPage: function(page,targetAttr) {
 	}
 	,linkToPagesWithName: function(linkName,targetAttr) {
@@ -1858,7 +1772,7 @@ org.slplayer.component.layer.LinkBase.prototype = $extend(org.slplayer.component
 		while(_g1 < _g) {
 			var pageIdx = _g1++;
 			if(pages[pageIdx].getAttribute("name") == linkName) {
-				var pageInstances = this.getSLPlayer().getAssociatedComponents(pages[pageIdx],org.slplayer.component.layer.Page);
+				var pageInstances = this.getSLPlayer().getAssociatedComponents(pages[pageIdx],org.slplayer.component.navigation.Page);
 				var $it0 = pageInstances.iterator();
 				while( $it0.hasNext() ) {
 					var page = $it0.next();
@@ -1869,47 +1783,47 @@ org.slplayer.component.layer.LinkBase.prototype = $extend(org.slplayer.component
 		}
 	}
 	,onClick: function(e) {
-		this.transitionData = new org.slplayer.component.transition.TransitionData(null,StringTools.trim(this.rootElement.getAttribute("data-transition-duration")),StringTools.trim(this.rootElement.getAttribute("data-transition-timing-function")),StringTools.trim(this.rootElement.getAttribute("data-transition-delay")),this.rootElement.getAttribute("data-transition-is-reversed") == null);
+		this.transitionData = new org.slplayer.component.transition.TransitionData(null,this.rootElement.getAttribute("data-transition-duration"),this.rootElement.getAttribute("data-transition-timing-function"),this.rootElement.getAttribute("data-transition-delay"),this.rootElement.getAttribute("data-transition-is-reversed") == null);
 		this.linkToPagesWithName(this.linkName,this.targetAttr);
 	}
 	,transitionData: null
 	,targetAttr: null
 	,linkName: null
-	,__class__: org.slplayer.component.layer.LinkBase
+	,__class__: org.slplayer.component.navigation.LinkBase
 });
-org.slplayer.component.layer.LinkClosePage = function(rootElement,SLPId) {
-	org.slplayer.component.layer.LinkBase.call(this,rootElement,SLPId);
+org.slplayer.component.navigation.LinkClosePage = function(rootElement,SLPId) {
+	org.slplayer.component.navigation.LinkBase.call(this,rootElement,SLPId);
 };
-$hxClasses["org.slplayer.component.layer.LinkClosePage"] = org.slplayer.component.layer.LinkClosePage;
-org.slplayer.component.layer.LinkClosePage.__name__ = ["org","slplayer","component","layer","LinkClosePage"];
-org.slplayer.component.layer.LinkClosePage.__super__ = org.slplayer.component.layer.LinkBase;
-org.slplayer.component.layer.LinkClosePage.prototype = $extend(org.slplayer.component.layer.LinkBase.prototype,{
+$hxClasses["org.slplayer.component.navigation.LinkClosePage"] = org.slplayer.component.navigation.LinkClosePage;
+org.slplayer.component.navigation.LinkClosePage.__name__ = ["org","slplayer","component","navigation","LinkClosePage"];
+org.slplayer.component.navigation.LinkClosePage.__super__ = org.slplayer.component.navigation.LinkBase;
+org.slplayer.component.navigation.LinkClosePage.prototype = $extend(org.slplayer.component.navigation.LinkBase.prototype,{
 	linkToPage: function(page,targetAttr) {
 		page.close(this.transitionData);
 	}
-	,__class__: org.slplayer.component.layer.LinkClosePage
+	,__class__: org.slplayer.component.navigation.LinkClosePage
 });
-org.slplayer.component.layer.LinkToPage = function(rootElement,SLPId) {
-	org.slplayer.component.layer.LinkBase.call(this,rootElement,SLPId);
+org.slplayer.component.navigation.LinkToPage = function(rootElement,SLPId) {
+	org.slplayer.component.navigation.LinkBase.call(this,rootElement,SLPId);
 };
-$hxClasses["org.slplayer.component.layer.LinkToPage"] = org.slplayer.component.layer.LinkToPage;
-org.slplayer.component.layer.LinkToPage.__name__ = ["org","slplayer","component","layer","LinkToPage"];
-org.slplayer.component.layer.LinkToPage.__super__ = org.slplayer.component.layer.LinkBase;
-org.slplayer.component.layer.LinkToPage.prototype = $extend(org.slplayer.component.layer.LinkBase.prototype,{
+$hxClasses["org.slplayer.component.navigation.LinkToPage"] = org.slplayer.component.navigation.LinkToPage;
+org.slplayer.component.navigation.LinkToPage.__name__ = ["org","slplayer","component","navigation","LinkToPage"];
+org.slplayer.component.navigation.LinkToPage.__super__ = org.slplayer.component.navigation.LinkBase;
+org.slplayer.component.navigation.LinkToPage.prototype = $extend(org.slplayer.component.navigation.LinkBase.prototype,{
 	linkToPage: function(page,targetAttr) {
 		page.open(this.transitionData,targetAttr != "_top");
 	}
-	,__class__: org.slplayer.component.layer.LinkToPage
+	,__class__: org.slplayer.component.navigation.LinkToPage
 });
-org.slplayer.component.layer.Page = function(rootElement,SLPId) {
+org.slplayer.component.navigation.Page = function(rootElement,SLPId) {
 	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
 	this.name = rootElement.getAttribute("name");
 	if(this.name == null || this.name == "") throw "Pages have to have a 'name' attribute";
 };
-$hxClasses["org.slplayer.component.layer.Page"] = org.slplayer.component.layer.Page;
-org.slplayer.component.layer.Page.__name__ = ["org","slplayer","component","layer","Page"];
-org.slplayer.component.layer.Page.__super__ = org.slplayer.component.ui.DisplayObject;
-org.slplayer.component.layer.Page.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
+$hxClasses["org.slplayer.component.navigation.Page"] = org.slplayer.component.navigation.Page;
+org.slplayer.component.navigation.Page.__name__ = ["org","slplayer","component","navigation","Page"];
+org.slplayer.component.navigation.Page.__super__ = org.slplayer.component.ui.DisplayObject;
+org.slplayer.component.navigation.Page.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
 	close: function(transitionData,preventCloseByClassName) {
 		transitionData.type = org.slplayer.component.transition.TransitionType.hide;
 		if(preventCloseByClassName == null) preventCloseByClassName = new Array();
@@ -1929,11 +1843,11 @@ org.slplayer.component.layer.Page.prototype = $extend(org.slplayer.component.ui.
 				}
 			}
 			if(!hasForbiddenClass) {
-				var layerInstances = this.getSLPlayer().getAssociatedComponents(layerNode,org.slplayer.component.layer.Layer);
+				var layerInstances = this.getSLPlayer().getAssociatedComponents(layerNode,org.slplayer.component.navigation.Layer);
 				var $it0 = layerInstances.iterator();
 				while( $it0.hasNext() ) {
 					var layerInstance = $it0.next();
-					(js.Boot.__cast(layerInstance , org.slplayer.component.layer.Layer)).hide(transitionData);
+					(js.Boot.__cast(layerInstance , org.slplayer.component.navigation.Layer)).hide(transitionData);
 				}
 			}
 		}
@@ -1945,7 +1859,7 @@ org.slplayer.component.layer.Page.prototype = $extend(org.slplayer.component.ui.
 		while(_g1 < _g) {
 			var idxLayerNode = _g1++;
 			var layerNode = nodes[idxLayerNode];
-			var layerInstances = this.getSLPlayer().getAssociatedComponents(layerNode,org.slplayer.component.layer.Layer);
+			var layerInstances = this.getSLPlayer().getAssociatedComponents(layerNode,org.slplayer.component.navigation.Layer);
 			var $it0 = layerInstances.iterator();
 			while( $it0.hasNext() ) {
 				var layerInstance = $it0.next();
@@ -1959,7 +1873,7 @@ org.slplayer.component.layer.Page.prototype = $extend(org.slplayer.component.ui.
 		while(_g1 < _g) {
 			var idxPageNode = _g1++;
 			var pageNode = nodes[idxPageNode];
-			var pageInstances = this.getSLPlayer().getAssociatedComponents(pageNode,org.slplayer.component.layer.Page);
+			var pageInstances = this.getSLPlayer().getAssociatedComponents(pageNode,org.slplayer.component.navigation.Page);
 			var $it0 = pageInstances.iterator();
 			while( $it0.hasNext() ) {
 				var pageInstance = $it0.next();
@@ -1972,19 +1886,16 @@ org.slplayer.component.layer.Page.prototype = $extend(org.slplayer.component.ui.
 		if(doCloseOthers) this.closeOthers(transitionData);
 		this.doOpen(transitionData);
 	}
-	,doAfterDomInit: function() {
-		if(this.getSLPlayer().getMetaParameter("InitialPageName") == this.name) {
-			haxe.Log.trace("Open home page '" + this.name + "'",{ fileName : "Page.hx", lineNumber : 68, className : "org.slplayer.component.layer.Page", methodName : "doAfterDomInit"});
+	,init: function() {
+		if(org.slplayer.util.DomTools.getMeta("initialPageName") == this.name) {
+			console.log("Open home page '" + this.name + "'");
 			var transitionData = new org.slplayer.component.transition.TransitionData(org.slplayer.component.transition.TransitionType.show,"0.01s");
 			this.open(transitionData);
 		}
 	}
-	,init: function() {
-		haxe.Timer.delay($bind(this,this.doAfterDomInit),10);
-	}
 	,name: null
 	,displayName: null
-	,__class__: org.slplayer.component.layer.Page
+	,__class__: org.slplayer.component.navigation.Page
 });
 org.slplayer.component.sound = {}
 org.slplayer.component.sound.SoundOn = function(rootElement,SLPId) {
@@ -1994,7 +1905,7 @@ org.slplayer.component.sound.SoundOn = function(rootElement,SLPId) {
 $hxClasses["org.slplayer.component.sound.SoundOn"] = org.slplayer.component.sound.SoundOn;
 org.slplayer.component.sound.SoundOn.__name__ = ["org","slplayer","component","sound","SoundOn"];
 org.slplayer.component.sound.SoundOn.mute = function(doMute) {
-	haxe.Log.trace("Sound mute " + Std.string(doMute),{ fileName : "SoundOn.hx", lineNumber : 54, className : "org.slplayer.component.sound.SoundOn", methodName : "mute"});
+	console.log("Sound mute " + Std.string(doMute));
 	var audioTags = js.Lib.document.getElementsByTagName("audio");
 	var _g1 = 0, _g = audioTags.length;
 	while(_g1 < _g) {
@@ -2033,7 +1944,7 @@ org.slplayer.component.sound.SoundOff.__name__ = ["org","slplayer","component","
 org.slplayer.component.sound.SoundOff.__super__ = org.slplayer.component.sound.SoundOn;
 org.slplayer.component.sound.SoundOff.prototype = $extend(org.slplayer.component.sound.SoundOn.prototype,{
 	onClick: function(e) {
-		haxe.Log.trace("Sound onClick",{ fileName : "SoundOff.hx", lineNumber : 23, className : "org.slplayer.component.sound.SoundOff", methodName : "onClick"});
+		console.log("Sound onClick");
 		org.slplayer.component.sound.SoundOn.mute(true);
 	}
 	,__class__: org.slplayer.component.sound.SoundOff
@@ -2194,16 +2105,16 @@ org.slplayer.core.Application.prototype = {
 		this.registeredComponents.push({ classname : componentClassName, args : args});
 	}
 	,registerComponentsforInit: function() {
-		org.slplayer.component.layer.LinkToPage;
-		this.registerComponent("org.slplayer.component.layer.LinkToPage");
 		org.slplayer.component.sound.SoundOff;
 		this.registerComponent("org.slplayer.component.sound.SoundOff");
-		org.slplayer.component.layer.LinkClosePage;
-		this.registerComponent("org.slplayer.component.layer.LinkClosePage");
-		org.slplayer.component.layer.Page;
-		this.registerComponent("org.slplayer.component.layer.Page");
-		org.slplayer.component.layer.Layer;
-		this.registerComponent("org.slplayer.component.layer.Layer");
+		org.slplayer.component.navigation.Page;
+		this.registerComponent("org.slplayer.component.navigation.Page");
+		org.slplayer.component.navigation.Layer;
+		this.registerComponent("org.slplayer.component.navigation.Layer");
+		org.slplayer.component.navigation.LinkToPage;
+		this.registerComponent("org.slplayer.component.navigation.LinkToPage");
+		org.slplayer.component.navigation.LinkClosePage;
+		this.registerComponent("org.slplayer.component.navigation.LinkClosePage");
 		org.slplayer.component.sound.SoundOn;
 		this.registerComponent("org.slplayer.component.sound.SoundOn");
 	}
@@ -2213,7 +2124,7 @@ org.slplayer.core.Application.prototype = {
 		this.htmlRootElement = appendTo;
 		if(this.htmlRootElement == null || this.htmlRootElement.nodeType != js.Lib.document.body.nodeType) this.htmlRootElement = js.Lib.document.body;
 		if(this.htmlRootElement == null) {
-			haxe.Log.trace("ERROR Lib.document.body is null => You are trying to start your application while the document loading is probably not complete yet." + " To fix that, add the noAutoStart option to your slplayer application and control the application startup with: window.onload = function() { myApplication.init() };",{ fileName : "Application.hx", lineNumber : 184, className : "org.slplayer.core.Application", methodName : "init"});
+			console.log("ERROR Lib.document.body is null => You are trying to start your application while the document loading is probably not complete yet." + " To fix that, add the noAutoStart option to your slplayer application and control the application startup with: window.onload = function() { myApplication.init() };");
 			return;
 		}
 		this.initMetaParameters();
@@ -2259,7 +2170,7 @@ org.slplayer.util.DomTools.inspectTrace = function(obj) {
 	while(_g < _g1.length) {
 		var prop = _g1[_g];
 		++_g;
-		haxe.Log.trace("- " + prop + " = " + Std.string(Reflect.field(obj,prop)),{ fileName : "DomTools.hx", lineNumber : 80, className : "org.slplayer.util.DomTools", methodName : "inspectTrace"});
+		console.log("- " + prop + " = " + Std.string(Reflect.field(obj,prop)));
 	}
 }
 org.slplayer.util.DomTools.toggleClass = function(element,className) {
@@ -2273,6 +2184,49 @@ org.slplayer.util.DomTools.removeClass = function(element,className) {
 }
 org.slplayer.util.DomTools.hasClass = function(element,className) {
 	return element.className.indexOf(className) > -1;
+}
+org.slplayer.util.DomTools.setMeta = function(metaName,metaValue,attributeName) {
+	if(attributeName == null) attributeName = "content";
+	var res = new Hash();
+	var metaTags = js.Lib.document.getElementsByTagName("META");
+	var found = false;
+	var _g1 = 0, _g = metaTags.length;
+	while(_g1 < _g) {
+		var idxNode = _g1++;
+		var node = metaTags[idxNode];
+		var configName = node.getAttribute("name");
+		var configValue = node.getAttribute(attributeName);
+		if(configName != null && configValue != null) {
+			if(configName == metaName) {
+				configValue = metaValue;
+				node.setAttribute(attributeName,metaValue);
+				found = true;
+			}
+			res.set(configName,configValue);
+		}
+	}
+	if(!found) {
+		var node = js.Lib.document.createElement("meta");
+		node.setAttribute("name",metaName);
+		node.setAttribute("content",metaValue);
+		var head = js.Lib.document.getElementsByTagName("head")[0];
+		head.appendChild(node);
+		res.set(metaName,metaValue);
+	}
+	return res;
+}
+org.slplayer.util.DomTools.getMeta = function(name,attributeName) {
+	if(attributeName == null) attributeName = "content";
+	var metaTags = js.Lib.document.getElementsByTagName("meta");
+	var _g1 = 0, _g = metaTags.length;
+	while(_g1 < _g) {
+		var idxNode = _g1++;
+		var node = metaTags[idxNode];
+		var configName = node.getAttribute("name");
+		var configValue = node.getAttribute(attributeName);
+		if(configName == name) return configValue;
+	}
+	return null;
 }
 function $iterator(o) { if( o instanceof Array ) return function() { return HxOverrides.iter(o); }; return typeof(o.iterator) == 'function' ? $bind(o,o.iterator) : o.iterator; };
 var $_;
@@ -2325,27 +2279,25 @@ haxe.Template.expr_int = new EReg("^[0-9]+$","");
 haxe.Template.expr_float = new EReg("^([+-]?)(?=\\d|,\\d)\\d*(,\\d*)?([Ee]([+-]?\\d+))?$","");
 haxe.Template.globals = { };
 js.Lib.onerror = null;
-org.silex.core.Silex.CONFIG_INITIAL_PAGE_NAME = "initialPageName";
 org.silex.core.Silex.CONFIG_PUBLICATION_NAME = "publicationName";
 org.silex.core.Silex.CONFIG_PUBLICATION_BODY = "publicationBody";
 org.silex.core.Silex.PUBLICATIONS_FOLDER = "publications/";
 org.silex.core.Silex.PUBLICATION_HTML_FILE = "content/index.html";
 org.silex.core.Silex.LOADER_SCRIPT_PATH = "loader.js";
-org.slplayer.component.layer.Layer.__meta__ = { obj : { tagNameFilter : ["div"]}};
-org.slplayer.component.layer.LinkBase.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.slplayer.component.layer.LinkBase.CONFIG_PAGE_NAME_ATTR = "href";
-org.slplayer.component.layer.LinkBase.CONFIG_TARGET_ATTR = "target";
-org.slplayer.component.layer.LinkBase.CONFIG_TRANSITION_DURATION = "data-transition-duration";
-org.slplayer.component.layer.LinkBase.CONFIG_TRANSITION_TIMING_FUNCTION = "data-transition-timing-function";
-org.slplayer.component.layer.LinkBase.CONFIG_TRANSITION_DELAY = "data-transition-delay";
-org.slplayer.component.layer.LinkBase.CONFIG_TRANSITION_IS_REVERSED = "data-transition-is-reversed";
-org.slplayer.component.layer.LinkClosePage.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.slplayer.component.layer.LinkToPage.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.slplayer.component.layer.LinkToPage.CONFIG_TARGET_IS_POPUP = "_top";
-org.slplayer.component.layer.Page.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.slplayer.component.layer.Page.CLASS_NAME = "Page";
-org.slplayer.component.layer.Page.CONFIG_NAME_ATTR = "name";
-org.slplayer.component.layer.Page.CONFIG_INITIAL_PAGE_NAME = "InitialPageName";
+org.slplayer.component.navigation.LinkBase.__meta__ = { obj : { tagNameFilter : ["a"]}};
+org.slplayer.component.navigation.LinkBase.CONFIG_PAGE_NAME_ATTR = "href";
+org.slplayer.component.navigation.LinkBase.CONFIG_TARGET_ATTR = "target";
+org.slplayer.component.navigation.LinkBase.CONFIG_TRANSITION_DURATION = "data-transition-duration";
+org.slplayer.component.navigation.LinkBase.CONFIG_TRANSITION_TIMING_FUNCTION = "data-transition-timing-function";
+org.slplayer.component.navigation.LinkBase.CONFIG_TRANSITION_DELAY = "data-transition-delay";
+org.slplayer.component.navigation.LinkBase.CONFIG_TRANSITION_IS_REVERSED = "data-transition-is-reversed";
+org.slplayer.component.navigation.LinkClosePage.__meta__ = { obj : { tagNameFilter : ["a"]}};
+org.slplayer.component.navigation.LinkToPage.__meta__ = { obj : { tagNameFilter : ["a"]}};
+org.slplayer.component.navigation.LinkToPage.CONFIG_TARGET_IS_POPUP = "_top";
+org.slplayer.component.navigation.Page.__meta__ = { obj : { tagNameFilter : ["a"]}};
+org.slplayer.component.navigation.Page.CLASS_NAME = "Page";
+org.slplayer.component.navigation.Page.CONFIG_NAME_ATTR = "name";
+org.slplayer.component.navigation.Page.CONFIG_INITIAL_PAGE_NAME = "initialPageName";
 org.slplayer.component.sound.SoundOn.__meta__ = { obj : { tagNameFilter : ["a"]}};
 org.slplayer.component.sound.SoundOn.CLASS_NAME = "SoundOn";
 org.slplayer.component.sound.SoundOn.isMuted = false;

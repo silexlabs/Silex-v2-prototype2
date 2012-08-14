@@ -16,6 +16,7 @@
 -cp ../../Cocktail/src/
 --remap js:cocktail
 -main org.silex.core.Silex
+--macro org.slplayer.core.Builder.create('index.php')
 #-D slpdebug
 -D disableEmbedHtml
 -D noAutoStart
