@@ -19,14 +19,19 @@
 		<div class="Layer page1">
 			<h1>HELLO SILEX!</h1>
 			<p>
-				Test of a paragraph.
+				Test of a paragraph. And this is <a href="#page2" class="LinkToPage">a link to page #2</a>
 			</p>
 		</div>
 		<A class="Page" name="page2">Page 2</A>
 		<div class="Layer page2">
-			<h1>Page 2 should not been shown unless you specified the deeplink "page2"!</h1>
+			<h1>Page 2</h1>
+			<p>Test of a paragraph 2. Back to <a href="#page1" class="LinkToPage" >page #1</a></p>
+			<p>This page should not been shown unless you specified <a href="#page2" >#page2 in the deeplink</a>!</p>
+		</div>
+		<div class="Layer page1 page2">
+			<h1>Foot</h1>
 			<p>
-				Test of a paragraph 2.
+				And this would be the footer ... :)
 			</p>
 		</div>
 	</body>

@@ -67,9 +67,11 @@ function swfobjectLoaded(){
 
 var _hasHtml5 = hasHtml5();
 
+// debug only 
+//_hasHtml5 = false;
+
 // flash or html version
 if (_hasHtml5)
 	startSilexJs();
-// debug only 
 else
 	startSilexFlash();

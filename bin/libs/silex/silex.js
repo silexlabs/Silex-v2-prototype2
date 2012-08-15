@@ -1568,20 +1568,19 @@ org.silex.core.Silex = function() { }
 $hxClasses["org.silex.core.Silex"] = org.silex.core.Silex;
 org.silex.core.Silex.__name__ = ["org","silex","core","Silex"];
 org.silex.core.Silex.publicationName = null;
-org.silex.core.Silex.initialPageName = null;
 org.silex.core.Silex.main = function() {
 	js.Lib.window.onload = org.silex.core.Silex.init;
 }
 org.silex.core.Silex.init = function(unused) {
-	var application = org.slplayer.core.Application.createApplication();
-	org.silex.core.Silex.initialPageName = org.slplayer.util.DomTools.getMeta("initialPageName");
+	if(js.Lib.window.location.hash != "") {
+		var initialPageName = HxOverrides.substr(js.Lib.window.location.hash,1,null);
+		org.slplayer.util.DomTools.setMeta("initialPageName",initialPageName);
+	}
 	org.silex.core.Silex.publicationName = org.slplayer.util.DomTools.getMeta("publicationName");
 	var publicationBody = org.slplayer.util.DomTools.getMeta("publicationBody");
-	if(publicationBody != null) {
-		var node = js.Lib.document.createElement("DIV");
-		node.innerHTML = StringTools.htmlUnescape(org.slplayer.util.DomTools.getMeta("publicationBody"));
-		js.Lib.document.body.appendChild(node);
-	}
+	if(publicationBody != null) js.Lib.document.body.innerHTML = StringTools.htmlUnescape(org.slplayer.util.DomTools.getMeta("publicationBody"));
+	console.log(" application.init " + Std.string(js.Lib.document.body));
+	var application = org.slplayer.core.Application.createApplication();
 	application.init();
 }
 org.slplayer = {}

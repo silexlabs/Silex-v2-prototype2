@@ -55,12 +55,6 @@ class Silex {
 	 * It is provided in the URL as http://my.domain.com/?publication_name
 	 */
 	static public var publicationName:String;
-	/**
-	 * Name of the current page
-	 * Initially, it is provided in the URL as http://my.domain.com/?publication_name/page_name
-	 * or as http://my.domain.com/?/page_name
-	 */
-	static public var initialPageName:String;
 
 #if SilexClientSide
 	/**
@@ -84,13 +78,9 @@ class Silex {
 //		init();
 	}
 	/**
-	 * Method to call if this class is not defined as the application entry point
-	 * Otherwise it is automatically called by main
+	 * Init Silex app
 	 */
 	static public function init(unused:Dynamic=null){
-
-		// create an SLPlayer app
-		var application = Application.createApplication();
 
 	#if flash
 		// init the document with non empty body, workaround see  https://github.com/silexlabs/Cocktail/issues/208
@@ -100,23 +90,35 @@ class Silex {
 		for (paramName in Reflect.fields(params)){
 			DomTools.setMeta(paramName, StringTools.urlDecode(Reflect.field(params, paramName)));
 		}
-	#end
-	
+	#else
 		// retrieve initialPageName
-		initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME);
-		
+		// hash is the page name after the # in the URL
+		if (Lib.window.location.hash != ""){
+			var initialPageName = Lib.window.location.hash.substr(1);
+			// set initial page 
+			DomTools.setMeta(Page.CONFIG_INITIAL_PAGE_NAME, initialPageName);
+		}
+	#end
+
 		// retrieve publicationName
 		publicationName = DomTools.getMeta(CONFIG_PUBLICATION_NAME);
 
 		// set the body of the publication if it is provided in the meta
 		var publicationBody = DomTools.getMeta(CONFIG_PUBLICATION_BODY);
 		if (publicationBody != null){
+			/*
 			var node = Lib.document.createElement("DIV");
 			node.innerHTML = StringTools.htmlUnescape(DomTools.getMeta(CONFIG_PUBLICATION_BODY));
 			Lib.document.body.appendChild(node);
+			/**/
+			Lib.document.body.innerHTML = StringTools.htmlUnescape(DomTools.getMeta(CONFIG_PUBLICATION_BODY));
 		}
 		// init SLPlayer components
+		trace(" application.init "+Lib.document.body);
+		// create an SLPlayer app
+		var application = Application.createApplication();
 		application.init();
+
 	}
 #end
 #if SilexServerSide
@@ -148,6 +150,7 @@ class Silex {
 			publicationName = serverConfig.defaultPublication;
 		}
 
+		var initialPageName = "";
 		// get the initial page name from the URL
 		// case of 		http://my.domain.com/
 		// case of 		http://my.domain.com/?/my.page
@@ -183,7 +186,7 @@ class Silex {
 		head.appendChild(node);
 
 		// init SLPayer
-		application.init();
+		application.init(Lib.document.body);
 
 		// Output the code to load Silex client in Javascript or in Flash version 
 		php.Lib.print(Lib.document.innerHTML);
