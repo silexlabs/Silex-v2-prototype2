@@ -1,15 +1,20 @@
 ** To do **
 
 * bugs
-  * SLPlayer do not hide the layers which are not on the home page, in versions seo, js and flash
   * workaround, bug https://github.com/silexlabs/Cocktail/issues/207
   * init the document with non empty body, workaround see  https://github.com/silexlabs/Cocktail/issues/208
-* pass params to the app: http://www.silexlabs.org/groups/labs/cocktail/forum/topic/cocktail-apps-params-flashvars/
-* no conditional compilation in class Silex (client version)
-* split Silex::new into smaller methods
-* pass the publicationBody in FlashVars, and get FlashVars in Flash version
-* SLExtend - Init plugins in Silex::new
-
+  * memory leak in the Layer and transition classes
+* transitions with params on the Layer as well as on the link
+* contexts with multiple class names
+* components
+  * transition alpha
+* ?no conditional compilation in class Silex (client version)
+* 404 error publication
+* SLExtend 
+  * Init plugins in Silex::new
+  * split Silex::new into smaller methods
+* opa-like lib
+* in Silex.hx, add the style sheet in a style tag directly in the html page
 
 ** About Silex **
 

@@ -49,6 +49,10 @@ class Silex {
 	/**
 	 * constant, path and file names
 	 */
+	public static inline var PUBLICATION_CSS_FILE:String = "content/app.css";
+	/**
+	 * constant, path and file names
+	 */
 	public static inline var LOADER_SCRIPT_PATH:String = "loader.js";
 	/**
 	 * Publication name
@@ -132,9 +136,6 @@ class Silex {
 	 * Output the code to load Silex client in Javascript or in Flash version  
 	 */
 	static public function main() {
-		// create an SLPlayer app
-		var application = Application.createApplication();
-
 		// load server config
 		var serverConfig = new ServerConfig();
 
@@ -184,6 +185,17 @@ class Silex {
 		
 		var head = Lib.document.getElementsByTagName("head")[0];
 		head.appendChild(node);
+
+		// add the app.css style sheet
+		// TODO: add the style sheet in a style tag directly in the html page
+		var node = Lib.document.createElement("link");
+		node.setAttribute("href", PUBLICATIONS_FOLDER + publicationName + "/" + PUBLICATION_CSS_FILE);
+		node.setAttribute("type", "text/css");
+		node.setAttribute("rel", "stylesheet");
+		head.appendChild(node);
+
+		// create an SLPlayer app
+		var application = Application.createApplication();
 
 		// init SLPayer
 		application.init(Lib.document.body);

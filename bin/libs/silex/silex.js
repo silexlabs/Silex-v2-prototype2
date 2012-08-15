@@ -1562,27 +1562,6 @@ js.Lib.setErrorHandler = function(f) {
 	js.Lib.onerror = f;
 }
 var org = {}
-org.silex = {}
-org.silex.core = {}
-org.silex.core.Silex = function() { }
-$hxClasses["org.silex.core.Silex"] = org.silex.core.Silex;
-org.silex.core.Silex.__name__ = ["org","silex","core","Silex"];
-org.silex.core.Silex.publicationName = null;
-org.silex.core.Silex.main = function() {
-	js.Lib.window.onload = org.silex.core.Silex.init;
-}
-org.silex.core.Silex.init = function(unused) {
-	if(js.Lib.window.location.hash != "") {
-		var initialPageName = HxOverrides.substr(js.Lib.window.location.hash,1,null);
-		org.slplayer.util.DomTools.setMeta("initialPageName",initialPageName);
-	}
-	org.silex.core.Silex.publicationName = org.slplayer.util.DomTools.getMeta("publicationName");
-	var publicationBody = org.slplayer.util.DomTools.getMeta("publicationBody");
-	if(publicationBody != null) js.Lib.document.body.innerHTML = StringTools.htmlUnescape(org.slplayer.util.DomTools.getMeta("publicationBody"));
-	console.log(" application.init " + Std.string(js.Lib.document.body));
-	var application = org.slplayer.core.Application.createApplication();
-	application.init();
-}
 org.slplayer = {}
 org.slplayer.component = {}
 org.slplayer.component.ISLPlayerComponent = function() { }
@@ -1593,36 +1572,6 @@ org.slplayer.component.ISLPlayerComponent.prototype = {
 	,SLPlayerInstanceId: null
 	,__class__: org.slplayer.component.ISLPlayerComponent
 }
-org.slplayer.component.SLPlayerComponent = function() { }
-$hxClasses["org.slplayer.component.SLPlayerComponent"] = org.slplayer.component.SLPlayerComponent;
-org.slplayer.component.SLPlayerComponent.__name__ = ["org","slplayer","component","SLPlayerComponent"];
-org.slplayer.component.SLPlayerComponent.initSLPlayerComponent = function(component,SLPlayerInstanceId) {
-	component.SLPlayerInstanceId = SLPlayerInstanceId;
-}
-org.slplayer.component.SLPlayerComponent.getSLPlayer = function(component) {
-	return org.slplayer.core.Application.get(component.SLPlayerInstanceId);
-}
-org.slplayer.component.SLPlayerComponent.checkRequiredParameters = function(cmpClass,elt) {
-	var requires = haxe.rtti.Meta.getType(cmpClass).requires;
-	if(requires == null) return;
-	var _g = 0;
-	while(_g < requires.length) {
-		var r = requires[_g];
-		++_g;
-		if(elt.getAttribute(Std.string(r)) == null || StringTools.trim(elt.getAttribute(Std.string(r))) == "") throw Std.string(r) + " parameter is required for " + Type.getClassName(cmpClass);
-	}
-}
-org.slplayer.component.navigation = {}
-org.slplayer.component.navigation.LayerStatus = $hxClasses["org.slplayer.component.navigation.LayerStatus"] = { __ename__ : ["org","slplayer","component","navigation","LayerStatus"], __constructs__ : ["visible","hidden","notInitialized"] }
-org.slplayer.component.navigation.LayerStatus.visible = ["visible",0];
-org.slplayer.component.navigation.LayerStatus.visible.toString = $estr;
-org.slplayer.component.navigation.LayerStatus.visible.__enum__ = org.slplayer.component.navigation.LayerStatus;
-org.slplayer.component.navigation.LayerStatus.hidden = ["hidden",1];
-org.slplayer.component.navigation.LayerStatus.hidden.toString = $estr;
-org.slplayer.component.navigation.LayerStatus.hidden.__enum__ = org.slplayer.component.navigation.LayerStatus;
-org.slplayer.component.navigation.LayerStatus.notInitialized = ["notInitialized",2];
-org.slplayer.component.navigation.LayerStatus.notInitialized.toString = $estr;
-org.slplayer.component.navigation.LayerStatus.notInitialized.__enum__ = org.slplayer.component.navigation.LayerStatus;
 org.slplayer.component.ui = {}
 org.slplayer.component.ui.IDisplayObject = function() { }
 $hxClasses["org.slplayer.component.ui.IDisplayObject"] = org.slplayer.component.ui.IDisplayObject;
@@ -1664,6 +1613,80 @@ org.slplayer.component.ui.DisplayObject.prototype = {
 	,SLPlayerInstanceId: null
 	,__class__: org.slplayer.component.ui.DisplayObject
 }
+org.silex = {}
+org.silex.component = {}
+org.silex.component.MenuManager = function(rootElement,SLPId) {
+	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
+	rootElement.addEventListener("click",$bind(this,this.onClick),false);
+};
+$hxClasses["org.silex.component.MenuManager"] = org.silex.component.MenuManager;
+org.silex.component.MenuManager.__name__ = ["org","silex","component","MenuManager"];
+org.silex.component.MenuManager.__super__ = org.slplayer.component.ui.DisplayObject;
+org.silex.component.MenuManager.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
+	onClick: function(e) {
+		var target = e.target;
+		if(target.nodeName.toLowerCase() != "a" || target.getAttribute("href") == "") throw "The menu items are expectted to be A tags with href set to the page name. (" + target.nodeName + ", " + target.getAttribute("href") + ")";
+		var menuPageName = HxOverrides.substr(target.getAttribute("href"),1,null);
+		console.log("Menu event " + menuPageName);
+		switch(menuPageName) {
+		case "item-login":
+			console.log("now login");
+			break;
+		}
+	}
+	,childrenArray: null
+	,__class__: org.silex.component.MenuManager
+});
+org.silex.core = {}
+org.silex.core.Silex = function() { }
+$hxClasses["org.silex.core.Silex"] = org.silex.core.Silex;
+org.silex.core.Silex.__name__ = ["org","silex","core","Silex"];
+org.silex.core.Silex.publicationName = null;
+org.silex.core.Silex.main = function() {
+	js.Lib.window.onload = org.silex.core.Silex.init;
+}
+org.silex.core.Silex.init = function(unused) {
+	if(js.Lib.window.location.hash != "") {
+		var initialPageName = HxOverrides.substr(js.Lib.window.location.hash,1,null);
+		org.slplayer.util.DomTools.setMeta("initialPageName",initialPageName);
+	}
+	org.silex.core.Silex.publicationName = org.slplayer.util.DomTools.getMeta("publicationName");
+	var publicationBody = org.slplayer.util.DomTools.getMeta("publicationBody");
+	if(publicationBody != null) js.Lib.document.body.innerHTML = StringTools.htmlUnescape(org.slplayer.util.DomTools.getMeta("publicationBody"));
+	console.log(" application.init " + Std.string(js.Lib.document.body));
+	var application = org.slplayer.core.Application.createApplication();
+	application.init();
+}
+org.slplayer.component.SLPlayerComponent = function() { }
+$hxClasses["org.slplayer.component.SLPlayerComponent"] = org.slplayer.component.SLPlayerComponent;
+org.slplayer.component.SLPlayerComponent.__name__ = ["org","slplayer","component","SLPlayerComponent"];
+org.slplayer.component.SLPlayerComponent.initSLPlayerComponent = function(component,SLPlayerInstanceId) {
+	component.SLPlayerInstanceId = SLPlayerInstanceId;
+}
+org.slplayer.component.SLPlayerComponent.getSLPlayer = function(component) {
+	return org.slplayer.core.Application.get(component.SLPlayerInstanceId);
+}
+org.slplayer.component.SLPlayerComponent.checkRequiredParameters = function(cmpClass,elt) {
+	var requires = haxe.rtti.Meta.getType(cmpClass).requires;
+	if(requires == null) return;
+	var _g = 0;
+	while(_g < requires.length) {
+		var r = requires[_g];
+		++_g;
+		if(elt.getAttribute(Std.string(r)) == null || StringTools.trim(elt.getAttribute(Std.string(r))) == "") throw Std.string(r) + " parameter is required for " + Type.getClassName(cmpClass);
+	}
+}
+org.slplayer.component.navigation = {}
+org.slplayer.component.navigation.LayerStatus = $hxClasses["org.slplayer.component.navigation.LayerStatus"] = { __ename__ : ["org","slplayer","component","navigation","LayerStatus"], __constructs__ : ["visible","hidden","notInitialized"] }
+org.slplayer.component.navigation.LayerStatus.visible = ["visible",0];
+org.slplayer.component.navigation.LayerStatus.visible.toString = $estr;
+org.slplayer.component.navigation.LayerStatus.visible.__enum__ = org.slplayer.component.navigation.LayerStatus;
+org.slplayer.component.navigation.LayerStatus.hidden = ["hidden",1];
+org.slplayer.component.navigation.LayerStatus.hidden.toString = $estr;
+org.slplayer.component.navigation.LayerStatus.hidden.__enum__ = org.slplayer.component.navigation.LayerStatus;
+org.slplayer.component.navigation.LayerStatus.notInitialized = ["notInitialized",2];
+org.slplayer.component.navigation.LayerStatus.notInitialized.toString = $estr;
+org.slplayer.component.navigation.LayerStatus.notInitialized.__enum__ = org.slplayer.component.navigation.LayerStatus;
 org.slplayer.component.navigation.Layer = function(rootElement,SLPId) {
 	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
 	this.isListeningHide = false;
@@ -2102,18 +2125,20 @@ org.slplayer.core.Application.prototype = {
 		this.registeredComponents.push({ classname : componentClassName, args : args});
 	}
 	,registerComponentsforInit: function() {
-		org.slplayer.component.sound.SoundOff;
-		this.registerComponent("org.slplayer.component.sound.SoundOff");
-		org.slplayer.component.navigation.Page;
-		this.registerComponent("org.slplayer.component.navigation.Page");
 		org.slplayer.component.navigation.Layer;
 		this.registerComponent("org.slplayer.component.navigation.Layer");
-		org.slplayer.component.navigation.LinkToPage;
-		this.registerComponent("org.slplayer.component.navigation.LinkToPage");
 		org.slplayer.component.navigation.LinkClosePage;
 		this.registerComponent("org.slplayer.component.navigation.LinkClosePage");
+		org.slplayer.component.navigation.LinkToPage;
+		this.registerComponent("org.slplayer.component.navigation.LinkToPage");
+		org.slplayer.component.sound.SoundOff;
+		this.registerComponent("org.slplayer.component.sound.SoundOff");
 		org.slplayer.component.sound.SoundOn;
 		this.registerComponent("org.slplayer.component.sound.SoundOn");
+		org.silex.component.MenuManager;
+		this.registerComponent("org.silex.component.MenuManager");
+		org.slplayer.component.navigation.Page;
+		this.registerComponent("org.slplayer.component.navigation.Page");
 	}
 	,initMetaParameters: function() {
 	}
@@ -2280,6 +2305,7 @@ org.silex.core.Silex.CONFIG_PUBLICATION_NAME = "publicationName";
 org.silex.core.Silex.CONFIG_PUBLICATION_BODY = "publicationBody";
 org.silex.core.Silex.PUBLICATIONS_FOLDER = "publications/";
 org.silex.core.Silex.PUBLICATION_HTML_FILE = "content/index.html";
+org.silex.core.Silex.PUBLICATION_CSS_FILE = "content/app.css";
 org.silex.core.Silex.LOADER_SCRIPT_PATH = "loader.js";
 org.slplayer.component.navigation.LinkBase.__meta__ = { obj : { tagNameFilter : ["a"]}};
 org.slplayer.component.navigation.LinkBase.CONFIG_PAGE_NAME_ATTR = "href";
