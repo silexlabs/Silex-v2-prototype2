@@ -1615,14 +1615,14 @@ org.slplayer.component.ui.DisplayObject.prototype = {
 }
 org.silex = {}
 org.silex.component = {}
-org.silex.component.MenuManager = function(rootElement,SLPId) {
+org.silex.component.LoginPopup = function(rootElement,SLPId) {
 	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
 	rootElement.addEventListener("click",$bind(this,this.onClick),false);
 };
-$hxClasses["org.silex.component.MenuManager"] = org.silex.component.MenuManager;
-org.silex.component.MenuManager.__name__ = ["org","silex","component","MenuManager"];
-org.silex.component.MenuManager.__super__ = org.slplayer.component.ui.DisplayObject;
-org.silex.component.MenuManager.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
+$hxClasses["org.silex.component.LoginPopup"] = org.silex.component.LoginPopup;
+org.silex.component.LoginPopup.__name__ = ["org","silex","component","LoginPopup"];
+org.silex.component.LoginPopup.__super__ = org.slplayer.component.ui.DisplayObject;
+org.silex.component.LoginPopup.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
 	onClick: function(e) {
 		var target = e.target;
 		if(target.nodeName.toLowerCase() != "a" || target.getAttribute("href") == "") throw "The menu items are expectted to be A tags with href set to the page name. (" + target.nodeName + ", " + target.getAttribute("href") + ")";
@@ -1633,6 +1633,29 @@ org.silex.component.MenuManager.prototype = $extend(org.slplayer.component.ui.Di
 			console.log("now login");
 			break;
 		}
+	}
+	,childrenArray: null
+	,__class__: org.silex.component.LoginPopup
+});
+org.silex.component.MenuManager = function(rootElement,SLPId) {
+	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
+	rootElement.addEventListener("click",$bind(this,this.onClick),false);
+};
+$hxClasses["org.silex.component.MenuManager"] = org.silex.component.MenuManager;
+org.silex.component.MenuManager.__name__ = ["org","silex","component","MenuManager"];
+org.silex.component.MenuManager.__super__ = org.slplayer.component.ui.DisplayObject;
+org.silex.component.MenuManager.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
+	onClick: function(e) {
+		var target = e.target;
+		if(target.href == "") throw "The menu items are expectted to be A tags with href set to the page name. (" + target.nodeName + ", " + target.href + ")";
+		var menuPageName = HxOverrides.substr(target.href,1,null);
+		console.log("Menu event " + menuPageName);
+		switch(menuPageName) {
+		case "item-login":
+			console.log("now login");
+			break;
+		}
+		"return false;";
 	}
 	,childrenArray: null
 	,__class__: org.silex.component.MenuManager
@@ -2137,6 +2160,8 @@ org.slplayer.core.Application.prototype = {
 		this.registerComponent("org.slplayer.component.sound.SoundOn");
 		org.silex.component.MenuManager;
 		this.registerComponent("org.silex.component.MenuManager");
+		org.silex.component.LoginPopup;
+		this.registerComponent("org.silex.component.LoginPopup");
 		org.slplayer.component.navigation.Page;
 		this.registerComponent("org.slplayer.component.navigation.Page");
 	}
@@ -2301,6 +2326,8 @@ haxe.Template.expr_int = new EReg("^[0-9]+$","");
 haxe.Template.expr_float = new EReg("^([+-]?)(?=\\d|,\\d)\\d*(,\\d*)?([Ee]([+-]?\\d+))?$","");
 haxe.Template.globals = { };
 js.Lib.onerror = null;
+org.silex.component.LoginPopup.__meta__ = { obj : { tagNameFilter : ["div"]}};
+org.silex.component.MenuManager.__meta__ = { obj : { tagNameFilter : ["a"]}};
 org.silex.core.Silex.CONFIG_PUBLICATION_NAME = "publicationName";
 org.silex.core.Silex.CONFIG_PUBLICATION_BODY = "publicationBody";
 org.silex.core.Silex.PUBLICATIONS_FOLDER = "publications/";
