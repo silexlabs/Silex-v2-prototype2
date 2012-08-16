@@ -17,8 +17,22 @@
 	z-index: 30;
 	display: inline-block;
 }
+.popup-foreground input{
+	width: 250px;
+}
+.popup-foreground p{
+	margin:0px;
+	padding:0px;
+	text-align: left;
+}
+.popup-foreground div{
+	border-left-style: none;
+}
 .menu-item-disabled{
 	color: grey !important;
+}
+.error-text{
+	color: darkred;
 }
 
 

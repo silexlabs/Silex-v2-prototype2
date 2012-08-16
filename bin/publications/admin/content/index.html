@@ -82,11 +82,12 @@
 		<A class="Page" name="login-popup"></A>
 		<A class="Page" name="login-pending"></A>
 		<div class="Layer login-popup popup-foreground LoginPopup">
-			<div><input></input></div>
-			<div><input></input></div>
+			<p>Login</p><p><input type="text" class="input-field-login"></input></p>
+			<p>Password</p><p><input type="text" class="input-field-pass"></input></p>
 			<div>
-				<a href="#login-pending" class="LinkToPage"><button>Ok</button></a>
+				<button class="ok-button">Ok</button>
 				<a href="#login-popup" class="LinkClosePage"><button>Cancel</button></a>
+				<p class="error-text"></p>
 			</div>
 		</div>
 		<div class="Layer login-pending popup-foreground">

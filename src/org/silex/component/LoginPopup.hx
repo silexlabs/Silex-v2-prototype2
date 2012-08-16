@@ -4,6 +4,8 @@ import js.Lib;
 import js.Dom;
 
 import org.slplayer.component.ui.DisplayObject;
+import org.slplayer.component.transition.TransitionData;
+import org.slplayer.component.navigation.LinkToPage;
 import org.slplayer.util.DomTools;
 
 /**
@@ -12,7 +14,7 @@ import org.slplayer.util.DomTools;
  * &gt;div class="LoginPopup login-popup"&lt;
  */
 @tagNameFilter("div")
-class LoginPopup extends DisplayObject
+class LoginPopup extends LinkToPage
 {
 	/**
 	 * array used to store all the children while the layer is hided
@@ -24,26 +26,47 @@ class LoginPopup extends DisplayObject
 	 */
 	public function new(rootElement:HtmlDom, SLPId:String){
 		super(rootElement, SLPId);
-		rootElement.addEventListener("click", onClick, false);
+//		rootElement.addEventListener("click", onClick, false);
 	}
 	/**
 	 * Handle click on submit button
 	 */
-	public function onClick(e:Event) {
+	override public function onClick(e:Event) {
 		// retrieve the node who triggered the event
 		var target:HtmlDom = cast(e.target);
-		// it is supposed to be a A tag
-		if (target.nodeName.toLowerCase() != "a" || target.getAttribute("href")==""){
-			throw("The menu items are expectted to be A tags with href set to the page name. ("+target.nodeName+", "+ target.getAttribute("href")+")");
-		}
-		// retrieve the page name from the href attribute, without the "#"
-		var menuPageName = target.getAttribute("href").substr(1);
-		trace("Menu event "+menuPageName);
+		// it is supposed to have ok-button in its class name
+		if (DomTools.hasClass(target, "ok-button")){
+			// get login
+			//var inputElements:HtmlCollection<HtmlDom> = rootElement.getElementsByClassName("input-field-login");
+			var inputElements:HtmlCollection<HtmlDom> = rootElement.getElementsByClassName("input-field-login");
+//	trace(inputElements.length + " - ");
+//	DomTools.inspectTrace(rootElement);
+			if(inputElements.length<1)
+				throw("Could not find the input field for login. It is expected to have input-field-login as a css class name.");
+			var login = cast(inputElements[0]).value;
 
-		// take an action depending on the menu name
-		switch (menuPageName) {
-			case "item-login":
-				trace ("now login");
+			// get pass
+			var inputElements:HtmlCollection<HtmlDom> = rootElement.getElementsByClassName("input-field-pass");
+			if(inputElements.length<1)
+				throw("Could not find the input field for password. It is expected to have input-field-pass as a css class name.");
+			var pass = cast(inputElements[0]).value;
+
+			// 
+			if (login == "" || pass == ""){
+				trace("Pass or login emty");
+				onLoginError("All fields are required.");
+			}
+			else{
+				linkToPagesWithName("login-pending");
+				haxe.Timer.delay(callback(onLoginError, "Network error"),2000);
+			}
+		}
+	}
+	private function onLoginError(msg:String){
+		linkToPagesWithName("login-popup");
+		var inputElements:HtmlCollection<HtmlDom> = rootElement.getElementsByClassName("error-text");
+		if(inputElements.length>0){
+			inputElements[0].innerHTML = msg;
 		}
 	}
 }
