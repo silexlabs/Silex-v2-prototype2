@@ -4,8 +4,52 @@
 		"selected_items":
 		[
 			[
+				"bor",
+				"border	border-left-style: style"
+			],
+			[
+				"trans",
+				"transitionData"
+			],
+			[
+				"Html",
+				"HtmlDom	js.Dom"
+			],
+			[
+				"inp",
+				"inputElements"
+			],
+			[
+				"Butt",
+				"Button	js.Dom"
+			],
+			[
+				"mar",
+				"margin	margin: all"
+			],
+			[
+				"in",
+				"input	Tag"
+			],
+			[
+				"ba",
+				"background	background-color: rgb"
+			],
+			[
+				"menu",
+				"menuPageName	var"
+			],
+			[
 				"Dom",
-				"DomTools"
+				"HtmlDom	js.Dom"
+			],
+			[
+				"w",
+				"window"
+			],
+			[
+				"visi",
+				"visibility"
 			],
 			[
 				"String",
@@ -120,10 +164,6 @@
 				"properties"
 			],
 			[
-				"ba",
-				"background	background-color: transparent"
-			],
-			[
 				"class",
 				"className"
 			],
@@ -180,17 +220,27 @@
 	},
 	"file_history":
 	[
+		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/LinkBase.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/component/MenuManager.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/Layer.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/core/Silex.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/loader.js",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/readme.txt",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/build.hxml",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/admin/content/app.css",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/component/LoginDialog.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/index.html",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/admin/content/index.html",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/test1/content/app.css",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/test1/content/index.html",
+		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/util/DomTools.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/LinkClosePage.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/LinkToContext.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/transition/TransitionBase.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/demo/using_navigation/build.hxml",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/build.hxml",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/core/Silex.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/core/Application.hx",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/loader.js",
-		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/util/DomTools.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/index.php",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/test1/content/index.html",
 		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/Page.hx",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/index.html",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/index.html",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/SLPlayer/src/org/slplayer/component/navigation/Page.hx",
 		"/usr/lib/haxe/std/haxe/macro/Context.hx",
@@ -205,7 +255,6 @@
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/components/Page.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/libs/silex/silex.php/index.php",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/index.php",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/readme.txt",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/index.php",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/index.html",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/build.hxml",
@@ -248,6 +297,22 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Login",
+			"popup",
+			"transitionData",
+			"<div>",
+			"getElementsByTagName",
+			"LinkToPage",
+			"PUBLICATION_HTML_FILE",
+			"PUBLICATION_CSS_FILE",
+			"head",
+			"script",
+			"style",
+			"initialPageName",
+			"Display",
+			"display",
+			"Display",
+			"none",
 			"tra",
 			"trace",
 			"file_get_contents",

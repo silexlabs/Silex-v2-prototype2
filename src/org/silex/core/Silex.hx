@@ -10,7 +10,6 @@ import js.Dom;
 
 import org.slplayer.core.Application;
 import org.slplayer.util.DomTools;
-import org.slplayer.component.navigation.Page;
 #if SilexClientSide
 #end
 
@@ -38,18 +37,6 @@ class Silex {
 	 * constant, name of attribute
 	 */
 	public static inline var CONFIG_PUBLICATION_BODY:String = "publicationBody";
-	/**
-	 * constant, path and file names
-	 */
-	public static inline var PUBLICATIONS_FOLDER:String = "publications/";
-	/**
-	 * constant, path and file names
-	 */
-	public static inline var PUBLICATION_HTML_FILE:String = "content/index.html";
-	/**
-	 * constant, path and file names
-	 */
-	public static inline var PUBLICATION_CSS_FILE:String = "content/app.css";
 	/**
 	 * constant, path and file names
 	 */
@@ -85,7 +72,7 @@ class Silex {
 	 * Init Silex app
 	 */
 	static public function init(unused:Dynamic=null){
-
+ici, utiliser Publication::loadDocument()
 	#if flash
 		// init the document with non empty body, workaround see  https://github.com/silexlabs/Cocktail/issues/208
 		//Lib.document.innerHTML = "<html><head></head><body></body></html>";

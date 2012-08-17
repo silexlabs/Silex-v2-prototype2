@@ -1,0 +1,98 @@
+<html>
+	<HEAD>
+		<META http-equiv="Content-Type" content="text/html; charset=UTF-8"></META> 
+		<META name="initialPageName" content="start-page"></META>
+		<!-- plugins -->
+		<!-- info -->
+		<title>Hello Silex!</title>
+		<meta name="description" content="Silex online editor" />
+		<meta name="keywords" content="HTML,CSS,website editor" />
+		<meta name="author" content="lexoyo" />
+		<meta name="revised" content="lexoyo, 29/08/2011" />
+		<!-- config -->
+		<meta name="type" content="publication" /> <!-- or theme, utility -->
+		<meta name="state" content="public" /> <!-- or private, trashed -->
+	</HEAD>
+	<body>
+		<!-- Menu -->
+		<A class="Page" name="start-page">Page 1</A>
+		<UL class="menu MenuManager">
+			<!-- Menu FILE -->
+			<LI class="main"><A href="#sub-menu1" class="LinkToPage">File</A><A class="Page" name="sub-menu1"></A>
+				<DIV class="container-sub">
+					<UL class="Layer sub-menu1 sub">
+						<LI><A href="#open-dialog" class="LinkToPage">Open</A></LI>
+						<LI><A href="#toolbox" class="menu-item-disabled">Save</A></LI>
+						<LI><A href="#toolbox" class="menu-item-disabled">Save As</A></LI>
+					</UL>
+				</DIV>
+		   </LI>
+			<!-- Menu EDITION -->
+			<LI class="main"><A href="#sub-menu2" class="LinkToPage">Edit</A><A class="Page" name="sub-menu2"></A>
+				<DIV class="container-sub">
+					<UL class="Layer sub-menu2 sub">
+						<LI><A href="#toolbox" class="menu-item-disabled">Cut</A></LI>
+						<LI><A href="#toolbox" class="menu-item-disabled">Copy</A></LI>
+						<LI><A href="#toolbox" class="menu-item-disabled">Paste</A></LI>
+						<LI><A href="#toolbox" class="menu-item-disabled">Select All</A></LI>
+					</UL>
+				</DIV>
+		   </LI>
+			<!-- Menu INSERT -->
+			<LI class="main"><A href="#sub-menu4" class="LinkToPage">Insert</A><A class="Page" name="sub-menu4"></A>
+				<DIV class="container-sub">
+					<UL class="Layer sub-menu4 sub-menu4-1 sub">
+						<LI><A href="#toolbox" class="menu-item-disabled">Snippet</A></LI>
+						<LI><A href="#sub-menu4-1" class="LinkToPage">Image &gt;</A></LI>
+						<LI><A href="#toolbox" class="menu-item-disabled">Table</A></LI>
+					</UL>
+					<A class="Page" name="sub-menu4-1"></A>
+					<UL class="Layer sub-menu4-1 sub sub-of-sub">
+						<LI><A href="#toolbox" class="menu-item-disabled">From File</A></LI>
+						<LI><A href="#toolbox" class="menu-item-disabled">From URL</A></LI>
+						<LI><A href="#toolbox" class="menu-item-disabled">From Picassa</A></LI>
+					</UL>
+				</DIV>
+		   </LI>
+			<!-- Menu HELP -->
+			<LI class="main"><A href="#sub-menu5" class="LinkToPage">Help</A><A class="Page" name="sub-menu5"></A>
+				<DIV class="container-sub">
+					<UL class="Layer sub-menu5 sub-menu5-1 sub">
+						<LI><A href="#welcome" class="menu-item-disabled">Welcome page</A></LI>
+						<LI><A href="#sub-menu5-1" class="LinkToPage">Account &gt;</A></LI>
+						<LI><A href="#about" class="menu-item-disabled">About</A></LI>
+					</UL>
+					<A class="Page" name="sub-menu5-1"></A>
+					<UL class="Layer sub-menu5-1 sub sub-of-sub">
+						<LI><A href="#item-logout" class="menu-item-disabled">Logout</A></LI>
+						<LI><A href="#login-dialog" class="LinkToPage" target="_top">Login</A></LI>
+						<LI><A href="#item-chpwd" class="menu-item-disabled">Change password</A></LI>
+						<LI><A href="#item-users" class="menu-item-disabled">Manage Users</A></LI>
+					</UL>
+				</DIV>
+		   </LI>
+		</UL>
+		<!-- Dialogs -->
+		<!-- Login Dialog -->
+		<A class="Page" name="login-dialog"></A>
+		<A class="Page" name="login-pending"></A>
+		<div class="Layer login-dialog dialog-foreground LoginDialog">
+			<p>Login</p><p><input type="text" class="input-field-login"></input></p>
+			<p>Password</p><p><input type="text" class="input-field-pass"></input></p>
+			<div>
+				<button class="ok-button">Ok</button>
+				<a href="#login-dialog" class="LinkClosePage"><button>Cancel</button></a>
+				<p class="error-text"></p>
+			</div>
+		</div>
+		<!-- Open Dialog -->
+		<A class="Page" name="open-dialog"></A>
+		<div class="Layer open-dialog dialog-foreground OpenDialog">
+		</div>
+		<div class="Layer login-pending dialog-foreground">
+			Please wait...
+		</div>
+		<!-- dialog background -->
+		<div class="Layer dialog-background login-pending login-dialog"></div>
+	</body>
+</html>

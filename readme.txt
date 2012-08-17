@@ -5,7 +5,10 @@
   * init the document with non empty body, workaround see  https://github.com/silexlabs/Cocktail/issues/208
   * memory leak in the Layer and transition classes
 * transitions with params on the Layer as well as on the link
-* contexts with multiple class names
+* contexts with multiple class names ==== merge the concepts of Context and Page (=> State, State.setState(contextName, stateName))
+* rename
+  - Page into State
+  - Layer into Container
 * components
   * transition alpha
 * ?no conditional compilation in class Silex (client version)

@@ -1714,15 +1714,15 @@ org.slplayer.component.navigation.LinkToPage.prototype = $extend(org.slplayer.co
 });
 org.silex = {}
 org.silex.component = {}
-org.silex.component.LoginPopup = function(rootElement,SLPId) {
+org.silex.component.LoginDialog = function(rootElement,SLPId) {
 	org.slplayer.component.navigation.LinkToPage.call(this,rootElement,SLPId);
 };
-$hxClasses["org.silex.component.LoginPopup"] = org.silex.component.LoginPopup;
-org.silex.component.LoginPopup.__name__ = ["org","silex","component","LoginPopup"];
-org.silex.component.LoginPopup.__super__ = org.slplayer.component.navigation.LinkToPage;
-org.silex.component.LoginPopup.prototype = $extend(org.slplayer.component.navigation.LinkToPage.prototype,{
+$hxClasses["org.silex.component.LoginDialog"] = org.silex.component.LoginDialog;
+org.silex.component.LoginDialog.__name__ = ["org","silex","component","LoginDialog"];
+org.silex.component.LoginDialog.__super__ = org.slplayer.component.navigation.LinkToPage;
+org.silex.component.LoginDialog.prototype = $extend(org.slplayer.component.navigation.LinkToPage.prototype,{
 	onLoginError: function(msg) {
-		this.linkToPagesWithName("login-popup");
+		this.linkToPagesWithName("login-dialog");
 		var inputElements = this.rootElement.getElementsByClassName("error-text");
 		if(inputElements.length > 0) inputElements[0].innerHTML = msg;
 	}
@@ -1736,7 +1736,7 @@ org.silex.component.LoginPopup.prototype = $extend(org.slplayer.component.naviga
 			if(inputElements1.length < 1) throw "Could not find the input field for password. It is expected to have input-field-pass as a css class name.";
 			var pass = inputElements1[0].value;
 			if(login == "" || pass == "") {
-				haxe.Log.trace("Pass or login emty",{ fileName : "LoginPopup.hx", lineNumber : 56, className : "org.silex.component.LoginPopup", methodName : "onClick"});
+				haxe.Log.trace("Pass or login emty",{ fileName : "LoginDialog.hx", lineNumber : 56, className : "org.silex.component.LoginDialog", methodName : "onClick"});
 				this.onLoginError("All fields are required.");
 			} else {
 				this.linkToPagesWithName("login-pending");
@@ -1749,7 +1749,7 @@ org.silex.component.LoginPopup.prototype = $extend(org.slplayer.component.naviga
 		}
 	}
 	,childrenArray: null
-	,__class__: org.silex.component.LoginPopup
+	,__class__: org.silex.component.LoginDialog
 });
 org.silex.component.MenuManager = function(rootElement,SLPId) {
 	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
@@ -2212,6 +2212,8 @@ org.slplayer.core.Application.prototype = {
 		this.registerComponent("org.slplayer.component.navigation.Layer");
 		org.slplayer.component.navigation.LinkClosePage;
 		this.registerComponent("org.slplayer.component.navigation.LinkClosePage");
+		org.silex.component.LoginDialog;
+		this.registerComponent("org.silex.component.LoginDialog");
 		org.slplayer.component.navigation.LinkToPage;
 		this.registerComponent("org.slplayer.component.navigation.LinkToPage");
 		org.slplayer.component.sound.SoundOff;
@@ -2220,8 +2222,6 @@ org.slplayer.core.Application.prototype = {
 		this.registerComponent("org.slplayer.component.sound.SoundOn");
 		org.silex.component.MenuManager;
 		this.registerComponent("org.silex.component.MenuManager");
-		org.silex.component.LoginPopup;
-		this.registerComponent("org.silex.component.LoginPopup");
 		org.slplayer.component.navigation.Page;
 		this.registerComponent("org.slplayer.component.navigation.Page");
 	}
@@ -2395,7 +2395,7 @@ org.slplayer.component.navigation.LinkBase.CONFIG_TRANSITION_DELAY = "data-trans
 org.slplayer.component.navigation.LinkBase.CONFIG_TRANSITION_IS_REVERSED = "data-transition-is-reversed";
 org.slplayer.component.navigation.LinkToPage.__meta__ = { obj : { tagNameFilter : ["a"]}};
 org.slplayer.component.navigation.LinkToPage.CONFIG_TARGET_IS_POPUP = "_top";
-org.silex.component.LoginPopup.__meta__ = { obj : { tagNameFilter : ["div"]}};
+org.silex.component.LoginDialog.__meta__ = { obj : { tagNameFilter : ["div"]}};
 org.silex.component.MenuManager.__meta__ = { obj : { tagNameFilter : ["a"]}};
 org.silex.core.Silex.CONFIG_PUBLICATION_NAME = "publicationName";
 org.silex.core.Silex.CONFIG_PUBLICATION_BODY = "publicationBody";

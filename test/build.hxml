@@ -1,9 +1,9 @@
--php config/test.php
+-php bin/test.php
 -cp ../src/
 -cp ../../SLPlayer/src/
 -cp ../../Cocktail/src/
 --remap js:cocktail
--main config.Test
+-main AllTestsServer
 -D SilexServerSide
 -lib utest
 
