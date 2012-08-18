@@ -98,4 +98,14 @@ class TestServer {
 				Assert.equals(TEST_HTML, File.getContent("../publication-data/test-rename/index.html"));
 		}
 	}
-}
+	public function testGetPublications():Void{
+		publicationService.getPublications();
+		// browse all publications 
+		//Assert.isTrue(FileSystem.exists("../publication-data/test-rename/index.html"));
+	}
+	public function testEmptyTrash():Void{
+		publicationService.emptyTrash();
+		// browse all publications and check their state
+		//Assert.isTrue(FileSystem.exists("../publication-data/test-rename/index.html"));
+	}
+/**/}

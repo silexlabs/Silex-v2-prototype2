@@ -60,28 +60,33 @@ class TestServer {
 			File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "server-config-tmp.xml.php")
 		);
 	}
+/**/
 	//////////////////////////////////////////////////////////////////
 	public function testPublicationConfigManagerRead():Void
 	{
 		var config = new PublicationConfigManager(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config.xml.php");
+		trace(config.publicationConfig);
 
-		Assert.equals(TEST_PUBLICATION_CONFIG, config.publicationConfig);
-/*
-		Assert.equals(Private, config.publicationConfig.publicationState);
-		Assert.equals("silexlabs", config.publicationConfig.owner);
-		Assert.equals("test publication config", config.publicationConfig.publicationState);
-*/
+		Assert.equals(TEST_PUBLICATION_CONFIG.name, config.publicationConfig.name);
+		Assert.equals(TEST_PUBLICATION_CONFIG.publicationFolder, config.publicationConfig.publicationFolder);
+		Assert.equals(TEST_PUBLICATION_CONFIG.state, config.publicationConfig.state);
+		Assert.equals(TEST_PUBLICATION_CONFIG.creation.author, config.publicationConfig.creation.author);
+		Assert.equals(TEST_PUBLICATION_CONFIG.creation.date.getTime(), config.publicationConfig.creation.date.getTime());
+		Assert.equals(TEST_PUBLICATION_CONFIG.lastChange.author, config.publicationConfig.lastChange.author);
+		Assert.equals(TEST_PUBLICATION_CONFIG.lastChange.date.getTime(), config.publicationConfig.lastChange.date.getTime());
 	}
+/**/
 	public function testPublicationConfigManagerWrite():Void
 	{
-		var config = new PublicationConfigManager(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config-write.xml.php");
+		var config = new PublicationConfigManager(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config.xml.php");
 		config.publicationConfig = TEST_PUBLICATION_CONFIG;
 		config.saveData(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config-tmp.xml.php");
 
 		Assert.equals(
-			File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config-write.xml.php"), 
+			File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config.xml.php"), 
 			File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config-tmp.xml.php")
 		);
 	}
 	//////////////////////////////////////////////////////////////////
+/**/
 }

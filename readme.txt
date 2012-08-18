@@ -1,5 +1,9 @@
 ** To do **
 
+continuer à debuguer test unitaires serveur
+meme chose client
+remettre sur pieds la classe Silex
+
 * bugs
   * workaround, bug https://github.com/silexlabs/Cocktail/issues/207
   * init the document with non empty body, workaround see  https://github.com/silexlabs/Cocktail/issues/208

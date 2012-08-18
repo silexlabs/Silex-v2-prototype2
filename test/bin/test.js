@@ -2029,6 +2029,13 @@ js.Lib.setErrorHandler = function(f) {
 }
 var org = org || {}
 if(!org.silex) org.silex = {}
+if(!org.silex.publication) org.silex.publication = {}
+org.silex.publication.PublicationState = $hxClasses["org.silex.publication.PublicationState"] = { __ename__ : ["org","silex","publication","PublicationState"], __constructs__ : ["Trashed","Published","Private"] }
+org.silex.publication.PublicationState.Trashed = function(data) { var $x = ["Trashed",0,data]; $x.__enum__ = org.silex.publication.PublicationState; $x.toString = $estr; return $x; }
+org.silex.publication.PublicationState.Published = function(data) { var $x = ["Published",1,data]; $x.__enum__ = org.silex.publication.PublicationState; $x.toString = $estr; return $x; }
+org.silex.publication.PublicationState.Private = ["Private",2];
+org.silex.publication.PublicationState.Private.toString = $estr;
+org.silex.publication.PublicationState.Private.__enum__ = org.silex.publication.PublicationState;
 if(!org.silex.service) org.silex.service = {}
 org.silex.service.ServiceBase = $hxClasses["org.silex.service.ServiceBase"] = function(serviceName,gatewayUrl) {
 	if(gatewayUrl == null) gatewayUrl = "./";
@@ -2045,10 +2052,8 @@ org.silex.service.ServiceBase.prototype = {
 	,serviceName: null
 	,__class__: org.silex.service.ServiceBase
 }
-if(!org.silex.publication) org.silex.publication = {}
 org.silex.publication.PublicationService = $hxClasses["org.silex.publication.PublicationService"] = function(publicationFolder,gatewayUrl) {
 	if(gatewayUrl == null) gatewayUrl = "./";
-	if(publicationFolder == null) publicationFolder = "publications/";
 	org.silex.service.ServiceBase.call(this,"publicationService",gatewayUrl);
 	this.publicationFolder = publicationFolder;
 };
@@ -3906,9 +3911,6 @@ haxe.Unserializer.CODES = null;
 js.Lib.onerror = null;
 org.silex.service.ServiceBase.DEFAULT_GATEWAY_URL = "./";
 org.silex.publication.PublicationService.SERVICE_NAME = "publicationService";
-org.silex.publication.PublicationService.DEFAULT_PUBLICATION_FOLDER = "publications/";
-org.silex.publication.PublicationService.PUBLICATION_HTML_FILE = "index.html";
-org.silex.publication.PublicationService.PUBLICATION_CSS_FILE = "styles/app.css";
 publication.TestClient.THIS_TEST_PATH = "publication-data/";
 publication.TestClient.TEST_HTML = "<HTML>\n\t<HEAD>\n\t</HEAD>\n\t<BODY>\n\t\tTest Publication\n\t</BODY>\n</HTML>";
 utest.TestHandler.POLLING_TIME = 10;

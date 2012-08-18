@@ -21,7 +21,7 @@ class AllTestsServer {
 	public static function main(){
         var runner = new Runner();
 
-        runner.addCase(new config.TestServer());
+       runner.addCase(new config.TestServer());
         runner.addCase(new publication.TestServer());
 
 	    // handle remoting, this entry point can be a gateway 

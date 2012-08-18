@@ -1,5 +1,7 @@
 package org.silex.config;
 
+import haxe.xml.Fast;
+
 /**
  * This class is in charge of loading and storing the configuration data of the Silex server
  */
@@ -25,38 +27,25 @@ class ServerConfigManager extends ConfigBase{
 	 * Virtual method implemented by the derived classes
 	 * This method is automatically called by Config::loadData
 	 */
-	override public function xmlToConfData(xml:Xml){
-		// take the first level nodes
-		var children = xml.firstChild().elements();
-		// browse the node
-		for (child in children){
-			// check the node name and get the config value
-			switch(child.nodeName){
-				case "defaultPublication":
-					defaultPublication = child.firstChild().nodeValue;
-				default:
-					trace("Warning: unknown config tag "+child);
-			}
-		}
+	override public function xmlToConfData(xml:Fast){
+		if(xml.hasNode.defaultPublication)
+			defaultPublication = xml.node.defaultPublication.innerData;
+		else
+			trace("Warning: missing defaultPublication in config file ");
 	}
 	/**
 	 * Convert the structured config data to XML data
 	 * Virtual method implemented by the derived classes
 	 * This method is used by Config::saveData
-	 * @param 	xml 	XML object with a root node and security comments 
+	 * @param 	xml 	Fast XML object with a root node and security comments 
 	 */
-	override public function confDataToXml(xml:Xml):Xml{
+	override public function confDataToXml(xml:Fast):Fast{
 		// array to store all config nodes
-		var configNodes:Array<Xml> = new Array();
+		var node:Xml = xml.x.firstChild();
 		// add one node per config data
-		configNodes.push(Xml.parse("
+		node.addChild(Xml.parse("
 			<defaultPublication>"+defaultPublication+"</defaultPublication>
 "));
-		// add all nodes to the XML data
-		for (node in configNodes){
-			trace("add node "+node);
-			xml.firstChild().addChild(node);
-		}
 		return xml;
 	}
 }

@@ -1,6 +1,7 @@
 package org.silex.config;
 
 import php.io.File;
+import haxe.xml.Fast;
 
 /**
  * This class is in charge of loading and storing the configuration data of the Silex server
@@ -30,16 +31,16 @@ class ConfigBase{
 	 * Virtual method implemented by the derived classes
 	 * This method is automatically called by Config::loadData
 	 */
-	public function xmlToConfData(xml:Xml){
+	public function xmlToConfData(xml:Fast){
 		throw("This virtual method has to be implemented in the derived class");
 	}
 	/**
 	 * Convert the structured config data to XML data
 	 * Virtual method implemented by the derived classes
 	 * This method is used by Config::saveData
-	 * @param 	xml 	XML object with a root node and security comments 
+	 * @param 	xml 	Fast XML object with a root node and security comments 
 	 */
-	public function confDataToXml(xml:Xml):Xml{
+	public function confDataToXml(xml:Fast):Fast{
 		throw("This virtual method has to be implemented in the derived class");
 		return xml;
 	}
@@ -49,7 +50,7 @@ class ConfigBase{
 	 */
 	public function loadData(configFile:String){
 		// load and parse XML data
-		var xml:Xml = Xml.parse(File.getContent(configFile));
+		var xml:Fast = new Fast(Xml.parse(File.getContent(configFile)).firstElement());
 		// call the xmlToConfData
 		xmlToConfData(xml); 
 	}
@@ -58,8 +59,8 @@ class ConfigBase{
 	 * Use confDataToXml virtual method implemented by the derived classes
 	 */
 	public function saveData(configFile:String){
-		var xml = Xml.parse(SECURITY_STRING);
+		var xml = new Fast(Xml.parse(SECURITY_STRING));
 
-		File.saveContent(configFile, confDataToXml(xml).toString());
+		File.saveContent(configFile, confDataToXml(xml).innerHTML);
 	}
 }
