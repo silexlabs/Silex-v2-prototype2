@@ -38,7 +38,6 @@ class TestServer {
 </xml>';
 */
 	public static inline var TEST_PUBLICATION_CONFIG:PublicationConfig = {
-		name : "test publication config",
 		publicationFolder : "", 
 		state : Private,
 		creation : {author : "silexlabs", date : Date.fromString("2021-12-02")}, 
@@ -65,9 +64,8 @@ class TestServer {
 	public function testPublicationConfigManagerRead():Void
 	{
 		var config = new PublicationConfigManager(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config.xml.php");
-		trace(config.publicationConfig);
+		//trace(config.publicationConfig);
 
-		Assert.equals(TEST_PUBLICATION_CONFIG.name, config.publicationConfig.name);
 		Assert.equals(TEST_PUBLICATION_CONFIG.publicationFolder, config.publicationConfig.publicationFolder);
 		Assert.equals(TEST_PUBLICATION_CONFIG.state, config.publicationConfig.state);
 		Assert.equals(TEST_PUBLICATION_CONFIG.creation.author, config.publicationConfig.creation.author);

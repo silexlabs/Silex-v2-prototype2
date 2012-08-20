@@ -2,6 +2,7 @@ package publication;
 
 import org.silex.publication.PublicationService;
 import org.silex.publication.PublicationData;
+import org.silex.util.FileSystemTools;
 
 import js.Dom;
 
@@ -35,7 +36,6 @@ class TestServer {
 		html : TEST_HTML,
 		css: TEST_CSS,
 		publicationConfig: {
-			name : "test publication config",
 			publicationFolder : "", 
 			state : Private,
 			creation : {
@@ -68,44 +68,64 @@ class TestServer {
 
 		publicationService.setPublicationData("test-write", TEST_PUBLICATION_DATA, AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH);
 		
-		Assert.equals(TEST_HTML, File.getContent("../publication-data/test-write/index.html"));
+		Assert.equals(TEST_HTML, File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-write/index.html"));
 	}
-	public function testCreate():Void{
+	public function testCreateAndTrash():Void{
+		if (FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-create/"))
+			FileSystemTools.recursiveDelete(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-create/");
+
 		publicationService.create("test-create", TEST_PUBLICATION_DATA, AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH);
 		
-		Assert.equals(TEST_HTML, File.getContent("../publication-data/test-create/index.html"));
-	}
-	public function testTrash():Void{
-		if (FileSystem.exists("../publication-data/test-create/index.html")){
+		Assert.equals(TEST_HTML, File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-create/index.html"));
+
+		if (FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-create/index.html")){
 			publicationService.trash("test-create", AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH);
-			
-			Assert.isFalse(FileSystem.exists("../publication-data/test-create/index.html"));
+
+			Assert.isFalse(File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-create/conf/config.xml.php").indexOf("Trashed")==-1);
 		}
+
+		// empty trash
+		publicationService.emptyTrash(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH);
+		Assert.isFalse(FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-create/"));
 	}
-	public function testDuplicate():Void{
+	public function testDuplicateAndRename():Void{
+		// remove existing folder
+		if (FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-duplicate/"))
+			FileSystemTools.recursiveDelete(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-duplicate/");
+
 		publicationService.duplicate("test-read", "test-duplicate", AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH);
 		
-		Assert.isTrue(FileSystem.exists("../publication-data/test-duplicate/index.html"));
-		if (FileSystem.exists("../publication-data/test-duplicate/index.html"))
-			Assert.equals(TEST_HTML, File.getContent("../publication-data/test-duplicate/index.html"));
-	}
-	public function testRename():Void{
-		if (FileSystem.exists("../publication-data/test-duplicate/index.html")){
+		Assert.isTrue(FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-duplicate/index.html"));
+		if (FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-duplicate/index.html"))
+			Assert.equals(TEST_HTML, File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-duplicate/index.html"));
+
+		if (FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-duplicate/index.html")){
+			// remove existing folder
+			if (FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-rename/"))
+				FileSystemTools.recursiveDelete(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-rename/");
+
 			publicationService.rename("test-duplicate", "test-rename", AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH);
 
-			Assert.isTrue(FileSystem.exists("../publication-data/test-rename/index.html"));
-			if (FileSystem.exists("../publication-data/test-rename/index.html"))
-				Assert.equals(TEST_HTML, File.getContent("../publication-data/test-rename/index.html"));
+			Assert.isTrue(FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-rename/index.html"));
+			if (FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-rename/index.html"))
+				Assert.equals(TEST_HTML, File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-rename/index.html"));
 		}
 	}
 	public function testGetPublications():Void{
-		publicationService.getPublications();
+		var publicationArray:Array<PublicationConfig> = publicationService.getPublications([Private], AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH);
 		// browse all publications 
-		//Assert.isTrue(FileSystem.exists("../publication-data/test-rename/index.html"));
+		for (publicationConfig in publicationArray){
+			Assert.isFalse(File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + publicationConfig.publicationFolder + "conf/config.xml.php").indexOf("Private")==-1);
+		}
+		var publicationArray:Array<PublicationConfig> = publicationService.getPublications([Trashed(null)], AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH);
+		// browse all publications 
+		for (publicationConfig in publicationArray){
+			Assert.isFalse(File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + publicationConfig.publicationFolder + "conf/config.xml.php").indexOf("Trashed")==-1);
+		}
+		var publicationArray:Array<PublicationConfig> = publicationService.getPublications([Published(null)], AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH);
+		// browse all publications 
+		for (publicationConfig in publicationArray){
+			Assert.isFalse(File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + publicationConfig.publicationFolder + "conf/config.xml.php").indexOf("Published")==-1);
+		}
 	}
-	public function testEmptyTrash():Void{
-		publicationService.emptyTrash();
-		// browse all publications and check their state
-		//Assert.isTrue(FileSystem.exists("../publication-data/test-rename/index.html"));
-	}
-/**/}
+}

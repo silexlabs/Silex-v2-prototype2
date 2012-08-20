@@ -1,7 +1,9 @@
 ** To do **
 
 continuer à debuguer test unitaires serveur
+dans publication data, name doit etre le nom du rep de la publication (ne pas le mettre dans le fichier de conf et le mettre dans PublicationData plutot que PublicaitonConfig)
 meme chose client
+deplacer config/PublicationConfig dans publication et pareil pour ServerConfig
 remettre sur pieds la classe Silex
 
 * bugs

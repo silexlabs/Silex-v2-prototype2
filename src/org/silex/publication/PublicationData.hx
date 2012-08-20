@@ -51,11 +51,7 @@ typedef ChangeData = {
  */
 typedef PublicationConfig = {
 	/**
-	 * the name of the publication
-	 */
-	var name:String;
-	/**
-	 * folder where publication is stored
+	 * the name of the publication, which is also the folder where publication is stored
 	 */
 	var publicationFolder:String;
 	/**

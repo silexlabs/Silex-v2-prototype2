@@ -60,7 +60,6 @@ class ConfigBase{
 	 */
 	public function saveData(configFile:String){
 		var xml = new Fast(Xml.parse(SECURITY_STRING));
-
 		File.saveContent(configFile, confDataToXml(xml).innerHTML);
 	}
 }

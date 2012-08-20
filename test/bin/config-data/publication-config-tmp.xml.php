@@ -7,7 +7,6 @@
 		?>
 	-->
 <state>Private</state>
-<name>test publication config</name>
 <publicationFolder/>
 <creation>
 	<author>silexlabs</author>

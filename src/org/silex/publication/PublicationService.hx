@@ -11,6 +11,7 @@ import js.Dom;
 
 #if SilexServerSide
 import org.silex.config.PublicationConfigManager;
+import org.silex.util.FileSystemTools;
 import haxe.remoting.Context;
 import sys.io.File;
 import sys.FileSystem;
@@ -70,16 +71,56 @@ class PublicationService extends ServiceBase{
 	}
 	/**
 	 * List available publication matching a state
+	 * For the states enum use like Published(null) to have all Published publications
 	 */
-	public function getPublications(publicationState:Null<PublicationState> = null, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
-		throw("not implemented");
+	public function getPublications(publicationStates:Null<Array<PublicationState>> = null, 
+		publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER):Array<PublicationConfig> {
+		// browse all folders in the publications directory
+		var files:Array<String> = FileSystem.readDirectory(publicationFolder);
+		// keep only the folders and the publication with the desired states
+		var publicationArray:Array<PublicationConfig> = new Array();
+		for(name in files){
+			var path = publicationFolder + name + "/";
+			if (FileSystem.isDirectory(path)){
+				var publicationConfig = getPublicationConfig(name, publicationFolder);
+				// correct the path?
+				if (publicationConfig.publicationFolder != path){
+					trace("Warning, config of the publication "+name+" is wrong: publicationFolder is "+publicationConfig.publicationFolder+" but should be "+path);
+					publicationConfig.publicationFolder = path;
+				}
+				// if no filter is provided, add anyway
+				if (publicationStates == null || publicationStates.length == 0){
+					publicationArray.push(publicationConfig);
+				}
+				else{
+					// filter
+					switch (publicationConfig.state) {
+						case Private:
+							if (Lambda.has(publicationStates, Private))
+								publicationArray.push(publicationConfig);
+						case Trashed(data):
+							if (Lambda.has(publicationStates, Trashed(null)))
+								publicationArray.push(publicationConfig);
+						case Published(data):
+							if (Lambda.has(publicationStates, Published(null)))
+								publicationArray.push(publicationConfig);
+					}
+				}
+			}
+		}
+		return publicationArray;
 	}
 	/**
 	 * Empty trash, i.e. browse all publications and check their state, then permanently delete the ones with the state Trashed
 	 * @param	PublicationState 	use this parameter to filter the publications which are being deleted, e.g. by user or state 
 	 */
-	public function emptyTrash(publicationState:Null<PublicationState> = null, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
-		throw("not implemented");
+	public function emptyTrash(publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
+		// get all publications with a state "Trashed"
+		var publicationArray:Array<PublicationConfig> = getPublications([Trashed(null)], publicationFolder);
+		// browse all publications
+		for (publicationConfig in publicationArray){
+			FileSystemTools.recursiveDelete(publicationConfig.publicationFolder);
+		}
 	}
 	/**
 	 * Create a publication given a raw HTML string
@@ -87,7 +128,7 @@ class PublicationService extends ServiceBase{
 	public function create(publicationName:String, publicationData:PublicationData, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
 		try{
 			// update with actual date and author
-			publicationData.publicationConfig.publicationFolder = publicationFolder;
+			publicationData.publicationConfig.publicationFolder = publicationFolder + publicationName + "/";
 			publicationData.publicationConfig.state = Private;
 			publicationData.publicationConfig.creation.author = "to do this author";
 			publicationData.publicationConfig.creation.date = Date.now();
@@ -95,6 +136,8 @@ class PublicationService extends ServiceBase{
 
 			// create the empty directory for the publication
 			FileSystem.createDirectory(publicationFolder+publicationName);
+			// create other empty directories
+			FileSystem.createDirectory(publicationFolder+publicationName+"/"+PublicationConfigManager.PUBLICATION_CONFIG_FOLDER);
 			// set the publication data
 			setPublicationData(publicationName, publicationData, publicationFolder);
 		}
@@ -130,7 +173,7 @@ class PublicationService extends ServiceBase{
 			create(publicationName, publicationData, publicationFolder);
 
 			// permanently delete this publication
-			FileSystem.deleteDirectory(publicationFolder+publicationName);
+			FileSystemTools.recursiveDelete(publicationFolder+srcPublicationName);
 		}
 		catch(e:Dynamic){
 			throw(e);
@@ -164,7 +207,7 @@ class PublicationService extends ServiceBase{
 		}
 	}
 	/**
-	 * Retrieve a publication raw HTML string
+	 * Retrieve a publication raw HTML/CSS string and the config
 	 * TODO: handle the case where the publication does not exist
 	 */
 	public function getPublicationData(publicationName:String, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER):Null<PublicationData> {
@@ -202,7 +245,7 @@ class PublicationService extends ServiceBase{
 	 */
 	public function getPublicationConfig(publicationName:String, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER):PublicationConfig {
 		try{
-			var config = new PublicationConfigManager(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_CONFIG_FILE);
+			var config = new PublicationConfigManager(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_CONFIG_FOLDER + "/" + PublicationConfigManager.PUBLICATION_CONFIG_FILE);
 			return config.publicationConfig;
 		}
 		catch(e:Dynamic){
@@ -215,14 +258,14 @@ class PublicationService extends ServiceBase{
 	 */
 	public function setPublicationConfig(publicationName:String, publicationConfig:PublicationConfig, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
 		try{
-			var config = new PublicationConfigManager(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_CONFIG_FILE);
+			var config = new PublicationConfigManager();
 			config.publicationConfig = {
-				name : publicationConfig.name,
-				publicationFolder : publicationConfig.publicationFolder, 
+				publicationFolder : publicationFolder + publicationName + "/", 
 				state : publicationConfig.state,
 				creation : publicationConfig.creation, 
 				lastChange : publicationConfig.lastChange
 			}
+			config.saveData(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_CONFIG_FOLDER + "/" + PublicationConfigManager.PUBLICATION_CONFIG_FILE);
 		}
 		catch(e:Dynamic){
 			throw(e);

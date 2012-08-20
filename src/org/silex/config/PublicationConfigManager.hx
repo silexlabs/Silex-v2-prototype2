@@ -23,7 +23,11 @@ class PublicationConfigManager extends ConfigBase{
 	/**
 	 * constant, path and file names
 	 */
-	public static inline var PUBLICATION_CONFIG_FILE:String = "conf/config.xml.php";
+	public static inline var PUBLICATION_CONFIG_FOLDER:String = "conf/";
+	/**
+	 * constant, path and file names
+	 */
+	public static inline var PUBLICATION_CONFIG_FILE:String = "config.xml.php";
 	/**
 	 * The the publication data
 	 * This is the public information for the publications
@@ -35,7 +39,6 @@ class PublicationConfigManager extends ConfigBase{
 	 */
 	public function new(configFile:String = null){
 		publicationConfig = {
-			name : "",
 			publicationFolder : "", 
 			state : Private,
 			creation : {
@@ -55,12 +58,6 @@ class PublicationConfigManager extends ConfigBase{
 	 * This method is automatically called by Config::loadData
 	 */
 	override public function xmlToConfData(xml:Fast){
-		trace("xmlToConfData ");
-
-		if(xml.hasNode.name)
-			publicationConfig.name = xml.node.name.innerData;
-		else
-			trace("Warning: missing name in config file ");
 
 		if(xml.hasNode.creation)
 			publicationConfig.creation = getChangeDataFromXML(xml.node.creation);
@@ -112,8 +109,6 @@ class PublicationConfigManager extends ConfigBase{
 	 * @example 		<state author="silexlabs" date="2021-12-01">Trashed</state> would return {author:"silexlabs", date:5487454}
 	 */
 	private function getChangeDataFromXML(xml:Fast):ChangeData{
-		trace("getChangeDataFromXML "+xml);
-
 		// Get the author
 		var author:String = ""; 
 		if(xml.hasNode.author)
@@ -147,16 +142,23 @@ class PublicationConfigManager extends ConfigBase{
 	 * @param 	xml 	Fast XML object with a root node and security comments 
 	 */
 	override public function confDataToXml(xml:Fast):Fast{
-		trace("confDataToXml "+xml);
 		// array to store all config nodes
 		var node:Xml = xml.x.firstChild();
 		// add one node per config data
-		node.addChild(Xml.parse("
-			<state>"+publicationConfig.state+"</state>
+		switch (publicationConfig.state) {
+			case Private:
+				node.addChild(Xml.parse("
+			<state>Private</state>
 "));
-		node.addChild(Xml.parse("
-			<name>"+publicationConfig.name+"</name>
+			case Trashed(changeData):
+				node.addChild(Xml.parse("
+			<state author=\""+changeData.author+"\" date=\""+changeData.date.toString()+"\" >Trashed</state>
 "));
+			case Published(changeData):
+				node.addChild(Xml.parse("
+			<state author=\""+changeData.author+"\" date=\""+changeData.date.toString()+"\" >Published</state>
+"));
+		}
 		node.addChild(Xml.parse("
 			<publicationFolder>"+publicationConfig.publicationFolder+"</publicationFolder>
 "));
