@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"creA",
+				"createAsyncCallback"
+			],
+			[
+				"rea",
+				"readyState"
+			],
+			[
+				"X",
+				"XMLHttpRequest	class"
+			],
+			[
+				"D",
+				"Dynamic	class"
+			],
+			[
 				"Fil",
 				"FileSystemTools	class"
 			],
@@ -271,6 +287,46 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "publication/TestClient.hx",
+			"settings":
+			{
+				"buffer_size": 7374,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "build.hxml",
+			"settings":
+			{
+				"buffer_size": 381,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationService.hx",
+			"settings":
+			{
+				"buffer_size": 10776,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "AllTestsClient.hx",
+			"settings":
+			{
+				"buffer_size": 672,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "publication/TestServer.hx",
+			"settings":
+			{
+				"buffer_size": 5785,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "Packages/HaXe/Hxml.sublime-build",
 	"command_palette":
@@ -300,6 +356,7 @@
 	},
 	"file_history":
 	[
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/test/publication/TestServer.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/test/config/TestServer.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/readme.txt",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/util/FileSystemTools.hx",
@@ -314,7 +371,6 @@
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/test/bin/publication-data/test-read/conf/config.xml.php",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/test/build.hxml",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/test/AllTestsServer.hx",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/test/publication/TestServer.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/test/bin/publication-data/test-create/app.css",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/test/bin/publication-data/test-create/index.html",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/test/util/ServerTest.hx",
@@ -384,7 +440,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 93.0,
 		"where_history":
 		[
 		]
@@ -394,6 +450,17 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"createAsync",
+			"createEvent",
+			"emptyTrash",
+			"conf",
+			"file_get_contents",
+			"trash(",
+			"TEST_CSS",
+			"response",
+			", AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH",
+			"getPublicationData",
+			"onResultReadRawHtml",
 			"rando",
 			"getPublications",
 			"publicationFolder",
@@ -510,18 +577,7 @@
 			"root\nroot\n\nroot",
 			"root\nroot\n\n",
 			"ds",
-			"company",
-			"conta",
-			"displayName\n",
-			"createLayer",
-			"refresh",
-			"'",
-			"style.",
-			"style=\"::li_style::\"",
-			"top",
-			"public var ",
-			"layer",
-			"parentId:Id = "
+			"company"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -543,8 +599,147 @@
 	"groups":
 	[
 		{
+			"selected": 4,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "publication/TestClient.hx",
+					"settings":
+					{
+						"buffer_size": 7374,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3714,
+								3714
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2159.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "build.hxml",
+					"settings":
+					{
+						"buffer_size": 381,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								334,
+								334
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HaXe/Hxml.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationService.hx",
+					"settings":
+					{
+						"buffer_size": 10776,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2417,
+								2417
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 935.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "AllTestsClient.hx",
+					"settings":
+					{
+						"buffer_size": 672,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								543,
+								543
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "publication/TestServer.hx",
+					"settings":
+					{
+						"buffer_size": 5785,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3541,
+								3541
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1405.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],

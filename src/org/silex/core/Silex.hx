@@ -13,6 +13,8 @@ import org.slplayer.util.DomTools;
 
 import org.slplayer.component.navigation.Page;
 
+import org.silex.publication.PublicationService;
+
 #if SilexClientSide
 #end
 
@@ -41,6 +43,10 @@ class Silex {
 	 */
 	public static inline var CONFIG_PUBLICATION_BODY:String = "publicationBody";
 	/**
+	 * constant, name of attribute
+	 */
+	public static inline var CONFIG_USE_DEEPLINK:String = "useDeeplink";
+	/**
 	 * constant, path and file names
 	 */
 	public static inline var LOADER_SCRIPT_PATH:String = "loader.js";
@@ -62,25 +68,18 @@ class Silex {
 	 */
 	static public function main() {
 		// workaround, bug https://github.com/silexlabs/Cocktail/issues/207
-/**/
-	#if js
-		Lib.window.onload = init;
-	#else
-		init();
-	#end
-/**/		
-//		init();
+		#if js
+			Lib.window.onload = init;
+		#else
+			init();
+		#end
 	}
 	/**
 	 * Init Silex app
 	 */
 	static public function init(unused:Dynamic=null){
 
-ici, utiliser Publication::loadDocument()
-
 	#if flash
-		// init the document with non empty body, workaround see  https://github.com/silexlabs/Cocktail/issues/208
-		//Lib.document.innerHTML = "<html><head></head><body></body></html>";
 		// retrieve config data from flashvars, add all flashvars to the meta
 		var params:Dynamic<String> = flash.Lib.current.loaderInfo.parameters;
 		for (paramName in Reflect.fields(params)){
@@ -88,8 +87,8 @@ ici, utiliser Publication::loadDocument()
 		}
 	#else
 		// retrieve initialPageName
-		// hash is the page name after the # in the URL
-		if (Lib.window.location.hash != ""){
+		if (Lib.window.location.hash != "" && DomTools.getMeta(CONFIG_USE_DEEPLINK)!="false"){
+			// hash is the page name after the # in the URL
 			var initialPageName = Lib.window.location.hash.substr(1);
 			// set initial page 
 			DomTools.setMeta(Page.CONFIG_INITIAL_PAGE_NAME, initialPageName);
@@ -157,9 +156,13 @@ ici, utiliser Publication::loadDocument()
 			initialPageName = params[1];
 		}
 		// Load HTML data
-		var htmlContent:String = File.getContent(PUBLICATIONS_FOLDER + publicationName + "/" + PUBLICATION_HTML_FILE);
-		//Lib.document.innerHTML = "<html><head></head><body><p>test</p></body></html>";
-		Lib.document.innerHTML = htmlContent;
+		var publicationData = PublicationService.getPublicationData(publicationName);
+
+		// build the DOM
+		Lib.document.innerHTML = publicationData.html;
+
+		// include the script
+		DomTools.addCssRules(publicationData.css);
 
 		// Add meta tags in the head section for CONFIG_INITIAL_PAGE_NAME and CONFIG_PUBLICATION_NAME
 		DomTools.setMeta(CONFIG_PUBLICATION_NAME, publicationName);
@@ -168,15 +171,11 @@ ici, utiliser Publication::loadDocument()
 		DomTools.setMeta(CONFIG_PUBLICATION_BODY, StringTools.htmlEscape(Lib.document.body.innerHTML));
 
 		// set initial page 
-		if (initialPageName != "")
+		if (initialPageName != "" && DomTools.getMeta(CONFIG_USE_DEEPLINK)!="false")
 				DomTools.setMeta(Page.CONFIG_INITIAL_PAGE_NAME, initialPageName);
 
 		// add loader script
-		var node = Lib.document.createElement("script");
-		node.setAttribute("src", LOADER_SCRIPT_PATH);
-		
-		var head = Lib.document.getElementsByTagName("head")[0];
-		head.appendChild(node);
+		DomTools.embedScript(LOADER_SCRIPT_PATH);
 
 		// add the app.css style sheet
 		// TODO: add the style sheet in a style tag directly in the html page
