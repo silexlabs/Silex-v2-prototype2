@@ -13,6 +13,10 @@ class AllTestsClient {
 	 */
 	public static inline var TEST_ROOT_PATH:String = "../";
 	/**
+	 * the server side gateway of silex
+	 */
+	public static inline var GATEWAY_URL:String = "./test.php/";
+	/**
 	 * Main entry point for the tests
 	 * Add new tests here
 	 */

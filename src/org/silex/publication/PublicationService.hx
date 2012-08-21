@@ -40,28 +40,44 @@ class PublicationService extends ServiceBase{
 		this.publicationFolder = publicationFolder;
 	}
 	/**
-	 * Retrieve a publication raw HTML string
-	 */
-	public function getRawHtml(publicationName:String, onResult:String->Void, onError:String->Void=null) {
-		// make the call
-		callServerMethod("getRawHtml", [publicationName, publicationFolder], onResult, onError);
-	}
-	/**
-	 * Set a publication raw HTML string
-	 */
-	public function setRawHtml(publicationName:String, rawHtml:String, onResult:Void->Void, onError:String->Void=null) {
-		// make the call
-		callServerMethod("setRawHtml", [publicationName, rawHtml, publicationFolder], onResult, onError);
-	}
-	/**
 	 * Retrieve a publication data
 	 */
-/*	public function getPublicationData(publicationName:String, onResult:PublicationData->Void, onError:String->Void=null) {
+	public function getPublicationData(publicationName:String, onResult:PublicationData->Void, onError:String->Void=null) {
 		// make the call
 		callServerMethod("getPublicationData", [publicationName, publicationFolder], onResult, onError);
 	}
-/**/
+	/**
+	 * Set the publication data
+	 */
+	public function setPublicationData(publicationName:String, publicationData:PublicationData, onResult:Void->Void, onError:String->Void=null) {
+		// make the call
+		callServerMethod("setPublicationData", [publicationName, publicationData, publicationFolder], onResult, onError);
+	}
+	/**
+	 * Create a publication given a publication data structure
+	 */
+	public function create(publicationName:String, publicationData:PublicationData, onResult:Void->Void, onError:String->Void=null) {
+		// make the call
+		callServerMethod("create", [publicationName, publicationData, publicationFolder], onResult, onError);
+	}
+	/**
+	 * Move a publication to trash
+	 */
+	public function trash(publicationName:String, onResult:Void->Void, onError:String->Void=null) {
+		// make the call
+		callServerMethod("trash", [publicationName, publicationFolder], onResult, onError);
+	}
+	/**
+	 * Empty trash, i.e. browse all publications and check their state, then permanently delete the ones with the state Trashed
+	 */
+	public function emptyTrash(onResult:Void->Void, onError:String->Void=null) {
+		// make the call
+		callServerMethod("emptyTrash", [publicationFolder], onResult, onError);
+	}
 #end
+
+//////////////////////////////////////////////////////////////////////////////////////////	
+
 #if SilexServerSide
 	/**
 	 * Constructor
@@ -112,7 +128,6 @@ class PublicationService extends ServiceBase{
 	}
 	/**
 	 * Empty trash, i.e. browse all publications and check their state, then permanently delete the ones with the state Trashed
-	 * @param	PublicationState 	use this parameter to filter the publications which are being deleted, e.g. by user or state 
 	 */
 	public function emptyTrash(publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
 		// get all publications with a state "Trashed"
@@ -123,7 +138,7 @@ class PublicationService extends ServiceBase{
 		}
 	}
 	/**
-	 * Create a publication given a raw HTML string
+	 * Create a publication given a publication data structure
 	 */
 	public function create(publicationName:String, publicationData:PublicationData, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
 		try{
@@ -245,7 +260,7 @@ class PublicationService extends ServiceBase{
 	 */
 	public function getPublicationConfig(publicationName:String, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER):PublicationConfig {
 		try{
-			var config = new PublicationConfigManager(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_CONFIG_FOLDER + "/" + PublicationConfigManager.PUBLICATION_CONFIG_FILE);
+			var config = new PublicationConfigManager(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_CONFIG_FOLDER + PublicationConfigManager.PUBLICATION_CONFIG_FILE);
 			return config.publicationConfig;
 		}
 		catch(e:Dynamic){
