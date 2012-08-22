@@ -22,7 +22,7 @@ import org.silex.publication.PublicationService;
 import php.Web;
 import sys.io.File;
 
-import org.silex.config.ServerConfigManager;
+import org.silex.core.ServerConfig;
 #end
 
 //////////////////////////////////////////////////
@@ -128,7 +128,7 @@ class Silex {
 	 */
 	static public function main() {
 		// load server config
-		var serverConfigManager = new ServerConfigManager();
+		var serverConfig = new ServerConfig();
 
 		// Retrieve the publication name from the URL
 		var urlParamsString:String = Web.getParamsString();
@@ -139,7 +139,7 @@ class Silex {
 		publicationName = params[0];
 		// default value
 		if (publicationName == ""){
-			publicationName = serverConfigManager.defaultPublication;
+			publicationName = serverConfig.defaultPublication;
 		}
 
 		var initialPageName = "";
@@ -188,26 +188,4 @@ class Silex {
 		php.Lib.print(Lib.document.innerHTML);
 	}
 #end
-
-	/**
-	 * Load Silex config from HTML head/meta tags
-	 * Store the config in the static config object
-	 */
-/*	static public function loadConfig(document:Document):Hash<String>{
-		var res:Hash<String> = new Hash();
-
-		// retrieve all config tags (the meta tags)
-		var metaTags:HtmlCollection<HtmlDom> = document.getElementsByTagName("meta");
-
-		// for each config element, store the name/value pair
-		for (idxNode in 0...metaTags.length){
-			var node = metaTags[idxNode];
-			var configName = node.getAttribute("name");
-			var configValue = node.getAttribute("content");
-			if (configName!=null && configValue!=null)
-				res.set(configName, configValue);
-		}
-		return res;
-	}
-*/
 }

@@ -1,8 +1,5 @@
 ** To do **
 
-ajout de owner à publicationConfig
-meme chose client
-deplacer config/PublicationConfig dans publication et pareil pour ServerConfig
 remettre sur pieds la classe Silex
 dans PublicationData, charger tous les .css? ou tout ce qui est dans style/?
 

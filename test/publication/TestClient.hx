@@ -33,7 +33,7 @@ class TestClient {
 		html : TEST_HTML,
 		css: TEST_CSS,
 	};
-	public static inline var TEST_PUBLICATION_CONFIG:PublicationConfig = {
+	public static inline var TEST_PUBLICATION_CONFIG:PublicationConfigData = {
 		state : Private,
 		creation : {
 			author : "silexlabs", 
@@ -189,7 +189,7 @@ class TestClient {
 	public function testGetPublications():Void{
 		publicationService.getPublications([Private], cast(Assert.createEvent(onResultGetPublications)));
 	}
-	private function onResultGetPublications(publications:Hash<PublicationConfig>):Void{
+	private function onResultGetPublications(publications:Hash<PublicationConfigData>):Void{
 		if (publications != null){
 			// browse all publications 
 			for (publicationName in publications.keys()){

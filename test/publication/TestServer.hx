@@ -36,7 +36,7 @@ class TestServer {
 		html : TEST_HTML,
 		css: TEST_CSS,
 	};
-	public static inline var TEST_PUBLICATION_CONFIG:PublicationConfig = {
+	public static inline var TEST_PUBLICATION_CONFIG:PublicationConfigData = {
 		state : Private,
 		creation : {
 			author : "silexlabs", 
@@ -112,17 +112,17 @@ class TestServer {
 		}
 	}
 	public function testGetPublications():Void{
-		var publications:Hash<PublicationConfig> = publicationService.getPublications([Private], AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH);
+		var publications:Hash<PublicationConfigData> = publicationService.getPublications([Private], AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH);
 		// browse all publications 
 		for (publicationName in publications.keys()){
 			Assert.isFalse(File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + publicationName + "/conf/config.xml.php").indexOf("Private")==-1);
 		}
-		var publications:Hash<PublicationConfig> = publicationService.getPublications([Trashed(null)], AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH);
+		var publications:Hash<PublicationConfigData> = publicationService.getPublications([Trashed(null)], AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH);
 		// browse all publications 
 		for (publicationName in publications.keys()){
 			Assert.isFalse(File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + publicationName + "/conf/config.xml.php").indexOf("Trashed")==-1);
 		}
-		var publications:Hash<PublicationConfig> = publicationService.getPublications([Published(null)], AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH);
+		var publications:Hash<PublicationConfigData> = publicationService.getPublications([Published(null)], AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH);
 		// browse all publications 
 		for (publicationName in publications.keys()){
 			Assert.isFalse(File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + publicationName + "/conf/config.xml.php").indexOf("Published")==-1);

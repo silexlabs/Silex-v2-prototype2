@@ -1,11 +1,13 @@
-package org.silex.config;
+package org.silex.core;
 
 import haxe.xml.Fast;
+
+import org.silex.config.ConfigBase;
 
 /**
  * This class is in charge of loading and storing the configuration data of the Silex server
  */
-class ServerConfigManager extends ConfigBase{
+class ServerConfig extends ConfigBase{
 	/**
 	 * Default path for the config file
 	 */

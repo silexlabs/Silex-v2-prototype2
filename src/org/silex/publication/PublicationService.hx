@@ -10,7 +10,8 @@ import js.Dom;
 #end
 
 #if SilexServerSide
-import org.silex.config.PublicationConfigManager;
+import org.silex.publication.PublicationConfig;
+import org.silex.publication.PublicationData;
 import org.silex.util.FileSystemTools;
 import haxe.remoting.Context;
 import sys.io.File;
@@ -87,7 +88,7 @@ class PublicationService extends ServiceBase{
 	 * For the states enum use like Published(null) to have all Published publications
 	 */
 	public function getPublications(publicationStates:Null<Array<PublicationState>> = null, 
-		onResult:Hash<PublicationConfig>->Void, onError:String->Void=null) {
+		onResult:Hash<PublicationConfigData>->Void, onError:String->Void=null) {
 		callServerMethod("getPublications", [publicationStates, publicationFolder], onResult, onError);
 	}
 #end
@@ -107,31 +108,31 @@ class PublicationService extends ServiceBase{
 	 * @return 	Hash with the publications names as key and the publications config as value
 	 */
 	public function getPublications(publicationStates:Null<Array<PublicationState>> = null, 
-		publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER):Hash<PublicationConfig> {
+		publicationFolder:String = PublicationConfig.DEFAULT_PUBLICATION_FOLDER):Hash<PublicationConfigData> {
 		// browse all folders in the publications directory
 		var files:Array<String> = FileSystem.readDirectory(publicationFolder);
 		// keep only the folders and the publication with the desired states
-		var publications:Hash<PublicationConfig> = new Hash();
+		var publications:Hash<PublicationConfigData> = new Hash();
 		for(name in files){
 			var path = publicationFolder + name + "/";
 			if (FileSystem.isDirectory(path)){
-				var publicationConfig = getPublicationConfig(name, publicationFolder);
+				var configData = getPublicationConfig(name, publicationFolder);
 				// if no filter is provided, add anyway
 				if (publicationStates == null || publicationStates.length == 0){
-					publications.set(name, publicationConfig);
+					publications.set(name, configData);
 				}
 				else{
 					// filter
-					switch (publicationConfig.state) {
+					switch (configData.state) {
 						case Private:
 							if (Lambda.has(publicationStates, Private))
-								publications.set(name, publicationConfig);
+								publications.set(name, configData);
 						case Trashed(data):
 							if (Lambda.has(publicationStates, Trashed(null)))
-								publications.set(name, publicationConfig);
+								publications.set(name, configData);
 						case Published(data):
 							if (Lambda.has(publicationStates, Published(null)))
-								publications.set(name, publicationConfig);
+								publications.set(name, configData);
 					}
 				}
 			}
@@ -141,9 +142,9 @@ class PublicationService extends ServiceBase{
 	/**
 	 * Empty trash, i.e. browse all publications and check their state, then permanently delete the ones with the state Trashed
 	 */
-	public function emptyTrash(publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
+	public function emptyTrash(publicationFolder:String = PublicationConfig.DEFAULT_PUBLICATION_FOLDER) {
 		// get all publications with a state "Trashed"
-		var publications:Hash<PublicationConfig> = getPublications([Trashed(null)], publicationFolder);
+		var publications:Hash<PublicationConfigData> = getPublications([Trashed(null)], publicationFolder);
 		// browse all publications
 		for (publicationName in publications.keys()){
 			FileSystemTools.recursiveDelete(publicationFolder + publicationName + "/");
@@ -152,10 +153,10 @@ class PublicationService extends ServiceBase{
 	/**
 	 * Create a publication given a publication data structure
 	 */
-	public function create(publicationName:String, publicationData:PublicationData, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
+	public function create(publicationName:String, publicationData:PublicationData, publicationFolder:String = PublicationConfig.DEFAULT_PUBLICATION_FOLDER) {
 		try{
 			// update with actual date and author
-			var publicationConfig:PublicationConfig = {
+			var configData:PublicationConfigData = {
 				state : Private,
 				creation : {
 					author : "silexlabs", 
@@ -169,9 +170,9 @@ class PublicationService extends ServiceBase{
 			// create the empty directory for the publication
 			FileSystem.createDirectory(publicationFolder + publicationName);
 			// create other empty directories
-			FileSystem.createDirectory(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_CONFIG_FOLDER);
+			FileSystem.createDirectory(publicationFolder + publicationName + "/" + PublicationConfig.PUBLICATION_CONFIG_FOLDER);
 			// set the publication config
-			setPublicationConfig(publicationName, publicationConfig, publicationFolder);
+			setPublicationConfig(publicationName, configData, publicationFolder);
 			// set the publication data
 			setPublicationData(publicationName, publicationData, publicationFolder);
 		}
@@ -182,7 +183,7 @@ class PublicationService extends ServiceBase{
 	/**
 	 * Duplicate an existing publication
 	 */
-	public function duplicate(srcPublicationName:String, publicationName:String, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
+	public function duplicate(srcPublicationName:String, publicationName:String, publicationFolder:String = PublicationConfig.DEFAULT_PUBLICATION_FOLDER) {
 		try{
 			// retrieve the application data
 			var publicationData:PublicationData = getPublicationData(srcPublicationName, publicationFolder);
@@ -198,7 +199,7 @@ class PublicationService extends ServiceBase{
 	 * Rename an existing publication
 	 * todo: handle empty names, security, same names, creation errors
 	 */
-	public function rename(srcPublicationName:String, publicationName:String, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
+	public function rename(srcPublicationName:String, publicationName:String, publicationFolder:String = PublicationConfig.DEFAULT_PUBLICATION_FOLDER) {
 		try{
 			// retrieve the application data
 			var publicationData:PublicationData = getPublicationData(srcPublicationName, publicationFolder);
@@ -217,23 +218,23 @@ class PublicationService extends ServiceBase{
 	 * Delete a publication
 	 * Put it in the trash state
 	 */
-	public function trash(publicationName:String, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
+	public function trash(publicationName:String, publicationFolder:String = PublicationConfig.DEFAULT_PUBLICATION_FOLDER) {
 		try{
 			// set the publication data
-			var publicationConfig = getPublicationConfig(publicationName, publicationFolder);
+			var configData = getPublicationConfig(publicationName, publicationFolder);
 
 			// trash state
-			publicationConfig.state = Trashed({
+			configData.state = Trashed({
 				author: "todo: authors and security",
 				date: Date.now()
 			});
 
 			// update with actual date and author
-			publicationConfig.lastChange.author = "to do this author";
-			publicationConfig.lastChange.date = Date.now();
+			configData.lastChange.author = "to do this author";
+			configData.lastChange.date = Date.now();
 			
 			// set config data
-			setPublicationConfig(publicationName, publicationConfig, publicationFolder);
+			setPublicationConfig(publicationName, configData, publicationFolder);
 
 		}
 		catch(e:Dynamic){
@@ -244,11 +245,10 @@ class PublicationService extends ServiceBase{
 	 * Retrieve a publication raw HTML/CSS string and the config
 	 * TODO: handle the case where the publication does not exist
 	 */
-	public function getPublicationData(publicationName:String, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER):Null<PublicationData> {
+	public function getPublicationData(publicationName:String, publicationFolder:String = PublicationConfig.DEFAULT_PUBLICATION_FOLDER):Null<PublicationData> {
 		try{
-			var html = File.getContent(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_HTML_FILE);
-			var css = File.getContent(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_CSS_FILE);
-			var publicationConfig = getPublicationConfig(publicationName, publicationFolder);
+			var html = File.getContent(publicationFolder + publicationName + "/" + PublicationConfig.PUBLICATION_HTML_FILE);
+			var css = File.getContent(publicationFolder + publicationName + "/" + PublicationConfig.PUBLICATION_CSS_FILE);
 			return {
 				html : html,
 				css: css,
@@ -262,10 +262,10 @@ class PublicationService extends ServiceBase{
 	 * Set a publication raw HTML and css
 	 * TODO: handle the case where the publication does not exist
 	 */
-	public function setPublicationData(publicationName:String, publicationData:PublicationData, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
+	public function setPublicationData(publicationName:String, publicationData:PublicationData, publicationFolder:String = PublicationConfig.DEFAULT_PUBLICATION_FOLDER) {
 		try{
-			File.saveContent(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_HTML_FILE, publicationData.html);
-			File.saveContent(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_CSS_FILE, publicationData.css);
+			File.saveContent(publicationFolder + publicationName + "/" + PublicationConfig.PUBLICATION_HTML_FILE, publicationData.html);
+			File.saveContent(publicationFolder + publicationName + "/" + PublicationConfig.PUBLICATION_CSS_FILE, publicationData.css);
 		}
 		catch(e:Dynamic){
 			throw(e);
@@ -275,10 +275,10 @@ class PublicationService extends ServiceBase{
 	 * Retrieve publication config
 	 * TODO: handle the case where the publication does not exist
 	 */
-	public function getPublicationConfig(publicationName:String, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER):PublicationConfig {
+	public function getPublicationConfig(publicationName:String, publicationFolder:String = PublicationConfig.DEFAULT_PUBLICATION_FOLDER):PublicationConfigData {
 		try{
-			var config = new PublicationConfigManager(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_CONFIG_FOLDER + PublicationConfigManager.PUBLICATION_CONFIG_FILE);
-			return config.publicationConfig;
+			var config = new PublicationConfig(publicationFolder + publicationName + "/" + PublicationConfig.PUBLICATION_CONFIG_FOLDER + PublicationConfig.PUBLICATION_CONFIG_FILE);
+			return config.configData;
 		}
 		catch(e:Dynamic){
 			throw(e);
@@ -288,15 +288,15 @@ class PublicationService extends ServiceBase{
 	 * Update publication config
 	 * TODO: handle the case where the publication does not exist
 	 */
-	public function setPublicationConfig(publicationName:String, publicationConfig:PublicationConfig, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
+	public function setPublicationConfig(publicationName:String, configData:PublicationConfigData, publicationFolder:String = PublicationConfig.DEFAULT_PUBLICATION_FOLDER) {
 		try{
-			var config = new PublicationConfigManager();
-			config.publicationConfig = {
-				state : publicationConfig.state,
-				creation : publicationConfig.creation, 
-				lastChange : publicationConfig.lastChange
+			var config = new PublicationConfig();
+			config.configData = {
+				state : configData.state,
+				creation : configData.creation, 
+				lastChange : configData.lastChange
 			}
-			config.saveData(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_CONFIG_FOLDER + "/" + PublicationConfigManager.PUBLICATION_CONFIG_FILE);
+			config.saveData(publicationFolder + publicationName + "/" + PublicationConfig.PUBLICATION_CONFIG_FOLDER + "/" + PublicationConfig.PUBLICATION_CONFIG_FILE);
 		}
 		catch(e:Dynamic){
 			throw(e);

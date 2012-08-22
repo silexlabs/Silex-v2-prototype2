@@ -1,13 +1,14 @@
-package org.silex.config;
+package org.silex.publication;
 
+import org.silex.config.ConfigBase;
 import org.silex.publication.PublicationData;
 import haxe.xml.Fast;
 
 /**
- * This class is in charge of reading and writing the configuration data 
- * of one given Silex publication
+ * This class is in charge of reading and writing the configuration data of one given Silex publication.
+ * It is only implemented for the server side, use PublicationService to access this from the client side.
  */
-class PublicationConfigManager extends ConfigBase{
+class PublicationConfig extends ConfigBase{
 	/**
 	 * Default folder where publications are stored
 	 */
@@ -32,13 +33,13 @@ class PublicationConfigManager extends ConfigBase{
 	 * The the publication data
 	 * This is the public information for the publications
 	 */
-	public var publicationConfig:PublicationConfig;
+	public var configData:PublicationConfigData;
 	/**
 	 * Constructor
 	 * Load the provided config file
 	 */
 	public function new(configFile:String = null){
-		publicationConfig = {
+		configData = {
 			state : Private,
 			creation : {
 				author : "", 
@@ -59,12 +60,12 @@ class PublicationConfigManager extends ConfigBase{
 	override public function xmlToConfData(xml:Fast){
 
 		if(xml.hasNode.creation)
-			publicationConfig.creation = getChangeDataFromXML(xml.node.creation);
+			configData.creation = getChangeDataFromXML(xml.node.creation);
 		else
 			trace("Warning: missing creation in config file ");
 
 		if(xml.hasNode.lastChange)
-			publicationConfig.lastChange = getChangeDataFromXML(xml.node.lastChange);
+			configData.lastChange = getChangeDataFromXML(xml.node.lastChange);
 		else
 			trace("Warning: missing lastChange in config file ");
 
@@ -72,18 +73,18 @@ class PublicationConfigManager extends ConfigBase{
 			switch(xml.node.state.innerData){
 				case "Trashed":
 					var changeData = getChangeDataFromXML(xml.node.state);
-					publicationConfig.state = Trashed({
+					configData.state = Trashed({
 						author : changeData.author,
 						date : changeData.date
 					});
 				case "Published":
 					var changeData = getChangeDataFromXML(xml.node.state);
-					publicationConfig.state = Published({
+					configData.state = Published({
 						author : changeData.author,
 						date : changeData.date
 					});
 				case "Private":
-					publicationConfig.state = Private;
+					configData.state = Private;
 			}
 		}
 		else
@@ -132,7 +133,7 @@ class PublicationConfigManager extends ConfigBase{
 		// array to store all config nodes
 		var node:Xml = xml.x.firstChild();
 		// add one node per config data
-		switch (publicationConfig.state) {
+		switch (configData.state) {
 			case Private:
 				node.addChild(Xml.parse("
 			<state>Private</state>
@@ -148,14 +149,14 @@ class PublicationConfigManager extends ConfigBase{
 		}
 		node.addChild(Xml.parse("
 <creation>
-	<author>"+publicationConfig.creation.author+"</author>
-	<date>"+publicationConfig.creation.date.toString()+"</date>
+	<author>"+configData.creation.author+"</author>
+	<date>"+configData.creation.date.toString()+"</date>
 </creation>
 "));
 		node.addChild(Xml.parse("
 <lastChange>
-	<author>"+publicationConfig.lastChange.author+"</author>
-	<date>"+publicationConfig.lastChange.date.toString()+"</date>
+	<author>"+configData.lastChange.author+"</author>
+	<date>"+configData.lastChange.date.toString()+"</date>
 </lastChange>
 "));
 

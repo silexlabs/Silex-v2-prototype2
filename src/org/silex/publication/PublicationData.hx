@@ -49,7 +49,7 @@ typedef ChangeData = {
  * Stored in a .xml.php file
  * use PublicationConfigManager::publicationConfig to get the config of a given publication
  */
-typedef PublicationConfig = {
+typedef PublicationConfigData = {
 	/**
 	 * State of the publication
 	 */

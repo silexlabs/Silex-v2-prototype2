@@ -1,7 +1,7 @@
 package config;
 
-import org.silex.config.ServerConfigManager;
-import org.silex.config.PublicationConfigManager;
+import org.silex.core.ServerConfig;
+import org.silex.publication.PublicationConfig;
 import org.silex.publication.PublicationData;
 
 import utest.Assert;
@@ -16,20 +16,20 @@ class TestServer {
 	public function new(){}
 	
 	public static inline var THIS_TEST_PATH:String = "config-data/";
-	public static inline var TEST_PUBLICATION_CONFIG:PublicationConfig = {
+	public static inline var TEST_PUBLICATION_CONFIG:PublicationConfigData = {
 		state : Private,
 		creation : {author : "silexlabs", date : Date.fromString("2021-12-02")}, 
 		lastChange : {author : "silexlabs", date : Date.fromString("2021-12-02")}
 	};
 
-	public function testServerConfigManagerRead():Void
+	public function testServerConfigRead():Void
 	{
-		var config = new ServerConfigManager(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "server-config.xml.php");
+		var config = new ServerConfig(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "server-config.xml.php");
 		Assert.equals("test1", config.defaultPublication);
 	}
-	public function testServerConfigManagerWrite():Void
+	public function testServerConfigWrite():Void
 	{
-		var config = new ServerConfigManager(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "server-config-write.xml.php");
+		var config = new ServerConfig(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "server-config-write.xml.php");
 		config.saveData(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "server-config-tmp.xml.php");
 
 		Assert.equals(
@@ -39,22 +39,21 @@ class TestServer {
 	}
 /**/
 	//////////////////////////////////////////////////////////////////
-	public function testPublicationConfigManagerRead():Void
+	public function testPublicationConfigRead():Void
 	{
-		var config = new PublicationConfigManager(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config.xml.php");
-		//trace(config.publicationConfig);
+		var config = new PublicationConfig(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config.xml.php");
 
-		Assert.equals(TEST_PUBLICATION_CONFIG.state, config.publicationConfig.state);
-		Assert.equals(TEST_PUBLICATION_CONFIG.creation.author, config.publicationConfig.creation.author);
-		Assert.equals(TEST_PUBLICATION_CONFIG.creation.date.getTime(), config.publicationConfig.creation.date.getTime());
-		Assert.equals(TEST_PUBLICATION_CONFIG.lastChange.author, config.publicationConfig.lastChange.author);
-		Assert.equals(TEST_PUBLICATION_CONFIG.lastChange.date.getTime(), config.publicationConfig.lastChange.date.getTime());
+		Assert.equals(TEST_PUBLICATION_CONFIG.state, config.configData.state);
+		Assert.equals(TEST_PUBLICATION_CONFIG.creation.author, config.configData.creation.author);
+		Assert.equals(TEST_PUBLICATION_CONFIG.creation.date.getTime(), config.configData.creation.date.getTime());
+		Assert.equals(TEST_PUBLICATION_CONFIG.lastChange.author, config.configData.lastChange.author);
+		Assert.equals(TEST_PUBLICATION_CONFIG.lastChange.date.getTime(), config.configData.lastChange.date.getTime());
 	}
 /**/
-	public function testPublicationConfigManagerWrite():Void
+	public function testPublicationConfigWrite():Void
 	{
-		var config = new PublicationConfigManager(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config.xml.php");
-		config.publicationConfig = TEST_PUBLICATION_CONFIG;
+		var config = new PublicationConfig(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config.xml.php");
+		config.configData = TEST_PUBLICATION_CONFIG;
 		config.saveData(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config-tmp.xml.php");
 
 		Assert.equals(
