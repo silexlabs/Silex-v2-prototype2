@@ -1,10 +1,10 @@
 ** To do **
 
-continuer à debuguer test unitaires serveur
-dans publication data, name doit etre le nom du rep de la publication (ne pas le mettre dans le fichier de conf et le mettre dans PublicationData plutot que PublicaitonConfig)
+ajout de owner à publicationConfig
 meme chose client
 deplacer config/PublicationConfig dans publication et pareil pour ServerConfig
 remettre sur pieds la classe Silex
+dans PublicationData, charger tous les .css? ou tout ce qui est dans style/?
 
 * bugs
   * workaround, bug https://github.com/silexlabs/Cocktail/issues/207

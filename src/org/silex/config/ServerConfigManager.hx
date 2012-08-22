@@ -16,6 +16,11 @@ class ServerConfigManager extends ConfigBase{
 	 */
 	public var defaultPublication:String;
 	/**
+	 * Config data
+	 * Admin user, the one who has installed Silex
+	 */
+	public var admin:String;
+	/**
 	 * Constructor
 	 * Load the provided config file
 	 */
@@ -32,6 +37,11 @@ class ServerConfigManager extends ConfigBase{
 			defaultPublication = xml.node.defaultPublication.innerData;
 		else
 			trace("Warning: missing defaultPublication in config file ");
+
+		if(xml.hasNode.admin)
+			admin = xml.node.admin.innerData;
+		else
+			trace("Warning: missing admin in config file ");
 	}
 	/**
 	 * Convert the structured config data to XML data
@@ -45,6 +55,9 @@ class ServerConfigManager extends ConfigBase{
 		// add one node per config data
 		node.addChild(Xml.parse("
 			<defaultPublication>"+defaultPublication+"</defaultPublication>
+"));
+		node.addChild(Xml.parse("
+			<admin>"+admin+"</admin>
 "));
 		return xml;
 	}

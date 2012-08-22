@@ -7,4 +7,5 @@
 		?>
 	-->
 	<defaultPublication>test1</defaultPublication>
+	<admin>silexlabs</admin>
 </xml>

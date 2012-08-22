@@ -1,0 +1,8 @@
+body{
+	font-family: Verdana, Arial;
+	font-size: 14pt;
+    margin: 0;
+    padding: 0;
+    background-color: grey;
+    overflow: auto;
+}

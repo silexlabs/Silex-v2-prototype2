@@ -16,29 +16,7 @@ class TestServer {
 	public function new(){}
 	
 	public static inline var THIS_TEST_PATH:String = "config-data/";
-/*	public static inline var TEST_PUBLICATION_CONFIG_DATA_XML:String = '<xml>
-	<!--
-		<?php
-			exit("access denied
-	-"."->
-</"."xml>");
-		?>
-	-->
-	<publicationState>Private</publicationState>
-	<name>test publication config</name>
-	<publicationFolder></publicationFolder>
-	<creation>
-		<author>silexlabs</author>
-		<date>12/02/2021</date>
-	</creation>
-	<lastChange>
-		<author>silexlabs</author>
-		<date>12/02/2021</date>
-	</lastChange>
-</xml>';
-*/
 	public static inline var TEST_PUBLICATION_CONFIG:PublicationConfig = {
-		publicationFolder : "", 
 		state : Private,
 		creation : {author : "silexlabs", date : Date.fromString("2021-12-02")}, 
 		lastChange : {author : "silexlabs", date : Date.fromString("2021-12-02")}
@@ -66,7 +44,6 @@ class TestServer {
 		var config = new PublicationConfigManager(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config.xml.php");
 		//trace(config.publicationConfig);
 
-		Assert.equals(TEST_PUBLICATION_CONFIG.publicationFolder, config.publicationConfig.publicationFolder);
 		Assert.equals(TEST_PUBLICATION_CONFIG.state, config.publicationConfig.state);
 		Assert.equals(TEST_PUBLICATION_CONFIG.creation.author, config.publicationConfig.creation.author);
 		Assert.equals(TEST_PUBLICATION_CONFIG.creation.date.getTime(), config.publicationConfig.creation.date.getTime());

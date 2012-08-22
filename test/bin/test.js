@@ -2060,7 +2060,16 @@ org.silex.publication.PublicationService = $hxClasses["org.silex.publication.Pub
 org.silex.publication.PublicationService.__name__ = ["org","silex","publication","PublicationService"];
 org.silex.publication.PublicationService.__super__ = org.silex.service.ServiceBase;
 org.silex.publication.PublicationService.prototype = $extend(org.silex.service.ServiceBase.prototype,{
-	emptyTrash: function(onResult,onError) {
+	getPublications: function(publicationStates,onResult,onError) {
+		this.callServerMethod("getPublications",[publicationStates,this.publicationFolder],onResult,onError);
+	}
+	,rename: function(srcPublicationName,publicationName,onResult,onError) {
+		this.callServerMethod("rename",[srcPublicationName,publicationName,this.publicationFolder],onResult,onError);
+	}
+	,duplicate: function(srcPublicationName,publicationName,onResult,onError) {
+		this.callServerMethod("duplicate",[srcPublicationName,publicationName,this.publicationFolder],onResult,onError);
+	}
+	,emptyTrash: function(onResult,onError) {
 		this.callServerMethod("emptyTrash",[this.publicationFolder],onResult,onError);
 	}
 	,trash: function(publicationName,onResult,onError) {
@@ -2084,40 +2093,66 @@ publication.TestClient = $hxClasses["publication.TestClient"] = function() {
 };
 publication.TestClient.__name__ = ["publication","TestClient"];
 publication.TestClient.prototype = {
-	doEmptyTrash: function() {
-		this.publicationService.emptyTrash(utest.Assert.createAsync($bind(this,this.onResultWriteNoCheck),200),$bind(this,this.onError));
+	onResultGetPublications: function(publications) {
+		if(publications != null) {
+			var $it0 = publications.keys();
+			while( $it0.hasNext() ) {
+				var publicationName = $it0.next();
+				haxe.Log.trace("Publication " + publicationName + " is " + Std.string(publications.get(publicationName).state),{ fileName : "TestClient.hx", lineNumber : 196, className : "publication.TestClient", methodName : "onResultGetPublications"});
+				utest.Assert.same(org.silex.publication.PublicationState.Private,publications.get(publicationName).state,null,null,{ fileName : "TestClient.hx", lineNumber : 197, className : "publication.TestClient", methodName : "onResultGetPublications"});
+			}
+		}
+	}
+	,testGetPublications: function() {
+		this.publicationService.getPublications([org.silex.publication.PublicationState.Private],utest.Assert.createEvent($bind(this,this.onResultGetPublications)));
+	}
+	,doRename: function() {
+		haxe.Log.trace("doRename",{ fileName : "TestClient.hx", lineNumber : 173, className : "publication.TestClient", methodName : "doRename"});
+		this.publicationService.rename("test-duplicate","test-rename",this.createAsyncCallback("publication-data/test-rename/app.css","body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}"),$bind(this,this.onError));
+		haxe.Log.trace("NOW REMOVE THE FOLDER bin/publication-data/test-rename/",{ fileName : "TestClient.hx", lineNumber : 178, className : "publication.TestClient", methodName : "doRename"});
+	}
+	,testDuplicateAndRename: function() {
+		haxe.Log.trace("testDuplicateAndRename",{ fileName : "TestClient.hx", lineNumber : 165, className : "publication.TestClient", methodName : "testDuplicateAndRename"});
+		this.publicationService.duplicate("test-read","test-duplicate",this.createAsyncCallback("publication-data/test-duplicate/app.css","body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}"),$bind(this,this.onError));
+		haxe.Timer.delay($bind(this,this.doRename),500);
+	}
+	,doEmptyTrash: function() {
+		haxe.Log.trace("doEmptyTrash",{ fileName : "TestClient.hx", lineNumber : 156, className : "publication.TestClient", methodName : "doEmptyTrash"});
+		this.publicationService.emptyTrash(utest.Assert.createAsync($bind(this,this.onResultWriteNoCheck),4000),$bind(this,this.onError));
 	}
 	,doTrash: function() {
-		this.publicationService.trash("test-create",utest.Assert.createAsync($bind(this,this.onResultWriteNoCheck),2000),$bind(this,this.onError));
-		haxe.Timer.delay($bind(this,this.doEmptyTrash),200);
+		haxe.Log.trace("doTrash",{ fileName : "TestClient.hx", lineNumber : 148, className : "publication.TestClient", methodName : "doTrash"});
+		this.publicationService.trash("test-create",utest.Assert.createAsync($bind(this,this.onResultWriteNoCheck),4000),$bind(this,this.onError));
+		haxe.Timer.delay($bind(this,this.doEmptyTrash),100);
 	}
 	,testCreateAndTrash: function() {
-		this.publicationService.create("test-create",{ html : "<HTML>\n\t<HEAD>\n\t</HEAD>\n\t<BODY>\n\t\tTest Publication\n\t</BODY>\n</HTML>", css : "body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}", publicationConfig : { publicationFolder : "", state : org.silex.publication.PublicationState.Private, creation : { author : "silexlabs", date : HxOverrides.strDate("2021-12-02")}, lastChange : { author : "silexlabs", date : HxOverrides.strDate("2021-12-02")}}},this.createAsyncCallback("publication-data/test-create/app.css","body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}"),$bind(this,this.onError));
-		haxe.Timer.delay($bind(this,this.doTrash),200);
+		haxe.Log.trace("testCreateAndTrash",{ fileName : "TestClient.hx", lineNumber : 140, className : "publication.TestClient", methodName : "testCreateAndTrash"});
+		this.publicationService.create("test-create",{ html : "<HTML>\n\t<HEAD>\n\t</HEAD>\n\t<BODY>\n\t\tTest Publication\n\t</BODY>\n</HTML>", css : "body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}"},this.createAsyncCallback("publication-data/test-create/app.css","body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}"),$bind(this,this.onError));
+		haxe.Timer.delay($bind(this,this.doTrash),100);
 	}
 	,testWriteError: function() {
-		this.publicationService.setPublicationData("test-not-exist",{ html : "<HTML>\n\t<HEAD>\n\t</HEAD>\n\t<BODY>\n\t\tTest Publication\n\t</BODY>\n</HTML>", css : "body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}", publicationConfig : { publicationFolder : "", state : org.silex.publication.PublicationState.Private, creation : { author : "silexlabs", date : HxOverrides.strDate("2021-12-02")}, lastChange : { author : "silexlabs", date : HxOverrides.strDate("2021-12-02")}}},$bind(this,this.onResultWriteNeverCalled),utest.Assert.createEvent($bind(this,this.onPuropseError),2000));
+		this.publicationService.setPublicationData("test-not-exist",{ html : "<HTML>\n\t<HEAD>\n\t</HEAD>\n\t<BODY>\n\t\tTest Publication\n\t</BODY>\n</HTML>", css : "body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}"},$bind(this,this.onResultWriteNeverCalled),utest.Assert.createEvent($bind(this,this.onPuropseError),4000));
 	}
 	,testWrite: function() {
-		this.publicationService.setPublicationData("test-write",{ html : "<HTML>\n\t<HEAD>\n\t</HEAD>\n\t<BODY>\n\t\tTest Publication\n\t</BODY>\n</HTML>", css : "body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}", publicationConfig : { publicationFolder : "", state : org.silex.publication.PublicationState.Private, creation : { author : "silexlabs", date : HxOverrides.strDate("2021-12-02")}, lastChange : { author : "silexlabs", date : HxOverrides.strDate("2021-12-02")}}},this.createAsyncCallback("publication-data/test-read/app.css","body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}"),$bind(this,this.onError));
+		this.publicationService.setPublicationData("test-write",{ html : "<HTML>\n\t<HEAD>\n\t</HEAD>\n\t<BODY>\n\t\tTest Publication\n\t</BODY>\n</HTML>", css : "body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}"},this.createAsyncCallback("publication-data/test-read/app.css","body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}"),$bind(this,this.onError));
 	}
 	,onResultRead: function(publicationData) {
-		utest.Assert.notNull(publicationData,null,{ fileName : "TestClient.hx", lineNumber : 119, className : "publication.TestClient", methodName : "onResultRead"});
+		utest.Assert.notNull(publicationData,null,{ fileName : "TestClient.hx", lineNumber : 117, className : "publication.TestClient", methodName : "onResultRead"});
 		if(publicationData.html != null) {
-			utest.Assert.equals("<HTML>\n\t<HEAD>\n\t</HEAD>\n\t<BODY>\n\t\tTest Publication\n\t</BODY>\n</HTML>",StringTools.trim(publicationData.html),null,{ fileName : "TestClient.hx", lineNumber : 122, className : "publication.TestClient", methodName : "onResultRead"});
-			utest.Assert.equals("body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}",StringTools.trim(publicationData.css),null,{ fileName : "TestClient.hx", lineNumber : 123, className : "publication.TestClient", methodName : "onResultRead"});
+			utest.Assert.equals("<HTML>\n\t<HEAD>\n\t</HEAD>\n\t<BODY>\n\t\tTest Publication\n\t</BODY>\n</HTML>",StringTools.trim(publicationData.html),null,{ fileName : "TestClient.hx", lineNumber : 120, className : "publication.TestClient", methodName : "onResultRead"});
+			utest.Assert.equals("body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}",StringTools.trim(publicationData.css),null,{ fileName : "TestClient.hx", lineNumber : 121, className : "publication.TestClient", methodName : "onResultRead"});
 		}
 	}
 	,testRead: function() {
-		this.publicationService.getPublicationData("test-read",utest.Assert.createEvent($bind(this,this.onResultRead),2000),$bind(this,this.onError));
-		this.publicationService.getPublicationData("test-not-exist",$bind(this,this.onResultRead),utest.Assert.createEvent($bind(this,this.onPuropseError),2000));
+		this.publicationService.getPublicationData("test-read",utest.Assert.createEvent($bind(this,this.onResultRead),4000),$bind(this,this.onError));
+		this.publicationService.getPublicationData("test-not-exist",$bind(this,this.onResultRead),utest.Assert.createEvent($bind(this,this.onPuropseError),4000));
 	}
 	,createAsyncCallback: function(urlToCompare,expected) {
 		var onHttpRequestReadyCallback = utest.Assert.createEvent((function(f,a1) {
 			return function(a2) {
 				return f(a1,a2);
 			};
-		})($bind(this,this.onHttpRequestReady),"body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}"),2000);
+		})($bind(this,this.onHttpRequestReady),"body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}"),4000);
 		return (function(f,a1,a2) {
 			return function() {
 				return f(a1,a2);
@@ -2125,24 +2160,22 @@ publication.TestClient.prototype = {
 		})($bind(this,this.onResultStartAjaxCheck),urlToCompare,onHttpRequestReadyCallback);
 	}
 	,onHttpRequestReady: function(response,expected) {
-		haxe.Log.trace("onHttpRequestReady " + response,{ fileName : "TestClient.hx", lineNumber : 97, className : "publication.TestClient", methodName : "onHttpRequestReady"});
-		utest.Assert.notNull(response,null,{ fileName : "TestClient.hx", lineNumber : 98, className : "publication.TestClient", methodName : "onHttpRequestReady"});
-		if(response != null) utest.Assert.equals(StringTools.trim(expected),StringTools.trim(response),null,{ fileName : "TestClient.hx", lineNumber : 100, className : "publication.TestClient", methodName : "onHttpRequestReady"});
+		utest.Assert.notNull(response,null,{ fileName : "TestClient.hx", lineNumber : 96, className : "publication.TestClient", methodName : "onHttpRequestReady"});
+		if(response != null) utest.Assert.equals(StringTools.trim(expected),StringTools.trim(response),null,{ fileName : "TestClient.hx", lineNumber : 98, className : "publication.TestClient", methodName : "onHttpRequestReady"});
 	}
 	,onResultStartAjaxCheck: function(urlToCompare,onHttpRequestReadyCallback) {
-		haxe.Log.trace("Load this to check the result: " + urlToCompare,{ fileName : "TestClient.hx", lineNumber : 93, className : "publication.TestClient", methodName : "onResultStartAjaxCheck"});
+		haxe.Log.trace("AJAX-Load this to check the result: " + urlToCompare,{ fileName : "TestClient.hx", lineNumber : 91, className : "publication.TestClient", methodName : "onResultStartAjaxCheck"});
 		this.loadString(urlToCompare,onHttpRequestReadyCallback,onHttpRequestReadyCallback);
 	}
 	,onResultWriteNoCheck: function() {
-		utest.Assert.isTrue(true,null,{ fileName : "TestClient.hx", lineNumber : 90, className : "publication.TestClient", methodName : "onResultWriteNoCheck"});
+		utest.Assert.isTrue(true,null,{ fileName : "TestClient.hx", lineNumber : 88, className : "publication.TestClient", methodName : "onResultWriteNoCheck"});
 	}
 	,onResultWriteNeverCalled: function() {
-		utest.Assert.isTrue(false,null,{ fileName : "TestClient.hx", lineNumber : 87, className : "publication.TestClient", methodName : "onResultWriteNeverCalled"});
+		utest.Assert.isTrue(false,null,{ fileName : "TestClient.hx", lineNumber : 85, className : "publication.TestClient", methodName : "onResultWriteNeverCalled"});
 	}
 	,loadString: function(url,onSuccess,onError) {
 		var req = new js.XMLHttpRequest();
 		req.onreadystatechange = function() {
-			haxe.Log.trace(req.readyState,{ fileName : "TestClient.hx", lineNumber : 66, className : "publication.TestClient", methodName : "loadString"});
 			if(req.readyState == 4) {
 				if(req.status == 200) onSuccess(req.responseText); else onError(req.statusText);
 			} else {
@@ -2152,12 +2185,11 @@ publication.TestClient.prototype = {
 		req.send(null);
 	}
 	,onPuropseError: function(msg) {
-		haxe.Log.trace("on purpose error: " + msg,{ fileName : "TestClient.hx", lineNumber : 59, className : "publication.TestClient", methodName : "onPuropseError"});
-		utest.Assert.notNull(msg,null,{ fileName : "TestClient.hx", lineNumber : 60, className : "publication.TestClient", methodName : "onPuropseError"});
+		utest.Assert.notNull(msg,null,{ fileName : "TestClient.hx", lineNumber : 58, className : "publication.TestClient", methodName : "onPuropseError"});
 	}
 	,onError: function(msg) {
-		haxe.Log.trace("onError " + msg,{ fileName : "TestClient.hx", lineNumber : 55, className : "publication.TestClient", methodName : "onError"});
-		utest.Assert.isTrue(false,null,{ fileName : "TestClient.hx", lineNumber : 56, className : "publication.TestClient", methodName : "onError"});
+		haxe.Log.trace("onError " + msg,{ fileName : "TestClient.hx", lineNumber : 53, className : "publication.TestClient", methodName : "onError"});
+		throw "onError " + msg;
 	}
 	,publicationService: null
 	,__class__: publication.TestClient
@@ -3976,7 +4008,8 @@ org.silex.publication.PublicationService.SERVICE_NAME = "publicationService";
 publication.TestClient.THIS_TEST_PATH = "publication-data/";
 publication.TestClient.TEST_CSS = "body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}";
 publication.TestClient.TEST_HTML = "<HTML>\n\t<HEAD>\n\t</HEAD>\n\t<BODY>\n\t\tTest Publication\n\t</BODY>\n</HTML>";
-publication.TestClient.TEST_PUBLICATION_DATA = { html : "<HTML>\n\t<HEAD>\n\t</HEAD>\n\t<BODY>\n\t\tTest Publication\n\t</BODY>\n</HTML>", css : "body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}", publicationConfig : { publicationFolder : "", state : org.silex.publication.PublicationState.Private, creation : { author : "silexlabs", date : HxOverrides.strDate("2021-12-02")}, lastChange : { author : "silexlabs", date : HxOverrides.strDate("2021-12-02")}}};
+publication.TestClient.TEST_PUBLICATION_DATA = { html : "<HTML>\n\t<HEAD>\n\t</HEAD>\n\t<BODY>\n\t\tTest Publication\n\t</BODY>\n</HTML>", css : "body{\n\tfont-family: Verdana, Arial;\n\tfont-size: 14pt;\n    margin: 0;\n    padding: 0;\n    background-color: grey;\n    overflow: auto;\n}"};
+publication.TestClient.TEST_PUBLICATION_CONFIG = { state : org.silex.publication.PublicationState.Private, creation : { author : "silexlabs", date : HxOverrides.strDate("2021-12-02")}, lastChange : { author : "silexlabs", date : HxOverrides.strDate("2021-12-02")}};
 utest.TestHandler.POLLING_TIME = 10;
 utest.ui.text.HtmlReport.platform = "javascript";
 AllTestsClient.main();

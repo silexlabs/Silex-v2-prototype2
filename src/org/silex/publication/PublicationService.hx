@@ -43,36 +43,52 @@ class PublicationService extends ServiceBase{
 	 * Retrieve a publication data
 	 */
 	public function getPublicationData(publicationName:String, onResult:PublicationData->Void, onError:String->Void=null) {
-		// make the call
 		callServerMethod("getPublicationData", [publicationName, publicationFolder], onResult, onError);
 	}
 	/**
 	 * Set the publication data
 	 */
 	public function setPublicationData(publicationName:String, publicationData:PublicationData, onResult:Void->Void, onError:String->Void=null) {
-		// make the call
 		callServerMethod("setPublicationData", [publicationName, publicationData, publicationFolder], onResult, onError);
 	}
 	/**
 	 * Create a publication given a publication data structure
 	 */
 	public function create(publicationName:String, publicationData:PublicationData, onResult:Void->Void, onError:String->Void=null) {
-		// make the call
 		callServerMethod("create", [publicationName, publicationData, publicationFolder], onResult, onError);
 	}
 	/**
 	 * Move a publication to trash
 	 */
 	public function trash(publicationName:String, onResult:Void->Void, onError:String->Void=null) {
-		// make the call
 		callServerMethod("trash", [publicationName, publicationFolder], onResult, onError);
 	}
 	/**
 	 * Empty trash, i.e. browse all publications and check their state, then permanently delete the ones with the state Trashed
 	 */
 	public function emptyTrash(onResult:Void->Void, onError:String->Void=null) {
-		// make the call
 		callServerMethod("emptyTrash", [publicationFolder], onResult, onError);
+	}
+	/**
+	 * Duplicate an existing publication
+	 */
+	public function duplicate(srcPublicationName:String, publicationName:String, onResult:Void->Void, onError:String->Void=null) {
+		callServerMethod("duplicate", [srcPublicationName, publicationName, publicationFolder], onResult, onError);
+	}
+	/**
+	 * Rename an existing publication
+	 * todo: handle empty names, security, same names, creation errors
+	 */
+	public function rename(srcPublicationName:String, publicationName:String, onResult:Void->Void, onError:String->Void=null) {
+		callServerMethod("rename", [srcPublicationName, publicationName, publicationFolder], onResult, onError);
+	}
+	/**
+	 * List available publication matching a state
+	 * For the states enum use like Published(null) to have all Published publications
+	 */
+	public function getPublications(publicationStates:Null<Array<PublicationState>> = null, 
+		onResult:Hash<PublicationConfig>->Void, onError:String->Void=null) {
+		callServerMethod("getPublications", [publicationStates, publicationFolder], onResult, onError);
 	}
 #end
 
@@ -88,53 +104,49 @@ class PublicationService extends ServiceBase{
 	/**
 	 * List available publication matching a state
 	 * For the states enum use like Published(null) to have all Published publications
+	 * @return 	Hash with the publications names as key and the publications config as value
 	 */
 	public function getPublications(publicationStates:Null<Array<PublicationState>> = null, 
-		publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER):Array<PublicationConfig> {
+		publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER):Hash<PublicationConfig> {
 		// browse all folders in the publications directory
 		var files:Array<String> = FileSystem.readDirectory(publicationFolder);
 		// keep only the folders and the publication with the desired states
-		var publicationArray:Array<PublicationConfig> = new Array();
+		var publications:Hash<PublicationConfig> = new Hash();
 		for(name in files){
 			var path = publicationFolder + name + "/";
 			if (FileSystem.isDirectory(path)){
 				var publicationConfig = getPublicationConfig(name, publicationFolder);
-				// correct the path?
-				if (publicationConfig.publicationFolder != path){
-					trace("Warning, config of the publication "+name+" is wrong: publicationFolder is "+publicationConfig.publicationFolder+" but should be "+path);
-					publicationConfig.publicationFolder = path;
-				}
 				// if no filter is provided, add anyway
 				if (publicationStates == null || publicationStates.length == 0){
-					publicationArray.push(publicationConfig);
+					publications.set(name, publicationConfig);
 				}
 				else{
 					// filter
 					switch (publicationConfig.state) {
 						case Private:
 							if (Lambda.has(publicationStates, Private))
-								publicationArray.push(publicationConfig);
+								publications.set(name, publicationConfig);
 						case Trashed(data):
 							if (Lambda.has(publicationStates, Trashed(null)))
-								publicationArray.push(publicationConfig);
+								publications.set(name, publicationConfig);
 						case Published(data):
 							if (Lambda.has(publicationStates, Published(null)))
-								publicationArray.push(publicationConfig);
+								publications.set(name, publicationConfig);
 					}
 				}
 			}
 		}
-		return publicationArray;
+		return publications;
 	}
 	/**
 	 * Empty trash, i.e. browse all publications and check their state, then permanently delete the ones with the state Trashed
 	 */
 	public function emptyTrash(publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
 		// get all publications with a state "Trashed"
-		var publicationArray:Array<PublicationConfig> = getPublications([Trashed(null)], publicationFolder);
+		var publications:Hash<PublicationConfig> = getPublications([Trashed(null)], publicationFolder);
 		// browse all publications
-		for (publicationConfig in publicationArray){
-			FileSystemTools.recursiveDelete(publicationConfig.publicationFolder);
+		for (publicationName in publications.keys()){
+			FileSystemTools.recursiveDelete(publicationFolder + publicationName + "/");
 		}
 	}
 	/**
@@ -143,16 +155,23 @@ class PublicationService extends ServiceBase{
 	public function create(publicationName:String, publicationData:PublicationData, publicationFolder:String = PublicationConfigManager.DEFAULT_PUBLICATION_FOLDER) {
 		try{
 			// update with actual date and author
-			publicationData.publicationConfig.publicationFolder = publicationFolder + publicationName + "/";
-			publicationData.publicationConfig.state = Private;
-			publicationData.publicationConfig.creation.author = "to do this author";
-			publicationData.publicationConfig.creation.date = Date.now();
-			publicationData.publicationConfig.lastChange = publicationData.publicationConfig.creation;
-
+			var publicationConfig:PublicationConfig = {
+				state : Private,
+				creation : {
+					author : "silexlabs", 
+					date : Date.now()
+				}, 
+				lastChange : {
+					author : "silexlabs", 
+					date : Date.now()
+				}
+			};
 			// create the empty directory for the publication
-			FileSystem.createDirectory(publicationFolder+publicationName);
+			FileSystem.createDirectory(publicationFolder + publicationName);
 			// create other empty directories
-			FileSystem.createDirectory(publicationFolder+publicationName+"/"+PublicationConfigManager.PUBLICATION_CONFIG_FOLDER);
+			FileSystem.createDirectory(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_CONFIG_FOLDER);
+			// set the publication config
+			setPublicationConfig(publicationName, publicationConfig, publicationFolder);
 			// set the publication data
 			setPublicationData(publicationName, publicationData, publicationFolder);
 		}
@@ -233,7 +252,6 @@ class PublicationService extends ServiceBase{
 			return {
 				html : html,
 				css: css,
-				publicationConfig: publicationConfig
 			};
 		}
 		catch(e:Dynamic){
@@ -248,7 +266,6 @@ class PublicationService extends ServiceBase{
 		try{
 			File.saveContent(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_HTML_FILE, publicationData.html);
 			File.saveContent(publicationFolder + publicationName + "/" + PublicationConfigManager.PUBLICATION_CSS_FILE, publicationData.css);
-			setPublicationConfig(publicationName, publicationData.publicationConfig, publicationFolder);
 		}
 		catch(e:Dynamic){
 			throw(e);
@@ -275,7 +292,6 @@ class PublicationService extends ServiceBase{
 		try{
 			var config = new PublicationConfigManager();
 			config.publicationConfig = {
-				publicationFolder : publicationFolder + publicationName + "/", 
 				state : publicationConfig.state,
 				creation : publicationConfig.creation, 
 				lastChange : publicationConfig.lastChange

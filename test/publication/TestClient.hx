@@ -32,38 +32,36 @@ class TestClient {
 	public static inline var TEST_PUBLICATION_DATA:PublicationData = {
 		html : TEST_HTML,
 		css: TEST_CSS,
-		publicationConfig: {
-			publicationFolder : "", 
-			state : Private,
-			creation : {
-				author : "silexlabs", 
-				date : Date.fromString("2021-12-02")
-			}, 
-			lastChange : {
-				author : "silexlabs", 
-				date : Date.fromString("2021-12-02")
-			}
+	};
+	public static inline var TEST_PUBLICATION_CONFIG:PublicationConfig = {
+		state : Private,
+		creation : {
+			author : "silexlabs", 
+			date : Date.fromString("2021-12-02")
+		}, 
+		lastChange : {
+			author : "silexlabs", 
+			date : Date.fromString("2021-12-02")
 		}
 	};
 
 	public function new(){
 		publicationService = new PublicationService(AllTestsClient.TEST_ROOT_PATH + THIS_TEST_PATH, AllTestsClient.GATEWAY_URL);
 	}
-
 	//////////////////////////////////////////////////////////////////////////////////////////	
 	private function onError(msg:String):Void{
 		trace("onError "+msg);
-		Assert.isTrue(false);
+		throw("onError "+msg);
 	}
 	private function onPuropseError(msg:String):Void{
-		trace("on purpose error: "+msg);
+		//trace("on purpose error: "+msg);
 		Assert.notNull(msg);
 	}
 
 	private function loadString(url:String, onSuccess, onError):Void{
 		var req = new XMLHttpRequest();
 		req.onreadystatechange = function (){
-			trace(req.readyState);
+			//trace(req.readyState);
 			if (req.readyState == 4) { 
 				if (req.status == 200) {
 					//trace("onreadystatechange"+req.responseText);
@@ -90,29 +88,29 @@ class TestClient {
 		Assert.isTrue(true);
 	}
 	private function onResultStartAjaxCheck(urlToCompare:String, onHttpRequestReadyCallback):Void{
-		trace("Load this to check the result: "+urlToCompare);
+		trace("AJAX-Load this to check the result: "+urlToCompare);
 		loadString(urlToCompare, onHttpRequestReadyCallback, onHttpRequestReadyCallback);
 	}
 	private function onHttpRequestReady(response:String, expected:String):Void{
-		trace("onHttpRequestReady "+response);
+		//trace("onHttpRequestReady "+response);
 		Assert.notNull(response);
 		if (response != null){
 			Assert.equals(StringTools.trim(expected), StringTools.trim(response));
 		}
 	}
 	private function createAsyncCallback(urlToCompare:String, expected:String):Dynamic{
-		var onHttpRequestReadyCallback = cast(Assert.createEvent(callback(onHttpRequestReady,TEST_CSS), 2000));
+		var onHttpRequestReadyCallback = cast(Assert.createEvent(callback(onHttpRequestReady,TEST_CSS), 4000));
 		return callback(onResultStartAjaxCheck, urlToCompare, onHttpRequestReadyCallback);
 	}
 
 
 	//////////////////////////////////////////////////////////////////////////////////////////	
 	public function testRead():Void{
-		publicationService.getPublicationData("test-read", Assert.createEvent(onResultRead, 2000)
+		publicationService.getPublicationData("test-read", Assert.createEvent(onResultRead, 4000)
 			, onError
 		);
 		publicationService.getPublicationData("test-not-exist", onResultRead
-			, cast(Assert.createEvent(onPuropseError, 2000))
+			, cast(Assert.createEvent(onPuropseError, 4000))
 		);
 	}
 	private function onResultRead(publicationData:PublicationData):Void{
@@ -133,73 +131,71 @@ class TestClient {
 	public function testWriteError():Void{
 		publicationService.setPublicationData("test-not-exist", TEST_PUBLICATION_DATA
 			, onResultWriteNeverCalled
-			, cast(Assert.createEvent(onPuropseError, 2000))
+			, cast(Assert.createEvent(onPuropseError, 4000))
 		);
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////	
 
 	public function testCreateAndTrash():Void{
-
+		trace("testCreateAndTrash");
 		publicationService.create("test-create", TEST_PUBLICATION_DATA
 			, createAsyncCallback("publication-data/test-create/app.css",TEST_CSS)
 			, onError
 		);
-		haxe.Timer.delay(doTrash, 200);
+		haxe.Timer.delay(doTrash, 100);
 	}
-	public function doTrash():Void{
+	private function doTrash():Void{
+		trace("doTrash");
 		publicationService.trash("test-create"
-			, Assert.createAsync(onResultWriteNoCheck, 2000)
+			, Assert.createAsync(onResultWriteNoCheck, 4000)
 			, onError
 		);
-		haxe.Timer.delay(doEmptyTrash, 200);
+		haxe.Timer.delay(doEmptyTrash, 100);
 	}
-	public function doEmptyTrash():Void{
+	private function doEmptyTrash():Void{
+		trace("doEmptyTrash");
 		// empty trash
 		publicationService.emptyTrash(
-			Assert.createAsync(onResultWriteNoCheck, 200)
+			Assert.createAsync(onResultWriteNoCheck, 4000)
 			//createAsyncCallback("publication-data/test-create/app.css", "Not Found")
 			, onError
 		);
 	}
-/*	public function testDuplicateAndRename():Void{
-		// remove existing folder
-		if (FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-duplicate/"))
-			FileSystemTools.recursiveDelete(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-duplicate/");
-
-		publicationService.duplicate("test-read", "test-duplicate");
-		
-		Assert.isTrue(FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-duplicate/index.html"));
-		if (FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-duplicate/index.html"))
-			Assert.equals(TEST_HTML, File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-duplicate/index.html"));
-
-		if (FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-duplicate/index.html")){
-			// remove existing folder
-			if (FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-rename/"))
-				FileSystemTools.recursiveDelete(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-rename/");
-
-			publicationService.rename("test-duplicate", "test-rename");
-
-			Assert.isTrue(FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-rename/index.html"));
-			if (FileSystem.exists(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-rename/index.html"))
-				Assert.equals(TEST_HTML, File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "test-rename/index.html"));
-		}
+	public function testDuplicateAndRename():Void{
+		trace("testDuplicateAndRename");
+		publicationService.duplicate("test-read", "test-duplicate"
+			, createAsyncCallback("publication-data/test-duplicate/app.css",TEST_CSS)
+			, onError
+		);
+		haxe.Timer.delay(doRename, 500);
 	}
+	private function doRename():Void{
+		trace("doRename");
+		publicationService.rename("test-duplicate", "test-rename"
+			, createAsyncCallback("publication-data/test-rename/app.css",TEST_CSS)
+			, onError
+		);
+		trace("NOW REMOVE THE FOLDER bin/publication-data/test-rename/");
+/*		haxe.Timer.delay(cleanup, 1000);
+	}
+	private function cleanup():Void{
+		trace("cleanup");
+		publicationService.trash("test-rename"
+			, Assert.createAsync(onResultWriteNoCheck, 4000)
+			, onError
+		);
+		haxe.Timer.delay(doEmptyTrash, 100);
+*/	}
 	public function testGetPublications():Void{
-		var publicationArray:Array<PublicationConfig> = publicationService.getPublications([Private]);
-		// browse all publications 
-		for (publicationConfig in publicationArray){
-			Assert.isFalse(File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + publicationConfig.publicationFolder + "conf/config.xml.php").indexOf("Private")==-1);
-		}
-		var publicationArray:Array<PublicationConfig> = publicationService.getPublications([Trashed(null)]);
-		// browse all publications 
-		for (publicationConfig in publicationArray){
-			Assert.isFalse(File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + publicationConfig.publicationFolder + "conf/config.xml.php").indexOf("Trashed")==-1);
-		}
-		var publicationArray:Array<PublicationConfig> = publicationService.getPublications([Published(null)]);
-		// browse all publications 
-		for (publicationConfig in publicationArray){
-			Assert.isFalse(File.getContent(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + publicationConfig.publicationFolder + "conf/config.xml.php").indexOf("Published")==-1);
+		publicationService.getPublications([Private], cast(Assert.createEvent(onResultGetPublications)));
+	}
+	private function onResultGetPublications(publications:Hash<PublicationConfig>):Void{
+		if (publications != null){
+			// browse all publications 
+			for (publicationName in publications.keys()){
+				trace("Publication "+ publicationName+" is "+publications.get(publicationName).state);
+				Assert.same(Private, publications.get(publicationName).state);
+			}
 		}
 	}
-*/
 }

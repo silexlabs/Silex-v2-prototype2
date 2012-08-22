@@ -22,7 +22,7 @@ import org.silex.publication.PublicationService;
 import php.Web;
 import sys.io.File;
 
-import org.silex.config.ServerConfig;
+import org.silex.config.ServerConfigManager;
 #end
 
 //////////////////////////////////////////////////
@@ -128,7 +128,7 @@ class Silex {
 	 */
 	static public function main() {
 		// load server config
-		var serverConfig = new ServerConfig();
+		var serverConfigManager = new ServerConfigManager();
 
 		// Retrieve the publication name from the URL
 		var urlParamsString:String = Web.getParamsString();
@@ -139,7 +139,7 @@ class Silex {
 		publicationName = params[0];
 		// default value
 		if (publicationName == ""){
-			publicationName = serverConfig.defaultPublication;
+			publicationName = serverConfigManager.defaultPublication;
 		}
 
 		var initialPageName = "";
@@ -156,7 +156,8 @@ class Silex {
 			initialPageName = params[1];
 		}
 		// Load HTML data
-		var publicationData = PublicationService.getPublicationData(publicationName);
+		var publicationService = new PublicationService();
+		var publicationData = publicationService.getPublicationData(publicationName);
 
 		// build the DOM
 		Lib.document.innerHTML = publicationData.html;
@@ -176,14 +177,6 @@ class Silex {
 
 		// add loader script
 		DomTools.embedScript(LOADER_SCRIPT_PATH);
-
-		// add the app.css style sheet
-		// TODO: add the style sheet in a style tag directly in the html page
-		var node = Lib.document.createElement("link");
-		node.setAttribute("href", PUBLICATIONS_FOLDER + publicationName + "/" + PUBLICATION_CSS_FILE);
-		node.setAttribute("type", "text/css");
-		node.setAttribute("rel", "stylesheet");
-		head.appendChild(node);
 
 		// create an SLPlayer app
 		var application = Application.createApplication();

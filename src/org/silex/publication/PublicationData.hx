@@ -15,11 +15,11 @@ typedef PublicationData = {
 	 * the CSS data of the publication, saved in the style folder of the publication
 	 */
 	var css:String;
-//	var styleSheets:HtmlCollection<StyleSheet>;
 	/**
-	 * the configuration data of the publication stored in the publication config file
+	 * name of the publication, which is also the folder containing the publication files
+	 * @example		[publication folder path]/[publication name]/
 	 */
-	var publicationConfig:PublicationConfig;
+//	var name:String;
 }
 
 /**
@@ -50,10 +50,6 @@ typedef ChangeData = {
  * use PublicationConfigManager::publicationConfig to get the config of a given publication
  */
 typedef PublicationConfig = {
-	/**
-	 * the name of the publication, which is also the folder where publication is stored
-	 */
-	var publicationFolder:String;
 	/**
 	 * State of the publication
 	 */

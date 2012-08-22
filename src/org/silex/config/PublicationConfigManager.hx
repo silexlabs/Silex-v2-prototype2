@@ -39,7 +39,6 @@ class PublicationConfigManager extends ConfigBase{
 	 */
 	public function new(configFile:String = null){
 		publicationConfig = {
-			publicationFolder : "", 
 			state : Private,
 			creation : {
 				author : "", 
@@ -68,18 +67,6 @@ class PublicationConfigManager extends ConfigBase{
 			publicationConfig.lastChange = getChangeDataFromXML(xml.node.lastChange);
 		else
 			trace("Warning: missing lastChange in config file ");
-
-		if(xml.hasNode.publicationFolder){
-			// allow empty node for publicationFolder 
-			try{
-				publicationConfig.publicationFolder = xml.node.publicationFolder.innerData;
-			}
-			catch(d:Dynamic){
-				publicationConfig.publicationFolder = "";
-			}
-		}
-		else
-			trace("Warning: missing publicationFolder in config file ");
 
 		if(xml.hasNode.state){
 			switch(xml.node.state.innerData){
@@ -159,9 +146,6 @@ class PublicationConfigManager extends ConfigBase{
 			<state author=\""+changeData.author+"\" date=\""+changeData.date.toString()+"\" >Published</state>
 "));
 		}
-		node.addChild(Xml.parse("
-			<publicationFolder>"+publicationConfig.publicationFolder+"</publicationFolder>
-"));
 		node.addChild(Xml.parse("
 <creation>
 	<author>"+publicationConfig.creation.author+"</author>

@@ -1,0 +1,16 @@
+
+--next
+
+-swf ../bin/libs/silex/silex.swf
+-cp ../../SLPlayer/src/
+-cp ../../Cocktail/src/
+-main org.silex.core.Silex
+--macro org.slplayer.core.Builder.create('index.html')
+--remap js:cocktail
+-swf-version 10.2
+#-D slpdebug
+-D disableEmbedHtml
+-D noAutoStart
+-D SilexClientSide
+-D stopOnError
+
