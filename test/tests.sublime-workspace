@@ -295,6 +295,38 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "util/TestServer.hx",
+			"settings":
+			{
+				"buffer_size": 1324,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/util/FileSystemTools.hx",
+			"settings":
+			{
+				"buffer_size": 2428,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/config/ConfigBase.hx",
+			"settings":
+			{
+				"buffer_size": 1875,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "AllTestsServer.hx",
+			"settings":
+			{
+				"buffer_size": 813,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "Packages/HaXe/Hxml.sublime-build",
 	"command_palette":
@@ -324,13 +356,13 @@
 	},
 	"file_history":
 	[
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/test/publication/TestServer.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/test/config/TestServer.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/readme.txt",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationData.hx",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/test/publication/TestServer.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationConfig.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/core/ServerConfig.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationService.hx",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/test/config/TestServer.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/test/publication/TestClient.hx",
 		"/Users/lexa/Documents/repositories/tests/05-html_and_css/style.css",
 		"/Users/lexa/Documents/repositories/tests/05-html_and_css/index.html",
@@ -423,7 +455,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 93.0,
+		"height": 0.0,
 		"where_history":
 		[
 		]
@@ -433,6 +465,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"FileSystemTools.getRootFolder()+",
+			"AllTestsServer.TEST_ROOT_PATH + ",
+			"THIS_TEST_PATH",
+			"AllTestsServer.TEST_ROOT_PATH + ",
+			"TEST_ROOT_PATH",
+			"../",
 			"publicationConfig",
 			"Manager",
 			"ServerConfig",
@@ -554,13 +592,7 @@
 			"docume",
 			"DEFAULT_PUBLICATION_FOLDER",
 			"class",
-			"\"../",
-			"launch",
-			"registerComponentsforInit",
-			"application",
-			"CONFIG_INITIAL_PAGE_NAME",
-			"_list",
-			"CONFIG"
+			"\"../"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -582,8 +614,121 @@
 	"groups":
 	[
 		{
+			"selected": 3,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "util/TestServer.hx",
+					"settings":
+					{
+						"buffer_size": 1324,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								609,
+								609
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/util/FileSystemTools.hx",
+					"settings":
+					{
+						"buffer_size": 2428,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								235,
+								235
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/config/ConfigBase.hx",
+					"settings":
+					{
+						"buffer_size": 1875,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								73,
+								73
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "AllTestsServer.hx",
+					"settings":
+					{
+						"buffer_size": 813,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								326,
+								326
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],

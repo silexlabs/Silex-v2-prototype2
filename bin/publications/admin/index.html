@@ -75,7 +75,7 @@
 		<!-- Dialogs -->
 		<!-- Login Dialog -->
 		<A class="Page" name="login-dialog"></A>
-		<A class="Page" name="login-pending"></A>
+		<A class="Page" name="loading-pending"></A>
 		<div class="Layer login-dialog dialog-foreground LoginDialog">
 			<p>Login</p><p><input type="text" class="input-field-login"></input></p>
 			<p>Password</p><p><input type="text" class="input-field-pass"></input></p>
@@ -87,12 +87,17 @@
 		</div>
 		<!-- Open Dialog -->
 		<A class="Page" name="open-dialog"></A>
-		<div class="Layer open-dialog dialog-foreground OpenDialog">
+		<div class="Layer open-dialog dialog-foreground OpenPublicationDialog">
+			<ul class="PublicationList PublicationConnector">
+				<li>::name:: <small>last change by ::configData.lastChange.author:: on ::configData.lastChange.date::</small></li>
+			</ul>
+			<button class="cancel-button">Cancel</button>
+			<button class="ok-button">Ok</button>
 		</div>
-		<div class="Layer login-pending dialog-foreground">
+		<div class="Layer loading-pending dialog-foreground">
 			Please wait...
 		</div>
 		<!-- dialog background -->
-		<div class="Layer dialog-background login-pending login-dialog"></div>
+		<div class="Layer dialog-background loading-pending login-dialog open-dialog"></div>
 	</body>
 </html>

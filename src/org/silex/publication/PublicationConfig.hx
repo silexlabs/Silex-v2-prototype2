@@ -3,6 +3,7 @@ package org.silex.publication;
 import org.silex.config.ConfigBase;
 import org.silex.publication.PublicationData;
 import haxe.xml.Fast;
+import org.silex.util.FileSystemTools;
 
 /**
  * This class is in charge of reading and writing the configuration data of one given Silex publication.

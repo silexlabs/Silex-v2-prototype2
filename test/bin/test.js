@@ -5,16 +5,162 @@ function $extend(from, fields) {
 	return proto;
 }
 var AllTestsClient = $hxClasses["AllTestsClient"] = function() {
-};
-AllTestsClient.__name__ = ["AllTestsClient"];
-AllTestsClient.main = function() {
 	var runner = new utest.Runner();
+	runner.addCase(new template.TestClient());
 	runner.addCase(new publication.TestClient());
 	utest.ui.Report.create(runner);
 	runner.run();
+};
+AllTestsClient.__name__ = ["AllTestsClient"];
+AllTestsClient.main = function() {
+	haxe.Timer.delay(function() {
+		new AllTestsClient();
+	},100);
 }
 AllTestsClient.prototype = {
 	__class__: AllTestsClient
+}
+var DateTools = $hxClasses["DateTools"] = function() { }
+DateTools.__name__ = ["DateTools"];
+DateTools.__format_get = function(d,e) {
+	return (function($this) {
+		var $r;
+		switch(e) {
+		case "%":
+			$r = "%";
+			break;
+		case "C":
+			$r = StringTools.lpad(Std.string(d.getFullYear() / 100 | 0),"0",2);
+			break;
+		case "d":
+			$r = StringTools.lpad(Std.string(d.getDate()),"0",2);
+			break;
+		case "D":
+			$r = DateTools.__format(d,"%m/%d/%y");
+			break;
+		case "e":
+			$r = Std.string(d.getDate());
+			break;
+		case "H":case "k":
+			$r = StringTools.lpad(Std.string(d.getHours()),e == "H"?"0":" ",2);
+			break;
+		case "I":case "l":
+			$r = (function($this) {
+				var $r;
+				var hour = d.getHours() % 12;
+				$r = StringTools.lpad(Std.string(hour == 0?12:hour),e == "I"?"0":" ",2);
+				return $r;
+			}($this));
+			break;
+		case "m":
+			$r = StringTools.lpad(Std.string(d.getMonth() + 1),"0",2);
+			break;
+		case "M":
+			$r = StringTools.lpad(Std.string(d.getMinutes()),"0",2);
+			break;
+		case "n":
+			$r = "\n";
+			break;
+		case "p":
+			$r = d.getHours() > 11?"PM":"AM";
+			break;
+		case "r":
+			$r = DateTools.__format(d,"%I:%M:%S %p");
+			break;
+		case "R":
+			$r = DateTools.__format(d,"%H:%M");
+			break;
+		case "s":
+			$r = Std.string(d.getTime() / 1000 | 0);
+			break;
+		case "S":
+			$r = StringTools.lpad(Std.string(d.getSeconds()),"0",2);
+			break;
+		case "t":
+			$r = "\t";
+			break;
+		case "T":
+			$r = DateTools.__format(d,"%H:%M:%S");
+			break;
+		case "u":
+			$r = (function($this) {
+				var $r;
+				var t = d.getDay();
+				$r = t == 0?"7":Std.string(t);
+				return $r;
+			}($this));
+			break;
+		case "w":
+			$r = Std.string(d.getDay());
+			break;
+		case "y":
+			$r = StringTools.lpad(Std.string(d.getFullYear() % 100),"0",2);
+			break;
+		case "Y":
+			$r = Std.string(d.getFullYear());
+			break;
+		default:
+			$r = (function($this) {
+				var $r;
+				throw "Date.format %" + e + "- not implemented yet.";
+				return $r;
+			}($this));
+		}
+		return $r;
+	}(this));
+}
+DateTools.__format = function(d,f) {
+	var r = new StringBuf();
+	var p = 0;
+	while(true) {
+		var np = f.indexOf("%",p);
+		if(np < 0) break;
+		r.b += HxOverrides.substr(f,p,np - p);
+		r.b += Std.string(DateTools.__format_get(d,HxOverrides.substr(f,np + 1,1)));
+		p = np + 2;
+	}
+	r.b += HxOverrides.substr(f,p,f.length - p);
+	return r.b;
+}
+DateTools.format = function(d,f) {
+	return DateTools.__format(d,f);
+}
+DateTools.delta = function(d,t) {
+	return (function($this) {
+		var $r;
+		var d1 = new Date();
+		d1.setTime(d.getTime() + t);
+		$r = d1;
+		return $r;
+	}(this));
+}
+DateTools.getMonthDays = function(d) {
+	var month = d.getMonth();
+	var year = d.getFullYear();
+	if(month != 1) return DateTools.DAYS_OF_MONTH[month];
+	var isB = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
+	return isB?29:28;
+}
+DateTools.seconds = function(n) {
+	return n * 1000.0;
+}
+DateTools.minutes = function(n) {
+	return n * 60.0 * 1000.0;
+}
+DateTools.hours = function(n) {
+	return n * 60.0 * 60.0 * 1000.0;
+}
+DateTools.days = function(n) {
+	return n * 24.0 * 60.0 * 60.0 * 1000.0;
+}
+DateTools.parse = function(t) {
+	var s = t / 1000;
+	var m = s / 60;
+	var h = m / 60;
+	return { ms : t % 1000, seconds : s % 60 | 0, minutes : m % 60 | 0, hours : h % 24 | 0, days : h / 24 | 0};
+}
+DateTools.make = function(o) {
+	return o.ms + 1000.0 * (o.seconds + 60.0 * (o.minutes + 60.0 * (o.hours + 24.0 * o.days)));
 }
 var EReg = $hxClasses["EReg"] = function(r,opt) {
 	opt = opt.split("u").join("");
@@ -1343,6 +1489,391 @@ haxe.Stack.makeStack = function(s) {
 		return m;
 	} else return s;
 }
+if(!haxe._Template) haxe._Template = {}
+haxe._Template.TemplateExpr = $hxClasses["haxe._Template.TemplateExpr"] = { __ename__ : ["haxe","_Template","TemplateExpr"], __constructs__ : ["OpVar","OpExpr","OpIf","OpStr","OpBlock","OpForeach","OpMacro"] }
+haxe._Template.TemplateExpr.OpVar = function(v) { var $x = ["OpVar",0,v]; $x.__enum__ = haxe._Template.TemplateExpr; $x.toString = $estr; return $x; }
+haxe._Template.TemplateExpr.OpExpr = function(expr) { var $x = ["OpExpr",1,expr]; $x.__enum__ = haxe._Template.TemplateExpr; $x.toString = $estr; return $x; }
+haxe._Template.TemplateExpr.OpIf = function(expr,eif,eelse) { var $x = ["OpIf",2,expr,eif,eelse]; $x.__enum__ = haxe._Template.TemplateExpr; $x.toString = $estr; return $x; }
+haxe._Template.TemplateExpr.OpStr = function(str) { var $x = ["OpStr",3,str]; $x.__enum__ = haxe._Template.TemplateExpr; $x.toString = $estr; return $x; }
+haxe._Template.TemplateExpr.OpBlock = function(l) { var $x = ["OpBlock",4,l]; $x.__enum__ = haxe._Template.TemplateExpr; $x.toString = $estr; return $x; }
+haxe._Template.TemplateExpr.OpForeach = function(expr,loop) { var $x = ["OpForeach",5,expr,loop]; $x.__enum__ = haxe._Template.TemplateExpr; $x.toString = $estr; return $x; }
+haxe._Template.TemplateExpr.OpMacro = function(name,params) { var $x = ["OpMacro",6,name,params]; $x.__enum__ = haxe._Template.TemplateExpr; $x.toString = $estr; return $x; }
+haxe.Template = $hxClasses["haxe.Template"] = function(str) {
+	var tokens = this.parseTokens(str);
+	this.expr = this.parseBlock(tokens);
+	if(!tokens.isEmpty()) throw "Unexpected '" + Std.string(tokens.first().s) + "'";
+};
+haxe.Template.__name__ = ["haxe","Template"];
+haxe.Template.prototype = {
+	run: function(e) {
+		var $e = (e);
+		switch( $e[1] ) {
+		case 0:
+			var v = $e[2];
+			this.buf.b += Std.string(Std.string(this.resolve(v)));
+			break;
+		case 1:
+			var e1 = $e[2];
+			this.buf.b += Std.string(Std.string(e1()));
+			break;
+		case 2:
+			var eelse = $e[4], eif = $e[3], e1 = $e[2];
+			var v = e1();
+			if(v == null || v == false) {
+				if(eelse != null) this.run(eelse);
+			} else this.run(eif);
+			break;
+		case 3:
+			var str = $e[2];
+			this.buf.b += Std.string(str);
+			break;
+		case 4:
+			var l = $e[2];
+			var $it0 = l.iterator();
+			while( $it0.hasNext() ) {
+				var e1 = $it0.next();
+				this.run(e1);
+			}
+			break;
+		case 5:
+			var loop = $e[3], e1 = $e[2];
+			var v = e1();
+			try {
+				var x = $iterator(v)();
+				if(x.hasNext == null) throw null;
+				v = x;
+			} catch( e2 ) {
+				try {
+					if(v.hasNext == null) throw null;
+				} catch( e3 ) {
+					throw "Cannot iter on " + Std.string(v);
+				}
+			}
+			this.stack.push(this.context);
+			var v1 = v;
+			while( v1.hasNext() ) {
+				var ctx = v1.next();
+				this.context = ctx;
+				this.run(loop);
+			}
+			this.context = this.stack.pop();
+			break;
+		case 6:
+			var params = $e[3], m = $e[2];
+			var v = Reflect.field(this.macros,m);
+			var pl = new Array();
+			var old = this.buf;
+			pl.push($bind(this,this.resolve));
+			var $it1 = params.iterator();
+			while( $it1.hasNext() ) {
+				var p = $it1.next();
+				var $e = (p);
+				switch( $e[1] ) {
+				case 0:
+					var v1 = $e[2];
+					pl.push(this.resolve(v1));
+					break;
+				default:
+					this.buf = new StringBuf();
+					this.run(p);
+					pl.push(this.buf.b);
+				}
+			}
+			this.buf = old;
+			try {
+				this.buf.b += Std.string(Std.string(v.apply(this.macros,pl)));
+			} catch( e1 ) {
+				var plstr = (function($this) {
+					var $r;
+					try {
+						$r = pl.join(",");
+					} catch( e2 ) {
+						$r = "???";
+					}
+					return $r;
+				}(this));
+				var msg = "Macro call " + m + "(" + plstr + ") failed (" + Std.string(e1) + ")";
+				throw msg;
+			}
+			break;
+		}
+	}
+	,makeExpr2: function(l) {
+		var p = l.pop();
+		if(p == null) throw "<eof>";
+		if(p.s) return this.makeConst(p.p);
+		switch(p.p) {
+		case "(":
+			var e1 = this.makeExpr(l);
+			var p1 = l.pop();
+			if(p1 == null || p1.s) throw p1.p;
+			if(p1.p == ")") return e1;
+			var e2 = this.makeExpr(l);
+			var p2 = l.pop();
+			if(p2 == null || p2.p != ")") throw p2.p;
+			return (function($this) {
+				var $r;
+				switch(p1.p) {
+				case "+":
+					$r = function() {
+						return e1() + e2();
+					};
+					break;
+				case "-":
+					$r = function() {
+						return e1() - e2();
+					};
+					break;
+				case "*":
+					$r = function() {
+						return e1() * e2();
+					};
+					break;
+				case "/":
+					$r = function() {
+						return e1() / e2();
+					};
+					break;
+				case ">":
+					$r = function() {
+						return e1() > e2();
+					};
+					break;
+				case "<":
+					$r = function() {
+						return e1() < e2();
+					};
+					break;
+				case ">=":
+					$r = function() {
+						return e1() >= e2();
+					};
+					break;
+				case "<=":
+					$r = function() {
+						return e1() <= e2();
+					};
+					break;
+				case "==":
+					$r = function() {
+						return e1() == e2();
+					};
+					break;
+				case "!=":
+					$r = function() {
+						return e1() != e2();
+					};
+					break;
+				case "&&":
+					$r = function() {
+						return e1() && e2();
+					};
+					break;
+				case "||":
+					$r = function() {
+						return e1() || e2();
+					};
+					break;
+				default:
+					$r = (function($this) {
+						var $r;
+						throw "Unknown operation " + p1.p;
+						return $r;
+					}($this));
+				}
+				return $r;
+			}(this));
+		case "!":
+			var e = this.makeExpr(l);
+			return function() {
+				var v = e();
+				return v == null || v == false;
+			};
+		case "-":
+			var e = this.makeExpr(l);
+			return function() {
+				return -e();
+			};
+		}
+		throw p.p;
+	}
+	,makeExpr: function(l) {
+		return this.makePath(this.makeExpr2(l),l);
+	}
+	,makePath: function(e,l) {
+		var p = l.first();
+		if(p == null || p.p != ".") return e;
+		l.pop();
+		var field = l.pop();
+		if(field == null || !field.s) throw field.p;
+		var f = field.p;
+		haxe.Template.expr_trim.match(f);
+		f = haxe.Template.expr_trim.matched(1);
+		return this.makePath(function() {
+			return Reflect.field(e(),f);
+		},l);
+	}
+	,makeConst: function(v) {
+		haxe.Template.expr_trim.match(v);
+		v = haxe.Template.expr_trim.matched(1);
+		if(HxOverrides.cca(v,0) == 34) {
+			var str = HxOverrides.substr(v,1,v.length - 2);
+			return function() {
+				return str;
+			};
+		}
+		if(haxe.Template.expr_int.match(v)) {
+			var i = Std.parseInt(v);
+			return function() {
+				return i;
+			};
+		}
+		if(haxe.Template.expr_float.match(v)) {
+			var f = Std.parseFloat(v);
+			return function() {
+				return f;
+			};
+		}
+		var me = this;
+		return function() {
+			return me.resolve(v);
+		};
+	}
+	,parseExpr: function(data) {
+		var l = new List();
+		var expr = data;
+		while(haxe.Template.expr_splitter.match(data)) {
+			var p = haxe.Template.expr_splitter.matchedPos();
+			var k = p.pos + p.len;
+			if(p.pos != 0) l.add({ p : HxOverrides.substr(data,0,p.pos), s : true});
+			var p1 = haxe.Template.expr_splitter.matched(0);
+			l.add({ p : p1, s : p1.indexOf("\"") >= 0});
+			data = haxe.Template.expr_splitter.matchedRight();
+		}
+		if(data.length != 0) l.add({ p : data, s : true});
+		var e;
+		try {
+			e = this.makeExpr(l);
+			if(!l.isEmpty()) throw l.first().p;
+		} catch( s ) {
+			if( js.Boot.__instanceof(s,String) ) {
+				throw "Unexpected '" + s + "' in " + expr;
+			} else throw(s);
+		}
+		return function() {
+			try {
+				return e();
+			} catch( exc ) {
+				throw "Error : " + Std.string(exc) + " in " + expr;
+			}
+		};
+	}
+	,parse: function(tokens) {
+		var t = tokens.pop();
+		var p = t.p;
+		if(t.s) return haxe._Template.TemplateExpr.OpStr(p);
+		if(t.l != null) {
+			var pe = new List();
+			var _g = 0, _g1 = t.l;
+			while(_g < _g1.length) {
+				var p1 = _g1[_g];
+				++_g;
+				pe.add(this.parseBlock(this.parseTokens(p1)));
+			}
+			return haxe._Template.TemplateExpr.OpMacro(p,pe);
+		}
+		if(HxOverrides.substr(p,0,3) == "if ") {
+			p = HxOverrides.substr(p,3,p.length - 3);
+			var e = this.parseExpr(p);
+			var eif = this.parseBlock(tokens);
+			var t1 = tokens.first();
+			var eelse;
+			if(t1 == null) throw "Unclosed 'if'";
+			if(t1.p == "end") {
+				tokens.pop();
+				eelse = null;
+			} else if(t1.p == "else") {
+				tokens.pop();
+				eelse = this.parseBlock(tokens);
+				t1 = tokens.pop();
+				if(t1 == null || t1.p != "end") throw "Unclosed 'else'";
+			} else {
+				t1.p = HxOverrides.substr(t1.p,4,t1.p.length - 4);
+				eelse = this.parse(tokens);
+			}
+			return haxe._Template.TemplateExpr.OpIf(e,eif,eelse);
+		}
+		if(HxOverrides.substr(p,0,8) == "foreach ") {
+			p = HxOverrides.substr(p,8,p.length - 8);
+			var e = this.parseExpr(p);
+			var efor = this.parseBlock(tokens);
+			var t1 = tokens.pop();
+			if(t1 == null || t1.p != "end") throw "Unclosed 'foreach'";
+			return haxe._Template.TemplateExpr.OpForeach(e,efor);
+		}
+		if(haxe.Template.expr_splitter.match(p)) return haxe._Template.TemplateExpr.OpExpr(this.parseExpr(p));
+		return haxe._Template.TemplateExpr.OpVar(p);
+	}
+	,parseBlock: function(tokens) {
+		var l = new List();
+		while(true) {
+			var t = tokens.first();
+			if(t == null) break;
+			if(!t.s && (t.p == "end" || t.p == "else" || HxOverrides.substr(t.p,0,7) == "elseif ")) break;
+			l.add(this.parse(tokens));
+		}
+		if(l.length == 1) return l.first();
+		return haxe._Template.TemplateExpr.OpBlock(l);
+	}
+	,parseTokens: function(data) {
+		var tokens = new List();
+		while(haxe.Template.splitter.match(data)) {
+			var p = haxe.Template.splitter.matchedPos();
+			if(p.pos > 0) tokens.add({ p : HxOverrides.substr(data,0,p.pos), s : true, l : null});
+			if(HxOverrides.cca(data,p.pos) == 58) {
+				tokens.add({ p : HxOverrides.substr(data,p.pos + 2,p.len - 4), s : false, l : null});
+				data = haxe.Template.splitter.matchedRight();
+				continue;
+			}
+			var parp = p.pos + p.len;
+			var npar = 1;
+			while(npar > 0) {
+				var c = HxOverrides.cca(data,parp);
+				if(c == 40) npar++; else if(c == 41) npar--; else if(c == null) throw "Unclosed macro parenthesis";
+				parp++;
+			}
+			var params = HxOverrides.substr(data,p.pos + p.len,parp - (p.pos + p.len) - 1).split(",");
+			tokens.add({ p : haxe.Template.splitter.matched(2), s : false, l : params});
+			data = HxOverrides.substr(data,parp,data.length - parp);
+		}
+		if(data.length > 0) tokens.add({ p : data, s : true, l : null});
+		return tokens;
+	}
+	,resolve: function(v) {
+		if(Reflect.hasField(this.context,v)) return Reflect.field(this.context,v);
+		var $it0 = this.stack.iterator();
+		while( $it0.hasNext() ) {
+			var ctx = $it0.next();
+			if(Reflect.hasField(ctx,v)) return Reflect.field(ctx,v);
+		}
+		if(v == "__current__") return this.context;
+		return Reflect.field(haxe.Template.globals,v);
+	}
+	,execute: function(context,macros) {
+		this.macros = macros == null?{ }:macros;
+		this.context = context;
+		this.stack = new List();
+		this.buf = new StringBuf();
+		this.run(this.expr);
+		return this.buf.b;
+	}
+	,buf: null
+	,stack: null
+	,macros: null
+	,context: null
+	,expr: null
+	,__class__: haxe.Template
+}
 haxe.Timer = $hxClasses["haxe.Timer"] = function(time_ms) {
 	var me = this;
 	this.id = window.setInterval(function() {
@@ -2087,6 +2618,32 @@ org.silex.publication.PublicationService.prototype = $extend(org.silex.service.S
 	,publicationFolder: null
 	,__class__: org.silex.publication.PublicationService
 });
+if(!org.slplayer) org.slplayer = {}
+if(!org.slplayer.component) org.slplayer.component = {}
+if(!org.slplayer.component.template) org.slplayer.component.template = {}
+org.slplayer.component.template.TemplateMacros = $hxClasses["org.slplayer.component.template.TemplateMacros"] = function() { }
+org.slplayer.component.template.TemplateMacros.__name__ = ["org","slplayer","component","template","TemplateMacros"];
+org.slplayer.component.template.TemplateMacros.makeDateReadable = function(resolve,dateOrString,format) {
+	if(format == null) format = "%Y/%m/%d %H:%M";
+	var date;
+	if(js.Boot.__instanceof(dateOrString,String)) {
+		date = HxOverrides.strDate(dateOrString);
+		haxe.Log.trace("makeDateReadable string " + Std.string(dateOrString),{ fileName : "TemplateMacros.hx", lineNumber : 38, className : "org.slplayer.component.template.TemplateMacros", methodName : "makeDateReadable"});
+	} else if(js.Boot.__instanceof(dateOrString,Date)) {
+		haxe.Log.trace("makeDateReadable date ",{ fileName : "TemplateMacros.hx", lineNumber : 41, className : "org.slplayer.component.template.TemplateMacros", methodName : "makeDateReadable"});
+		date = dateOrString;
+	} else {
+		date = null;
+		throw "Error, the parameter is supposed to be String or Date";
+	}
+	var res = DateTools.format(date,format);
+	haxe.Log.trace("makeDateReadable returns " + res,{ fileName : "TemplateMacros.hx", lineNumber : 50, className : "org.slplayer.component.template.TemplateMacros", methodName : "makeDateReadable"});
+	return res;
+}
+org.slplayer.component.template.TemplateMacros.trace = function(resolve,obj) {
+	haxe.Log.trace(obj,{ fileName : "TemplateMacros.hx", lineNumber : 58, className : "org.slplayer.component.template.TemplateMacros", methodName : "trace"});
+	return "";
+}
 var publication = publication || {}
 publication.TestClient = $hxClasses["publication.TestClient"] = function() {
 	this.publicationService = new org.silex.publication.PublicationService("../" + "publication-data/","./test.php/");
@@ -2193,6 +2750,22 @@ publication.TestClient.prototype = {
 	}
 	,publicationService: null
 	,__class__: publication.TestClient
+}
+var template = template || {}
+template.TestClient = $hxClasses["template.TestClient"] = function() {
+};
+template.TestClient.__name__ = ["template","TestClient"];
+template.TestClient.prototype = {
+	testTemplateMacros: function() {
+		var date = HxOverrides.strDate("2021-12-02 00:00:00");
+		var t = new haxe.Template("$$trace(::date::)$$makeDateReadable(::date::)");
+		utest.Assert.equals("2021/12/02 00:00",t.execute({ date : date},org.slplayer.component.template.TemplateMacros),null,{ fileName : "TestClient.hx", lineNumber : 19, className : "template.TestClient", methodName : "testTemplateMacros"});
+		var t1 = new haxe.Template("$$makeDateReadable(::date::,%Y/%m/%d)");
+		utest.Assert.equals("2021/12/02",t1.execute({ date : date},org.slplayer.component.template.TemplateMacros),null,{ fileName : "TestClient.hx", lineNumber : 22, className : "template.TestClient", methodName : "testTemplateMacros"});
+		var t2 = new haxe.Template("$$makeDateReadable(::date::,%H:%M)");
+		utest.Assert.equals("00:00",t2.execute({ date : date},org.slplayer.component.template.TemplateMacros),null,{ fileName : "TestClient.hx", lineNumber : 25, className : "template.TestClient", methodName : "testTemplateMacros"});
+	}
+	,__class__: template.TestClient
 }
 var utest = utest || {}
 utest.Assert = $hxClasses["utest.Assert"] = function() { }
@@ -3996,9 +4569,16 @@ js.XMLHttpRequest = window.XMLHttpRequest?XMLHttpRequest:window.ActiveXObject?fu
 }(this));
 AllTestsClient.TEST_ROOT_PATH = "../";
 AllTestsClient.GATEWAY_URL = "./test.php/";
+DateTools.DAYS_OF_MONTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 haxe.Serializer.USE_CACHE = false;
 haxe.Serializer.USE_ENUM_INDEX = false;
 haxe.Serializer.BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%:";
+haxe.Template.splitter = new EReg("(::[A-Za-z0-9_ ()&|!+=/><*.\"-]+::|\\$\\$([A-Za-z0-9_-]+)\\()","");
+haxe.Template.expr_splitter = new EReg("(\\(|\\)|[ \r\n\t]*\"[^\"]*\"[ \r\n\t]*|[!+=/><*.&|-]+)","");
+haxe.Template.expr_trim = new EReg("^[ ]*([^ ]+)[ ]*$","");
+haxe.Template.expr_int = new EReg("^[0-9]+$","");
+haxe.Template.expr_float = new EReg("^([+-]?)(?=\\d|,\\d)\\d*(,\\d*)?([Ee]([+-]?\\d+))?$","");
+haxe.Template.globals = { };
 haxe.Unserializer.DEFAULT_RESOLVER = Type;
 haxe.Unserializer.BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%:";
 haxe.Unserializer.CODES = null;

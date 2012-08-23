@@ -21,12 +21,19 @@ class AllTestsClient {
 	 * Add new tests here
 	 */
 	public static function main(){
+		// workaround, utest says that body is null :-/
+		haxe.Timer.delay(function (){
+			new AllTestsClient();
+		}, 100);
+	}
+	public function new(){
         var runner = new Runner();
 
-	    runner.addCase(new publication.TestClient());
+	    runner.addCase(new template.TestClient());
+		runner.addCase(new publication.TestClient());
 
         Report.create(runner);
         runner.run();
+
 	}
-	public function new(){}
 }

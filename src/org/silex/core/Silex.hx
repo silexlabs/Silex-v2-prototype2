@@ -21,8 +21,10 @@ import org.silex.publication.PublicationService;
 #if SilexServerSide
 import php.Web;
 import sys.io.File;
+import haxe.remoting.HttpConnection;
 
 import org.silex.core.ServerConfig;
+import org.silex.service.ServiceBase;
 #end
 
 //////////////////////////////////////////////////
@@ -130,6 +132,13 @@ class Silex {
 		// load server config
 		var serverConfig = new ServerConfig();
 
+		// create the services (which are then exposed)
+		var publicationService = new PublicationService();
+
+	    // handle remoting, this entry point can be a gateway 
+		if( HttpConnection.handleRequest(ServiceBase.context) )
+		  return;
+
 		// Retrieve the publication name from the URL
 		var urlParamsString:String = Web.getParamsString();
 		var params:Array<String> = (urlParamsString.split("&")[0]).split("/");
@@ -156,7 +165,6 @@ class Silex {
 			initialPageName = params[1];
 		}
 		// Load HTML data
-		var publicationService = new PublicationService();
 		var publicationData = publicationService.getPublicationData(publicationName);
 
 		// build the DOM

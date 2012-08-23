@@ -16,18 +16,20 @@ import org.slplayer.util.DomTools;
 @tagNameFilter("div")
 class LoginDialog extends LinkToPage
 {
-	/**
-	 * array used to store all the children while the layer is hided
-	 */
-	private var childrenArray:Array<HtmlDom>;
-	/**
-	 * Constructor
-	 * Start listening the buttons
-	 */
-	public function new(rootElement:HtmlDom, SLPId:String){
-		super(rootElement, SLPId);
-//		rootElement.addEventListener("click", onClick, false);
-	}
+	public static inline var LOADING_PAGE_NAME = "loading-pending";
+	public static inline var THIS_PAGE_NAME = "login-dialog";
+
+	public static inline var SUBMIT_BUTTON_CLASS_NAME = "ok-button";
+	public static inline var ERROR_TEXT_FIELD_CLASS_NAME = "error-text";
+
+	public static inline var LOGIN_INPUT_FIELD_CLASS_NAME = "input-field-login";
+	public static inline var LOGIN_INPUT_FIELD_NOT_FOUND = "Could not find the input field for login. It is expected to have input-field-login as a css class name.";
+
+	public static inline var PASSWORD_INPUT_FIELD_CLASS_NAME = "input-field-pass";
+	public static inline var PASSWORD_INPUT_FIELD_NOT_FOUND = "Could not find the input field for password. It is expected to have input-field-pass as a css class name.";
+	
+	public static inline var ALL_FIELDS_REQUIRED = "All fields are required.";
+	public static inline var NETWORK_ERROR = "Network error.";
 	/**
 	 * Handle click on submit button
 	 */
@@ -35,36 +37,34 @@ class LoginDialog extends LinkToPage
 		// retrieve the node who triggered the event
 		var target:HtmlDom = cast(e.target);
 		// it is supposed to have ok-button in its class name
-		if (DomTools.hasClass(target, "ok-button")){
+		if (DomTools.hasClass(target, SUBMIT_BUTTON_CLASS_NAME)){
 			// get login
-			//var inputElements:HtmlCollection<HtmlDom> = rootElement.getElementsByClassName("input-field-login");
-			var inputElements:HtmlCollection<HtmlDom> = rootElement.getElementsByClassName("input-field-login");
-//	trace(inputElements.length + " - ");
-//	DomTools.inspectTrace(rootElement);
+			var inputElements:HtmlCollection<HtmlDom> = rootElement.getElementsByClassName(LOGIN_INPUT_FIELD_CLASS_NAME);
+
 			if(inputElements.length<1)
-				throw("Could not find the input field for login. It is expected to have input-field-login as a css class name.");
+				throw(LOGIN_INPUT_FIELD_NOT_FOUND);
 			var login = cast(inputElements[0]).value;
 
 			// get pass
-			var inputElements:HtmlCollection<HtmlDom> = rootElement.getElementsByClassName("input-field-pass");
+			var inputElements:HtmlCollection<HtmlDom> = rootElement.getElementsByClassName(PASSWORD_INPUT_FIELD_CLASS_NAME);
 			if(inputElements.length<1)
-				throw("Could not find the input field for password. It is expected to have input-field-pass as a css class name.");
+				throw(PASSWORD_INPUT_FIELD_NOT_FOUND);
 			var pass = cast(inputElements[0]).value;
 
 			// 
 			if (login == "" || pass == ""){
-				trace("Pass or login emty");
-				onLoginError("All fields are required.");
+				onLoginError(ALL_FIELDS_REQUIRED);
 			}
 			else{
-				linkToPagesWithName("login-pending");
-				haxe.Timer.delay(callback(onLoginError, "Network error"),2000);
+				linkToPagesWithName(LOADING_PAGE_NAME);
+				haxe.Timer.delay(callback(onLoginError, NETWORK_ERROR),2000);
+				// todo : implement authentication here
 			}
 		}
 	}
 	private function onLoginError(msg:String){
-		linkToPagesWithName("login-dialog");
-		var inputElements:HtmlCollection<HtmlDom> = rootElement.getElementsByClassName("error-text");
+		linkToPagesWithName(THIS_PAGE_NAME);
+		var inputElements:HtmlCollection<HtmlDom> = rootElement.getElementsByClassName(ERROR_TEXT_FIELD_CLASS_NAME);
 		if(inputElements.length>0){
 			inputElements[0].innerHTML = msg;
 		}

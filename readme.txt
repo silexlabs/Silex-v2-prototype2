@@ -1,17 +1,23 @@
 ** To do **
 
-remettre sur pieds la classe Silex
-dans PublicationData, charger tous les .css? ou tout ce qui est dans style/?
+
+Builder::loadPublication charge le dom, le duplique et le stock
+menu : when an item without a sub-menu is clicked, the menu should close itself
+
+refactoring:
+- there should be a DialogBase class, and the *Dialog should be popups, not pages
 
 * bugs
   * workaround, bug https://github.com/silexlabs/Cocktail/issues/207
   * init the document with non empty body, workaround see  https://github.com/silexlabs/Cocktail/issues/208
   * memory leak in the Layer and transition classes
 * transitions with params on the Layer as well as on the link
+* "loading" transitions for the layers with connectors
 * contexts with multiple class names ==== merge the concepts of Context and Page (=> State, State.setState(contextName, stateName))
 * rename
   - Page into State
   - Layer into Container
+* dans PublicationData, charger tous les .css? ou tout ce qui est dans style/?
 * components
   * transition alpha
 * ?no conditional compilation in class Silex (client version)

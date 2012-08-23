@@ -2,6 +2,7 @@ package org.silex.util;
 
 import sys.FileSystem;
 import sys.io.File;
+import php.Web;
 
 /**
  * FileSystem helper functions
@@ -9,6 +10,27 @@ import sys.io.File;
  */
 class FileSystemTools
 {
+	/**
+	 * Retrieve the path to the root folder of the app, given the location of the php library
+	 */
+/*	public static inline var SILEX_ROOT_PATH_FROM_PHP_LIB = "../../../";
+	public static inline var SILEX_PHP_LIB_PATH = "libs/silex/silex.php";
+	public static var DEFAULT_PHP_LIB_PATH = SILEX_PHP_LIB_PATH;
+
+	public static function getRootFolder(pathOfPhpLib:String = null):String{
+		if (pathOfPhpLib == null)
+			pathOfPhpLib = DEFAULT_PHP_LIB_PATH;
+
+		if (StringTools.startsWith(pathOfPhpLib, "./"))
+			pathOfPhpLib = pathOfPhpLib.substr(-2);
+		if (StringTools.endsWith(pathOfPhpLib, "/"))
+			pathOfPhpLib = pathOfPhpLib.substr(0, pathOfPhpLib.length-1);
+
+		var thisFile = Web.getCwd();
+		var ret = thisFile.substr(0,thisFile.indexOf(pathOfPhpLib));
+		trace ("getRootFolder ("+pathOfPhpLib+") called in "+thisFile+" returns "+ret);
+		return ret;
+	}
 	/**
 	 * Recursively delete directory content
 	 */
