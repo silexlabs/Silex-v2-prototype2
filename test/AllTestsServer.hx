@@ -21,6 +21,7 @@ class AllTestsServer {
 	public static function main(){
         var runner = new Runner();
 
+	    runner.addCase(new interpreter.TestCross());
 		runner.addCase(new util.TestServer());
 		runner.addCase(new config.TestServer());
 		runner.addCase(new publication.TestServer());

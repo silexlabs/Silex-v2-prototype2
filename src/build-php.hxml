@@ -12,3 +12,4 @@
 -D SilexServerSide
 -D stopOnError
 --no-traces
+-lib hscript

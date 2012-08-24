@@ -7,4 +7,8 @@
 		?>
 	-->
 	<defaultPublication>test1</defaultPublication>
+	<admin>silexlabs</admin>
+	<debugModeAction>
+		openPublication("test1");
+	</debugModeAction>
 </xml>

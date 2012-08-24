@@ -11,7 +11,7 @@ class ServerConfig extends ConfigBase{
 	/**
 	 * Default path for the config file
 	 */
-	public static inline var SERVER_CONFIG_FILE:String = "conf/server-config.xml.php";
+	public static inline var SERVER_CONFIG_FILE = "conf/server-config.xml.php";
 	/**
 	 * Config data
 	 * Default publication
@@ -22,6 +22,11 @@ class ServerConfig extends ConfigBase{
 	 * Admin user, the one who has installed Silex
 	 */
 	public var admin:String;
+	/**
+	 * Actions to be executed at start, on the client side for debugging
+	 * @example	openPublication("test1"); to open the publication directly at
+	 */
+	public var debugModeAction:String;
 	/**
 	 * Constructor
 	 * Load the provided config file
@@ -44,6 +49,11 @@ class ServerConfig extends ConfigBase{
 			admin = xml.node.admin.innerData;
 		else
 			trace("Warning: missing admin in config file ");
+
+		if(xml.hasNode.debugModeAction)
+			debugModeAction = xml.node.debugModeAction.innerData;
+		else
+			debugModeAction = "";
 	}
 	/**
 	 * Convert the structured config data to XML data
@@ -60,6 +70,9 @@ class ServerConfig extends ConfigBase{
 "));
 		node.addChild(Xml.parse("
 			<admin>"+admin+"</admin>
+"));
+		node.addChild(Xml.parse("
+			<debugModeAction>"+debugModeAction+"</debugModeAction>
 "));
 		return xml;
 	}

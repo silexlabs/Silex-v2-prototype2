@@ -9,6 +9,7 @@
 -D slpdebug
 -D disableEmbedHtml
 -D noAutoStart
+-lib hscript
 
 --next
 
@@ -24,3 +25,4 @@
 -D slpdebug
 -D disableEmbedHtml
 -D noAutoStart
+-lib hscript

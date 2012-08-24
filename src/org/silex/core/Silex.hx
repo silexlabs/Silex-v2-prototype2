@@ -14,6 +14,7 @@ import org.slplayer.util.DomTools;
 import org.slplayer.component.navigation.Page;
 
 import org.silex.publication.PublicationService;
+import org.silex.interpreter.Interpreter;
 
 #if SilexClientSide
 #end
@@ -110,6 +111,11 @@ class Silex {
 			/**/
 			Lib.document.body.innerHTML = StringTools.htmlUnescape(DomTools.getMeta(CONFIG_PUBLICATION_BODY));
 		}
+		// execute an action when needed for debug
+		var debugModeAction = DomTools.getMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION);
+		if (debugModeAction != null){
+			Interpreter.exec(debugModeAction);
+		}
 		// init SLPlayer components
 		trace(" application.init "+Lib.document.body);
 		// create an SLPlayer app
@@ -178,6 +184,9 @@ class Silex {
 
 		// add meta with the page content
 		DomTools.setMeta(CONFIG_PUBLICATION_BODY, StringTools.htmlEscape(Lib.document.body.innerHTML));
+
+		// add meta with the debug action
+		DomTools.setMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION, StringTools.htmlEscape(serverConfig.debugModeAction));
 
 		// set initial page 
 		if (initialPageName != "" && DomTools.getMeta(CONFIG_USE_DEEPLINK)!="false")

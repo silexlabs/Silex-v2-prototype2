@@ -326,6 +326,46 @@
 				"buffer_size": 813,
 				"line_ending": "Unix"
 			}
+		},
+		{
+			"file": "template/TestClient.hx",
+			"settings":
+			{
+				"buffer_size": 765,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/template/TemplateMacros.hx",
+			"settings":
+			{
+				"buffer_size": 2184,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/list/List.hx",
+			"settings":
+			{
+				"buffer_size": 6696,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "AllTestsClient.hx",
+			"settings":
+			{
+				"buffer_size": 838,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "publication/TestClient.hx",
+			"settings":
+			{
+				"buffer_size": 6273,
+				"line_ending": "Unix"
+			}
 		}
 	],
 	"build_system": "Packages/HaXe/Hxml.sublime-build",
@@ -465,6 +505,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"		var t = new haxe.Template(\"$$makeDateReadable(::date::,%Y/%m/%d)\");\n		Assert.equals(\"2021/12/02\", t.execute({date:date}, TemplateMacros));\n",
+			"TemplateMacros",
+			"template",
 			"FileSystemTools.getRootFolder()+",
 			"AllTestsServer.TEST_ROOT_PATH + ",
 			"THIS_TEST_PATH",
@@ -589,10 +632,7 @@
 			"RawHtml",
 			"FileSystem",
 			"	public function testReadRawHtml():Void{\n		publicationService.getRawHtml(\"test-read\", Assert.createEvent(onResultReadRawHtml), onError);\n		//publicationService.load(\"test-not-exist\", onResultReadRawHtml, Assert.createEvent(onError));\n	}\n",
-			"docume",
-			"DEFAULT_PUBLICATION_FOLDER",
-			"class",
-			"\"../"
+			"docume"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -614,7 +654,7 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 7,
 			"sheets":
 			[
 				{
@@ -725,6 +765,146 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "template/TestClient.hx",
+					"settings":
+					{
+						"buffer_size": 765,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								688,
+								688
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/template/TemplateMacros.hx",
+					"settings":
+					{
+						"buffer_size": 2184,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2178,
+								2178
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 375.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/list/List.hx",
+					"settings":
+					{
+						"buffer_size": 6696,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2734,
+								2730
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1235.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "AllTestsClient.hx",
+					"settings":
+					{
+						"buffer_size": 838,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								730,
+								730
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "publication/TestClient.hx",
+					"settings":
+					{
+						"buffer_size": 6273,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4446,
+								4480
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1997.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

@@ -1,6 +1,6 @@
 ** To do **
 
-
+reunir template et interpreter
 Builder::loadPublication charge le dom, le duplique et le stock
 menu : when an item without a sub-menu is clicked, the menu should close itself
 

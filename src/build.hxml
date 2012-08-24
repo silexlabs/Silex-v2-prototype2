@@ -9,3 +9,4 @@
 -D SilexClientSide
 -D stopOnError
 
+-lib hscript
