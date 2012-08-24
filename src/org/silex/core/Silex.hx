@@ -111,11 +111,13 @@ class Silex {
 			/**/
 			Lib.document.body.innerHTML = StringTools.htmlUnescape(DomTools.getMeta(CONFIG_PUBLICATION_BODY));
 		}
+		
 		// execute an action when needed for debug
 		var debugModeAction = DomTools.getMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION);
 		if (debugModeAction != null){
-			Interpreter.exec(debugModeAction);
+			var res = Interpreter.exec(StringTools.htmlUnescape(debugModeAction));
 		}
+
 		// init SLPlayer components
 		trace(" application.init "+Lib.document.body);
 		// create an SLPlayer app
@@ -157,6 +159,12 @@ class Silex {
 			publicationName = serverConfig.defaultPublication;
 		}
 
+		// Load HTML data
+		var publicationData = publicationService.getPublicationData(publicationName);
+
+		// Load config data
+		var publicationConfig = publicationService.getPublicationConfig(publicationName);
+
 		var initialPageName = "";
 		// get the initial page name from the URL
 		// case of 		http://my.domain.com/
@@ -170,9 +178,6 @@ class Silex {
 			// page name is either "" or the 1st element
 			initialPageName = params[1];
 		}
-		// Load HTML data
-		var publicationData = publicationService.getPublicationData(publicationName);
-
 		// build the DOM
 		Lib.document.innerHTML = publicationData.html;
 
@@ -185,8 +190,11 @@ class Silex {
 		// add meta with the page content
 		DomTools.setMeta(CONFIG_PUBLICATION_BODY, StringTools.htmlEscape(Lib.document.body.innerHTML));
 
-		// add meta with the debug action
-		DomTools.setMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION, StringTools.htmlEscape(serverConfig.debugModeAction));
+		// add meta with the scripts
+		// todo: add the scripts from the html page
+		var scripts = StringTools.htmlEscape(serverConfig.debugModeAction);
+		DomTools.setMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION, scripts);
+
 
 		// set initial page 
 		if (initialPageName != "" && DomTools.getMeta(CONFIG_USE_DEEPLINK)!="false")

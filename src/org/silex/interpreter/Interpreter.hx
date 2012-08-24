@@ -29,12 +29,10 @@ class Interpreter{
 		var program = parser.parseString(script);
 		var interp = new hscript.Interp();
 		for (varName in Reflect.fields(BASIC_CONTEXT)){
-				trace("add variable "+varName+" = "+Reflect.getProperty(BASIC_CONTEXT, varName));
 			interp.variables.set(varName,Reflect.getProperty(BASIC_CONTEXT, varName));
 		}
 		if (context != null){
 			for (varName in context.keys()){
-				trace("add variable "+varName+" = "+context.get(varName));
 				interp.variables.set(varName,context.get(varName));
 			}
 		}

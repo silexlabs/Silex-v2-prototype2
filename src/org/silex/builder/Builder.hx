@@ -2,6 +2,7 @@ package org.silex.builder;
 
 import js.Dom;
 import js.Lib;
+import haxe.xml.Fast;
 
 import org.silex.publication.PublicationService;
 import org.silex.publication.PublicationData;
@@ -19,12 +20,12 @@ class Builder {
 	/**
 	 * publication DOM used as the model
 	 */
-	public static var publicationModel:HtmlDom;
+	public static var publicationModel:{body:HtmlDom, head:HtmlDom};
 	/**
 	 * publication DOM used as the view
 	 * it is attached to the browser dom
 	 */
-	public static var publicationView:HtmlDom;
+	public static var publicationView:{body:HtmlDom, head:HtmlDom};
 	/**
 	 * currently loaded publication config
 	 */
@@ -49,12 +50,31 @@ class Builder {
 	 * initialize the SLPlayer for the view
 	 */
 	public static function onLoad(data:PublicationData){
-		publicationModel = Lib.document.createElement("div");
-		publicationModel.innerHTML = data.html;
-		trace(data.html);
-		trace(publicationModel.innerHTML);
-		DomTools.addCssRules(data.html, publicationModel);
-		publicationView = publicationModel.cloneNode(true);
+		publicationModel = {
+			body:Lib.document.createElement("div"),
+			head: Lib.document.createElement("div")
+		}
+		trace("parsing data "+data.html);
+		var xml = new Fast(Xml.parse(data.html).firstChild());
+
+		trace("Convert to DOM "+xml.hasNode.head+" - "+xml.hasNode.body);
+		if (xml.hasNode.body)
+			publicationModel.body.innerHTML = xml.node.body.innerHTML;
+		else if (xml.hasNode.BODY)
+			publicationModel.body.innerHTML = xml.node.BODY.innerHTML;
+		if (xml.hasNode.head)
+			publicationModel.head.innerHTML = xml.node.head.innerHTML;
+		else if (xml.hasNode.HEAD)
+			publicationModel.head.innerHTML = xml.node.HEAD.innerHTML;
+
+		trace("Duplicate DOM "+publicationModel.body);
+		publicationView = {
+			body: publicationModel.body.cloneNode(true),
+			head: publicationModel.head.cloneNode(true)
+		}
+		trace(publicationView.head.innerHTML);
+		DomTools.addCssRules(data.css, publicationView.head);
+		trace(publicationView.head.innerHTML);
 	}
 	/**
 	 * publication loading went wrong

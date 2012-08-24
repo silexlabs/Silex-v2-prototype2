@@ -4976,14 +4976,12 @@ org.silex.interpreter.Interpreter.exec = function(script,context) {
 	while(_g < _g1.length) {
 		var varName = _g1[_g];
 		++_g;
-		haxe.Log.trace("add variable " + varName + " = " + Std.string(Reflect.getProperty({ Lib : js.Lib, Math : Math, StringTools : StringTools},varName)),{ fileName : "Interpreter.hx", lineNumber : 32, className : "org.silex.interpreter.Interpreter", methodName : "exec"});
 		interp.variables.set(varName,Reflect.getProperty({ Lib : js.Lib, Math : Math, StringTools : StringTools},varName));
 	}
 	if(context != null) {
 		var $it0 = context.keys();
 		while( $it0.hasNext() ) {
 			var varName = $it0.next();
-			haxe.Log.trace("add variable " + varName + " = " + Std.string(context.get(varName)),{ fileName : "Interpreter.hx", lineNumber : 37, className : "org.silex.interpreter.Interpreter", methodName : "exec"});
 			interp.variables.set(varName,context.get(varName));
 		}
 	}

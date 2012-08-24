@@ -1,11 +1,12 @@
 ** To do **
 
-reunir template et interpreter
 Builder::loadPublication charge le dom, le duplique et le stock
-menu : when an item without a sub-menu is clicked, the menu should close itself
 
 refactoring:
+- reunir template et interpreter dans un package 
 - there should be a DialogBase class, and the *Dialog should be popups, not pages
+  + menu : when an item without a sub-menu is clicked, the menu should close itself
+- specs Silex v2 builder
 
 * bugs
   * workaround, bug https://github.com/silexlabs/Cocktail/issues/207

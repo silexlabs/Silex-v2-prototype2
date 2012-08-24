@@ -13,7 +13,8 @@ import php.Sys;
 import php.io.File;
 
 class TestServer {
-	public function new(){}
+	public function new(){
+	}
 	
 	public static inline var THIS_TEST_PATH:String = "config-data/";
 	public static inline var TEST_PUBLICATION_CONFIG:PublicationConfigData = {
@@ -24,11 +25,13 @@ class TestServer {
 
 	public function testServerConfigRead():Void
 	{
+		trace("testServerConfigRead");
 		var config = new ServerConfig(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "server-config.xml.php");
 		Assert.equals("test1", config.defaultPublication);
 	}
 	public function testServerConfigWrite():Void
 	{
+		trace("testServerConfigWrite");
 		var config = new ServerConfig(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "server-config-write.xml.php");
 		config.saveData(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "server-config-tmp.xml.php");
 
@@ -41,6 +44,7 @@ class TestServer {
 	//////////////////////////////////////////////////////////////////
 	public function testPublicationConfigRead():Void
 	{
+		trace("testPublicationConfigRead");
 		var config = new PublicationConfig(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config.xml.php");
 
 		Assert.equals(TEST_PUBLICATION_CONFIG.state, config.configData.state);
@@ -52,6 +56,7 @@ class TestServer {
 /**/
 	public function testPublicationConfigWrite():Void
 	{
+		trace("testPublicationConfigWrite");
 		var config = new PublicationConfig(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config.xml.php");
 		config.configData = TEST_PUBLICATION_CONFIG;
 		config.saveData(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config-tmp.xml.php");
@@ -64,3 +69,4 @@ class TestServer {
 	//////////////////////////////////////////////////////////////////
 /**/
 }
+		

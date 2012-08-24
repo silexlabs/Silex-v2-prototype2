@@ -7,6 +7,10 @@ import js.Dom;
  * Store the content data of a publiction for client/server transmission
  */
 typedef PublicationData = {
+	/**
+	 * the raw HTML data of the publication including the body and header tags
+	 * @example 	<HTML><HEAD><META name="description" content="Silex online editor"></META></HEAD><BODY><P>Hello</P></BODY></HTML>
+	 */
 	var html:String;
 	/**
 	 * the raw HTML data of the publication's body tag, including the body tag
