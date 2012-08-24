@@ -1,12 +1,11 @@
 ** To do **
 
-Builder::loadPublication charge le dom, le duplique et le stock
-
 refactoring:
-- reunir template et interpreter dans un package 
 - there should be a DialogBase class, and the *Dialog should be popups, not pages
   + menu : when an item without a sub-menu is clicked, the menu should close itself
+  + use form tag
 - specs Silex v2 builder
+- reunir template et interpreter dans un package ?
 
 * bugs
   * workaround, bug https://github.com/silexlabs/Cocktail/issues/207

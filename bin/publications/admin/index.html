@@ -72,11 +72,17 @@
 				</DIV>
 		   </LI>
 		</UL>
+		<!-- Views / modes -->
+		<!-- Builder mode -->
+		<A class="Page" name="builder-mode"></A>
+		<div class="Layer builder-mode Builder" >
+			HERE IS THE PUBLICATION
+		</div>
 		<!-- Dialogs -->
 		<!-- Login Dialog -->
 		<A class="Page" name="login-dialog"></A>
 		<A class="Page" name="loading-pending"></A>
-		<div class="Layer login-dialog dialog-foreground LoginDialog">
+		<div class="Layer login-dialog dialog-foreground Auth" data-dialog-name="login-dialog">
 			<p>Login</p><p><input type="text" class="input-field-login"></input></p>
 			<p>Password</p><p><input type="text" class="input-field-pass"></input></p>
 			<div>
@@ -87,7 +93,7 @@
 		</div>
 		<!-- Open Dialog -->
 		<A class="Page" name="open-dialog"></A>
-		<div class="Layer open-dialog dialog-foreground OpenPublicationDialog">
+		<div class="Layer open-dialog dialog-foreground SelectPublication" data-dialog-name="open-dialog">
 			<ul class="PublicationList PublicationConnector">
 				<li>::name:: <small>last change by ::configData.lastChange.author:: on ::configData.lastChange.date::</small></li>
 			</ul>

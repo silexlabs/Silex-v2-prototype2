@@ -34,17 +34,17 @@
 .error-text{
 	color: darkred;
 }
-.OpenPublicationDialog{
+.SelectPublication{
     width: 250px;
     height: 500px;
 }
-.OpenPublicationDialog ul{
+.SelectPublication ul{
     overflow: auto;
 	padding: 0px;
 	margin: 0px;
     height: 100%;
 }
-.OpenPublicationDialog li{
+.SelectPublication li{
     border-width: 1px 0;
     border-style: solid;
     border-width: thin;
@@ -58,7 +58,7 @@
     border-radius: 5px;
     cursor: pointer;
 }
-.OpenPublicationDialog .listSelectedItem{
+.SelectPublication .listSelectedItem{
     background-color: DarkRed;
 }
 
