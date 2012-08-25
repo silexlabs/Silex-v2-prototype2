@@ -4,11 +4,13 @@ import js.Dom;
 import js.Lib;
 import haxe.xml.Fast;
 
+import org.silex.interpreter.Interpreter;
 import org.silex.publication.PublicationService;
 import org.silex.publication.PublicationData;
 import org.slplayer.component.navigation.transition.TransitionData;
 import org.slplayer.util.DomTools;
 
+import org.slplayer.core.Application;
 import org.slplayer.component.ui.DisplayObject;
 
 /**
@@ -21,6 +23,7 @@ class Builder extends DisplayObject{
 	 * name for the builder mode of the Silex editor
 	 */
 	public static inline var BUILDER_MODE_PAGE_NAME = "Builder";
+#if silexClientSide
 	/**
 	 * publication DOM used as the model
 	 */
@@ -56,16 +59,17 @@ class Builder extends DisplayObject{
 		else{
 			builderInstance = builder;
 			if (publicationView != null)
-				builderInstance.attachPublicationView(publicationView.body);
+				initView();
 		}
 	}
 	/**
 	 * load a publication
 	 */
-	public static function loadPublication(name:String){
+	public static function loadPublication(name:String, config:PublicationConfigData){
 		trace("loading publication "+name);
 		var publicationService = new PublicationService();
 		publicationName = name;
+		configData = config;
 		publicationService.getPublicationData(name, onLoad, onError);
 	}
 	/**
@@ -101,8 +105,32 @@ class Builder extends DisplayObject{
 
 		trace("Call attachView on the builder instance "+builderInstance);
 		// attach to the browser DOM
-		if (builderInstance != null)
-			builderInstance.attachPublicationView(publicationView.body);
+		if (builderInstance != null){
+			initView();
+		}
+	}
+	/**
+	 * Attach the view to the DOM and init a new SLPlayer app
+	 */
+	private static function initView() {
+
+		builderInstance.attachPublicationView(publicationView.body);
+
+		// init SLPlayer
+		// create an SLPlayer app
+		var application = Application.createApplication();
+		application.init();
+
+		// execute debug actions
+		#if silexDebug
+		// execute an action when needed for debug (publication and server config)
+		if (configData.debugModeAction != null){
+			var context = new Hash();
+			context.set("slpid", application.id);
+			trace("slpid = "+ application.id);
+			var res = Interpreter.exec(configData.debugModeAction, context);
+		}
+		#end
 	}
 	/**
 	 * publication loading went wrong
@@ -144,4 +172,5 @@ class Builder extends DisplayObject{
 		rootElement.innerHTML = "";
 		rootElement.appendChild(body);
 	}
+#end
 }

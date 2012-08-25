@@ -59,7 +59,7 @@ class SelectPublication extends DialogBase
 		var item:{name:String, configData:PublicationConfigData} = list.selectedItem;
 		// if a publication is selected
 		if (item != null){
-			Builder.loadPublication(item.name);
+			Builder.loadPublication(item.name, item.configData);
 			Page.openPage(Builder.BUILDER_MODE_PAGE_NAME, false, null, SLPlayerInstanceId);
 			close();
 		}

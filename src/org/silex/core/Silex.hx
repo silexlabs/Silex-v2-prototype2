@@ -118,16 +118,15 @@ class Silex {
 		var application = Application.createApplication();
 		application.init();
 
-		haxe.Timer.delay(callback(doAfterInit,application), 1000);
+		haxe.Timer.delay(callback(doAfterInit, application), 1000);
 	}
 	private static function doAfterInit(application) {
 		#if silexDebug
-		// execute an action when needed for debug
+		// execute an action when needed for debug (publication and server config)
 		var debugModeAction = DomTools.getMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION);
 		if (debugModeAction != null){
 			var context = new Hash();
 			context.set("slpid", application.id);
-			trace("slpid = "+ application.id);
 			var res = Interpreter.exec(StringTools.htmlUnescape(debugModeAction), context);
 		}
 		#end
@@ -169,7 +168,7 @@ class Silex {
 		var publicationData = publicationService.getPublicationData(publicationName);
 
 		// Load config data
-		//var publicationConfig = publicationService.getPublicationConfig(publicationName);
+		var publicationConfig = publicationService.getPublicationConfig(publicationName);
 	
 		var initialPageName = "";
 		// get the initial page name from the URL
@@ -198,7 +197,7 @@ class Silex {
 
 		// add meta with the scripts
 		// todo: add the scripts from the html page
-		var scripts = StringTools.htmlEscape(serverConfig.debugModeAction);
+		var scripts = StringTools.htmlEscape(serverConfig.debugModeAction + publicationConfig.debugModeAction);
 		DomTools.setMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION, scripts);
 
 		// set initial page 

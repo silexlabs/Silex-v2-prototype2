@@ -165,7 +165,8 @@ class PublicationService extends ServiceBase{
 				lastChange : {
 					author : "silexlabs", 
 					date : Date.now()
-				}
+				},
+				debugModeAction: null
 			};
 			// create the empty directory for the publication
 			FileSystem.createDirectory(publicationFolder + publicationName);
@@ -294,7 +295,8 @@ class PublicationService extends ServiceBase{
 			config.configData = {
 				state : configData.state,
 				creation : configData.creation, 
-				lastChange : configData.lastChange
+				lastChange : configData.lastChange,
+				debugModeAction : configData.debugModeAction,
 			}
 			config.saveData(publicationFolder + publicationName + "/" + PublicationConfig.PUBLICATION_CONFIG_FOLDER + "/" + PublicationConfig.PUBLICATION_CONFIG_FILE);
 		}

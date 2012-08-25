@@ -49,7 +49,8 @@ class PublicationConfig extends ConfigBase{
 			lastChange : {
 				author : "", 
 				date : new Date(0, 0, 0, 0, 0, 0)
-			}
+			},
+			debugModeAction: null
 		};
 		super(configFile);
 	}
@@ -69,6 +70,11 @@ class PublicationConfig extends ConfigBase{
 			configData.lastChange = getChangeDataFromXML(xml.node.lastChange);
 		else
 			trace("Warning: missing lastChange in config file ");
+
+		if(xml.hasNode.debugModeAction)
+			configData.debugModeAction = xml.node.debugModeAction.innerData;
+		else
+			configData.debugModeAction=null;
 
 		if(xml.hasNode.state){
 			switch(xml.node.state.innerData){
@@ -159,6 +165,10 @@ class PublicationConfig extends ConfigBase{
 	<author>"+configData.lastChange.author+"</author>
 	<date>"+configData.lastChange.date.toString()+"</date>
 </lastChange>
+"));
+		if (configData.debugModeAction != null)
+			node.addChild(Xml.parse("
+<debugModeAction>"+configData.debugModeAction+"</debugModeAction>
 "));
 
 		return xml;

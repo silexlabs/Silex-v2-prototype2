@@ -14,5 +14,4 @@
 -lib hscript
 
 -D silexServerSide
--D silexClientSide
 -D silexDebug

@@ -73,4 +73,9 @@ typedef PublicationConfigData = {
 	 * The last change data
 	 */
 	var lastChange:ChangeData;
+	/**
+	 * Script to be executed when the publication is opened.
+	 * This is for debug purpose and it requires Silex to be compiled with the flag -silexDebug
+	 */
+	var debugModeAction:Null<String>;
 }

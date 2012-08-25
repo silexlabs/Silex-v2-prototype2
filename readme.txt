@@ -1,6 +1,7 @@
 ** To do **
-bug en cours : Builder.hx:102: Call attachView on the builder instance null
 
+le builder qui ouvre une publication devrait se servir des fonctions de Silex
+pareil pour le côté server (remoting)
 
 refactoring:
 - there should be a DialogBase class, and the *Dialog should be popups, not pages
