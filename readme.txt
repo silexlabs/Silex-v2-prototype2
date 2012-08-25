@@ -1,4 +1,6 @@
 ** To do **
+bug en cours : Builder.hx:102: Call attachView on the builder instance null
+
 
 refactoring:
 - there should be a DialogBase class, and the *Dialog should be popups, not pages
@@ -8,9 +10,11 @@ refactoring:
 - reunir template et interpreter dans un package ?
 
 * bugs
+  * bugfix Lib.document.innerHTML call makes an error 500 on the server https://github.com/silexlabs/Cocktail/issues/217
   * workaround, bug https://github.com/silexlabs/Cocktail/issues/207
   * init the document with non empty body, workaround see  https://github.com/silexlabs/Cocktail/issues/208
   * memory leak in the Layer and transition classes
+  * in the List class, listen to the click on the container instead of each cell, to prevent memory leak
 * transitions with params on the Layer as well as on the link
 * "loading" transitions for the layers with connectors
 * contexts with multiple class names ==== merge the concepts of Context and Page (=> State, State.setState(contextName, stateName))

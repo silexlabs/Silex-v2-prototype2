@@ -6,7 +6,9 @@
 #-D slpdebug
 -D disableEmbedHtml
 -D noAutoStart
--D SilexClientSide
 -D stopOnError
+
+-D silexClientSide
+-D silexDebug
 
 -lib hscript

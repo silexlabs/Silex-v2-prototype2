@@ -1,6 +1,6 @@
 package org.silex.service;
 
-#if SilexClientSide
+#if silexClientSide
 import haxe.remoting.HttpAsyncConnection;
 #end
 import haxe.remoting.Context;
@@ -17,7 +17,7 @@ class ServiceBase{
 	 */
 	public var serviceName:String;
 
-#if SilexClientSide
+#if silexClientSide
 	/**
 	 * Default Silex server URL
 	 */
@@ -49,7 +49,7 @@ class ServiceBase{
 
 #end
 
-#if SilexServerSide
+#if silexServerSide
 	/**
 	 * Remoting context
 	 * Each service adds itself to this context, see the constructor

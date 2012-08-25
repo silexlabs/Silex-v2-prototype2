@@ -6,10 +6,10 @@ import org.silex.publication.PublicationData;
 import js.Lib;
 import js.Dom;
 
-#if SilexClientSide
+#if silexClientSide
 #end
 
-#if SilexServerSide
+#if silexServerSide
 import org.silex.publication.PublicationConfig;
 import org.silex.publication.PublicationData;
 import org.silex.util.FileSystemTools;
@@ -27,7 +27,7 @@ class PublicationService extends ServiceBase{
 	 */
 	public static inline var SERVICE_NAME:String = "publicationService";
 
-#if SilexClientSide
+#if silexClientSide
 	/**
 	 * folder where publications are stored
 	 */
@@ -95,7 +95,7 @@ class PublicationService extends ServiceBase{
 
 //////////////////////////////////////////////////////////////////////////////////////////	
 
-#if SilexServerSide
+#if silexServerSide
 	/**
 	 * Constructor
 	 */

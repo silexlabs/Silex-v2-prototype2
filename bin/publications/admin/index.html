@@ -21,7 +21,7 @@
 			<LI class="main"><A href="#sub-menu1" class="LinkToPage">File</A><A class="Page" name="sub-menu1"></A>
 				<DIV class="container-sub">
 					<UL class="Layer sub-menu1 sub">
-						<LI><A href="#open-dialog" class="LinkToPage">Open</A></LI>
+						<LI><A href="#open-dialog" target="_top" class="LinkToPage">Open</A></LI>
 						<LI><A href="#toolbox" class="menu-item-disabled">Save</A></LI>
 						<LI><A href="#toolbox" class="menu-item-disabled">Save As</A></LI>
 					</UL>
@@ -74,7 +74,7 @@
 		</UL>
 		<!-- Views / modes -->
 		<!-- Builder mode -->
-		<A class="Page" name="builder-mode"></A>
+		<A class="Page" name="Builder"></A>
 		<div class="Layer builder-mode Builder" >
 			HERE IS THE PUBLICATION
 		</div>
@@ -82,24 +82,28 @@
 		<!-- Login Dialog -->
 		<A class="Page" name="login-dialog"></A>
 		<A class="Page" name="loading-pending"></A>
-		<div class="Layer login-dialog dialog-foreground Auth" data-dialog-name="login-dialog">
-			<p>Login</p><p><input type="text" class="input-field-login"></input></p>
-			<p>Password</p><p><input type="text" class="input-field-pass"></input></p>
-			<div>
-				<button class="ok-button">Ok</button>
-				<a href="#login-dialog" class="LinkClosePage"><button>Cancel</button></a>
+		<form class="Layer login-dialog dialog-foreground Auth" data-dialog-name="login-dialog">
+			<fieldset>
+				<legend>Login:</legend>
+				<p>Login</p><p><input type="text" class="input-field-login"></input></p>
+				<p>Password</p><p><input type="text" class="input-field-pass"></input></p>
+				<button class="cancel-button">Cancel</button>
+				<input type="submit" value="Ok" class="ok-button"></input>
 				<p class="error-text"></p>
-			</div>
-		</div>
+			</fieldset>
+		</form>
 		<!-- Open Dialog -->
 		<A class="Page" name="open-dialog"></A>
-		<div class="Layer open-dialog dialog-foreground SelectPublication" data-dialog-name="open-dialog">
-			<ul class="PublicationList PublicationConnector">
-				<li>::name:: <small>last change by ::configData.lastChange.author:: on ::configData.lastChange.date::</small></li>
-			</ul>
-			<button class="cancel-button">Cancel</button>
-			<button class="ok-button">Ok</button>
-		</div>
+		<form class="Layer open-dialog dialog-foreground SelectPublication" data-dialog-name="open-dialog">
+			<fieldset>
+				<legend>Your Publications:</legend>
+				<ul class="PublicationList PublicationConnector">
+					<li>::name:: <small>last change by ::configData.lastChange.author:: on ::configData.lastChange.date::</small></li>
+				</ul>
+				<button class="cancel-button">Cancel</button>
+				<input type="submit" value="Ok" class="ok-button"></input>
+			</fieldset>
+		</form>
 		<div class="Layer loading-pending dialog-foreground">
 			Please wait...
 		</div>

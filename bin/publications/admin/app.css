@@ -18,7 +18,10 @@
 	display: inline-block;
 }
 .dialog-foreground input{
-	width: 250px;
+	width: 45%;
+}
+.dialog-foreground button{
+	width: 45%;
 }
 .dialog-foreground p{
 	margin:0px;
@@ -37,6 +40,10 @@
 .SelectPublication{
     width: 250px;
     height: 500px;
+	border: 1px solid #494949;
+}
+.Auth{
+	border: 1px solid #494949;
 }
 .SelectPublication ul{
     overflow: auto;

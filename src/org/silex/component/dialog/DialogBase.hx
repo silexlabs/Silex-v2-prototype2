@@ -11,7 +11,6 @@ import org.slplayer.util.DomTools;
 
 import org.silex.component.PublicationConnector;
 import org.silex.publication.PublicationData;
-import org.silex.builder.Builder;
 
 /**
  * This component displays a window. Derive this class in order to make a new Dialog.

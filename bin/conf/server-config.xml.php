@@ -9,7 +9,8 @@
 	<defaultPublication>test1</defaultPublication>
 	<admin>silexlabs</admin>
 	<debugModeAction>
-		Lib.alert("test!");
-		// openPublication("test1");
+		//Lib.alert("test!");
+		Builder.loadPublication("test1");
+		Page.openPage("Builder", false, null, slpid);
 	</debugModeAction>
 </xml>

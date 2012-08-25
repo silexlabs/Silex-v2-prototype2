@@ -16,10 +16,10 @@ import org.slplayer.component.navigation.Page;
 import org.silex.publication.PublicationService;
 import org.silex.interpreter.Interpreter;
 
-#if SilexClientSide
+#if silexClientSide
 #end
 
-#if SilexServerSide
+#if silexServerSide
 import php.Web;
 import sys.io.File;
 import haxe.remoting.HttpConnection;
@@ -59,7 +59,7 @@ class Silex {
 	 */
 	static public var publicationName:String;
 
-#if SilexClientSide
+#if silexClientSide
 	/**
 	 * Entry point for Silex applications
 	 * Load Silex config
@@ -112,21 +112,28 @@ class Silex {
 			Lib.document.body.innerHTML = StringTools.htmlUnescape(DomTools.getMeta(CONFIG_PUBLICATION_BODY));
 		}
 		
-		// execute an action when needed for debug
-		var debugModeAction = DomTools.getMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION);
-		if (debugModeAction != null){
-			var res = Interpreter.exec(StringTools.htmlUnescape(debugModeAction));
-		}
-
 		// init SLPlayer components
 		trace(" application.init "+Lib.document.body);
 		// create an SLPlayer app
 		var application = Application.createApplication();
 		application.init();
 
+		haxe.Timer.delay(callback(doAfterInit,application), 1000);
+	}
+	private static function doAfterInit(application) {
+		#if silexDebug
+		// execute an action when needed for debug
+		var debugModeAction = DomTools.getMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION);
+		if (debugModeAction != null){
+			var context = new Hash();
+			context.set("slpid", application.id);
+			trace("slpid = "+ application.id);
+			var res = Interpreter.exec(StringTools.htmlUnescape(debugModeAction), context);
+		}
+		#end
 	}
 #end
-#if SilexServerSide
+#if silexServerSide
 	/**
 	 * Entry point for Silex applications
 	 * Retrieve the publication name from the URL
@@ -158,13 +165,12 @@ class Silex {
 		if (publicationName == ""){
 			publicationName = serverConfig.defaultPublication;
 		}
-
 		// Load HTML data
 		var publicationData = publicationService.getPublicationData(publicationName);
 
 		// Load config data
-		var publicationConfig = publicationService.getPublicationConfig(publicationName);
-
+		//var publicationConfig = publicationService.getPublicationConfig(publicationName);
+	
 		var initialPageName = "";
 		// get the initial page name from the URL
 		// case of 		http://my.domain.com/
@@ -194,7 +200,6 @@ class Silex {
 		// todo: add the scripts from the html page
 		var scripts = StringTools.htmlEscape(serverConfig.debugModeAction);
 		DomTools.setMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION, scripts);
-
 
 		// set initial page 
 		if (initialPageName != "" && DomTools.getMeta(CONFIG_USE_DEEPLINK)!="false")

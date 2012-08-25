@@ -3,6 +3,10 @@ package org.silex.interpreter;
 import js.Lib;
 import js.Dom;
 
+import org.silex.component.builder.Builder;
+import org.slplayer.component.navigation.Page;
+import org.slplayer.util.DomTools;
+
 import hscript.Interp;
 import hscript.Parser;
 /**
@@ -17,9 +21,12 @@ class Interpreter{
 	 * Basic context for Silex
 	 */
 	public static inline var BASIC_CONTEXT = {
-		"Lib":Lib,
-		"Math":Math,
-		"StringTools":StringTools,
+		"Lib": Lib,
+		"Math": Math,
+		"StringTools": StringTools,
+		"Builder": Builder,
+		"Page": Page,
+		"DomTools": DomTools,
 	};
 	/**
 	 * execute a set of actions

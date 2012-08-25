@@ -11,7 +11,7 @@ import org.slplayer.util.DomTools;
 
 import org.silex.component.PublicationConnector;
 import org.silex.publication.PublicationData;
-import org.silex.builder.Builder;
+import org.silex.component.builder.Builder;
 import org.silex.component.dialog.DialogBase;
 
 /**
@@ -59,7 +59,7 @@ class SelectPublication extends DialogBase
 		var item:{name:String, configData:PublicationConfigData} = list.selectedItem;
 		// if a publication is selected
 		if (item != null){
-			Builder.loadPublication(item.name, item.configData);
+			Builder.loadPublication(item.name);
 			Page.openPage(Builder.BUILDER_MODE_PAGE_NAME, false, null, SLPlayerInstanceId);
 			close();
 		}
