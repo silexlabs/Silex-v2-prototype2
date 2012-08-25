@@ -8,6 +8,8 @@ import org.silex.interpreter.Interpreter;
 import org.silex.publication.PublicationService;
 import org.silex.publication.PublicationData;
 import org.slplayer.component.navigation.transition.TransitionData;
+import org.slplayer.component.navigation.Page;
+
 import org.slplayer.util.DomTools;
 
 import org.slplayer.core.Application;
@@ -119,7 +121,16 @@ class Builder extends DisplayObject{
 		// init SLPlayer
 		// create an SLPlayer app
 		var application = Application.createApplication();
-		application.init();
+		application.init(publicationView.body);
+
+/*		haxe.Timer.delay(callback(doAfterInit, application), 1000);
+	}
+	private static function doAfterInit(application) {
+*/
+		// initial page
+		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, publicationModel.head);
+		trace("initialPageName "+initialPageName);
+		Page.openPage(initialPageName, true, null, application.id);
 
 		// execute debug actions
 		#if silexDebug

@@ -18,9 +18,9 @@
 	</lastChange>
 	<debugModeAction>
 		//Lib.alert("test!");
-		Builder.loadPublication("test1");
-		Page.openPage("Builder", false, {
-			debugModeAction: "Lib.alert('test2');",
-		}, slpid);
+		Builder.loadPublication("test1", {
+			debugModeAction: "//Lib.alert('test2');",
+		});
+		Page.openPage("Builder", false, null, slpid);
 	</debugModeAction>
 </xml>

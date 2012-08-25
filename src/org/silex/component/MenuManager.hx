@@ -41,9 +41,10 @@ class MenuManager extends DisplayObject
 		trace("Menu event "+menuPageName);
 
 		// take an action depending on the menu name
-		switch (menuPageName) {
+/*		switch (menuPageName) {
 			case "item-login":
 				trace ("now login");
 		}
 	}
+*/
 }
