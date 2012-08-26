@@ -19,8 +19,10 @@ class TestServer {
 	public static inline var THIS_TEST_PATH:String = "config-data/";
 	public static inline var TEST_PUBLICATION_CONFIG:PublicationConfigData = {
 		state : Private,
+		category : Publication,
 		creation : {author : "silexlabs", date : Date.fromString("2021-12-02")}, 
-		lastChange : {author : "silexlabs", date : Date.fromString("2021-12-02")}
+		lastChange : {author : "silexlabs", date : Date.fromString("2021-12-02")},
+		debugModeAction : null,
 	};
 
 	public function testServerConfigRead():Void
@@ -48,6 +50,7 @@ class TestServer {
 		var config = new PublicationConfig(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "publication-config.xml.php");
 
 		Assert.equals(TEST_PUBLICATION_CONFIG.state, config.configData.state);
+		Assert.equals(TEST_PUBLICATION_CONFIG.category, config.configData.category);
 		Assert.equals(TEST_PUBLICATION_CONFIG.creation.author, config.configData.creation.author);
 		Assert.equals(TEST_PUBLICATION_CONFIG.creation.date.getTime(), config.configData.creation.date.getTime());
 		Assert.equals(TEST_PUBLICATION_CONFIG.lastChange.author, config.configData.lastChange.author);

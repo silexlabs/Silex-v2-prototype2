@@ -35,7 +35,7 @@ class PublicationConnector extends DisplayObject
 	 * starts the loading process
 	 */
 	public function loadData(unused:Event = null){
-		publicationService.getPublications(null, onResult, onError);
+		publicationService.getPublications(null, [Publication], onResult, onError);
 	}
 	/**
 	 * An error occured

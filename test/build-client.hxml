@@ -3,7 +3,7 @@
 -cp ../../SLPlayer/src/
 -cp ../../Cocktail/src/
 -main AllTestsClient
--D SilexClientSide
+-D silexClientSide
 -lib utest
 
 -D slpdebug

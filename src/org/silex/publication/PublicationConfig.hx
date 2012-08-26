@@ -42,6 +42,7 @@ class PublicationConfig extends ConfigBase{
 	public function new(configFile:String = null){
 		configData = {
 			state : Private,
+			category : Publication,
 			creation : {
 				author : "", 
 				date : new Date(0, 0, 0, 0, 0, 0)
@@ -64,12 +65,12 @@ class PublicationConfig extends ConfigBase{
 		if(xml.hasNode.creation)
 			configData.creation = getChangeDataFromXML(xml.node.creation);
 		else
-			trace("Warning: missing creation in config file ");
+			trace("Warning: missing creation tag in config file ");
 
 		if(xml.hasNode.lastChange)
 			configData.lastChange = getChangeDataFromXML(xml.node.lastChange);
 		else
-			trace("Warning: missing lastChange in config file ");
+			trace("Warning: missing lastChange tag in config file ");
 
 		if(xml.hasNode.debugModeAction)
 			configData.debugModeAction = xml.node.debugModeAction.innerData;
@@ -95,7 +96,20 @@ class PublicationConfig extends ConfigBase{
 			}
 		}
 		else
-			trace("Warning: missing state in config file ");
+			trace("Warning: missing state tag in config file ");
+
+		if(xml.hasNode.category){
+			switch(xml.node.category.innerData){
+				case "Publication":
+					configData.category = Publication;
+				case "Theme":
+					configData.category = Theme;
+				case "Utility":
+					configData.category = Utility;
+			}
+		}
+		else
+			trace("Warning: missing category tag in config file ");
 	}
 	/**
 	 * retrieve the change data from XML node
@@ -152,6 +166,20 @@ class PublicationConfig extends ConfigBase{
 			case Published(changeData):
 				node.addChild(Xml.parse("
 			<state author=\""+changeData.author+"\" date=\""+changeData.date.toString()+"\" >Published</state>
+"));
+		}
+		switch (configData.category) {
+			case Publication:
+				node.addChild(Xml.parse("
+			<category>Publication</category>
+"));
+			case Utility:
+				node.addChild(Xml.parse("
+			<category>Utility</category>
+"));
+			case Theme:
+				node.addChild(Xml.parse("
+			<category>Theme</category>
 "));
 		}
 		node.addChild(Xml.parse("

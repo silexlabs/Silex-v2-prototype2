@@ -34,6 +34,15 @@ typedef PublicationData = {
 }
 
 /**
+ * Category of a publication
+ * use PublicationConfigManager::publicationConfig to get the config of a given publication
+ */
+enum PublicationCategory{
+	Publication;
+	Utility;
+	Theme; // Todo: (id:String, version:String, url:String);
+}
+/**
  * state of a publication
  * use PublicationConfigManager::publicationConfig to get the config of a given publication
  */
@@ -65,6 +74,10 @@ typedef PublicationConfigData = {
 	 * State of the publication
 	 */
 	var state:PublicationState;
+	/**
+	 * Category of the publication
+	 */
+	var category:PublicationCategory;
 	/**
 	 * The owner of the publication and the date of creation
 	 */

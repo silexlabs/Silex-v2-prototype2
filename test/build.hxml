@@ -3,7 +3,7 @@
 -cp ../../SLPlayer/src/
 -cp ../../Cocktail/src/
 -main AllTestsClient
--D SilexClientSide
+-D silexClientSide
 -lib utest
 
 -D slpdebug
@@ -19,7 +19,7 @@
 -cp ../../Cocktail/src/
 --remap js:cocktail
 -main AllTestsServer
--D SilexServerSide
+-D silexServerSide
 -lib utest
 
 -D slpdebug

@@ -4,7 +4,7 @@
 -cp ../../Cocktail/src/
 --remap js:cocktail
 -main AllTestsServer
--D SilexServerSide
+-D silexServerSide
 -lib utest
 
 -D slpdebug

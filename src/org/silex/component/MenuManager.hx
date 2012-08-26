@@ -45,6 +45,6 @@ class MenuManager extends DisplayObject
 			case "item-login":
 				trace ("now login");
 		}
-	}
 */
+	}
 }

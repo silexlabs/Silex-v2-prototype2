@@ -1,38 +1,3 @@
-** To do **
-
-le builder qui ouvre une publication devrait se servir des fonctions de Silex
-pareil pour le côté server (remoting)
-
-refactoring:
-- there should be a DialogBase class, and the *Dialog should be popups, not pages
-  + menu : when an item without a sub-menu is clicked, the menu should close itself
-  + use form tag
-- specs Silex v2 builder
-- reunir template et interpreter dans un package ?
-
-* bugs
-  * bugfix Lib.document.innerHTML call makes an error 500 on the server https://github.com/silexlabs/Cocktail/issues/217
-  * workaround, bug https://github.com/silexlabs/Cocktail/issues/207
-  * init the document with non empty body, workaround see  https://github.com/silexlabs/Cocktail/issues/208
-  * memory leak in the Layer and transition classes
-  * in the List class, listen to the click on the container instead of each cell, to prevent memory leak
-* transitions with params on the Layer as well as on the link
-* "loading" transitions for the layers with connectors
-* contexts with multiple class names ==== merge the concepts of Context and Page (=> State, State.setState(contextName, stateName))
-* rename
-  - Page into State
-  - Layer into Container
-* dans PublicationData, charger tous les .css? ou tout ce qui est dans style/?
-* components
-  * transition alpha
-* ?no conditional compilation in class Silex (client version)
-* 404 error publication
-* SLExtend 
-  * Init plugins in Silex::new
-  * split Silex::new into smaller methods
-* opa-like lib
-* in Silex.hx, add the style sheet in a style tag directly in the html page
-
 ** About Silex **
 
 Silex is used to produce websites directly in the browser.
@@ -65,3 +30,44 @@ This program is free software; you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
+
+
+** To do **
+
+le builder qui ouvre une publication devrait se servir des fonctions de Silex
+pareil pour le côté server (remoting)
+
+refactoring:
+- there should be a DialogBase class, and the *Dialog should be popups, not pages
+  + menu : when an item without a sub-menu is clicked, the menu should close itself
+  + use form tag
+- specs Silex v2 builder
+- reunir template et interpreter dans un package ?
+
+* bugs
+  * bugfix Lib.document.innerHTML call makes an error 500 on the server https://github.com/silexlabs/Cocktail/issues/217
+  * workaround, bug https://github.com/silexlabs/Cocktail/issues/207
+  * init the document with non empty body, workaround see  https://github.com/silexlabs/Cocktail/issues/208
+  * memory leak in the Layer and transition classes
+  * in the List class, listen to the click on the container instead of each cell, to prevent memory leak
+
+improvements
+* add the manager, not found etc. to distrib ?
+* transitions with params on the Layer as well as on the link
+* "loading" transitions for the layers with connectors
+* contexts with multiple class names ==== merge the concepts of Context and Page (=> State, State.setState(contextName, stateName))
+* rename
+  - Page into State
+  - Layer into Container
+* dans PublicationData, charger tous les .css? ou tout ce qui est dans style/?
+* mettre toute la conf dans les headers? Vu que seules les personnes autorisées vont voir la page...
+* components
+  * transition alpha
+* ?no conditional compilation in class Silex (client version)
+* 404 error publication
+* SLExtend 
+  * Init plugins in Silex::new
+  * split Silex::new into smaller methods
+* opa-like lib
+* in Silex.hx, add the style sheet in a style tag directly in the html page
+

@@ -6,15 +6,14 @@
 </"."xml>");
 		?>
 	-->
-<state>Private</state>
+<state author="todo: authors and security" date="2012-08-26 09:41:16">Trashed</state>
 <category>Publication</category>
-<publicationFolder>../publication-data/test-read/</publicationFolder>
 <creation>
 	<author>silexlabs</author>
-	<date>2021-12-02 00:00:00</date>
+	<date>2012-08-26 09:41:16</date>
 </creation>
 <lastChange>
-	<author>silexlabs</author>
-	<date>2021-12-02 00:00:00</date>
+	<author>to do this author</author>
+	<date>2012-08-26 09:41:16</date>
 </lastChange>
 </xml>

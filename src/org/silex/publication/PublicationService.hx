@@ -87,9 +87,10 @@ class PublicationService extends ServiceBase{
 	 * List available publication matching a state
 	 * For the states enum use like Published(null) to have all Published publications
 	 */
-	public function getPublications(publicationStates:Null<Array<PublicationState>> = null, 
+	public function getPublications(stateFilter:Null<Array<PublicationState>> = null, 
+		categoryFilter:Null<Array<PublicationCategory>> = null, 
 		onResult:Hash<PublicationConfigData>->Void, onError:String->Void=null) {
-		callServerMethod("getPublications", [publicationStates, publicationFolder], onResult, onError);
+		callServerMethod("getPublications", [stateFilter, categoryFilter, publicationFolder], onResult, onError);
 	}
 #end
 
@@ -107,34 +108,60 @@ class PublicationService extends ServiceBase{
 	 * For the states enum use like Published(null) to have all Published publications
 	 * @return 	Hash with the publications names as key and the publications config as value
 	 */
-	public function getPublications(publicationStates:Null<Array<PublicationState>> = null, 
+	public function getPublications(stateFilter:Null<Array<PublicationState>> = null, 
+		categoryFilter:Null<Array<PublicationCategory>> = null, 
 		publicationFolder:String = PublicationConfig.DEFAULT_PUBLICATION_FOLDER):Hash<PublicationConfigData> {
 		// browse all folders in the publications directory
 		var files:Array<String> = FileSystem.readDirectory(publicationFolder);
 		// keep only the folders and the publication with the desired states
 		var publications:Hash<PublicationConfigData> = new Hash();
 		for(name in files){
+			// check that the publication folder is not a file
 			var path = publicationFolder + name + "/";
 			if (FileSystem.isDirectory(path)){
 				var configData = getPublicationConfig(name, publicationFolder);
+				// variable used to know if we should return this publication or not
+				var fitStateFilter = false;
+				var fitCategoryFilter = false;
 				// if no filter is provided, add anyway
-				if (publicationStates == null || publicationStates.length == 0){
-					publications.set(name, configData);
+				if (stateFilter == null || stateFilter.length == 0){
+					fitStateFilter = true;
 				}
 				else{
 					// filter
 					switch (configData.state) {
 						case Private:
-							if (Lambda.has(publicationStates, Private))
-								publications.set(name, configData);
+							if (Lambda.has(stateFilter, Private))
+								fitStateFilter = true;
 						case Trashed(data):
-							if (Lambda.has(publicationStates, Trashed(null)))
-								publications.set(name, configData);
+							if (Lambda.has(stateFilter, Trashed(null)))
+								fitStateFilter = true;
 						case Published(data):
-							if (Lambda.has(publicationStates, Published(null)))
-								publications.set(name, configData);
+							if (Lambda.has(stateFilter, Published(null)))
+								fitStateFilter = true;
 					}
 				}
+				// if no filter is provided, add anyway
+				if (categoryFilter == null || categoryFilter.length == 0){
+					fitCategoryFilter = true;
+				}
+				else{
+					// filter
+					switch (configData.category) {
+						case Publication:
+							if (Lambda.has(categoryFilter, Publication))
+								fitCategoryFilter = true;
+						case Utility:
+							if (Lambda.has(categoryFilter, Utility))
+								fitCategoryFilter = true;
+						case Theme:
+							if (Lambda.has(categoryFilter, Theme))
+								fitCategoryFilter = true;
+					}
+				}
+				// add the publication to the returned hash
+				if(fitStateFilter && fitCategoryFilter)
+					publications.set(name, configData);
 			}
 		}
 		return publications;
@@ -158,6 +185,7 @@ class PublicationService extends ServiceBase{
 			// update with actual date and author
 			var configData:PublicationConfigData = {
 				state : Private,
+				category : Publication,
 				creation : {
 					author : "silexlabs", 
 					date : Date.now()
@@ -294,6 +322,7 @@ class PublicationService extends ServiceBase{
 			var config = new PublicationConfig();
 			config.configData = {
 				state : configData.state,
+				category : configData.category,
 				creation : configData.creation, 
 				lastChange : configData.lastChange,
 				debugModeAction : configData.debugModeAction,

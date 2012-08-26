@@ -29,10 +29,11 @@ class AllTestsClient {
 	public function new(){
         var runner = new Runner();
 
+/*
 	    runner.addCase(new interpreter.TestCross());
 	    runner.addCase(new template.TestClient());
+/**/
 		runner.addCase(new publication.TestClient());
-
         Report.create(runner);
         runner.run();
 

@@ -7,6 +7,7 @@
 		?>
 	-->
 	<state>Private</state>
+	<category>Utility</category>
 	<publicationFolder>../publication-data/test-read/</publicationFolder>
 	<creation>
 		<author>silexlabs</author>
@@ -20,7 +21,7 @@
 		//Lib.alert("test!");
 		Builder.loadPublication("test1", {
 			debugModeAction: "//Lib.alert('test2');",
-		});
+		 });
 		Page.openPage("Builder", false, null, slpid);
 	</debugModeAction>
 </xml>

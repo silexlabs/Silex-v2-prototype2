@@ -11,9 +11,13 @@ import utest.Runner;
 import utest.ui.Report;
 
 class TestClient {
-	private var publicationService:PublicationService;
+	private var publicationServiceRead:PublicationService;
+	private var publicationServiceWrite:PublicationService;
 
 	public static inline var THIS_TEST_PATH:String = "publication-data/";
+	public static inline var THIS_TEST_PATH_READ:String = THIS_TEST_PATH + "read/";
+	public static inline var THIS_TEST_PATH_WRITE:String = THIS_TEST_PATH + "write/";
+
 	public static inline var TEST_CSS:String = "body{
 	font-family: Verdana, Arial;
 	font-size: 14pt;
@@ -29,12 +33,32 @@ class TestClient {
 		Test Publication
 	</BODY>
 </HTML>";
+	public static inline var TEST_PUBLICATION_CONFIG_TRASHED:String = '<xml>
+	<!--
+		<?php
+			exit("access denied
+	-"."->
+</"."xml>");
+		?>
+	-->
+<state author="todo: authors and security" date="2012-08-26 10:24:40">Trashed</state>
+<category>Publication</category>
+<creation>
+	<author>silexlabs</author>
+	<date>2012-08-26 10:24:40</date>
+</creation>
+<lastChange>
+	<author>to do this author</author>
+	<date>2012-08-26 10:24:40</date>
+</lastChange>
+</xml>';
 	public static inline var TEST_PUBLICATION_DATA:PublicationData = {
 		html : TEST_HTML,
 		css: TEST_CSS,
 	};
 	public static inline var TEST_PUBLICATION_CONFIG:PublicationConfigData = {
 		state : Private,
+		category : Publication,
 		creation : {
 			author : "silexlabs", 
 			date : Date.fromString("2021-12-02")
@@ -42,11 +66,13 @@ class TestClient {
 		lastChange : {
 			author : "silexlabs", 
 			date : Date.fromString("2021-12-02")
-		}
+		},
+		debugModeAction: null,
 	};
 
 	public function new(){
-		publicationService = new PublicationService(AllTestsClient.TEST_ROOT_PATH + THIS_TEST_PATH, AllTestsClient.GATEWAY_URL);
+		publicationServiceRead = new PublicationService(AllTestsClient.TEST_ROOT_PATH + THIS_TEST_PATH_READ, AllTestsClient.GATEWAY_URL);
+		publicationServiceWrite = new PublicationService(AllTestsClient.TEST_ROOT_PATH + THIS_TEST_PATH_WRITE, AllTestsClient.GATEWAY_URL);
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////	
 	private function onError(msg:String):Void{
@@ -99,18 +125,20 @@ class TestClient {
 		}
 	}
 	private function createAsyncCallback(urlToCompare:String, expected:String):Dynamic{
-		var onHttpRequestReadyCallback = cast(Assert.createEvent(callback(onHttpRequestReady,TEST_CSS), 4000));
+		var onHttpRequestReadyCallback = cast(Assert.createEvent(callback(onHttpRequestReady,expected), 4000));
 		return callback(onResultStartAjaxCheck, urlToCompare, onHttpRequestReadyCallback);
 	}
 
 
 	//////////////////////////////////////////////////////////////////////////////////////////	
 	public function testRead():Void{
-		publicationService.getPublicationData("test-read", Assert.createEvent(onResultRead, 4000)
+		publicationServiceRead.getPublicationData("test-publication-private", 
+			Assert.createEvent(onResultRead, 2000)
 			, onError
 		);
-		publicationService.getPublicationData("test-not-exist", onResultRead
-			, cast(Assert.createEvent(onPuropseError, 4000))
+		publicationServiceRead.getPublicationData("test-not-exist", 
+			onResultRead
+			, cast(Assert.createEvent(onPuropseError, 2000))
 		);
 	}
 	private function onResultRead(publicationData:PublicationData):Void{
@@ -121,15 +149,47 @@ class TestClient {
 			Assert.equals(TEST_CSS, StringTools.trim(publicationData.css));
 		}
 	}
+	public function testGetPublications():Void{
+		publicationServiceRead.getPublications([Private], null, cast(Assert.createEvent(onResultGetPublications)));
+	}
+	private function onResultGetPublications(publications:Hash<PublicationConfigData>):Void{
+		Assert.isFalse(publications == null);
+		if (publications != null){
+			var length = 0;
+			// browse all publications 
+			for (publicationName in publications.keys()){
+				trace("Publication "+ publicationName+" is "+publications.get(publicationName).state);
+				Assert.same(Private, publications.get(publicationName).state);
+				length++;
+			}
+			Assert.isFalse(length == 0);
+		}
+	}
+	public function testGetThemes():Void{
+		publicationServiceRead.getPublications(null, [Theme], cast(Assert.createEvent(onResultGetThemes)));
+	}
+	private function onResultGetThemes(publications:Hash<PublicationConfigData>):Void{
+		Assert.isFalse(publications == null);
+		if (publications != null){
+			var length = 0;
+			// browse all publications 
+			for (publicationName in publications.keys()){
+				trace("Publication "+ publicationName+" is "+publications.get(publicationName).category);
+				Assert.same(Theme, publications.get(publicationName).category);
+				length++;
+			}
+			Assert.isFalse(length == 0);
+		}
+	}
 	//////////////////////////////////////////////////////////////////////////////////////////	
 	public function testWrite():Void{
-		publicationService.setPublicationData("test-write", TEST_PUBLICATION_DATA
-			, createAsyncCallback("publication-data/test-read/app.css",TEST_CSS)
+		publicationServiceWrite.setPublicationData("test-write", TEST_PUBLICATION_DATA
+			, createAsyncCallback(THIS_TEST_PATH_WRITE + "test-write/app.css",TEST_CSS)
 			, onError
 		);
 	}
 	public function testWriteError():Void{
-		publicationService.setPublicationData("test-not-exist", TEST_PUBLICATION_DATA
+		publicationServiceWrite.setPublicationData("test-not-exist", TEST_PUBLICATION_DATA
 			, onResultWriteNeverCalled
 			, cast(Assert.createEvent(onPuropseError, 4000))
 		);
@@ -138,15 +198,15 @@ class TestClient {
 
 	public function testCreateAndTrash():Void{
 		trace("testCreateAndTrash");
-		publicationService.create("test-create", TEST_PUBLICATION_DATA
-			, createAsyncCallback("publication-data/test-create/app.css",TEST_CSS)
+		publicationServiceWrite.create("test-create", TEST_PUBLICATION_DATA
+			, createAsyncCallback(THIS_TEST_PATH_WRITE + "test-create/app.css",TEST_CSS)
 			, onError
 		);
 		haxe.Timer.delay(doTrash, 100);
 	}
 	private function doTrash():Void{
 		trace("doTrash");
-		publicationService.trash("test-create"
+		publicationServiceWrite.trash("test-create"
 			, Assert.createAsync(onResultWriteNoCheck, 4000)
 			, onError
 		);
@@ -155,47 +215,27 @@ class TestClient {
 	private function doEmptyTrash():Void{
 		trace("doEmptyTrash");
 		// empty trash
-		publicationService.emptyTrash(
+		publicationServiceWrite.emptyTrash(
 			Assert.createAsync(onResultWriteNoCheck, 4000)
-			//createAsyncCallback("publication-data/test-create/app.css", "Not Found")
+			//createAsyncCallback(THIS_TEST_PATH_WRITE + "test-create/app.css", "Not Found")
 			, onError
 		);
 	}
 	public function testDuplicateAndRename():Void{
 		trace("testDuplicateAndRename");
-		publicationService.duplicate("test-read", "test-duplicate"
-			, createAsyncCallback("publication-data/test-duplicate/app.css",TEST_CSS)
+		publicationServiceWrite.duplicate("test-read", "test-duplicate"
+			, createAsyncCallback(THIS_TEST_PATH_WRITE + "test-duplicate/app.css",TEST_CSS)
 			, onError
 		);
 		haxe.Timer.delay(doRename, 500);
 	}
 	private function doRename():Void{
 		trace("doRename");
-		publicationService.rename("test-duplicate", "test-rename"
-			, createAsyncCallback("publication-data/test-rename/app.css",TEST_CSS)
+		publicationServiceWrite.rename("test-duplicate", "test-rename"
+			, createAsyncCallback(THIS_TEST_PATH_WRITE + "test-rename/app.css",TEST_CSS)
 			, onError
 		);
-		trace("NOW REMOVE THE FOLDER bin/publication-data/test-rename/");
-/*		haxe.Timer.delay(cleanup, 1000);
+		trace("NOW REMOVE THE FOLDER bin/publication-data/write/test-rename/");
 	}
-	private function cleanup():Void{
-		trace("cleanup");
-		publicationService.trash("test-rename"
-			, Assert.createAsync(onResultWriteNoCheck, 4000)
-			, onError
-		);
-		haxe.Timer.delay(doEmptyTrash, 100);
-*/	}
-	public function testGetPublications():Void{
-		publicationService.getPublications([Private], cast(Assert.createEvent(onResultGetPublications)));
-	}
-	private function onResultGetPublications(publications:Hash<PublicationConfigData>):Void{
-		if (publications != null){
-			// browse all publications 
-			for (publicationName in publications.keys()){
-				trace("Publication "+ publicationName+" is "+publications.get(publicationName).state);
-				Assert.same(Private, publications.get(publicationName).state);
-			}
-		}
-	}
+/**/
 }
