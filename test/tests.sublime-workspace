@@ -4,6 +4,38 @@
 		"selected_items":
 		[
 			[
+				"TEST_",
+				"TEST_PUBLICATION_CONFIG"
+			],
+			[
+				"Publ",
+				"Publication"
+			],
+			[
+				"cat",
+				"category"
+			],
+			[
+				"The",
+				"Theme"
+			],
+			[
+				"configD",
+				"configData	var"
+			],
+			[
+				"public",
+				"publicationCategory"
+			],
+			[
+				"fit",
+				"fitCategoryFilter	var"
+			],
+			[
+				"publ",
+				"publicationCategory"
+			],
+			[
 				"pub",
 				"publicationConfig"
 			],
@@ -179,7 +211,7 @@
 			"file": "AllTestsServer.hx",
 			"settings":
 			{
-				"buffer_size": 863,
+				"buffer_size": 871,
 				"line_ending": "Unix"
 			}
 		},
@@ -192,10 +224,18 @@
 			}
 		},
 		{
-			"file": "publication/TestServer.hx",
+			"file": "publication/TestClient.hx",
 			"settings":
 			{
-				"buffer_size": 5743,
+				"buffer_size": 7739,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "bin/publication-data/write/test-create/conf/config.xml.php",
+			"settings":
+			{
+				"buffer_size": 381,
 				"line_ending": "Unix"
 			}
 		},
@@ -203,7 +243,7 @@
 			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationService.hx",
 			"settings":
 			{
-				"buffer_size": 10982,
+				"buffer_size": 12013,
 				"line_ending": "Unix"
 			}
 		},
@@ -211,7 +251,71 @@
 			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/readme.txt",
 			"settings":
 			{
-				"buffer_size": 3178,
+				"buffer_size": 3383,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "config/TestServer.hx",
+			"settings":
+			{
+				"buffer_size": 2966,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "bin/config-data/publication-config.xml.php",
+			"settings":
+			{
+				"buffer_size": 310,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "build-server.hxml",
+			"settings":
+			{
+				"buffer_size": 209,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationData.hx",
+			"settings":
+			{
+				"buffer_size": 2470,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/changelog.txt",
+			"settings":
+			{
+				"buffer_size": 1428,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationConfig.hx",
+			"settings":
+			{
+				"buffer_size": 5762,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "publication/TestServer.hx",
+			"settings":
+			{
+				"buffer_size": 8058,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "AllTestsClient.hx",
+			"settings":
+			{
+				"buffer_size": 895,
 				"line_ending": "Unix"
 			}
 		}
@@ -244,6 +348,21 @@
 	},
 	"file_history":
 	[
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/bin/publication-data/cleanup.sh",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/bin/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/build.hxml",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/build-client.hxml",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/bin/test.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/[Finished in 1.0s with exit code 1]publication/TestClient.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/bin/publication-data/read/test-utility-published/conf/config.xml.php",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/bin/publication-data/test-trashed/conf/config.xml.php",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/publication/TestServer.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/bin/publication-data/read/test-not-listed-in-getPublications/conf/config.xml.php",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/bin/publication-data/read/test-theme-published/conf/config.xml.php",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/bin/publication-data/test-write/conf/config.xml.php",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/bin/publication-data/test-not-listed-in-getPublications/conf/config.xml.php",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/bin/publication-data/test-read/conf/config.xml.php",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/changelog.txt",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/config/ServerConfigManager.hx",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/config/PublicationConfigManager.hx",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/config/TestServer.hx",
@@ -254,7 +373,6 @@
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/config/ServerConfig.hx",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/config/data/server-config.xml.php",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/config/Config.hx",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/build.hxml",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/config/Test.hx",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/core/Silex.hx",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/test/config/data/server-config.php.xml",
@@ -311,6 +429,28 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"TEST_PUBLICATION_CONFIG_TRASHED",
+			"\"publication-data/write/",
+			"publication-data/test",
+			"publicationService",
+			"THIS_TEST_PATH",
+			"testGet",
+			"THIS_TEST_PATH_WRITE",
+			"THIS_TEST_PATH + \"write/\"",
+			"THIS_TEST_PATH + \"read/\"",
+			"THIS_TEST_PATH",
+			"in config file",
+			"state",
+			"debugModeAction",
+			"publicationCategories",
+			"publicationStates",
+			"publicationCategory",
+			"fitStateFilter",
+			"state",
+			"publicationService",
+			"Private",
+			"state",
+			"TEST_PUBLICATION_CONFIG",
 			"date",
 			"creation",
 			"name",
@@ -396,6 +536,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"THIS_TEST_PATH_WRITE",
 			"components"
 		],
 		"reverse": false,
@@ -415,15 +556,15 @@
 					"file": "AllTestsServer.hx",
 					"settings":
 					{
-						"buffer_size": 863,
+						"buffer_size": 871,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								513,
+								513
 							]
 						],
 						"settings":
@@ -468,18 +609,18 @@
 				},
 				{
 					"buffer": 2,
-					"file": "publication/TestServer.hx",
+					"file": "publication/TestClient.hx",
 					"settings":
 					{
-						"buffer_size": 5743,
+						"buffer_size": 7739,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								5229,
+								5229
 							]
 						],
 						"settings":
@@ -489,25 +630,52 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1224.0,
+						"translation.y": 2569.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationService.hx",
+					"file": "bin/publication-data/write/test-create/conf/config.xml.php",
 					"settings":
 					{
-						"buffer_size": 10982,
+						"buffer_size": 381,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								381,
+								381
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationService.hx",
+					"settings":
+					{
+						"buffer_size": 12013,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11670,
+								11670
 							]
 						],
 						"settings":
@@ -517,17 +685,17 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 51.0,
+						"translation.y": 5126.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 5,
 					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/readme.txt",
 					"settings":
 					{
-						"buffer_size": 3178,
+						"buffer_size": 3383,
 						"regions":
 						{
 						},
@@ -543,6 +711,225 @@
 							"syntax": "Packages/Text/Plain text.tmLanguage",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "config/TestServer.hx",
+					"settings":
+					{
+						"buffer_size": 2966,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								685,
+								685
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 51.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "bin/config-data/publication-config.xml.php",
+					"settings":
+					{
+						"buffer_size": 310,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								227,
+								227
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "build-server.hxml",
+					"settings":
+					{
+						"buffer_size": 209,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								123,
+								123
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HaXe/Hxml.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationData.hx",
+					"settings":
+					{
+						"buffer_size": 2470,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2094,
+								2094
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 816.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/changelog.txt",
+					"settings":
+					{
+						"buffer_size": 1428,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								349,
+								349
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationConfig.hx",
+					"settings":
+					{
+						"buffer_size": 5762,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4982,
+								4982
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2457.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "publication/TestServer.hx",
+					"settings":
+					{
+						"buffer_size": 8058,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								591,
+								591
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "AllTestsClient.hx",
+					"settings":
+					{
+						"buffer_size": 895,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								501,
+								501
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,

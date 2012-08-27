@@ -38,10 +38,9 @@ le builder qui ouvre une publication devrait se servir des fonctions de Silex
 pareil pour le côté server (remoting)
 
 refactoring:
-- there should be a DialogBase class, and the *Dialog should be popups, not pages
-  + menu : when an item without a sub-menu is clicked, the menu should close itself
-  + use form tag
-- specs Silex v2 builder
+- specs builder
+  . manip styles
+  .  
 - reunir template et interpreter dans un package ?
 
 * bugs
@@ -70,4 +69,4 @@ improvements
   * split Silex::new into smaller methods
 * opa-like lib
 * in Silex.hx, add the style sheet in a style tag directly in the html page
-
+* builder classes should not be in silex.js

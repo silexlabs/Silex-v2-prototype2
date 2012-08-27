@@ -19,7 +19,7 @@
 	</lastChange>
 	<debugModeAction>
 		//Lib.alert("test!");
-		Builder.loadPublication("test1", {
+		Builder.loadPublication("default", {
 			debugModeAction: "//Lib.alert('test2');",
 		 });
 		Page.openPage("Builder", false, null, slpid);

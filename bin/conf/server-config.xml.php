@@ -6,6 +6,6 @@
 </"."xml>");
 		?>
 	-->
-	<defaultPublication>test1</defaultPublication>
+	<defaultPublication>default</defaultPublication>
 	<admin>silexlabs</admin>
 </xml>

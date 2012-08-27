@@ -1,3 +1,24 @@
+.hover-marker, .selection-marker{
+	z-index: 200;
+	position: absolute;
+	margin:0px;
+	padding:0px;
+}
+.hover-marker{
+	opacity:0.4;
+	background-color: red;
+	cursor: pointer;
+}
+.selection-marker{
+	border: 2px solid grey;
+	border: 
+}
+.selection-marker:hover{
+	border: 2px solid grey;
+	
+}
+
+/*
 .dialog-background{
 	width:	100%;
 	height:	100%;
@@ -77,11 +98,7 @@ body
 {
 	margin:0px;
 	padding:0px;
-	width: 100%;
-	height: 100%;
-	position: relative;
 	font-family:Arial, Helvetica, sans-serif;
-	text-align:	 center;
 }
 ul
 {
@@ -101,7 +118,6 @@ ul.menu
 	padding-left:5px;
 	padding-right:0px;
 	padding-bottom:0px;
-	/*background-color:#D6D6D6;*/
 	background-image: linear-gradient(bottom, rgb(240,240,240) 0%, rgb(214,214,214) 10%, rgb(214,214,214) 70%, rgb(217,217,217) 80%, rgb(222,222,222) 90%, rgb(240,240,240) 100%);
 background-image: -o-linear-gradient(bottom, rgb(240,240,240) 0%, rgb(214,214,214) 10%, rgb(214,214,214) 70%, rgb(217,217,217) 80%, rgb(222,222,222) 90%, rgb(240,240,240) 100%);
 background-image: -moz-linear-gradient(bottom, rgb(240,240,240) 0%, rgb(214,214,214) 10%, rgb(214,214,214) 70%, rgb(217,217,217) 80%, rgb(222,222,222) 90%, rgb(240,240,240) 100%);
@@ -139,7 +155,6 @@ ul.sub-of-sub
 	padding:4px;
 	position: absolute;
 	background-color:#F0F0F0;
-	/*display:none;*/
 }
 li.main
 {
@@ -160,7 +175,6 @@ li.main:hover div {
 
 li.main:hover 
 {
-	/*background-color: #CCC;*/
 	background-image: linear-gradient(bottom, rgb(240,240,240) 0%, rgb(180,180,180) 0%, rgb(233,233,233) 100%);
 background-image: -o-linear-gradient(bottom, rgb(240,240,240) 0%, rgb(180,180,180) 0%, rgb(233,233,233) 100%);
 background-image: -moz-linear-gradient(bottom, rgb(240,240,240) 0%, rgb(180,180,180) 0%, rgb(233,233,233) 100%);
@@ -228,3 +242,4 @@ div
 	background-color: #FFFFFF;
 	padding: 5px;
 }
+*/

@@ -1,4 +1,4 @@
-package org.silex.component;
+package org.silex.component.builder;
 
 import js.Lib;
 import js.Dom;
@@ -12,10 +12,6 @@ import org.slplayer.util.DomTools;
 @tagNameFilter("a")
 class MenuManager extends DisplayObject
 {
-	/**
-	 * array used to store all the children while the layer is hided
-	 */
-	private var childrenArray:Array<HtmlDom>;
 	/**
 	 * Constructor
 	 * Start listening the node

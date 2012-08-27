@@ -103,7 +103,9 @@ class Builder extends DisplayObject{
 			head: publicationModel.head.cloneNode(true)
 		}
 		// Add the CSS in the head 
-		DomTools.addCssRules(data.css, publicationView.head);
+		//DomTools.addCssRules(data.css, publicationView.head);
+		DomTools.addCssRules(data.css, publicationView.body);
+		//DomTools.addCssRules(data.css);
 
 		trace("Call attachView on the builder instance "+builderInstance);
 		// attach to the browser DOM
@@ -118,19 +120,19 @@ class Builder extends DisplayObject{
 
 		builderInstance.attachPublicationView(publicationView.body);
 
-		// init SLPlayer
 		// create an SLPlayer app
 		var application = Application.createApplication();
+		// init SLPlayer
 		application.init(publicationView.body);
 
-/*		haxe.Timer.delay(callback(doAfterInit, application), 1000);
-	}
-	private static function doAfterInit(application) {
-*/
 		// initial page
 		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, publicationModel.head);
-		trace("initialPageName "+initialPageName);
-		Page.openPage(initialPageName, true, null, application.id);
+		if (initialPageName != null){
+			Page.openPage(initialPageName, true, null, application.id);
+		}
+		else{
+			trace("Warning: no initial page found");
+		}
 
 		// execute debug actions
 		#if silexDebug
