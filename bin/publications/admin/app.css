@@ -5,17 +5,17 @@
 	padding:0px;
 }
 .hover-marker{
-	opacity:0.4;
+	opacity:0.25;
 	background-color: red;
 	cursor: pointer;
 }
 .selection-marker{
 	border: 2px solid grey;
-	border: 
 }
 .selection-marker:hover{
+	opacity:0.25;
+	background-color: yellow;
 	border: 2px solid grey;
-	
 }
 
 /*

@@ -62,7 +62,7 @@ class SelectionManager extends DisplayObject
 	public function onClickAnywhere(e:Event) {
 		trace("onClickAnywhere "+hoveredItem);
 		// set the selection marker over the hovered element
-		setSelection(hoveredItem);
+		setSelection(null);
 	}
 	/**
 	 * Handle mouse events
@@ -110,20 +110,29 @@ class SelectionManager extends DisplayObject
 	private function setMarkerPosition(marker:HtmlDom, target:HtmlDom){
 		if (target == null){
 			trace("setMarkerPosition - remove marker "+marker);
-			marker.style.display = "none";
+			//marker.style.display = "none";
+			marker.style.visibility = "hidden";
 		}
 		else{			
 			//var halfBorderH = (target.offsetWidth - target.clientWidth)/4.0;
 			//var halfBorderV = (target.offsetHeight - target.clientHeight)/4.0;
 			var halfBorderH = (marker.offsetWidth - marker.clientWidth)/2.0;
 			var halfBorderV = (marker.offsetHeight - marker.clientHeight)/2.0;
-			marker.style.display = "inline";
-			marker.style.left = (target.offsetLeft - halfBorderH) + "px";
-			marker.style.top = (target.offsetTop - halfBorderV) + "px";
-			marker.style.width = Math.floor(target.offsetWidth - halfBorderH) + "px";
-			marker.style.height = Math.floor(target.offsetHeight - halfBorderV) + "px";
-			trace("setMarkerPosition - "+marker.style.left+", "+marker.style.top+" - "+marker.style.width+" - "+marker.style.height);
+			//marker.style.display = "inline";
+			marker.style.visibility = "visible";
+			doSetMarkerPosition(marker,
+				Math.floor(target.offsetLeft - halfBorderH),
+				Math.floor(target.offsetTop - halfBorderV),
+				Math.floor(target.offsetWidth - halfBorderH),
+				Math.floor(target.offsetHeight - halfBorderV)
+			);
 		}
+	}
+	private function doSetMarkerPosition(marker:HtmlDom, left:Int, top:Int, width:Int, height:Int) {
+		marker.style.left = left + "px";
+		marker.style.top = top + "px";
+		marker.style.width = width + "px";
+		marker.style.height = height + "px";
 	}
 	/**
 	 * retrieve the node which is a component, i.e. the one whise parent node has the Layer class
