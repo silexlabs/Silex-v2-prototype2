@@ -24,11 +24,21 @@ img{
 p{
 
 }
-.list ul{
-
+.list{
+	padding: 0;
+	margin: 0;
+	text-decoration: none;
+	list-style-type: none;
 }
 .list li{
 
 }
 
 /* Publication styles */
+.property{
+	width: 100%;
+}
+.context-img,.context-video,.context-audio,.context-div,.context-layer{
+	visibility: hidden;
+	display: none;
+}

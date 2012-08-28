@@ -20,28 +20,38 @@
 				style="width:100%; margin: 0 10px;"/>
 			<img src="publications/default/assets/image.png" 
 				style="border-width:5px; border-style:double;"/>
-			<p>
-				This would be the header ... :)
-			</p>
+			<div>
+					This would be the header ... :)
+			</div>
 		</div>
 		<A class="Page" name="page1">Page 1</A>
-		<div class="Layer page1">
-			<h1>HELLO SILEX!</h1>
+		<div class="Layer page1 TransitionHorizontal" data-transition-duration="2s">
+			<div>
+				<h1>HELLO SILEX!</h1>
+			</div>
 			<button style="float: left;">
 				<a href="#test">Button default style</a>
 			</button>
-			<p>
-				This is <strong>Page 1</strong>.
-			</p>
-			<p>
-				Test of a paragraph. And this is <a href="#page2" class="LinkToPage">a link to page #2</a>
-			</p>
+			<div>
+				<p style="display: inline-block;">
+					This is <strong>Page 1</strong>.
+				</p>
+			</div>
+			<div>
+				<p>
+					Test of a paragraph. And this is <a href="#page2" class="LinkToPage">a link to page #2</a>
+				</p>
+			</div>
 		</div>
 		<A class="Page" name="page2">Page 2</A>
 		<div class="Layer page2">
-			<h1>Page 2</h1>
-			<p>Test of a paragraph 2. Back to <a href="#page1" class="LinkToPage" >page #1</a></p>
-			<p>This page should not been shown unless you specified <a href="#page2" >#page2 in the deeplink</a>!</p>
+			<div>
+				<h1>Page 2</h1>
+				<p>Test of a paragraph 2. Back to <a href="#page1" class="LinkToPage" >page #1</a></p>
+			</div>
+			<div>
+				This page should not been shown unless you specified <a href="#page2" >#page2 in the deeplink</a>!
+			</div>
 		</div>
 		<div class="Layer page1 page2">
 			<h1>Footer</h1>
