@@ -22,6 +22,6 @@
 		Builder.loadPublication("default", {
 			debugModeAction: "//Lib.alert('test2');",
 		 });
-		Page.openPage("Builder", false, null, slpid);
+		Page.openPage("builder-mode", false, null, slpid, null);
 	</debugModeAction>
 </xml>

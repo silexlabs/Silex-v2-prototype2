@@ -114,6 +114,7 @@ class DialogBase extends DisplayObject
 	 * Call onSubmit or onCancel callbacks
 	 */
 	public function onClick(e:Event) {
+		e.preventDefault();
 		// retrieve the node who triggered the event
 		var target:HtmlDom = cast(e.target);
 		// it is supposed to have ok-button in its class name

@@ -24,7 +24,7 @@ class Builder extends DisplayObject{
 	/**
 	 * name for the builder mode of the Silex editor
 	 */
-	public static inline var BUILDER_MODE_PAGE_NAME = "Builder";
+	public static inline var BUILDER_MODE_PAGE_NAME = "builder-mode";
 #if silexClientSide
 	/**
 	 * publication DOM used as the model

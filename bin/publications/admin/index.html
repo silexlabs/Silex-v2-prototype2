@@ -13,22 +13,22 @@
 		<meta name="type" content="publication" /> <!-- or theme, utility -->
 		<meta name="useDeeplink" content="false" />
 	</HEAD>
-	<body>
+	<body class="GroupMain">
 		<!-- Menu -->
 		<A class="Page" name="start-page">Page 1</A>
-		<UL class="menu MenuManager">
+		<UL class="menu MenuManager GroupMenu">
 			<!-- Menu FILE -->
-			<LI class="main"><A href="#sub-menu1" class="LinkToPage">File</A><A class="Page" name="sub-menu1"></A>
+			<LI class="main"><A href="#sub-menu1" class="LinkToPage" data-group-id="GroupMenu">File</A><A class="Page" data-group-id="GroupMenu" name="sub-menu1"></A>
 				<DIV class="container-sub">
 					<UL class="Layer sub-menu1 sub">
-						<LI><A href="#open-dialog" target="_top" class="LinkToPage">Open</A></LI>
+						<LI><A href="#open-dialog" target="_top" class="LinkToPage" data-group-id="GroupMain">Open</A></LI>
 						<LI><A href="#toolbox" class="menu-item-disabled">Save</A></LI>
 						<LI><A href="#toolbox" class="menu-item-disabled">Save As</A></LI>
 					</UL>
 				</DIV>
 		   </LI>
 			<!-- Menu EDITION -->
-			<LI class="main"><A href="#sub-menu2" class="LinkToPage">Edit</A><A class="Page" name="sub-menu2"></A>
+			<LI class="main"><A href="#sub-menu2" class="LinkToPage" data-group-id="GroupMenu">Edit</A><A class="Page" data-group-id="GroupMenu" name="sub-menu2"></A>
 				<DIV class="container-sub">
 					<UL class="Layer sub-menu2 sub">
 						<LI><A href="#toolbox" class="menu-item-disabled">Cut</A></LI>
@@ -39,14 +39,14 @@
 				</DIV>
 		   </LI>
 			<!-- Menu INSERT -->
-			<LI class="main"><A href="#sub-menu4" class="LinkToPage">Insert</A><A class="Page" name="sub-menu4"></A>
+			<LI class="main"><A href="#sub-menu4" class="LinkToPage" data-group-id="GroupMenu">Insert</A><A class="Page" data-group-id="GroupMenu" name="sub-menu4"></A>
 				<DIV class="container-sub">
 					<UL class="Layer sub-menu4 sub-menu4-1 sub">
 						<LI><A href="#toolbox" class="menu-item-disabled">Snippet</A></LI>
-						<LI><A href="#sub-menu4-1" class="LinkToPage">Image &gt;</A></LI>
+						<LI><A href="#sub-menu4-1" class="LinkToPage" data-group-id="GroupMenu">Image &gt;</A></LI>
 						<LI><A href="#toolbox" class="menu-item-disabled">Table</A></LI>
 					</UL>
-					<A class="Page" name="sub-menu4-1"></A>
+					<A class="Page" data-group-id="GroupMenu" name="sub-menu4-1"></A>
 					<UL class="Layer sub-menu4-1 sub sub-of-sub">
 						<LI><A href="#toolbox" class="menu-item-disabled">From File</A></LI>
 						<LI><A href="#toolbox" class="menu-item-disabled">From URL</A></LI>
@@ -55,17 +55,17 @@
 				</DIV>
 		   </LI>
 			<!-- Menu HELP -->
-			<LI class="main"><A href="#sub-menu5" class="LinkToPage">Help</A><A class="Page" name="sub-menu5"></A>
+			<LI class="main"><A href="#sub-menu5" class="LinkToPage" data-group-id="GroupMenu">Help</A><A class="Page" data-group-id="GroupMenu" name="sub-menu5"></A>
 				<DIV class="container-sub">
 					<UL class="Layer sub-menu5 sub-menu5-1 sub">
 						<LI><A href="#welcome" class="menu-item-disabled">Welcome page</A></LI>
-						<LI><A href="#sub-menu5-1" class="LinkToPage">Account &gt;</A></LI>
+						<LI><A href="#sub-menu5-1" class="LinkToPage" data-group-id="GroupMenu">Account &gt;</A></LI>
 						<LI><A href="#about" class="menu-item-disabled">About</A></LI>
 					</UL>
-					<A class="Page" name="sub-menu5-1"></A>
+					<A class="Page" data-group-id="GroupMenu" name="sub-menu5-1"></A>
 					<UL class="Layer sub-menu5-1 sub sub-of-sub">
 						<LI><A href="#item-logout" class="menu-item-disabled">Logout</A></LI>
-						<LI><A href="#login-dialog" class="LinkToPage" target="_top">Login</A></LI>
+						<LI><A href="#login-dialog" class="LinkToPage" data-group-id="GroupMain" target="_top">Login</A></LI>
 						<LI><A href="#item-chpwd" class="menu-item-disabled">Change password</A></LI>
 						<LI><A href="#item-users" class="menu-item-disabled">Manage Users</A></LI>
 					</UL>
@@ -74,17 +74,21 @@
 		</UL>
 		<!-- /Menu -->
 		<!-- Toolboxes -->
-		<div>
+		<A class="Page" name="builder-mode"></A>
+		<div class="GroupPropertiesToolbox" data-initial-page-name="properties-editor">
+			<A class="Page" data-group-id="GroupPropertiesToolbox" name="raw-html">Page 1</A>
+			<A class="Page" data-group-id="GroupPropertiesToolbox" name="properties-editor">Page 1</A>
+			<A class="Page" data-group-id="GroupPropertiesToolbox" name="style-editor">Page 1</A>
 			<!-- Navigation -->
-			<div class="Layer raw-html properties style-editor">
+			<div class="Layer raw-html properties-editor style-editor">
 				<ul class="tabs">
-					<li><a href="#properties" class="LinkToPage">Properties</a></li>
-					<li><a href="#style-editor" class="LinkToPage">Style</a></li>
-					<li><a href="#raw-html" class="LinkToPage">Raw HTML</a></li>
+					<li><a href="#properties-editor" class="LinkToPage" data-group-id="GroupPropertiesToolbox">Properties</a></li>
+					<li><a href="#style-editor" class="LinkToPage" data-group-id="GroupPropertiesToolbox">Style</a></li>
+					<li><a href="#raw-html" class="LinkToPage" data-group-id="GroupPropertiesToolbox">Raw HTML</a></li>
 				</ul>
 			</div>
 			<!-- Contexts -->
-			<div class="Layer raw-html properties style-editor">
+			<div class="Layer raw-html properties-editor style-editor">
 				<ul class="">
 					<li><a href="#context-img" class="LinkToContext">Image tag</a></li>
 					<li><a href="#context-video" class="LinkToContext">Video tag</a></li>
@@ -94,7 +98,6 @@
 				</ul>
 			</div>
 			<!-- Raw HTML editor -->
-			<A class="Page" name="raw-html">Page 1</A>
 			<form class="Layer raw-html RawHtmlToolbox">
 				<fieldset>
 					<legend>Raw HTML content</legend>
@@ -103,8 +106,7 @@
 				</fieldset>
 			</form>
 			<!-- Properties editor -->
-			<A class="Page" name="properties">Page 1</A>
-			<form class="Layer properties PropertiesToolbox">
+			<form class="Layer properties-editor PropertiesToolbox">
 				<fieldset>
 					<legend>Properties</legend>
 					<ul class="list">
@@ -124,10 +126,6 @@
 							<p>Loop or stop at the end</p>
 							<input type="checkbox" class="property toggle-loop-property" /> Loop
 						</li>
-						<li class="context-div">
-							<p>Raw HTML</p>
-							<textarea class="property url-property"></textarea>
-						</li>
 						<li class="context-layer">
 							<p>Set as master</p>
 							<input type="checkbox" class="property toggle-master-property" /> Master
@@ -136,7 +134,6 @@
 				</fieldset>
 			</form>
 			<!-- Style editor -->
-			<A class="Page" name="style-editor">Page 1</A>
 			<form class="Layer style-editor StyleToolbox">
 				<fieldset>
 					<legend>Style</legend>
@@ -173,8 +170,7 @@
 		<!-- Views -->
 		<!-- /Views -->
 		<!-- Builder mode -->
-		<A class="Page" name="Builder"></A>
-		<div class="Layer builder-mode Builder SelectionManager" >
+		<div class="Layer builder-mode Builder SelectionManager " >
 			HERE IS THE PUBLICATION
 		</div>
 		<!-- /Builder -->
