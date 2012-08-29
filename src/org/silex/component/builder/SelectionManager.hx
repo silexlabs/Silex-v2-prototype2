@@ -114,17 +114,16 @@ class SelectionManager extends DisplayObject
 			marker.style.visibility = "hidden";
 		}
 		else{			
-			//var halfBorderH = (target.offsetWidth - target.clientWidth)/4.0;
-			//var halfBorderV = (target.offsetHeight - target.clientHeight)/4.0;
-			var halfBorderH = (marker.offsetWidth - marker.clientWidth)/2.0;
-			var halfBorderV = (marker.offsetHeight - marker.clientHeight)/2.0;
+			var boundingBox = DomTools.getElementBoundingBox(target);
+			var markerMarginH = (marker.offsetWidth - marker.clientWidth)/2.0;
+			var markerMarginV = (marker.offsetHeight - marker.clientHeight)/2.0;
 			//marker.style.display = "inline";
 			marker.style.visibility = "visible";
 			doSetMarkerPosition(marker,
-				Math.floor(target.offsetLeft - halfBorderH),
-				Math.floor(target.offsetTop - halfBorderV),
-				Math.floor(target.offsetWidth - halfBorderH),
-				Math.floor(target.offsetHeight - halfBorderV)
+				Math.floor(boundingBox.x - markerMarginH/2),
+				Math.floor(boundingBox.y - markerMarginV/2),
+				Math.floor(boundingBox.w - markerMarginH),
+				Math.floor(boundingBox.h - markerMarginV)
 			);
 		}
 	}

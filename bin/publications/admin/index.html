@@ -73,105 +73,114 @@
 		   </LI>
 		</UL>
 		<!-- /Menu -->
-		<!-- Toolboxes -->
-		<A class="Page" name="builder-mode"></A>
-		<div class="GroupPropertiesToolbox" data-initial-page-name="properties-editor">
-			<A class="Page" data-group-id="GroupPropertiesToolbox" name="raw-html">Page 1</A>
-			<A class="Page" data-group-id="GroupPropertiesToolbox" name="properties-editor">Page 1</A>
-			<A class="Page" data-group-id="GroupPropertiesToolbox" name="style-editor">Page 1</A>
-			<!-- Navigation -->
-			<div class="Layer raw-html properties-editor style-editor">
-				<ul class="tabs">
-					<li><a href="#properties-editor" class="LinkToPage" data-group-id="GroupPropertiesToolbox">Properties</a></li>
-					<li><a href="#style-editor" class="LinkToPage" data-group-id="GroupPropertiesToolbox">Style</a></li>
-					<li><a href="#raw-html" class="LinkToPage" data-group-id="GroupPropertiesToolbox">Raw HTML</a></li>
-				</ul>
-			</div>
-			<!-- Contexts -->
-			<div class="Layer raw-html properties-editor style-editor">
-				<ul class="">
-					<li><a href="#context-img" class="LinkToContext">Image tag</a></li>
-					<li><a href="#context-video" class="LinkToContext">Video tag</a></li>
-					<li><a href="#context-audio" class="LinkToContext">Audio tag</a></li>
-					<li><a href="#context-div" class="LinkToContext">Div tag / text</a></li>
-					<li><a href="#context-layer" class="LinkToContext">Container / layer</a></li>
-				</ul>
-			</div>
-			<!-- Raw HTML editor -->
-			<form class="Layer raw-html RawHtmlToolbox">
-				<fieldset>
-					<legend>Raw HTML content</legend>
-					<textarea class="property url-property"></textarea>
-					<input type="submit" value="Apply" />
-				</fieldset>
-			</form>
-			<!-- Properties editor -->
-			<form class="Layer properties-editor PropertiesToolbox">
-				<fieldset>
-					<legend>Properties</legend>
-					<ul class="list">
-						<li class="">
-							<p>Name</p>
-							<input type="text" class="property name-property"></input>
-						</li>
-						<li class="context-img context-video context-audio">
-							<p>URL</p>
-							<input type="text" class="property url-property"></input>
-						</li>
-						<li class="context-video context-audio">
-							<p>Auto start playing</p>
-							<input type="checkbox" class="property toggle-loop-property" /> Auto start
-						</li>
-						<li class="context-video context-audio">
-							<p>Loop or stop at the end</p>
-							<input type="checkbox" class="property toggle-loop-property" /> Loop
-						</li>
-						<li class="context-layer">
-							<p>Set as master</p>
-							<input type="checkbox" class="property toggle-master-property" /> Master
-						</li>
+		<div class="toolbox-drop-zone">
+			<A class="Page" name="builder-mode"></A>
+			<div class="GroupPropertiesToolbox Draggable Panel PropertiesToolbox" 
+				data-initial-page-name="properties-editor" 
+				data-toolbox-name="PropertiesToolbox"
+				data-dropzones-class-name="toolbox-drop-zone"
+				data-phantom-class-name="toolbox-phantom">
+				<div class="panel-header">
+					<div class="draggable-dragzone">
+						Properties
+					</div>
+					<ul class="tabs">
+						<li><a href="#properties-editor" class="LinkToPage" data-group-id="GroupPropertiesToolbox">Properties</a></li>
+						<li><a href="#style-editor" class="LinkToPage" data-group-id="GroupPropertiesToolbox">Style</a></li>
+						<li><a href="#raw-html" class="LinkToPage" data-group-id="GroupPropertiesToolbox">Raw HTML</a></li>
 					</ul>
-				</fieldset>
-			</form>
-			<!-- Style editor -->
-			<form class="Layer style-editor StyleToolbox">
-				<fieldset>
-					<legend>Style</legend>
-					<ul class="list">
-						<li>
-							<p>Width</p>
-							<input type="text" class="property width-property"></input>
-						</li>
-						<li>
-							<p>Height</p>
-							<input type="text" class="property height-property"></input>
-						</li>
-						<li>
-							<p>Z-index</p>
-							<input type="text" class="property z-index-property"></input>
-						</li>
-						<li>
-							<p>Display</p>
-							<input type="text" class="property display-property"></input>
-						</li>
-						<li>
-							<p>Position</p>
-							<input type="text" class="property position-property"></input>
-						</li>
-						<li>
-							<p>Float</p>
-							<input type="text" class="property float-property"></input>
-						</li>
-					</ul>
-				</fieldset>
-			</form>
-		</div>
-		<!-- /Toolboxes -->
-		<!-- Views -->
-		<!-- /Views -->
-		<!-- Builder mode -->
-		<div class="Layer builder-mode Builder SelectionManager " >
-			HERE IS THE PUBLICATION
+				</div>
+				<div class="panel-body">
+					<A class="Page" data-group-id="GroupPropertiesToolbox" name="raw-html">Page 1</A>
+					<A class="Page" data-group-id="GroupPropertiesToolbox" name="properties-editor">Page 1</A>
+					<A class="Page" data-group-id="GroupPropertiesToolbox" name="style-editor">Page 1</A>
+					<!-- Navigation -->
+					<!-- Contexts -->
+					<div class="Layer raw-html properties-editor style-editor">
+						<ul class="">
+							<li><a href="#context-img" class="LinkToContext">Image tag</a></li>
+							<li><a href="#context-video" class="LinkToContext">Video tag</a></li>
+							<li><a href="#context-audio" class="LinkToContext">Audio tag</a></li>
+							<li><a href="#context-div" class="LinkToContext">Div tag / text</a></li>
+							<li><a href="#context-layer" class="LinkToContext">Container / layer</a></li>
+						</ul>
+					</div>
+					<!-- Raw HTML editor -->
+					<form class="Layer raw-html RawHtmlToolbox">
+						<fieldset>
+							<legend>Raw HTML content</legend>
+							<textarea class="property url-property"></textarea>
+							<input type="submit" value="Apply" />
+						</fieldset>
+					</form>
+					<!-- Properties editor -->
+					<form class="Layer properties-editor PropertiesToolbox">
+						<fieldset>
+							<legend>Properties</legend>
+							<ul class="list">
+								<li class="">
+									<p>Name</p>
+									<input type="text" class="property name-property"></input>
+								</li>
+								<li class="context-img context-video context-audio">
+									<p>URL</p>
+									<input type="text" class="property url-property"></input>
+								</li>
+								<li class="context-video context-audio">
+									<p>Auto start playing</p>
+									<input type="checkbox" class="property toggle-loop-property" /> Auto start
+								</li>
+								<li class="context-video context-audio">
+									<p>Loop or stop at the end</p>
+									<input type="checkbox" class="property toggle-loop-property" /> Loop
+								</li>
+								<li class="context-layer">
+									<p>Set as master</p>
+									<input type="checkbox" class="property toggle-master-property" /> Master
+								</li>
+							</ul>
+						</fieldset>
+					</form>
+					<!-- Style editor -->
+					<form class="Layer style-editor StyleToolbox">
+						<fieldset>
+							<legend>Style</legend>
+							<ul class="list">
+								<li>
+									<p>Width</p>
+									<input type="text" class="property width-property"></input>
+								</li>
+								<li>
+									<p>Height</p>
+									<input type="text" class="property height-property"></input>
+								</li>
+								<li>
+									<p>Z-index</p>
+									<input type="text" class="property z-index-property"></input>
+								</li>
+								<li>
+									<p>Display</p>
+									<input type="text" class="property display-property"></input>
+								</li>
+								<li>
+									<p>Position</p>
+									<input type="text" class="property position-property"></input>
+								</li>
+								<li>
+									<p>Float</p>
+									<input type="text" class="property float-property"></input>
+								</li>
+							</ul>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+			<!-- Views -->
+			<!-- /Views -->
+			<!-- Builder mode -->
+			<div class="Layer builder-mode Builder SelectionManager " >
+				HERE IS THE PUBLICATION
+			</div>
 		</div>
 		<!-- /Builder -->
 		<!-- Dialogs -->
