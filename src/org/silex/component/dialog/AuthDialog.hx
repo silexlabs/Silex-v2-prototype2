@@ -15,19 +15,39 @@ import org.slplayer.util.DomTools;
  * &gt;div class="LoginDialog login-dialog"&lt;
  */
 @tagNameFilter("div")
-class Auth extends DialogBase
+class AuthDialog extends DialogBase
 {
+	/**
+	 * The dialog css class name, used to close it
+	 */
 	public static inline var LOADING_PAGE_NAME = "loading-pending";
-
+	/**
+	 * The css class name of the text field used to display error
+	 */
 	public static inline var ERROR_TEXT_FIELD_CLASS_NAME = "error-text";
-
+	/**
+	 * The css class name of the text field used as input 
+	 */
 	public static inline var LOGIN_INPUT_FIELD_CLASS_NAME = "input-field-login";
-	public static inline var LOGIN_INPUT_FIELD_NOT_FOUND = "Could not find the input field for login. It is expected to have input-field-login as a css class name.";
-
+	/**
+	 * The css class name of the text field used as input 
+	 */
 	public static inline var PASSWORD_INPUT_FIELD_CLASS_NAME = "input-field-pass";
+	/**
+	 * Constant for error text
+	 */
+	public static inline var LOGIN_INPUT_FIELD_NOT_FOUND = "Could not find the input field for login. It is expected to have input-field-login as a css class name.";
+	/**
+	 * Constant for error text
+	 */
 	public static inline var PASSWORD_INPUT_FIELD_NOT_FOUND = "Could not find the input field for password. It is expected to have input-field-pass as a css class name.";
-	
+	/**
+	 * Constant for error text
+	 */
 	public static inline var ALL_FIELDS_REQUIRED = "All fields are required.";
+	/**
+	 * Constant for error text
+	 */
 	public static inline var NETWORK_ERROR = "Network error.";
 	/**
 	 * Constructor

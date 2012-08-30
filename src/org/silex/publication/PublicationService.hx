@@ -41,6 +41,12 @@ class PublicationService extends ServiceBase{
 		this.publicationFolder = publicationFolder;
 	}
 	/**
+	 * Retrieve publication config
+	 */
+	public function getPublicationConfig(publicationName:String, onResult:PublicationConfigData->Void, onError:String->Void=null) {
+		callServerMethod("getPublicationConfig", [publicationName, publicationFolder], onResult, onError);
+	}
+	/**
 	 * Retrieve a publication data
 	 */
 	public function getPublicationData(publicationName:String, onResult:PublicationData->Void, onError:String->Void=null) {

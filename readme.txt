@@ -34,8 +34,29 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** To do **
 
-le builder qui ouvre une publication devrait se servir des fonctions de Silex
-pareil pour le côté server (remoting)
+en cours
+- methodes static de Page dans PageModel
+- laytou.Panel devrait etre groupable, pour que les boites a outils l utilisent et le menu aussi
+- rename component => ui et laisser component.ComponentModel
+- rename the component SelectionManager.hx => SelectionView.hx
+- rename the component MenuManager.hx => MenuControler.hx
+- rename all *Manager => *Model ??
+- passer Silex => org.silex et ServerConfig dans org.silex.server
+- regrouper *Base => org.silex.core
+- supprimer package org
+
+permettre la selection des Layer
+
+permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html aux liens?)
+
+le builder qui ouvre une publication devrait se servir des fonctions de Silex.hx?
+pareil pour le côté server (remoting)?
+
+dans ToolboxBase, 
+- supprimer drop zone car tout est en fixed (par rapport a la fenatre)
+- changer drop zone par stage?
+
+- mise a jour version Cocktail => typedef audio et video => changer dans SLPLayer Layer
 
 refactoring:
 - specs builder

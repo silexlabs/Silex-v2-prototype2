@@ -9,10 +9,11 @@ import org.slplayer.component.navigation.link.LinkToPage;
 import org.slplayer.component.navigation.Page;
 import org.slplayer.util.DomTools;
 
-import org.silex.component.PublicationConnector;
 import org.silex.publication.PublicationData;
-import org.silex.component.builder.Builder;
+import org.silex.publication.PublicationModel;
 import org.silex.component.dialog.DialogBase;
+import org.silex.component.list.PublicationList;
+import org.silex.component.stage.Stage;
 
 /**
  * This component displays a window with a list of publications and let the user choose which one to use.
@@ -20,9 +21,11 @@ import org.silex.component.dialog.DialogBase;
  * &gt;div class="OpenPublicationDialog"&lt;
  */
 @tagNameFilter("div")
-class SelectPublication extends DialogBase
+class OpenDialog extends DialogBase
 {
-	public static inline var CONNECTOR_CLASS_NAME = "PublicationConnector";
+	/**
+	 * The css class name of the list used to display the publications
+	 */
 	public static inline var LIST_CLASS_NAME = "PublicationList";
 	/**
 	 * Constructor
@@ -30,23 +33,14 @@ class SelectPublication extends DialogBase
 	 */
 	public function new(rootElement:HtmlDom, SLPId:String){
 		super(rootElement, SLPId, requestRedraw, null, validateSelection, cancelSelection);
-		// listen to the list events
-		var listNode = rootElement.getElementsByClassName(LIST_CLASS_NAME)[0];
-		listNode.addEventListener("click", onClick, false);
 	}
 	/**
 	 * Callback for the "show" event of the Layer class
-	 * Update the data of the connector
+	 * Update the publications list when the page is opened
 	 */
 	public function requestRedraw(transitionData:TransitionData) {
-
-		trace("requestRedraw ");
-		// update the list when the page is opened
-		var event:CustomEvent = cast Lib.document.createEvent("CustomEvent");
-		event.initCustomEvent(PublicationConnector.REFRESH_DATA_EVENT, true, true, null);
-
-		var connectorNode = rootElement.getElementsByClassName(CONNECTOR_CLASS_NAME)[0];
-		connectorNode.dispatchEvent(event);
+		// reload data
+		PublicationModel.getInstance().loadList();
 	}
 	/**
 	 * Called after a click on the submit button
@@ -56,11 +50,11 @@ class SelectPublication extends DialogBase
 		// get the list instance
 		var list = getListComponent();
 		// get the selected item
-		var item:{name:String, configData:PublicationConfigData} = list.selectedItem;
+		var item:PublicationListItem = list.selectedItem;
 		// if a publication is selected
 		if (item != null){
-			Builder.loadPublication(item.name, item.configData);
-			Page.openPage(Builder.BUILDER_MODE_PAGE_NAME, false, null, SLPlayerInstanceId);
+			PublicationModel.getInstance().load(item.name, item.configData);
+			Page.openPage(Stage.BUILDER_MODE_PAGE_NAME, false, null, SLPlayerInstanceId);
 			close();
 		}
 	}
@@ -69,7 +63,7 @@ class SelectPublication extends DialogBase
 	 */
 	public function getListComponent():PublicationList {
 		// get the node with the list
-		var listNode = rootElement.getElementsByClassName(LIST_CLASS_NAME)[0];
+		var listNode = DomTools.getSingleElement(rootElement, LIST_CLASS_NAME, true);
 		// returns the list instance
 		return getSLPlayer().getAssociatedComponents(listNode, PublicationList).first();
 	}

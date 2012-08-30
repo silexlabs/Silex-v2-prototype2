@@ -1,8 +1,13 @@
 -js ../bin/libs/silex/silex.js
 -cp ../../SLPlayer/src/
 -cp ../../Cocktail/src/
+#--no-traces
+-debug
+-lib hscript
+
 -main org.silex.core.Silex
 --macro org.slplayer.core.Builder.create('index.html')
+
 #-D slpdebug
 -D disableEmbedHtml
 -D noAutoStart
@@ -10,5 +15,3 @@
 
 -D silexClientSide
 -D silexDebug
-
--lib hscript

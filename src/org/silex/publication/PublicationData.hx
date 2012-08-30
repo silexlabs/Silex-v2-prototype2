@@ -26,11 +26,6 @@ typedef PublicationData = {
 	 * the CSS data of the publication, saved in the style folder of the publication
 	 */
 	var css:String;
-	/**
-	 * name of the publication, which is also the folder containing the publication files
-	 * @example		[publication folder path]/[publication name]/
-	 */
-//	var name:String;
 }
 
 /**

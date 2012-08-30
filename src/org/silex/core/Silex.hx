@@ -118,10 +118,10 @@ class Silex {
 		var application = Application.createApplication();
 		application.init();
 
+		#if silexDebug
 		haxe.Timer.delay(callback(doAfterInit, application), 1000);
 	}
 	private static function doAfterInit(application) {
-		#if silexDebug
 		// execute an action when needed for debug (publication and server config)
 		var debugModeAction = DomTools.getMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION);
 		if (debugModeAction != null){

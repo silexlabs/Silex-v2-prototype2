@@ -17,7 +17,15 @@ import org.slplayer.component.interaction.Draggable;
 @tagNameFilter("div")
 class ToolboxBase extends DisplayObject 
 {
-	public static inline var CONFIG_TOOLBOX_NAME = "data-toolbox-name";
+	/**
+	 * name of the attribute to pass the drop zone param param to this class
+	 * the drop zone is used to compute the limits of the stage and constraint the tool box
+	 */
+	public static inline var ATTR_DROPZONE = "data-toolbox-dropzones-class-name";
+	/**
+	 * default class name for the drop zones, used if you do not specify a data-toolbox-dropzones-class-name attribute
+	 */
+	public static inline var DEFAULT_CSS_CLASS_DROPZONE = "toolbox-dropzone";
 	/**
 	 * Callback, called automatically
 	 * Passed to the constructor or set during execution
@@ -29,12 +37,14 @@ class ToolboxBase extends DisplayObject
 	 */
 	private var onHide:Null<TransitionData->Void>;
 	/**
-	 * Name of the toolbox
-	 * Passed as an attribute of the node
-	 * It is not supposed to contain white spaces in the name since it is used as a css class
-	 * @example	 &lt;div class=&quot;MyToolbox&quot; data-toolbox-name=&quot;the-toolbox-name&quot; &gt;Test toolbox&lt;/div&gt;
+	 * class name to select the zone used to detect the scene borders
+	 * @default	dropzone 
 	 */
-	private var toolboxName:String;
+	public var dropZonesClassName:String;
+	/**
+	 * html elment instance for the zone used to detect the scene borders
+	 */
+	public var dropZone:HtmlDom;
 
 	/**
 	 * Constructor
@@ -49,14 +59,12 @@ class ToolboxBase extends DisplayObject
 		this.onShow = onShow;
 		this.onHide = onHide;
 
-		// init toolboxName
-		toolboxName = rootElement.getAttribute(CONFIG_TOOLBOX_NAME);
-		if (toolboxName == null){
-			trace("Warning, this toolbox has no data-toolbox-name attribute. It will not be able to close automatically.");
-		}else{
-			// add the toolbox name as a css class
-			DomTools.addClass(rootElement, toolboxName);
-		}
+		// retrieve atribute of the html dom node 
+		dropZonesClassName = rootElement.getAttribute(ATTR_DROPZONE);
+
+		// default value
+		if (dropZonesClassName == null || dropZonesClassName == "")
+			dropZonesClassName = DEFAULT_CSS_CLASS_DROPZONE;
 
 		// listen to the Layer class event
 		rootElement.addEventListener(TransitionData.EVENT_TYPE_REQUEST, onLayerShowOrHide, false);
@@ -65,6 +73,21 @@ class ToolboxBase extends DisplayObject
 		rootElement.addEventListener(Draggable.EVENT_DRAG, onDrag, false);
 		rootElement.addEventListener(Draggable.EVENT_DROPPED, onDrop, false);
 		rootElement.addEventListener(Draggable.EVENT_MOVE, onMove, false);
+	}
+	/**
+	 * init the component
+	 */
+	override public function init() : Void 
+	{ 
+		super.init();
+
+		// retrieve references to the elements
+		var dropZones = Lib.document.body.getElementsByClassName(dropZonesClassName);
+		if (dropZones.length == 0)
+			dropZone = rootElement.parentNode;
+		else
+			dropZone = dropZones[0];
+
 	}
 	/**
 	 * Callback for the "show" and hide events of the Layer class
@@ -84,50 +107,22 @@ class ToolboxBase extends DisplayObject
 		}
 	}
 	/**
-	 * Close this toolbox
-	 * It uses the toolbox name as a css class
-	 */
-	public function close() {
-		Page.closePage(toolboxName, null, SLPlayerInstanceId);
-	}
-	/**
 	 * Called when the toolbox is dragged
 	 */
 	public function onDrag(event:Event) {
-		var draggableEvent : DraggableEvent = cast(event).detail;
-
-		if (draggableEvent.dropZone != null){
-			applyConstraints(draggableEvent.dropZone.parent);
-		}
-		else{
-			trace("Warning: Toolbox "+toolboxName+" has not found a dropzone (it should have the css class "+draggableEvent.draggable.dropZonesClassName+")");
-		}
+		applyConstraints(dropZone);
 	}
 	/**
 	 * Called when the toolbox is dropped
 	 */
 	public function onDrop(event:Event) {
-		var draggableEvent : DraggableEvent = cast(event).detail;
-
-		if (draggableEvent.dropZone != null){
-			applyConstraints(draggableEvent.dropZone.parent);
-		}
-		else{
-			trace("Warning: Toolbox "+toolboxName+" has not found a dropzone (it should have the css class "+draggableEvent.draggable.dropZonesClassName+")");
-		}
+		applyConstraints(dropZone);
 	}
 	/**
 	 * Called when the toolbox is moved
 	 */
 	public function onMove(event:Event) {
-		var draggableEvent : DraggableEvent = cast(event).detail;
-
-		if (draggableEvent.dropZone != null){
-			applyConstraints(draggableEvent.dropZone.parent);
-		}
-		else{
-			trace("Warning: Toolbox "+toolboxName+" has not found a dropzone (it should have the css class "+draggableEvent.draggable.dropZonesClassName+")");
-		}
+		applyConstraints(dropZone);
 	}
 	/**
 	 * do not drop outside the limits of the drop zone

@@ -17,11 +17,12 @@
 	<body>
 		<!-- Toolboxes -->
 		<A class="Page" name="builder-mode"></A>
-		<div class="toolbox-drop-zone">
-			<div class="GroupPropertiesToolbox Draggable Panel PropertiesToolbox" 
+		<div class="toolbox-drop-zone"></div>
+		<div class="builder-scene">
+			<div class="GroupPropertiesToolbox Draggable Panel " 
 				data-initial-page-name="properties-editor" 
 				data-toolbox-name="PropertiesToolbox"
-				data-dropzones-class-name="toolbox-drop-zone"
+				data-toolbox-dropzones-class-name="toolbox-drop-zone"
 				data-phantom-class-name="toolbox-phantom">
 				<div class="panel-header">
 					<div class="draggable-dragzone">
@@ -38,16 +39,6 @@
 					<A class="Page" data-group-id="GroupPropertiesToolbox" name="properties-editor">Page 1</A>
 					<A class="Page" data-group-id="GroupPropertiesToolbox" name="style-editor">Page 1</A>
 					<!-- Navigation -->
-					<!-- Contexts -->
-					<div class="Layer raw-html properties-editor style-editor">
-						<ul class="">
-							<li><a href="#context-img" class="LinkToContext">Image tag</a></li>
-							<li><a href="#context-video" class="LinkToContext">Video tag</a></li>
-							<li><a href="#context-audio" class="LinkToContext">Audio tag</a></li>
-							<li><a href="#context-div" class="LinkToContext">Div tag / text</a></li>
-							<li><a href="#context-layer" class="LinkToContext">Container / layer</a></li>
-						</ul>
-					</div>
 					<!-- Raw HTML editor -->
 					<form class="Layer raw-html RawHtmlToolbox">
 						<fieldset>
@@ -58,6 +49,14 @@
 					</form>
 					<!-- Properties editor -->
 					<form class="Layer properties-editor PropertiesToolbox">
+						<!-- Contexts -->
+						<ul class="">
+							<li><a href="#context-img" class="LinkToContext">Image tag</a></li>
+							<li><a href="#context-video" class="LinkToContext">Video tag</a></li>
+							<li><a href="#context-audio" class="LinkToContext">Audio tag</a></li>
+							<li><a href="#context-div" class="LinkToContext">Div tag / text</a></li>
+							<li><a href="#context-layer" class="LinkToContext">Container / layer</a></li>
+						</ul>
 						<fieldset>
 							<legend>Properties</legend>
 							<ul class="list">
@@ -67,7 +66,7 @@
 								</li>
 								<li class="context-img context-video context-audio">
 									<p>URL</p>
-									<input type="text" class="property url-property"></input>
+									<input type="url" class="property url-property" name="URL" />
 								</li>
 								<li class="context-video context-audio">
 									<p>Auto start playing</p>
@@ -90,28 +89,62 @@
 							<legend>Style</legend>
 							<ul class="list">
 								<li>
+									<p>Left</p>
+									<input type="number" class="property left-property"
+										name="quantity" min="-50000" max="50000" />
+								</li>
+								<li>
+									<p>Top</p>
+									<input type="number" class="property top-property"
+										name="quantity" min="-50000" max="50000" />
+								</li>
+								<li>
+									<p>Bottom</p>
+									<input type="number" class="property bottom-property"
+										name="quantity" min="-50000" max="50000" />
+								</li>
+								<li>
+									<p>Right</p>
+									<input type="number" class="property right-property"
+										name="quantity" min="-50000" max="50000" />
+								</li>
+								<li>
 									<p>Width</p>
-									<input type="text" class="property width-property"></input>
+									<input type="number" class="property width-property"
+										name="quantity" min="0" max="50000" />
 								</li>
 								<li>
 									<p>Height</p>
-									<input type="text" class="property height-property"></input>
+									<input type="number" class="property height-property"
+										name="quantity" min="0" max="50000" />
 								</li>
 								<li>
 									<p>Z-index</p>
-									<input type="text" class="property z-index-property"></input>
+									<input type="number" class="property z-index-property"
+										name="quantity" min="-50000" max="50000" />
 								</li>
 								<li>
 									<p>Display</p>
-									<input type="text" class="property display-property"></input>
+									<select class="property display-property">
+										<option value="block">Block</option>
+										<option value="inline">Inline</option>
+										<option value="none">None</option>
+									</select>
 								</li>
 								<li>
 									<p>Position</p>
-									<input type="text" class="property position-property"></input>
+									<select class="property position-property">
+										<option value="relative">Relative</option>
+										<option value="absolute">Absolute</option>
+									</select>
 								</li>
 								<li>
 									<p>Float</p>
-									<input type="text" class="property float-property"></input>
+									<select class="property float-property">
+										<option value="none">None</option>
+										<option value="left">Left</option>
+										<option value="right">Right</option>
+									</select>
 								</li>
 							</ul>
 						</fieldset>

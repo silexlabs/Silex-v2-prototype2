@@ -9,8 +9,7 @@ import org.slplayer.component.navigation.link.LinkToPage;
 import org.slplayer.component.navigation.Page;
 import org.slplayer.util.DomTools;
 
-import org.silex.component.PublicationConnector;
-import org.silex.publication.PublicationData;
+import org.silex.publication.PublicationModel;
 
 /**
  * This component displays a window. Derive this class in order to make a new Dialog.
@@ -24,8 +23,17 @@ import org.silex.publication.PublicationData;
 @tagNameFilter("div")
 class DialogBase extends DisplayObject 
 {
+	/**
+	 * The css class name of the button used to submit the form
+	 */
 	public static inline var SUBMIT_BUTTON_CLASS_NAME = "ok-button";
+	/**
+	 * The css class name of the button used to close the form
+	 */
 	public static inline var CANCEL_BUTTON_CLASS_NAME = "cancel-button";
+	/**
+	 * The dialog css class name, used to close it
+	 */
 	public static inline var CONFIG_DIALOG_NAME = "data-dialog-name";
 	/**
 	 * Callback, called automatically

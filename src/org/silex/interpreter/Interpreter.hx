@@ -3,7 +3,11 @@ package org.silex.interpreter;
 import js.Lib;
 import js.Dom;
 
-import org.silex.component.builder.Builder;
+import org.silex.property.PropertyModel;
+import org.silex.component.ComponentModel;
+import org.silex.layer.LayerModel;
+import org.silex.page.PageModel;
+import org.silex.publication.PublicationModel;
 import org.slplayer.component.navigation.Page;
 import org.slplayer.util.DomTools;
 
@@ -23,10 +27,17 @@ class Interpreter{
 	public static inline var BASIC_CONTEXT = {
 		"Lib": Lib,
 		"Math": Math,
+		
 		"StringTools": StringTools,
-		"Builder": Builder,
-		"Page": Page,
 		"DomTools": DomTools,
+
+		"Page": Page,
+		
+		"PropertyModel": PropertyModel.getInstance(),
+		"ComponentModel": ComponentModel.getInstance(),
+		"LayerModel": LayerModel.getInstance(),
+		"PageModel": PageModel.getInstance(),
+		"PublicationModel": PublicationModel.getInstance(),
 	};
 	/**
 	 * execute a set of actions
