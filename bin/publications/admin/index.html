@@ -13,7 +13,7 @@
 		<meta name="type" content="publication" /> <!-- or theme, utility -->
 		<meta name="useDeeplink" content="false" />
 	</HEAD>
-	<body class="GroupMain">
+	<body class="PublicationGroupBUILDER">
 		<!-- Menu -->
 		<A class="Page" name="start-page">Page 1</A>
 		<UL class="menu ApplicationMenu GroupMenu">
@@ -21,8 +21,8 @@
 			<LI class="main"><A href="#sub-menu1" class="LinkToPage" data-group-id="GroupMenu">File</A><A class="Page" data-group-id="GroupMenu" name="sub-menu1"></A>
 				<DIV class="container-sub">
 					<UL class="Layer sub-menu1 sub">
-						<LI><A href="#open-dialog" target="_top" class="LinkToPage" data-group-id="GroupMain">Open</A></LI>
-						<LI><A href="#close-publication" target="_top" data-group-id="GroupMain">Close</A></LI>
+						<LI><A href="#open-dialog" target="_top" class="LinkToPage" data-group-id="PublicationGroupBUILDER">Open</A></LI>
+						<LI><A href="#close-publication" target="_top" data-group-id="PublicationGroupBUILDER">Close</A></LI>
 						<LI><A href="#toolbox" class="menu-item-disabled">Save</A></LI>
 						<LI><A href="#toolbox" class="menu-item-disabled">Save As</A></LI>
 					</UL>
@@ -66,7 +66,7 @@
 					<A class="Page" data-group-id="GroupMenu" name="sub-menu5-1"></A>
 					<UL class="Layer sub-menu5-1 sub sub-of-sub">
 						<LI><A href="#item-logout" class="menu-item-disabled">Logout</A></LI>
-						<LI><A href="#login-dialog" class="LinkToPage" data-group-id="GroupMain" target="_top">Login</A></LI>
+						<LI><A href="#login-dialog" class="LinkToPage" data-group-id="PublicationGroupBUILDER" target="_top">Login</A></LI>
 						<LI><A href="#item-chpwd" class="menu-item-disabled">Change password</A></LI>
 						<LI><A href="#item-users" class="menu-item-disabled">Manage Users</A></LI>
 					</UL>
@@ -78,7 +78,12 @@
 		<div class="toolbox-drop-zone"></div>
 		<div class="builder-scene">
 			<!-- Toolboxes -->
-			<div class="GroupPropertiesToolbox Draggable Panel PropertiesToolbox" 
+			<!-- Property Toolbox -->
+			<!-- Property Toolbox tabs -->
+			<A class="Page" data-group-id="GroupPropertiesToolbox" name="raw-html">Page 1</A>
+			<A class="Page" data-group-id="GroupPropertiesToolbox" name="properties-editor">Page 1</A>
+			<A class="Page" data-group-id="GroupPropertiesToolbox" name="style-editor">Page 1</A>
+			<div class="GroupPropertiesToolbox Draggable Panel PropertiesToolbox Layer builder-mode" 
 				data-initial-page-name="properties-editor" 
 				data-toolbox-name="PropertiesToolbox"
 				data-toolbox-dropzones-class-name="toolbox-drop-zone"
@@ -94,9 +99,6 @@
 					</ul>
 				</div>
 				<div class="panel-body">
-					<A class="Page" data-group-id="GroupPropertiesToolbox" name="raw-html">Page 1</A>
-					<A class="Page" data-group-id="GroupPropertiesToolbox" name="properties-editor">Page 1</A>
-					<A class="Page" data-group-id="GroupPropertiesToolbox" name="style-editor">Page 1</A>
 					<!-- Navigation -->
 					<!-- Raw HTML editor -->
 					<form class="Layer raw-html RawHtmlToolbox">
@@ -215,7 +217,7 @@
 			<!-- /Views -->
 			<!-- Builder mode -->
 			<div class="Layer builder-mode Stage SelectionController" >
-				LOADING PUBLICATION... HERE...
+				LOADING PUBLICATION... HERE... 
 			</div>
 		</div>
 		<!-- /Builder -->

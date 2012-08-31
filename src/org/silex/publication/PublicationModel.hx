@@ -91,15 +91,15 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	/** 
 	 * Current dom object, being edited, this is the actual model
 	 */
-	 public var body:HtmlDom;
+	 public var modelHtmlDom:HtmlDom;
 	/** 
 	 * Current dom object, being edited, this is the actual model
 	 */
-	 public var head:HtmlDom;
+	 public var headHtmlDom:HtmlDom;
 	/** 
 	 * Current duplicated DOM in order to be displayed and edited
 	 */
-	 public var view:HtmlDom;
+	 public var viewHtmlDom:HtmlDom;
 	/**
 	 * SLPlayer application used to create the components in the loaded publication (the view)
 	 */
@@ -178,51 +178,135 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * End of the loading process, the whole publication data is available
 	 */
 	private function onData(publicationData:PublicationData):Void{
-
 		// store the data / update the model
 		currentData = publicationData;
 
 		// parse the data and make it available as HTML
-		body = Lib.document.createElement("div");
-		head = Lib.document.createElement("div");
+		modelHtmlDom = Lib.document.createElement("div");
+		headHtmlDom = Lib.document.createElement("div");
 
 		// parse html data as XML
-		var xml = new Fast(Xml.parse(currentData.html).firstChild());
+		var xml:Fast;
+		try{
+			xml = new Fast(Xml.parse(currentData.html).firstChild());
+		}
+		catch(e:Dynamic){
+			throw("Error in the HTML data of the publication "+currentName+". Note that valid XHTML is expected. Error message: "+e);
+		}
 
 		// Convert xml to DOM/html
 		if (xml.hasNode.body)
-			body.innerHTML = xml.node.body.innerHTML;
+			modelHtmlDom.innerHTML = xml.node.body.innerHTML;
 		else if (xml.hasNode.BODY)
-			body.innerHTML = xml.node.BODY.innerHTML;
+			modelHtmlDom.innerHTML = xml.node.BODY.innerHTML;
 		if (xml.hasNode.head)
-			head.innerHTML = xml.node.head.innerHTML;
+			headHtmlDom.innerHTML = xml.node.head.innerHTML;
 		else if (xml.hasNode.HEAD)
-			head.innerHTML = xml.node.HEAD.innerHTML;
+			headHtmlDom.innerHTML = xml.node.HEAD.innerHTML;
 
 		// init the view
-		initDOMView();
+		initViewHtmlDom();
 
-		// dispatch the event 
+		// dispatch the event, the DOM is then assumed to be attached to the browser DOM
 		dispatchEvent(createEvent(ON_DATA));
+
+		// init the SLPlayer application
+		initSLPlayerApplication(viewHtmlDom);
 	}
 	/**
 	 * Duplicate the loaded DOM
 	 * Initialize the SLPlayer for the view
 	 */
-	public function initDOMView():Void{
+	private function initViewHtmlDom():Void{
+		trace("initViewHtmlDom");
 		// Duplicate DOM
-		view = body.cloneNode(true);
+		viewHtmlDom = modelHtmlDom.cloneNode(true);
+
+		// add attributes to nodes recursively
+		prepareForEdit(modelHtmlDom, viewHtmlDom);
 
 		// Add the CSS in the body tag rather than head tag, because the later is not really added to the browser dom
-		DomTools.addCssRules(currentData.css, view);
+		DomTools.addCssRules(currentData.css, viewHtmlDom);
+	}
+	/**
+	 * Fixes the DOM root when needed
+	 * - add the PublicationGroup to the root of the DOM
+	 */
+	function fixDomRoot(modelDom:HtmlDom, viewDom:HtmlDom){
+		// add the PublicationGroup to the root of the DOM
+		DomTools.addClass(modelDom, "PublicationGroup");
+		DomTools.addClass(viewDom, "PublicationGroup");
+	}
+	/**
+	 * Fixes the components, layers and pages when needed
+	 * - add the attribute data-group-id to components
+	 */
+	function fixDom(modelDom:HtmlDom, viewDom:HtmlDom){
+		// add the attribute data-group-id to components
+		if (modelDom.getAttribute("data-group-id") == null){
+			modelDom.setAttribute("data-group-id", "PublicationGroup");
+			viewDom.setAttribute("data-group-id", "PublicationGroup");
+		}
+	}
+	/**
+	 * Recursively browse all html nodes and does this:
+	 * - add the attribute data-silex-component-id to node which are editable components
+	 * - add the attribute data-silex-layer-id to nodes which are editable layers
+	 * - call fixDom method for each component
+	 */
+	private function prepareForEdit(modelDom:HtmlDom, viewDom:HtmlDom) {
+		//trace("prepareForEdit ("+modelDom+", "+viewDom+"));
+		// Take only HtmlDom elements, not TextNode
+		if (modelDom.className == null){
+			return;
+		}
 
-		// init the SLPlayer application
-		initSLPlayerApplication(view);
+		// check that browsing is synced in view and model
+		if (viewDom.childNodes.length != modelDom.childNodes.length){
+			throw("Error: view and model have a different number of children: "+viewDom.childNodes.length+" != "+modelDom.childNodes.length);
+		}
+		// Dom Root
+		else if (modelDom.parentNode == null){
+			// correct anomalies if needed at the dom root
+			fixDomRoot(modelDom, viewDom);
+		}
+		// Components
+		else if (DomTools.hasClass(modelDom.parentNode, "Layer")){
+			// add the attribute data-silex-component-id to nodes which parent is a layer
+			modelDom.setAttribute("data-silex-component-id", generateNewId());
+			viewDom.setAttribute("data-silex-component-id", generateNewId());
+			fixDom(modelDom, viewDom);
+		}
+		// Layers
+		else if (DomTools.hasClass(modelDom, "Layer")){
+			// add the attribute data-silex-layer-id to nodes which are layers
+			modelDom.setAttribute("data-silex-layer-id", generateNewId());
+			viewDom.setAttribute("data-silex-layer-id", generateNewId());
+			fixDom(modelDom, viewDom);
+		}
+		// Pages
+		else if (DomTools.hasClass(modelDom, "Page")){
+			// check Dom for robustness
+			fixDom(modelDom, viewDom);
+		}
+		// browse the children
+		for(idx in 0...modelDom.childNodes.length){
+			var modelChild = modelDom.childNodes[idx];
+			var viewChild = viewDom.childNodes[idx];
+			prepareForEdit(modelChild, viewChild);
+		}
+	}
+	private static var nextId = 0;
+	/**
+	 * Generate an id, unique to this edit session
+	 */
+	private function generateNewId():String{
+		return (nextId++)+"";
 	}
 	/**
 	 * init the SLPlayer application
 	 */
-	public function initSLPlayerApplication(rootElement:HtmlDom):Void{
+	private function initSLPlayerApplication(rootElement:HtmlDom):Void{
 		// create an SLPlayer app
 		application = Application.createApplication();
 
@@ -230,9 +314,15 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		application.init(rootElement);
 
 		// initial page
-		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, head);
+		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, headHtmlDom);
 		if (initialPageName != null){
-			Page.openPage(initialPageName, true, null, application.id, rootElement);
+			var page = Page.getPageByName(initialPageName, application.id, viewHtmlDom);
+			if (page != null){	
+				PageModel.getInstance().selectedItem = page;
+			}
+			else{
+				trace("Warning: could not resolve default page name ("+initialPageName+")");
+			}
 		}
 		else{
 			trace("Warning: no initial page found");

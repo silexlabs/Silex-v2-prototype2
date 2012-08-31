@@ -35,7 +35,6 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 ** To do **
 
 refactoring en cours
-- methodes static de Page dans PageModel
 - laytou.Panel devrait etre groupable, pour que les boites a outils l utilisent et le menu aussi
 - rename component => ui et laisser component.ComponentModel
 - rename the component SelectionManager.hx => SelectionView.hx
@@ -45,7 +44,7 @@ refactoring en cours
 - regrouper *Base => org.silex.core
 - supprimer package org
 
-permettre la selection des Layer
+selection : detecter en fonction d'un "hittest"
 
 le builder qui ouvre une publication devrait se servir des fonctions de Silex.hx?
 pareil pour le côté server (remoting)?

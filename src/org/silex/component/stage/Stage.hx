@@ -3,8 +3,11 @@ package org.silex.component.stage;
 import js.Dom;
 import js.Lib;
 
+import org.silex.page.PageModel;
 import org.silex.publication.PublicationModel;
 import org.silex.publication.PublicationData;
+
+import org.slplayer.component.navigation.Page;
 import org.slplayer.component.navigation.transition.TransitionData;
 
 import org.slplayer.util.DomTools;
@@ -22,7 +25,11 @@ class Stage extends DisplayObject{
 	/**
 	 * publication model
 	 */
-	public static var publicationModel:PublicationModel;
+	public var publicationModel:PublicationModel;
+	/**
+	 * page model
+	 */
+	public var pageModel:PageModel;
 
 	/**
 	 * Constructor
@@ -37,6 +44,11 @@ class Stage extends DisplayObject{
 		// update the data when the publication data changed
 		publicationModel.addEventListener(PublicationModel.ON_DATA, onPublicationData);
 		publicationModel.addEventListener(PublicationModel.ON_CHANGE, onPublicationChange);
+		
+		// store a reference to the model
+		pageModel = PageModel.getInstance();
+		// attach events to the model
+		pageModel.addEventListener(PageModel.ON_SELECTION_CHANGE, onPageChange);
 	}
 	/**
 	 * Callback for the event, dispatched when a new publication is about to be loaded
@@ -51,6 +63,14 @@ class Stage extends DisplayObject{
 	public function onPublicationData(event:CustomEvent){
 		// display the publication for editing
 		rootElement.innerHTML = "";
-		rootElement.appendChild(publicationModel.view);
+		rootElement.appendChild(publicationModel.viewHtmlDom);
+	}
+	/**
+	 * Callback for the event dispatched when the page selection changes.
+	 * Open the selected page in the view
+	 */
+	public function onPageChange(event:CustomEvent){
+		trace("onPageChange "+pageModel.selectedItem.name+" - "+publicationModel.application.id+" - "+publicationModel.viewHtmlDom);
+		Page.openPage(pageModel.selectedItem.name, false, null, publicationModel.application.id, publicationModel.viewHtmlDom);
 	}
 }

@@ -41,6 +41,16 @@ class SelectionController extends DisplayObject
 	 */ 
 	private var hoverMarker:HtmlDom;
 	/**
+	 * Selection marker for layers
+	 * It is attached directly at the end of the layer DOM elements
+	 */ 
+	private var selectionLayerMarker:HtmlDom;
+	/**
+	 * Hover marker for layers
+	 * It is attached directly at the end of the layer DOM elements
+	 */ 
+	private var hoverLayerMarker:HtmlDom;
+	/**
 	 * Component model, used to interact with the DOM
 	 */
 	private var componentModel:ComponentModel;
@@ -56,9 +66,17 @@ class SelectionController extends DisplayObject
 	public function new(rootElement:HtmlDom, SLPId:String){
 		super(rootElement, SLPId);
 
+		// create the marker, attached directly at the end of the layer DOM elements
+		hoverLayerMarker = Lib.document.createElement("div");
+		hoverLayerMarker.className = HOVER_MARKER_STYLE_NAME;
+
+		// create the marker, attached directly at the end of the layer DOM elements
+		selectionLayerMarker = Lib.document.createElement("div");
+		selectionLayerMarker.className = SELECTION_MARKER_STYLE_NAME;
+
 		// create the marker
 		hoverMarker = Lib.document.createElement("div");
-		hoverMarker.className = "hover-marker";
+		hoverMarker.className = HOVER_MARKER_STYLE_NAME;
 		Lib.document.body.appendChild(hoverMarker);
 
 		// create the marker
@@ -87,8 +105,8 @@ class SelectionController extends DisplayObject
 	 */
 	public function onClickAnywhere(e:Event) {
 		// set the selection marker over the hovered element
-		componentModel.hoveredItem = null;
-		componentModel.selectedItem = null;
+		layerModel.hoveredItem = null;
+		layerModel.selectedItem = null;
 	}
 	/**
 	 * Handle mouse events
@@ -123,9 +141,9 @@ class SelectionController extends DisplayObject
 			if (layerList.length != 1){
 				trace("Warning: there should be 1 and only 1 Layer instance associated with this node, not "+layerList.length);
 			}
-			layerModel.selectedItem = layerList.first();
-		}
-		else{
+			trace("set layerModel.hoveredItem="+layerList.first());
+			layerModel.hoveredItem = layerList.first();
+		}else{
 			// retrieve the node which is a component, i.e. the one whise parent node has the Layer class
 			var component:HtmlDom = getComponent(e.target);
 			// set the item on the model (this will dispatch an event and we will catch it to update the marker)
@@ -138,15 +156,36 @@ class SelectionController extends DisplayObject
 	 */
 	private function onLayerSelectionChanged(event:CustomEvent){
 		trace("Layer selected TODO !!! ");
-		setMarkerPosition(selectionMarker, LayerModel.getInstance().selectedItem.rootElement);
+		// remove marker from the DOM
+		if (selectionLayerMarker.parentNode != null){
+			selectionLayerMarker.parentNode.removeChild(selectionLayerMarker);
+		}
+		if (LayerModel.getInstance().selectedItem != null){
+			// attach marker at the same level as the selected/hoverd node
+			var targetNode = LayerModel.getInstance().selectedItem.rootElement;
+			targetNode.appendChild(selectionLayerMarker);
+			setMarkerPosition(selectionLayerMarker, targetNode);
+			// remove the component marker
+			setMarkerPosition(selectionMarker, null);
+		}
 	}
 	/**
 	 * Called by the model when selection changed
 	 * Position the marker over the element
 	 */
 	private function onLayerHoverChanged(event:CustomEvent){
-		trace("Layer hovered TODO !!! ");
-		setMarkerPosition(hoverMarker, LayerModel.getInstance().hoveredItem.rootElement);
+		// remove marker from the DOM
+		if (hoverLayerMarker.parentNode != null){
+			hoverLayerMarker.parentNode.removeChild(hoverLayerMarker);
+		}
+		if (LayerModel.getInstance().hoveredItem != null){
+			// attach marker at the same level as the selected/hoverd node
+			var targetNode = LayerModel.getInstance().hoveredItem.rootElement;
+			targetNode.appendChild(hoverLayerMarker);
+			setMarkerPosition(hoverLayerMarker, targetNode);
+			// remove the component marker
+			setMarkerPosition(hoverMarker, null);
+		}
 	}
 	/**
 	 * Called by the model when selection changed
@@ -154,6 +193,8 @@ class SelectionController extends DisplayObject
 	 */
 	private function onSelectionChanged(event:CustomEvent){
 		setMarkerPosition(selectionMarker, componentModel.selectedItem);
+		// remove the layer marker
+		setMarkerPosition(selectionLayerMarker, null);
 	}
 	/**
 	 * Called by the model when selection changed
@@ -161,6 +202,8 @@ class SelectionController extends DisplayObject
 	 */
 	private function onHoverChanged(event:CustomEvent){
 		setMarkerPosition(hoverMarker, componentModel.hoveredItem);
+		// remove the layer marker
+		setMarkerPosition(hoverLayerMarker, null);
 	}
 	/**
 	 * position the given marker over the element
@@ -185,6 +228,9 @@ class SelectionController extends DisplayObject
 			);
 		}
 	}
+	/**
+	 * position the given marker at the given position
+	 */
 	private function doSetMarkerPosition(marker:HtmlDom, left:Int, top:Int, width:Int, height:Int) {
 		marker.style.left = left + "px";
 		marker.style.top = top + "px";
@@ -199,7 +245,7 @@ class SelectionController extends DisplayObject
 		while (target != null // there has been a problem
 			&& target.parentNode != null // stop before we reach the html root tag
 			&& target.parentNode != rootElement // the stage can not be selected
-			&& !DomTools.hasClass(target.parentNode, "Layer") // if it is a layer, break because we have the result
+			&& !DomTools.hasClass(target.parentNode, "Layer")
 		){
 			target = target.parentNode;
 		}
