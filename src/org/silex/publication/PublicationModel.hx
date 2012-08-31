@@ -9,6 +9,10 @@ import org.silex.model.ModelBase;
 import org.silex.page.PageModel;
 import org.silex.component.ComponentModel;
 import org.silex.publication.PublicationData;
+import org.slplayer.core.Application;
+import org.slplayer.util.DomTools;
+import org.slplayer.component.navigation.Page;
+import org.silex.interpreter.Interpreter;
 
 /**
  * Structure used to store the items of the publication list
@@ -86,14 +90,20 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	public var currentConfig:PublicationConfigData;
 	/** 
 	 * Current dom object, being edited, this is the actual model
-	 * It is duplicated by the Stage class in order to be displayed and edited
 	 */
 	 public var body:HtmlDom;
 	/** 
 	 * Current dom object, being edited, this is the actual model
-	 * It is duplicated by the Stage class in order to be displayed and edited
 	 */
 	 public var head:HtmlDom;
+	/** 
+	 * Current duplicated DOM in order to be displayed and edited
+	 */
+	 public var view:HtmlDom;
+	/**
+	 * SLPlayer application used to create the components in the loaded publication (the view)
+	 */
+	public var application:Application;
 
 	/**
 	 * Models are singletons
@@ -168,8 +178,10 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * End of the loading process, the whole publication data is available
 	 */
 	private function onData(publicationData:PublicationData):Void{
+
 		// store the data / update the model
 		currentData = publicationData;
+
 		// parse the data and make it available as HTML
 		body = Lib.document.createElement("div");
 		head = Lib.document.createElement("div");
@@ -187,8 +199,55 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		else if (xml.hasNode.HEAD)
 			head.innerHTML = xml.node.HEAD.innerHTML;
 
+		// init the view
+		initDOMView();
+
 		// dispatch the event 
 		dispatchEvent(createEvent(ON_DATA));
+	}
+	/**
+	 * Duplicate the loaded DOM
+	 * Initialize the SLPlayer for the view
+	 */
+	public function initDOMView():Void{
+		// Duplicate DOM
+		view = body.cloneNode(true);
+
+		// Add the CSS in the body tag rather than head tag, because the later is not really added to the browser dom
+		DomTools.addCssRules(currentData.css, view);
+
+		// init the SLPlayer application
+		initSLPlayerApplication(view);
+	}
+	/**
+	 * init the SLPlayer application
+	 */
+	public function initSLPlayerApplication(rootElement:HtmlDom):Void{
+		// create an SLPlayer app
+		application = Application.createApplication();
+
+		// init SLPlayer
+		application.init(rootElement);
+
+		// initial page
+		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, head);
+		if (initialPageName != null){
+			Page.openPage(initialPageName, true, null, application.id, rootElement);
+		}
+		else{
+			trace("Warning: no initial page found");
+		}
+
+		// execute debug actions
+		#if silexDebug
+		// execute an action when needed for debug (publication and server config)
+		if (currentConfig.debugModeAction != null){
+			var context = new Hash();
+			context.set("slpid", application.id);
+			trace("slpid = "+ application.id);
+			var res = Interpreter.exec(currentConfig.debugModeAction, context);
+		}
+		#end
 	}
 	/**
 	 * An error occured

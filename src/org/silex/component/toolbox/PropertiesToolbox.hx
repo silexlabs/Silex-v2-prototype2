@@ -17,7 +17,7 @@ class PropertiesToolbox extends ToolboxBase
 	 */
 	public function new(rootElement:HtmlDom, SLPId:String)
 	{
-		super(rootElement, SLPId, null, null);
+		super(rootElement, SLPId);
 		
 	}
 }

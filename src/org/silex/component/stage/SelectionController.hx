@@ -5,8 +5,11 @@ import js.Dom;
 
 import org.slplayer.component.ui.DisplayObject;
 import org.slplayer.util.DomTools;
+import org.slplayer.component.navigation.Layer;
+import org.slplayer.core.Application;
 
 import org.silex.layer.LayerModel;
+import org.silex.publication.PublicationModel;
 
 /**
  * This component listen to the mouse events and start the desired actions. 
@@ -76,8 +79,8 @@ class SelectionController extends DisplayObject
 		
 		// listen to the model events
 		layerModel = LayerModel.getInstance();
-		layerModel.addEventListener(LayerModel.ON_SELECTION_CHANGE, onSelectionChanged);
-		layerModel.addEventListener(LayerModel.ON_HOVER_CHANGE, onHoverChanged);
+		layerModel.addEventListener(LayerModel.ON_SELECTION_CHANGE, onLayerSelectionChanged);
+		layerModel.addEventListener(LayerModel.ON_HOVER_CHANGE, onLayerHoverChanged);
 	}
 	/**
 	 * Handle mouse events
@@ -108,20 +111,48 @@ class SelectionController extends DisplayObject
 	 * Handle mouse events
 	 */
 	public function onMouseOver(e:Event) {
-		trace("onMouseOver ");
+		trace("onMouseOver "+e.target.className);
 		// retrieve the node who triggered the event
 		var target:HtmlDom = e.target;
-		// retrieve the node which is a component, i.e. the one whise parent node has the Layer class
-		var component:HtmlDom = getComponent(e.target);
-		// set the item on the model (this will dispatch an event and we will catch it to update the marker)
-		componentModel.hoveredItem = component;
+		// check if this is a Layer component
+		if (DomTools.hasClass(target, "Layer")){
+			// get the SLPlayer application from the loaded publication
+			var application = PublicationModel.getInstance().application;
+			// get the Layer instance associated with the target
+			var layerList = application.getAssociatedComponents(target, Layer); // there should be 1 and only 1 element here
+			if (layerList.length != 1){
+				trace("Warning: there should be 1 and only 1 Layer instance associated with this node, not "+layerList.length);
+			}
+			layerModel.selectedItem = layerList.first();
+		}
+		else{
+			// retrieve the node which is a component, i.e. the one whise parent node has the Layer class
+			var component:HtmlDom = getComponent(e.target);
+			// set the item on the model (this will dispatch an event and we will catch it to update the marker)
+			componentModel.hoveredItem = component;
+		}
+	}
+	/**
+	 * Called by the model when selection changed
+	 * Position the marker over the element
+	 */
+	private function onLayerSelectionChanged(event:CustomEvent){
+		trace("Layer selected TODO !!! ");
+		setMarkerPosition(selectionMarker, LayerModel.getInstance().selectedItem.rootElement);
+	}
+	/**
+	 * Called by the model when selection changed
+	 * Position the marker over the element
+	 */
+	private function onLayerHoverChanged(event:CustomEvent){
+		trace("Layer hovered TODO !!! ");
+		setMarkerPosition(hoverMarker, LayerModel.getInstance().hoveredItem.rootElement);
 	}
 	/**
 	 * Called by the model when selection changed
 	 * Position the marker over the element
 	 */
 	private function onSelectionChanged(event:CustomEvent){
-		trace("selection "+componentModel.selectedItem);
 		setMarkerPosition(selectionMarker, componentModel.selectedItem);
 	}
 	/**
@@ -137,7 +168,6 @@ class SelectionController extends DisplayObject
 	 */
 	private function setMarkerPosition(marker:HtmlDom, target:HtmlDom){
 		if (target == null){
-			trace("setMarkerPosition - remove marker "+marker);
 			//marker.style.display = "none";
 			marker.style.visibility = "hidden";
 		}
