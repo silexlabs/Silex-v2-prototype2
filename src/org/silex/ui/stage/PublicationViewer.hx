@@ -1,4 +1,4 @@
-package org.silex.component.stage;
+package org.silex.ui.stage;
 
 import js.Dom;
 import js.Lib;
@@ -17,7 +17,7 @@ import org.slplayer.component.ui.DisplayObject;
 /**
  * This class is in charge of attaching the publication to the DOM.
  */
-class Stage extends DisplayObject{
+class PublicationViewer extends DisplayObject{
 	/**
 	 * name for the builder mode of the Silex editor
 	 */
@@ -70,7 +70,13 @@ class Stage extends DisplayObject{
 	 * Open the selected page in the view
 	 */
 	public function onPageChange(event:CustomEvent){
-		trace("onPageChange "+pageModel.selectedItem.name+" - "+publicationModel.application.id+" - "+publicationModel.viewHtmlDom);
-		Page.openPage(pageModel.selectedItem.name, false, null, publicationModel.application.id, publicationModel.viewHtmlDom);
+		if (pageModel.selectedItem ==null){
+			var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME);
+			if (initialPageName != null)
+				Page.openPage(initialPageName, false, null, publicationModel.application.id, publicationModel.viewHtmlDom);
+		}
+		else{
+			Page.openPage(pageModel.selectedItem.name, false, null, publicationModel.application.id, publicationModel.viewHtmlDom);
+		}
 	}
 }

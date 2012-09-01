@@ -1,4 +1,4 @@
-package org.silex.component.dialog;
+package org.silex.ui.dialog;
 
 import js.Lib;
 import js.Dom;

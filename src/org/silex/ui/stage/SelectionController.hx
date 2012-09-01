@@ -1,4 +1,4 @@
-package org.silex.component.stage;
+package org.silex.ui.stage;
 
 import js.Lib;
 import js.Dom;
@@ -10,6 +10,7 @@ import org.slplayer.core.Application;
 
 import org.silex.layer.LayerModel;
 import org.silex.publication.PublicationModel;
+import org.silex.component.ComponentModel;
 
 /**
  * This component listen to the mouse events and start the desired actions. 

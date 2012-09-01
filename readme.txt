@@ -35,21 +35,94 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 ** To do **
 
 refactoring en cours
-- laytou.Panel devrait etre groupable, pour que les boites a outils l utilisent et le menu aussi
-- rename component => ui et laisser component.ComponentModel
 - rename the component SelectionManager.hx => SelectionView.hx
 - rename the component MenuManager.hx => MenuControler.hx
 - rename all *Manager => *Model ??
 - passer Silex => org.silex et ServerConfig dans org.silex.server
 - regrouper *Base => org.silex.core
 - supprimer package org
+- recompiler server side
+- remettre les tests unitaire en ordre 
 
-selection : detecter en fonction d'un "hittest"
+== edition of properties ==
+
+the toolboxes / dialogs
+
+* go to the menu "file" and then "properties" to open the publication properties
+* select a page to edit its properties in the properties tool box
+* select a layer to edit its properties in the properties tool box
+* select a component to edit its properties in the properties tool box
+
+properties of the a publication
+
+* vertical and horizontal align, optional size
+* meta tags: description, content-type, distribution (target platform), keywords, refresh (redirect), robots, author, revised
+* html head elements: title, base, link (rss etc.), script (text/ecmascript cf http://www.w3schools.com/tags/att_script_type.asp )
+
+properties of the pages 
+
+* title, name/deeplink
+* initialPage (true/false)
+* order (index in the page list) - 2D order??
+
+properties of the layers 
+
+* name
+* type (container or master)
+* styles (all css styles)
+* contexts
+
+properties of the components
+
+* name/title?, description?
+* actions
+  * next/prev page
+  * internal link (linkToPage, linkToPopup, closePopup)
+  * external link
+* properties function of the component type
+  * URL
+  * preload and auto start
+  * loop
+* styles (all css styles)
+* contexts
+
+== edition of styles ==
+
+for component
+
+* select a conponent by clicking on it
+* change its style in the properties toolbox
+
+for layers
+
+* select a layer by double clicking on it
+* change its style in the properties toolbox
+
+edit the flow in the flow toolbox
+* change the flow of the components and layers
+* move components accross layers
+
+styles for a layer
+* display, position, float, borders, background, margin...
+
+styles for a component
+* display, position, float, borders, background, margin...
+
+
+
+-------------------
+En cours
+-------------------
+
+
+mise a jour version Cocktail => typedef audio et video => changer dans SLPLayer Layer
+
+selection
+- detecter en fonction d'un "hittest"?
+- ecoute window.resize, et dispatcher window.resize dans Page::open
 
 le builder qui ouvre une publication devrait se servir des fonctions de Silex.hx?
 pareil pour le côté server (remoting)?
-
-mise a jour version Cocktail => typedef audio et video => changer dans SLPLayer Layer
 
 refactoring:
 - reunir template et interpreter dans un package ?

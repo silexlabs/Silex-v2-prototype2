@@ -1,4 +1,4 @@
-package org.silex.component.list;
+package org.silex.ui.list;
 
 import js.Lib;
 import js.Dom;

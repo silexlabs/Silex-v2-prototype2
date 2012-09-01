@@ -1,4 +1,4 @@
-package org.silex.component.list;
+package org.silex.ui.stage;
 
 import js.Lib;
 import js.Dom;
@@ -12,7 +12,7 @@ import org.silex.publication.PublicationModel;
  * This component listen to the menu events and start the desired actions. 
  */
 @tagNameFilter("a")
-class ApplicationMenu extends DisplayObject
+class MenuController extends DisplayObject
 {
 	/**
 	 * Constructor

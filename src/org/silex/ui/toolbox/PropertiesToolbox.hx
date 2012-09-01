@@ -1,4 +1,4 @@
-package org.silex.component.toolbox;
+package org.silex.ui.toolbox;
 
 import js.Lib;
 import js.Dom;

@@ -1,4 +1,4 @@
-package org.silex.component.dialog;
+package org.silex.ui.dialog;
 
 import js.Lib;
 import js.Dom;
@@ -11,9 +11,9 @@ import org.slplayer.util.DomTools;
 
 import org.silex.publication.PublicationData;
 import org.silex.publication.PublicationModel;
-import org.silex.component.dialog.DialogBase;
-import org.silex.component.list.PublicationList;
-import org.silex.component.stage.Stage;
+import org.silex.ui.dialog.DialogBase;
+import org.silex.ui.list.PublicationList;
+import org.silex.ui.stage.PublicationViewer;
 
 /**
  * This component displays a window with a list of publications and let the user choose which one to use.
@@ -54,7 +54,7 @@ class OpenDialog extends DialogBase
 		// if a publication is selected
 		if (item != null){
 			PublicationModel.getInstance().load(item.name, item.configData);
-			Page.openPage(Stage.BUILDER_MODE_PAGE_NAME, false, null, SLPlayerInstanceId);
+			Page.openPage(PublicationViewer.BUILDER_MODE_PAGE_NAME, false, null, SLPlayerInstanceId);
 			close();
 		}
 	}
