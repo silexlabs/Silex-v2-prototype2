@@ -2,8 +2,8 @@ package ;
 
 import haxe.remoting.HttpConnection;
 
-import org.silex.publication.PublicationService;
-import org.silex.service.ServiceBase;
+import silex.publication.PublicationService;
+import silex.ServiceBase;
 
 import utest.Assert;
 import utest.Runner;
@@ -21,7 +21,7 @@ class AllTestsServer {
 	public static function main(){
         var runner = new Runner();
 
-/*
+/**/
 	    runner.addCase(new interpreter.TestCross());
 		runner.addCase(new util.TestServer());
 		runner.addCase(new config.TestServer());

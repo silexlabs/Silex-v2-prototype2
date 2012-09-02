@@ -7,7 +7,7 @@ import utest.ui.Report;
 import sys.io.File;
 import php.FileSystem;
 
-import org.silex.util.FileSystemTools;
+import silex.util.FileSystemTools;
 
 class TestServer {
 	public static inline var THIS_TEST_PATH:String = "util-data/";

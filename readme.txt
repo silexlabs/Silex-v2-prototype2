@@ -34,16 +34,6 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** To do **
 
-refactoring en cours
-- rename the component SelectionManager.hx => SelectionView.hx
-- rename the component MenuManager.hx => MenuControler.hx
-- rename all *Manager => *Model ??
-- passer Silex => org.silex et ServerConfig dans org.silex.server
-- regrouper *Base => org.silex.core
-- supprimer package org
-- recompiler server side
-- remettre les tests unitaire en ordre 
-
 == edition of properties ==
 
 the toolboxes / dialogs
@@ -114,6 +104,7 @@ styles for a component
 En cours
 -------------------
 
+**refactoring**
 
 mise a jour version Cocktail => typedef audio et video => changer dans SLPLayer Layer
 
@@ -124,8 +115,9 @@ selection
 le builder qui ouvre une publication devrait se servir des fonctions de Silex.hx?
 pareil pour le côté server (remoting)?
 
-refactoring:
-- reunir template et interpreter dans un package ?
+reunir template et interpreter dans un package ?
+
+
 
 permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html aux liens?)
 

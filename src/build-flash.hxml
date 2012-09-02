@@ -4,7 +4,7 @@
 -swf ../bin/libs/silex/silex.swf
 -cp ../../SLPlayer/src/
 -cp ../../Cocktail/src/
--main org.silex.core.Silex
+-main silex.Silex
 --macro org.slplayer.core.Builder.create('index.html')
 --remap js:cocktail
 -swf-version 10.2

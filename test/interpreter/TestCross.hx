@@ -4,7 +4,7 @@ import utest.Assert;
 import utest.Runner;
 import utest.ui.Report;
 
-import org.silex.interpreter.Interpreter;
+import silex.interpreter.Interpreter;
 
 class TestCross {
 	public static inline var THIS_TEST_PATH:String = "interpreter-data/";
@@ -21,6 +21,5 @@ class TestCross {
 		';
 		var res = Interpreter.exec(debugModeAction);
 		Assert.equals(true, res);
-		Assert.isFalse(false);
 	}
 }

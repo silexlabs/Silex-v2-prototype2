@@ -1,7 +1,7 @@
 package ;
 
-import org.silex.publication.PublicationService;
-import org.silex.service.ServiceBase;
+import silex.publication.PublicationService;
+import silex.ServiceBase;
 
 import utest.Assert;
 import utest.Runner;
@@ -29,7 +29,7 @@ class AllTestsClient {
 	public function new(){
         var runner = new Runner();
 
-/*
+/**/
 	    runner.addCase(new interpreter.TestCross());
 	    runner.addCase(new template.TestClient());
 /**/

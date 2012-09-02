@@ -1,8 +1,8 @@
 package config;
 
-import org.silex.core.ServerConfig;
-import org.silex.publication.PublicationConfig;
-import org.silex.publication.PublicationData;
+import silex.server.ServerConfig;
+import silex.publication.PublicationConfig;
+import silex.publication.PublicationData;
 
 import utest.Assert;
 import utest.Runner;
@@ -28,7 +28,7 @@ class TestServer {
 	public function testServerConfigRead():Void
 	{
 		trace("testServerConfigRead");
-		var config = new ServerConfig(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "server-config.xml.php");
+		var config = new ServerConfig(AllTestsServer.TEST_ROOT_PATH + THIS_TEST_PATH + "server-config-read.xml.php");
 		Assert.equals("test1", config.defaultPublication);
 	}
 	public function testServerConfigWrite():Void

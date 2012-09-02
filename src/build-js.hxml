@@ -5,7 +5,7 @@
 -debug
 -lib hscript
 
--main org.silex.core.Silex
+-main silex.Silex
 --macro org.slplayer.core.Builder.create('index.html')
 
 #-D slpdebug

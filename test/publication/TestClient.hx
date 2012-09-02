@@ -1,7 +1,7 @@
 package publication;
 
-import org.silex.publication.PublicationService;
-import org.silex.publication.PublicationData;
+import silex.publication.PublicationService;
+import silex.publication.PublicationData;
 
 import js.Dom;
 import js.XMLHttpRequest;
@@ -125,7 +125,7 @@ class TestClient {
 		}
 	}
 	private function createAsyncCallback(urlToCompare:String, expected:String):Dynamic{
-		var onHttpRequestReadyCallback = cast(Assert.createEvent(callback(onHttpRequestReady,expected), 4000));
+		var onHttpRequestReadyCallback = cast(Assert.createEvent(callback(onHttpRequestReady,expected), 6000));
 		return callback(onResultStartAjaxCheck, urlToCompare, onHttpRequestReadyCallback);
 	}
 
@@ -198,15 +198,15 @@ class TestClient {
 
 	public function testCreateAndTrash():Void{
 		trace("testCreateAndTrash");
-		publicationServiceWrite.create("test-create", TEST_PUBLICATION_DATA
-			, createAsyncCallback(THIS_TEST_PATH_WRITE + "test-create/app.css",TEST_CSS)
+		publicationServiceWrite.create("test-create-tmp", TEST_PUBLICATION_DATA
+			, createAsyncCallback(THIS_TEST_PATH_WRITE + "test-create-tmp/app.css",TEST_CSS)
 			, onError
 		);
 		haxe.Timer.delay(doTrash, 100);
 	}
 	private function doTrash():Void{
 		trace("doTrash");
-		publicationServiceWrite.trash("test-create"
+		publicationServiceWrite.trash("test-create-tmp"
 			, Assert.createAsync(onResultWriteNoCheck, 4000)
 			, onError
 		);
@@ -222,20 +222,20 @@ class TestClient {
 		);
 	}
 	public function testDuplicateAndRename():Void{
-		trace("testDuplicateAndRename");
-		publicationServiceWrite.duplicate("test-read", "test-duplicate"
-			, createAsyncCallback(THIS_TEST_PATH_WRITE + "test-duplicate/app.css",TEST_CSS)
+		trace("testDuplicateAndRename, REMEMBER TO DELETE FOLDERS FROM PREVIOUS TEST: sudo rm -R test/bin/publication-data/write/*-tmp");
+		publicationServiceWrite.duplicate("test-duplicate", "duplicated-tmp"
+			, createAsyncCallback(THIS_TEST_PATH_WRITE + "duplicated-tmp/app.css",TEST_CSS)
 			, onError
 		);
-		haxe.Timer.delay(doRename, 500);
+		haxe.Timer.delay(doRename, 100);
 	}
 	private function doRename():Void{
 		trace("doRename");
-		publicationServiceWrite.rename("test-duplicate", "test-rename"
-			, createAsyncCallback(THIS_TEST_PATH_WRITE + "test-rename/app.css",TEST_CSS)
+		publicationServiceWrite.rename("duplicated-tmp", "renamed-tmp"
+			, createAsyncCallback(THIS_TEST_PATH_WRITE + "renamed-tmp/app.css",TEST_CSS)
 			, onError
 		);
-		trace("NOW REMOVE THE FOLDER bin/publication-data/write/test-rename/");
+		trace("NOW REMOVE THE FOLDERS FROM PREVIOUS TEST: sudo rm -R test/bin/publication-data/write/*-tmp");
 	}
 /**/
 }

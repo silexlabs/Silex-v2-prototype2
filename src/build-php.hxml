@@ -9,7 +9,7 @@
 -lib hscript
 
 --remap js:cocktail
--main org.silex.core.Silex
+-main silex.Silex
 --macro org.slplayer.core.Builder.create('index.php')
 
 #-D slpdebug

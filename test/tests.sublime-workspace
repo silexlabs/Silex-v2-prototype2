@@ -207,6 +207,54 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "AllTestsClient.hx",
+			"settings":
+			{
+				"buffer_size": 881,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "AllTestsServer.hx",
+			"settings":
+			{
+				"buffer_size": 857,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "config/TestServer.hx",
+			"settings":
+			{
+				"buffer_size": 2961,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "interpreter/TestCross.hx",
+			"settings":
+			{
+				"buffer_size": 549,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "publication/TestClient.hx",
+			"settings":
+			{
+				"buffer_size": 7875,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "publication/TestServer.hx",
+			"settings":
+			{
+				"buffer_size": 8143,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "Packages/HaXe/Hxml.sublime-build",
 	"command_palette":
@@ -327,6 +375,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"test-rename",
+			"test-duplicate",
+			"test-create",
+			"create",
+			"duplicate",
+			"create",
 			"TEST_PUBLICATION_CONFIG_TRASHED",
 			"\"publication-data/write/",
 			"publication-data/test",
@@ -446,8 +500,177 @@
 	"groups":
 	[
 		{
+			"selected": 2,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "AllTestsClient.hx",
+					"settings":
+					{
+						"buffer_size": 881,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								671,
+								671
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "AllTestsServer.hx",
+					"settings":
+					{
+						"buffer_size": 857,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								455,
+								455
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "config/TestServer.hx",
+					"settings":
+					{
+						"buffer_size": 2961,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1863,
+								1863
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 663.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "interpreter/TestCross.hx",
+					"settings":
+					{
+						"buffer_size": 549,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								545,
+								545
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "publication/TestClient.hx",
+					"settings":
+					{
+						"buffer_size": 7875,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7757,
+								7757
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3460.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "publication/TestServer.hx",
+					"settings":
+					{
+						"buffer_size": 8143,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5575,
+								5575
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 39.0,
+						"translation.y": 1173.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
