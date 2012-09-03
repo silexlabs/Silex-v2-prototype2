@@ -48,30 +48,34 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	// Selection
 	////////////////////////////////////////////////
 	/**
+	 * Information for debugging, e.g. the class name
+	 */ 
+	public static inline var DEBUG_INFO = "PublicationModel class";
+	/**
 	 * event dispatched when the list of publications is updated successfully
 	 */
-	public static inline var ON_CHANGE:String = "onPublicationChange";
+	public static inline var ON_CHANGE = "onPublicationChange";
 	/**
 	 * Event dispatched when the list of publications is updated successfully
 	 * The event object will have event.detail set to an array of PublicationListItem
 	 */
-	public static inline var ON_LIST:String = "onPublicationList";
+	public static inline var ON_LIST = "onPublicationList";
 	/**
 	 * event dispatched when a publication is loaded successfully
 	 */
-	public static inline var ON_DATA:String = "onPublicationData";
+	public static inline var ON_DATA = "onPublicationData";
 	/**
 	 * event dispatched when a publication config is loaded
 	 */
-	public static inline var ON_CONFIG:String = "onPublicationConfigChange";
+	public static inline var ON_CONFIG = "onPublicationConfigChange";
 	/**
 	 * event dispatched when a publication config changed
 	 */
-	public static inline var ON_CONFIG_CHANGE:String = "onPublicationConfigChange";
+	public static inline var ON_CONFIG_CHANGE = "onPublicationConfigChange";
 	/**
 	 * event dispatched when an error occured 
 	 */
-	public static inline var ON_ERROR:String = "onPublicationError";
+	public static inline var ON_ERROR = "onPublicationError";
 	/**
 	 * Publication service, used to load/save a publication etc.
 	 */
@@ -111,7 +115,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 */
 	private function new(){
 		// do not use the selection pattern
-		super(null, null);
+		super(null, null, DEBUG_INFO);
 		// store the service provider
 		publicationService = new PublicationService();
 	}
@@ -145,7 +149,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		pageModel.selectedItem = null;
 
 		// dispatch the event 
-		dispatchEvent(createEvent(ON_CHANGE));
+		dispatchEvent(createEvent(ON_CHANGE), debugInfo);
 
 		// Start the loading process
 		if (name == ""){
@@ -171,7 +175,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		// continue the loading process
 		publicationService.getPublicationData(currentName, onData, onError);
 		// dispatch the event 
-		dispatchEvent(createEvent(ON_CONFIG));
+		dispatchEvent(createEvent(ON_CONFIG), debugInfo);
 	}
 	/**
 	 * Publication data is loaded 
@@ -208,7 +212,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		initViewHtmlDom();
 
 		// dispatch the event, the DOM is then assumed to be attached to the browser DOM
-		dispatchEvent(createEvent(ON_DATA));
+		dispatchEvent(createEvent(ON_DATA), debugInfo);
 
 		// init the SLPlayer application
 		initSLPlayerApplication(viewHtmlDom);
@@ -335,7 +339,11 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			var context = new Hash();
 			context.set("slpid", application.id);
 			trace("slpid = "+ application.id);
-			var res = Interpreter.exec(currentConfig.debugModeAction, context);
+			try{
+				Interpreter.exec(StringTools.htmlUnescape(currentConfig.debugModeAction), context);
+			}catch(e:Dynamic){
+				throw("Error while executing the script in the config file of the publication (debugModeAction variable). The error: "+e);
+			}
 		}
 		#end
 	}
@@ -344,7 +352,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 */
 	private function onError(msg:String):Void{
 		// todo: display notification
-		dispatchEvent(createEvent(ON_ERROR));
+		dispatchEvent(createEvent(ON_ERROR), debugInfo);
 		trace("An error occured while loading publications list ("+msg+")");
 		throw("An error occured while loading publications list ("+msg+")");
 	}
@@ -365,7 +373,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			}
 		}
 		// populate the list
-		dispatchEvent(createEvent(ON_LIST, data));
+		dispatchEvent(createEvent(ON_LIST, data), debugInfo);
 	}
 #end
 }

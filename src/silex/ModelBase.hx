@@ -8,7 +8,8 @@ import js.Lib;
  */
 typedef EventListener = {
 	callbackFunction:CustomEvent->Void,
-	eventName:String
+	eventName:String,
+	debugInfo:String
 }
 /**
  * The models in Silex are used only when editing, not when viewing a publication.
@@ -20,16 +21,21 @@ class ModelBase <FinalType>{
 	 * Models are singletons
 	 * Constructor is private
 	 */
-	private function new(hoverChangeEventName:String, selectionChangeEventName:String){
+	private function new(hoverChangeEventName:String, selectionChangeEventName:String, debugInfo:String){
 		// init event system
 		listeners = new List();
 		// store the event names
 		this.hoverChangeEventName = hoverChangeEventName; 
 		this.selectionChangeEventName = selectionChangeEventName;
+		this.debugInfo = debugInfo;
 	}
 	////////////////////////////////////////////////
 	// Selection
 	////////////////////////////////////////////////
+	/**
+	 * Information for debugging, should be the class name or any element which will ease the debuging of errors occuring in a listener
+	 */ 
+	private var debugInfo:String;
 	/**
 	 * selected element
 	 */ 
@@ -53,7 +59,7 @@ class ModelBase <FinalType>{
 	public function setHoveredItem(item:FinalType):FinalType {
 		if (hoveredItem != item){
 			hoveredItem = item;
-			dispatchEvent(createEvent(hoverChangeEventName));
+			dispatchEvent(createEvent(hoverChangeEventName), debugInfo);
 		}
 		return item;
 	}
@@ -64,7 +70,7 @@ class ModelBase <FinalType>{
 	public function setSelectedItem(item:FinalType):FinalType {
 		if (selectedItem != item){
 			selectedItem = item;
-			dispatchEvent(createEvent(selectionChangeEventName));
+			dispatchEvent(createEvent(selectionChangeEventName), debugInfo);
 		}
 		return item;
 	}
@@ -97,11 +103,12 @@ class ModelBase <FinalType>{
 	 * Envent system
 	 * Add a listener, so that it will be notified of an event
 	 */
-	public function addEventListener(eventName:String, callbackFunction:CustomEvent->Void) {
+	public function addEventListener(eventName:String, callbackFunction:CustomEvent->Void, debugInfo:String) {
 		if (getEventListener(callbackFunction, eventName) == null){
 			listeners.add({
 				callbackFunction:callbackFunction,
 				eventName: eventName,
+				debugInfo:debugInfo
 			});
 		}
 	}
@@ -119,11 +126,15 @@ class ModelBase <FinalType>{
 	 * Envent system
 	 * Dispatch an event to the registered listeners
 	 */
-	public function dispatchEvent(event:CustomEvent) {
+	public function dispatchEvent(event:CustomEvent, debugInfo:String) {
 		// dispatch the event on each node
 		for(el in listeners){
 			if (el.eventName == event.type){
-				el.callbackFunction(event);
+				try{
+					el.callbackFunction(event);
+				}catch(e:Dynamic){
+					throw("Error when dispatching \""+el.eventName+"\" event, from "+debugInfo+", to "+el.debugInfo+". The error: "+e);
+				}
 			}
 		}		
 	}

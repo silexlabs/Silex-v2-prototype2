@@ -34,6 +34,10 @@ class PageModel extends ModelBase<Page>{
 	// Selection
 	////////////////////////////////////////////////
 	/**
+	 * Information for debugging, e.g. the class name
+	 */ 
+	public static inline var DEBUG_INFO:String = "PageModel class";
+	/**
 	 * event dispatched when selection changes
 	 */
 	public static inline var ON_SELECTION_CHANGE:String = "onPageSelectionChange";
@@ -47,7 +51,7 @@ class PageModel extends ModelBase<Page>{
 	 * Constructor is private
 	 */
 	private function new(){
-		super(ON_HOVER_CHANGE, ON_SELECTION_CHANGE);
+		super(ON_HOVER_CHANGE, ON_SELECTION_CHANGE, DEBUG_INFO);
 	}
 	/**
 	 * Setter for the selected item

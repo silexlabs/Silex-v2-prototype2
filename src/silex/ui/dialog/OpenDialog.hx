@@ -39,8 +39,8 @@ class OpenDialog extends DialogBase
 	 * Update the publications list when the page is opened
 	 */
 	public function requestRedraw(transitionData:TransitionData) {
-		// reload data
-		PublicationModel.getInstance().loadList();
+		// redraw the list, which will reload data and then refresh the list when onListData is dispatched by the model
+		getListComponent().redraw();
 	}
 	/**
 	 * Called after a click on the submit button
@@ -54,7 +54,6 @@ class OpenDialog extends DialogBase
 		// if a publication is selected
 		if (item != null){
 			PublicationModel.getInstance().load(item.name, item.configData);
-			Page.openPage(PublicationViewer.BUILDER_MODE_PAGE_NAME, false, null, SLPlayerInstanceId);
 			close();
 		}
 	}

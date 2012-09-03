@@ -20,6 +20,10 @@ import silex.component.ComponentModel;
 class SelectionController extends DisplayObject
 {
 	/**
+	 * Information for debugging, e.g. the class name
+	 */ 
+	public static inline var DEBUG_INFO = "SelectionController class";
+	/**
 	 * The selection marker placed over the selected item. 
 	 * This constant defines the css style applyed to the marker, so that one can style it.
 	 */
@@ -93,13 +97,13 @@ class SelectionController extends DisplayObject
 
 		// listen to the model events
 		componentModel = ComponentModel.getInstance();
-		componentModel.addEventListener(ComponentModel.ON_SELECTION_CHANGE, onSelectionChanged);
-		componentModel.addEventListener(ComponentModel.ON_HOVER_CHANGE, onHoverChanged);
+		componentModel.addEventListener(ComponentModel.ON_SELECTION_CHANGE, onSelectionChanged, DEBUG_INFO);
+		componentModel.addEventListener(ComponentModel.ON_HOVER_CHANGE, onHoverChanged, DEBUG_INFO);
 		
 		// listen to the model events
 		layerModel = LayerModel.getInstance();
-		layerModel.addEventListener(LayerModel.ON_SELECTION_CHANGE, onLayerSelectionChanged);
-		layerModel.addEventListener(LayerModel.ON_HOVER_CHANGE, onLayerHoverChanged);
+		layerModel.addEventListener(LayerModel.ON_SELECTION_CHANGE, onLayerSelectionChanged, DEBUG_INFO);
+		layerModel.addEventListener(LayerModel.ON_HOVER_CHANGE, onLayerHoverChanged, DEBUG_INFO);
 	}
 	/**
 	 * Handle mouse events

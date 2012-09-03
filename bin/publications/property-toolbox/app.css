@@ -1,27 +1,33 @@
-body{
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-}
-.hover-marker, .selection-marker{
-	z-index: 200;
-	position: absolute;
+/* Silex base styles */
+body
+{
 	margin:0px;
 	padding:0px;
+	font-family:Arial, Helvetica, sans-serif;
 }
-.hover-marker{
-	opacity:0.25;
-	background-color: red;
-	cursor: pointer;
+.Layer{
+
 }
-.selection-marker{
-	border: 2px solid grey;
+.Page{
+	display: none;
 }
-.selection-marker:hover{
-	opacity:0.25;
-	background-color: yellow;
-	border: 2px solid grey;
+button a{
+	color: black;
+	text-decoration: none;
 }
+img{
+	
+}
+p{
+
+}
+.list ul{
+
+}
+.list li{
+
+}
+/* Publication styles */
 
 /* Properties Toolbox */
 .property{

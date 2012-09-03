@@ -36,6 +36,11 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 == edition of properties ==
 
+en cours
+- PropertiesToolbox, 
+- PropertyEditor, StyleEditor, RawHtmlEditor ?
+- UrlInput, BackgroundInput, ...
+
 the toolboxes / dialogs
 
 * go to the menu "file" and then "properties" to open the publication properties
@@ -116,8 +121,6 @@ le builder qui ouvre une publication devrait se servir des fonctions de Silex.hx
 pareil pour le côté server (remoting)?
 
 reunir template et interpreter dans un package ?
-
-
 
 permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html aux liens?)
 

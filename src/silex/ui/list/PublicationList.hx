@@ -21,6 +21,10 @@ import silex.publication.PublicationData;
 class PublicationList extends List<PublicationListItem>
 {
 	/**
+	 * Information for debugging, e.g. the class name
+	 */ 
+	public static inline var DEBUG_INFO = "PublicationList class";
+	/**
 	 * Publication model, used to interact with the DOM
 	 */
 	private var publicationModel:PublicationModel;
@@ -34,14 +38,24 @@ class PublicationList extends List<PublicationListItem>
 		publicationModel = PublicationModel.getInstance();
 
 		// update the data when the publication data changed
-		publicationModel.addEventListener(PublicationModel.ON_LIST, onListResult);
+		publicationModel.addEventListener(PublicationModel.ON_LIST, onListResult, DEBUG_INFO);
+	}
+	/**
+	 * refreh list data, and then redraw the display by calling doRedraw
+	 * to be overriden to handle the model or do nothing if you manipulate the list and dataProvider by composition
+	 * if you override this, either call super.reloadData() to redraw immediately, or call doRedraw() when the data is ready
+	 */
+	override public function reloadData()
+	{
+		// reload data, this will trigger a  refresh on the list when onListData is dispatched by the model
+		PublicationModel.getInstance().loadList();
 	}
 	/**
 	 * callback for the onList event, dispatched by the PublicationModel
+	 * call the list doRedraw method to redraw the display
 	 */
 	private function onListResult(event:Event){
-		trace("onData "+event);
 		dataProvider = cast(event).detail;
-		redraw();
+		doRedraw();
 	}
 }

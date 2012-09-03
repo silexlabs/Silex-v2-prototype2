@@ -19,6 +19,10 @@ import org.slplayer.component.ui.DisplayObject;
  */
 class PublicationViewer extends DisplayObject{
 	/**
+	 * Information for debugging, e.g. the class name
+	 */ 
+	public static inline var DEBUG_INFO = "PublicationViewer class";
+	/**
 	 * name for the builder mode of the Silex editor
 	 */
 	public static inline var BUILDER_MODE_PAGE_NAME = "builder-mode";
@@ -42,13 +46,13 @@ class PublicationViewer extends DisplayObject{
 		publicationModel = PublicationModel.getInstance();
 
 		// update the data when the publication data changed
-		publicationModel.addEventListener(PublicationModel.ON_DATA, onPublicationData);
-		publicationModel.addEventListener(PublicationModel.ON_CHANGE, onPublicationChange);
+		publicationModel.addEventListener(PublicationModel.ON_DATA, onPublicationData, DEBUG_INFO);
+		publicationModel.addEventListener(PublicationModel.ON_CHANGE, onPublicationChange, DEBUG_INFO);
 		
 		// store a reference to the model
 		pageModel = PageModel.getInstance();
 		// attach events to the model
-		pageModel.addEventListener(PageModel.ON_SELECTION_CHANGE, onPageChange);
+		pageModel.addEventListener(PageModel.ON_SELECTION_CHANGE, onPageChange, DEBUG_INFO);
 	}
 	/**
 	 * Callback for the event, dispatched when a new publication is about to be loaded
@@ -70,10 +74,12 @@ class PublicationViewer extends DisplayObject{
 	 * Open the selected page in the view
 	 */
 	public function onPageChange(event:CustomEvent){
-		if (pageModel.selectedItem ==null){
+		if (pageModel.selectedItem==null){
+			// open the builder initial page
 			var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME);
 			if (initialPageName != null)
-				Page.openPage(initialPageName, false, null, publicationModel.application.id, publicationModel.viewHtmlDom);
+				Page.openPage(initialPageName, false, null, SLPlayerInstanceId);
+//				Page.openPage(initialPageName, false, null, publicationModel.application.id, publicationModel.viewHtmlDom);
 		}
 		else{
 			Page.openPage(pageModel.selectedItem.name, false, null, publicationModel.application.id, publicationModel.viewHtmlDom);

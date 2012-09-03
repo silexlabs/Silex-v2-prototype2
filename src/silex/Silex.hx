@@ -127,7 +127,11 @@ class Silex {
 		if (debugModeAction != null){
 			var context = new Hash();
 			context.set("slpid", application.id);
-			var res = Interpreter.exec(StringTools.htmlUnescape(debugModeAction), context);
+			try{
+				Interpreter.exec(StringTools.htmlUnescape(debugModeAction), context);
+			}catch(e:Dynamic){
+				throw("Error while executing the script in the config file of the publication (debugModeAction variable). The error: "+e);
+			}
 		}
 		#end
 	}
