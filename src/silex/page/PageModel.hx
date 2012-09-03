@@ -58,11 +58,10 @@ class PageModel extends ModelBase<Page>{
 	 * Reset the selection
 	 */
 	override public function setSelectedItem(item:Page):Page {
-		super.setSelectedItem(item);
 		// reset model selection
 		var model = LayerModel.getInstance();
 		model.selectedItem = null;
 		model.hoveredItem = null;
-		return item;
+		return super.setSelectedItem(item);
 	}
 }

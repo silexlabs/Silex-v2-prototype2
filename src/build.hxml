@@ -15,3 +15,24 @@
 
 -D silexClientSide
 -D silexDebug
+
+--next
+
+-php ../bin/libs/silex/silex.php
+-cp ../../SLPlayer/src/
+-cp ../../Cocktail/src/
+--no-traces
+-debug
+-lib hscript
+
+--remap js:cocktail
+-main silex.Silex
+--macro org.slplayer.core.Builder.create('index.php')
+
+#-D slpdebug
+-D disableEmbedHtml
+-D noAutoStart
+-D stopOnError
+
+-D silexServerSide
+#-D silexDebug

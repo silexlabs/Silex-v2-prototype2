@@ -11,6 +11,14 @@ function hasHtml5() {
  * @return	the script node
  */
 function addScript(scriptPath){
+	// check if this script tag is already set
+	var scriptNodes = document.getElementsByTagName("script");
+	for (var idxNode=0; idxNode<scriptNodes.length; idxNode++){
+		var node = scriptNodes[idxNode];
+		if(node.getAttribute("src") == scriptPath){
+			return node;
+		}
+	}
 	var node = document.createElement("script");
 	node.src = scriptPath;
 	node.type = 'text/javascript';
@@ -23,7 +31,7 @@ function addScript(scriptPath){
  * load the javascript version of Silex
  */
 function startSilexJs(){
-	addScript("libs/silex/silex.js");
+	addScript("../../libs/silex/silex.js");
 }
 /**
  * load the Flash version of Silex
@@ -31,13 +39,12 @@ function startSilexJs(){
  * create a node to embed silex.swf 
  */
 function startSilexFlash(){
-	var node = addScript("libs/swfobject.js");
-	node.onload = swfobjectLoaded;
-
 	var node = document.createElement("div");
 	node.id = "flashContainer";
 	document.body.appendChild(node);
 
+	var node = addScript("../../libs/swfobject.js");
+	node.onload = swfobjectLoaded;
 }
 /**
  * add the meta tags (config) to the flashvars

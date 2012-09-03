@@ -12,20 +12,22 @@
 		<!-- config -->
 		<meta name="type" content="publication" /> <!-- or theme, utility -->
 		<meta name="useDeeplink" content="false" />
+		<LINK href="app.css" rel="stylesheet"></LINK>
+		<SCRIPT src="../../loader.js"></SCRIPT>
 	</HEAD>
 	<body class="">
-		<div class="PublicationGroupBUILDER Panel" 
+		<div class="group-main Panel" 
 			data-panel-header-class-name="panel-publication-header"
 			data-panel-body-class-name="panel-publication-body"
 		>
 			<!-- Menu -->
 			<A class="Page" name="start-page">Start Page</A>
-			<UL class="menu MenuController GroupMenu panel-publication-header">
+			<UL class="menu MenuController group-menu panel-publication-header">
 				<!-- Menu FILE -->
-				<LI class="main"><A href="#sub-menu1" class="LinkToPage" data-group-id="GroupMenu">File</A><A class="Page" data-group-id="GroupMenu" name="sub-menu1"></A>
+				<LI class="main"><A href="#sub-menu1" class="LinkToPage" data-group-id="group-menu">File</A><A class="Page" data-group-id="group-menu" name="sub-menu1"></A>
 					<DIV class="container-sub">
 						<UL class="Layer sub-menu1 sub">
-							<LI><A href="#open-dialog" target="_top" class="LinkToPage" data-group-id="PublicationGroupBUILDER">Open</A></LI>
+							<LI><A href="#open-dialog" target="_top" class="LinkToPage" data-group-id="group-main">Open</A></LI>
 							<LI><A href="#close-publication" >Close</A></LI>
 							<LI><A href="#toolbox" class="menu-item-disabled">Save</A></LI>
 							<LI><A href="#toolbox" class="menu-item-disabled">Save As</A></LI>
@@ -33,7 +35,7 @@
 					</DIV>
 			   </LI>
 				<!-- Menu EDITION -->
-				<LI class="main"><A href="#sub-menu2" class="LinkToPage" data-group-id="GroupMenu">Edit</A><A class="Page" data-group-id="GroupMenu" name="sub-menu2"></A>
+				<LI class="main"><A href="#sub-menu2" class="LinkToPage" data-group-id="group-menu">Edit</A><A class="Page" data-group-id="group-menu" name="sub-menu2"></A>
 					<DIV class="container-sub">
 						<UL class="Layer sub-menu2 sub">
 							<LI><A href="#toolbox" class="menu-item-disabled">Cut</A></LI>
@@ -44,14 +46,14 @@
 					</DIV>
 			   </LI>
 				<!-- Menu INSERT -->
-				<LI class="main"><A href="#sub-menu4" class="LinkToPage" data-group-id="GroupMenu">Insert</A><A class="Page" data-group-id="GroupMenu" name="sub-menu4"></A>
+				<LI class="main"><A href="#sub-menu4" class="LinkToPage" data-group-id="group-menu">Insert</A><A class="Page" data-group-id="group-menu" name="sub-menu4"></A>
 					<DIV class="container-sub">
 						<UL class="Layer sub-menu4 sub-menu4-1 sub">
 							<LI><A href="#toolbox" class="menu-item-disabled">Snippet</A></LI>
-							<LI><A href="#sub-menu4-1" class="LinkToPage" data-group-id="GroupMenu">Image &gt;</A></LI>
+							<LI><A href="#sub-menu4-1" class="LinkToPage" data-group-id="group-menu">Image &gt;</A></LI>
 							<LI><A href="#toolbox" class="menu-item-disabled">Table</A></LI>
 						</UL>
-						<A class="Page" data-group-id="GroupMenu" name="sub-menu4-1"></A>
+						<A class="Page" data-group-id="group-menu" name="sub-menu4-1"></A>
 						<UL class="Layer sub-menu4-1 sub sub-of-sub">
 							<LI><A href="#toolbox" class="menu-item-disabled">From File</A></LI>
 							<LI><A href="#toolbox" class="menu-item-disabled">From URL</A></LI>
@@ -60,17 +62,17 @@
 					</DIV>
 			   </LI>
 				<!-- Menu HELP -->
-				<LI class="main"><A href="#sub-menu5" class="LinkToPage" data-group-id="GroupMenu">Help</A><A class="Page" data-group-id="GroupMenu" name="sub-menu5"></A>
+				<LI class="main"><A href="#sub-menu5" class="LinkToPage" data-group-id="group-menu">Help</A><A class="Page" data-group-id="group-menu" name="sub-menu5"></A>
 					<DIV class="container-sub">
 						<UL class="Layer sub-menu5 sub-menu5-1 sub">
 							<LI><A href="#welcome" class="menu-item-disabled">Welcome page</A></LI>
-							<LI><A href="#sub-menu5-1" class="LinkToPage" data-group-id="GroupMenu">Account &gt;</A></LI>
+							<LI><A href="#sub-menu5-1" class="LinkToPage" data-group-id="group-menu">Account &gt;</A></LI>
 							<LI><A href="#about" class="menu-item-disabled">About</A></LI>
 						</UL>
-						<A class="Page" data-group-id="GroupMenu" name="sub-menu5-1"></A>
+						<A class="Page" data-group-id="group-menu" name="sub-menu5-1"></A>
 						<UL class="Layer sub-menu5-1 sub sub-of-sub">
 							<LI><A href="#item-logout" class="menu-item-disabled">Logout</A></LI>
-							<LI><A href="#login-dialog" class="LinkToPage" data-group-id="PublicationGroupBUILDER" target="_top">Login</A></LI>
+							<LI><A href="#login-dialog" class="LinkToPage" data-group-id="group-main" target="_top">Login</A></LI>
 							<LI><A href="#item-chpwd" class="menu-item-disabled">Change password</A></LI>
 							<LI><A href="#item-users" class="menu-item-disabled">Manage Users</A></LI>
 						</UL>
@@ -81,20 +83,20 @@
 			<!-- Dialogs -->
 			<div>
 				<!-- Login Dialog -->
-				<A class="Page" name="login-dialog" data-group-id="PublicationGroupBUILDER"></A>
-				<A class="Page" name="loading-pending" data-group-id="PublicationGroupBUILDER"></A>
+				<A class="Page" name="login-dialog" data-group-id="group-main"></A>
+				<A class="Page" name="loading-pending" data-group-id="group-main"></A>
 				<form class="Layer login-dialog dialog-foreground AuthDialog" data-dialog-name="login-dialog">
 					<fieldset>
 						<legend>Login:</legend>
 						<p>Login</p><p><input type="text" class="input-field-login"></input></p>
 						<p>Password</p><p><input type="text" class="input-field-pass"></input></p>
 						<button class="cancel-button">Cancel</button>
-						<input type="submit" value="Ok" class="ok-button"></input>
+						<input type="submit" value="Ok" class="validate-button"></input>
 						<p class="error-text"></p>
 					</fieldset>
 				</form>
 				<!-- Open Dialog -->
-				<A class="Page" name="open-dialog" data-group-id="PublicationGroupBUILDER"></A>
+				<A class="Page" name="open-dialog" data-group-id="group-main"></A>
 				<form class="Layer open-dialog dialog-foreground OpenDialog" data-dialog-name="open-dialog">
 					<fieldset>
 						<legend>Your Publications:</legend>
@@ -102,7 +104,7 @@
 							<li>::name:: <small>last change by ::configData.lastChange.author:: on ::configData.lastChange.date::</small></li>
 						</ul>
 						<button class="cancel-button">Cancel</button>
-						<input type="submit" value="Ok" class="ok-button"></input>
+						<input type="submit" value="Ok" class="validate-button"></input>
 					</fieldset>
 				</form>
 				<div class="Layer loading-pending dialog-foreground">
@@ -115,141 +117,163 @@
 			<div class="builder-scene panel-publication-body">
 				<!-- Toolboxes -->
 				<!-- Property Toolbox -->
-				<div class="GroupPropertiesToolbox Draggable Panel PropertiesToolbox" 
+				<div class="group-property-toolbox Draggable Panel PropertiesToolbox silex-toolbox" 
 					data-initial-page-name="properties-editor" 
 					data-toolbox-name="PropertiesToolbox"
 					data-toolbox-dropzones-class-name="toolbox-drop-zone"
 					data-phantom-class-name="toolbox-phantom">
 
 					<!-- Property Toolbox tabs -->
-					<A class="Page" data-group-id="GroupPropertiesToolbox" name="raw-html">Raw Html</A>
-					<A class="Page" data-group-id="GroupPropertiesToolbox" name="properties-editor">Properties</A>
-					<A class="Page" data-group-id="GroupPropertiesToolbox" name="style-editor">Styles</A>
+					<A class="Page" data-group-id="group-property-toolbox" name="raw-html">Raw Html</A>
+					<A class="Page" data-group-id="group-property-toolbox" name="properties-editor">Properties</A>
+					<A class="Page" data-group-id="group-property-toolbox" name="style-editor">Styles</A>
 
 					<div class="panel-header">
 						<div class="draggable-dragzone">
 							Properties
 						</div>
 						<ul class="tabs">
-							<li><a href="#properties-editor" class="LinkToPage" data-group-id="GroupPropertiesToolbox">Properties</a></li>
-							<li><a href="#style-editor" class="LinkToPage" data-group-id="GroupPropertiesToolbox">Style</a></li>
-							<li><a href="#raw-html" class="LinkToPage" data-group-id="GroupPropertiesToolbox">Raw HTML</a></li>
+							<li><a href="#properties-editor" class="LinkToPage" data-group-id="group-property-toolbox">Properties</a></li>
+							<li><a href="#style-editor" class="LinkToPage" data-group-id="group-property-toolbox">Style</a></li>
+							<li><a href="#raw-html" class="LinkToPage" data-group-id="group-property-toolbox">Raw HTML</a></li>
 						</ul>
 					</div>
 					<div class="panel-body">
 						<!-- Navigation -->
 						<!-- Raw HTML editor -->
-						<form class="Layer raw-html RawHtmlToolbox">
-							<fieldset>
+						<form class="Layer raw-html">
+							<fieldset class="RawHtmlEditor"
+								data-attribute-name="innerHTML"
+							>
 								<legend>Raw HTML content</legend>
-								<textarea class="property url-property"></textarea>
-								<input type="submit" value="Apply" />
+								<textarea class="text-input"></textarea>
+								<input type="submit" value="Apply" class="validate-button" />
 							</fieldset>
 						</form>
 						<!-- Properties editor -->
 						<form class="Layer properties-editor PropertiesToolbox">
-							<!-- Contexts -->
-							<ul class="">
-								<li><a href="#context-img" class="LinkToContext">Image tag</a></li>
-								<li><a href="#context-video" class="LinkToContext">Video tag</a></li>
-								<li><a href="#context-audio" class="LinkToContext">Audio tag</a></li>
-								<li><a href="#context-div" class="LinkToContext">Div tag / text</a></li>
-								<li><a href="#context-layer" class="LinkToContext">Container / layer</a></li>
-							</ul>
 							<fieldset>
 								<legend>Properties</legend>
-								<ul class="list">
-									<li class="">
-										<p>Name</p>
-										<input type="text" class="property name-property"></input>
-									</li>
-									<li class="context-img context-video context-audio">
-										<p>URL</p>
-										<input type="url" class="property url-property" name="URL" />
-									</li>
-									<li class="context-video context-audio">
-										<p>Auto start playing</p>
-										<input type="checkbox" class="property toggle-loop-property" /> Auto start
-									</li>
-									<li class="context-video context-audio">
-										<p>Loop or stop at the end</p>
-										<input type="checkbox" class="property toggle-loop-property" /> Loop
-									</li>
-									<li class="context-layer">
-										<p>Set as master</p>
-										<input type="checkbox" class="property toggle-master-property" /> Master
-									</li>
-								</ul>
+								<fieldset>
+									<legend>Name</legend>
+									<input type="text" class="property name-property"></input>
+								</fieldset>
+								<fieldset class="context-img context-video context-audio">
+									<legend>Source</legend>
+									<input type="src" class="property src-property" name="URL" />
+									<button disabled="disabled" title="Option not yet implemented.">Browse media gallery</button>
+								</fieldset>
+								<fieldset 
+									class="context-video context-audio" 
+									disabled="disabled" 
+									title="Option not yet implemented.">
+									<legend>Auto start playing</legend>
+									<input type="checkbox" class="property auto-start-property" /> Auto start
+								</fieldset>
+								<fieldset 
+									class="context-video context-audio"
+									disabled="disabled" 
+									title="Option not yet implemented.">
+									<legend>Loop or stop at the end</legend>
+									<input type="checkbox" class="property loop-property" /> Loop
+								</fieldset>
+								<fieldset 
+									class="context-layer"
+									disabled="disabled" 
+									title="Option not yet implemented.">
+									<legend>Set as master</legend>
+									<input type="checkbox" class="property master-property" /> Master
+								</fieldset>
 							</fieldset>
 						</form>
 						<!-- Style editor -->
 						<form class="Layer style-editor StyleToolbox">
 							<fieldset>
 								<legend>Style</legend>
-								<ul class="list">
-									<li>
-										<p>Left</p>
-										<input type="number" class="property left-property"
+								<fieldset 
+									class="property left-property"
+								>
+									<legend>Left</legend>
+									<input type="radio" name="left-type" value="Auto" /> Auto<br /> 
+									<input type="radio" name="left-type" value="Value" /> 
+										<input type="number" class="value"
 											name="quantity" min="-50000" max="50000" />
-									</li>
-									<li>
-										<p>Top</p>
-										<input type="number" class="property top-property"
-											name="quantity" min="-50000" max="50000" />
-									</li>
-									<li>
-										<p>Bottom</p>
-										<input type="number" class="property bottom-property"
-											name="quantity" min="-50000" max="50000" />
-									</li>
-									<li>
-										<p>Right</p>
-										<input type="number" class="property right-property"
-											name="quantity" min="-50000" max="50000" />
-									</li>
-									<li>
-										<p>Width</p>
-										<input type="number" class="property width-property"
-											name="quantity" min="0" max="50000" />
-									</li>
-									<li>
-										<p>Height</p>
-										<input type="number" class="property height-property"
-											name="quantity" min="0" max="50000" />
-									</li>
-									<li>
-										<p>Z-index</p>
-										<input type="number" class="property z-index-property"
-											name="quantity" min="-50000" max="50000" />
-									</li>
-									<li>
-										<p>Display</p>
-										<select class="property display-property">
-											<option value="block">Block</option>
-											<option value="inline">Inline</option>
-											<option value="none">None</option>
+										<select class="unit">
+											<option value="percent">%</option>
+											<option value="px">px</option>
+											<option value="em">em</option>
 										</select>
-									</li>
-									<li>
-										<p>Position</p>
-										<select class="property position-property">
-											<option value="relative">Relative</option>
-											<option value="absolute">Absolute</option>
+								</fieldset>
+								<fieldset 
+									class="property top-property"
+								>
+									<legend>Top</legend>
+									<input type="radio" name="top-type" value="Auto" /> Auto<br /> 
+									<input type="radio" name="top-type" value="Value" /> 
+										<input type="number" class="value"
+											name="quantity" min="-50000" max="50000" />
+										<select class="unit">
+											<option value="percent">%</option>
+											<option value="px">px</option>
+											<option value="em">em</option>
 										</select>
-									</li>
-									<li>
-										<p>Float</p>
-										<select class="property float-property">
-											<option value="none">None</option>
-											<option value="left">Left</option>
-											<option value="right">Right</option>
+								</fieldset>
+								<fieldset 
+									class="property width-property"
+								>
+									<legend>Width</legend>
+									<input type="radio" name="width-type" value="Auto" /> Auto<br /> 
+									<input type="radio" name="width-type" value="Value" /> 
+										<input type="number" class="value"
+											name="quantity" min="-50000" max="50000" />
+										<select class="unit">
+											<option value="percent">%</option>
+											<option value="px">px</option>
+											<option value="em">em</option>
 										</select>
-									</li>
-								</ul>
+								</fieldset>
+								<fieldset 
+									class="property height-property"
+								>
+									<legend>Heigh</legend>
+									<input type="radio" name="height-type" value="Auto" /> Auto<br /> 
+									<input type="radio" name="height-type" value="Value" /> 
+										<input type="number" class="value"
+											name="quantity" min="-50000" max="50000" />
+										<select class="unit">
+											<option value="percent">%</option>
+											<option value="px">px</option>
+											<option value="em">em</option>
+										</select>
+								</fieldset>
+								<fieldset>
+									<legend>Display</legend>
+									<select class="property display-property">
+										<option value="block">Block</option>
+										<option value="inline">Inline</option>
+										<option value="none">None</option>
+									</select>
+								</fieldset>
+								<fieldset>
+									<legend>Position</legend>
+									<select class="property position-property">
+										<option value="relative">Relative</option>
+										<option value="absolute">Absolute</option>
+									</select>
+								</fieldset>
+								<fieldset>
+									<legend>Float</legend>
+									<select class="property float-property">
+										<option value="none">None</option>
+										<option value="left">Left</option>
+										<option value="right">Right</option>
+									</select>
+								</fieldset>
 							</fieldset>
 						</form>
 					</div>
 				</div>
+				<!-- /Property Toolbox -->
 				<!-- /Toolboxes -->
 				<!-- Builder mode -->
 				<div class="PublicationViewer SelectionController" >

@@ -33,18 +33,24 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	// Selection
 	////////////////////////////////////////////////
 	/**
+	 * Name of the attribute for the component id
+	 * The component id is used only when editing a Silex publication, and it is not saved in the HTML file
+	 * It is used to ease the synch between the view and the model, i.e. the publication DOM which is displayed by the browser and the one which is stored by Silex
+	 */ 
+	public static inline var COMPONENT_ID_ATTRIBUTE_NAME = "data-silex-component-id";
+	/**
 	 * Information for debugging, e.g. the class name
 	 */ 
-	public static inline var DEBUG_INFO:String = "ComponentModel class";
+	public static inline var DEBUG_INFO = "ComponentModel class";
 	/**
 	 * event dispatched when selection changes
 	 */
-	public static inline var ON_SELECTION_CHANGE:String = "onComponentSelectionChange";
+	public static inline var ON_SELECTION_CHANGE = "onComponentSelectionChange";
 	/**
 	 * event dispatched when hover changes
 	 * hover is like a pre-selection visualization
 	 */
-	public static inline var ON_HOVER_CHANGE:String = "onComponentHoverChange";
+	public static inline var ON_HOVER_CHANGE = "onComponentHoverChange";
 	/**
 	 * Models are singletons
 	 * Constructor is private
@@ -57,11 +63,12 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	 * Reset the selection
 	 */
 	override public function setSelectedItem(item:HtmlDom):HtmlDom {
-		super.setSelectedItem(item);
 		// reset model selection
-		var model = PropertyModel.getInstance();
-		model.selectedItem = null;
-		model.hoveredItem = null;
-		return item;
+		// Todo: onSlectionChange event could be dispatched when the property editor has the focus
+		/* var model = PropertyModel.getInstance();
+		   model.selectedItem = null;
+		   model.hoveredItem = null;
+		*/
+		return super.setSelectedItem(item);
 	}
 }

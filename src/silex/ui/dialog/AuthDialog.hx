@@ -62,19 +62,20 @@ class AuthDialog extends DialogBase
 	 */
 	public function validate() {
 		// get login
-		var inputElements:HtmlCollection<HtmlDom> = rootElement.getElementsByClassName(LOGIN_INPUT_FIELD_CLASS_NAME);
-
-		if(inputElements.length<1)
-			throw(LOGIN_INPUT_FIELD_NOT_FOUND);
-
-		var login = cast(inputElements[0]).value;
+		var login:String;
+		try{
+			login = cast(DomTools.getSingleElement(rootElement, LOGIN_INPUT_FIELD_CLASS_NAME, true)).value;
+		}catch(e:Dynamic){
+			throw(PASSWORD_INPUT_FIELD_NOT_FOUND);
+		}
 
 		// get pass
-		var inputElements:HtmlCollection<HtmlDom> = rootElement.getElementsByClassName(PASSWORD_INPUT_FIELD_CLASS_NAME);
-		if(inputElements.length<1)
+		var pass:String;
+		try{
+			pass = cast(DomTools.getSingleElement(rootElement, PASSWORD_INPUT_FIELD_CLASS_NAME, true)).value;
+		}catch(e:Dynamic){
 			throw(PASSWORD_INPUT_FIELD_NOT_FOUND);
-
-		var pass = cast(inputElements[0]).value;
+		}
 
 		// check required fields
 		if (login == "" || pass == ""){

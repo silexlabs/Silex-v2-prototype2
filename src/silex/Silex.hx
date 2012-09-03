@@ -52,12 +52,13 @@ class Silex {
 	/**
 	 * constant, path and file names
 	 */
-	public static inline var LOADER_SCRIPT_PATH:String = "loader.js";
+	public static inline var LOADER_SCRIPT_PATH:String = "../../loader.js";
 	/**
 	 * Publication name
 	 * It is provided in the URL as http://my.domain.com/?publication_name
 	 */
 	static public var publicationName:String;
+
 
 #if silexClientSide
 	/**
@@ -110,6 +111,8 @@ class Silex {
 			Lib.document.body.appendChild(node);
 			/**/
 			Lib.document.body.innerHTML = StringTools.htmlUnescape(DomTools.getMeta(CONFIG_PUBLICATION_BODY));
+			// set base tag so the ./ is the publicaiton folder
+			DomTools.setBaseTag(PublicationService.PUBLICATION_FOLDER+publicationName+"/");
 		}
 		
 		// init SLPlayer components
@@ -204,6 +207,9 @@ class Silex {
 		var scripts = StringTools.htmlEscape(serverConfig.debugModeAction + publicationConfig.debugModeAction);
 		DomTools.setMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION, scripts);
 
+		// set base tag so the ./ is the publicaiton folder
+		DomTools.setBaseTag(PublicationService.PUBLICATION_FOLDER+publicationName+"/");
+		
 		// set initial page 
 		if (initialPageName != "" && DomTools.getMeta(CONFIG_USE_DEEPLINK)!="false")
 				DomTools.setMeta(Page.CONFIG_INITIAL_PAGE_NAME, initialPageName);

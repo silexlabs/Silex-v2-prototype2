@@ -26,6 +26,15 @@ class PublicationService extends ServiceBase{
 	 * Constant for this service name, as exposed to Haxe remoting
 	 */
 	public static inline var SERVICE_NAME:String = "publicationService";
+	/**
+	 * Relative path of the publication folder
+	 */ 
+	public static inline var PUBLICATION_FOLDER = "./publications/";
+
+	/** 
+	 * name of the publication which contains Silex builder
+	 */
+	public static inline var BUILDER_PUBLICATION_NAME = "admin";
 
 #if silexClientSide
 	/**

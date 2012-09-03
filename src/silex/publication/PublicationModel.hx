@@ -5,14 +5,15 @@ import js.Dom;
 import haxe.xml.Fast;
 
 import silex.ModelBase;
-
 import silex.page.PageModel;
 import silex.component.ComponentModel;
+import silex.layer.LayerModel;
 import silex.publication.PublicationData;
+import silex.interpreter.Interpreter;
+
 import org.slplayer.core.Application;
 import org.slplayer.util.DomTools;
 import org.slplayer.component.navigation.Page;
-import silex.interpreter.Interpreter;
 
 /**
  * Structure used to store the items of the publication list
@@ -140,6 +141,19 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * Reset model selection
 	 */
 	public function load(name:String, configData:PublicationConfigData = null){
+		// set base tag so the ./ is the publication folder
+		var currentBasTag = DomTools.getBaseTag();
+		if (currentBasTag == PublicationService.PUBLICATION_FOLDER + currentName + "/"
+			|| currentBasTag == PublicationService.PUBLICATION_FOLDER + PublicationService.BUILDER_PUBLICATION_NAME + "/"
+			){
+			DomTools.setBaseTag(PublicationService.PUBLICATION_FOLDER + name+"/");
+		}
+		else{
+			// case of a publication displayed directly from the publicaiton folder, i.e. publications/default/index.html
+			DomTools.setBaseTag("../" + name + "/");
+		}
+
+
 		// store the new publication name
 		currentName = name;
 
@@ -208,6 +222,9 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		else if (xml.hasNode.HEAD)
 			headHtmlDom.innerHTML = xml.node.HEAD.innerHTML;
 
+		// add attributes to nodes recursively
+		prepareForEdit(modelHtmlDom);
+
 		// init the view
 		initViewHtmlDom();
 
@@ -226,9 +243,6 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		// Duplicate DOM
 		viewHtmlDom = modelHtmlDom.cloneNode(true);
 
-		// add attributes to nodes recursively
-		prepareForEdit(modelHtmlDom, viewHtmlDom);
-
 		// Add the CSS in the body tag rather than head tag, because the later is not really added to the browser dom
 		DomTools.addCssRules(currentData.css, viewHtmlDom);
 	}
@@ -236,20 +250,18 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * Fixes the DOM root when needed
 	 * - add the PublicationGroup to the root of the DOM
 	 */
-	function fixDomRoot(modelDom:HtmlDom, viewDom:HtmlDom){
+	function fixDomRoot(modelDom:HtmlDom){
 		// add the PublicationGroup to the root of the DOM
 		DomTools.addClass(modelDom, "PublicationGroup");
-		DomTools.addClass(viewDom, "PublicationGroup");
 	}
 	/**
 	 * Fixes the components, layers and pages when needed
 	 * - add the attribute data-group-id to components
 	 */
-	function fixDom(modelDom:HtmlDom, viewDom:HtmlDom){
+	function fixDom(modelDom:HtmlDom){
 		// add the attribute data-group-id to components
 		if (modelDom.getAttribute("data-group-id") == null){
 			modelDom.setAttribute("data-group-id", "PublicationGroup");
-			viewDom.setAttribute("data-group-id", "PublicationGroup");
 		}
 	}
 	/**
@@ -258,46 +270,39 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * - add the attribute data-silex-layer-id to nodes which are editable layers
 	 * - call fixDom method for each component
 	 */
-	private function prepareForEdit(modelDom:HtmlDom, viewDom:HtmlDom) {
+	private function prepareForEdit(modelDom:HtmlDom) {
 		//trace("prepareForEdit ("+modelDom+", "+viewDom+"));
 		// Take only HtmlDom elements, not TextNode
 		if (modelDom.className == null){
 			return;
 		}
 
-		// check that browsing is synced in view and model
-		if (viewDom.childNodes.length != modelDom.childNodes.length){
-			throw("Error: view and model have a different number of children: "+viewDom.childNodes.length+" != "+modelDom.childNodes.length);
-		}
 		// Dom Root
-		else if (modelDom.parentNode == null){
+		if (modelDom.parentNode == null){
 			// correct anomalies if needed at the dom root
-			fixDomRoot(modelDom, viewDom);
+			fixDomRoot(modelDom);
 		}
 		// Components
 		else if (DomTools.hasClass(modelDom.parentNode, "Layer")){
 			// add the attribute data-silex-component-id to nodes which parent is a layer
-			modelDom.setAttribute("data-silex-component-id", generateNewId());
-			viewDom.setAttribute("data-silex-component-id", generateNewId());
-			fixDom(modelDom, viewDom);
+			modelDom.setAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, generateNewId());
+			fixDom(modelDom);
 		}
 		// Layers
 		else if (DomTools.hasClass(modelDom, "Layer")){
 			// add the attribute data-silex-layer-id to nodes which are layers
-			modelDom.setAttribute("data-silex-layer-id", generateNewId());
-			viewDom.setAttribute("data-silex-layer-id", generateNewId());
-			fixDom(modelDom, viewDom);
+			modelDom.setAttribute(LayerModel.LAYER_ID_ATTRIBUTE_NAME, generateNewId());
+			fixDom(modelDom);
 		}
 		// Pages
 		else if (DomTools.hasClass(modelDom, "Page")){
 			// check Dom for robustness
-			fixDom(modelDom, viewDom);
+			fixDom(modelDom);
 		}
 		// browse the children
 		for(idx in 0...modelDom.childNodes.length){
 			var modelChild = modelDom.childNodes[idx];
-			var viewChild = viewDom.childNodes[idx];
-			prepareForEdit(modelChild, viewChild);
+			prepareForEdit(modelChild);
 		}
 	}
 	private static var nextId = 0;

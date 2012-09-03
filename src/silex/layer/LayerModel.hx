@@ -31,6 +31,15 @@ class LayerModel extends ModelBase<Layer>{
 	 	return instance;
 	}
 	////////////////////////////////////////////////
+	// 
+	////////////////////////////////////////////////
+	/**
+	 * Name of the attribute for the layer id
+	 * The layer id is used only when editing a Silex publication, and it is not saved in the HTML file
+	 * It is used to ease the synch between the view and the model, i.e. the publication DOM which is displayed by the browser and the one which is stored by Silex
+	 */ 
+	public static inline var LAYER_ID_ATTRIBUTE_NAME = "data-silex-layer-id";
+	////////////////////////////////////////////////
 	// Selection
 	////////////////////////////////////////////////
 	/**
@@ -58,11 +67,10 @@ class LayerModel extends ModelBase<Layer>{
 	 * Reset the selection
 	 */
 	override public function setSelectedItem(item:Layer):Layer {
-		super.setSelectedItem(item);
 		// reset model selection
 		var model = ComponentModel.getInstance();
 		model.selectedItem = null;
 		model.hoveredItem = null;
-		return item;
+		return super.setSelectedItem(item);
 	}
 }

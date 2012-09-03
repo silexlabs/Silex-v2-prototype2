@@ -1,4 +1,5 @@
-/* Silex base styles */
+/* 		Silex base styles 			 */
+/* 		Do not edit these styles 	 */
 body
 {
 	margin:0px;
@@ -28,7 +29,8 @@ p{
 
 }
 
-/* Publication styles */
+/* 		Publication styles 			 */
+/* 		You can edit these styles 	 */
 
 .button-test1{
    border-color: yellow;

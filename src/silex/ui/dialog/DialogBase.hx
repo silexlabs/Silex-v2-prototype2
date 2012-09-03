@@ -26,7 +26,7 @@ class DialogBase extends DisplayObject
 	/**
 	 * The css class name of the button used to submit the form
 	 */
-	public static inline var SUBMIT_BUTTON_CLASS_NAME = "ok-button";
+	public static inline var SUBMIT_BUTTON_CLASS_NAME = "validate-button";
 	/**
 	 * The css class name of the button used to close the form
 	 */

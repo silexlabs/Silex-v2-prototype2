@@ -21,12 +21,12 @@ class PropertiesToolbox extends ToolboxBase
 	{
 		super(rootElement, SLPId);
 		// listen to the input event
-		rootElement.addEventListener("input", onInput, true);
+//		rootElement.addEventListener("input", onInput, true);
 	}
 	/**
 	 * callback for toolbox events
 	 */
-	public function onInput(e:Event) {
+/*	public function onInput(e:Event) {
 		// retrieve the node who triggered the event
 		var target:HtmlDom = e.target;
 		// handle the change event
@@ -35,10 +35,11 @@ class PropertiesToolbox extends ToolboxBase
 	/**
 	 * Handle toolbox events
 	 */
-	public function handleChange(target:HtmlDom) {
+/*	public function handleChange(target:HtmlDom) {
 		trace("PropertiesToolbox - "+cast(target).value);
 		switch(target.className){
 			
 		}
 	}
+	*/
 }
