@@ -54,23 +54,23 @@ class ModelBase <FinalType>{
 	private var selectionChangeEventName:String;
 	/**
 	 * Setter for the hovered item
-	 * Dispatch the change event
+	 * Dispatch the change event with the item reference as the detail property of the custom event
 	 */
 	public function setHoveredItem(item:FinalType):FinalType {
 		if (hoveredItem != item){
 			hoveredItem = item;
-			dispatchEvent(createEvent(hoverChangeEventName), debugInfo);
+			dispatchEvent(createEvent(hoverChangeEventName, item), debugInfo);
 		}
 		return item;
 	}
 	/**
 	 * Setter for the selected item
-	 * Dispatch the change event
+	 * Dispatch the change event with the item reference as the detail property of the custom event
 	 */
 	public function setSelectedItem(item:FinalType):FinalType {
 		if (selectedItem != item){
 			selectedItem = item;
-			dispatchEvent(createEvent(selectionChangeEventName), debugInfo);
+			dispatchEvent(createEvent(selectionChangeEventName, item), debugInfo);
 		}
 		return item;
 	}

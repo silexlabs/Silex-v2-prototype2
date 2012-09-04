@@ -10,5 +10,6 @@ import js.Dom;
 typedef PropertyData = {
 	name:String,
 	value:String,
-	owner:HtmlDom,
+	viewHtmlDom:HtmlDom,
+	modelHtmlDom:HtmlDom,
 }

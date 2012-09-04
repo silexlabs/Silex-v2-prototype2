@@ -56,13 +56,33 @@ body{
 	cursor: pointer;
 }
 .selection-marker{
-	border: 2px solid grey;
+	border: 6px solid grey;
 	cursor: move;
 }
 .selection-marker:hover{
 	opacity:0.25;
 	background-color: yellow;
-	border: 2px solid grey;
+	border: 6px solid grey;
+}
+.hover-layer-marker, .selection-layer-marker{
+	z-index: 200;
+	position: absolute;
+	margin:0px;
+	padding:0px;
+}
+.hover-layer-marker{
+	opacity:0.25;
+	background-color: blue;
+	cursor: pointer;
+}
+.selection-layer-marker{
+	border: 6px solid green;
+	cursor: move;
+}
+.selection-layer-marker:hover{
+	opacity:0.25;
+	background-color: green;
+	border: 6px solid green;
 }
 
 /* Properties Toolbox */

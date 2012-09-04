@@ -39,7 +39,25 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 en cours
 - PropertiesToolbox, 
 - PropertyEditor, StyleEditor, RawHtmlEditor ?
+  Text
+    Font Name
+    Font Size + unit
+    Font Style
+    Line Hight + unit
+    Wheight
+    Variant
+    Case
+    Color (picker, rgb, rgba, hsl)
+    Decoration
+  Background
+  Block
+  Box
+  Border
+  List
+  Positioning
 - UrlInput, BackgroundInput, ...
+
+reprendre la classificaiton de tinymce pour les css
 
 the toolboxes / dialogs
 
