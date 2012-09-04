@@ -17,8 +17,4 @@
 		<author>silexlabs</author>
 		<date>2021-12-02 00:00:00</date>
 	</lastChange>
-	<debugModeAction>
-		//Lib.alert("test!");
-		PublicationModel.load("default");
-	</debugModeAction>
 </xml>

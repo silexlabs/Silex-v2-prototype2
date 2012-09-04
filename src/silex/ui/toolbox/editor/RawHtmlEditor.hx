@@ -67,7 +67,7 @@ class RawHtmlEditor extends EditorBase
 		if (selectedItem == null)
 			load("");
 		else
-			load(PropertyModel.getInstance().getProperty(selectedItem, ATTRIBUTE_NAME).value);
+			load(PropertyModel.getInstance().getProperty(selectedItem, ATTRIBUTE_NAME));
 
 		return selectedItem;
 	}

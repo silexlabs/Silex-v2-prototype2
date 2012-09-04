@@ -14,12 +14,18 @@
 		<meta name="useDeeplink" content="false" />
 		<LINK href="app.css" rel="stylesheet"></LINK>
 		<SCRIPT src="../../loader.js"></SCRIPT>
+		<META name="debugModeAction" content="
+		//Lib.alert(&quot;test!&quot;);
+		PublicationModel.load(&quot;default&quot;);
+	"></META>
 	</HEAD>
 	<body class="">
 		<div class="group-main Panel" 
 			data-panel-header-class-name="panel-publication-header"
 			data-panel-body-class-name="panel-publication-body"
 		>
+
+
 			<!-- ----------	 -->
 			<!-- 	Menu 	 -->
 			<!-- ----------	 -->
@@ -130,8 +136,8 @@
 			<!-- Builder 	 -->
 			<!-- ----------	 -->
 			<div class="builder-scene panel-publication-body">
-				<!-- ****************	-->
-				<!-- Property Toolbox 	-->
+				<!-- 	**************************	-->
+				<!-- 		Property Toolbox 		-->
 				<div class="group-property-toolbox Draggable Panel PropertiesToolbox silex-toolbox" 
 					data-initial-page-name="properties-tab" 
 					data-toolbox-name="PropertiesToolbox"
@@ -204,50 +210,56 @@
 							</fieldset>
 						</form>
 						<!-- /Properties editor -->
-
-
-
 						<!-- Style Text -->
 						<form class="Layer style-text-tab">
 							<fieldset class="TextStyleEditor">
 								<legend>Text</legend>
-								<label for="text_font">Font</label>
-								<select id="text_font" name="text_font"><option value=""></option><option value="Arial, Helvetica, sans-serif">Arial, Helvetica, sans-serif</option><option value="Times New Roman, Times, serif">Times New Roman, Times, serif</option><option value="Courier New, Courier, mono">Courier New, Courier, mono</option><option value="Times New Roman, Times, serif">Times New Roman, Times, serif</option><option value="Georgia, Times New Roman, Times, serif">Georgia, Times New Roman, Times, serif</option><option value="Verdana, Arial, Helvetica, sans-serif">Verdana, Arial, Helvetica, sans-serif</option><option value="Geneva, Arial, Helvetica, sans-serif">Geneva, Arial, Helvetica, sans-serif</option></select>
+								<label for="text_font">Font</label><br />
+								<input class="text_font" type="text" value="" /><br />
+
+								<label for="text_size">Size</label><br />
+								<select class="text_size"><option value=""><option value="xx-small">xx-small</option><option value="x-small">x-small</option><option value="small">small</option><option value="medium">medium</option><option value="large">large</option><option value="x-large">x-large</option><option value="xx-large">xx-large</option><option value="smaller">smaller</option><option value="larger">larger</option><br />
+								</select><br />
+
+								<input type="number" class="text_size_num" min="0" max="5000" />
+								<label id="text_size_measurement_label" for="text_size_measurement" style="display: none; ">Text Size Measurement Unit</label>
+								<select class="text_size_unit"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select><br />
+
+								<label for="text_weight">Weight</label><br />
+								<select class="text_weight"><option value=""></option><option value="normal">normal</option><option value="bold">bold</option><option value="bolder">bolder</option><option value="lighter">lighter</option><option value="100">100</option><option value="200">200</option><option value="300">300</option><option value="400">400</option><option value="500">500</option><option value="600">600</option><option value="700">700</option><option value="800">800</option><option value="900">900</option>
+								</select><br />
 
 
-								<label for="text_size">Size</label>
-								<select id="text_size" name="text_size" class=""><option value=""></option><option value="9">9</option><option value="10">10</option><option value="12">12</option><option value="14">14</option><option value="16">16</option><option value="18">18</option><option value="24">24</option><option value="xx-small">xx-small</option><option value="x-small">x-small</option><option value="small">small</option><option value="medium">medium</option><option value="large">large</option><option value="x-large">x-large</option><option value="xx-large">xx-large</option><option value="smaller">smaller</option><option value="larger">larger</option></select>
+								<label for="text_style">Style</label><br />
+								<select class="text_style" class=""><option value=""></option><option value="normal">normal</option><option value="italic">italic</option><option value="oblique">oblique</option>
+								</select><br />
 
-								<label id="text_size_measurement_label" for="text_size_measurement" style="display: none; visibility: hidden;">Text Size Measurement Unit</label>
-								<select id="text_size_measurement" name="text_size_measurement" aria-labelledby="text_size_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<label for="text_variant">Variant</label><br />
+								<select class="text_variant"><option value=""></option><option value="normal">normal</option><option value="small-caps">small-caps</option>
+								</select><br />
 
-								<label for="text_weight">Weight</label>
-								<select id="text_weight" name="text_weight"><option value=""></option><option value="normal">normal</option><option value="bold">bold</option><option value="bolder">bolder</option><option value="lighter">lighter</option><option value="100">100</option><option value="200">200</option><option value="300">300</option><option value="400">400</option><option value="500">500</option><option value="600">600</option><option value="700">700</option><option value="800">800</option><option value="900">900</option></select>
+								<label for="text_lineheight">Line Height</label><br />
+								<input type="number" class="text_lineheight" min="0" max="5000" />
+								<label style="display: none; ">Line Height Measurement Unit</label>
+								<select class="text_lineheight_unit"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select><br />
 
+								<label for="text_case">Case</label><br />
+								<select class="text_case"><option value=""></option><option value="capitalize">capitalize</option><option value="uppercase">uppercase</option><option value="lowercase">lowercase</option>
+								</select><br />
 
-								<label for="text_style">Style</label>
-								<select id="text_style" name="text_style" class=""><option value=""></option><option value="normal">normal</option><option value="italic">italic</option><option value="oblique">oblique</option></select>
+								<label for="text_color">Color</label><br />
+								<input class="text_color" type="color"/><br />
 
-								<label for="text_variant">Variant</label>
-								<select id="text_variant" name="text_variant"><option value=""></option><option value="normal">normal</option><option value="small-caps">small-caps</option></select>
-
-								<label for="text_lineheight">Line Height</label>
-								<select id="text_lineheight" name="text_lineheight" class=""><option value=""></option><option value="normal">normal</option></select>
-								<label style="display: none; visibility: hidden;">Line Height Measurement Unit</label>
-								<select id="text_lineheight_measurement" name="text_lineheight_measurement" aria-labelledby="text_lineheight_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
-
-								<label for="text_case">Case</label>
-								<select id="text_case" name="text_case"><option value=""></option><option value="capitalize">capitalize</option><option value="uppercase">uppercase</option><option value="lowercase">lowercase</option></select>
-
-								<label for="text_color">Color</label>
-								<input id="text_color" name="text_color" type="text" value="" size="9" onchange="updateColor('text_color_pick','text_color');" />
-
-								<label for="text_color">Decoration</label>
-								<input type="radio" name="decoration" value="underline" />Underline<br /> 
-								<input type="radio" name="decoration" value="overline" />Overline<br /> 
-								<input type="radio" name="decoration" value="linethrough" />Strikethrough<br /> 
-								<input type="radio" name="decoration" value="blink" />Blink<br /> 
-								<input type="radio" name="decoration" value="none" />None<br /> 
+								<label for="text_decoration">Decoration</label><br />
+								<select class="text_decoration">
+									<option value=""></option>
+									<option value="underline">Underline</option>
+									<option value="overline">Overline</option>
+									<option value="line-through">Line through</option>
+									<option value="blink">Blink</option>
+								</select><br />
 							</fieldset>
 						</form>
 						<!-- /Style Text -->
@@ -256,29 +268,35 @@
 							<fieldset>
 								<legend>Background</legend>
 								<label for="background_color">Background Color</label>
-								<input id="background_color" name="background_color" type="text" value="" size="9" onchange="updateColor('background_color_pick','background_color');">
+								<input id="background_color" name="background_color" type="text" value="" size="9"/>
 							
 								<label for="background_image">Background Image</label>
-								<input id="background_image" name="background_image" type="text"> 
+								<input id="background_image" name="background_image" type="text" /> 
 							
 								<label for="background_repeat">Repeat</label>
-								<select id="background_repeat" name="background_repeat" class=""><option value=""></option><option value="no-repeat">no-repeat</option><option value="repeat">repeat</option><option value="repeat-x">repeat-x</option><option value="repeat-y">repeat-y</option></select>
+								<select id="background_repeat" name="background_repeat" class=""><option value=""></option><option value="no-repeat">no-repeat</option><option value="repeat">repeat</option><option value="repeat-x">repeat-x</option><option value="repeat-y">repeat-y</option>
+								</select>
 							
 								<label for="background_attachment">Attachment</label>
-								<select id="background_attachment" name="background_attachment" class=""><option value=""></option><option value="fixed">fixed</option><option value="scroll">scroll</option></select>
+								<select id="background_attachment" name="background_attachment" class=""><option value=""></option><option value="fixed">fixed</option><option value="scroll">scroll</option>
+								</select>
 							
 								<label for="background_hpos">Horizontal Position</label>
-								<select id="background_hpos" name="background_hpos" class=""><option value=""></option><option value="left">left</option><option value="center">center</option><option value="right">right</option></select>
+								<select id="background_hpos" name="background_hpos" class=""><option value=""></option><option value="left">left</option><option value="center">center</option><option value="right">right</option>
+								</select>
 											
-								<label id="background_hpos_measurement_label" for="background_hpos_measurement" style="display: none; visibility: hidden;">Horizontal position measurement unit</label>
-								<select id="background_hpos_measurement" name="background_hpos_measurement" aria-labelledby="background_hpos_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<label id="background_hpos_measurement_label" for="background_hpos_measurement" style="display: none; ">Horizontal position measurement unit</label>
+								<select id="background_hpos_measurement" name="background_hpos_measurement" aria-labelledby="background_hpos_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 											
 							
 								<label for="background_vpos">Vertical Position</label>
-								<select id="background_vpos" name="background_vpos" class=""><option value=""></option><option value="top">top</option><option value="center">center</option><option value="bottom">bottom</option></select>
+								<select id="background_vpos" name="background_vpos" class=""><option value=""></option><option value="top">top</option><option value="center">center</option><option value="bottom">bottom</option>
+								</select>
 
-								<label id="background_vpos_measurement_label" for="background_vpos_measurement" style="display: none; visibility: hidden;">Vertical position measurement unit</label>
-								<select id="background_vpos_measurement" name="background_vpos_measurement" aria-labelledby="background_vpos_measurement_label">&gt;<option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<label id="background_vpos_measurement_label" for="background_vpos_measurement" style="display: none; ">Vertical position measurement unit</label>
+								<select id="background_vpos_measurement" name="background_vpos_measurement" aria-labelledby="background_vpos_measurement_label">&gt;<option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 							</fieldset>
 						</form>
 						<!-- /Style Background -->
@@ -287,36 +305,45 @@
 							<fieldset>
 								<legend>Block</legend>
 								<label for="block_wordspacing">Word Spacing</label>
-								<select id="block_wordspacing" name="block_wordspacing" class=""><option value=""></option><option value="normal">normal</option></select>
+								<select id="block_wordspacing" name="block_wordspacing" class=""><option value=""></option><option value="normal">normal</option>
+								</select>
 											
-								<label id="block_wordspacing_measurement_label" for="block_wordspacing_measurement" style="display: none; visibility: hidden;">Word spacing measurement unit</label>
-								<select id="block_wordspacing_measurement" name="block_wordspacing_measurement" aria-labelledby="block_wordspacing_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<label id="block_wordspacing_measurement_label" for="block_wordspacing_measurement" style="display: none; ">Word spacing measurement unit</label>
+								<select id="block_wordspacing_measurement" name="block_wordspacing_measurement" aria-labelledby="block_wordspacing_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 											
 							
 								<label for="block_letterspacing">Letter Spacing</label>
-								<select id="block_letterspacing" name="block_letterspacing" class=""><option value=""></option><option value="normal">normal</option></select>
+								<select id="block_letterspacing" name="block_letterspacing" class=""><option value=""></option><option value="normal">normal</option>
+								</select>
 											
-								<label id="block_letterspacing_measurement_label" for="block_letterspacing_measurement" style="display: none; visibility: hidden;">Letter spacing measurement unit</label>
-								<select id="block_letterspacing_measurement" name="block_letterspacing_measurement" aria-labelledby="block_letterspacing_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<label id="block_letterspacing_measurement_label" for="block_letterspacing_measurement" style="display: none; ">Letter spacing measurement unit</label>
+								<select id="block_letterspacing_measurement" name="block_letterspacing_measurement" aria-labelledby="block_letterspacing_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 											
 							
 								<label for="block_vertical_alignment">Vertical Alignment</label>
-								<select id="block_vertical_alignment" name="block_vertical_alignment" class=""><option value=""></option><option value="baseline">baseline</option><option value="sub">sub</option><option value="super">super</option><option value="top">top</option><option value="text-top">text-top</option><option value="middle">middle</option><option value="bottom">bottom</option><option value="text-bottom">text-bottom</option></select>
+								<select id="block_vertical_alignment" name="block_vertical_alignment" class=""><option value=""></option><option value="baseline">baseline</option><option value="sub">sub</option><option value="super">super</option><option value="top">top</option><option value="text-top">text-top</option><option value="middle">middle</option><option value="bottom">bottom</option><option value="text-bottom">text-bottom</option>
+								</select>
 							
 								<label for="block_text_align">Text Align</label>
-								<select id="block_text_align" name="block_text_align" class=""><option value=""></option><option value="left">left</option><option value="right">right</option><option value="center">center</option><option value="justify">justify</option></select>
+								<select id="block_text_align" name="block_text_align" class=""><option value=""></option><option value="left">left</option><option value="right">right</option><option value="center">center</option><option value="justify">justify</option>
+								</select>
 							
 								<label for="block_text_indent">Text Indent</label>
-								<input type="text" id="block_text_indent" name="block_text_indent">
-								<label id="block_text_indent_measurement_label" for="block_text_indent_measurement" style="display: none; visibility: hidden;">Text Indent Measurement Unit</label>
+								<input type="text" id="block_text_indent" name="block_text_indent" />
+								<label id="block_text_indent_measurement_label" for="block_text_indent_measurement" style="display: none; ">Text Indent Measurement Unit</label>
 
-								<select id="block_text_indent_measurement" name="block_text_indent_measurement" aria-labelledby="block_text_indent_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<select id="block_text_indent_measurement" name="block_text_indent_measurement" aria-labelledby="block_text_indent_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 											
 								<label for="block_whitespace">Whitespace</label>
-								<select id="block_whitespace" name="block_whitespace" class=""><option value=""></option><option value="normal">normal</option><option value="pre">pre</option><option value="nowrap">nowrap</option></select>
+								<select id="block_whitespace" name="block_whitespace" class=""><option value=""></option><option value="normal">normal</option><option value="pre">pre</option><option value="nowrap">nowrap</option>
+								</select>
 							
 								<label for="block_display">Display</label>
-								<select id="block_display" name="block_display" class=""><option value=""></option><option value="inline">inline</option><option value="block">block</option><option value="list-item">list-item</option><option value="run-in">run-in</option><option value="compact">compact</option><option value="marker">marker</option><option value="table">table</option><option value="inline-table">inline-table</option><option value="table-row-group">table-row-group</option><option value="table-header-group">table-header-group</option><option value="table-footer-group">table-footer-group</option><option value="table-row">table-row</option><option value="table-column-group">table-column-group</option><option value="table-column">table-column</option><option value="table-cell">table-cell</option><option value="table-caption">table-caption</option><option value="none">none</option></select>
+								<select id="block_display" name="block_display" class=""><option value=""></option><option value="inline">inline</option><option value="block">block</option><option value="list-item">list-item</option><option value="run-in">run-in</option><option value="compact">compact</option><option value="marker">marker</option><option value="table">table</option><option value="inline-table">inline-table</option><option value="table-row-group">table-row-group</option><option value="table-header-group">table-header-group</option><option value="table-footer-group">table-footer-group</option><option value="table-row">table-row</option><option value="table-column-group">table-column-group</option><option value="table-column">table-column</option><option value="table-cell">table-cell</option><option value="table-caption">table-caption</option><option value="none">none</option>
+								</select>
 							</fieldset>
 						</form>
 						<!-- /Style Block -->
@@ -325,77 +352,89 @@
 							<fieldset>
 								<legend>Box</legend>
 								<label for="box_width">Width</label>
-								<input type="text" id="box_width" name="box_width" class="" onchange="synch('box_width','positioning_width');">
+								<input type="text" name="box_width" class="" />
 											
-								<label id="box_width_measurement_label" for="box_width_measurement" style="display: none; visibility: hidden;">Box Width Measurement Unit</label>
-								<select id="box_width_measurement" name="box_width_measurement" aria-labelledby="box_width_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<label id="box_width_measurement_label" for="box_width_measurement" style="display: none; ">Box Width Measurement Unit</label>
+								<select id="box_width_measurement" name="box_width_measurement" aria-labelledby="box_width_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 											
 								<label for="box_float">Float</label>
-								<select id="box_float" name="box_float" class=""><option value=""></option><option value="left">left</option><option value="right">right</option><option value="none">none</option></select>
+								<select id="box_float" name="box_float" class=""><option value=""></option><option value="left">left</option><option value="right">right</option><option value="none">none</option>
+								</select>
 							
 								<label for="box_height">Height</label>
-								<input type="text" id="box_height" name="box_height" class="" onchange="synch('box_height','positioning_height');">
+								<input type="text" name="box_height" class="" />
 											
-								<label id="box_height_measurement_label" for="box_height_measurement" style="display: none; visibility: hidden;">Box Height Measurement Unit</label>
-								<select id="box_height_measurement" name="box_height_measurement" aria-labelledby="box_height_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<label id="box_height_measurement_label" for="box_height_measurement" style="display: none; ">Box Height Measurement Unit</label>
+								<select id="box_height_measurement" name="box_height_measurement" aria-labelledby="box_height_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 											
 								<label for="box_clear">Clear</label>
-								<select id="box_clear" name="box_clear" class=""><option value=""></option><option value="left">left</option><option value="right">right</option><option value="both">both</option><option value="none">none</option></select>
+								<select id="box_clear" name="box_clear" class=""><option value=""></option><option value="left">left</option><option value="right">right</option><option value="both">both</option><option value="none">none</option>
+								</select>
 							</fieldset>
 							<fieldset>
 								<legend>Padding</legend>
 
 								<label for="box_padding_top">Top</label>
-								<input type="text" id="box_padding_top" name="box_padding_top" class="">
+								<input type="text" id="box_padding_top" name="box_padding_top" class=""/>
 													
-								<label id="box_padding_top_measurement_label" for="box_padding_top_measurement" style="display: none; visibility: hidden;">Padding Top Measurement Unit</label>
-								<select id="box_padding_top_measurement" name="box_padding_top_measurement" aria-labelledby="box_padding_top_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<label id="box_padding_top_measurement_label" for="box_padding_top_measurement" style="display: none; ">Padding Top Measurement Unit</label>
+								<select id="box_padding_top_measurement" name="box_padding_top_measurement" aria-labelledby="box_padding_top_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 													
 								<label for="box_padding_right">Right</label>
-								<input type="text" id="box_padding_right" name="box_padding_right" class=" disabled" >
+								<input type="text" id="box_padding_right" name="box_padding_right" class=" disabled" />
 													
-								<label id="box_padding_right_measurement_label" for="box_padding_right_measurement" style="display: none; visibility: hidden;">Padding Right Measurement Unit</label>
-								<select id="box_padding_right_measurement" name="box_padding_right_measurement"  aria-labelledby="box_padding_right_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<label id="box_padding_right_measurement_label" for="box_padding_right_measurement" style="display: none; ">Padding Right Measurement Unit</label>
+								<select id="box_padding_right_measurement" name="box_padding_right_measurement"  aria-labelledby="box_padding_right_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 													
 								<label for="box_padding_bottom">Bottom</label>
-								<input type="text" id="box_padding_bottom" name="box_padding_bottom" class=" disabled" >
+								<input type="text" id="box_padding_bottom" name="box_padding_bottom" class=" disabled" />
 													
-								<label id="box_padding_bottom_measurement_label" for="box_padding_bottom_measurement" style="display: none; visibility: hidden;">Padding Bottom Measurement Unit</label>
-								<select id="box_padding_bottom_measurement" name="box_padding_bottom_measurement"  aria-labelledby="box_padding_bottom_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<label id="box_padding_bottom_measurement_label" for="box_padding_bottom_measurement" style="display: none; ">Padding Bottom Measurement Unit</label>
+								<select id="box_padding_bottom_measurement" name="box_padding_bottom_measurement"  aria-labelledby="box_padding_bottom_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 													
 								<label for="box_padding_left">Left</label>
-								<input type="text" id="box_padding_left" name="box_padding_left" class=" disabled" >
+								<input type="text" id="box_padding_left" name="box_padding_left" class=" disabled" />
 													
-								<label id="box_padding_left_measurement_label" for="box_padding_left_measurement" style="display: none; visibility: hidden;">Padding Left Measurement Unit</label>
-								<select id="box_padding_left_measurement" name="box_padding_left_measurement"  aria-labelledby="box_padding_left_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<label id="box_padding_left_measurement_label" for="box_padding_left_measurement" style="display: none; ">Padding Left Measurement Unit</label>
+								<select id="box_padding_left_measurement" name="box_padding_left_measurement"  aria-labelledby="box_padding_left_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 													
 							</fieldset>
 							<fieldset>
 								<legend>Margin</legend>
 
 								<label for="box_margin_top">Top</label>
-								<input type="text" id="box_margin_top" name="box_margin_top" class="">
+								<input type="text" id="box_margin_top" name="box_margin_top" class=""/>
 													
-								<label id="box_margin_top_measurement_label" for="box_margin_top_measurement" style="display: none; visibility: hidden;">Margin Top Measurement Unit</label>
-								<select id="box_margin_top_measurement" name="box_margin_top_measurement" aria-labelledby="box_margin_top_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<label id="box_margin_top_measurement_label" for="box_margin_top_measurement" style="display: none; ">Margin Top Measurement Unit</label>
+								<select id="box_margin_top_measurement" name="box_margin_top_measurement" aria-labelledby="box_margin_top_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 													
 								<label for="box_margin_right">Right</label>
-								<input type="text" id="box_margin_right" name="box_margin_right" class=" disabled" >
+								<input type="text" id="box_margin_right" name="box_margin_right" class=" disabled" />
 													
-								<label id="box_margin_right_measurement_label" for="box_margin_right_measurement" style="display: none; visibility: hidden;">Margin Right Measurement Unit</label>
-								<select id="box_margin_right_measurement" name="box_margin_right_measurement"  aria-labelledby="box_margin_right_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<label id="box_margin_right_measurement_label" for="box_margin_right_measurement" style="display: none; ">Margin Right Measurement Unit</label>
+								<select id="box_margin_right_measurement" name="box_margin_right_measurement"  aria-labelledby="box_margin_right_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 								
 								<label for="box_margin_bottom">Bottom</label>
-								<input type="text" id="box_margin_bottom" name="box_margin_bottom" class=" disabled" >
+								<input type="text" id="box_margin_bottom" name="box_margin_bottom" class=" disabled" />
 
-								<label id="box_margin_bottom_measurement_label" for="box_margin_bottom_measurement" style="display: none; visibility: hidden;">Margin Bottom Measurement Unit</label>
-								<select id="box_margin_bottom_measurement" name="box_margin_bottom_measurement"  aria-labelledby="box_margin_bottom_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<label id="box_margin_bottom_measurement_label" for="box_margin_bottom_measurement" style="display: none; ">Margin Bottom Measurement Unit</label>
+								<select id="box_margin_bottom_measurement" name="box_margin_bottom_measurement"  aria-labelledby="box_margin_bottom_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 							
 								<label for="box_margin_left">Left</label>
-								<input type="text" id="box_margin_left" name="box_margin_left" class=" disabled" >
+								<input type="text" id="box_margin_left" name="box_margin_left" class=" disabled" />
 													
-								<label id="box_margin_left_measurement_label" for="box_margin_left_measurement" style="display: none; visibility: hidden;">Margin Left Measurement Unit</label>
-								<select id="box_margin_left_measurement" name="box_margin_left_measurement"  aria-labelledby="box_margin_left_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<label id="box_margin_left_measurement_label" for="box_margin_left_measurement" style="display: none; ">Margin Left Measurement Unit</label>
+								<select id="box_margin_left_measurement" name="box_margin_left_measurement"  aria-labelledby="box_margin_left_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 
 							</fieldset>
 							<fieldset>
@@ -412,6 +451,7 @@
 											<option value="percent">%</option>
 											<option value="px">px</option>
 											<option value="em">em</option>
+										
 										</select>
 								</fieldset>
 								<fieldset 
@@ -426,6 +466,7 @@
 											<option value="percent">%</option>
 											<option value="px">px</option>
 											<option value="em">em</option>
+										
 										</select>
 								</fieldset>
 								<fieldset 
@@ -440,6 +481,7 @@
 											<option value="percent">%</option>
 											<option value="px">px</option>
 											<option value="em">em</option>
+										
 										</select>
 								</fieldset>
 								<fieldset 
@@ -454,6 +496,7 @@
 											<option value="percent">%</option>
 											<option value="px">px</option>
 											<option value="em">em</option>
+										
 										</select>
 								</fieldset>
 								<fieldset>
@@ -462,6 +505,7 @@
 										<option value="block">Block</option>
 										<option value="inline">Inline</option>
 										<option value="none">None</option>
+									
 									</select>
 								</fieldset>
 								<fieldset>
@@ -469,6 +513,7 @@
 									<select class="property position-property">
 										<option value="relative">Relative</option>
 										<option value="absolute">Absolute</option>
+									
 									</select>
 								</fieldset>
 								<fieldset>
@@ -477,6 +522,7 @@
 										<option value="none">None</option>
 										<option value="left">Left</option>
 										<option value="right">Right</option>
+									
 									</select>
 								</fieldset>
 							</fieldset>
@@ -487,77 +533,89 @@
 							<fieldset>
 								<legend>Position</legend>
 								<label for="positioning_type">Type</label>
-								<select id="positioning_type" name="positioning_type" class=""><option value=""></option><option value="absolute">absolute</option><option value="relative">relative</option><option value="static">static</option></select>
+								<select id="positioning_type" name="positioning_type" class=""><option value=""></option><option value="absolute">absolute</option><option value="relative">relative</option><option value="static">static</option>
+								</select>
 								
 								<label for="positioning_visibility">Visibility</label>
-								<select id="positioning_visibility" name="positioning_visibility" class=""><option value=""></option><option value="inherit">inherit</option><option value="visible">visible</option><option value="hidden">hidden</option></select>
+								<select id="positioning_visibility" name="positioning_visibility" class=""><option value=""></option><option value="inherit">inherit</option><option value="visible">visible</option><option value="hidden">hidden</option>
+								</select>
 								
 								<label for="positioning_width">Width</label>
-								<select id="positioning_width_measurement" name="positioning_width_measurement" aria-labelledby="positioning_width_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<select id="positioning_width_measurement" name="positioning_width_measurement" aria-labelledby="positioning_width_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 												
 								<label for="positioning_zindex">Z-index</label>
-								<input type="text" id="positioning_zindex" name="positioning_zindex">
+								<input type="text" id="positioning_zindex" name="positioning_zindex" />
 
 								<label for="positioning_height">Height</label>
-								<select id="positioning_height_measurement" name="positioning_height_measurement" aria-labelledby="positioning_height_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<select id="positioning_height_measurement" name="positioning_height_measurement" aria-labelledby="positioning_height_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 
 								<label for="positioning_overflow">Overflow</label>
-								<select id="positioning_overflow" name="positioning_overflow" class=""><option value=""></option><option value="visible">visible</option><option value="hidden">hidden</option><option value="scroll">scroll</option><option value="auto">auto</option></select>
+								<select id="positioning_overflow" name="positioning_overflow" class=""><option value=""></option><option value="visible">visible</option><option value="hidden">hidden</option><option value="scroll">scroll</option><option value="auto">auto</option>
+								</select>
 								
 							</fieldset>
 							<fieldset>
 								<legend>Placement</legend>
 								<label for="positioning_top">Top</label>
-								<input type="text" id="positioning_placement_top" name="positioning_placement_top">
-								<select id="positioning_placement_top_measurement" name="positioning_placement_top_measurement" aria-labelledby="positioning_placement_top_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<input type="text" id="positioning_placement_top" name="positioning_placement_top" />
+								<select id="positioning_placement_top_measurement" name="positioning_placement_top_measurement" aria-labelledby="positioning_placement_top_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 													
 								<label for="positioningright">Right</label>
-								<input type="text" id="positioning_placement_right" name="positioning_placement_right"  class="disabled">
-								<select id="positioning_placement_right_measurement" name="positioning_placement_right_measurement"  aria-labelledby="positioning_placement_right_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<input type="text" id="positioning_placement_right" name="positioning_placement_right"  class="disabled" />
+								<select id="positioning_placement_right_measurement" name="positioning_placement_right_measurement"  aria-labelledby="positioning_placement_right_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 													
 								<label for="positioning_placement_bottom_measurement">Bottom</label>
-								<input type="text" id="positioning_placement_bottom" name="positioning_placement_bottom"  class="disabled">
-								<select id="positioning_placement_bottom_measurement" name="positioning_placement_bottom_measurement"  aria-labelledby="positioning_placement_bottom_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<input type="text" id="positioning_placement_bottom" name="positioning_placement_bottom"  class="disabled" />
+								<select id="positioning_placement_bottom_measurement" name="positioning_placement_bottom_measurement"  aria-labelledby="positioning_placement_bottom_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 
 								<label for="positioning_placement_left_measurement" >Left</label>
-								<input type="text" id="positioning_placement_left" name="positioning_placement_left"  class="disabled">
-								<select id="positioning_placement_left_measurement" name="positioning_placement_left_measurement"  aria-labelledby="positioning_placement_left_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<input type="text" id="positioning_placement_left" name="positioning_placement_left"  class="disabled" />
+								<select id="positioning_placement_left_measurement" name="positioning_placement_left_measurement"  aria-labelledby="positioning_placement_left_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 							</fieldset>
-								<fieldset>
+							<fieldset>
 								<legend>Clip</legend>
 
 								<label for="positioning_clip_top_measurement" >Clip Top</label>
-								<input type="text" id="positioning_clip_top" name="positioning_clip_top">
-								<select id="positioning_clip_top_measurement" name="positioning_clip_top_measurement" aria-labelledby="positioning_clip_top_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<input type="text" id="positioning_clip_top" name="positioning_clip_top" />
+								<select id="positioning_clip_top_measurement" name="positioning_clip_top_measurement" aria-labelledby="positioning_clip_top_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 														
 								<label for="positioning_clip_right_measurement" >Clip Right</label>
-								<input type="text" id="positioning_clip_right" name="positioning_clip_right" class="disabled">
-								<select id="positioning_clip_right_measurement" name="positioning_clip_right_measurement" aria-labelledby="positioning_clip_right_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<input type="text" id="positioning_clip_right" name="positioning_clip_right" class="disabled" />
+								<select id="positioning_clip_right_measurement" name="positioning_clip_right_measurement" aria-labelledby="positioning_clip_right_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 														
 								<label for="positioning_clip_bottom_measurement" >Clip Bottom</label>
-								<input type="text" id="positioning_clip_bottom" name="positioning_clip_bottom" class="disabled">
-								<select id="positioning_clip_bottom_measurement" name="positioning_clip_bottom_measurement" aria-labelledby="positioning_clip_bottom_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<input type="text" id="positioning_clip_bottom" name="positioning_clip_bottom" class="disabled" />
+								<select id="positioning_clip_bottom_measurement" name="positioning_clip_bottom_measurement" aria-labelledby="positioning_clip_bottom_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 														
 								<label for="positioning_clip_left_measurement" >Clip Left</label>
-								<input type="text" id="positioning_clip_left" name="positioning_clip_left" class="disabled">
-								<select id="positioning_clip_left_measurement" name="positioning_clip_left_measurement" aria-labelledby="positioning_clip_left_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+								<input type="text" id="positioning_clip_left" name="positioning_clip_left" class="disabled" />
+								<select id="positioning_clip_left_measurement" name="positioning_clip_left_measurement" aria-labelledby="positioning_clip_left_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
 							</fieldset>
 						</form>
 						<!-- /Style Positioning -->
-
 					</div>
 				</div>
-				<!-- ****************	-->
-				<!-- /Property Toolbox 	-->
+				<!-- 		/Property Toolbox 		-->
+				<!-- 	**************************	-->
 
 
-				<!-- ****************	-->
-				<!-- 	Builder mode	-->
+				<!-- 	**************************	-->
+				<!-- 		Builder mode			-->
 				<div class="PublicationViewer SelectionController" >
 					LOADING PUBLICATION... HERE... 
 				</div>
-				<!-- ****************	-->
-				<!-- 	/Builder mode 	-->
+				<!-- 		/Builder mode 			-->
+				<!-- 	**************************	-->
 
 
 			</div>

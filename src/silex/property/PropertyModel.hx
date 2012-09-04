@@ -41,6 +41,10 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 */ 
 	public static inline var DEBUG_INFO:String = "PropertyModel class";
 	/**
+	 * event dispatched when a style value changes
+	 */
+	public static inline var ON_STYLE_CHANGE:String = "onStyleChange";
+	/**
 	 * event dispatched when a property value changes
 	 */
 	public static inline var ON_PROPERTY_CHANGE:String = "onPropertyChange";
@@ -119,7 +123,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	/**
 	 * Retrieve a value in the model
 	 */
-	public function getProperty(viewHtmlDom:HtmlDom, name:String):PropertyData{
+	public function getProperty(viewHtmlDom:HtmlDom, name:String):String{
 		var value:String;
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
@@ -131,12 +135,51 @@ class PropertyModel extends ModelBase<PropertyData>{
 			throw("Error: the selected element has no field "+name+" or there was an error ("+e+")");
 		}
 		// create the property data object
-		return {
+		return value;
+	}
+	/**
+	 * Apply a value to the style property of the view and the model simultanneously
+	 * This dispatches a onStyleChange event with event.detail set to the PropertyData object 
+	 */
+	public function setStyle(viewHtmlDom:HtmlDom, name:String, value:String){
+		trace("setStyle("+viewHtmlDom+", "+name+", "+value+")");
+		// retrieve the model of the component 
+		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
+		// apply the change 
+		try{
+			Reflect.setField(viewHtmlDom.style, name, value);
+			Reflect.setField(modelHtmlDom.style, name, value);
+		}
+		catch(e:Dynamic){
+			throw("Error: the selected element has no field "+name+" or there was an error ("+e+")");
+		}
+
+		// create the property data object
+		var propertyData:PropertyData = {
 			name: name,
 			value: value,
 			viewHtmlDom: viewHtmlDom,
 			modelHtmlDom: modelHtmlDom,
 		};
+		// dispatch the event 
+		dispatchEvent(createEvent(ON_STYLE_CHANGE, propertyData), debugInfo);
+	}
+	/**
+	 * Retrieve a value in the model
+	 */
+	public function getStyle(viewHtmlDom:HtmlDom, name:String):String{
+		var value:String;
+		// retrieve the model of the component 
+		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
+		// get the value
+		try{
+			value = Reflect.field(modelHtmlDom.style, name);
+		}
+		catch(e:Dynamic){
+			throw("Error: the selected element has no field "+name+" or there was an error ("+e+")");
+		}
+		// create the property data object
+		return value;
 	}
 	/**
 	 * Retrieve a reference to the selected component or layer in the PublicationModel::modelHtmlDom object

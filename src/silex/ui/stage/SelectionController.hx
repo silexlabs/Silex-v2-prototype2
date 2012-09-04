@@ -127,21 +127,21 @@ class SelectionController extends DisplayObject
 	 * Handle mouse events
 	 */
 	public function onMouseOver(e:Event) {
-		trace("onMouseOver "+e.target.className);
+		// trace("onMouseOver "+e.target.className);
 		// retrieve the node who triggered the event
 /**/
 		// retrieve the node which is a component
 		var target:HtmlDom = getComponent(e.target);
 		// check if this is a Layer or a Component
 		if (target != null){
-			trace("COMPONENT!");
+			// trace("COMPONENT!");
 			// set the item on the model (this will dispatch an event and we will catch it to update the marker)
 			componentModel.hoveredItem = target;
 		}else{
 			var target:HtmlDom = getLayer(e.target);
 			// check if this is a Layer component
 			if (target != null){
-				trace("LAYER!");
+				// trace("LAYER!");
 				// get the SLPlayer application from the loaded publication
 				var application = PublicationModel.getInstance().application;
 				// get the Layer instance associated with the target
@@ -191,7 +191,7 @@ class SelectionController extends DisplayObject
 	 * Handle mouse events
 	 */
 	public function onClickHover(e:Event) {
-		trace("onClickHover ");
+		// trace("onClickHover ");
 		// prenvent default (selection of text, call of this.onClickAnywhere)
 		e.preventDefault();
 		// set the item on the model (this will dispatch an event and we will catch it to update the marker)
@@ -202,7 +202,7 @@ class SelectionController extends DisplayObject
 	 * Handle mouse events
 	 */
 	public function onClickLayerHover(e:Event) {
-		trace("onClickLayerHover ");
+		// trace("onClickLayerHover ");
 		// prenvent default (selection of text, call of this.onClickAnywhere)
 		e.preventDefault();
 		// set the item on the model (this will dispatch an event and we will catch it to update the marker)
@@ -214,20 +214,18 @@ class SelectionController extends DisplayObject
 	 * Todo: move, resize...
 	 */
 	public function onClickSelection(e:Event) {
-		trace("onClickSelection ");
+		// trace("onClickSelection ");
 		// prenvent default (selection of text, call of this.onClickAnywhere)
 		e.preventDefault();
-		// trace("SelectionController onClickSelection");
 	}
 	/**
 	 * Handle mouse events
 	 * Todo: move, resize...
 	 */
 	public function onClickLayerSelection(e:Event) {
-		trace("onClickLayerSelection ");
+		// trace("onClickLayerSelection ");
 		// prenvent default (selection of text, call of this.onClickAnywhere)
 		e.preventDefault();
-		// trace("SelectionController onClickSelection");
 	}
 
 	/**
