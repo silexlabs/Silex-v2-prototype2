@@ -24,6 +24,7 @@ import php.Web;
 import sys.io.File;
 import haxe.remoting.HttpConnection;
 
+import silex.publication.PublicationConfig;
 import silex.server.ServerConfig;
 import silex.ServiceBase;
 #end
@@ -191,7 +192,12 @@ class Silex {
 			initialPageName = params[1];
 		}
 		// build the DOM
-		Lib.document.innerHTML = publicationData.html;
+		try{
+			Lib.document.innerHTML = publicationData.html;
+		}catch(e:Dynamic){
+			var filePath = PublicationService.PUBLICATION_FOLDER + publicationName + "/" + PublicationConfig.PUBLICATION_HTML_FILE;
+			throw("<br /><br />There is an error in the HTML file <a href='"+filePath+"'>"+filePath+"</a>.<br /><br />The error is: <quote>\""+StringTools.htmlEscape(e)+"\"</quote>");
+		}
 
 		// include the script
 		DomTools.addCssRules(publicationData.css);
