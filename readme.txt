@@ -39,16 +39,10 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 en cours
 - PropertiesToolbox, 
 - PropertyEditor, StyleEditor, RawHtmlEditor ?
+  Properties
+    ajout preload etc pour les medias : http://www.w3schools.com/html5/tag_audio.asp
   Text
-    Font Name
-    Font Size + unit
-    Font Style
-    Line Hight + unit
-    Wheight
-    Variant
-    Case
-    Color (picker, rgb, rgba, hsl)
-    Decoration
+    ajouter des sliders http://www.w3schools.com/html5/tryit.asp?filename=tryhtml5_input_type_range
   Background
   Block
   Box

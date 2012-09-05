@@ -77,7 +77,7 @@ body{
 	border: 6px solid grey;
 }
 .hover-layer-marker, .selection-layer-marker{
-	z-index: 200;
+	z-index: -1;
 	position: absolute;
 	margin:0px;
 	padding:0px;

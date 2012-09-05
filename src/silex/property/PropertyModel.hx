@@ -97,7 +97,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * Apply a value to the view and the model simultanneously
 	 * This dispatches a onPropertyChange event with event.detail set to the PropertyData object 
 	 */
-	public function setProperty(viewHtmlDom:HtmlDom, name:String, value:String){
+	public function setProperty(viewHtmlDom:HtmlDom, name:String, value:Null<Dynamic>){
 		trace("setProperty("+viewHtmlDom+", "+name+", "+value+")");
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
@@ -123,7 +123,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	/**
 	 * Retrieve a value in the model
 	 */
-	public function getProperty(viewHtmlDom:HtmlDom, name:String):String{
+	public function getProperty(viewHtmlDom:HtmlDom, name:String):Dynamic{
 		var value:String;
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);

@@ -8,11 +8,15 @@ import silex.component.ComponentModel;
 import silex.layer.LayerModel;
 import silex.page.PageModel;
 import silex.publication.PublicationModel;
+
+import org.slplayer.core.Application;
 import org.slplayer.component.navigation.Page;
 import org.slplayer.util.DomTools;
 
 import hscript.Interp;
 import hscript.Parser;
+
+import haxe.Timer;
 /**
  * This class is in charge of loading and storing the configuration data of the Silex server
  */
@@ -27,17 +31,19 @@ class Interpreter{
 	public static inline var BASIC_CONTEXT = {
 		"Lib": Lib,
 		"Math": Math,
+		"Timer": Timer,
 		
 		"StringTools": StringTools,
 		"DomTools": DomTools,
 
+		"Application": Application,
 		"Page": Page,
 		
-		"PropertyModel": PropertyModel.getInstance(),
-		"ComponentModel": ComponentModel.getInstance(),
-		"LayerModel": LayerModel.getInstance(),
-		"PageModel": PageModel.getInstance(),
-		"PublicationModel": PublicationModel.getInstance(),
+		"PropertyModel": PropertyModel,
+		"ComponentModel": ComponentModel,
+		"LayerModel": LayerModel,
+		"PageModel": PageModel,
+		"PublicationModel": PublicationModel,
 	};
 	/**
 	 * execute a set of actions

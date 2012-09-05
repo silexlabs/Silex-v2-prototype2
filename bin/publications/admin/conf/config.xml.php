@@ -19,6 +19,6 @@
 	</lastChange>
 	<debugModeAction>
 		//Lib.alert("test!");
-		PublicationModel.load("default");
+		PublicationModel.getInstance().load("default");
 	</debugModeAction>
 </xml>

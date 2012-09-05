@@ -15,6 +15,17 @@
 		<meta name="useDeeplink" content="false" />
 		<LINK href="app.css" rel="stylesheet"></LINK>
 		<SCRIPT src="../../libs/silex/silex.js"></SCRIPT>
+
+		<META name="debugModeAction" content="
+			PublicationModel.getInstance().load(&quot;default&quot;);
+			trace('Loading publication');
+			Timer.delay(function(){
+				var element = Lib.document.getElementById('testForToolBox');
+				trace('Selecting element '+element);
+				ComponentModel.getInstance().setSelectedItem(element);
+				trace('Selecting element '+element);
+			}, 1000)
+			"></META>
 	</HEAD>
 	<body>
 				<!-- 	**************************	-->
@@ -51,43 +62,46 @@
 					<div class="panel-body">
 						<!-- Properties editor -->
 						<form class="Layer properties-tab">
-							<fieldset>
+							<fieldset class="PropertyEditor">
 								<legend>Properties</legend>
 								<fieldset>
 									<legend>Name</legend>
-									<input type="text" class="property name-property"></input>
+									<input type="text" class="name-property"></input>
 								</fieldset>
-								<fieldset class="context-img context-video context-audio">
+								<fieldset class="context-video context-audio">
+									<legend>Sources (1 by line)</legend>
+									<textarea class="multiple-src-property"></textarea>
+									<button title="Option not yet implemented." >Browse media gallery</button>
+								</fieldset>
+								<fieldset class="context-img">
 									<legend>Source</legend>
-									<input type="src" class="property src-property" name="URL" />
+									<input type="src" class="src-property" name="URL" />
 									<button title="Option not yet implemented.">Browse media gallery</button>
 								</fieldset>
 								<fieldset 
-									class="context-video context-audio" 
-									
-									title="Option not yet implemented.">
-									<legend>Auto start playing</legend>
-									<input type="checkbox" class="property auto-start-property" /> Auto start
+									class="context-video context-audio">
+									<legend>Autoplay</legend>
+									<input type="checkbox" class="auto-start-property" /> On/Off
 								</fieldset>
 								<fieldset 
-									class="context-video context-audio"
-									
-									title="Option not yet implemented.">
+									class="context-video context-audio">
+									<legend>Controls</legend>
+									<input type="checkbox" class="controls-property" /> On/Off
+								</fieldset>
+								<fieldset 
+									class="context-video context-audio">
 									<legend>Loop or stop at the end</legend>
-									<input type="checkbox" class="property loop-property" /> Loop
+									<input type="checkbox" class="loop-property" /> On/Off
 								</fieldset>
 								<fieldset 
-									class="context-layer"
-									
-									title="Option not yet implemented.">
+									class="context-layer">
 									<legend>Set as master</legend>
-									<input type="checkbox" class="property master-property" /> Master
+									<input type="checkbox" class="master-property" /> On/Off
 								</fieldset>
 							</fieldset>
 							<fieldset class="RawHtmlEditor">
-								<legend>Raw HTML content</legend>
+								<legend>HTML content</legend>
 								<textarea class="text-input"></textarea>
-								<input type="submit" value="Apply" class="validate-button" />
 							</fieldset>
 						</form>
 						<!-- /Properties editor -->
@@ -99,7 +113,7 @@
 								<input class="text_font" type="text" value="" /><br />
 
 								<label for="text_size">Size</label><br />
-								<select class="text_size"><option value=""><option value="xx-small">xx-small</option><option value="x-small">x-small</option><option value="small">small</option><option value="medium">medium</option><option value="large">large</option><option value="x-large">x-large</option><option value="xx-large">xx-large</option><option value="smaller">smaller</option><option value="larger">larger</option><br />
+								<select class="text_size"><option value=""></option><option value="xx-small">xx-small</option><option value="x-small">x-small</option><option value="small">small</option><option value="medium">medium</option><option value="large">large</option><option value="x-large">x-large</option><option value="xx-large">xx-large</option><option value="smaller">smaller</option><option value="larger">larger</option><br />
 								</select><br />
 
 								<input type="number" class="text_size_num" min="0" max="5000" />
@@ -113,7 +127,7 @@
 
 
 								<label for="text_style">Style</label><br />
-								<select class="text_style" class=""><option value=""></option><option value="normal">normal</option><option value="italic">italic</option><option value="oblique">oblique</option>
+								<select class="text_style" ><option value=""></option><option value="normal">normal</option><option value="italic">italic</option><option value="oblique">oblique</option>
 								</select><br />
 
 								<label for="text_variant">Variant</label><br />
@@ -321,7 +335,7 @@
 							<fieldset>
 								<legend>Style</legend>
 								<fieldset 
-									class="property left-property"
+									class="left-property"
 								>
 									<legend>Left</legend>
 									<input type="radio" name="left-type" value="Auto" /> Auto<br /> 
@@ -336,7 +350,7 @@
 										</select>
 								</fieldset>
 								<fieldset 
-									class="property top-property"
+									class="top-property"
 								>
 									<legend>Top</legend>
 									<input type="radio" name="top-type" value="Auto" /> Auto<br /> 
@@ -351,7 +365,7 @@
 										</select>
 								</fieldset>
 								<fieldset 
-									class="property width-property"
+									class="width-property"
 								>
 									<legend>Width</legend>
 									<input type="radio" name="width-type" value="Auto" /> Auto<br /> 
@@ -366,7 +380,7 @@
 										</select>
 								</fieldset>
 								<fieldset 
-									class="property height-property"
+									class="height-property"
 								>
 									<legend>Heigh</legend>
 									<input type="radio" name="height-type" value="Auto" /> Auto<br /> 
@@ -382,7 +396,7 @@
 								</fieldset>
 								<fieldset>
 									<legend>Display</legend>
-									<select class="property display-property">
+									<select class="display-property">
 										<option value="block">Block</option>
 										<option value="inline">Inline</option>
 										<option value="none">None</option>
@@ -391,7 +405,7 @@
 								</fieldset>
 								<fieldset>
 									<legend>Position</legend>
-									<select class="property position-property">
+									<select class="position-property">
 										<option value="relative">Relative</option>
 										<option value="absolute">Absolute</option>
 									
@@ -399,7 +413,7 @@
 								</fieldset>
 								<fieldset>
 									<legend>Float</legend>
-									<select class="property float-property">
+									<select class="float-property">
 										<option value="none">None</option>
 										<option value="left">Left</option>
 										<option value="right">Right</option>
@@ -488,5 +502,13 @@
 				</div>
 				<!-- 		/Property Toolbox 		-->
 				<!-- 	**************************	-->
+
+				<!-- 		Builder mode			-->
+				<div class="PublicationViewer " >
+					LOADING PUBLICATION... HERE... 
+				</div>
+				<!-- 		/Builder mode 			-->
+				<!-- 	**************************	-->
+
 	</body>
 </html>
