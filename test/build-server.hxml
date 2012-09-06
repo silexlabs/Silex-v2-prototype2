@@ -1,0 +1,13 @@
+-php bin/test.php
+-cp ../src/
+-cp ../../SLPlayer/src/
+-cp ../../Cocktail/src/
+--remap js:cocktail
+-main AllTestsServer
+-D silexServerSide
+-lib utest
+
+-D slpdebug
+-D disableEmbedHtml
+-D noAutoStart
+-lib hscript
