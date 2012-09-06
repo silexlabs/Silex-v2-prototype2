@@ -34,7 +34,14 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** To do **
 
-== edition of properties ==
+
+tiny-mce.html
+fin toolbox props
+save
+selection move
+toolbox page
+toolbox media
+selection resize / rotate
 
 en cours
 - PropertiesToolbox, 
@@ -51,7 +58,8 @@ en cours
   Positioning
 - UrlInput, BackgroundInput, ...
 
-reprendre la classificaiton de tinymce pour les css
+
+== edition of properties ==
 
 the toolboxes / dialogs
 

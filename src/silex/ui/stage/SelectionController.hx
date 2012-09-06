@@ -15,6 +15,13 @@ import silex.component.ComponentModel;
 /**
  * This component listen to the mouse events and start the desired actions. 
  * It acts on the selection and it is in charge of the editing in place (move, resize...)
+ * 	- mouse move on the scene => check position of all layers layers
+ * 	- mouse move on the currently hovered layer => check the position of all components
+ * 	- if mouse is over a component, remove the layer hover marker, display the component hover marker (if component is not selected)
+ * 	- else if mouse is over a layer, display the layer hover marker (if component is not selected)
+ * 	- on click, select the hovered component, or layer 
+ * 	- on select layer, remove all other marker, display layer selection marker
+ * 	- on select component, remove all other marker, display component selection marker
  */
 @tagNameFilter("a")
 class SelectionController extends DisplayObject
@@ -73,33 +80,36 @@ class SelectionController extends DisplayObject
 	public function new(rootElement:HtmlDom, SLPId:String){
 		super(rootElement, SLPId);
 
-		// create the marker, attached directly at the end of the layer DOM elements
+		// create the marker
 		hoverLayerMarker = Lib.document.createElement("div");
 		hoverLayerMarker.className = HOVER_LAYER_MARKER_STYLE_NAME;
+		hoverLayerMarker.addEventListener("click", onClickLayerHover, false);
+		hoverLayerMarker.addEventListener("mouseout", onOutLayerHover, false);
+		Lib.document.body.appendChild(hoverLayerMarker);
 
-		// create the marker, attached directly at the end of the layer DOM elements
+		// create the marker
 		selectionLayerMarker = Lib.document.createElement("div");
 		selectionLayerMarker.className = SELECTION_LAYER_MARKER_STYLE_NAME;
+		selectionLayerMarker.addEventListener("click", onClickLayerSelection, false);
+		Lib.document.body.appendChild(selectionLayerMarker);
 
 		// create the marker
 		hoverMarker = Lib.document.createElement("div");
 		hoverMarker.className = HOVER_MARKER_STYLE_NAME;
+		hoverMarker.addEventListener("click", onClickHover, false);
+		hoverMarker.addEventListener("mouseout", onOutHover, false);
 		Lib.document.body.appendChild(hoverMarker);
 
 		// create the marker
 		selectionMarker = Lib.document.createElement("div");
 		selectionMarker.className = SELECTION_MARKER_STYLE_NAME;
+		selectionMarker.addEventListener("click", onClickSelection, false);
 		Lib.document.body.appendChild(selectionMarker);
 
 		// listen to the view events
-		rootElement.addEventListener("mouseover", onMouseOver, false);
+		Lib.document.body.addEventListener("mousemove", onMouseMove, false);
+		//rootElement.addEventListener("mouseover", onMouseOver, false);
 		//Lib.document.body.addEventListener("click", onClickAnywhere, false);
-		hoverMarker.addEventListener("click", onClickHover, false);
-		hoverMarker.addEventListener("mouseout", onOutHover, false);
-		selectionMarker.addEventListener("click", onClickSelection, false);
-		hoverLayerMarker.addEventListener("click", onClickLayerHover, false);
-		hoverLayerMarker.addEventListener("mouseout", onOutLayerHover, false);
-		selectionLayerMarker.addEventListener("click", onClickLayerSelection, false);
 
 		// listen to the model events
 		componentModel = ComponentModel.getInstance();
@@ -111,6 +121,63 @@ class SelectionController extends DisplayObject
 		layerModel.addEventListener(LayerModel.ON_SELECTION_CHANGE, onLayerSelectionChanged, DEBUG_INFO);
 		layerModel.addEventListener(LayerModel.ON_HOVER_CHANGE, onLayerHoverChanged, DEBUG_INFO);
 	}
+	//////////////////////////////////////////////////////
+	// Selection clicks
+	//////////////////////////////////////////////////////
+	/**
+	 * Handle mouse events
+	 */
+	public function onClickHover(e:Event) {
+		// trace("onClickHover ");
+		// prenvent default (selection of text, call of this.onClickAnywhere)
+		e.preventDefault();
+		// set the item on the model (this will dispatch an event and we will catch it to update the marker)
+		componentModel.selectedItem = componentModel.hoveredItem;
+	}
+	/**
+	 * Handle mouse events
+	 */
+	public function onClickLayerHover(e:Event) {
+		// trace("onClickLayerHover ");
+		// prenvent default (selection of text, call of this.onClickAnywhere)
+		e.preventDefault();
+		// set the item on the model (this will dispatch an event and we will catch it to update the marker)
+		layerModel.selectedItem = layerModel.hoveredItem;
+	}
+	/**
+	 * Handle mouse events
+	 * Todo: move, resize...
+	 */
+	public function onClickSelection(e:Event) {
+		// trace("onClickSelection ");
+		// prenvent default (selection of text, call of this.onClickAnywhere)
+		e.preventDefault();
+	}
+	/**
+	 * Handle mouse events
+	 * Todo: move, resize...
+	 */
+	public function onClickLayerSelection(e:Event) {
+		// trace("onClickLayerSelection ");
+		// prenvent default (selection of text, call of this.onClickAnywhere)
+		e.preventDefault();
+	}
+	/**
+	 * Handle mouse events
+	 */
+/*	public function onClickAnywhere(e:Event) {
+		trace("onClickAnywhere ");
+		e.preventDefault();
+		// set the selection marker over the hovered element
+		layerModel.hoveredItem = null;
+		layerModel.selectedItem = null;
+		componentModel.hoveredItem = null;
+		componentModel.selectedItem = null;
+	}
+
+	//////////////////////////////////////////////////////
+	// Hover detection
+	//////////////////////////////////////////////////////
 	/**
 	 * Handle mouse events
 	 */
@@ -126,10 +193,53 @@ class SelectionController extends DisplayObject
 	/**
 	 * Handle mouse events
 	 */
-	public function onMouseOver(e:Event) {
-		// trace("onMouseOver "+e.target.className);
-		// retrieve the node who triggered the event
-/**/
+	public function onMouseMove(e:Event) {
+		//trace("onMouseMove "+e.target.className);
+		// browse all layers to check if it should be set as hovered
+		var found = false;
+		var layers = DomTools.getElementsByAttribute(rootElement, "data-silex-layer-id", "*");
+		for (idx in 0...layers.length){
+			if (checkIsOver(layers[idx], e.clientX, e.clientY)){
+				// the mouse is over a layer
+				// trace("LAYER!");
+				// get the SLPlayer application from the loaded publication
+				var application = PublicationModel.getInstance().application;
+				// get the Layer instance associated with the layers[idx]
+				var layerList = application.getAssociatedComponents(layers[idx], Layer); // there should be 1 and only 1 element here
+				if (layerList.length != 1){
+					trace("Warning: there should be 1 and only 1 Layer instance associated with this node, not "+layerList.length);
+				}
+				layerModel.hoveredItem = layerList.first();
+				found = true;
+				break;
+			}
+		}
+		if (found == false){
+			layerModel.hoveredItem = null;
+		}else{
+			trace("onMouseMove LAYER SELECTED");
+		}
+
+		// mouse move on the currently hovered layer
+		var found = false;
+		if (layerModel.hoveredItem != null){
+			// browse all components to check if it should be set as hovered
+			var comps = DomTools.getElementsByAttribute(layerModel.hoveredItem.rootElement, "data-silex-component-id", "*");
+			for (idx in 0...comps.length){
+				if (checkIsOver(comps[idx], e.clientX, e.clientY)){
+					// the mouse is over a layer
+					componentModel.hoveredItem = comps[idx];
+					found = true;
+					break;
+				}
+			}
+		}
+		if (found == false){
+			componentModel.hoveredItem = null;
+		}else{
+			trace("onMouseMove COMPONENT SELECTED");
+		}
+/*
 		// retrieve the node which is a component
 		var target:HtmlDom = getComponent(e.target);
 		// check if this is a Layer or a Component
@@ -174,77 +284,59 @@ class SelectionController extends DisplayObject
 			// set the item on the model (this will dispatch an event and we will catch it to update the marker)
 			componentModel.hoveredItem = component;
 		}
-/**/	}
-	/**
-	 * Handle mouse events
-	 */
-/*	public function onClickAnywhere(e:Event) {
-		trace("onClickAnywhere ");
-		e.preventDefault();
-		// set the selection marker over the hovered element
-		layerModel.hoveredItem = null;
-		layerModel.selectedItem = null;
-		componentModel.hoveredItem = null;
-		componentModel.selectedItem = null;
+/**/	
 	}
 	/**
-	 * Handle mouse events
+	 * Check if the mouse is aver a given node
 	 */
-	public function onClickHover(e:Event) {
-		// trace("onClickHover ");
-		// prenvent default (selection of text, call of this.onClickAnywhere)
-		e.preventDefault();
-		// set the item on the model (this will dispatch an event and we will catch it to update the marker)
-		componentModel.selectedItem = componentModel.hoveredItem;
-		componentModel.hoveredItem = null;
+	private function checkIsOver(target:HtmlDom, mouseX:Int, mouseY:Int):Bool{
+		var boundingBox = DomTools.getElementBoundingBox(target);
+		var res = mouseX > boundingBox.x 
+			&& mouseX < boundingBox.x+boundingBox.w
+			&& mouseY > boundingBox.y
+			&& mouseY < boundingBox.y+boundingBox.h;
+		//trace("checkIsOver(" + target + ", " + mouseX + ", "+ mouseY + ") returns "+res);
+		return res;
 	}
 	/**
-	 * Handle mouse events
+	 * retrieve the node which is a component, i.e. the one whith data-silex-component-id
 	 */
-	public function onClickLayerHover(e:Event) {
-		// trace("onClickLayerHover ");
-		// prenvent default (selection of text, call of this.onClickAnywhere)
-		e.preventDefault();
-		// set the item on the model (this will dispatch an event and we will catch it to update the marker)
-		layerModel.selectedItem = layerModel.hoveredItem;
-		layerModel.hoveredItem = null;
+/*	private function getComponent(target:HtmlDom):Null<HtmlDom>{
+		// browse in the parent
+		while (target != null && target.nodeName.toLowerCase() != "body"){
+			if (target.getAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME) != null){
+				return target;
+			}
+			target = target.parentNode;
+		}
+		return null;
 	}
 	/**
-	 * Handle mouse events
-	 * Todo: move, resize...
+	 * retrieve the node which is a layer, i.e. the one whith data-silex-layer-id
 	 */
-	public function onClickSelection(e:Event) {
-		// trace("onClickSelection ");
-		// prenvent default (selection of text, call of this.onClickAnywhere)
-		e.preventDefault();
+/*	private function getLayer(target:HtmlDom):Null<HtmlDom>{
+		// browse in the parent
+		while (target != null){
+			if (target.getAttribute(LayerModel.LAYER_ID_ATTRIBUTE_NAME) != null){
+				return target;
+			}
+			target = target.parentNode;
+		}
+		return null;
 	}
-	/**
-	 * Handle mouse events
-	 * Todo: move, resize...
-	 */
-	public function onClickLayerSelection(e:Event) {
-		// trace("onClickLayerSelection ");
-		// prenvent default (selection of text, call of this.onClickAnywhere)
-		e.preventDefault();
-	}
-
+	//////////////////////////////////////////////////////
+	// Model events handling
+	//////////////////////////////////////////////////////
 	/**
 	 * Called by the model when selection changed
 	 * Position the marker over the element
 	 */
 	private function onLayerSelectionChanged(event:CustomEvent){
-		// trace("Layer selected ");
-		// remove marker from the DOM
-		if (selectionLayerMarker.parentNode != null){
-			selectionLayerMarker.parentNode.removeChild(selectionLayerMarker);
+		if (layerModel.selectedItem == null || componentModel.selectedItem != null){
+			setMarkerPosition(selectionLayerMarker, null);
 		}
-		if (LayerModel.getInstance().selectedItem != null){
-			// attach marker at the same level as the selected/hoverd node
-			var targetNode = LayerModel.getInstance().selectedItem.rootElement;
-			targetNode.appendChild(selectionLayerMarker);
-			setMarkerPosition(selectionLayerMarker, targetNode);
-			// remove the component marker
-			setMarkerPosition(selectionMarker, null);
+		else{
+			setMarkerPosition(selectionLayerMarker, layerModel.selectedItem.rootElement);
 		}
 	}
 	/**
@@ -252,17 +344,11 @@ class SelectionController extends DisplayObject
 	 * Position the marker over the element
 	 */
 	private function onLayerHoverChanged(event:CustomEvent){
-		// remove marker from the DOM
-		if (hoverLayerMarker.parentNode != null){
-			hoverLayerMarker.parentNode.removeChild(hoverLayerMarker);
+		if (layerModel.hoveredItem == null || componentModel.hoveredItem != null){
+			setMarkerPosition(hoverLayerMarker, null);
 		}
-		if (LayerModel.getInstance().hoveredItem != null){
-			// attach marker at the same level as the selected/hoverd node
-			var targetNode = LayerModel.getInstance().hoveredItem.rootElement;
-			targetNode.appendChild(hoverLayerMarker);
-			setMarkerPosition(hoverLayerMarker, targetNode);
-			// remove the component marker
-			setMarkerPosition(hoverMarker, null);
+		else{
+			setMarkerPosition(hoverLayerMarker, layerModel.hoveredItem.rootElement);
 		}
 	}
 	/**
@@ -285,6 +371,9 @@ class SelectionController extends DisplayObject
 		if (componentModel.hoveredItem != null)
 			setMarkerPosition(hoverLayerMarker, null);
 	}
+	//////////////////////////////////////////////////////
+	// Markers management
+	//////////////////////////////////////////////////////
 	/**
 	 * position the given marker over the element
 	 * todo: with transformations + rotation
@@ -316,31 +405,5 @@ class SelectionController extends DisplayObject
 		marker.style.top = top + "px";
 		marker.style.width = width + "px";
 		marker.style.height = height + "px";
-	}
-	/**
-	 * retrieve the node which is a component, i.e. the one whith data-silex-component-id
-	 */
-	private function getComponent(target:HtmlDom):Null<HtmlDom>{
-		// browse in the parent
-		while (target != null && target.nodeName.toLowerCase() != "body"){
-			if (target.getAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME) != null){
-				return target;
-			}
-			target = target.parentNode;
-		}
-		return null;
-	}
-	/**
-	 * retrieve the node which is a layer, i.e. the one whith data-silex-layer-id
-	 */
-	private function getLayer(target:HtmlDom):Null<HtmlDom>{
-		// browse in the parent
-		while (target != null){
-			if (target.getAttribute(LayerModel.LAYER_ID_ATTRIBUTE_NAME) != null){
-				return target;
-			}
-			target = target.parentNode;
-		}
-		return null;
 	}
 }

@@ -57,7 +57,8 @@ class ModelBase <FinalType>{
 	 * Dispatch the change event with the item reference as the detail property of the custom event
 	 */
 	public function setHoveredItem(item:FinalType):FinalType {
-		if (hoveredItem != item){
+//		if (hoveredItem != item)
+		{
 			hoveredItem = item;
 			dispatchEvent(createEvent(hoverChangeEventName, item), debugInfo);
 		}
@@ -68,7 +69,8 @@ class ModelBase <FinalType>{
 	 * Dispatch the change event with the item reference as the detail property of the custom event
 	 */
 	public function setSelectedItem(item:FinalType):FinalType {
-		if (selectedItem != item){
+//		if (selectedItem != item)
+		{
 			selectedItem = item;
 			dispatchEvent(createEvent(selectionChangeEventName, item), debugInfo);
 		}
