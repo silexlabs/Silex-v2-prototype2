@@ -1,0 +1,215 @@
+<html>
+	<HEAD>
+		<META http-equiv="Content-Type" content="text/html; charset=UTF-8"></META> 
+		<META name="initialPageName" content="properties"></META>
+		<!-- plugins -->
+		<!-- info -->
+		<title>Hello Silex!</title>
+		<meta name="description" content="A 1st test of Silex publication" />
+		<meta name="keywords" content="HTML,CSS,website editor" />
+		<meta name="author" content="lexoyo" />
+		<meta name="revised" content="lexoyo, 29/08/2011" />
+		<!-- config -->
+		<meta name="type" content="publication" /> <!-- or theme, utility -->
+		<meta name="state" content="public" /> <!-- or private, trashed -->
+		<meta name="useDeeplink" content="false" />
+		<LINK href="app.css" rel="stylesheet"></LINK>
+		<SCRIPT src="../../libs/silex/silex.js"></SCRIPT>
+	</HEAD>
+	<body>
+		<div class="group-page-calque"
+			data-initial-page-name="page-page" >
+			<a name="page-page" class="Page" data-group-id="group-page-calque">Page</a>
+			<a name="page-calque" class="Page" data-group-id="group-page-calque">Calque</a>
+			<a name="page-vide" class="Page" data-group-id="group-page-calque">Calque</a>
+			<ul>
+				<li>
+					<a href="#page-page" class="LinkToPage" data-group-id="group-page-calque">
+						lien vers page
+					</a>
+				</li>
+				<li>
+					<a href="#page-calque" class="LinkToPage" data-group-id="group-page-calque">
+						lien vers calque
+					</a>
+				</li>
+				<li>
+					<a href="#page-vide" class="LinkToPage" data-group-id="group-page-calque">
+						lien vers vide
+					</a>
+				</li>
+			</ul>
+			<div class="Layer page-page">
+				<h1>Page</h1>
+				<ul>
+					<li>ajouter</li>
+					<li>supprimer</li>
+					<li>renommer</li>
+				</ul>
+			</div>
+			<div class="Layer page-calque">
+				<h1>Calque</h1>
+				<ul>
+					<li>ajouter</li>
+					<li>supprimer</li>
+				</ul>
+			</div>
+		</div>
+				<!-- Property Toolbox -->
+				<div class="GroupPropertiesToolbox Draggable Panel PropertiesToolbox silex-toolbox" 
+					data-initial-page-name="properties-editor" 
+					data-toolbox-name="PropertiesToolbox"
+					data-toolbox-dropzones-class-name="toolbox-drop-zone"
+					data-phantom-class-name="toolbox-phantom">
+
+					<!-- Property Toolbox tabs -->
+					<A class="Page" data-group-id="GroupPropertiesToolbox" name="raw-html">Raw Html</A>
+					<A class="Page" data-group-id="GroupPropertiesToolbox" name="properties-editor">Properties</A>
+					<A class="Page" data-group-id="GroupPropertiesToolbox" name="style-editor">Styles</A>
+
+					<div class="panel-header">
+						<div class="draggable-dragzone">
+							Properties
+						</div>
+						<ul class="tabs">
+							<li><a href="#properties-editor" class="LinkToPage" data-group-id="GroupPropertiesToolbox">Properties</a></li>
+							<li><a href="#style-editor" class="LinkToPage" data-group-id="GroupPropertiesToolbox">Style</a></li>
+							<li><a href="#raw-html" class="LinkToPage" data-group-id="GroupPropertiesToolbox">Raw HTML</a></li>
+						</ul>
+					</div>
+					<div class="panel-body">
+						<!-- Navigation -->
+						<!-- Raw HTML editor -->
+						<form class="Layer raw-html RawHtmlToolbox">
+							<fieldset>
+								<legend>Raw HTML content</legend>
+								<textarea class="property url-property"></textarea>
+								<input type="submit" value="Apply" />
+							</fieldset>
+						</form>
+						<!-- Properties editor -->
+						<form class="Layer properties-editor PropertiesToolbox">
+							<fieldset>
+								<legend>Properties</legend>
+								<fieldset>
+									<legend>Name</legend>
+									<input type="text" class="property name-property"></input>
+								</fieldset>
+								<fieldset class="context-img context-video context-audio">
+									<legend>Source</legend>
+									<input type="src" class="property src-property" name="URL" />
+									<button disabled="disabled" title="Option not yet implemented.">Browse media gallery</button>
+								</fieldset>
+								<fieldset 
+									class="context-video context-audio" 
+									disabled="disabled" 
+									title="Option not yet implemented.">
+									<legend>Auto start playing</legend>
+									<input type="checkbox" class="property auto-start-property" /> Auto start
+								</fieldset>
+								<fieldset 
+									class="context-video context-audio"
+									disabled="disabled" 
+									title="Option not yet implemented.">
+									<legend>Loop or stop at the end</legend>
+									<input type="checkbox" class="property loop-property" /> Loop
+								</fieldset>
+								<fieldset 
+									class="context-layer"
+									disabled="disabled" 
+									title="Option not yet implemented.">
+									<legend>Set as master</legend>
+									<input type="checkbox" class="property master-property" /> Master
+								</fieldset>
+							</fieldset>
+						</form>
+						<!-- Style editor -->
+						<form class="Layer style-editor StyleToolbox">
+							<fieldset>
+								<legend>Style</legend>
+								<fieldset 
+									class="property left-property"
+								>
+									<legend>Left</legend>
+									<input type="radio" name="left-type" value="Auto" /> Auto<br /> 
+									<input type="radio" name="left-type" value="Value" /> 
+										<input type="number" class="value"
+											name="quantity" min="-50000" max="50000" />
+										<select class="unit">
+											<option value="percent">%</option>
+											<option value="px">px</option>
+											<option value="em">em</option>
+										</select>
+								</fieldset>
+								<fieldset 
+									class="property top-property"
+								>
+									<legend>Top</legend>
+									<input type="radio" name="top-type" value="Auto" /> Auto<br /> 
+									<input type="radio" name="top-type" value="Value" /> 
+										<input type="number" class="value"
+											name="quantity" min="-50000" max="50000" />
+										<select class="unit">
+											<option value="percent">%</option>
+											<option value="px">px</option>
+											<option value="em">em</option>
+										</select>
+								</fieldset>
+								<fieldset 
+									class="property width-property"
+								>
+									<legend>Width</legend>
+									<input type="radio" name="width-type" value="Auto" /> Auto<br /> 
+									<input type="radio" name="width-type" value="Value" /> 
+										<input type="number" class="value"
+											name="quantity" min="-50000" max="50000" />
+										<select class="unit">
+											<option value="percent">%</option>
+											<option value="px">px</option>
+											<option value="em">em</option>
+										</select>
+								</fieldset>
+								<fieldset 
+									class="property height-property"
+								>
+									<legend>Heigh</legend>
+									<input type="radio" name="height-type" value="Auto" /> Auto<br /> 
+									<input type="radio" name="height-type" value="Value" /> 
+										<input type="number" class="value"
+											name="quantity" min="-50000" max="50000" />
+										<select class="unit">
+											<option value="percent">%</option>
+											<option value="px">px</option>
+											<option value="em">em</option>
+										</select>
+								</fieldset>
+								<fieldset>
+									<legend>Display</legend>
+									<select class="property display-property">
+										<option value="block">Block</option>
+										<option value="inline">Inline</option>
+										<option value="none">None</option>
+									</select>
+								</fieldset>
+								<fieldset>
+									<legend>Position</legend>
+									<select class="property position-property">
+										<option value="relative">Relative</option>
+										<option value="absolute">Absolute</option>
+									</select>
+								</fieldset>
+								<fieldset>
+									<legend>Float</legend>
+									<select class="property float-property">
+										<option value="none">None</option>
+										<option value="left">Left</option>
+										<option value="right">Right</option>
+									</select>
+								</fieldset>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+				<!-- /Property Toolbox -->
+	</body>
+</html>

@@ -1,0 +1,54 @@
+<html>
+	<HEAD>
+		<META http-equiv="Content-Type" content="text/html; charset=UTF-8"></META> 
+		<!-- 
+		<meta name="useDeeplink" content="false" />
+		 -->
+		<META name="initialPageName" content="empty-page"></META>
+		<title></title>
+		<LINK href="app.css" rel="stylesheet"></LINK>
+		<SCRIPT src="../../loader.js"></SCRIPT>
+	</HEAD>
+	<body class="group-main">
+			<P><A class="LinkToPage" href="#empty-page" data-group-id="group-main">Empty page</A></P>
+			<P><A class="LinkToPage" href="#login-dialog" data-group-id="group-main">Login</A></P>
+			<P><A class="LinkToPage" href="#open-dialog" data-group-id="group-main">Open publication</A></P>
+
+			<A class="Page" name="empty-page" data-group-id="group-main"></A>
+
+			<!-- ----------	 -->
+			<!-- 	Dialogs	 -->
+			<!-- ----------	 -->
+			<div>
+				<!-- Login Dialog -->
+				<A class="Page" name="login-dialog" data-group-id="group-main"></A>
+				<form class="Layer login-dialog dialog-foreground AuthDialog" data-dialog-name="login-dialog">
+					<fieldset>
+						<legend>Login</legend>
+						<p>Login</p><p><input type="text" class="input-field-login"></input></p>
+						<p>Password</p><p><input type="text" class="input-field-pass"></input></p>
+						<button class="cancel-button">Cancel</button>
+						<input type="submit" value="Ok" class="validate-button"></input>
+						<p class="error-text"></p>
+					</fieldset>
+				</form>
+				<!-- Open Dialog -->
+				<A class="Page" name="open-dialog" data-group-id="group-main"></A>
+				<form class="Layer open-dialog dialog-foreground OpenDialog" data-dialog-name="open-dialog">
+					<fieldset>
+						<legend>Your Publications</legend>
+						<ul class="PublicationList">
+							<li>::name:: <small>last change by ::configData.lastChange.author::</small></li>
+						</ul>
+						<button class="cancel-button">Cancel</button>
+						<input type="submit" value="Ok" class="validate-button"></input>
+					</fieldset>
+				</form>
+				<!-- dialog background -->
+				<div class="Layer dialog-background login-dialog open-dialog"></div>
+			</div>
+			<!-- ----------	 -->
+			<!-- 	/Dialogs	 -->
+			<!-- ----------	 -->
+	</body>
+</html>
