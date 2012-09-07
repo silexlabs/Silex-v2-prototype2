@@ -145,6 +145,7 @@ reunir template et interpreter dans un package ?
 permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html aux liens?)
 
 * bugs
+  * fermeture de page ne tient pas compte des groupes enfants
   * bugfix Lib.document.innerHTML call makes an error 500 on the server https://github.com/silexlabs/Cocktail/issues/217
   * workaround, bug https://github.com/silexlabs/Cocktail/issues/207
   * init the document with non empty body, workaround see  https://github.com/silexlabs/Cocktail/issues/208

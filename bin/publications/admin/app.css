@@ -135,8 +135,17 @@ body{
 /* **************** */
 /* 		Menu 		*/
 /* **************** */
-body{
-	overflow: hidden;
+.MenuController{
+	position: static;
+	left:0;
+	background:Gainsboro;
+	height:32px;
+	margin:0;
+	width:100%;
+	padding-left:80px;
+	border-color:black;
+	border-style:solid;
+	border-width:1px medium;
 }
 
 .group-main{
@@ -169,19 +178,6 @@ ul{
 	list-style: none outside none;
 	padding-left:20px;
 
-
-}
-ul.menu{
-	position:absolute;
-	left:0;
-	background:Gainsboro;
-	height:32px;
-	margin:0;
-	width:100%;
-	padding-left:80px;
-	border-color:black;
-	border-style:solid;
-	border-width:1px medium;
 
 }
 ul.menu li.main{

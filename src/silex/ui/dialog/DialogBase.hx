@@ -5,11 +5,11 @@ import js.Dom;
 
 import org.slplayer.component.ui.DisplayObject;
 import org.slplayer.component.navigation.transition.TransitionData;
+import org.slplayer.component.navigation.transition.TransitionTools;
 import org.slplayer.component.navigation.link.LinkToPage;
 import org.slplayer.component.navigation.Page;
+import org.slplayer.component.navigation.Layer;
 import org.slplayer.util.DomTools;
-
-import silex.publication.PublicationModel;
 
 /**
  * This component displays a window. Derive this class in order to make a new Dialog.
@@ -89,26 +89,32 @@ class DialogBase extends DisplayObject
 		}
 
 		// listen to the Layer class event
-		rootElement.addEventListener(TransitionData.EVENT_TYPE_REQUEST, onLayerShowOrHide, false);
+		rootElement.addEventListener(Layer.EVENT_TYPE_SHOW, onLayerShow, false);
+		rootElement.addEventListener(Layer.EVENT_TYPE_HIDE, onLayerHide, false);
 		// listen to the buttons event
 		rootElement.addEventListener("click", onClick, false);
 	}
 	/**
-	 * Callback for the "show" and hide events of the Layer class
-	 * Call onShow or onHide callbacks
+	 * Callback for the show event of the Layer class
+	 * Call onShow callback
 	 */
-	public function onLayerShowOrHide(event:Event) {
+	public function onLayerShow(event:Event) {
 		// retrieve the transition event data
-		var transitionData:TransitionData = cast(event).detail;
-
-		// call onShow if it is a show request and onHide otherwise
-		if (transitionData.type == show){
-			if (onShow != null)
-				onShow(transitionData);
-		}else{
-			if (onHide != null)
-				onHide(transitionData);
-		}
+		var transitionData:TransitionData = cast(event).detail.transitionData;
+		// Call onShow callback
+		if (onShow != null)
+			onShow(transitionData);
+	}
+	/**
+	 * Callback for the hide event of the Layer class
+	 * Call onHide callback
+	 */
+	public function onLayerHide(event:Event) {
+		// retrieve the transition event data
+		var transitionData:TransitionData = cast(event).detail.transitionData;
+		// Call onHide callback
+		if (onHide != null)
+			onHide(transitionData);
 	}
 	/**
 	 * Close this dialog

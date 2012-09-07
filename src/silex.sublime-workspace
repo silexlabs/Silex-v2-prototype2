@@ -4,6 +4,66 @@
 		"selected_items":
 		[
 			[
+				"bo",
+				"getElementBoundingBox"
+			],
+			[
+				"la",
+				"layerModel"
+			],
+			[
+				"data-silex",
+				"data-silex-layer-id"
+			],
+			[
+				"conte",
+				"contextArray"
+			],
+			[
+				"con",
+				"contextArray"
+			],
+			[
+				"css",
+				"cssText	var"
+			],
+			[
+				"get",
+				"getInstance"
+			],
+			[
+				"view",
+				"viewHtmlDom	var"
+			],
+			[
+				"inpt",
+				"inputProperty"
+			],
+			[
+				"tr",
+				"true"
+			],
+			[
+				"prope",
+				"propertyModel	var"
+			],
+			[
+				"compon",
+				"component	package"
+			],
+			[
+				"onS",
+				"onSelectLayer"
+			],
+			[
+				"onSe",
+				"onSelectLayer"
+			],
+			[
+				"Publication",
+				"PublicationService"
+			],
+			[
 				"Html",
 				"HtmlCollection	js.Dom"
 			],
@@ -28,10 +88,6 @@
 				"LayerModel"
 			],
 			[
-				"view",
-				"viewHtmlDom"
-			],
-			[
 				"Service",
 				"PublicationService"
 			],
@@ -54,10 +110,6 @@
 			[
 				"scrip",
 				"scriptPath"
-			],
-			[
-				"get",
-				"getElementFromModel"
 			],
 			[
 				"compo",
@@ -208,20 +260,12 @@
 				"hoveredItem"
 			],
 			[
-				"compon",
-				"ComponentModel"
-			],
-			[
 				"selected",
 				"selectedItem"
 			],
 			[
 				"Public",
 				"PublicationModel"
-			],
-			[
-				"Publication",
-				"PublicationModel	class"
 			],
 			[
 				"ca",
@@ -300,10 +344,6 @@
 				"debugModeAction"
 			],
 			[
-				"con",
-				"config"
-			],
-			[
 				"String",
 				"StringTools"
 			],
@@ -342,10 +382,6 @@
 			[
 				"Array",
 				"ArrayStore"
-			],
-			[
-				"bo",
-				"border	border-bottom-style: style"
 			],
 			[
 				"on",
@@ -419,7 +455,7 @@
 			"file": "/Users/lexa/Dropbox/fdt-workspace/Silex/readme.txt",
 			"settings":
 			{
-				"buffer_size": 5595,
+				"buffer_size": 5748,
 				"line_ending": "Unix"
 			}
 		}
@@ -452,40 +488,46 @@
 	},
 	"file_history":
 	[
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/menu/app.css",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/admin/app.css",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/menu/index.html",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/index.html",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/editor/RawHtmlEditor.hx",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/property/PropertyModel.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/ModelBase.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/ui/stage/SelectionController.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/admin/app.css",
+		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/link/LinkToContext.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/property/PropertyModel.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/default/index.html",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/editor/TextStyleEditor.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/admin/conf/config.xml.php",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/admin/index.html",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/interpreter/Interpreter.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/publication/PublicationModel.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/editor/TextStyleEditor.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/editor/EditorBase.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/editor/RawHtmlEditor.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/build.hxml",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/Silex.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/editor/PropertyEditor.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/property-toolbox/index.html",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/property-toolbox/tiny-mce.html",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/readme.txt",
+		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/util/DomTools.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/component/ComponentModel.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/index.html",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/default/conf/config.xml.php",
+		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/layout/Panel.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/dialogs/index.html",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/menu/app.css",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/menu/index.html",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/menu/conf/config.xml.php",
 		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/link/LinkToPage.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/Page.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/link/LinkBase.hx",
-		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/util/DomTools.hx",
-		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/layout/Panel.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/popup/index.html",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/page/PageModel.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/publication/PublicationService.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/loader.js",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/Silex.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/ServiceBase.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/PropertiesToolbox.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/ui/dialog/AuthDialog.hx",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/editor/EditorBase.hx",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/publication/PublicationModel.hx",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/build.hxml",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/layer/LayerModel.hx",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/component/ComponentModel.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/property/PropertyData.hx",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/ModelBase.hx",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/readme.txt",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/property-toolbox/tiny-mce.html",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/popup-open-publication/conf/config.xml.php",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/popup-open-publication/app.css",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/popup-open-publication/index.html",
@@ -501,7 +543,6 @@
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/ui/list/PublicationList.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/ui/DisplayObject.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/silex/ui/stage/PublicationViewer.hx",
-		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/admin/conf/config.xml.php",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/build-php.hxml",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/libs/silex/silex.js",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/[Finished in 1.0s with exit code 1]silex/ui/stage/SelectionController.hx",
@@ -544,7 +585,6 @@
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/page/PageManager.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/property/PropertyManager",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/toolbox1/app.css",
-		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/link/LinkToContext.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/link/LinkClosePage.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/component/dialog/Auth.hx",
 		"/Users/lexa/Dropbox/fdt-workspace/Silex/src/org/silex/component/dialog/SelectPublication.hx",
@@ -575,11 +615,7 @@
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/component/PublicationConnector.hx",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/admin/conf/config.xml.php",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/build-php.hxml",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/test1/conf/config.xml.php",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/readme.txt",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/changelog.txt",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/component/dialog/SelectPublication.hx",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationData.hx"
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/test1/conf/config.xml.php"
 	],
 	"find":
 	{
@@ -598,6 +634,114 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"onMouseMove",
+			"getLayer",
+			"onMouseOver",
+			"onMouseMove",
+			"move",
+			"onMouseOver",
+			", ",
+			"selectedLayerMarker",
+			"LayerMarker",
+			"target",
+			"hoveredItem =",
+			"checkIsOver",
+			"Mouse",
+			"getElementBoundingBox",
+			"layers",
+			"onMouseOver",
+			"hover",
+			"hoveredItem",
+			"LayerModel.getInstance()",
+			", attached directly at the end of the layer DOM elements",
+			"setMarkerPosition",
+			"hoverLayerMarker",
+			"display",
+			"index",
+			"hoverMarker",
+			"hover-layer-marker",
+			"hoverLayerMarker",
+			"				<!-- 	**************************	-->\n",
+			"SUBMIT_BUTTON_CLASS_NAME",
+			"src",
+			"styleSheet",
+			"source",
+			"loop",
+			"getModel",
+			"src",
+			"source",
+			"PublicationModel",
+			"textArea",
+			"src",
+			"name",
+			"		if (value == false) ",
+			"master",
+			"loop",
+			"getProperty",
+			"\"));\n",
+			"selectionChangeEventName",
+			"ON_SELECTION_CHANGE",
+			"TextStyleEditor",
+			"onSelectComponent",
+			"selectedItem",
+			"setSelectedItem",
+			"refresh",
+			"getProperty",
+			"autoplay",
+			"check",
+			"setInputValue",
+			"Property",
+			"fieldset class=",
+			"									title=\"Option not yet implemented.\"",
+			"option",
+			"getInputValue",
+			"propertyModel.getProperty",
+			"setInputValue",
+			"\"\");",
+			"false",
+			"-property",
+			"setInputValue",
+			"property ",
+			"Text",
+			".getInstance()",
+			"onSelectComponent",
+			"selectedItem",
+			"setStyle",
+			"modelHtmlDom",
+			"PublicationModel",
+			"case of a",
+			"testForToolBox",
+			"selectionChangeEventName",
+			"ON_SELECTION_CHANGE",
+			"application",
+			"selectedItem",
+			"setStyle",
+			"case of a",
+			"testForToolBox",
+			"ComponentModel",
+			"button-test1",
+			"stage",
+			"PublicationGroup\n",
+			"PublicationGroup\n\nPublicationGroup",
+			"load",
+			"save",
+			"PropertyModel",
+			"refresh",
+			"reset",
+			"save",
+			"private",
+			"DEBUG_INFO",
+			"onPropertyChange",
+			"CustomEvent->Void",
+			":CustomEvent->Void",
+			"onClick",
+			"DEBUG_INFO",
+			"ATTRIBUTE_NAME",
+			"TextStyle",
+			"PropertyEditor",
+			"PublicationConfig",
+			"PUBLICATION_FOLDER",
+			"class=\"\"",
 			"size=\"9\"",
 			"text_size",
 			"text_decoration",
@@ -617,115 +761,7 @@
 			"		//Lib.document.getElementsByName(name);\n",
 			"setOptionValue",
 			"ON_STYLE_CHANGE",
-			"ON_PROPERTY_CHANGE",
-			"modelHtmlDom",
-			"text_font",
-			"TextStyleEditor",
-			"Style Text",
-			"TextStyleEditor",
-			"trace",
-			"*******",
-			"> /",
-			"visibility",
-			"visibility: hidden;",
-			"</select>",
-			"option><option",
-			"input",
-			"onchange",
-			"onchange=\"synch('box_height','positioning_height');\"",
-			"onchange",
-			"type=\"text\" value=\"\" size=\"9\" onchange",
-			"id=\"text_color\" name=\"text_color\" ",
-			"input",
-			"fieldset",
-			"							<fieldset>\n								<legend>Text</legend>\n								<label for=\"text_font\">Font</label>\n								<select id=\"text_font\" name=\"text_font\"><option value=\"\"></option><option value=\"Arial, Helvetica, sans-serif\">Arial, Helvetica, sans-serif</option><option value=\"Times New Roman, Times, serif\">Times New Roman, Times, serif</option><option value=\"Courier New, Courier, mono\">Courier New, Courier, mono</option><option value=\"Times New Roman, Times, serif\">Times New Roman, Times, serif</option><option value=\"Georgia, Times New Roman, Times, serif\">Georgia, Times New Roman, Times, serif</option><option value=\"Verdana, Arial, Helvetica, sans-serif\">Verdana, Arial, Helvetica, sans-serif</option><option value=\"Geneva, Arial, Helvetica, sans-serif\">Geneva, Arial, Helvetica, sans-serif</option></select>\n\n\n								<label for=\"text_size\">Size</label>\n								<select id=\"text_size\" name=\"text_size\" class=\"\"><option value=\"\"></option><option value=\"9\">9</option><option value=\"10\">10</option><option value=\"12\">12</option><option value=\"14\">14</option><option value=\"16\">16</option><option value=\"18\">18</option><option value=\"24\">24</option><option value=\"xx-small\">xx-small</option><option value=\"x-small\">x-small</option><option value=\"small\">small</option><option value=\"medium\">medium</option><option value=\"large\">large</option><option value=\"x-large\">x-large</option><option value=\"xx-large\">xx-large</option><option value=\"smaller\">smaller</option><option value=\"larger\">larger</option></select>\n\n								<label id=\"text_size_measurement_label\" for=\"text_size_measurement\" style=\"display: none; visibility: hidden;\">Text Size Measurement Unit</label>\n								<select id=\"text_size_measurement\" name=\"text_size_measurement\" aria-labelledby=\"text_size_measurement_label\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n\n								<label for=\"text_weight\">Weight</label>\n								<select id=\"text_weight\" name=\"text_weight\"><option value=\"\"></option><option value=\"normal\">normal</option><option value=\"bold\">bold</option><option value=\"bolder\">bolder</option><option value=\"lighter\">lighter</option><option value=\"100\">100</option><option value=\"200\">200</option><option value=\"300\">300</option><option value=\"400\">400</option><option value=\"500\">500</option><option value=\"600\">600</option><option value=\"700\">700</option><option value=\"800\">800</option><option value=\"900\">900</option></select>\n\n\n								<label for=\"text_style\">Style</label>\n								<select id=\"text_style\" name=\"text_style\" class=\"\"><option value=\"\"></option><option value=\"normal\">normal</option><option value=\"italic\">italic</option><option value=\"oblique\">oblique</option></select>\n\n								<label for=\"text_variant\">Variant</label>\n								<select id=\"text_variant\" name=\"text_variant\"><option value=\"\"></option><option value=\"normal\">normal</option><option value=\"small-caps\">small-caps</option></select>\n\n								<label for=\"text_lineheight\">Line Height</label>\n								<select id=\"text_lineheight\" name=\"text_lineheight\" class=\"\"><option value=\"\"></option><option value=\"normal\">normal</option></select>\n								<label style=\"display: none; visibility: hidden;\">Line Height Measurement Unit</label>\n								<select id=\"text_lineheight_measurement\" name=\"text_lineheight_measurement\" aria-labelledby=\"text_lineheight_measurement_label\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n\n								<label for=\"text_case\">Case</label>\n								<select id=\"text_case\" name=\"text_case\"><option value=\"\"></option><option value=\"capitalize\">capitalize</option><option value=\"uppercase\">uppercase</option><option value=\"lowercase\">lowercase</option></select>\n\n								<label for=\"text_color\">Color</label>\n								<input id=\"text_color\" name=\"text_color\" type=\"text\" value=\"\" size=\"9\" onchange=\"updateColor('text_color_pick','text_color');\" />\n\n								<label for=\"text_color\">Decoration</label>\n								<input type=\"radio\" name=\"decoration\" value=\"underline\" />Underline<br /> \n								<input type=\"radio\" name=\"decoration\" value=\"overline\" />Overline<br /> \n								<input type=\"radio\" name=\"decoration\" value=\"linethrough\" />Strikethrough<br /> \n								<input type=\"radio\" name=\"decoration\" value=\"blink\" />Blink<br /> \n								<input type=\"radio\" name=\"decoration\" value=\"none\" />None<br /> \n							</fieldset>\n						</form>\n						<!-- /Style Text -->\n						<!-- Style Background -->\n						<form class=\"Layer style-background-tab\">\n							<fieldset>\n								<legend>Background</legend>\n								<label for=\"background_color\">Background Color</label>\n								<input id=\"background_color\" name=\"background_color\" type=\"text\" value=\"\" size=\"9\" onchange=\"updateColor('background_color_pick','background_color');\">\n							\n								<label for=\"background_image\">Background Image</label>\n								<input id=\"background_image\" name=\"background_image\" type=\"text\"> \n							\n								<label for=\"background_repeat\">Repeat</label>\n								<select id=\"background_repeat\" name=\"background_repeat\" class=\"\"><option value=\"\"></option><option value=\"no-repeat\">no-repeat</option><option value=\"repeat\">repeat</option><option value=\"repeat-x\">repeat-x</option><option value=\"repeat-y\">repeat-y</option></select>\n							\n								<label for=\"background_attachment\">Attachment</label>\n								<select id=\"background_attachment\" name=\"background_attachment\" class=\"\"><option value=\"\"></option><option value=\"fixed\">fixed</option><option value=\"scroll\">scroll</option></select>\n							\n								<label for=\"background_hpos\">Horizontal Position</label>\n								<select id=\"background_hpos\" name=\"background_hpos\" class=\"\"><option value=\"\"></option><option value=\"left\">left</option><option value=\"center\">center</option><option value=\"right\">right</option></select>\n											\n								<label id=\"background_hpos_measurement_label\" for=\"background_hpos_measurement\" style=\"display: none; visibility: hidden;\">Horizontal position measurement unit</label>\n								<select id=\"background_hpos_measurement\" name=\"background_hpos_measurement\" aria-labelledby=\"background_hpos_measurement_label\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n											\n							\n								<label for=\"background_vpos\">Vertical Position</label>\n								<select id=\"background_vpos\" name=\"background_vpos\" class=\"\"><option value=\"\"></option><option value=\"top\">top</option><option value=\"center\">center</option><option value=\"bottom\">bottom</option></select>\n\n								<label id=\"background_vpos_measurement_label\" for=\"background_vpos_measurement\" style=\"display: none; visibility: hidden;\">Vertical position measurement unit</label>\n								<select id=\"background_vpos_measurement\" name=\"background_vpos_measurement\" aria-labelledby=\"background_vpos_measurement_label\">&gt;<option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n							</fieldset>\n						</form>\n						<!-- /Style Background -->\n						<!-- Style Block -->\n						<form class=\"Layer style-block-tab\">\n							<fieldset>\n								<legend>Block</legend>\n								<label for=\"block_wordspacing\">Word Spacing</label>\n								<select id=\"block_wordspacing\" name=\"block_wordspacing\" class=\"\"><option value=\"\"></option><option value=\"normal\">normal</option></select>\n											\n								<label id=\"block_wordspacing_measurement_label\" for=\"block_wordspacing_measurement\" style=\"display: none; visibility: hidden;\">Word spacing measurement unit</label>\n								<select id=\"block_wordspacing_measurement\" name=\"block_wordspacing_measurement\" aria-labelledby=\"block_wordspacing_measurement_label\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n											\n							\n								<label for=\"block_letterspacing\">Letter Spacing</label>\n								<select id=\"block_letterspacing\" name=\"block_letterspacing\" class=\"\"><option value=\"\"></option><option value=\"normal\">normal</option></select>\n											\n								<label id=\"block_letterspacing_measurement_label\" for=\"block_letterspacing_measurement\" style=\"display: none; visibility: hidden;\">Letter spacing measurement unit</label>\n								<select id=\"block_letterspacing_measurement\" name=\"block_letterspacing_measurement\" aria-labelledby=\"block_letterspacing_measurement_label\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n											\n							\n								<label for=\"block_vertical_alignment\">Vertical Alignment</label>\n								<select id=\"block_vertical_alignment\" name=\"block_vertical_alignment\" class=\"\"><option value=\"\"></option><option value=\"baseline\">baseline</option><option value=\"sub\">sub</option><option value=\"super\">super</option><option value=\"top\">top</option><option value=\"text-top\">text-top</option><option value=\"middle\">middle</option><option value=\"bottom\">bottom</option><option value=\"text-bottom\">text-bottom</option></select>\n							\n								<label for=\"block_text_align\">Text Align</label>\n								<select id=\"block_text_align\" name=\"block_text_align\" class=\"\"><option value=\"\"></option><option value=\"left\">left</option><option value=\"right\">right</option><option value=\"center\">center</option><option value=\"justify\">justify</option></select>\n							\n								<label for=\"block_text_indent\">Text Indent</label>\n								<input type=\"text\" id=\"block_text_indent\" name=\"block_text_indent\">\n								<label id=\"block_text_indent_measurement_label\" for=\"block_text_indent_measurement\" style=\"display: none; visibility: hidden;\">Text Indent Measurement Unit</label>\n\n								<select id=\"block_text_indent_measurement\" name=\"block_text_indent_measurement\" aria-labelledby=\"block_text_indent_measurement_label\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n											\n								<label for=\"block_whitespace\">Whitespace</label>\n								<select id=\"block_whitespace\" name=\"block_whitespace\" class=\"\"><option value=\"\"></option><option value=\"normal\">normal</option><option value=\"pre\">pre</option><option value=\"nowrap\">nowrap</option></select>\n							\n								<label for=\"block_display\">Display</label>\n								<select id=\"block_display\" name=\"block_display\" class=\"\"><option value=\"\"></option><option value=\"inline\">inline</option><option value=\"block\">block</option><option value=\"list-item\">list-item</option><option value=\"run-in\">run-in</option><option value=\"compact\">compact</option><option value=\"marker\">marker</option><option value=\"table\">table</option><option value=\"inline-table\">inline-table</option><option value=\"table-row-group\">table-row-group</option><option value=\"table-header-group\">table-header-group</option><option value=\"table-footer-group\">table-footer-group</option><option value=\"table-row\">table-row</option><option value=\"table-column-group\">table-column-group</option><option value=\"table-column\">table-column</option><option value=\"table-cell\">table-cell</option><option value=\"table-caption\">table-caption</option><option value=\"none\">none</option></select>\n							</fieldset>\n						</form>\n						<!-- /Style Block -->\n						<!-- Style Box -->\n						<form class=\"Layer style-box-tab\">\n							<fieldset>\n								<legend>Box</legend>\n								<label for=\"box_width\">Width</label>\n								<input type=\"text\" id=\"box_width\" name=\"box_width\" class=\"\" onchange=\"synch('box_width','positioning_width');\">\n											\n								<label id=\"box_width_measurement_label\" for=\"box_width_measurement\" style=\"display: none; visibility: hidden;\">Box Width Measurement Unit</label>\n								<select id=\"box_width_measurement\" name=\"box_width_measurement\" aria-labelledby=\"box_width_measurement_label\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n											\n								<label for=\"box_float\">Float</label>\n								<select id=\"box_float\" name=\"box_float\" class=\"\"><option value=\"\"></option><option value=\"left\">left</option><option value=\"right\">right</option><option value=\"none\">none</option></select>\n							\n								<label for=\"box_height\">Height</label>\n								<input type=\"text\" id=\"box_height\" name=\"box_height\" class=\"\" onchange=\"synch('box_height','positioning_height');\">\n											\n								<label id=\"box_height_measurement_label\" for=\"box_height_measurement\" style=\"display: none; visibility: hidden;\">Box Height Measurement Unit</label>\n								<select id=\"box_height_measurement\" name=\"box_height_measurement\" aria-labelledby=\"box_height_measurement_label\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n											\n								<label for=\"box_clear\">Clear</label>\n								<select id=\"box_clear\" name=\"box_clear\" class=\"\"><option value=\"\"></option><option value=\"left\">left</option><option value=\"right\">right</option><option value=\"both\">both</option><option value=\"none\">none</option></select>\n							</fieldset>\n							<fieldset>\n								<legend>Padding</legend>\n\n								<label for=\"box_padding_top\">Top</label>\n								<input type=\"text\" id=\"box_padding_top\" name=\"box_padding_top\" class=\"\">\n													\n								<label id=\"box_padding_top_measurement_label\" for=\"box_padding_top_measurement\" style=\"display: none; visibility: hidden;\">Padding Top Measurement Unit</label>\n								<select id=\"box_padding_top_measurement\" name=\"box_padding_top_measurement\" aria-labelledby=\"box_padding_top_measurement_label\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n													\n								<label for=\"box_padding_right\">Right</label>\n								<input type=\"text\" id=\"box_padding_right\" name=\"box_padding_right\" class=\" disabled\" >\n													\n								<label id=\"box_padding_right_measurement_label\" for=\"box_padding_right_measurement\" style=\"display: none; visibility: hidden;\">Padding Right Measurement Unit</label>\n								<select id=\"box_padding_right_measurement\" name=\"box_padding_right_measurement\"  aria-labelledby=\"box_padding_right_measurement_label\" class=\"disabled\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n													\n								<label for=\"box_padding_bottom\">Bottom</label>\n								<input type=\"text\" id=\"box_padding_bottom\" name=\"box_padding_bottom\" class=\" disabled\" >\n													\n								<label id=\"box_padding_bottom_measurement_label\" for=\"box_padding_bottom_measurement\" style=\"display: none; visibility: hidden;\">Padding Bottom Measurement Unit</label>\n								<select id=\"box_padding_bottom_measurement\" name=\"box_padding_bottom_measurement\"  aria-labelledby=\"box_padding_bottom_measurement_label\" class=\"disabled\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n													\n								<label for=\"box_padding_left\">Left</label>\n								<input type=\"text\" id=\"box_padding_left\" name=\"box_padding_left\" class=\" disabled\" >\n													\n								<label id=\"box_padding_left_measurement_label\" for=\"box_padding_left_measurement\" style=\"display: none; visibility: hidden;\">Padding Left Measurement Unit</label>\n								<select id=\"box_padding_left_measurement\" name=\"box_padding_left_measurement\"  aria-labelledby=\"box_padding_left_measurement_label\" class=\"disabled\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n													\n							</fieldset>\n							<fieldset>\n								<legend>Margin</legend>\n\n								<label for=\"box_margin_top\">Top</label>\n								<input type=\"text\" id=\"box_margin_top\" name=\"box_margin_top\" class=\"\">\n													\n								<label id=\"box_margin_top_measurement_label\" for=\"box_margin_top_measurement\" style=\"display: none; visibility: hidden;\">Margin Top Measurement Unit</label>\n								<select id=\"box_margin_top_measurement\" name=\"box_margin_top_measurement\" aria-labelledby=\"box_margin_top_measurement_label\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n													\n								<label for=\"box_margin_right\">Right</label>\n								<input type=\"text\" id=\"box_margin_right\" name=\"box_margin_right\" class=\" disabled\" >\n													\n								<label id=\"box_margin_right_measurement_label\" for=\"box_margin_right_measurement\" style=\"display: none; visibility: hidden;\">Margin Right Measurement Unit</label>\n								<select id=\"box_margin_right_measurement\" name=\"box_margin_right_measurement\"  aria-labelledby=\"box_margin_right_measurement_label\" class=\"disabled\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n								\n								<label for=\"box_margin_bottom\">Bottom</label>\n								<input type=\"text\" id=\"box_margin_bottom\" name=\"box_margin_bottom\" class=\" disabled\" >\n\n								<label id=\"box_margin_bottom_measurement_label\" for=\"box_margin_bottom_measurement\" style=\"display: none; visibility: hidden;\">Margin Bottom Measurement Unit</label>\n								<select id=\"box_margin_bottom_measurement\" name=\"box_margin_bottom_measurement\"  aria-labelledby=\"box_margin_bottom_measurement_label\" class=\"disabled\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n							\n								<label for=\"box_margin_left\">Left</label>\n								<input type=\"text\" id=\"box_margin_left\" name=\"box_margin_left\" class=\" disabled\" >\n													\n								<label id=\"box_margin_left_measurement_label\" for=\"box_margin_left_measurement\" style=\"display: none; visibility: hidden;\">Margin Left Measurement Unit</label>\n								<select id=\"box_margin_left_measurement\" name=\"box_margin_left_measurement\"  aria-labelledby=\"box_margin_left_measurement_label\" class=\"disabled\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n\n							</fieldset>\n							<fieldset>\n								<legend>Style</legend>\n								<fieldset \n									class=\"property left-property\"\n								>\n									<legend>Left</legend>\n									<input type=\"radio\" name=\"left-type\" value=\"Auto\" /> Auto<br /> \n									<input type=\"radio\" name=\"left-type\" value=\"Value\" /> \n										<input type=\"number\" class=\"value\"\n											name=\"quantity\" min=\"-50000\" max=\"50000\" />\n										<select class=\"unit\">\n											<option value=\"percent\">%</option>\n											<option value=\"px\">px</option>\n											<option value=\"em\">em</option>\n										</select>\n								</fieldset>\n								<fieldset \n									class=\"property top-property\"\n								>\n									<legend>Top</legend>\n									<input type=\"radio\" name=\"top-type\" value=\"Auto\" /> Auto<br /> \n									<input type=\"radio\" name=\"top-type\" value=\"Value\" /> \n										<input type=\"number\" class=\"value\"\n											name=\"quantity\" min=\"-50000\" max=\"50000\" />\n										<select class=\"unit\">\n											<option value=\"percent\">%</option>\n											<option value=\"px\">px</option>\n											<option value=\"em\">em</option>\n										</select>\n								</fieldset>\n								<fieldset \n									class=\"property width-property\"\n								>\n									<legend>Width</legend>\n									<input type=\"radio\" name=\"width-type\" value=\"Auto\" /> Auto<br /> \n									<input type=\"radio\" name=\"width-type\" value=\"Value\" /> \n										<input type=\"number\" class=\"value\"\n											name=\"quantity\" min=\"-50000\" max=\"50000\" />\n										<select class=\"unit\">\n											<option value=\"percent\">%</option>\n											<option value=\"px\">px</option>\n											<option value=\"em\">em</option>\n										</select>\n								</fieldset>\n								<fieldset \n									class=\"property height-property\"\n								>\n									<legend>Heigh</legend>\n									<input type=\"radio\" name=\"height-type\" value=\"Auto\" /> Auto<br /> \n									<input type=\"radio\" name=\"height-type\" value=\"Value\" /> \n										<input type=\"number\" class=\"value\"\n											name=\"quantity\" min=\"-50000\" max=\"50000\" />\n										<select class=\"unit\">\n											<option value=\"percent\">%</option>\n											<option value=\"px\">px</option>\n											<option value=\"em\">em</option>\n										</select>\n								</fieldset>\n								<fieldset>\n									<legend>Display</legend>\n									<select class=\"property display-property\">\n										<option value=\"block\">Block</option>\n										<option value=\"inline\">Inline</option>\n										<option value=\"none\">None</option>\n									</select>\n								</fieldset>\n								<fieldset>\n									<legend>Position</legend>\n									<select class=\"property position-property\">\n										<option value=\"relative\">Relative</option>\n										<option value=\"absolute\">Absolute</option>\n									</select>\n								</fieldset>\n								<fieldset>\n									<legend>Float</legend>\n									<select class=\"property float-property\">\n										<option value=\"none\">None</option>\n										<option value=\"left\">Left</option>\n										<option value=\"right\">Right</option>\n									</select>\n								</fieldset>\n							</fieldset>\n						</form>\n						<!-- /Style Box -->\n						<!-- Style Positioning -->\n						<form class=\"Layer style-positioning-tab\">\n							<fieldset>\n								<legend>Position</legend>\n								<label for=\"positioning_type\">Type</label>\n								<select id=\"positioning_type\" name=\"positioning_type\" class=\"\"><option value=\"\"></option><option value=\"absolute\">absolute</option><option value=\"relative\">relative</option><option value=\"static\">static</option></select>\n								\n								<label for=\"positioning_visibility\">Visibility</label>\n								<select id=\"positioning_visibility\" name=\"positioning_visibility\" class=\"\"><option value=\"\"></option><option value=\"inherit\">inherit</option><option value=\"visible\">visible</option><option value=\"hidden\">hidden</option></select>\n								\n								<label for=\"positioning_width\">Width</label>\n								<select id=\"positioning_width_measurement\" name=\"positioning_width_measurement\" aria-labelledby=\"positioning_width_measurement_label\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n												\n								<label for=\"positioning_zindex\">Z-index</label>\n								<input type=\"text\" id=\"positioning_zindex\" name=\"positioning_zindex\">\n\n								<label for=\"positioning_height\">Height</label>\n								<select id=\"positioning_height_measurement\" name=\"positioning_height_measurement\" aria-labelledby=\"positioning_height_measurement_label\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n\n								<label for=\"positioning_overflow\">Overflow</label>\n								<select id=\"positioning_overflow\" name=\"positioning_overflow\" class=\"\"><option value=\"\"></option><option value=\"visible\">visible</option><option value=\"hidden\">hidden</option><option value=\"scroll\">scroll</option><option value=\"auto\">auto</option></select>\n								\n							</fieldset>\n							<fieldset>\n								<legend>Placement</legend>\n								<label for=\"positioning_top\">Top</label>\n								<input type=\"text\" id=\"positioning_placement_top\" name=\"positioning_placement_top\">\n								<select id=\"positioning_placement_top_measurement\" name=\"positioning_placement_top_measurement\" aria-labelledby=\"positioning_placement_top_measurement_label\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n													\n								<label for=\"positioningright\">Right</label>\n								<input type=\"text\" id=\"positioning_placement_right\" name=\"positioning_placement_right\"  class=\"disabled\">\n								<select id=\"positioning_placement_right_measurement\" name=\"positioning_placement_right_measurement\"  aria-labelledby=\"positioning_placement_right_measurement_label\" class=\"disabled\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n													\n								<label for=\"positioning_placement_bottom_measurement\">Bottom</label>\n								<input type=\"text\" id=\"positioning_placement_bottom\" name=\"positioning_placement_bottom\"  class=\"disabled\">\n								<select id=\"positioning_placement_bottom_measurement\" name=\"positioning_placement_bottom_measurement\"  aria-labelledby=\"positioning_placement_bottom_measurement_label\" class=\"disabled\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n\n								<label for=\"positioning_placement_left_measurement\" >Left</label>\n								<input type=\"text\" id=\"positioning_placement_left\" name=\"positioning_placement_left\"  class=\"disabled\">\n								<select id=\"positioning_placement_left_measurement\" name=\"positioning_placement_left_measurement\"  aria-labelledby=\"positioning_placement_left_measurement_label\" class=\"disabled\"><option value=\"\"></option><option value=\"px\">pixels</option><option value=\"pt\">points</option><option value=\"in\">inches</option><option value=\"cm\">centimetres</option><option value=\"mm\">millimetres</option><option value=\"pc\">picas</option><option value=\"em\">ems</option><option value=\"ex\">exs</option><option value=\"%\">%</option></select>\n							</fieldset>\n",
-			"<option value=\"\">",
-			"loa",
-			"onInput",
-			"raw",
-			"TextStyleEditor",
-			"delay",
-			"Toolbox",
-			"Dialogs",
-			"disabled=\"\"",
-			"disabled",
-			"disabled=\"disabled\" ",
-			"panel",
-			"mce",
-			"class=\" \"",
-			"mceFocus",
-			"mceEditableSelect",
-			"<option value=\"__mce_add_custom__\" class=\"mceAddSelectValue\">(value)</option>",
-			"properties-editor",
-			"aria-labelledby=\"positioning_placement_left_measurement_label\"",
-			"<input ",
-			"Same for All",
-			"<label for=\"positioning_clip_same\">Same for All</label>",
-			"form",
-			"style-box-tab",
-			"Layer",
-			"fieldset",
-			"<td id=\"background_image_browser\">",
-			"<td",
-			"&nbsp",
-			"<tbody><tr>",
-			"			<tbody><tr> \n",
-			"<table",
-			"<div ",
-			"<div id=\"block_panel\" class=\"panel\" aria-hidden=\"true\">",
-			"<div id=\"block_panel\" class=\"panel\" aria-hidden=\"true\">\n",
-			"			\n		</tbody></table>\n	</fieldset>\n</div>\n",
-			"			\n		</tbody></table>\n	</fieldset>\n</div>\n\n<div id=\"block_panel\" class=\"panel\" aria-hidden=\"true\">\n",
-			"\n			<tr>\n",
-			"					</tbody></table>\n",
-			"</tr>",
-			"						<tbody><tr>\n</tr>",
-			"						<tbody><tr>\n",
-			"					<table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n						<tbody><tr>\n",
-			"				\n					<table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n						<tbody><tr>\n",
-			"						<tbody><tr>\n",
-			"</td>",
-			"<td>",
-			"				<td>",
-			"		<table role=\"presentation\" border=\"0\">\n			<tbody><tr>\n",
-			"tr",
-			"</td>",
-			"<td>",
-			"				<td>",
-			"				</td>\n			</tr>\n			<tr>\n",
-			"				</td>\n",
-			"</td>",
-			"ATTRIBUTE_NAME",
-			"raw",
-			"Layer",
-			"onClickAnywhere",
-			"getComponent",
-			"getLayer",
-			"true",
-			"onClickHover",
-			"LayerModel.getInstance()",
-			"LayerModel.getInstance().selectedItem",
-			"ON_PROPERTY_CHANGE",
-			"FinalType",
-			"setSelectedItem",
-			"ATTRIBUTE_NAME",
-			"no layer",
-			"getSelectedElementFromModel",
-			"trace",
-			"ATTRIBUTE_NAME",
-			"getAttribute",
-			"viewDom",
-			"img",
-			"publications/default/",
-			"publication/",
-			"publication",
-			"PUBLICATION_FOLDER",
-			"\"./publications/\"",
-			"folder",
-			"setBaseTag",
-			"				",
-			"swfobjectLoaded",
-			"addScript"
+			"ON_PROPERTY_CHANGE"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -762,15 +798,15 @@
 					"file": "/Users/lexa/Dropbox/fdt-workspace/Silex/readme.txt",
 					"settings":
 					{
-						"buffer_size": 5595,
+						"buffer_size": 5748,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1903,
-								1903
+								1705,
+								1705
 							]
 						],
 						"settings":
@@ -780,7 +816,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 417.0,
+						"translation.y": 227.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
