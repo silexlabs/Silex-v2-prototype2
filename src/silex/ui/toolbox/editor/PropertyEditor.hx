@@ -34,7 +34,7 @@ class PropertyEditor extends EditorBase
 	 * reset the values
 	 */
 	override private function reset() {
-		trace("reset ");
+		// trace("reset ");
 		// font family
 		setInputValue("name-property", "");
 		setInputValue("multiple-src-property", "");
@@ -57,14 +57,14 @@ class PropertyEditor extends EditorBase
 		for (context in contextArray){
 			cssText += "."+context+" { display : inline; visibility : visible; } ";
 		}
-		trace("cssText="+cssText);
+		// trace("cssText="+cssText);
 		styleSheet = DomTools.addCssRules(cssText);
 	}
 	/**
 	 * display the property value
 	 */
 	override private function load(element:HtmlDom) {
-		trace("load "+element);
+		// trace("load "+element);
 
 		// handle the context
 		var contextArray = [];
@@ -93,12 +93,12 @@ class PropertyEditor extends EditorBase
 		if (value != null) setInputValue("name-property", value);
 
 		var value = propertyModel.getProperty(element, "src");
-		if (value != null) setInputValue("src-property", value);
+		if (value != null) setInputValue("src-property", abs2rel(value));
 
 		var sources = propertyModel.getModel(element).getElementsByTagName("source");
 		var value = "";
 		for (idx in 0...sources.length){
-			value += cast(sources[idx]).src + "\n";
+			value += abs2rel(cast(sources[idx]).src) + "\n";
 		}
 		setInputValue("multiple-src-property", value);
 
@@ -130,7 +130,7 @@ class PropertyEditor extends EditorBase
 	 * apply the property value
 	 */
 	override private function apply() {
-		trace("TextStyleEditor apply "+selectedItem);
+		// trace("TextStyleEditor apply "+selectedItem);
 		var propertyModel = PropertyModel.getInstance();
 
 		var value = getInputValue("name-property");
@@ -139,7 +139,7 @@ class PropertyEditor extends EditorBase
 
 		var value = getInputValue("src-property");
 		if (value != null)
-			propertyModel.setProperty(selectedItem, "src", value);
+			propertyModel.setProperty(selectedItem, "src", abs2rel(value));
 
 		var modelHtmlDom = propertyModel.getModel(selectedItem);
 		var sources = modelHtmlDom.getElementsByTagName("source");
@@ -164,10 +164,10 @@ class PropertyEditor extends EditorBase
 			for (sourceUrl in urls){
 				if (sourceUrl != ""){
 					var sourceElement = Lib.document.createElement("source");
-					cast(sourceElement).src = sourceUrl;
+					cast(sourceElement).src = abs2rel(sourceUrl);
 					modelHtmlDom.appendChild(sourceElement);
 					var sourceElement = Lib.document.createElement("source");
-					cast(sourceElement).src = sourceUrl;
+					cast(sourceElement).src = abs2rel(sourceUrl);
 					selectedItem.appendChild(sourceElement);
 				}
 			}

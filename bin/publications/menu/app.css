@@ -36,7 +36,6 @@ p{
 /* 		Menu 		*/
 /* **************** */
 .MenuController{
-	position: static;
 	left:0;
 	background:Gainsboro;
 	height:32px;
@@ -53,32 +52,11 @@ p{
 	height: 100%;
 	overflow: hidden;
 }
-
-.hover-marker, .selection-marker{
-	z-index: 200;
-	position: absolute;
-	margin:0px;
-	padding:0px;
-}
-.hover-marker{
-	opacity:0.25;
-	background-color: red;
-	cursor: pointer;
-}
-.selection-marker{
-	border: 2px solid grey;
-	cursor: move;
-}
-.selection-marker:hover{
-	opacity:0.25;
-	background-color: yellow;
-	border: 2px solid grey;
-}
 ul{
 	list-style: none outside none;
 	padding-left:20px;
-
-
+	position: absolute;
+	z-index: 2000;
 }
 ul.menu li.main{
 	display:inline-block;

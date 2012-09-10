@@ -98,7 +98,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * This dispatches a onPropertyChange event with event.detail set to the PropertyData object 
 	 */
 	public function setProperty(viewHtmlDom:HtmlDom, name:String, value:Null<Dynamic>){
-		trace("setProperty("+viewHtmlDom+", "+name+", "+value+")");
+		// trace("setProperty("+viewHtmlDom+", "+name+", "+value+")");
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
 		// apply the change 
@@ -142,7 +142,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * This dispatches a onStyleChange event with event.detail set to the PropertyData object 
 	 */
 	public function setStyle(viewHtmlDom:HtmlDom, name:String, value:String){
-		trace("setStyle("+viewHtmlDom+", "+name+", "+value+")");
+		// trace("setStyle("+viewHtmlDom+", "+name+", "+value+")");
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
 		// apply the change 
@@ -195,7 +195,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 			id = ComponentModel.getInstance().selectedItem.getAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME);
 		if (id==null){
 			if (LayerModel.getInstance().selectedItem != null){
-				trace("case of a layer");
+				// trace("case of a layer");
 				// case of a layer
 				id = LayerModel.getInstance().selectedItem.rootElement.getAttribute(LayerModel.LAYER_ID_ATTRIBUTE_NAME);
 				if (id!=null){
@@ -211,7 +211,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 			}
 		}
 		else{
-			trace("case of a component");
+			// trace("case of a component");
 			// case of a component
 			results = DomTools.getElementsByAttribute(PublicationModel.getInstance().modelHtmlDom, ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, id);
 		}

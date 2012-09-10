@@ -8,6 +8,7 @@ import org.slplayer.util.DomTools;
 import silex.property.PropertyModel;
 import silex.component.ComponentModel;
 import silex.layer.LayerModel;
+import silex.publication.PublicationModel;
 
 /**
  * This component is the base class for all editors in Silex. 
@@ -96,7 +97,7 @@ class EditorBase extends DisplayObject
 	 * Dispatch the change event with the item reference as the detail property of the custom event
 	 */
 	public function setSelectedItem(item:HtmlDom):HtmlDom {
-		trace("setSelectedItem("+item+")");
+		// trace("setSelectedItem("+item+")");
 		selectedItem = item;
 		refresh();
 		return selectedItem;
@@ -105,7 +106,7 @@ class EditorBase extends DisplayObject
 	 * refresh display
 	 */
 	private function refresh() {
-		trace("refresh");
+		// trace("refresh");
 		if (selectedItem != null)
 			load(selectedItem);
 		else
@@ -138,7 +139,7 @@ class EditorBase extends DisplayObject
 	 * set the value of the input control with name in its class name
 	 */
 	private function setInputValue(name:String, value:Dynamic, inputProperty:String = "value"){
-		trace("setInputValue "+name+", "+value);
+		// trace("setInputValue "+name+", "+value);
 		var element = DomTools.getSingleElement(rootElement, name, true);
 		Reflect.setField(element, inputProperty, value);
 	}
@@ -147,7 +148,7 @@ class EditorBase extends DisplayObject
 	 */
 	private function getInputValue(name:String, inputProperty:String = "value"):Dynamic{
 		var element = DomTools.getSingleElement(rootElement, name, true);
-		trace("getInputValue "+name+" - "+Reflect.field(element, inputProperty));
+		// trace("getInputValue "+name+" - "+Reflect.field(element, inputProperty));
 		return Reflect.field(element, inputProperty);
 	}
 	////////////////////////////////////////////
@@ -157,7 +158,7 @@ class EditorBase extends DisplayObject
 	 * callback for the click event, validate the data
 	 */
 	private function onInput(e:Event) {
-		trace("onInput");
+		// trace("onInput");
 		e.preventDefault();
 		beforeApply();
 		apply();
@@ -182,7 +183,7 @@ class EditorBase extends DisplayObject
 	 * display the component style
 	 */
 	private function onSelectComponent(e:CustomEvent) {
-		trace("onSelectComponent");
+		// trace("onSelectComponent");
 		selectedItem = e.detail;
 	}
 	/**
@@ -190,12 +191,33 @@ class EditorBase extends DisplayObject
 	 * display the layer style
 	 */
 	private function onSelectLayer(e:CustomEvent) {
-		trace("onSelectLayer");
+		// trace("onSelectLayer");
 		if (e.detail == null){
 			selectedItem = null;
 		}
 		else{
 			selectedItem = e.detail.rootElement;
 		}
+	}
+	////////////////////////////////////////////
+	// Helpers
+	////////////////////////////////////////////
+	/**
+	 * convert into relative url
+	 */
+	private function abs2rel(url:String):String{
+		var pubUrl = "publications/" + PublicationModel.currentName + "/";
+		var idxPubFolder = url.indexOf(pubUrl);
+		if (idxPubFolder >= 0){
+			// remove file name if there is one
+			var idxSlash = pubUrl.lastIndexOf("/");
+			var idxDot = pubUrl.lastIndexOf(".");
+			if (idxSlash < idxDot)
+				pubUrl = pubUrl.substr(idxSlash);
+			// remove all the common parts
+			url = url.substr(idxPubFolder + pubUrl.length);
+			trace(" url "+ url );
+		}
+		return url;
 	}
 }

@@ -26,6 +26,7 @@ import silex.component.ComponentModel;
 @tagNameFilter("a")
 class SelectionController extends DisplayObject
 {
+	public static inline var MARKER_CONTAINER_STYLE_NAME = "selection-marker-container";
 	/**
 	 * Information for debugging, e.g. the class name
 	 */ 
@@ -80,31 +81,33 @@ class SelectionController extends DisplayObject
 	public function new(rootElement:HtmlDom, SLPId:String){
 		super(rootElement, SLPId);
 
+		//var selectionContainer = DomTools.getSingleElement(rootElement, MARKER_CONTAINER_STYLE_NAME);
+var selectionContainer = Lib.document.body;
 		// create the marker
 		hoverLayerMarker = Lib.document.createElement("div");
 		hoverLayerMarker.className = HOVER_LAYER_MARKER_STYLE_NAME;
 		hoverLayerMarker.addEventListener("click", onClickLayerHover, false);
 		hoverLayerMarker.addEventListener("mouseout", onOutLayerHover, false);
-		Lib.document.body.appendChild(hoverLayerMarker);
+		selectionContainer.appendChild(hoverLayerMarker);
 
 		// create the marker
 		selectionLayerMarker = Lib.document.createElement("div");
 		selectionLayerMarker.className = SELECTION_LAYER_MARKER_STYLE_NAME;
 		selectionLayerMarker.addEventListener("click", onClickLayerSelection, false);
-		Lib.document.body.appendChild(selectionLayerMarker);
+		selectionContainer.appendChild(selectionLayerMarker);
 
 		// create the marker
 		hoverMarker = Lib.document.createElement("div");
 		hoverMarker.className = HOVER_MARKER_STYLE_NAME;
 		hoverMarker.addEventListener("click", onClickHover, false);
 		hoverMarker.addEventListener("mouseout", onOutHover, false);
-		Lib.document.body.appendChild(hoverMarker);
+		selectionContainer.appendChild(hoverMarker);
 
 		// create the marker
 		selectionMarker = Lib.document.createElement("div");
 		selectionMarker.className = SELECTION_MARKER_STYLE_NAME;
 		selectionMarker.addEventListener("click", onClickSelection, false);
-		Lib.document.body.appendChild(selectionMarker);
+		selectionContainer.appendChild(selectionMarker);
 
 		// listen to the view events
 		Lib.document.body.addEventListener("mousemove", onMouseMove, false);

@@ -76,9 +76,9 @@ class PublicationViewer extends DisplayObject{
 	public function onPageChange(event:CustomEvent){
 		if (pageModel.selectedItem==null){
 			// open the builder initial page
-			var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME);
-			if (initialPageName != null)
-				Page.openPage(initialPageName, false, null, null, SLPlayerInstanceId);
+//			var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME);
+//			if (initialPageName != null)
+//				Page.openPage(initialPageName, false, null, null, SLPlayerInstanceId);
 		}
 		else{
 			Page.openPage(pageModel.selectedItem.name, false, null, null, publicationModel.application.id, publicationModel.viewHtmlDom);

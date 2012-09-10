@@ -5,6 +5,7 @@ import js.Dom;
 
 import org.slplayer.core.Application;
 import org.slplayer.component.navigation.Page;
+import org.slplayer.component.navigation.Layer;
 import org.slplayer.util.DomTools;
 
 import hscript.Interp;
@@ -32,6 +33,7 @@ class Interpreter{
 
 		"Application": Application,
 		"Page": Page,
+		"Layer": Layer,
 	
 	};
 	/**

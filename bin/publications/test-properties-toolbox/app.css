@@ -1,0 +1,37 @@
+/* 		Silex base styles 			 */
+/* 		Do not edit these styles 	 */
+body
+{
+	margin:0px;
+	padding:0px;
+	font-family:Arial, Helvetica, sans-serif;
+}
+.Layer{
+
+}
+.Page{
+	display: none;
+}
+img{
+	
+}
+p{
+
+}
+.list ul{
+
+}
+.list li{
+
+}
+
+/* 		Publication styles 			 */
+/* 		You can edit these styles 	 */
+
+.button-test1{
+   border-color: yellow;
+    border-width: 10px;
+    float: left;
+    margin-left: 200px;
+    margin-top: 10px;
+}
