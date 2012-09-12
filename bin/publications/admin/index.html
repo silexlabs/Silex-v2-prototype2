@@ -36,10 +36,15 @@
 				<LI class="main"><A href="#sub-menu1" class="LinkToPage" data-group-id="group-menu">File</A><A class="Page" data-group-id="group-menu" name="sub-menu1"></A>
 					<DIV class="container-sub">
 						<UL class="Layer sub-menu1 sub">
-							<LI><A href="#open-dialog" target="_top" class="LinkToPage" data-group-id="group-main">Open</A></LI>
-							<LI><A href="#close-publication" >Close</A></LI>
-							<LI><A href="#toolbox" class="menu-item-disabled">Save</A></LI>
-							<LI><A href="#toolbox" class="menu-item-disabled">Save As</A></LI>
+							<LI><A href="#open-dialog" target="_top" class="LinkToPage" id="background" data-group-id="group-main">New<span>Ctrl+N</span></A></LI>
+							<LI><A href="#close-publication" >New from template<span>Maj+Ctrl+N</span></A></LI>
+							<LI class="open"><A href="#toolbox" class="menu-item-disabled">Open<span>Ctrl+O</span></A></LI>
+							<LI><A href="#toolbox" class="menu-item-disabled">Close<span>Ctrl+W</span></A></LI>
+							<LI><A href="#close-publication" >Save<span>Ctrl+S</span></A></LI>
+							<LI><A href="#toolbox" class="menu-item-disabled">Save as<span>Alt+Ctrl+S</span></A></LI>
+							<LI class="save-as"><A href="#toolbox" class="menu-item-disabled">Save as template<span>Alt+Maj+Ctrl+S</span></A></LI>
+							<LI class="settings"><A href="#toolbox" class="menu-item-disabled">Settings<span>Ctrl+K</span></A></LI>
+							<LI><A href="#toolbox" class="menu-item-disabled">Quit<span>Ctrl+Q</span></A></LI>
 						</UL>
 					</DIV>
 			   </LI>
@@ -59,7 +64,7 @@
 					<DIV class="container-sub">
 						<UL class="Layer sub-menu4 sub-menu4-1 sub">
 							<LI><A href="#toolbox" class="menu-item-disabled">Snippet</A></LI>
-							<LI><A href="#sub-menu4-1" class="LinkToPage" data-group-id="group-menu">Image &gt; </A></LI>
+							<LI><A href="#sub-menu4-1" id="background"class="LinkToPage" data-group-id="group-menu">Image &gt; </A></LI>
 							<LI><A href="#toolbox" class="menu-item-disabled">Table</A></LI>
 						</UL>
 						<A class="Page" data-group-id="group-menu" name="sub-menu4-1"></A>
@@ -75,13 +80,13 @@
 					<DIV class="container-sub">
 						<UL class="Layer sub-menu5 sub-menu5-1 sub">
 							<LI><A href="#welcome" class="menu-item-disabled">Welcome page</A></LI>
-							<LI><A href="#sub-menu5-1" class="LinkToPage" data-group-id="group-menu">Account &gt;</A></LI>
+							<LI><A href="#sub-menu5-1" class="LinkToPage"id="background" data-group-id="group-menu">Account &gt;</A></LI>
 							<LI><A href="#about" class="menu-item-disabled">About</A></LI>
 						</UL>
 						<A class="Page" data-group-id="group-menu" name="sub-menu5-1"></A>
 						<UL class="Layer sub-menu5-1 sub sub-of-sub">
 							<LI><A href="#item-logout" class="menu-item-disabled">Logout</A></LI>
-							<LI><A href="#login-dialog" class="LinkToPage" data-group-id="group-main" target="_top">Login</A></LI>
+							<LI><A href="#login-dialog" id="background"class="LinkToPage" data-group-id="group-main" target="_top">Login</A></LI>
 							<LI><A href="#item-chpwd" class="menu-item-disabled">Change password</A></LI>
 							<LI><A href="#item-users" class="menu-item-disabled">Manage Users</A></LI>
 						</UL>
@@ -91,7 +96,6 @@
 			<!-- ----------	 -->
 			<!-- 	/Menu 	 -->
 			<!-- ----------	 -->
-
 			<!-- ----------	 -->
 			<!-- 	Dialogs	 -->
 			<!-- ----------	 -->

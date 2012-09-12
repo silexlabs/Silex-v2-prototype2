@@ -88,6 +88,9 @@ class Silex {
 	 * Init Silex app
 	 */
 	static public function init(unused:Dynamic=null){
+		// create an SLPlayer app
+		var application = Application.createApplication();
+		application.initDom();
 
 	#if flash
 		// retrieve config data from flashvars, add all flashvars to the meta
@@ -95,7 +98,7 @@ class Silex {
 		for (paramName in Reflect.fields(params)){
 			DomTools.setMeta(paramName, StringTools.urlDecode(Reflect.field(params, paramName)));
 		}
-	#else
+	#elseif js
 		// retrieve initialPageName
 		if (Lib.window.location.hash != "" && DomTools.getMeta(CONFIG_USE_DEEPLINK)!="false"){
 			// hash is the page name after the # in the URL
@@ -123,9 +126,7 @@ class Silex {
 		
 		// init SLPlayer components
 		trace(" application.init "+Lib.document.body);
-		// create an SLPlayer app
-		var application = Application.createApplication();
-		application.init();
+		application.initComponents();
 
 		#if silexDebug
 		haxe.Timer.delay(callback(doAfterInit, application), 1000);

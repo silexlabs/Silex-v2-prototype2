@@ -97,7 +97,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * Apply a value to the view and the model simultanneously
 	 * This dispatches a onPropertyChange event with event.detail set to the PropertyData object 
 	 */
-	public function setProperty(viewHtmlDom:HtmlDom, name:String, value:Null<Dynamic>){
+	public function setProperty(viewHtmlDom:HtmlDom, name:String, value:Null<String>){
 		// trace("setProperty("+viewHtmlDom+", "+name+", "+value+")");
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);

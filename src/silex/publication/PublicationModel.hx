@@ -323,7 +323,8 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		application = Application.createApplication();
 
 		// init SLPlayer
-		application.init(rootElement);
+		application.initDom(rootElement);
+		application.initComponents();
 
 		// initial page
 		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, headHtmlDom);
