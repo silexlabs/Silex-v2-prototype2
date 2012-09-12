@@ -17,6 +17,11 @@ import silex.publication.PublicationService;
 import silex.interpreter.Interpreter;
 
 #if silexClientSide
+import silex.property.PropertyModel;
+import silex.component.ComponentModel;
+import silex.layer.LayerModel;
+import silex.page.PageModel;
+import silex.publication.PublicationModel;
 #end
 
 #if silexServerSide
@@ -83,6 +88,9 @@ class Silex {
 	 * Init Silex app
 	 */
 	static public function init(unused:Dynamic=null){
+		// create an SLPlayer app
+		var application = Application.createApplication();
+		application.initDom();
 
 	#if flash
 		// retrieve config data from flashvars, add all flashvars to the meta
@@ -90,7 +98,7 @@ class Silex {
 		for (paramName in Reflect.fields(params)){
 			DomTools.setMeta(paramName, StringTools.urlDecode(Reflect.field(params, paramName)));
 		}
-	#else
+	#elseif js
 		// retrieve initialPageName
 		if (Lib.window.location.hash != "" && DomTools.getMeta(CONFIG_USE_DEEPLINK)!="false"){
 			// hash is the page name after the # in the URL
@@ -118,9 +126,7 @@ class Silex {
 		
 		// init SLPlayer components
 		trace(" application.init "+Lib.document.body);
-		// create an SLPlayer app
-		var application = Application.createApplication();
-		application.init();
+		application.initComponents();
 
 		#if silexDebug
 		haxe.Timer.delay(callback(doAfterInit, application), 1000);
@@ -129,8 +135,13 @@ class Silex {
 		// execute an action when needed for debug (publication and server config)
 		var debugModeAction = DomTools.getMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION);
 		if (debugModeAction != null){
-			var context = new Hash();
+			var context:Hash<Dynamic> = new Hash();
 			context.set("slpid", application.id);
+			context.set("PublicationModel", PublicationModel);
+			context.set("PageModel", PageModel);
+			context.set("LayerModel", LayerModel);
+			context.set("ComponentModel", ComponentModel);
+			context.set("PropertyModel", PropertyModel);
 			try{
 				Interpreter.exec(StringTools.htmlUnescape(debugModeAction), context);
 			}catch(e:Dynamic){

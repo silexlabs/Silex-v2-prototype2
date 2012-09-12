@@ -5,11 +5,14 @@ import js.Dom;
 import haxe.xml.Fast;
 
 import silex.ModelBase;
-import silex.page.PageModel;
-import silex.component.ComponentModel;
-import silex.layer.LayerModel;
 import silex.publication.PublicationData;
 import silex.interpreter.Interpreter;
+
+import silex.property.PropertyModel;
+import silex.component.ComponentModel;
+import silex.layer.LayerModel;
+import silex.page.PageModel;
+import silex.publication.PublicationModel;
 
 import org.slplayer.core.Application;
 import org.slplayer.util.DomTools;
@@ -320,7 +323,8 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		application = Application.createApplication();
 
 		// init SLPlayer
-		application.init(rootElement);
+		application.initDom(rootElement);
+		application.initComponents();
 
 		// initial page
 		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, headHtmlDom);
@@ -341,8 +345,13 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		#if silexDebug
 		// execute an action when needed for debug (publication and server config)
 		if (currentConfig.debugModeAction != null){
-			var context = new Hash();
+			var context:Hash<Dynamic> = new Hash();
 			context.set("slpid", application.id);
+			context.set("PublicationModel", PublicationModel);
+			context.set("PageModel", PageModel);
+			context.set("LayerModel", LayerModel);
+			context.set("ComponentModel", ComponentModel);
+			context.set("PropertyModel", PropertyModel);
 			trace("slpid = "+ application.id);
 			try{
 				Interpreter.exec(StringTools.htmlUnescape(currentConfig.debugModeAction), context);

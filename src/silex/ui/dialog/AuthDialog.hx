@@ -83,7 +83,7 @@ class AuthDialog extends DialogBase
 		}
 		else{
 			// submit form
-			Page.openPage(LOADING_PAGE_NAME, true, null, SLPlayerInstanceId);
+			Page.openPage(LOADING_PAGE_NAME, true, null, null, SLPlayerInstanceId);
 			haxe.Timer.delay(callback(onLoginError, NETWORK_ERROR),2000);
 			// todo : implement authentication here
 		}
@@ -99,7 +99,7 @@ class AuthDialog extends DialogBase
 	 */
 	private function onLoginError(msg:String){
 		trace("onLoginError "+msg);
-		Page.openPage(dialogName, true, null, SLPlayerInstanceId);
+		Page.openPage(dialogName, true, null, null, SLPlayerInstanceId);
 		var inputElements:HtmlCollection<HtmlDom> = rootElement.getElementsByClassName(ERROR_TEXT_FIELD_CLASS_NAME);
 		if(inputElements.length>0){
 			inputElements[0].innerHTML = msg;

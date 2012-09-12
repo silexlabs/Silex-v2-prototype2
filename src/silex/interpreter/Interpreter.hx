@@ -3,14 +3,9 @@ package silex.interpreter;
 import js.Lib;
 import js.Dom;
 
-import silex.property.PropertyModel;
-import silex.component.ComponentModel;
-import silex.layer.LayerModel;
-import silex.page.PageModel;
-import silex.publication.PublicationModel;
-
 import org.slplayer.core.Application;
 import org.slplayer.component.navigation.Page;
+import org.slplayer.component.navigation.Layer;
 import org.slplayer.util.DomTools;
 
 import hscript.Interp;
@@ -38,12 +33,8 @@ class Interpreter{
 
 		"Application": Application,
 		"Page": Page,
-		
-		"PropertyModel": PropertyModel,
-		"ComponentModel": ComponentModel,
-		"LayerModel": LayerModel,
-		"PageModel": PageModel,
-		"PublicationModel": PublicationModel,
+		"Layer": Layer,
+	
 	};
 	/**
 	 * execute a set of actions

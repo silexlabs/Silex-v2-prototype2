@@ -6,7 +6,7 @@
 -lib hscript
 
 -main silex.Silex
---macro org.slplayer.core.Builder.create('index.html')
+--macro org.slplayer.core.Builder.create('index-builder.html')
 
 #-D slpdebug
 -D disableEmbedHtml
@@ -15,4 +15,5 @@
 
 -D silexClientSide
 -D silexDebug
+
 
