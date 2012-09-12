@@ -29,7 +29,7 @@ class TextStyleEditor extends EditorBase
 	 * reset the values
 	 */
 	override private function reset() {
-		trace("reset ");
+		// trace("reset ");
 		// font family
 		setInputValue("text_font", "");
 		// font size
@@ -57,7 +57,7 @@ class TextStyleEditor extends EditorBase
 	 * display the property value
 	 */
 	override private function load(element:HtmlDom) {
-		trace("load "+element);
+		// trace("load "+element);
 
 		// font family
 		var value = element.style.fontFamily;
@@ -121,7 +121,7 @@ class TextStyleEditor extends EditorBase
 	 * apply the property value
 	 */
 	override private function apply() {
-		trace("TextStyleEditor apply "+selectedItem);
+		// trace("TextStyleEditor apply "+selectedItem);
 		var propertyModel = PropertyModel.getInstance();
 
 		// font family

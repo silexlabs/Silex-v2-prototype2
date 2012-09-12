@@ -5,6 +5,8 @@ body
 	margin:0px;
 	padding:0px;
 	font-family:Arial, Helvetica, sans-serif;
+
+	background:#464B50;
 }
 .Layer{
 
@@ -13,7 +15,7 @@ body
 	display: none;
 }
 button a{
-	color: black;
+	color: blue;
 	text-decoration: none;
 }
 img{
@@ -28,6 +30,388 @@ p{
 .list li{
 
 }
+a.LinkToPage{
+	color:Gray;
+
+
+
+	
+}
+a.LinkToPage:hover{
+	color:LightGray;
+
+}
+a.LinkToPage:active{
+	color:Gray;
+
+}
+.group-main{
+	position:relative;
+}
+
+.header{
+margin-left:auto;
+margin-right:auto;
+max-width:300px;
+
+}
+
+.container{
+
+	max-width:360px;
+	max-height:100%;
+	margin:0 auto;
+	z-index:3;
+	position:relative;
+}
+
+.form{
+	max-width:100%;
+	background:Lightgray;
+	padding-top:17px;
+	border-radius:3px;
+	height:111px;
+	margin:0 auto;
+	padding-left:18px;
+	z-index:3;
+}
+
+.login-dialog fieldset{
+
+max-width:300px;
+border:none;
+margin-left:auto;
+margin-right:auto;
+
+
+}
+
+
+.login-dialog fieldset .login{
+
+	
+	display:block;
+	position:absolute;
+	padding-left:11px;
+	color:DimGray;
+	font-size:15px;
+
+}
+
+.login-dialog fieldset .password{
+	
+
+	display:block;
+	position:absolute;
+	padding-left:11px;
+	color:DimGray;
+	font-size:15px;
+	margin-top:1px;
+
+}
+
+.login-dialog fieldset .input-field-login{
+	margin-left:95px;
+	
+
+}
+
+.login-dialog fieldset .input-field-pass{
+	margin-left:95px;
+
+
+}
+
+.login-dialog fieldset .input-field-login:focus{
+	margin-left:95px;
+	outline-color:DimGray;
+
+}
+
+.login-dialog fieldset .input-field-pass:focus{
+outline-color:DimGray;
+	
+}
+.assets{
+	max-width:100%;
+	max-height:19px;
+
+}
+
+.login-dialog .validate-button{
+    cursor:pointer;
+ 	float:right;
+   position:relative;
+   margin-left:14px;
+
+}
+.login-dialog .validate-button:hover{
+    cursor:pointer;
+    color:green;
+
+    
+   
+}
+.login-dialog .validate-button:active{
+    cursor:pointer;
+    color:green;
+
+
+}
+
+.login-dialog .cancel-button{
+    cursor:pointer;
+    float:right;
+    position:relative;
+ 
+
+
+
+}
+.login-dialog .cancel-button:hover{
+    cursor:pointer;
+    color:red;
+   
+}
+.login-dialog .cancel-button:active{
+    cursor:pointer;
+    color:red;
+
+}
+.solid{
+	height:1px;
+	width:100%;
+	background:LightGray;
+	margin-top:14px;
+}
+.solid-2{
+	margin-top:63px;
+	height:1px;
+	width:100%;
+	background:LightGray;
+}
+p.error-text{
+
+
+	color:#FFFF00;
+	display:block;
+	max-width:159px;
+	height:20px;
+	padding-top:58px;
+	margin-left:auto;
+	margin-right:auto;
+
+}
+
+footer{
+	color:LightGray;
+	padding-left:4px;
+	display:block;
+	width:100%;
+	margin-top:23px;
+
+}
+
+footer p a{
+	font-size:14px;
+	text-decoration:none;
+	color:LightGray;
+}
+
+footer p a:hover{
+opacity:0.7;
+
+}
+footer p a:active{
+opacity:1;
+
+}
+
+.disabled-link{
+	color:LightGray;
+	opacity:0.7;
+}
+.dialog-background{
+top:0;
+width:100%;
+height:100%;
+left:0;
+z-index:1;
+position:absolute;
+background-color:Black;
+opacity:0.5;
+
+
+}
+
+
+.container-2{
+
+	max-width:633px;
+	max-height:100%;
+	margin-left:auto;
+	margin-right:auto;
+	z-index:3;
+	position:relative;
+	border: 1px solid DimGray;
+	border-radius:3px;
+}
+
+.header-2{
+
+width:100%;
+
+}
+.header-2 img{
+	margin-left:67px;
+
+}
+.back-header{
+	
+	width:100%;
+	border-top:1px black solid;
+	height:17px;
+
+}
+legend{
+
+	float:left;
+	display:block;
+	padding-top:5px;
+	padding-left:20px;
+	
+}
+
+label{
+	
+	float:right;
+	display:block;
+	padding-right:250px;
+	padding-top:5px;
+	
+}
+
+.publications{
+	max-width:100%;
+	background:Gainsboro;
+	border-radius:3px;
+	height:160px;
+	z-index:3;
+	padding:0;
+	margin:0;
+	
+}
+
+.cont-1{
+	width:100%;
+	background:Gainsboro;
+	height:100%;
+	position:relative;
+	float:left;
+	padding:0;
+	margin:0;
+
+}
+
+
+.foot{
+	clear:both;
+	position:relative;
+	width:100%;
+	height:37px;
+	background:Gainsboro;
+
+}
+.foot .validate-button{
+	cursor:pointer;
+ 	float:right;
+    position:relative;
+    margin-left:14px;
+    margin-top:10px;
+    margin-right:9px;
+}
+
+.foot .validate-button:hover{
+	cursor:pointer;
+    color:green;
+}
+
+.foot .validate-button:active{
+	cursor:pointer;
+    color:green;
+}
+
+
+.foot .cancel-button{
+	cursor:pointer;
+    float:right;
+    position:relative;
+    margin-top:10px;
+}
+
+.foot .cancel-button:hover{
+	cursor:pointer;
+	color:red;
+
+}
+
+.foot .cancel-button:active{
+	cursor:pointer;
+	color:red;
+    
+}
+
+
+.solid-3{
+	height:1px;
+	width:97%;
+	background:White;
+	margin-left:auto;
+	margin-right:auto;
+	
+}
+.solid-4{
+	height:1px;
+	width:97%;
+	background:DimGray;
+	margin-left:auto;
+	margin-right:auto;
+
+}
+
+ul.PublicationList{
+	font-size:12px;
+	padding-right:7px;
+	padding-top:8px;
+	list-style-type: none;
+	margin-left:-17px;
+
+
+}
+ul.PublicationList a{
+	text-decoration: none;
+	color:#3C3C3C;
+
+
+}
+ul.PublicationList a:hover{
+	color:black;
+
+}
+
+
+.column{
+	float:right;
+	padding-right:3px;
+	font-size:12px;
+	color:DimGray;
+}
+
+
+
+
+
+
 
 /* 		Publication styles 			 */
 /* 		You can edit these styles 	 */

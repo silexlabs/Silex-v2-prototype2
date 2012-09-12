@@ -34,7 +34,19 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** To do **
 
-== edition of properties ==
+
+tiny-mce.html
+
+fin toolbox props
++anims de transition show/hide
++styles de textes contextuels (boutons, textes, ??)
+ordre dans le flow?
+save
+selection move
+toolbox page
+toolbox media
+selection resize / rotate
+editeur texte
 
 en cours
 - PropertiesToolbox, 
@@ -51,7 +63,8 @@ en cours
   Positioning
 - UrlInput, BackgroundInput, ...
 
-reprendre la classificaiton de tinymce pour les css
+
+== edition of properties ==
 
 the toolboxes / dialogs
 
@@ -70,7 +83,7 @@ properties of the pages
 
 * title, name/deeplink
 * initialPage (true/false)
-* order (index in the page list) - 2D order??
+* order (index in the page list) - 2D order for wire-like publications??
 
 properties of the layers 
 
@@ -124,6 +137,7 @@ En cours
 **refactoring**
 
 mise a jour version Cocktail => typedef audio et video => changer dans SLPLayer Layer
+contexts: generalize the toolbox contexts
 
 selection
 - detecter en fonction d'un "hittest"?
@@ -137,11 +151,13 @@ reunir template et interpreter dans un package ?
 permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html aux liens?)
 
 * bugs
+  * fermeture de page ne tient pas compte des groupes enfants
   * bugfix Lib.document.innerHTML call makes an error 500 on the server https://github.com/silexlabs/Cocktail/issues/217
   * workaround, bug https://github.com/silexlabs/Cocktail/issues/207
   * init the document with non empty body, workaround see  https://github.com/silexlabs/Cocktail/issues/208
   * memory leak in the Layer and transition classes
   * in the List class, listen to the click on the container instead of each cell, to prevent memory leak
+  * chrome and color picker : read ok, load bug
 
 improvements
 * add the manager, not found etc. to distrib ?
