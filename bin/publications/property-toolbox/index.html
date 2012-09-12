@@ -22,11 +22,15 @@
 			Timer.delay(function(){
 				var element = Lib.document.getElementById('testForToolBox');
 				trace('properties toolbox - Selecting element '+element);
-				// ComponentModel.getInstance().setSelectedItem(element);
-				var layer = PublicationModel.getInstance().application.getAssociatedComponents(element, Layer).first();
-				trace('select layer '+layer);
-				LayerModel.getInstance().setSelectedItem(layer);
-				trace('properties toolbox - Selecting element '+element);
+				
+				// component case
+				ComponentModel.getInstance().setSelectedItem(element);
+				
+				// layer case
+				//var layer = PublicationModel.getInstance().application.getAssociatedComponents(element, Layer).first();
+				//trace('select layer '+layer);
+				//LayerModel.getInstance().setSelectedItem(layer);
+				//trace('properties toolbox - Selecting element '+element);
 			}, 1000)
 			"></META>
 	</HEAD>

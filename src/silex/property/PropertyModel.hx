@@ -96,9 +96,10 @@ class PropertyModel extends ModelBase<PropertyData>{
 	/**
 	 * Apply a value to the view and the model simultanneously
 	 * This dispatches a onPropertyChange event with event.detail set to the PropertyData object 
+	 * @param 	value 	a value to be set on the view and html dom elements, can be null to remove the attribute, and of different types, e.g. Bool for the autostart param of an audio element 
 	 */
-	public function setProperty(viewHtmlDom:HtmlDom, name:String, value:Null<String>){
-		// trace("setProperty("+viewHtmlDom+", "+name+", "+value+")");
+	public function setProperty(viewHtmlDom:HtmlDom, name:String, value:Null<Dynamic>){
+		// trace("setProperty("+viewHtmlDom+", "+name+", "+Type.typeof(value)+")");
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
 		// apply the change 
