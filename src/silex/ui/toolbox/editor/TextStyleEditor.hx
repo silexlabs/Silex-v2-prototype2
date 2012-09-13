@@ -111,9 +111,26 @@ class TextStyleEditor extends EditorBase
 		var value = element.style.textTransform;
 		setInputValue("text_case", value);
 		// color
-		var value = element.style.color;
-		setInputValue("text_color", value);
-		// color
+		var value:String = element.style.color;
+		if(StringTools.startsWith(value.toLowerCase(), "rgb(") || StringTools.startsWith(value.toLowerCase(), "rgba(")){
+			var decValue:Int = 0;
+			// remove rgb( or argb(
+			value = value.substr(value.indexOf("(")+1);
+			// remove everything after ")"
+			value = value.substr(0, value.lastIndexOf(")"));
+			var values = value.split(",");
+			decValue = Std.parseInt(values[0])*255*255 + Std.parseInt(values[1])*255 + Std.parseInt(values[2]);
+			if (values.length == 4){
+				decValue *= 255;
+				decValue += Math.round(Std.parseFloat(values[3])*255);
+			}
+			// convert to hex
+			setInputValue("text_color", "#" + StringTools.hex(decValue, 6));
+			trace("load "+values+" -> "+decValue+" -> "+StringTools.hex(decValue));
+		}else{
+			setInputValue("text_color", value);
+		}
+		// decoration
 		var value = element.style.textDecoration;
 		setInputValue("text_decoration", value);
 	}

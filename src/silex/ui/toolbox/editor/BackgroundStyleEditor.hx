@@ -14,6 +14,7 @@ import org.slplayer.util.DomTools;
  * Editor for background styles. 
  * Editors are SLPlayer components, in charge of handling HTML input elements, 
  * in order to let the user enter values and edit css style values or tag attributes.
+ * todo: background alpha
  */
 @tagNameFilter("fieldset div")
 class BackgroundStyleEditor extends EditorBase 
@@ -56,8 +57,25 @@ class BackgroundStyleEditor extends EditorBase
 		trace("load "+element);
 
 		// color
-		var value = element.style.backgroundColor;
-		setInputValue("background_color", value);
+		var value:String = element.style.backgroundColor;
+		if(StringTools.startsWith(value.toLowerCase(), "rgb(") || StringTools.startsWith(value.toLowerCase(), "rgba(")){
+			var decValue:Int = 0;
+			// remove rgb( or argb(
+			value = value.substr(value.indexOf("(")+1);
+			// remove everything after ")"
+			value = value.substr(0, value.lastIndexOf(")"));
+			var values = value.split(",");
+			decValue = Std.parseInt(values[0])*255*255 + Std.parseInt(values[1])*255 + Std.parseInt(values[2]);
+			if (values.length == 4){
+				decValue *= 255;
+				decValue += Math.round(Std.parseFloat(values[3])*255);
+			}
+			// convert to hex
+			setInputValue("background_color", "#" + StringTools.hex(decValue, 6));
+			trace("load "+values+" -> "+decValue+" -> "+StringTools.hex(decValue));
+		}else{
+			setInputValue("background_color", value);
+		}
 		
 		// image
 		// values is a list of "," separated elements which can be url('URL'), none or inherit
@@ -67,17 +85,20 @@ class BackgroundStyleEditor extends EditorBase
 			var value = values[idx];
 			value = StringTools.trim(value);
 			if(StringTools.startsWith(value.toLowerCase(), "url")){
+				// remove url(
+				value = value.substr(value.indexOf("(")+1);
+				// remove everything after ")"
+				value = value.substr(0, value.lastIndexOf(")"));
+				value = StringTools.trim(value);
+
+				// remove the quotes " and '
 				if(StringTools.startsWith(value, "\"") || StringTools.startsWith(value, "'")){
 					// remove the quotes
 					value = value.substr(1);
 					value = value.substr(0, value.length-1);
 					value = StringTools.trim(value);
 				}
-				// remove url(
-				value = value.substr(value.indexOf("(")+1);
-				// remove everything after "
-				value = value.substr(0, value.lastIndexOf(")"));
-				value = StringTools.trim(value);
+				// absolute url to relative
 				value = abs2rel(value);
 			}
 			urls.push(value);
