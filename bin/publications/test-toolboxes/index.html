@@ -56,6 +56,9 @@
 			<div>
 				Test of a paragraph. And this is <a href="#page2" class="LinkToPage" >a link to page #2</a>
 			</div>
+			<div>
+				Test of a new page: <a href="#test" class="LinkToPage" >a link to "test"</a>
+			</div>
 		</div>
 		<A class="Page" name="page2" >Page 2</A>
 		<div class="Layer page2">
@@ -65,6 +68,15 @@
 			</div>
 			<div>
 				This page should not been shown unless you specified <a href="#page2" >#page2 in the deeplink</a>!
+			</div>
+		</div>
+		<div class="Layer test">
+			<div>
+				<h1>Test of a new page</h1>
+				<p>Back to <a href="#page1" class="LinkToPage" >page #1</a></p>
+			</div>
+			<div>
+				This page should not been shown unless you created a page named "test"!
 			</div>
 		</div>
 		<div class="Layer page1 page2">
