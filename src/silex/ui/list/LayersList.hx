@@ -3,26 +3,27 @@ package silex.ui.list;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.navigation.Page;
+import org.slplayer.component.navigation.Layer;
 import org.slplayer.component.list.List;
 import org.slplayer.util.DomTools;
 
-import silex.page.PageModel;
+import silex.layer.LayerModel;
 import silex.publication.PublicationModel;
 import silex.property.PropertyModel;
 
 /**
- * list component used to visualize and manipulate pages 
+ * list component used to visualize and manipulate layers 
+ * by default it displays only the masters, i.e. the layers which nodes have a "data-master" attribute
  * listen to the model events to update the list 
- * @example 	<ul class="PageList"><li>::name::</li></ul> displays the name of the items
+ * @example 	<ul class="LayersList"><li>::rootElement.className:: (::status::)</li></ul> displays the name of the items
  */
 @tagNameFilter("ul")
-class PageList extends List<Page>
+class LayersList extends List<Layer>
 {
 	/**
 	 * Information for debugging, e.g. the class name
 	 */ 
-	public static inline var DEBUG_INFO = "PageList class";
+	public static inline var DEBUG_INFO = "LayersList class";
 	/**
 	 * constructor
 	 */
@@ -30,19 +31,19 @@ class PageList extends List<Page>
 		super(rootElement, SLPId);
 
 		// store a reference to the model
-		var pageModel = PageModel.getInstance();
+		var layerModel = LayerModel.getInstance();
 
 		// update the data when the publication data changed
-		pageModel.addEventListener(PageModel.ON_LIST_CHANGE, onListChange, DEBUG_INFO);
+		layerModel.addEventListener(LayerModel.ON_LIST_CHANGE, onListChange, DEBUG_INFO);
 
 		// update the selection
-		pageModel.addEventListener(PageModel.ON_SELECTION_CHANGE, onListChange, DEBUG_INFO);
+		layerModel.addEventListener(LayerModel.ON_SELECTION_CHANGE, onListChange, DEBUG_INFO);
 
 		// update the selection
 		PropertyModel.getInstance().addEventListener(PropertyModel.ON_PROPERTY_CHANGE, onListChange, DEBUG_INFO);
 
 		// open the page when the selection changes
-		onChange = onSelectPage;
+		onChange = onSelectLayer;
 	}
 	/**
 	 * refreh list data, and then redraw the display by calling doRedraw
@@ -53,8 +54,26 @@ class PageList extends List<Page>
 		var publicationModel = PublicationModel.getInstance();
 		// if a publication is loaded only
 		if(publicationModel.application != null){
-			dataProvider = PageModel.getInstance().getClasses(publicationModel.viewHtmlDom, publicationModel.application.id, Page);
-			selectedItem = PageModel.getInstance().selectedItem;
+			// get the list of all layers
+			var nodes = DomTools.getElementsByAttribute(publicationModel.viewHtmlDom, "data-master", "*");
+			// get a list of instances 
+			var layers:Array<Layer> = new Array();
+			// browse all nodes
+			for (idx in 0...nodes.length){
+				// retrieve the class instance associated with this node
+				var instances = publicationModel.application.getAssociatedComponents(nodes[idx], Layer);
+
+				if (instances.length == 1){
+					// store the first instance
+					layers.push(instances.first());
+				}
+				else{
+					throw ("Error: there should be 1 and only 1 instance of Layer associated with this node, and there is "+instances.length);
+				}
+			}
+
+			dataProvider = layers;
+			selectedItem = LayerModel.getInstance().selectedItem;
 		}
 		trace("reloadData "+dataProvider);
 		super.reloadData();
@@ -73,10 +92,10 @@ class PageList extends List<Page>
 	/**
 	 * callback for the list, dispatched when the user selection changed
 	 */
-	private function onSelectPage(page:Page){
-		if (PageModel.getInstance().selectedItem != page){
-			trace("onSelectPage("+page+")");
-			PageModel.getInstance().selectedItem = page;
+	private function onSelectLayer(layer:Layer){
+		if (LayerModel.getInstance().selectedItem != layer){
+			trace("onSelectLayer("+layer+")");
+			LayerModel.getInstance().selectedItem = layer;
 		}
 	}
 }

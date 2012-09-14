@@ -98,6 +98,57 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * This dispatches a onPropertyChange event with event.detail set to the PropertyData object 
 	 * @param 	value 	a value to be set on the view and html dom elements, can be null to remove the attribute, and of different types, e.g. Bool for the autostart param of an audio element 
 	 */
+	public function setAttribute(viewHtmlDom:HtmlDom, name:String, value:Null<Dynamic>){
+		trace("setAttribute("+viewHtmlDom+", "+name+", "+Type.typeof(value)+")");
+		// retrieve the model of the component 
+		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
+		// apply the change 
+		try{
+			if (value == null){
+				viewHtmlDom.removeAttribute(name);
+				modelHtmlDom.removeAttribute(name);
+			}
+			else{			
+				viewHtmlDom.setAttribute(name, value);
+				modelHtmlDom.setAttribute(name, value);
+			}
+		}
+		catch(e:Dynamic){
+			throw("Error: the selected element has no field "+name+" or there was an error ("+e+")");
+		}
+
+		// create the property data object
+		var propertyData:PropertyData = {
+			name: name,
+			value: value,
+			viewHtmlDom: viewHtmlDom,
+			modelHtmlDom: modelHtmlDom,
+		};
+		// dispatch the event 
+		dispatchEvent(createEvent(ON_PROPERTY_CHANGE, propertyData), debugInfo);
+	}
+	/**
+	 * Retrieve a value in the model
+	 */
+	public function getAttribute(viewHtmlDom:HtmlDom, name:String):Dynamic{
+		var value:String;
+		// retrieve the model of the component 
+		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
+		// get the value
+		try{
+			value = modelHtmlDom.getAttribute(name);
+		}
+		catch(e:Dynamic){
+			throw("Error: the selected element has no field "+name+" or there was an error ("+e+")");
+		}
+		// create the property data object
+		return value;
+	}
+	/**
+	 * Apply a value to the view and the model simultanneously
+	 * This dispatches a onPropertyChange event with event.detail set to the PropertyData object 
+	 * @param 	value 	a value to be set on the view and html dom elements, can be null to remove the attribute, and of different types, e.g. Bool for the autostart param of an audio element 
+	 */
 	public function setProperty(viewHtmlDom:HtmlDom, name:String, value:Null<Dynamic>){
 		// trace("setProperty("+viewHtmlDom+", "+name+", "+Type.typeof(value)+")");
 		// retrieve the model of the component 
@@ -143,7 +194,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * This dispatches a onStyleChange event with event.detail set to the PropertyData object 
 	 */
 	public function setStyle(viewHtmlDom:HtmlDom, name:String, value:String){
-		// trace("setStyle("+viewHtmlDom+", "+name+", "+value+")");
+		trace("setStyle("+viewHtmlDom+", "+name+", "+value+")");
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
 		// apply the change 
@@ -169,6 +220,8 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * Retrieve a value in the model
 	 */
 	public function getStyle(viewHtmlDom:HtmlDom, name:String):String{
+		trace("getStyle("+viewHtmlDom+", "+name+")");
+
 		var value:String;
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
@@ -186,7 +239,9 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * Retrieve a reference to the selected component or layer in the PublicationModel::modelHtmlDom object
 	 * Todo: same for pages
 	 */
-	public function getModel(viewHtmlDom):HtmlDom{
+	public function getModel(viewHtmlDom:HtmlDom):HtmlDom{
+		//trace("getModel("+viewHtmlDom.className+") - "+LayerModel.getInstance().selectedItem);
+
 		if (ComponentModel.getInstance().selectedItem == null && LayerModel.getInstance().selectedItem == null)
 			throw ("Error: no component nor layer is selected.");
 

@@ -4,7 +4,8 @@ body
 {
 	margin:0px;
 	padding:0px;
-	font-family:Arial, Helvetica, sans-serif;
+	font-family:Tahoma, Arial, Helvetica, sans-serif;
+
 }
 .Layer{
 
@@ -13,7 +14,7 @@ body
 	display: none;
 }
 button a{
-	color: black;
+	color: green;
 	text-decoration: none;
 }
 img{
@@ -34,7 +35,7 @@ p{
 .PublicationViewer{
 	float: left;
 	overflow: auto;
-	width: 79%;
+	width: 83%;
 	height: 100%;
 	border: 2px black solid;
 }
@@ -54,10 +55,10 @@ p{
 	display: none;
 }
 .silex-toolbox {
-	width: 20%;
+	width: 19%;
 	height: 100%;
 	position: absolute;
-	background-color: #CCCCCC;
+	background-color: #F0F0F0;
 	padding: 0;
 	margin: 0;
 	border: 2px black solid;
@@ -69,17 +70,325 @@ p{
 .silex-toolbox .panel-body{
 	overflow: auto;
 }
-.silex-toolbox.panel-header{
+.panel-header{
+	width:100%;
+
+
 }
 .silex-toolbox .draggable-dragzone{
-	background-color: green;
+	background-color: Gainsboro;
+	width:100%;
+	position:relative;
+	height:25px;
+
 }
+.title{
+width:100%;
+height:100%;
+position: absolute;
+
+
+}
+.title h2{
+	font-size: 15px;
+	color:#3C3C3C;
+	margin-left:37%;
+	margin-top:4px;
+	position:absolute;
+
+}
+
 .silex-toolbox .panel-footer {
 }
 .silex-toolbox textarea,input {
-	width: 100%;
+	width: 21%;
+	float:right;
+
+}
+input.text_font{
+	width: 32%;
+	float:right;
+}
+input.text_color{
+	width:30%;
+}
+input.background_color{
+	margin-top:-18px;
+	width:31%;
 }
 .silex-toolbox textarea {
 	height: auto;
 	min-height: 100px;
+	min-width:100%;
+
 }
+fieldset input.name-property{
+	min-width:88%;
+	margin-left:13px;
+	margin-top:5px;
+	float:none;
+
+}
+
+fieldset.PropertyEditor{
+	margin-left:12px;
+	width:75%;
+
+}
+
+fieldset.Backgroundstyleeditor{
+	margin-left:auto;
+	margin-right:auto;
+	width:83%;
+
+}
+.style-block-tab{
+	margin-left:auto;
+	margin-right:auto;
+	width:97%;
+}
+
+.style-box-tab{
+	margin-left:auto;
+	margin-right:auto;
+	width:95%;
+
+}
+
+.style-positioning-tab{
+	margin-left:auto;
+	margin-right:auto;
+	width:95%;
+
+}
+.group-property-toolbox{	@
+	
+	min-width:16%;
+
+}
+select#box_width_measurement{
+	float:right;
+}
+
+fieldset.PropertyEditor{
+
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+	height:168px;
+}
+fieldset.PropertyEditor legend{
+	margin-left:auto;
+	margin-right:auto;
+	font-weight:bold;
+
+
+}
+fieldset.TextStyleEditor{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+	width:79%;
+}
+fieldset.TextStyleEditor legend{
+	margin-left:auto;
+	margin-right:auto;
+	font-weight:bold;
+
+}
+fieldset.Backgroundstyleeditor{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+	width:75%;
+}
+fieldset.Backgroundstyleeditor legend{
+	margin-left:auto;
+	margin-right:auto;
+	font-weight:bold;
+
+}
+.style-block-tab fieldset{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+	min-width:91%;
+
+}
+.style-block-tab fieldset legend{
+	margin-left:auto;
+	margin-right:auto;
+	font-weight:bold;
+
+
+}
+.style-box-tab fieldset{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+	width:80%;
+}
+.style-box-tab fieldset legend{
+	margin-left:auto;
+	margin-right:auto;
+	font-weight:bold;
+
+}
+.style-positioning-tab fieldset{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+	width:75%;
+}
+.style-positioning-tab fieldset legend{
+	margin-left:auto;
+	margin-right:auto;
+	font-weight:bold;
+
+}
+
+.context-layer {
+margin-left:20%;
+margin-top:7%;
+margin-bottom:1%;
+height:33%;
+min-width:51%;
+}
+
+
+
+fieldset.context-layer .master-property{
+
+min-width:105px;
+}
+
+
+fieldset.RawHtmlEditor{
+	margin-left:auto;
+	margin-right:auto;
+	width:75%;
+	margin-top:8px;
+	
+}
+fieldset.RawHtmlEditor legend{
+	font-size:12px;	
+	margin-left:auto;
+	margin-right:auto;
+}
+
+ul.tabs{
+	margin-left:-24px;
+}
+ul.tabs li{
+	list-style-type: none;
+	display: inline-block;
+}
+ul.tabs li a{
+/*
+	text-decoration: none;
+*/
+	color:#3C3C3C;
+	font-size:12px;
+}
+ul.tabs li a:hover{
+color:Black;
+
+}
+
+select{
+	width:31%;
+	float:right;
+	margin-left:5px;
+}
+select#box_float{
+	
+	float:right;
+}
+select#box_clear{
+	float:right;
+}
+
+input.text_lineheight{
+	float:right;
+}
+select#block_text_indent_measurement{
+	float:right;
+	margin-left:3;
+}
+select#block_wordspacing_measurement{
+	margin-left:0px;
+	margin-top:-5%;
+}
+select#block_wordspacing{
+	margin-left:3px;
+	margin-top:-5%;
+}
+select#block_letterspacing{
+	margin-left:3px;
+	margin-top:-5%;
+}
+select#block_letterspacing_measurement{
+	margin-left:0;
+	padding:0;
+	margin-top:-5%;
+}
+
+select.unit{
+	float:right;
+}
+input#block_text_indent{
+	width:24%;
+}
+input.value{
+	float:right;
+	width:30%;
+}
+input.radio{
+	float:left;
+	margin-right:13%;
+}
+
+label.hop{
+	margin-right:24px;
+}
+label.hop2{
+	margin-right:36px;
+}
+select.background_hpos{margin-top:9%;}
+select.background_vpos{margin-top:9%;}
+input.background_vpos_num{width:24%;}
+input.background_hpos_num{width:24%;}
+input.value-radio{
+	float:left;
+}
+select.text_size{
+	margin-left:1px;
+}
+select.text_size_unit{
+	margin-left:1px;
+}
+select.text_case{
+	margin-left:1px
+	 }
+#positioning_zindex{
+	width:31%;
+}
+.display-property{
+	width:57%;
+	margin-left:36px;
+	float:none;
+
+}
+.position-property{
+	width:57%;
+	margin-left:36px;
+	float:none;
+}
+.float-property{
+	width:57%;
+	margin-left:36px;
+	float:none;
+}
+/* **************** */
+/* /Properties Toolbox */
+/* **************** */

@@ -64,7 +64,7 @@ class PropertyEditor extends EditorBase
 	 * display the property value
 	 */
 	override private function load(element:HtmlDom) {
-		// trace("load "+element);
+		trace("load "+element);
 
 		// handle the context
 		var contextArray = [];
@@ -121,7 +121,7 @@ class PropertyEditor extends EditorBase
 		else
 			setInputValue("controls-property", "checked", "checked");
 
-		var value:Bool = propertyModel.getProperty(element, "master");
+		var value:Bool = propertyModel.getAttribute(element, "data-master");
 		if (value == null || value == false) 
 			setInputValue("master-property", null, "checked");
 		else
@@ -184,6 +184,9 @@ class PropertyEditor extends EditorBase
 		propertyModel.setProperty(selectedItem, "loop", value);
 
 		var value:Bool = getInputValue("master-property", "checked");
-		propertyModel.setProperty(selectedItem, "master", value);
+		if (value == true)
+			propertyModel.setAttribute(selectedItem, "data-master", "true");
+		else
+			propertyModel.setAttribute(selectedItem, "data-master", null);
 	}
 }

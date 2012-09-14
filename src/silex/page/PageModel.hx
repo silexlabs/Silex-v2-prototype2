@@ -71,33 +71,6 @@ class PageModel extends ModelBase<Page>{
 		model.hoveredItem = null;
 		return super.setSelectedItem(item);
 	}
-	public function getPages():Array<Page>{
-		// get all pages, i.e. all element with class name "page"
-		var viewHtmlDom = PublicationModel.getInstance().viewHtmlDom;
-		var pages:Array<Page> = new Array();
-
-		// if a publication is loaded only
-		if (viewHtmlDom == null)
-			return pages;
-			
-		// get the page nodes
-		var pageNodes:HtmlCollection<HtmlDom> = Page.getPageNodes(PublicationModel.getInstance().application.id, viewHtmlDom);
-
-		// browse all pages
-		for (pageIdx in 0...pageNodes.length)
-		{
-			// retrieve the Page class instance associated with this node
-			var pageInstances:List<Page> = PublicationModel.getInstance().application.getAssociatedComponents(pageNodes[pageIdx], Page);
-			if (pageInstances.length == 1){
-				// store the first instance
-				pages.push(pageInstances.first());
-			}
-			else{
-				throw ("Error: there should be 1 and only 1 instance of Page associated with this node, and there is "+pageInstances.length+ " - "+pageNodes[pageIdx].className);
-			}
-		}
-		return pages;
-	}
 	/**
 	 * add a page to the view and model of the publication
 	 * dispatch the change event
@@ -123,21 +96,26 @@ class PageModel extends ModelBase<Page>{
 		modelHtmlDom.appendChild(newNode.cloneNode(true));
 		viewHtmlDom.appendChild(newNode);
 
+		PublicationModel.getInstance().prepareForEdit(newNode);
+
 		// create the Page instance
 		var newPage:Page = new Page(newNode, publicationModel.application.id);
+		//publicationModel.application.addAssociatedComponent(newNode, newPage);
 		newPage.init();
 
 		// create a node for an empty new layer
 		var newNode = Lib.document.createElement("div");
 		newNode.className = "Layer "+className;
-		PublicationModel.getInstance().prepareForEdit(newNode);
 
 		// add to the view and model DOMs
 		modelHtmlDom.appendChild(newNode.cloneNode(true));
 		viewHtmlDom.appendChild(newNode);
 
+		PublicationModel.getInstance().prepareForEdit(newNode);
+
 		// create the Layer instance
 		var newLayer:Layer = new Layer(newNode, publicationModel.application.id);
+		//publicationModel.application.addAssociatedComponent(newNode, newLayer);
 		newLayer.init();
 
 		// open the new page
@@ -150,7 +128,7 @@ class PageModel extends ModelBase<Page>{
 	 * build a new unique name
 	 */
 	public function getNewName():String{
-		return "New Page Name"+Math.round(Math.random()*999999);
+		return "New Page Name "+Math.round(Math.random()*999999);
 	}
 	/**
 	 * remove a page from the view and model of the publication

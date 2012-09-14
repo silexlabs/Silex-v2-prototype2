@@ -269,7 +269,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	public function prepareForEdit(modelDom:HtmlDom) {
 		//trace("prepareForEdit ("+modelDom+", "+viewDom+"));
 		// Take only HtmlDom elements, not TextNode
-		if (modelDom.className == null){
+		if (modelDom.nodeType != 1){
 			return;
 		}
 
