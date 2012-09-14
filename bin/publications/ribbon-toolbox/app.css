@@ -6,9 +6,6 @@ body
 	padding:0px;
 	font-family:Arial, Helvetica, sans-serif;
 }
-.Layer{
-	min-height: 200px;
-}
 .Page{
 	display: none;
 }

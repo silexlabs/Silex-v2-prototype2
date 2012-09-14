@@ -37,8 +37,12 @@
 	<body>
 				<!-- 	**************************	-->
 				<!-- 		Ribbon Toolbox 		-->
-				<div>
-					<div class="PageToolbox">
+				<div class="GroupRibbon" data-initial-page-name="page-list">
+					<a name="page-list" class="Page" data-group-id="GroupRibbon">Pages</a>
+					<a name="layer-list" class="Page" data-group-id="GroupRibbon">Masters</a>
+					<a href="#page-list" class="LinkToPage" data-group-id="GroupRibbon">Pages</a>
+					<a href="#layer-list" class="LinkToPage" data-group-id="GroupRibbon">Masters</a>
+					<div class="PageToolbox Layer page-list">
 						<div class="assets-page">
 							<img src="assets/sv2-ico-add.png"></img>
 							<img src="assets/sv2-ico-delete.png"></img>
@@ -54,19 +58,20 @@
 								::name::
 							</li>
 						</ul>
+						<button class="del-button">Del</button>
+						<button class="add-button">Add</button>
 					</div>
-					<button class="del-button">Del</button>
-					<button class="add-button">Add</button>
-					<div class="LayerToolbox">
+
+					<div class="LayerToolbox Layer layer-list">
 						<ul class="LayersList">
 							<li>
 								<div class="solid"></div></br>
 								(::status::)
 							</li>
 						</ul>
+						<button class="del-button">Del</button>
+						<button class="add-button">Add</button>
 					</div>
-					<button class="del-button">Del</button>
-					<button class="add-button">Add</button>
 				</div>
 				<!-- 		/Ribbon Toolbox 		-->
 				<!-- 	**************************	-->

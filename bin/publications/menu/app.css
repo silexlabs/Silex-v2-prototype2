@@ -35,6 +35,12 @@ p{
 /* **************** */
 /* 		Menu 		*/
 /* **************** */
+.menu-item-disabled {
+       pointer-events: none;
+       cursor: default;
+       color: grey ! important;
+}
+
 .MenuController{
 	position: static;
 	left:0;
@@ -48,13 +54,13 @@ p{
 	border-width:1px medium;
 }
 
-ul{
+.MenuController ul{
 	list-style: none outside none;
 	padding-left:20px;
 
 
 }
-ul.menu li.main{
+.MenuController li.main{
 	display:inline-block;
 	padding-right:50px;
 	padding-top:7px;
@@ -62,7 +68,7 @@ ul.menu li.main{
 
 }
 
-ul.menu li.main a{
+.MenuController li.main a{
 	text-decoration:none;
 	color:#3C3C3C;
 	padding:3px;
@@ -74,31 +80,16 @@ ul.menu li.main a{
 }
 
 
-ul.menu li.main a.LinkToPage:hover{
-	background: -webkit-linear-gradient(bottom left, #F0F0F0 0%, #B4B4B4 0%, #E9E9E9 100%);
-	background: -moz-linear-gradient(bottom left, #F0F0F0 0%, #B4B4B4 0%, #E9E9E9 100%);
-	background: -o-linear-gradient(bottom left, #F0F0F0 0%, #B4B4B4 0%, #E9E9E9 100%);	
-	width:100%%;
-	height:100%;
-}
 
-ul.menu li.main a:hover{
-background:white;
-	
-}
-ul.menu li.main a#background:hover{
-background:white;
-	
-}
 
-ul.menu li.main a:active{
+.MenuController li.main a:active{
 	color:#7F7F7F;
 	
 }
 
 
 
-ul.sub {
+.MenuController ul.sub {
     background-color: #F0F0F0;
     float: left;
     position: relative;
@@ -108,7 +99,10 @@ ul.sub {
     
 
 }
-ul.sub li{
+.MenuController ul.sub li:hover{
+background-color:white;
+}
+.MenuController ul.sub li{
 	border-left: 1px solid black;
     height: auto;
     width:auto;
@@ -121,37 +115,30 @@ ul.sub li{
     padding-right:3px;
     
 }
-ul.sub li span{
+.MenuController ul.sub li span{
 	float:right;
 	margin-left:41px;
 	margin-right:5px;
 }
-ul.sub li.open{
+.MenuController ul.sub li.open{
 	border-bottom: 1px solid black;
 }
-ul.sub li.save-as{
+.MenuController ul.sub li.save-as{
 	border-bottom: 1px solid black;
 }
-ul.sub li.settings{
+.MenuController ul.sub li.settings{
 	border-bottom: 1px solid black;
 }
 
-.container-sub {
+.MenuController .container-sub {
   	
     margin: 0 auto;
 	top: 23px;
     position: absolute;   
 }
 
-ul.sub a{
 
-width:90px;
-padding:0;
-margin:0;
-display:block;
-}
-
-.img{
+.menu-logo{
 	position:absolute;
 	z-index:2;
 	margin-top:5px;
