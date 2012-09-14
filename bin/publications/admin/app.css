@@ -7,6 +7,7 @@ body
 	font-family:Arial, Helvetica, sans-serif;
 }
 .Layer{
+	min-height: 200px;
 }
 .Page{
 	display: none;
@@ -47,7 +48,6 @@ body{
 
 .group-main{
 	width: 100%;
-	height: 100%;
 }
 .SelectionController{
 	width: 80%;
@@ -59,6 +59,381 @@ body{
 }
 .PublicationViewer{
 }
+/* **************** */
+/* 	Dialogs 		*/
+/* **************** */
+a.LinkToPage{
+	color:Gray;	
+}
+a.LinkToPage:hover{
+	color:LightGray;
+
+}
+a.LinkToPage:active{
+	color:Gray;
+
+}
+
+.header{
+margin-left:auto;
+margin-right:auto;
+max-width:300px;
+
+}
+
+.container{
+
+	max-width:360px;
+	max-height:100%;
+	margin:0 auto;
+	z-index:3;
+	position:relative;
+}
+
+.form{
+	max-width:100%;
+	background:Lightgray;
+	padding-top:17px;
+	border-radius:3px;
+	height:111px;
+	margin:0 auto;
+	padding-left:18px;
+	z-index:3;
+}
+
+.login-dialog fieldset{
+
+max-width:300px;
+border:none;
+margin-left:auto;
+margin-right:auto;
+
+
+}
+
+
+.login-dialog fieldset .login{
+
+	
+	display:block;
+	position:absolute;
+	padding-left:11px;
+	color:DimGray;
+	font-size:15px;
+
+}
+
+.login-dialog fieldset .password{
+	
+
+	display:block;
+	position:absolute;
+	padding-left:11px;
+	color:DimGray;
+	font-size:15px;
+	margin-top:1px;
+
+}
+
+.login-dialog fieldset .input-field-login{
+	margin-left:95px;
+	
+
+}
+
+.login-dialog fieldset .input-field-pass{
+	margin-left:95px;
+
+
+}
+
+.login-dialog fieldset .input-field-login:focus{
+	margin-left:95px;
+	outline-color:DimGray;
+
+}
+
+.login-dialog fieldset .input-field-pass:focus{
+outline-color:DimGray;
+	
+}
+.assets-dialog{
+	max-width:100%;
+	max-height:19px;
+
+}
+
+.login-dialog .validate-button{
+    cursor:pointer;
+ 	float:right;
+   position:relative;
+   margin-left:14px;
+
+}
+.login-dialog .validate-button:hover{
+    cursor:pointer;
+    color:green;
+
+    
+   
+}
+.login-dialog .validate-button:active{
+    cursor:pointer;
+    color:green;
+
+
+}
+
+.login-dialog .cancel-button{
+    cursor:pointer;
+    float:right;
+    position:relative;
+ 
+
+
+
+}
+.login-dialog .cancel-button:hover{
+    cursor:pointer;
+    color:red;
+   
+}
+.login-dialog .cancel-button:active{
+    cursor:pointer;
+    color:red;
+
+}
+.solid{
+	height:1px;
+	width:100%;
+	background:LightGray;
+	margin-top:14px;
+}
+.solid-2{
+	margin-top:63px;
+	height:1px;
+	width:100%;
+	background:LightGray;
+}
+p.error-text{
+
+
+	color:#FFFF00;
+	display:block;
+	max-width:159px;
+	height:20px;
+	padding-top:58px;
+	margin-left:auto;
+	margin-right:auto;
+
+}
+
+footer{
+	color:LightGray;
+	padding-left:4px;
+	display:block;
+	width:100%;
+	margin-top:23px;
+
+}
+
+footer p a{
+	font-size:14px;
+	text-decoration:none;
+	color:LightGray;
+}
+
+footer p a:hover{
+opacity:0.7;
+
+}
+footer p a:active{
+opacity:1;
+
+}
+
+.disabled-link{
+	color:LightGray;
+	opacity:0.7;
+}
+.dialog-background{
+top:0;
+width:100%;
+height:100%;
+left:0;
+z-index:1;
+position:absolute;
+background-color:Black;
+opacity:0.5;
+
+
+}
+
+
+.container-2{
+
+	max-width:633px;
+	max-height:100%;
+	margin-left:auto;
+	margin-right:auto;
+	z-index:3;
+	position:relative;
+	border: 1px solid DimGray;
+	border-radius:3px;
+}
+
+.header-2{
+
+width:100%;
+
+}
+.header-2 img{
+	margin-left:67px;
+
+}
+.back-header{
+	
+	width:100%;
+	border-top:1px black solid;
+	height:17px;
+
+}
+legend{
+
+	float:left;
+	display:block;
+	padding-top:5px;
+	padding-left:20px;
+	
+}
+
+label{
+	
+	float:right;
+	display:block;
+	padding-right:250px;
+	padding-top:5px;
+	
+}
+
+.publications{
+	max-width:100%;
+	background:Gainsboro;
+	border-radius:3px;
+	height:160px;
+	z-index:3;
+	padding:0;
+	margin:0;
+	
+}
+
+.cont-1{
+	width:100%;
+	background:Gainsboro;
+	height:100%;
+	position:relative;
+	float:left;
+	padding:0;
+	margin:0;
+
+}
+
+
+.foot{
+	clear:both;
+	position:relative;
+	width:100%;
+	height:37px;
+	background:Gainsboro;
+
+}
+.foot .validate-button{
+	cursor:pointer;
+ 	float:right;
+    position:relative;
+    margin-left:14px;
+    margin-top:10px;
+    margin-right:9px;
+}
+
+.foot .validate-button:hover{
+	cursor:pointer;
+    color:green;
+}
+
+.foot .validate-button:active{
+	cursor:pointer;
+    color:green;
+}
+
+
+.foot .cancel-button{
+	cursor:pointer;
+    float:right;
+    position:relative;
+    margin-top:10px;
+}
+
+.foot .cancel-button:hover{
+	cursor:pointer;
+	color:red;
+
+}
+
+.foot .cancel-button:active{
+	cursor:pointer;
+	color:red;
+    
+}
+
+
+.solid-3{
+	height:1px;
+	width:97%;
+	background:White;
+	margin-left:auto;
+	margin-right:auto;
+	
+}
+.solid-4{
+	height:1px;
+	width:97%;
+	background:DimGray;
+	margin-left:auto;
+	margin-right:auto;
+
+}
+
+ul.PublicationList{
+	font-size:12px;
+	padding-right:7px;
+	padding-top:8px;
+	list-style-type: none;
+	margin-left:-17px;
+
+
+}
+ul.PublicationList a{
+	text-decoration: none;
+	color:#3C3C3C;
+
+
+}
+ul.PublicationList a:hover{
+	color:black;
+
+}
+
+
+.column{
+	float:right;
+	padding-right:3px;
+	font-size:12px;
+	color:DimGray;
+}
+/* **************** */
+/* 	/Dialogs 		*/
+/* **************** */
 
 /* **************** */
 /* 		selection 		*/
@@ -106,6 +481,89 @@ body{
 }
 
 /* **************** */
+/* Ribbon Toolbox */
+/* **************** */
+.PageToolbox{
+	width: 100%;
+}
+.listSelectedItem{
+	color: green;
+	width:60px;
+
+}
+
+ul.PageList{
+	margin:0;
+	padding:0;
+	width:100%;
+	height:80px;
+	margin-top:5px;
+	margin-left:5px;
+}
+ul.PageList li{
+	display:inline-block;
+	clear:left;
+	opacity:1;
+	padding-top:3px;
+	height:68px;
+	padding-left:8px;
+	width:60px;
+	margin:auto;
+	padding:auto;
+}
+ul.PageList li:hover{
+	
+	cursor:pointer;
+	background:LightCyan;
+	
+}
+
+
+.solid{
+	height:35px;
+	width:50px;
+	background:LightGray;
+	display:inline-block;
+	border:1px solid black;
+	margin-top:7px;
+
+}
+ul.LayersList{
+	margin:0;
+	padding:0;
+	width:100%;
+	height:80px;
+	margin-top:0px;
+	margin-left:5px;
+}
+ul.LayersList li{
+	display:inline-block;
+	clear:left;
+	opacity:1;
+	padding-top:3px;
+	height:68px;
+	padding-left:8px;
+	width:60px;
+	margin:auto;
+	padding:auto;
+}
+ul.LayersList li:hover{
+	
+	cursor:pointer;
+	background:LightCyan;
+	
+}
+.assets-page{
+	background:Gray;
+	width:7%;
+	border:1px solid black;
+	float: left;
+}
+/* **************** */
+/* /Ribbon Toolbox */
+/* **************** */
+
+/* **************** */
 /* Properties Toolbox */
 /* **************** */
 .toolbox-drop-zone{
@@ -120,10 +578,10 @@ body{
 	display: none;
 }
 .silex-toolbox {
-	width: 20%;
+	width: 19%;
 	height: 100%;
 	position: absolute;
-	background-color: #CCCCCC;
+	background-color: #F0F0F0;
 	padding: 0;
 	margin: 0;
 	border: 2px black solid;
@@ -135,24 +593,332 @@ body{
 .silex-toolbox .panel-body{
 	overflow: auto;
 }
-.silex-toolbox.panel-header{
+.panel-header{
+	width:100%;
+
+
 }
 .silex-toolbox .draggable-dragzone{
-	background-color: green;
+	background-color: Gainsboro;
+	width:100%;
+	position:relative;
+	height:25px;
+
 }
+.title{
+width:100%;
+height:100%;
+position: absolute;
+
+
+}
+.title h2{
+	font-size: 15px;
+	color:#3C3C3C;
+	margin-left:37%;
+	margin-top:4px;
+	position:absolute;
+
+}
+
 .silex-toolbox .panel-footer {
 }
 .silex-toolbox textarea,input {
-	width: 100%;
+	width: 21%;
+	float:right;
+
+}
+input.text_font{
+	width: 32%;
+	float:right;
+}
+input.text_color{
+	width:30%;
+}
+input.background_color{
+	margin-top:-18px;
+	width:31%;
 }
 .silex-toolbox textarea {
 	height: auto;
 	min-height: 100px;
+	min-width:100%;
+
 }
+fieldset input.name-property{
+	min-width:88%;
+	margin-left:13px;
+	margin-top:5px;
+	float:none;
+
+}
+
+fieldset.PropertyEditor{
+	margin-left:12px;
+	width:75%;
+
+}
+
+fieldset.Backgroundstyleeditor{
+	margin-left:auto;
+	margin-right:auto;
+	width:83%;
+
+}
+.style-block-tab{
+	margin-left:auto;
+	margin-right:auto;
+	width:97%;
+}
+
+.style-box-tab{
+	margin-left:auto;
+	margin-right:auto;
+	width:95%;
+
+}
+
+.style-positioning-tab{
+	margin-left:auto;
+	margin-right:auto;
+	width:95%;
+
+}
+.group-property-toolbox{	@
+	
+	min-width:16%;
+
+}
+select#box_width_measurement{
+	float:right;
+}
+
+fieldset.PropertyEditor{
+
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+	height:168px;
+}
+fieldset.PropertyEditor legend{
+	margin-left:auto;
+	margin-right:auto;
+	font-weight:bold;
+
+
+}
+fieldset.TextStyleEditor{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+	width:79%;
+}
+fieldset.TextStyleEditor legend{
+	margin-left:auto;
+	margin-right:auto;
+	font-weight:bold;
+
+}
+fieldset.Backgroundstyleeditor{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+	width:75%;
+}
+fieldset.Backgroundstyleeditor legend{
+	margin-left:auto;
+	margin-right:auto;
+	font-weight:bold;
+
+}
+.style-block-tab fieldset{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+	min-width:91%;
+
+}
+.style-block-tab fieldset legend{
+	margin-left:auto;
+	margin-right:auto;
+	font-weight:bold;
+
+
+}
+.style-box-tab fieldset{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+	width:80%;
+}
+.style-box-tab fieldset legend{
+	margin-left:auto;
+	margin-right:auto;
+	font-weight:bold;
+
+}
+.style-positioning-tab fieldset{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+	width:75%;
+}
+.style-positioning-tab fieldset legend{
+	margin-left:auto;
+	margin-right:auto;
+	font-weight:bold;
+
+}
+
+.context-layer {
+margin-left:20%;
+margin-top:7%;
+margin-bottom:1%;
+height:33%;
+min-width:51%;
+}
+
+
+
+fieldset.context-layer .master-property{
+
+min-width:105px;
+}
+
+
+fieldset.RawHtmlEditor{
+	margin-left:auto;
+	margin-right:auto;
+	width:75%;
+	margin-top:8px;
+	
+}
+fieldset.RawHtmlEditor legend{
+	font-size:12px;	
+	margin-left:auto;
+	margin-right:auto;
+}
+
+ul.tabs{
+}
+ul.tabs li{
+	list-style-type: none;
+	display: inline-block;
+}
+ul.tabs li a{
+/*
+	text-decoration: none;
+*/
+	color:#3C3C3C;
+	font-size:12px;
+}
+ul.tabs li a:hover{
+color:Black;
+
+}
+
+select{
+	width:31%;
+	float:right;
+	margin-left:5px;
+}
+select#box_float{
+	
+	float:right;
+}
+select#box_clear{
+	float:right;
+}
+
+input.text_lineheight{
+	float:right;
+}
+select#block_text_indent_measurement{
+	float:right;
+	margin-left:3;
+}
+select#block_wordspacing_measurement{
+	margin-left:0px;
+	margin-top:-5%;
+}
+select#block_wordspacing{
+	margin-left:3px;
+	margin-top:-5%;
+}
+select#block_letterspacing{
+	margin-left:3px;
+	margin-top:-5%;
+}
+select#block_letterspacing_measurement{
+	margin-left:0;
+	padding:0;
+	margin-top:-5%;
+}
+
+select.unit{
+	float:right;
+}
+input#block_text_indent{
+	width:24%;
+}
+input.value{
+	float:right;
+	width:30%;
+}
+input.radio{
+	float:left;
+	margin-right:13%;
+}
+
+label.hop{
+	margin-right:24px;
+}
+label.hop2{
+	margin-right:36px;
+}
+select.background_hpos{margin-top:9%;}
+select.background_vpos{margin-top:9%;}
+input.background_vpos_num{width:24%;}
+input.background_hpos_num{width:24%;}
+input.value-radio{
+	float:left;
+}
+select.text_size{
+	margin-left:1px;
+}
+select.text_size_unit{
+	margin-left:1px;
+}
+select.text_case{
+	margin-left:1px
+	 }
+#positioning_zindex{
+	width:31%;
+}
+.display-property{
+	width:57%;
+	margin-left:36px;
+	float:none;
+
+}
+.position-property{
+	width:57%;
+	margin-left:36px;
+	float:none;
+}
+.float-property{
+	width:57%;
+	margin-left:36px;
+	float:none;
+}
+/* **************** */
+/* /Properties Toolbox */
+/* **************** */
 /* **************** */
 /* 		Menu 		*/
 /* **************** */
 .MenuController{
+	position: static;
 	left:0;
 	background:Gainsboro;
 	height:32px;
@@ -164,16 +930,9 @@ body{
 	border-width:1px medium;
 }
 
-.group-main{
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-}
-
 ul{
 	list-style: none outside none;
 	padding-left:20px;
-	z-index: 2000;
 
 
 }
@@ -280,3 +1039,6 @@ display:block;
 	margin-top:5px;
 	margin-left:8px;
 }
+/* **************** */
+/* 		/Menu 		*/
+/* **************** */

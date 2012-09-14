@@ -1,0 +1,82 @@
+<html>
+	<HEAD>
+		<META http-equiv="Content-Type" content="text/html; charset=UTF-8"></META> 
+		<META name="initialPageName" content="properties"></META>
+		<!-- plugins -->
+		<!-- info -->
+		<title>Hello Silex!</title>
+		<meta name="description" content="A 1st test of Silex publication" />
+		<meta name="keywords" content="HTML,CSS,website editor" />
+		<meta name="author" content="lexoyo" />
+		<meta name="revised" content="lexoyo, 29/08/2011" />
+		<!-- config -->
+		<meta name="type" content="publication" /> <!-- or theme, utility -->
+		<meta name="state" content="public" /> <!-- or private, trashed -->
+		<meta name="useDeeplink" content="false" />
+		<LINK href="app.css" rel="stylesheet"></LINK>
+		<SCRIPT src="../../libs/silex/silex.js"></SCRIPT>
+
+		<META name="debugModeAction" content="
+			trace('properties toolbox - Loading publication');
+			PublicationModel.getInstance().load('test-toolboxes');
+			Timer.delay(function(){
+/*				var element = Lib.document.getElementById('testForToolBox');
+				trace('properties toolbox - Selecting element '+element);
+				
+				// component case
+				ComponentModel.getInstance().setSelectedItem(element);
+				
+				// layer case
+				//var layer = PublicationModel.getInstance().application.getAssociatedComponents(element, Layer).first();
+				//trace('select layer '+layer);
+				//LayerModel.getInstance().setSelectedItem(layer);
+				//trace('properties toolbox - Selecting element '+element);
+*/			}, 1000)
+			"></META>
+	</HEAD>
+	<body>
+				<!-- 	**************************	-->
+				<!-- 		Ribbon Toolbox 		-->
+				<div>
+					<div class="PageToolbox">
+						<div class="assets-page">
+							<img src="assets/sv2-ico-add.png"></img>
+							<img src="assets/sv2-ico-delete.png"></img>
+							<img src="assets/sv2-ico-duplicate.png"></img></br>
+							<img src="assets/sv2-ico-snapshot.png"></img>
+							<img src="assets/sv2-ico-properties.png"></img>
+							<img src="assets/sv2-ico-rename.png"></img>
+							
+						</div>
+						<ul class="PageList">
+							<li>
+								<div class="solid"></div></br>
+								::name::
+							</li>
+						</ul>
+					</div>
+					<button class="del-button">Del</button>
+					<button class="add-button">Add</button>
+					<div class="LayerToolbox">
+						<ul class="LayersList">
+							<li>
+								<div class="solid"></div></br>
+								(::status::)
+							</li>
+						</ul>
+					</div>
+					<button class="del-button">Del</button>
+					<button class="add-button">Add</button>
+				</div>
+				<!-- 		/Ribbon Toolbox 		-->
+				<!-- 	**************************	-->
+
+				<!-- 		Builder mode			-->
+				<div class="PublicationViewer " >
+					LOADING PUBLICATION... HERE... 
+				</div>
+				<!-- 		/Builder mode 			-->
+				<!-- 	**************************	-->
+
+	</body>
+</html>

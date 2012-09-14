@@ -205,7 +205,13 @@ class EditorBase extends DisplayObject
 	/**
 	 * convert into relative url
 	 */
-	private function abs2rel(url:String):String{
+	private function abs2rel(url:Null<String>):Null<String>{
+		if (url == null)
+			return null;
+			
+		if (url == "")
+			return "";
+
 		var pubUrl = "publications/" + PublicationModel.currentName + "/";
 		var idxPubFolder = url.indexOf(pubUrl);
 		if (idxPubFolder >= 0){
