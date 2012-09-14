@@ -9,7 +9,7 @@ import js.Dom;
  */
 typedef PropertyData = {
 	name:String,
-	value:String,
+	value:Dynamic,
 	viewHtmlDom:HtmlDom,
 	modelHtmlDom:HtmlDom,
 }

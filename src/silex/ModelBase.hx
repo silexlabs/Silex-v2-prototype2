@@ -3,6 +3,9 @@ package silex;
 import js.Dom;
 import js.Lib;
 
+import org.slplayer.core.Application;
+import org.slplayer.component.ui.DisplayObject;
+
 /**
  * structure used to store the listeners and the event they are listening to
  */
@@ -28,6 +31,43 @@ class ModelBase <FinalType>{
 		this.hoverChangeEventName = hoverChangeEventName; 
 		this.selectionChangeEventName = selectionChangeEventName;
 		this.debugInfo = debugInfo;
+	}
+	////////////////////////////////////////////////
+	// Type param
+	////////////////////////////////////////////////
+	/** 
+	 * retrieve all the instances of a given component
+	 * @example 	all the layers: LayerModel.getInstance().getClasses(publicationModel.viewHtmlDom, publicationModel.application.id, Layer);
+	 */
+	public function getClasses(viewHtmlDom:HtmlDom, slPlayerId:String, finalType:Class<DisplayObject>):Array<FinalType>{
+		// get all nodes which have instances of FinalType, i.e. all element with class name "FinalType"
+		var classes:Array<FinalType> = new Array();
+
+		// if a publication is loaded only
+		if (viewHtmlDom == null)
+			return classes;
+			
+		// get the class nodes
+		var className = Type.getClassName(finalType);
+		// remove the package
+		className = className.substr(className.lastIndexOf(".")+1);
+		// retrieve the nodes
+		var nodes:HtmlCollection<HtmlDom> = viewHtmlDom.getElementsByClassName(className);
+		// browse all nodes
+		for (idx in 0...nodes.length)
+		{
+			// retrieve the class instance associated with this node
+			var instances:List<DisplayObject> = Application.get(slPlayerId).getAssociatedComponents(nodes[idx], finalType);
+
+			if (instances.length == 1){
+				// store the first instance
+				classes.push(cast(instances.first()));
+			}
+			else{
+				throw ("Error: there should be 1 and only 1 instance of "+Type.getClassName(finalType)+" associated with this node, and there is "+instances.length+" ("+nodes[idx].className+")");
+			}
+		}
+		return classes;
 	}
 	////////////////////////////////////////////////
 	// Selection

@@ -64,7 +64,7 @@ class PropertyEditor extends EditorBase
 	 * display the property value
 	 */
 	override private function load(element:HtmlDom) {
-		// trace("load "+element);
+		trace("load "+element);
 
 		// handle the context
 		var contextArray = [];
@@ -94,6 +94,7 @@ class PropertyEditor extends EditorBase
 
 		var value = propertyModel.getProperty(element, "src");
 		if (value != null) setInputValue("src-property", abs2rel(value));
+		else setInputValue("src-property", "");
 
 		var sources = propertyModel.getModel(element).getElementsByTagName("source");
 		var value = "";
@@ -120,7 +121,7 @@ class PropertyEditor extends EditorBase
 		else
 			setInputValue("controls-property", "checked", "checked");
 
-		var value:Bool = propertyModel.getProperty(element, "master");
+		var value:Bool = propertyModel.getAttribute(element, "data-master");
 		if (value == null || value == false) 
 			setInputValue("master-property", null, "checked");
 		else
@@ -134,29 +135,29 @@ class PropertyEditor extends EditorBase
 		var propertyModel = PropertyModel.getInstance();
 
 		var value = getInputValue("name-property");
-		if (value != null)
+		if (value != null && value != "")
 			propertyModel.setProperty(selectedItem, "title", getInputValue("name-property"));
+		else
+			propertyModel.setProperty(selectedItem, "title", null);
 
 		var value = getInputValue("src-property");
-		if (value != null)
-			propertyModel.setProperty(selectedItem, "src", abs2rel(value));
+		if (value != null && value != "") propertyModel.setProperty(selectedItem, "src", abs2rel(value));
+		else if (Reflect.hasField(selectedItem, "src")){
+			// only if the attrivute is defined 
+			// otherwise it my be on a node of type audio or video, which has no src attribute
+			propertyModel.setProperty(selectedItem, "src", "");
+		}
 
 		var modelHtmlDom = propertyModel.getModel(selectedItem);
 		var sources = modelHtmlDom.getElementsByTagName("source");
 		for (idx in 0...sources.length){
-			try{
-				modelHtmlDom.removeChild(sources[idx]);
-			}catch(e:Dynamic){
-				trace("Warning: could not delete node in the model ("+e+")");
-			}
+			// always take "0" element because this remove an item from sources 
+			sources[0].parentNode.removeChild(sources[0]);
 		}
 		var sources = selectedItem.getElementsByTagName("source");
 		for (idx in 0...sources.length){
-			try{
-				selectedItem.removeChild(sources[idx]);
-			}catch(e:Dynamic){
-				trace("Warning: could not delete node in the view ("+e+")");
-			}
+			// always take "0" element because this remove an item from sources 
+			sources[0].parentNode.removeChild(sources[0]);
 		}
 		var value:String = getInputValue("multiple-src-property");
 		if (value != null){
@@ -183,6 +184,9 @@ class PropertyEditor extends EditorBase
 		propertyModel.setProperty(selectedItem, "loop", value);
 
 		var value:Bool = getInputValue("master-property", "checked");
-		propertyModel.setProperty(selectedItem, "master", value);
+		if (value == true)
+			propertyModel.setAttribute(selectedItem, "data-master", "true");
+		else
+			propertyModel.setAttribute(selectedItem, "data-master", null);
 	}
 }

@@ -204,7 +204,6 @@ var selectionContainer = Lib.document.body;
 		for (idx in 0...layers.length){
 			if (checkIsOver(layers[idx], e.clientX, e.clientY)){
 				// the mouse is over a layer
-				// trace("LAYER!");
 				// get the SLPlayer application from the loaded publication
 				var application = PublicationModel.getInstance().application;
 				// get the Layer instance associated with the layers[idx]
@@ -220,7 +219,7 @@ var selectionContainer = Lib.document.body;
 		if (found == false){
 			layerModel.hoveredItem = null;
 		}else{
-			trace("onMouseMove LAYER SELECTED");
+			
 		}
 
 		// mouse move on the currently hovered layer
@@ -240,7 +239,6 @@ var selectionContainer = Lib.document.body;
 		if (found == false){
 			componentModel.hoveredItem = null;
 		}else{
-			trace("onMouseMove COMPONENT SELECTED");
 		}
 /*
 		// retrieve the node which is a component

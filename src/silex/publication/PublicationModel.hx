@@ -18,13 +18,6 @@ import org.slplayer.core.Application;
 import org.slplayer.util.DomTools;
 import org.slplayer.component.navigation.Page;
 
-/**
- * Structure used to store the items of the publication list
- */
-typedef PublicationListItem = {
-	name:String, 
-	configData:PublicationConfigData
-}
 
 /**
  * Manipulation of publications, loading, display, etc. 
@@ -273,10 +266,10 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * - add the attribute data-silex-layer-id to nodes which are editable layers
 	 * - call fixDom method for each component
 	 */
-	private function prepareForEdit(modelDom:HtmlDom) {
+	public function prepareForEdit(modelDom:HtmlDom) {
 		//trace("prepareForEdit ("+modelDom+", "+viewDom+"));
 		// Take only HtmlDom elements, not TextNode
-		if (modelDom.className == null){
+		if (modelDom.nodeType != 1){
 			return;
 		}
 
