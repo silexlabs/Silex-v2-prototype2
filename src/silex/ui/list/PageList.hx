@@ -45,7 +45,7 @@ class PageList extends List<Page>
 		onChange = onSelectPage;
 	}
 	/**
-	 * refreh list data, and then redraw the display by calling doRedraw
+	 * refresh list data, and then redraw the display by calling doRedraw
 	 * to be overriden to handle the model or do nothing if you manipulate the list and dataProvider by composition
 	 * if you override this, either call super.reloadData() to redraw immediately, or call doRedraw() when the data is ready
 	 */

@@ -30,12 +30,11 @@ p{
 .list li{
 
 }
+/* **************** */
+/* 	Dialogs 		*/
+/* **************** */
 a.LinkToPage{
-	color:Gray;
-
-
-
-	
+	color:Gray;	
 }
 a.LinkToPage:hover{
 	color:LightGray;
@@ -44,9 +43,6 @@ a.LinkToPage:hover{
 a.LinkToPage:active{
 	color:Gray;
 
-}
-.group-main{
-	position:relative;
 }
 
 .header{
@@ -132,7 +128,7 @@ margin-right:auto;
 outline-color:DimGray;
 	
 }
-.assets{
+.assets-dialog{
 	max-width:100%;
 	max-height:19px;
 
@@ -406,14 +402,6 @@ ul.PublicationList a:hover{
 	font-size:12px;
 	color:DimGray;
 }
-
-
-
-
-
-
-
-/* 		Publication styles 			 */
-/* 		You can edit these styles 	 */
-
-/* Open publication popup */
+/* **************** */
+/* 	/Dialogs 		*/
+/* **************** */
