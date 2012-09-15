@@ -64,26 +64,14 @@ body{
 /* **************** */
 /* 	Dialogs 		*/
 /* **************** */
-a.LinkToPage{
-	color:Gray;	
-}
-a.LinkToPage:hover{
-	color:LightGray;
-
-}
-a.LinkToPage:active{
-	color:Gray;
-
-}
-
-.header{
+.dialogs .header{
 margin-left:auto;
 margin-right:auto;
 max-width:300px;
 
 }
 
-.container{
+.dialogs .container{
 
 	max-width:360px;
 	max-height:100%;
@@ -92,7 +80,7 @@ max-width:300px;
 	position:relative;
 }
 
-.form{
+.dialogs .form{
 	max-width:100%;
 	background:Lightgray;
 	padding-top:17px;
@@ -205,19 +193,19 @@ outline-color:DimGray;
     color:red;
 
 }
-.solid{
+.dialogs .solid{
 	height:1px;
 	width:100%;
 	background:LightGray;
 	margin-top:14px;
 }
-.solid-2{
+.dialogs .solid-2{
 	margin-top:63px;
 	height:1px;
 	width:100%;
 	background:LightGray;
 }
-p.error-text{
+.dialogs .error-text{
 
 
 	color:#FFFF00;
@@ -230,7 +218,7 @@ p.error-text{
 
 }
 
-footer{
+.dialogs footer{
 	color:LightGray;
 	padding-left:4px;
 	display:block;
@@ -239,26 +227,26 @@ footer{
 
 }
 
-footer p a{
+.dialogs footer p a{
 	font-size:14px;
 	text-decoration:none;
 	color:LightGray;
 }
 
-footer p a:hover{
+.dialogs footer p a:hover{
 opacity:0.7;
 
 }
-footer p a:active{
+.dialogs footer p a:active{
 opacity:1;
 
 }
 
-.disabled-link{
+.dialogs .disabled-link{
 	color:LightGray;
 	opacity:0.7;
 }
-.dialog-background{
+.dialogs .dialog-background{
 top:0;
 width:100%;
 height:100%;
@@ -272,7 +260,7 @@ opacity:0.5;
 }
 
 
-.container-2{
+.dialogs .container-2{
 
 	max-width:633px;
 	max-height:100%;
@@ -284,16 +272,16 @@ opacity:0.5;
 	border-radius:3px;
 }
 
-.header-2{
+.dialogs .header-2{
 
 width:100%;
 
 }
-.header-2 img{
+.dialogs .header-2 img{
 	margin-left:67px;
 
 }
-.back-header{
+.dialogs .back-header{
 	
 	width:100%;
 	border-top:1px black solid;
@@ -318,7 +306,12 @@ label{
 	
 }
 
-.publications{
+/*   PUBLICATION LIST  */
+
+.dialogs .publications .listSelectedItem{
+	color: green;
+}
+.dialogs .publications{
 	max-width:100%;
 	background:Gainsboro;
 	border-radius:3px;
@@ -326,10 +319,10 @@ label{
 	z-index:3;
 	padding:0;
 	margin:0;
-	
+	cursor: hand;	
 }
 
-.cont-1{
+.dialogs .cont-1{
 	width:100%;
 	background:Gainsboro;
 	height:100%;
@@ -349,7 +342,7 @@ label{
 	background:Gainsboro;
 
 }
-.foot .validate-button{
+.dialogs .foot .validate-button{
 	cursor:pointer;
  	float:right;
     position:relative;
@@ -358,38 +351,38 @@ label{
     margin-right:9px;
 }
 
-.foot .validate-button:hover{
+.dialogs .foot .validate-button:hover{
 	cursor:pointer;
     color:green;
 }
 
-.foot .validate-button:active{
+.dialogs .foot .validate-button:active{
 	cursor:pointer;
     color:green;
 }
 
 
-.foot .cancel-button{
+.dialogs .foot .cancel-button{
 	cursor:pointer;
     float:right;
     position:relative;
     margin-top:10px;
 }
 
-.foot .cancel-button:hover{
+.dialogs .foot .cancel-button:hover{
 	cursor:pointer;
 	color:red;
 
 }
 
-.foot .cancel-button:active{
+.dialogs .foot .cancel-button:active{
 	cursor:pointer;
 	color:red;
     
 }
 
 
-.solid-3{
+.dialogs .solid-3{
 	height:1px;
 	width:97%;
 	background:White;
@@ -397,7 +390,7 @@ label{
 	margin-right:auto;
 	
 }
-.solid-4{
+.dialogs .solid-4{
 	height:1px;
 	width:97%;
 	background:DimGray;
@@ -406,28 +399,29 @@ label{
 
 }
 
-ul.PublicationList{
+.dialogs .PublicationList{
 	font-size:12px;
 	padding-right:7px;
 	padding-top:8px;
 	list-style-type: none;
 	margin-left:-17px;
-
+	overflow: auto;
+	height: 100%;
 
 }
-ul.PublicationList a{
+.dialogs .PublicationList a{
 	text-decoration: none;
 	color:#3C3C3C;
 
 
 }
-ul.PublicationList a:hover{
+.dialogs .PublicationList a:hover{
 	color:black;
 
 }
 
 
-.column{
+.dialogs .column{
 	float:right;
 	padding-right:3px;
 	font-size:12px;
@@ -488,13 +482,13 @@ ul.PublicationList a:hover{
 .PageToolbox{
 	width: 100%;
 }
-.listSelectedItem{
+.PageToolbox .listSelectedItem{
 	color: green;
 	width:60px;
 
 }
 
-ul.PageList{
+.PageToolbox ul.PageList{
 	margin:0;
 	padding:0;
 	width:100%;
@@ -502,7 +496,7 @@ ul.PageList{
 	margin-top:5px;
 	margin-left:5px;
 }
-ul.PageList li{
+.PageToolbox ul.PageList li{
 	display:inline-block;
 	clear:left;
 	opacity:1;
@@ -564,7 +558,6 @@ ul.LayersList li:hover{
 /* **************** */
 /* /Ribbon Toolbox */
 /* **************** */
-
 /* **************** */
 /* Properties Toolbox */
 /* **************** */
@@ -580,7 +573,7 @@ ul.LayersList li:hover{
 	display: none;
 }
 .silex-toolbox {
-	width: 19%;
+	width: 300px;
 	height: 100%;
 	position: absolute;
 	background-color: #F0F0F0;
@@ -595,7 +588,7 @@ ul.LayersList li:hover{
 .silex-toolbox .panel-body{
 	overflow: auto;
 }
-.panel-header{
+.silex-toolbox .panel-header{
 	width:100%;
 
 
@@ -607,14 +600,7 @@ ul.LayersList li:hover{
 	height:25px;
 
 }
-.title{
-width:100%;
-height:100%;
-position: absolute;
-
-
-}
-.title h2{
+.silex-toolbox .title h2{
 	font-size: 15px;
 	color:#3C3C3C;
 	margin-left:37%;
@@ -630,14 +616,14 @@ position: absolute;
 	float:right;
 
 }
-input.text_font{
+.silex-toolbox input.text_font{
 	width: 32%;
 	float:right;
 }
-input.text_color{
+.silex-toolbox input.text_color{
 	width:30%;
 }
-input.background_color{
+.silex-toolbox input.background_color{
 	margin-top:-18px;
 	width:31%;
 }
@@ -647,7 +633,7 @@ input.background_color{
 	min-width:100%;
 
 }
-fieldset input.name-property{
+.silex-toolbox fieldset input.name-property{
 	min-width:88%;
 	margin-left:13px;
 	margin-top:5px;
@@ -655,92 +641,88 @@ fieldset input.name-property{
 
 }
 
-fieldset.PropertyEditor{
+.silex-toolbox fieldset.PropertyEditor{
 	margin-left:12px;
 	width:75%;
 
 }
 
-fieldset.Backgroundstyleeditor{
+.silex-toolbox fieldset.Backgroundstyleeditor{
 	margin-left:auto;
 	margin-right:auto;
 	width:83%;
 
 }
-.style-block-tab{
+.silex-toolbox .style-block-tab{
 	margin-left:auto;
 	margin-right:auto;
 	width:97%;
 }
 
-.style-box-tab{
+.silex-toolbox .style-box-tab{
 	margin-left:auto;
 	margin-right:auto;
 	width:95%;
 
 }
 
-.style-positioning-tab{
+.silex-toolbox .style-positioning-tab{
 	margin-left:auto;
 	margin-right:auto;
 	width:95%;
 
 }
-.group-property-toolbox{	@
+.silex-toolbox .group-property-toolbox{	
 	
 	min-width:16%;
 
 }
-select#box_width_measurement{
-	float:right;
-}
-
-fieldset.PropertyEditor{
+.silex-toolbox fieldset.PropertyEditor{
 
 	margin-left:auto;
 	margin-right:auto;
 	font-size:12px;
 	height:168px;
 }
-fieldset.PropertyEditor legend{
+.silex-toolbox fieldset.PropertyEditor legend{
 	margin-left:auto;
 	margin-right:auto;
 	font-weight:bold;
 
 
 }
-fieldset.TextStyleEditor{
+.silex-toolbox fieldset.TextStyleEditor{
 	margin-left:auto;
 	margin-right:auto;
 	font-size:12px;
 	width:79%;
 }
-fieldset.TextStyleEditor legend{
+.silex-toolbox fieldset.TextStyleEditor legend{
 	margin-left:auto;
 	margin-right:auto;
 	font-weight:bold;
 
 }
-fieldset.Backgroundstyleeditor{
+.silex-toolbox fieldset.Backgroundstyleeditor{
 	margin-left:auto;
 	margin-right:auto;
 	font-size:12px;
 	width:75%;
 }
-fieldset.Backgroundstyleeditor legend{
+.silex-toolbox fieldset.Backgroundstyleeditor legend{
 	margin-left:auto;
 	margin-right:auto;
 	font-weight:bold;
 
 }
-.style-block-tab fieldset{
+.silex-toolbox .style-block-tab fieldset{
 	margin-left:auto;
 	margin-right:auto;
 	font-size:12px;
 	min-width:91%;
 
 }
-.style-block-tab fieldset legend{
+.silex-toolbox .style-block-tab fieldset legend{
 	margin-left:auto;
 	margin-right:auto;
 	font-weight:bold;
@@ -753,26 +735,26 @@ fieldset.Backgroundstyleeditor legend{
 	font-size:12px;
 	width:80%;
 }
-.style-box-tab fieldset legend{
+.silex-toolbox .style-box-tab fieldset legend{
 	margin-left:auto;
 	margin-right:auto;
 	font-weight:bold;
 
 }
-.style-positioning-tab fieldset{
+.silex-toolbox .style-positioning-tab fieldset{
 	margin-left:auto;
 	margin-right:auto;
 	font-size:12px;
 	width:75%;
 }
-.style-positioning-tab fieldset legend{
+.silex-toolbox .style-positioning-tab fieldset legend{
 	margin-left:auto;
 	margin-right:auto;
 	font-weight:bold;
 
 }
 
-.context-layer {
+.silex-toolbox .context-layer {
 margin-left:20%;
 margin-top:7%;
 margin-bottom:1%;
@@ -782,133 +764,131 @@ min-width:51%;
 
 
 
-fieldset.context-layer .master-property{
+.silex-toolbox fieldset.context-layer .master-property{
 
 min-width:105px;
 }
 
 
-fieldset.RawHtmlEditor{
+.silex-toolbox fieldset.RawHtmlEditor{
 	margin-left:auto;
 	margin-right:auto;
 	width:75%;
 	margin-top:8px;
 	
 }
-fieldset.RawHtmlEditor legend{
+.silex-toolbox fieldset.RawHtmlEditor legend{
 	font-size:12px;	
 	margin-left:auto;
 	margin-right:auto;
 }
 
-ul.tabs{
-}
-ul.tabs li{
+.silex-toolbox ul.tabs li{
 	list-style-type: none;
 	display: inline-block;
 }
-ul.tabs li a{
+.silex-toolbox ul.tabs li a{
 /*
 	text-decoration: none;
 */
 	color:#3C3C3C;
 	font-size:12px;
 }
-ul.tabs li a:hover{
+.silex-toolbox ul.tabs li a:hover{
 color:Black;
 
 }
 
-select{
+.silex-toolbox select{
 	width:31%;
 	float:right;
 	margin-left:5px;
 }
-select#box_float{
+.silex-toolbox .box_float{
 	
 	float:right;
 }
-select#box_clear{
+.silex-toolbox .box_clear{
 	float:right;
 }
 
-input.text_lineheight{
+.silex-toolbox .input.text_lineheight{
 	float:right;
 }
-select#block_text_indent_measurement{
+.silex-toolbox .block_text_indent_measurement{
 	float:right;
-	margin-left:3;
+	margin-left:3px;
 }
-select#block_wordspacing_measurement{
+.silex-toolbox .block_wordspacing_measurement{
 	margin-left:0px;
 	margin-top:-5%;
 }
-select#block_wordspacing{
+.silex-toolbox .block_wordspacing{
 	margin-left:3px;
 	margin-top:-5%;
 }
-select#block_letterspacing{
+.silex-toolbox .block_letterspacing{
 	margin-left:3px;
 	margin-top:-5%;
 }
-select#block_letterspacing_measurement{
+.silex-toolbox .block_letterspacing_measurement{
 	margin-left:0;
 	padding:0;
 	margin-top:-5%;
 }
 
-select.unit{
+.silex-toolbox select.unit{
 	float:right;
 }
-input#block_text_indent{
+.silex-toolbox .block_text_indent{
 	width:24%;
 }
-input.value{
+.silex-toolbox input.value{
 	float:right;
 	width:30%;
 }
-input.radio{
+.silex-toolbox input.radio{
 	float:left;
 	margin-right:13%;
 }
 
-label.hop{
+.silex-toolbox label.hop{
 	margin-right:24px;
 }
-label.hop2{
+.silex-toolbox label.hop2{
 	margin-right:36px;
 }
-select.background_hpos{margin-top:9%;}
-select.background_vpos{margin-top:9%;}
-input.background_vpos_num{width:24%;}
-input.background_hpos_num{width:24%;}
-input.value-radio{
+.silex-toolbox select.background_hpos{margin-top:9%;}
+.silex-toolbox select.background_vpos{margin-top:9%;}
+.silex-toolbox input.background_vpos_num{width:24%;}
+.silex-toolbox input.background_hpos_num{width:24%;}
+.silex-toolbox input.value-radio{
 	float:left;
 }
-select.text_size{
+.silex-toolbox select.text_size{
 	margin-left:1px;
 }
-select.text_size_unit{
+.silex-toolbox select.text_size_unit{
 	margin-left:1px;
 }
-select.text_case{
+.silex-toolbox select.text_case{
 	margin-left:1px
 	 }
-#positioning_zindex{
+.silex-toolbox .positioning_zindex{
 	width:31%;
 }
-.display-property{
+.silex-toolbox .display-property{
 	width:57%;
 	margin-left:36px;
 	float:none;
 
 }
-.position-property{
+.silex-toolbox .position-property{
 	width:57%;
 	margin-left:36px;
 	float:none;
 }
-.float-property{
+.silex-toolbox .float-property{
 	width:57%;
 	margin-left:36px;
 	float:none;
@@ -916,6 +896,7 @@ select.text_case{
 /* **************** */
 /* /Properties Toolbox */
 /* **************** */
+
 /* **************** */
 /* 		Menu 		*/
 /* **************** */

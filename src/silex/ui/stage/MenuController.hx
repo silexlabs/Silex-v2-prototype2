@@ -27,6 +27,9 @@ class MenuController extends DisplayObject
 	 * Handle menu events
 	 */
 	public function onClick(e:Event) {
+		// prevent default links behavior
+		e.preventDefault();
+
 		// retrieve the node who triggered the event
 		var target:Anchor = cast(e.target);
 
@@ -42,6 +45,8 @@ class MenuController extends DisplayObject
 		switch (menuPageName) {
 			case "close-publication":
 				PublicationModel.getInstance().unload();
+			case "save-publication":
+				PublicationModel.getInstance().save();
 		}
 
 	}
