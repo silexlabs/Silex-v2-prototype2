@@ -93,6 +93,10 @@ p{
 
 .silex-toolbox .panel-footer {
 }
+.property-editor-delete-selected {
+	width: 80%;
+	background-color: red;
+}
 .silex-toolbox textarea,input {
 	width: 21%;
 	float:right;

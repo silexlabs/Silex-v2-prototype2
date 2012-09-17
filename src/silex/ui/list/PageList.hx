@@ -56,18 +56,17 @@ class PageList extends List<Page>
 			dataProvider = PageModel.getInstance().getClasses(publicationModel.viewHtmlDom, publicationModel.application.id, Page);
 			selectedItem = PageModel.getInstance().selectedItem;
 		}
-		trace("reloadData "+dataProvider);
 		super.reloadData();
 	}
 	public function onListChange(e:CustomEvent){
-		trace("onListChange("+e+")");
+		// trace("onListChange("+e+")");
 		reloadData();
 	}
 	/**
 	 * selection changed, open the selected page
 	 */
 	override function setSelectedIndex(idx:Int):Int {
-		trace("setSelectedIndex "+idx);
+		// trace("setSelectedIndex "+idx);
 		return super.setSelectedIndex(idx);
 	}
 	/**
@@ -75,7 +74,7 @@ class PageList extends List<Page>
 	 */
 	private function onSelectPage(page:Page){
 		if (PageModel.getInstance().selectedItem != page){
-			trace("onSelectPage("+page+")");
+			// trace("onSelectPage("+page+")");
 			PageModel.getInstance().selectedItem = page;
 		}
 	}

@@ -4,7 +4,8 @@ import js.Lib;
 import js.Dom;
 
 import silex.ModelBase;
-import silex.property.PropertyModel;
+import silex.publication.PublicationModel;
+import org.slplayer.component.navigation.Layer;
 
 
 /**
@@ -52,6 +53,10 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	 */
 	public static inline var ON_HOVER_CHANGE = "onComponentHoverChange";
 	/**
+	 * event dispatched when the list of components changes
+	 */
+	public static inline var ON_LIST_CHANGE = "onComponentListChange";
+	/**
 	 * Models are singletons
 	 * Constructor is private
 	 */
@@ -71,4 +76,52 @@ class ComponentModel extends ModelBase<HtmlDom>{
 		*/
 		return super.setSelectedItem(item);
 	}
+	/**
+	 * add a component to a layer (view and model)
+	 * dispatch the change event
+	 * @return 	the created component, i.e. a dom element added to the view
+	 */
+	public function addComponent(nodeName:String, layer:Layer):HtmlDom{
+		// get the publication model
+		var publicationModel = PublicationModel.getInstance();
+		// get the view and model DOM
+		var viewHtmlDom = layer.rootElement;
+		var modelHtmlDom = publicationModel.getModelFromView(layer.rootElement);
+
+		// create a node for an empty new layer
+		var newNode = Lib.document.createElement(nodeName);
+
+		// add to the view and model DOMs
+		modelHtmlDom.appendChild(newNode.cloneNode(true));
+		viewHtmlDom.appendChild(newNode);
+
+		publicationModel.prepareForEdit(newNode);
+
+		// dispatch the change event
+		dispatchEvent(createEvent(ON_LIST_CHANGE, newNode), DEBUG_INFO);
+
+		// return the new dom element
+		return newNode;
+	}
+	/**
+	 * remove a page from the view and model of the publication
+	 * remove the page from all layers css class name
+	 * dispatch the change event
+	 */
+	public function removeComponent(element:HtmlDom){
+		// get the publication model
+		var publicationModel = PublicationModel.getInstance();
+
+		// get the view and model DOM
+		var viewHtmlDom = element;
+		var modelHtmlDom = publicationModel.getModelFromView(element);
+
+		// remove element from dom
+		viewHtmlDom.parentNode.removeChild(viewHtmlDom);
+		modelHtmlDom.parentNode.removeChild(modelHtmlDom);
+
+		// dispatch the change event
+		dispatchEvent(createEvent(ON_LIST_CHANGE), DEBUG_INFO);
+	}
+
 }

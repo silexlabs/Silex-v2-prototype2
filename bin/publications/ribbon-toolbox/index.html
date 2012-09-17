@@ -20,18 +20,19 @@
 			trace('properties toolbox - Loading publication');
 			PublicationModel.getInstance().load('test-toolboxes');
 			Timer.delay(function(){
-/*				var element = Lib.document.getElementById('testForToolBox');
+/*				
+				var element = Lib.document.getElementById('testComponentForToolBox');
 				trace('properties toolbox - Selecting element '+element);
-				
 				// component case
 				ComponentModel.getInstance().setSelectedItem(element);
-				
+				trace('properties toolbox - Selecting element '+element);
+*/				
 				// layer case
-				//var layer = PublicationModel.getInstance().application.getAssociatedComponents(element, Layer).first();
-				//trace('select layer '+layer);
-				//LayerModel.getInstance().setSelectedItem(layer);
-				//trace('properties toolbox - Selecting element '+element);
-*/			}, 1000)
+				var element = Lib.document.getElementById('testLayerForToolBox');
+				var layer = PublicationModel.getInstance().application.getAssociatedComponents(element, Layer).first();
+				trace('properties toolbox - Selecting layer '+layer);
+				LayerModel.getInstance().setSelectedItem(layer);
+			}, 1000)
 			"></META>
 	</HEAD>
 	<body>
@@ -40,9 +41,12 @@
 				<div class="GroupRibbon" data-initial-page-name="page-list">
 					<a name="page-list" class="Page" data-group-id="GroupRibbon">Pages</a>
 					<a name="layer-list" class="Page" data-group-id="GroupRibbon">Masters</a>
+					<a name="insert-list" class="Page" data-group-id="GroupRibbon">Insert</a>
 					<a href="#page-list" class="LinkToPage" data-group-id="GroupRibbon">Pages</a>
 					<a href="#layer-list" class="LinkToPage" data-group-id="GroupRibbon">Masters</a>
-					<div class="PageToolbox Layer page-list">
+					<a href="#insert-list" class="LinkToPage" data-group-id="GroupRibbon">Insert</a>
+					<div class="PageToolbox Layer page-list ribbon-list">
+<!--
 						<div class="assets-page">
 							<img src="../admin/assets/sv2-ico-add.png"></img>
 							<img src="../admin/assets/sv2-ico-delete.png"></img>
@@ -52,7 +56,7 @@
 							<img src="../admin/assets/sv2-ico-rename.png"></img>
 							
 						</div>
-						<ul class="PageList">
+-->						<ul class="PageList">
 							<li>
 								<div class="solid"></div></br>
 								::name::
@@ -62,14 +66,26 @@
 						<button class="add-button">Add</button>
 					</div>
 
-					<div class="LayerToolbox Layer layer-list">
+					<div class="MasterToolbox Layer layer-list ribbon-list">
 						<ul class="LayersList">
 							<li>
 								<div class="solid"></div></br>
 								(::status::)
 							</li>
 						</ul>
-						<button class="del-button">Del</button>
+						<button class="add-button">Add</button>
+					</div>
+					<div class="InsertToolbox Layer insert-list ribbon-list">
+						<ul class="XmlList" data-items="&lt;item&gt;&lt;title&gt;Image&lt;/title&gt;&lt;type&gt;image&lt;/type&gt;&lt;/item&gt;
+						&lt;item&gt;&lt;title&gt;Text&lt;/title&gt;&lt;type&gt;text&lt;/type&gt;&lt;/item&gt;
+						&lt;item&gt;&lt;title&gt;Audio&lt;/title&gt;&lt;type&gt;audio&lt;/type&gt;&lt;/item&gt;
+						&lt;item&gt;&lt;title&gt;Video&lt;/title&gt;&lt;type&gt;video&lt;/type&gt;&lt;/item&gt;
+						&lt;item&gt;&lt;title&gt;Layer&lt;/title&gt;&lt;type&gt;layer&lt;/type&gt;&lt;/item&gt;" >
+							<li class="::type::">
+								<div class="solid"></div></br>
+								::title::
+							</li>
+						</ul>
 						<button class="add-button">Add</button>
 					</div>
 				</div>

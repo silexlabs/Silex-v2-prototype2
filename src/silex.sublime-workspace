@@ -4,6 +4,42 @@
 		"selected_items":
 		[
 			[
+				"sele",
+				"selectedItem"
+			],
+			[
+				"get",
+				"getInstance"
+			],
+			[
+				"Layer",
+				"LayerModel"
+			],
+			[
+				"new",
+				"newNode"
+			],
+			[
+				"node",
+				"nodeName	var"
+			],
+			[
+				"P",
+				"PublicationModel	class"
+			],
+			[
+				"co",
+				"component	package"
+			],
+			[
+				"mode",
+				"modelHtmlDom"
+			],
+			[
+				"Html",
+				"HtmlDom	js.Dom"
+			],
+			[
 				"head",
 				"headCloseIdx"
 			],
@@ -96,10 +132,6 @@
 				"appendChild( child : js.HtmlDom )	Void"
 			],
 			[
-				"get",
-				"getElementsByTagName(...)	js.HtmlCollection<js.HtmlDom>"
-			],
-			[
 				"init",
 				"initialPageName	var"
 			],
@@ -176,10 +208,6 @@
 				"getComponents"
 			],
 			[
-				"P",
-				"properties"
-			],
-			[
 				"class",
 				"className"
 			],
@@ -208,26 +236,34 @@
 	"buffers":
 	[
 		{
-			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/admin/index.html",
+			"file": "silex/property/PropertyModel.hx",
 			"settings":
 			{
-				"buffer_size": 46866,
+				"buffer_size": 7968,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/menu/index.html",
+			"file": "silex/ui/toolbox/editor/PropertyEditor.hx",
 			"settings":
 			{
-				"buffer_size": 4662,
+				"buffer_size": 7630,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/dialogs/index.html",
+			"file": "silex/layer/LayerModel.hx",
 			"settings":
 			{
-				"buffer_size": 3302,
+				"buffer_size": 5171,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "silex/publication/PublicationModel.hx",
+			"settings":
+			{
+				"buffer_size": 18039,
 				"line_ending": "Unix"
 			}
 		},
@@ -235,15 +271,63 @@
 			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/ribbon-toolbox/index.html",
 			"settings":
 			{
-				"buffer_size": 3213,
+				"buffer_size": 4195,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/dialogs/app.css",
+			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/ribbon-toolbox/app.css",
 			"settings":
 			{
-				"buffer_size": 5154,
+				"buffer_size": 1350,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/demo/tool_box_demo/src/lists.html",
+			"settings":
+			{
+				"buffer_size": 1896,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "silex/ui/toolbox/InsertToolbox.hx",
+			"settings":
+			{
+				"buffer_size": 3649,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "silex/ui/toolbox/MasterToolbox.hx",
+			"settings":
+			{
+				"buffer_size": 2022,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "silex/component/ComponentModel.hx",
+			"settings":
+			{
+				"buffer_size": 4059,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/test-toolboxes/index.html",
+			"settings":
+			{
+				"buffer_size": 3215,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/admin/index.html",
+			"settings":
+			{
+				"buffer_size": 47889,
 				"line_ending": "Unix"
 			}
 		},
@@ -251,7 +335,47 @@
 			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/admin/app.css",
 			"settings":
 			{
-				"buffer_size": 14471,
+				"buffer_size": 14194,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/property-toolbox/index.html",
+			"settings":
+			{
+				"buffer_size": 39063,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/property-toolbox/app.css",
+			"settings":
+			{
+				"buffer_size": 5963,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "silex/ui/toolbox/editor/EditorBase.hx",
+			"settings":
+			{
+				"buffer_size": 6927,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "index-builder.html",
+			"settings":
+			{
+				"buffer_size": 2100,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/default/index.html",
+			"settings":
+			{
+				"buffer_size": 2960,
 				"line_ending": "Unix"
 			}
 		}
@@ -284,15 +408,20 @@
 	},
 	"file_history":
 	[
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/index-builder.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/index-player.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/list/XmlList.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/admin/app.css",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/dialogs/app.css",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/ribbon-toolbox/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/dialogs/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/menu/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/admin/index.html",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ui/stage/MenuController.hx",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/publication/PublicationService.hx",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/publication/PublicationModel.hx",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/dialogs/app.css",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/property-toolbox/index.html",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/property-toolbox/app.css",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/admin/app.css",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/dialogs/index.html",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/admin/index.html",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/index.html",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ui/stage/PublicationViewer.hx",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/editor/PropertyEditor.hx",
@@ -406,12 +535,7 @@
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex-v2.x/src/index.html",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex-v2.x/src/build.hxml",
 		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex-v2.x/src/org/silex/core/Main.hx",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex-v2.x/bin/libs/silex/silex.html",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/BuzzPlayer/build_flash.hxml",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/BuzzPlayer/bin/index.html",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/BuzzPlayer/BuzzPlayer.html",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/EuropaApps/src/index.html",
-		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/util/MacroTools.hx"
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex-v2.x/bin/libs/silex/silex.html"
 	],
 	"find":
 	{
@@ -429,6 +553,32 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"silex-toolbox .panel-footer",
+			"legend>Properties",
+			"PageModel",
+			"PublicationModel",
+			"getAssociatedComponents",
+			"getass",
+			"onInput",
+			"ribb",
+			"addComponent",
+			"PropertyModel",
+			"ON_LIST_CHANGE",
+			"IMAGE_TYPE",
+			"= IMAGE_TYPE",
+			"IMAGE_TYPE",
+			"\"image\"",
+			"IMAGE_",
+			"class",
+			"MasterToolbox",
+			"&lg;title&gt;",
+			"PageList",
+			"layer-list",
+			"layer",
+			"getModel",
+			"PublicationModel",
+			"getModel",
+			"PublicationModel",
 			"img",
 			"img src=\"",
 			"img",
@@ -530,33 +680,7 @@
 			"id",
 			"Page",
 			"trace",
-			"PUBLICATIONS_FOLDER",
-			"publicationService",
-			"serverConfig",
-			"serverConfigManager",
-			"setConfig",
-			"inner",
-			"setConfig",
-			"getConfig",
-			"application.getMetaParameter",
-			"setConfig",
-			"application.init",
-			"getslplayer",
-			"meta",
-			"launch",
-			"registerComponentsforInit",
-			"application",
-			"CONFIG_INITIAL_PAGE_NAME",
-			"_list",
-			"CONFIG",
-			"PUBLICATIONS_FOLDER",
-			"php.",
-			"/?/",
-			"main",
-			"manage",
-			"arvix",
-			"height",
-			"layers"
+			"PUBLICATIONS_FOLDER"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -575,78 +699,135 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 17,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/admin/index.html",
+					"file": "silex/property/PropertyModel.hx",
 					"settings":
 					{
-						"buffer_size": 46866,
+						"buffer_size": 7968,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								16966,
-								16966
+								1300,
+								1300
 							]
 						],
 						"settings":
 						{
-							"spell_check": true,
-							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 5842.0,
+						"translation.y": 482.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/menu/index.html",
+					"file": "silex/ui/toolbox/editor/PropertyEditor.hx",
 					"settings":
 					{
-						"buffer_size": 4662,
+						"buffer_size": 7630,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								854,
-								854
+								2316,
+								2316
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 522.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/dialogs/index.html",
+					"file": "silex/layer/LayerModel.hx",
 					"settings":
 					{
-						"buffer_size": 3302,
+						"buffer_size": 5171,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2373,
-								2373
+								4354,
+								4354
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1887.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "silex/publication/PublicationModel.hx",
+					"settings":
+					{
+						"buffer_size": 18039,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4632,
+								4632
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2094.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/ribbon-toolbox/index.html",
+					"settings":
+					{
+						"buffer_size": 4195,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3988,
+								3988
 							]
 						],
 						"settings":
@@ -655,25 +836,52 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 554.0,
+						"translation.y": 1239.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/ribbon-toolbox/index.html",
+					"buffer": 5,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/ribbon-toolbox/app.css",
 					"settings":
 					{
-						"buffer_size": 3213,
+						"buffer_size": 1350,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2351,
-								2351
+								1350,
+								1350
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 820.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/demo/tool_box_demo/src/lists.html",
+					"settings":
+					{
+						"buffer_size": 1896,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1013,
+								1013
 							]
 						],
 						"settings":
@@ -688,46 +896,156 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/dialogs/app.css",
+					"buffer": 7,
+					"file": "silex/ui/toolbox/InsertToolbox.hx",
 					"settings":
 					{
-						"buffer_size": 5154,
+						"buffer_size": 3649,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3499,
-								3499
+								3256,
+								3256
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/CSS/CSS.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 4532.0,
+						"translation.y": 1319.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/admin/app.css",
+					"buffer": 8,
+					"file": "silex/ui/toolbox/MasterToolbox.hx",
 					"settings":
 					{
-						"buffer_size": 14471,
+						"buffer_size": 2022,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3746,
-								3746
+								777,
+								777
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 102.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "silex/component/ComponentModel.hx",
+					"settings":
+					{
+						"buffer_size": 4059,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3558,
+								3558
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1451.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/test-toolboxes/index.html",
+					"settings":
+					{
+						"buffer_size": 3215,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1544,
+								1544
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 408.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/admin/index.html",
+					"settings":
+					{
+						"buffer_size": 47889,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8701,
+								8701
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3041.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/admin/app.css",
+					"settings":
+					{
+						"buffer_size": 14194,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7656,
+								7656
 							]
 						],
 						"settings":
@@ -736,7 +1054,143 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 4675.0,
+						"translation.y": 9603.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/property-toolbox/index.html",
+					"settings":
+					{
+						"buffer_size": 39063,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3727,
+								3727
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1122.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/property-toolbox/app.css",
+					"settings":
+					{
+						"buffer_size": 5963,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1250,
+								1250
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1071.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "silex/ui/toolbox/editor/EditorBase.hx",
+					"settings":
+					{
+						"buffer_size": 6927,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1452,
+								1452
+							]
+						],
+						"settings":
+						{
+							"haxe-build-id": 0,
+							"syntax": "Packages/HaXe/HaXe.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 282.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "index-builder.html",
+					"settings":
+					{
+						"buffer_size": 2100,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1782,
+								1782
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 17,
+					"file": "/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/default/index.html",
+					"settings":
+					{
+						"buffer_size": 2960,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2939,
+								2939
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 867.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

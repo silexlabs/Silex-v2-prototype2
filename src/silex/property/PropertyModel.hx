@@ -101,7 +101,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	public function setAttribute(viewHtmlDom:HtmlDom, name:String, value:Null<Dynamic>){
 		trace("setAttribute("+viewHtmlDom+", "+name+", "+Type.typeof(value)+")");
 		// retrieve the model of the component 
-		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
+		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
 		try{
 			if (value == null){
@@ -133,7 +133,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	public function getAttribute(viewHtmlDom:HtmlDom, name:String):Dynamic{
 		var value:String;
 		// retrieve the model of the component 
-		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
+		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		// get the value
 		try{
 			value = modelHtmlDom.getAttribute(name);
@@ -152,7 +152,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	public function setProperty(viewHtmlDom:HtmlDom, name:String, value:Null<Dynamic>){
 		// trace("setProperty("+viewHtmlDom+", "+name+", "+Type.typeof(value)+")");
 		// retrieve the model of the component 
-		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
+		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
 		try{
 			Reflect.setField(viewHtmlDom, name, value);
@@ -178,7 +178,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	public function getProperty(viewHtmlDom:HtmlDom, name:String):Dynamic{
 		var value:String;
 		// retrieve the model of the component 
-		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
+		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		// get the value
 		try{
 			value = Reflect.field(modelHtmlDom, name);
@@ -196,7 +196,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	public function setStyle(viewHtmlDom:HtmlDom, name:String, value:String){
 		trace("setStyle("+viewHtmlDom+", "+name+", "+value+")");
 		// retrieve the model of the component 
-		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
+		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
 		try{
 			Reflect.setField(viewHtmlDom.style, name, value);
@@ -224,7 +224,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 
 		var value:String;
 		// retrieve the model of the component 
-		var modelHtmlDom:HtmlDom = getModel(viewHtmlDom);
+		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		// get the value
 		try{
 			value = Reflect.field(modelHtmlDom.style, name);
@@ -234,47 +234,5 @@ class PropertyModel extends ModelBase<PropertyData>{
 		}
 		// create the property data object
 		return value;
-	}
-	/**
-	 * Retrieve a reference to the selected component or layer in the PublicationModel::modelHtmlDom object
-	 * Todo: same for pages
-	 */
-	public function getModel(viewHtmlDom:HtmlDom):HtmlDom{
-		//trace("getModel("+viewHtmlDom.className+") - "+LayerModel.getInstance().selectedItem);
-
-		if (ComponentModel.getInstance().selectedItem == null && LayerModel.getInstance().selectedItem == null)
-			throw ("Error: no component nor layer is selected.");
-
-		var results : Array<HtmlDom> = null;
-		var id:String = null;
-		if (ComponentModel.getInstance().selectedItem != null)
-			id = ComponentModel.getInstance().selectedItem.getAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME);
-		if (id==null){
-			if (LayerModel.getInstance().selectedItem != null){
-				// trace("case of a layer");
-				// case of a layer
-				id = LayerModel.getInstance().selectedItem.rootElement.getAttribute(LayerModel.LAYER_ID_ATTRIBUTE_NAME);
-				if (id!=null){
-					results = DomTools.getElementsByAttribute(PublicationModel.getInstance().modelHtmlDom, LayerModel.LAYER_ID_ATTRIBUTE_NAME, id);
-				}
-				else{
-					throw("Error: the selected layer has not a Silex ID. It should have the ID in the "+LayerModel.LAYER_ID_ATTRIBUTE_NAME+" or "+ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME+" attributes");
-				}
-			}
-			else{
-				// should never go here: a component is selected but has no data-silex-component-id
-				throw("Error: the selected component has not a Silex ID. It should have the ID in the "+ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME+" attribute");
-			}
-		}
-		else{
-			// trace("case of a component");
-			// case of a component
-			results = DomTools.getElementsByAttribute(PublicationModel.getInstance().modelHtmlDom, ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, id);
-		}
-		// returns the element
-		if (results == null || results.length != 1){
-			throw ("Error: 1 and only 1 component or layer is expected to have ID \"" + id + "\".");
-		}
-		return results[0];
 	}
 }

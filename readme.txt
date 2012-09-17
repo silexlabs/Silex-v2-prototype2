@@ -64,6 +64,12 @@ en cours
 - UrlInput, BackgroundInput, ...
 
 
+== tool tips for beginners ==
+
+Put them in the app by default
+
+* to create a new master, insert a container in a page, select it on the stage and check the property "Set as master"
+
 == edition of properties ==
 
 the toolboxes / dialogs

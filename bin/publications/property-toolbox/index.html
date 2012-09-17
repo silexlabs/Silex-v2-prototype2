@@ -19,9 +19,9 @@
 		<META name="debugModeAction" content="
 			trace('properties toolbox - Loading publication');
 			PublicationModel.getInstance().load('test-toolboxes');
-			/*
+			/*  */
 			Timer.delay(function(){
-				var element = Lib.document.getElementById('testForToolBox');
+				var element = Lib.document.getElementById('testComponentForToolBox');
 				trace('properties toolbox - Selecting element '+element);
 				 ComponentModel.getInstance().setSelectedItem(element);
 				/*
@@ -31,7 +31,7 @@
 				trace('properties toolbox - Selecting element '+element);
 				*/
 			}, 1000)
-			*/
+			/*   */
 			"></META>
 	</HEAD>
 	<body>
@@ -78,7 +78,9 @@
 							
 									<legend>Name</legend>
 									<input type="text" class="name-property" value="21" max-lenght="20"></input>
-								
+									<!-- DELETE BUTTON -->
+									<button class="property-editor-delete-selected">Delete</button>
+									<!-- /DELETE BUTTON -->
 								<fieldset class="context-video context-audio">
 									<legend>Sources (1 by line)</legend>
 									<textarea class="multiple-src-property"></textarea>
