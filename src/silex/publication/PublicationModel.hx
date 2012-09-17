@@ -244,20 +244,26 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			headHtmlDom.innerHTML = xml.node.HEAD.innerHTML;
 */
 		// split head and body tags 
-		var headOpenIdx = currentData.html.indexOf("<head>");
-		if (headOpenIdx == -1) headOpenIdx = currentData.html.indexOf("<HEAD>");
+		var headOpenIdx = currentData.html.indexOf("<head");
+		if (headOpenIdx == -1) headOpenIdx = currentData.html.indexOf("<HEAD");
 		var headCloseIdx = currentData.html.indexOf("</head>");
 		if (headCloseIdx == -1) headCloseIdx = currentData.html.indexOf("</HEAD>");
-		var bodyOpenIdx = currentData.html.indexOf("<body>");
-		if (bodyOpenIdx == -1) bodyOpenIdx = currentData.html.indexOf("<BODY>");
+		var bodyOpenIdx = currentData.html.indexOf("<body");
+		if (bodyOpenIdx == -1) bodyOpenIdx = currentData.html.indexOf("<BODY");
 		var bodyCloseIdx = currentData.html.indexOf("</body>");
 		if (bodyCloseIdx == -1) bodyCloseIdx = currentData.html.indexOf("</BODY>");
 
 		if (headOpenIdx > -1 && headCloseIdx > -1){
-			headHtmlDom.innerHTML = currentData.html.substring(headOpenIdx+6, headCloseIdx);
+			// look for the first ">" after "<head"
+			var closingTagIdx = currentData.html.indexOf(">", headOpenIdx);
+			// extract the head section
+			headHtmlDom.innerHTML = currentData.html.substring(closingTagIdx + 1, headCloseIdx);
 		}
 		if (bodyOpenIdx > -1 && bodyCloseIdx > -1){
-			modelHtmlDom.innerHTML = currentData.html.substring(bodyOpenIdx+6, bodyCloseIdx);
+			// look for the first ">" after "<body"
+			var closingTagIdx = currentData.html.indexOf(">", bodyOpenIdx);
+			// extract the body section
+			modelHtmlDom.innerHTML = currentData.html.substring(closingTagIdx + 1, bodyCloseIdx);
 		}
 
 		// add attributes to nodes recursively
