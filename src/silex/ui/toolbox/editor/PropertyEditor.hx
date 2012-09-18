@@ -44,12 +44,13 @@ class PropertyEditor extends EditorBase
 	 * handle the click on delete button, remove the selection from model and view
 	 */
 	public function onClick(e:Event) {
+		trace("click "+e.target);
 		// retrieve the node who triggered the event
 		var target:HtmlDom = e.target;
-		e.preventDefault();
 		// remove the selection from model and view
 		if (DomTools.hasClass(target, DELETE_BUTTON_CLASS_NAME)){
-		trace("click delete");
+			trace("click delete");
+			e.preventDefault();
 			if (DomTools.hasClass(selectedItem, "Layer")){
 				var layer = LayerModel.getInstance().selectedItem;
 				var page = PageModel.getInstance().selectedItem;

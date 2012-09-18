@@ -143,12 +143,24 @@ class LayerModel extends ModelBase<Layer>{
 		DomTools.removeClass(viewHtmlDom, page.name);
 		DomTools.removeClass(modelHtmlDom, page.name);
 
-		// remove layer from dom if it is not a master
-		if (layer.rootElement.getAttribute(MASTER_PROPERTY_NAME) == null){
+		var allPageNodes = Page.getPageNodes(publicationModel.application.id, publicationModel.viewHtmlDom);
+		var found = false;
+		for (idx in 0...allPageNodes.length){
+			if (DomTools.hasClass(viewHtmlDom, allPageNodes[idx].getAttribute(Page.CONFIG_NAME_ATTR))){
+				found = true;
+				break;
+			}
+		}
+		// remove layer from dom if it is not used on other pages and it is not marked as a master
+		if (layer.rootElement.getAttribute(MASTER_PROPERTY_NAME) == null
+			&& found == false){
 			viewHtmlDom.parentNode.removeChild(viewHtmlDom);
 			modelHtmlDom.parentNode.removeChild(modelHtmlDom);
 			// todo: maybe free the domelement, not possible to write layer.rootElement = null;
 			// todo: unregister class from SLPLayer
+		}
+		else{
+			layer.hide(null, true);
 		}
 
 		// dispatch the change event
