@@ -11,19 +11,19 @@ import org.slplayer.component.ui.DisplayObject;
 import org.slplayer.util.DomTools;
 
 /**
- * Editor for margin styles. 
+ * Editor for padding styles. 
  * Editors are SLPlayer components, in charge of handling HTML input elements, 
  * in order to let the user enter values and edit css style values or tag attributes.
  * todo: background alpha
  */
 @tagNameFilter("fieldset div")
-class MarginStyleEditor extends BoxTypeEditorBase 
+class PlacementStyleEditor extends BoxTypeEditorBase 
 {
 	/**
 	 * Constructor
 	 * store the prefix values 
 	 */
 	public function new(rootElement:HtmlDom, SLPId:String){
-		super(rootElement, SLPId, "box_margin", "margin");
+		super(rootElement, SLPId, "positioning_placement", "");
 	}
 }

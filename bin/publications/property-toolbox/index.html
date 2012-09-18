@@ -51,6 +51,7 @@
 					<A class="Page" data-group-id="group-property-toolbox" name="style-block-tab">Block</A>
 					<A class="Page" data-group-id="group-property-toolbox" name="style-box-tab">Box</A>
 					<A class="Page" data-group-id="group-property-toolbox" name="style-positioning-tab">Positioning</A>
+					<A class="Page" data-group-id="group-property-toolbox" name="style-border-tab">Border</A>
 
 					<div class="panel-header">
 						<div class="draggable-dragzone">
@@ -67,6 +68,7 @@
 							<li><a href="#style-block-tab" class="LinkToPage" data-group-id="group-property-toolbox">Block</a></li>
 							<li><a href="#style-box-tab" class="LinkToPage" data-group-id="group-property-toolbox">Box</a></li>
 							<li><a href="#style-positioning-tab" class="LinkToPage" data-group-id="group-property-toolbox">Positioning</a></li>
+							<li><a href="#style-border-tab" class="LinkToPage" data-group-id="group-property-toolbox">Border</a></li>
 						</ul>
 						<!-- /Navigation -->
 					</div>
@@ -593,10 +595,10 @@
 						<!-- /Style Box -->
 						<!-- Style Positioning -->
 						<form class="Layer all-tab style-positioning-tab">
-							<fieldset>
+							<fieldset class="PositionStyleEditor">
 								<legend>Position</legend><br />
 								<label for="positioning_type">Type</label>
-								<select class="positioning_type" 
+								<select class="positioning_type" >
 									<option value=""></option>
 									<option value="absolute">absolute</option>
 									<option value="relative">relative</option>
@@ -604,15 +606,14 @@
 								</select><br /><br />
 								
 								<label for="positioning_visibility">Visibility</label>
-								<select class="positioning_visibility" 
+								<select class="positioning_visibility" >
 									<option value=""></option>
-									<option value="inherit">inherit</option>
 									<option value="visible">visible</option>
 									<option value="hidden">hidden</option>
 								</select><br /><br />
 								
 								<label for="positioning_width">Width</label>
-								<select class="positioning_width_measurement" >
+								<select class="positioning_width_unit" >
 									<option value=""></option>
 									<option value="px">pixels</option>
 									<option value="pt">points</option>
@@ -624,12 +625,13 @@
 									<option value="ex">exs</option>
 									<option value="%">%</option>
 								</select><br /><br />
+								<input type="text" class="positioning_width"  /><br /><br />
 												
 								<label for="positioning_zindex">Z-index</label>
-								<input type="text" class="positioning_zindex" /><br /><br />
+								<input type="number" class="positioning_zindex" min="-5000" max="5000" /><br /><br />
 
 								<label for="positioning_height">Height</label>
-								<select class="positioning_height_measurement" >
+								<select class="positioning_height_unit" >
 									<option value=""></option>
 									<option value="px">pixels</option>
 									<option value="pt">points</option>
@@ -641,9 +643,10 @@
 									<option value="ex">exs</option>
 									<option value="%">%</option>
 								</select><br /><br />
+								<input type="text" class="positioning_height"  /><br /><br />
 
 								<label for="positioning_overflow">Overflow</label>
-								<select class="positioning_overflow" 
+								<select class="positioning_overflow" >
 									<option value=""></option>
 									<option value="visible">visible</option>
 									<option value="hidden">hidden</option>
@@ -657,7 +660,7 @@
 								<legend>Placement</legend><br />
 								<label for="positioning_top">Top</label>
 								
-								<select class="positioning_placement_top_measurement" >
+								<select class="positioning_placement_top_unit" >
 									<option value=""></option>
 									<option value="px">pixels</option>
 									<option value="pt">points</option>
@@ -673,7 +676,7 @@
 													
 								<label for="positioningright">Right</label>
 								
-								<select class="positioning_placement_right_measurement" 
+								<select class="positioning_placement_right_unit" >
 									<option value=""></option>
 									<option value="px">pixels</option>
 									<option value="pt">points</option>
@@ -687,9 +690,9 @@
 								</select>
 								<input type="text" class="positioning_placement_right"   /><br /><br />
 													
-								<label for="positioning_placement_bottom_measurement">Bottom</label>
+								<label for="positioning_placement_bottom_unit">Bottom</label>
 								
-								<select class="positioning_placement_bottom_measurement" 
+								<select class="positioning_placement_bottom_unit" >
 									<option value=""></option>
 									<option value="px">pixels</option>
 									<option value="pt">points</option>
@@ -703,9 +706,9 @@
 								</select>
 								<input type="text" class="positioning_placement_bottom"   /><br /><br />
 
-								<label for="positioning_placement_left_measurement" >Left</label>
+								<label for="positioning_placement_left_unit" >Left</label>
 								
-								<select class="positioning_placement_left_measurement" 
+								<select class="positioning_placement_left_unit" >
 									<option value=""></option>
 									<option value="px">pixels</option>
 									<option value="pt">points</option>
@@ -723,9 +726,9 @@
 							<fieldset>
 								<legend>Clip</legend><br />
 
-								<label for="positioning_clip_top_measurement" >Clip Top</label>
+								<label for="positioning_clip_top_unit" >Clip Top</label>
 								
-								<select class="positioning_clip_top_measurement" >
+								<select class="positioning_clip_top_unit" >
 									<option value=""></option>
 									<option value="px">pixels</option>
 									<option value="pt">points</option>
@@ -739,9 +742,9 @@
 								</select>
 								<input type="text" class="positioning_clip_top" /><br /><br />
 														
-								<label for="positioning_clip_right_measurement" >Clip Right</label>
+								<label for="positioning_clip_right_unit" >Clip Right</label>
 								
-								<select class="positioning_clip_right_measurement"  >
+								<select class="positioning_clip_right_unit"  >
 									<option value=""></option>
 									<option value="px">pixels</option>
 									<option value="pt">points</option>
@@ -755,9 +758,9 @@
 								</select>
 								<input type="text" class="positioning_clip_right"  /><br /><br />
 														
-								<label for="positioning_clip_bottom_measurement" >Clip Bottom</label>
+								<label for="positioning_clip_bottom_unit" >Clip Bottom</label>
 								
-								<select class="positioning_clip_bottom_measurement"  >
+								<select class="positioning_clip_bottom_unit"  >
 									<option value=""></option>
 									<option value="px">pixels</option>
 									<option value="pt">points</option>
@@ -766,9 +769,9 @@
 								</select>
 								<input type="text" class="positioning_clip_bottom"  /><br /><br />
 														
-								<label for="positioning_clip_left_measurement" >Clip Left</label>
+								<label for="positioning_clip_left_unit" >Clip Left</label>
 								
-								<select class="positioning_clip_left_measurement"  >
+								<select class="positioning_clip_left_unit"  >
 									<option value=""></option>
 									<option value="px">pixels</option>
 									<option value="pt">points</option>

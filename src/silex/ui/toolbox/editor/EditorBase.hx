@@ -36,8 +36,7 @@ class EditorBase extends DisplayObject
 	 * Constructor
 	 * Start listening the input events
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String)
-	{
+	public function new(rootElement:HtmlDom, SLPId:String){
 		super(rootElement, SLPId);
 		// listen to the change event of HTML inputs
 		if (onInput != null){
