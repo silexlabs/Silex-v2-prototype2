@@ -91,11 +91,14 @@ class ComponentModel extends ModelBase<HtmlDom>{
 		// create a node for an empty new layer
 		var newNode = Lib.document.createElement(nodeName);
 
-		// add to the view and model DOMs
-		modelHtmlDom.appendChild(newNode.cloneNode(true));
+		// add to the view DOM
 		viewHtmlDom.appendChild(newNode);
-
+		
+		// add the layer id
 		publicationModel.prepareForEdit(newNode);
+
+		// add to the model DOM
+		modelHtmlDom.appendChild(newNode.cloneNode(true));
 
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE, newNode), DEBUG_INFO);

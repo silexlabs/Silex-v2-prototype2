@@ -153,7 +153,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * Retrieve a reference to the selected component or layer in the PublicationModel::modelHtmlDom object
 	 */
 	public function getModelFromView(viewHtmlDom:HtmlDom):HtmlDom{
-		//trace("getModel("+viewHtmlDom.className+") - "+LayerModel.getInstance().selectedItem);
+		trace("getModelFromView("+viewHtmlDom.className+") - "+LayerModel.getInstance().selectedItem);
 
 		if (ComponentModel.getInstance().selectedItem == null && LayerModel.getInstance().selectedItem == null)
 			throw ("Error: no component nor layer is selected.");
@@ -164,11 +164,12 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			id = ComponentModel.getInstance().selectedItem.getAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME);
 		if (id==null){
 			if (LayerModel.getInstance().selectedItem != null){
-				// trace("case of a layer");
 				// case of a layer
 				id = LayerModel.getInstance().selectedItem.rootElement.getAttribute(LayerModel.LAYER_ID_ATTRIBUTE_NAME);
+				 trace("case of a layer "+id);
 				if (id!=null){
 					results = DomTools.getElementsByAttribute(PublicationModel.getInstance().modelHtmlDom, LayerModel.LAYER_ID_ATTRIBUTE_NAME, id);
+				 trace("case of a layer "+results+" - "+LayerModel.LAYER_ID_ATTRIBUTE_NAME+ " - "+id);
 				}
 				else{
 					throw("Error: the selected layer has not a Silex ID. It should have the ID in the "+LayerModel.LAYER_ID_ATTRIBUTE_NAME+" or "+ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME+" attributes");
@@ -180,13 +181,13 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			}
 		}
 		else{
-			// trace("case of a component");
+			 trace("case of a component");
 			// case of a component
 			results = DomTools.getElementsByAttribute(PublicationModel.getInstance().modelHtmlDom, ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, id);
 		}
 		// returns the element
 		if (results == null || results.length != 1){
-			throw ("Error: 1 and only 1 component or layer is expected to have ID \"" + id + "\".");
+			throw ("Error: 1 and only 1 component or layer is expected to have ID \"" + id + "\" ("+results+").");
 		}
 		return results[0];
 	}

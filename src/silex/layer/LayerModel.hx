@@ -94,6 +94,8 @@ class LayerModel extends ModelBase<Layer>{
 		trace("addMaster("+layer+", "+page+")");
 		// simply add the name of the page to the css class of the layer node
 		DomTools.addClass(layer.rootElement, page.name);
+		// do the same in the model
+		DomTools.addClass(PublicationModel.getInstance().getModelFromView(layer.rootElement), page.name);
 		//show the layer
 		layer.show();
 		// dispatch the change event
@@ -114,11 +116,15 @@ class LayerModel extends ModelBase<Layer>{
 		var newNode = Lib.document.createElement("div");
 		newNode.className = "Layer " + page.name;
 
-		// add to the view and model DOMs
-		modelHtmlDom.appendChild(newNode.cloneNode(true));
+		// add to the view DOM
 		viewHtmlDom.appendChild(newNode);
 
+		// add the layer id
 		publicationModel.prepareForEdit(newNode);
+
+		// add to the model DOM
+		modelHtmlDom.appendChild(newNode.cloneNode(true));
+
 
 		// create the Layer instance
 		var newLayer:Layer = new Layer(newNode, publicationModel.application.id);
@@ -137,7 +143,7 @@ class LayerModel extends ModelBase<Layer>{
 		var publicationModel = PublicationModel.getInstance();
 		// get the view and model DOM
 		var viewHtmlDom = layer.rootElement;
-		var modelHtmlDom = PublicationModel.getInstance().getModelFromView(layer.rootElement);
+		var modelHtmlDom = publicationModel.getModelFromView(layer.rootElement);
 
 		// remove the page from layer css class name
 		DomTools.removeClass(viewHtmlDom, page.name);

@@ -90,7 +90,7 @@ class InsertToolbox extends ToolboxBase
 			case IMAGE_TYPE:
 				addComponent("img").setAttribute("src", "enter image url here");
 			case TEXT_TYPE:
-				addComponent("p").innerHTML = "new text";
+				addComponent("p").innerHTML = "Insert text here.";
 			case AUDIO_TYPE:
 				var element = addComponent("audio");
 				element.innerHTML = "<source>enter media url here</source>";
