@@ -50,7 +50,7 @@ p{
 	padding:0px;
 }
 .hover-marker{
-	z-index: 500;
+	z-index: 300;
 	opacity:0.25;
 	background-color: red;
 	cursor: pointer;
@@ -87,9 +87,9 @@ p{
 	border: 6px solid green;
 }
 .selection-phantom{
-	min-height: 100px;
-	min-width: 100px;
+	opacity: .5 !important;
 }
+
 /* **************** */
 /* /Selection */
 /* **************** */

@@ -110,21 +110,47 @@ class SelectionMarker extends DisplayObject{
 		else{
 			throw("No component nor layer being dragged");
 		}
+		// this will be used to retrieve the beforeElement in the model
+		var beforeElement:HtmlDom = null;
+
 		// get where to drop
 		if (dropZone != null){
 			// a drop zone was found
-			trace("onDrop DROPPED in "+dropZone.parent+" at "+dropZone.position);
+			trace("onDrop DROPPED in "+dropZone.parent+" at "+dropZone.position+" - "+dropZone.parent.childNodes[dropZone.position].nodeType);
 			position = dropZone.position;
 			parent = dropZone.parent;
+
+			// find the component before the insetion position
+			// only if the insert position is not the end
+			if (parent.childNodes.length > position){
+				// before can be text node or dom element
+				var before:Dynamic = parent.childNodes[position];
+				var layerOrComponentDataAttr;
+				if (draggedComponent != null){
+					// case of a component
+					layerOrComponentDataAttr = ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME;
+				}
+				else {
+					// case of a layer
+					layerOrComponentDataAttr = LayerModel.LAYER_ID_ATTRIBUTE_NAME;
+				}
+				// browse siblings until it is a component/layer
+				while (before != null && 
+					(before.nodeType != 1 || before.getAttribute(layerOrComponentDataAttr) == null)
+				){
+					before = before.nextSibling;
+				}
+				beforeElement = before;
+			}
 		}
 		else{
 			// a drop zone was NOT found , put the element back to the previous parent and position
 			position = draggedPosition;
 			parent = draggedParent;
 		}
-		// drop, i.e. put back into the DOM
+		// put the dragged element back into the DOM
 		if (parent.childNodes.length <= position){
-			// at the end
+			// drop at the end 
 			parent.appendChild(element);
 		}
 		else{
@@ -133,23 +159,24 @@ class SelectionMarker extends DisplayObject{
 		}
 		// and also move in the model if needed
 		if (dropZone != null){
-			// remove the element from the model
+			// link view to model
 			var modelElement = PublicationModel.getInstance().getModelFromView(element);
+			var modelBeforeElement = PublicationModel.getInstance().getModelFromView(beforeElement);
+			var modelParent = PublicationModel.getInstance().getModelFromView(parent);
+
+			// remove the element from the model
 			if (modelElement == null) throw("Error while moving the element: could not retrieve the element in the model.");
 			if (modelElement.parentNode == null) throw("Error while moving the element: the element in the model has no parent.");
-			trace("Move "+modelElement +" from "+modelElement.parentNode);
 			modelElement.parentNode.removeChild(modelElement);
 
 			// put back the element at a new position
-			var newParent = PublicationModel.getInstance().modelHtmlDom;
-			trace("Move "+modelElement +" to "+newParent + " - "+newParent.childNodes.length +" <= "+ position);
-			if (newParent.childNodes.length <= position){
+			if (modelBeforeElement == null){
 				// at the end
-				newParent.appendChild(modelElement);
+				modelParent.appendChild(modelElement);
 			}
 			else{
 				// at a given position
-				newParent.insertBefore(modelElement, newParent.childNodes[position+1]);
+				modelParent.insertBefore(modelElement, modelBeforeElement);
 			}
 		}
 /*
@@ -175,7 +202,6 @@ class SelectionMarker extends DisplayObject{
 
 		// reset the marker position in the DOM
 		if (rootElement.parentNode != initialMarkerParent){
-			trace("MARKER MOVED, RESET "+rootElement.parentNode);
 			//	generate an exception?		rootElement.parentNode.removeChild(rootElement.parentNode);
 			initialMarkerParent.appendChild(rootElement);
 		}

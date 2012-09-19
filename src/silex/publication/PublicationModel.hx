@@ -153,35 +153,46 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * Retrieve a reference to the selected component or layer in the PublicationModel::modelHtmlDom object
 	 */
 	public function getModelFromView(viewHtmlDom:HtmlDom):HtmlDom{
-		trace("getModelFromView("+viewHtmlDom.className+") ");
-
-		//if (ComponentModel.getInstance().selectedItem == null && LayerModel.getInstance().selectedItem == null)
-		//	throw ("Error: no component nor layer is selected.");
-
-		var results : Array<HtmlDom> = null;
-		var id = viewHtmlDom.getAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME);
-		if (id != null)
-		{
-			 trace("case of a component");
-			// case of a component
-			results = DomTools.getElementsByAttribute(PublicationModel.getInstance().modelHtmlDom, ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, id);
+		if (viewHtmlDom == null){
+			trace("Warning: could not retrieve the model for element because it is null.");
+			return null;
 		}
-		else{
-			id = viewHtmlDom.getAttribute(LayerModel.LAYER_ID_ATTRIBUTE_NAME);
-			if (id!=null){
-				// case of a layer
-				results = DomTools.getElementsByAttribute(PublicationModel.getInstance().modelHtmlDom, LayerModel.LAYER_ID_ATTRIBUTE_NAME, id);
-				 trace("case of a layer "+id+" - "+results);
+		try{
+			//trace("getModelFromView("+viewHtmlDom.className+") ");
+
+			//if (ComponentModel.getInstance().selectedItem == null && LayerModel.getInstance().selectedItem == null)
+			//	throw ("Error: no component nor layer is selected.");
+
+			var results : Array<HtmlDom> = null;
+			var id = viewHtmlDom.getAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME);
+			if (id != null)
+			{
+				 // trace("case of component "+id);
+				// case of a component
+				results = DomTools.getElementsByAttribute(PublicationModel.getInstance().modelHtmlDom, ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, id);
 			}
 			else{
-				throw("Error: the selected layer has not a Silex ID. It should have the ID in the "+LayerModel.LAYER_ID_ATTRIBUTE_NAME+" or "+ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME+" attributes");
+				id = viewHtmlDom.getAttribute(LayerModel.LAYER_ID_ATTRIBUTE_NAME);
+				if (id!=null){
+					// case of a layer
+					results = DomTools.getElementsByAttribute(PublicationModel.getInstance().modelHtmlDom, LayerModel.LAYER_ID_ATTRIBUTE_NAME, id);
+					 // trace("case of layer "+id+" - "+results);
+				}
+				else{
+					throw("Error: the selected layer has not a Silex ID. It should have the ID in the "+LayerModel.LAYER_ID_ATTRIBUTE_NAME+" or "+ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME+" attributes");
+				}
 			}
+			// returns the element
+			if (results == null || results.length != 1){
+				throw ("Error: 1 and only 1 component or layer is expected to have ID \"" + id + "\" ("+results+").");
+			}
+			// trace("returns "+results[0]);
+			return results[0];
+		}catch(e:Dynamic){
+			trace("Error, could not retrieve the model for element "+viewHtmlDom+" ("+e+").");
+			throw("Error, could not retrieve the model for element "+viewHtmlDom+" ("+e+").");
 		}
-		// returns the element
-		if (results == null || results.length != 1){
-			throw ("Error: 1 and only 1 component or layer is expected to have ID \"" + id + "\" ("+results+").");
-		}
-		return results[0];
+		return null;
 	}
 	////////////////////////////////////////////////
 	// load
@@ -317,7 +328,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * Initialize the SLPlayer for the view
 	 */
 	private function initViewHtmlDom():Void{
-		trace("initViewHtmlDom");
+		// trace("initViewHtmlDom");
 		// Duplicate DOM
 		viewHtmlDom = modelHtmlDom.cloneNode(true);
 		viewHtmlDom.className = "silex-view";
@@ -330,7 +341,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * - add the PublicationGroup to the root of the DOM
 	 */
 	private function fixDomRoot(modelDom:HtmlDom){
-		trace("fixDomRoot( "+modelDom+") - "+modelDom.parentNode);
+		// trace("fixDomRoot( "+modelDom+") - "+modelDom.parentNode);
 		// add the PublicationGroup to the root of the DOM
 		DomTools.addClass(modelDom, "PublicationGroup");
 	}
@@ -351,7 +362,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * - call fixDom method for each component
 	 */
 	public function prepareForEdit(modelDom:HtmlDom) {
-		trace("prepareForEdit ("+modelDom+") - "+modelDom.parentNode);
+		// trace("prepareForEdit ("+modelDom+") - "+modelDom.parentNode);
 		// Take only HtmlDom elements, not TextNode
 		if (modelDom.nodeType != 1){
 			return;
@@ -429,7 +440,6 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			context.set("LayerModel", LayerModel);
 			context.set("ComponentModel", ComponentModel);
 			context.set("PropertyModel", PropertyModel);
-			trace("slpid = "+ application.id);
 			try{
 				Interpreter.exec(StringTools.htmlUnescape(currentConfig.debugModeAction), context);
 			}catch(e:Dynamic){
@@ -455,7 +465,6 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		if (publications != null){
 			// browse all publications 
 			for (publicationName in publications.keys()){
-				trace("Publication "+ publicationName);
 				// create the item (name and config data)
 				var item = {name:publicationName, configData:publications.get(publicationName)};
 				// add to the data

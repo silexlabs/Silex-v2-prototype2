@@ -150,7 +150,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * @param 	value 	a value to be set on the view and html dom elements, can be null to remove the attribute, and of different types, e.g. Bool for the autostart param of an audio element 
 	 */
 	public function setProperty(viewHtmlDom:HtmlDom, name:String, value:Null<Dynamic>){
-		// trace("setProperty("+viewHtmlDom+", "+name+", "+Type.typeof(value)+")");
+		trace("setProperty("+viewHtmlDom+", "+name+", "+Type.typeof(value)+")");
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
@@ -220,7 +220,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * Retrieve a value in the model
 	 */
 	public function getStyle(viewHtmlDom:HtmlDom, name:String):String{
-		trace("getStyle("+viewHtmlDom+", "+name+")");
+		// trace("getStyle("+viewHtmlDom+", "+name+")");
 
 		var value:String;
 		// retrieve the model of the component 
