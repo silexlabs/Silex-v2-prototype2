@@ -1,0 +1,58 @@
+<html>
+	<HEAD>
+		<META http-equiv="Content-Type" content="text/html; charset=UTF-8"></META> 
+		<META name="initialPageName" content="properties"></META>
+		<!-- plugins -->
+		<!-- info -->
+		<title>Hello Silex!</title>
+		<meta name="description" content="A 1st test of Silex publication" />
+		<meta name="keywords" content="HTML,CSS,website editor" />
+		<meta name="author" content="lexoyo" />
+		<meta name="revised" content="lexoyo, 29/08/2011" />
+		<!-- config -->
+		<meta name="type" content="publication" /> <!-- or theme, utility -->
+		<meta name="state" content="public" /> <!-- or private, trashed -->
+		<meta name="useDeeplink" content="false" />
+		<LINK href="app.css" rel="stylesheet"></LINK>
+		<SCRIPT src="../../libs/silex/silex.js"></SCRIPT>
+
+		<META name="debugModeAction" content="
+			trace('properties toolbox - Loading publication');
+			PublicationModel.getInstance().load('test-toolboxes');
+			Timer.delay(function(){
+				/*
+				var element = Lib.document.getElementById('testComponentForToolBox');
+				trace('properties toolbox - Selecting element '+element);
+				 ComponentModel.getInstance().setSelectedItem(element);
+				/*
+				var layer = PublicationModel.getInstance().application.getAssociatedComponents(element, Layer).first();
+				trace('select layer '+layer);
+				LayerModel.getInstance().setSelectedItem(layer);
+				trace('properties toolbox - Selecting element '+element);
+				/*   */
+			}, 1000)
+			"></META>
+	</HEAD>
+	<body>
+				<!-- 	**************************	-->
+				<!-- 		Builder mode			-->
+					<div class="SelectionController" >
+						<div class="PublicationViewer" >
+						</div>
+						<div style="position:absolute; displayer:block;">
+							<div class="selection-marker Draggable SelectionMarker"
+								data-dropzones-class-name="Layer"
+								data-phantom-class-name="selection-phantom"
+							></div>
+							<div class="hover-marker"></div>
+							<div class="selection-layer-marker Draggable SelectionMarker"
+								data-dropzones-class-name="silex-view"
+								data-phantom-class-name="selection-phantom"
+							></div>
+							<div class="hover-layer-marker"></div>
+						</div>
+					</div>
+				<!-- 		/Builder mode 			-->
+				<!-- 	**************************	-->
+	</body>
+</html>

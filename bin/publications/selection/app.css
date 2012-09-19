@@ -1,0 +1,95 @@
+/* 		Silex base styles 			 */
+/* 		Do not edit these styles 	 */
+body
+{
+	margin:0px;
+	padding:0px;
+	font-family:Tahoma, Arial, Helvetica, sans-serif;
+	overflow: hidden;
+}
+.Layer{
+
+}
+.Page{
+	display: none;
+}
+button a{
+	color: green;
+	text-decoration: none;
+}
+img{
+	
+}
+p{
+
+}
+.list ul{
+
+}
+.list li{
+
+}
+/* 		Publication styles 			 */
+/* 		You can edit these styles 	 */
+
+.PublicationViewer{
+	float: left;
+	overflow: auto;
+	width: 83%;
+	height: 100%;
+	border: 2px black solid;
+}
+
+/* **************** */
+/* 		selection 		*/
+/* **************** */
+
+.hover-marker, .selection-marker{
+	position: absolute;
+	margin:0px;
+	padding:0px;
+}
+.hover-marker{
+	z-index: 500;
+	opacity:0.25;
+	background-color: red;
+	cursor: pointer;
+}
+.selection-marker{
+	z-index: 400;
+	border: 6px solid grey;
+	cursor: move;
+}
+.selection-marker:hover{
+	opacity:0.25;
+	background-color: yellow;
+	border: 6px solid grey;
+}
+.hover-layer-marker, .selection-layer-marker{
+	position: absolute;
+	margin:0px;
+	padding:0px;
+}
+.hover-layer-marker{
+	z-index: 100;
+	opacity:0.25;
+	background-color: blue;
+	cursor: pointer;
+}
+.selection-layer-marker{
+	z-index: 400;
+	border: 6px solid green;
+	cursor: move;
+}
+.selection-layer-marker:hover{
+	opacity:0.25;
+	background-color: green;
+	border: 6px solid green;
+}
+.selection-phantom{
+	min-height: 100px;
+	min-width: 100px;
+}
+/* **************** */
+/* /Selection */
+/* **************** */

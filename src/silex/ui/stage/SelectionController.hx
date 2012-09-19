@@ -26,7 +26,6 @@ import silex.component.ComponentModel;
 @tagNameFilter("a")
 class SelectionController extends DisplayObject
 {
-	public static inline var MARKER_CONTAINER_STYLE_NAME = "selection-marker-container";
 	/**
 	 * Information for debugging, e.g. the class name
 	 */ 
@@ -81,31 +80,35 @@ class SelectionController extends DisplayObject
 	public function new(rootElement:HtmlDom, SLPId:String){
 		super(rootElement, SLPId);
 
-		//var selectionContainer = DomTools.getSingleElement(rootElement, MARKER_CONTAINER_STYLE_NAME);
-var selectionContainer = Lib.document.body;
+		var selectionContainer = Lib.document.body;
+
 		// create the marker
-		hoverLayerMarker = Lib.document.createElement("div");
-		hoverLayerMarker.className = HOVER_LAYER_MARKER_STYLE_NAME;
+//		hoverLayerMarker = Lib.document.createElement("div");
+//		hoverLayerMarker.className = HOVER_LAYER_MARKER_STYLE_NAME;
+		hoverLayerMarker = DomTools.getSingleElement(rootElement, HOVER_LAYER_MARKER_STYLE_NAME, true);
 		hoverLayerMarker.addEventListener("click", onClickLayerHover, false);
 		hoverLayerMarker.addEventListener("mouseout", onOutLayerHover, false);
 		selectionContainer.appendChild(hoverLayerMarker);
 
 		// create the marker
-		selectionLayerMarker = Lib.document.createElement("div");
-		selectionLayerMarker.className = SELECTION_LAYER_MARKER_STYLE_NAME;
+//		selectionLayerMarker = Lib.document.createElement("div");
+//		selectionLayerMarker.className = SELECTION_LAYER_MARKER_STYLE_NAME;
+		selectionLayerMarker = DomTools.getSingleElement(rootElement, SELECTION_LAYER_MARKER_STYLE_NAME, true);
 		selectionLayerMarker.addEventListener("click", onClickLayerSelection, false);
 		selectionContainer.appendChild(selectionLayerMarker);
 
 		// create the marker
-		hoverMarker = Lib.document.createElement("div");
-		hoverMarker.className = HOVER_MARKER_STYLE_NAME;
+//		hoverMarker = Lib.document.createElement("div");
+//		hoverMarker.className = HOVER_MARKER_STYLE_NAME;
+		hoverMarker = DomTools.getSingleElement(rootElement, HOVER_MARKER_STYLE_NAME, true);
 		hoverMarker.addEventListener("click", onClickHover, false);
 		hoverMarker.addEventListener("mouseout", onOutHover, false);
 		selectionContainer.appendChild(hoverMarker);
 
 		// create the marker
-		selectionMarker = Lib.document.createElement("div");
-		selectionMarker.className = SELECTION_MARKER_STYLE_NAME;
+//		selectionMarker = Lib.document.createElement("div");
+//		selectionMarker.className = SELECTION_MARKER_STYLE_NAME;
+		selectionMarker = DomTools.getSingleElement(rootElement, SELECTION_MARKER_STYLE_NAME, true);
 		selectionMarker.addEventListener("click", onClickSelection, false);
 		selectionContainer.appendChild(selectionMarker);
 
