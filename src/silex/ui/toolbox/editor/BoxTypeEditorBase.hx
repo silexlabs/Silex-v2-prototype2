@@ -26,13 +26,22 @@ class BoxTypeEditorBase extends EditorBase
 {
 	private var prefix:String;
 	private var stylePrefix:String;
+	private var topStyleSufix:String;
+	private var leftStyleSufix:String;
+	private var rightStyleSufix:String;
+	private var bottomStyleSufix:String;
 	/**
 	 * Constructor
 	 * store the prefix values 
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String, prefix:String, stylePrefix:String){
+	public function new(rootElement:HtmlDom, SLPId:String, prefix:String, stylePrefix:String, topStyleSufix:String="Top", leftStyleSufix:String="Left", rightStyleSufix:String="Right", bottomStyleSufix:String="Bottom"){
 		this.prefix = prefix;
 		this.stylePrefix = stylePrefix;
+		this.topStyleSufix = topStyleSufix;
+		this.leftStyleSufix = leftStyleSufix;
+		this.rightStyleSufix = rightStyleSufix;
+		this.bottomStyleSufix = bottomStyleSufix;
+
 		super(rootElement, SLPId);
 	}
 	/**
@@ -43,15 +52,15 @@ class BoxTypeEditorBase extends EditorBase
 		// top
 		setInputValue(prefix + "_top", "");
 		setInputValue(prefix + "_top_unit", "");
+		//left
+		setInputValue(prefix + "_left", "");
+		setInputValue(prefix + "_left_unit", "");
 		// right
 		setInputValue(prefix + "_right", "");
 		setInputValue(prefix + "_right_unit", "");
 		// bottom
 		setInputValue(prefix + "_bottom", "");
 		setInputValue(prefix + "_bottom_unit", "");
-		//left
-		setInputValue(prefix + "_left", "");
-		setInputValue(prefix + "_left_unit", "");
 
 	}
 	/**
@@ -61,7 +70,7 @@ class BoxTypeEditorBase extends EditorBase
 		var propertyModel = PropertyModel.getInstance();
 
 		// top
-		var value = propertyModel.getStyle(element, stylePrefix + "Top");
+		var value = propertyModel.getStyle(element, stylePrefix + topStyleSufix);
 		if (value == null || value == ""){
 			setInputValue(prefix + "_top", "");
 			setInputValue(prefix + "_top_unit", "");
@@ -77,8 +86,25 @@ class BoxTypeEditorBase extends EditorBase
 				}
 			}
 		}
+		// left
+		var value = propertyModel.getStyle(element, stylePrefix + leftStyleSufix);
+		if (value == null || value == ""){
+			setInputValue(prefix + "_left", "");
+			setInputValue(prefix + "_left_unit", "");
+		}
+		else{
+			var options = getOptions(prefix + "_left_unit");
+			for (idx in 0...options.length){
+				// if the value ends with one of the units
+				if (StringTools.endsWith(value, cast(options[idx]).value)){
+					// case of a number + unit
+					setInputValue(prefix + "_left", Std.string(Std.parseInt(value)));
+					setInputValue(prefix + "_left_unit", cast(options[idx]).value);
+				}
+			}
+		}
 		// right
-		var value = propertyModel.getStyle(element, stylePrefix + "Right");
+		var value = propertyModel.getStyle(element, stylePrefix + rightStyleSufix);
 		if (value == null || value == ""){
 			setInputValue(prefix + "_right", "");
 			setInputValue(prefix + "_right_unit", "");
@@ -95,7 +121,7 @@ class BoxTypeEditorBase extends EditorBase
 			}
 		}
 		// bottom
-		var value = propertyModel.getStyle(element, stylePrefix + "Bottom");
+		var value = propertyModel.getStyle(element, stylePrefix + bottomStyleSufix);
 		if (value == null || value == ""){
 			setInputValue(prefix + "_bottom", "");
 			setInputValue(prefix + "_bottom_unit", "");
@@ -111,23 +137,6 @@ class BoxTypeEditorBase extends EditorBase
 				}
 			}
 		}
-		// left
-		var value = propertyModel.getStyle(element, stylePrefix + "Left");
-		if (value == null || value == ""){
-			setInputValue(prefix + "_left", "");
-			setInputValue(prefix + "_left_unit", "");
-		}
-		else{
-			var options = getOptions(prefix + "_left_unit");
-			for (idx in 0...options.length){
-				// if the value ends with one of the units
-				if (StringTools.endsWith(value, cast(options[idx]).value)){
-					// case of a number + unit
-					setInputValue(prefix + "_left", Std.string(Std.parseInt(value)));
-					setInputValue(prefix + "_left_unit", cast(options[idx]).value);
-				}
-			}
-		}
 
 	}
 	/**
@@ -135,25 +144,26 @@ class BoxTypeEditorBase extends EditorBase
 	 */
 	override private function apply() {
 		var propertyModel = PropertyModel.getInstance();
-
+trace("apply "+stylePrefix + topStyleSufix);
 		// top
 		var value:String = getInputValue(prefix + "_top");
 		var unit:String = getInputValue(prefix + "_top_unit");
-		propertyModel.setStyle(selectedItem, stylePrefix + "Top", value+unit);
-
-		// right
-		var value:String = getInputValue(prefix + "_right");
-		var unit:String = getInputValue(prefix + "_right_unit");
-		propertyModel.setStyle(selectedItem, stylePrefix + "Right", value+unit);
-
-		// bottom
-		var value:String = getInputValue(prefix + "_bottom");
-		var unit:String = getInputValue(prefix + "_bottom_unit");
-		propertyModel.setStyle(selectedItem, stylePrefix + "Bottom", value+unit);
+		propertyModel.setStyle(selectedItem, stylePrefix + topStyleSufix, value+unit);
 
 		// left
 		var value:String = getInputValue(prefix + "_left");
 		var unit:String = getInputValue(prefix + "_left_unit");
-		propertyModel.setStyle(selectedItem, stylePrefix + "Left", value+unit);
+		propertyModel.setStyle(selectedItem, stylePrefix + leftStyleSufix, value+unit);
+
+		// right
+		var value:String = getInputValue(prefix + "_right");
+		var unit:String = getInputValue(prefix + "_right_unit");
+		propertyModel.setStyle(selectedItem, stylePrefix + rightStyleSufix, value+unit);
+
+		// bottom
+		var value:String = getInputValue(prefix + "_bottom");
+		var unit:String = getInputValue(prefix + "_bottom_unit");
+		propertyModel.setStyle(selectedItem, stylePrefix + bottomStyleSufix, value+unit);
+
 	}
 }

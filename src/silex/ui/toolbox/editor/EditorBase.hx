@@ -39,10 +39,9 @@ class EditorBase extends DisplayObject
 	public function new(rootElement:HtmlDom, SLPId:String){
 		super(rootElement, SLPId);
 		// listen to the change event of HTML inputs
-		if (onInput != null){
-			rootElement.addEventListener("input", onInput, true);
-			rootElement.addEventListener("change", onInput, true);
-		}
+		rootElement.addEventListener("input", onInput, true);
+		rootElement.addEventListener("change", onInput, true);
+
 		// listen to the property change event
 		PropertyModel.getInstance().addEventListener(PropertyModel.ON_PROPERTY_CHANGE, onPropertyChange, DEBUG_INFO);
 		// listen to the component change event

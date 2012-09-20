@@ -24,6 +24,6 @@ class PlacementStyleEditor extends BoxTypeEditorBase
 	 * store the prefix values 
 	 */
 	public function new(rootElement:HtmlDom, SLPId:String){
-		super(rootElement, SLPId, "positioning_placement", "");
+		super(rootElement, SLPId, "positioning_placement", "", "top", "left", "right", "bottom");
 	}
 }
