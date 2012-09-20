@@ -45,11 +45,18 @@ body{
 	border: 2px dashed grey;
 }
 /* **************** */
+/* 	builder 		*/
+/* **************** */
+.panel-publication-body{
+	width: 100%;
+}
+/* **************** */
 /* 		stage 		*/
 /* **************** */
 
 .group-main{
 	width: 100%;
+	height: 99%; 
 }
 .SelectionController{
 	width: 80%;
@@ -58,6 +65,7 @@ body{
 	border: 2px red solid;
 	top: 0px;
 	left: 0;
+	overflow: auto;
 }
 .PublicationViewer{
 }
@@ -558,15 +566,13 @@ ul.ribbon-list{
 .silex-toolbox {
 	width: 300px;
 	height: 100%;
-	position: absolute;
 	background-color: #F0F0F0;
 	padding: 0;
 	margin: 0;
 	border: 2px black solid;
 	border-radius: 5px;
-	right: 0;
-	top: 0;
 	z-index: 2000;
+	float: right;
 }
 .silex-toolbox .panel-body{
 	overflow: auto;
