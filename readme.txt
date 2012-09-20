@@ -37,31 +37,29 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 tiny-mce.html
 
-fin toolbox props
-+anims de transition show/hide
-+styles de textes contextuels (boutons, textes, ??)
-ordre dans le flow?
-save
-selection move
-toolbox page
-toolbox media
-selection resize / rotate
-editeur texte
+fonctionnalité
+- selection move
+- drag/drop page, layer, comp
+- stage avec scroll, Pannel pour stage et boites a outils
+- remove page, layer, comp, 
+- publication: open, close, save, save as, save a copy, delete
+- ------
+- selection resize
+- selection rotate
+- toolbox media
+- editeur texte
+- boites a outil
+  . ajout preload etc pour les medias : http://www.w3schools.com/html5/tag_audio.asp
+  . ajouter des sliders http://www.w3schools.com/html5/tryit.asp?filename=tryhtml5_input_type_range
+  . UrlInput, BackgroundInput, ...
+  . Border
 
-en cours
-- PropertiesToolbox, 
-- PropertyEditor, StyleEditor, RawHtmlEditor ?
-  Properties
-    ajout preload etc pour les medias : http://www.w3schools.com/html5/tag_audio.asp
-  Text
-    ajouter des sliders http://www.w3schools.com/html5/tryit.asp?filename=tryhtml5_input_type_range
-  Background
-  Block
-  Box
-  Border
-  List
-  Positioning
-- UrlInput, BackgroundInput, ...
+design
+- dans text, "Line Height" a son text input dans "Case"
+- style menu / ribbon
+- style des boites a outils
+- anims de transition show/hide sur selection, position des layers, des composants...
+
 
 
 == tool tips for beginners ==
@@ -146,7 +144,6 @@ mise a jour version Cocktail => typedef audio et video => changer dans SLPLayer 
 contexts: generalize the toolbox contexts
 
 selection
-- detecter en fonction d'un "hittest"?
 - ecoute window.resize, et dispatcher window.resize dans Page::open
 
 le builder qui ouvre une publication devrait se servir des fonctions de Silex.hx?

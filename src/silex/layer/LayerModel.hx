@@ -105,7 +105,7 @@ class LayerModel extends ModelBase<Layer>{
 	 * add a layer to the page (view and model)
 	 * dispatch the change event
 	 */
-	public function addLayer(page:Page){
+	public function addLayer(page:Page, layerName:String){
 		// get the publication model
 		var publicationModel = PublicationModel.getInstance();
 		// get the view and model DOM
@@ -115,7 +115,7 @@ class LayerModel extends ModelBase<Layer>{
 		// create a node for an empty new layer
 		var newNode = Lib.document.createElement("div");
 		newNode.className = "Layer " + page.name;
-		newNode.title = Lib.window.prompt("I need a name your container please.");
+		newNode.title = layerName;
 
 		// add to the view DOM
 		viewHtmlDom.appendChild(newNode);
@@ -128,9 +128,14 @@ class LayerModel extends ModelBase<Layer>{
 
 
 		// create the Layer instance
+/**/
 		var newLayer:Layer = new Layer(newNode, publicationModel.application.id);
 		newLayer.init();
-
+/*
+		publicationModel.application.initDom(newNode);
+		publicationModel.application.initComponents();
+		var newLayer = publicationModel.application.getAssociatedComponents(newNode, Layer).first();
+/**/
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE, newLayer), DEBUG_INFO);
 	}

@@ -468,7 +468,7 @@ width:100%;
 	cursor: pointer;
 }
 .selection-layer-marker{
-	z-index: 400;
+	z-index: 300;
 	border: 6px solid green;
 	cursor: move;
 }

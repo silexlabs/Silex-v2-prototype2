@@ -86,7 +86,7 @@ class InsertToolbox extends ToolboxBase
 	public function doAdd(selectedType:String) {
 		switch (selectedType) {
 			case LAYER_TYPE:
-				LayerModel.getInstance().addLayer(PageModel.getInstance().selectedItem);
+				LayerModel.getInstance().addLayer(PageModel.getInstance().selectedItem, Lib.window.prompt("I need a name your container please."));
 			case IMAGE_TYPE:
 				addComponent("img").setAttribute("src", "enter image url here");
 			case TEXT_TYPE:

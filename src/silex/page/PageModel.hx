@@ -54,6 +54,10 @@ class PageModel extends ModelBase<Page>{
 	 */
 	public static inline var ON_LIST_CHANGE = "onPageListChange";
 	/**
+	 * name of the layer automatically created with a new page
+	 */
+	public static inline var NEW_LAYER_NAME = "body";
+	/**
 	 * Models are singletons
 	 * Constructor is private
 	 */
@@ -100,12 +104,17 @@ class PageModel extends ModelBase<Page>{
 		publicationModel.prepareForEdit(newNode);
 
 		// create the Page instance
+/**/
 		var newPage:Page = new Page(newNode, publicationModel.application.id);
 		//publicationModel.application.addAssociatedComponent(newNode, newPage);
 		newPage.init();
-
+/*
+		publicationModel.application.initDom(newNode);
+		publicationModel.application.initComponents();
+		var newPage:Page = publicationModel.application.getAssociatedComponents(newNode, Page).first();
+/**/
 		// create an empty new layer
-		LayerModel.getInstance().addLayer(newPage);
+		LayerModel.getInstance().addLayer(newPage, NEW_LAYER_NAME);
 
 		// open the new page
 		Page.getPageByName(className, publicationModel.application.id, viewHtmlDom).open(null, null, true, true);

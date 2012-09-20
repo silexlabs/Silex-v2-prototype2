@@ -99,7 +99,10 @@ class ComponentModel extends ModelBase<HtmlDom>{
 
 		// add to the model DOM
 		modelHtmlDom.appendChild(newNode.cloneNode(true));
-
+/*
+		publicationModel.application.initDom(newNode);
+		publicationModel.application.initComponents();
+*/
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE, newNode), DEBUG_INFO);
 
