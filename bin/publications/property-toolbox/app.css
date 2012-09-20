@@ -63,6 +63,7 @@ p{
 	border: 2px black solid;
 	border-radius: 5px;
 	z-index: 2000;
+	float: right;
 }
 .silex-toolbox .panel-body{
 	overflow: auto;

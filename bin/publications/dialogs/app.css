@@ -273,7 +273,6 @@ width:100%;
 
 }
 
-
 /*   PUBLICATION LIST  */
 
 .dialogs legend{
@@ -293,7 +292,6 @@ width:100%;
 	padding-top:5px;
 	
 }
-
 .dialogs .publications .listSelectedItem{
 	color: green;
 }
