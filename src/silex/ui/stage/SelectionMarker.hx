@@ -157,6 +157,7 @@ class SelectionMarker extends DisplayObject{
 			// at a given position
 			parent.insertBefore(element, parent.childNodes[position+1]);
 		}
+try{
 		// and also move in the model if needed
 		if (dropZone != null){
 			// link view to model
@@ -167,7 +168,8 @@ class SelectionMarker extends DisplayObject{
 			// remove the element from the model
 			if (modelElement == null) throw("Error while moving the element: could not retrieve the element in the model.");
 			if (modelElement.parentNode == null) throw("Error while moving the element: the element in the model has no parent.");
-			modelElement.parentNode.removeChild(modelElement);
+			//causes an exception when modelElement==modelBeforeElement
+			//modelElement.parentNode.removeChild(modelElement);
 
 			// put back the element at a new position
 			if (modelBeforeElement == null){
@@ -179,6 +181,10 @@ class SelectionMarker extends DisplayObject{
 				modelParent.insertBefore(modelElement, modelBeforeElement);
 			}
 		}
+}
+catch(e:Dynamic){
+		trace("ON DROP ERROR: "+e+ "("+element+" , "+beforeElement+", "+parent+")");
+}
 /*
 		DomTools.doLater(resetMarkerParent);
 	}
@@ -205,5 +211,7 @@ class SelectionMarker extends DisplayObject{
 			//	generate an exception?		rootElement.parentNode.removeChild(rootElement.parentNode);
 			initialMarkerParent.appendChild(rootElement);
 		}
+
+		trace("ON DROP COMPLETE");
 	}
 }

@@ -88,7 +88,7 @@ class SelectionController extends DisplayObject
 //		hoverLayerMarker = Lib.document.createElement("div");
 //		hoverLayerMarker.className = HOVER_LAYER_MARKER_STYLE_NAME;
 		hoverLayerMarker = DomTools.getSingleElement(rootElement, HOVER_LAYER_MARKER_STYLE_NAME, true);
-		hoverLayerMarker.addEventListener("click", onClickLayerHover, false);
+		hoverLayerMarker.addEventListener("mousedown", onClickLayerHover, false);
 		hoverLayerMarker.addEventListener("mouseout", onOutLayerHover, false);
 		selectionContainer.appendChild(hoverLayerMarker);
 
@@ -103,7 +103,7 @@ class SelectionController extends DisplayObject
 //		hoverMarker = Lib.document.createElement("div");
 //		hoverMarker.className = HOVER_MARKER_STYLE_NAME;
 		hoverMarker = DomTools.getSingleElement(rootElement, HOVER_MARKER_STYLE_NAME, true);
-		hoverMarker.addEventListener("click", onClickHover, false);
+		hoverMarker.addEventListener("mousedown", onClickHover, false);
 		hoverMarker.addEventListener("mouseout", onOutHover, false);
 		selectionContainer.appendChild(hoverMarker);
 
@@ -157,9 +157,18 @@ class SelectionController extends DisplayObject
 	public function onClickHover(e:Event) {
 		// trace("onClickHover ");
 		// prenvent default (selection of text, call of this.onClickAnywhere)
-		e.preventDefault();
+//		e.preventDefault();
 		// set the item on the model (this will dispatch an event and we will catch it to update the marker)
 		componentModel.selectedItem = componentModel.hoveredItem;
+
+/* attempt to start drag on mouse down
+		// start drag on mouse down
+		var e:Event = Lib.document.createEvent('HTMLEvents');
+		e.initEvent('mousedown', true, false);
+		selectionMarker.dispatchEvent(cast(e));
+
+//		DomTools.doLater(callback(selectionMarker.dispatchEvent, cast(e)), 100);
+*/
 	}
 	/**
 	 * Handle mouse events
@@ -410,11 +419,11 @@ class SelectionController extends DisplayObject
 			marker.style.visibility = "hidden";
 		}
 		else{			
+			marker.style.display = "inline";
+			marker.style.visibility = "visible";
 			var boundingBox = DomTools.getElementBoundingBox(target);
 			var markerMarginH = (marker.offsetWidth - marker.clientWidth)/2.0;
 			var markerMarginV = (marker.offsetHeight - marker.clientHeight)/2.0;
-			marker.style.display = "inline";
-			marker.style.visibility = "visible";
 			doSetMarkerPosition(marker,
 				Math.floor(boundingBox.x - markerMarginH/2),
 				Math.floor(boundingBox.y - markerMarginV/2),

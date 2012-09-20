@@ -43,6 +43,8 @@ fonctionnalité
 - stage avec scroll, Pannel pour stage et boites a outils
 - remove page, layer, comp, 
 - publication: open, close, save, save as, save a copy, delete
+- admin dans ./admin/index.html, export de la publication dans ./ 
+  =>  ./admin/index.html est compilée a partir de src/index-builder.html
 - ------
 - selection resize
 - selection rotate
@@ -53,6 +55,7 @@ fonctionnalité
   . ajouter des sliders http://www.w3schools.com/html5/tryit.asp?filename=tryhtml5_input_type_range
   . UrlInput, BackgroundInput, ...
   . Border
+- publier une publication
 
 design
 - dans text, "Line Height" a son text input dans "Case"

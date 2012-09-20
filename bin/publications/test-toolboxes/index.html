@@ -1,92 +1,29 @@
-<html>
-	<HEAD>
-		<META http-equiv="Content-Type" content="text/html; charset=UTF-8"></META> 
-		<META name="initialPageName" content="page1"></META>
+<HTML>
+		<HEAD>
+			
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+		<meta name="initialPageName" content="page1">
 		<!-- plugins -->
 		<!-- info -->
 		<title>Hello Silex!</title>
-		<meta name="description" content="A 1st test of Silex publication" />
-		<meta name="keywords" content="HTML,CSS,website editor" />
-		<meta name="author" content="lexoyo" />
-		<meta name="revised" content="lexoyo, 29/08/2011" />
+		<meta name="description" content="A 1st test of Silex publication">
+		<meta name="keywords" content="HTML,CSS,website editor">
+		<meta name="author" content="lexoyo">
+		<meta name="revised" content="lexoyo, 29/08/2011">
 		<!-- config -->
-		<meta name="type" content="publication" /> <!-- or theme, utility -->
-		<meta name="state" content="public" /> <!-- or private, trashed -->
-		<LINK href="app.css" rel="stylesheet"></LINK>
-		<SCRIPT src="../../loader.js"></SCRIPT>
-	</HEAD>
-	<body class="">
-		<div title="header" class="Layer page1 page2" data-master="true">
-			<h1>Header</h1>
-			<img src="assets/header.jpeg" 
-				style=""/>
-			<div>
-					This would be the header ... :)
-			</div>
-		</div>
-		<A class="Page" name="page1" >Page 1</A>
-
-
-
-
-		<div title="Body page 1" class="Layer page1 " id="testLayerForToolBox"
-		 style="background-color: rgb(251, 254, 57); background-image: url(assets/icon.png); background-repeat: no-repeat; background-attachment: scroll;
-		background-position: left bottom;  " >
-			<div  id="testComponentForToolBox"
-				style="color: rgb(255, 0, 255); text-indent: 25pt; text-align: center; vertical-align: middle; white-space: pre; clear: none; float: left; height: 200px; width: 50%;
-				position: absolute;
-				clip:rect(0px,60px,200px,0px); overflow: hidden;">
-				<h1>HELLO SILEX!</h1>
-			</div>
-			<button  style="font-family: arial,verdana; font-size: 18px; float: left; ">
-				<a href="#test">Button default style</a>
-			</button>
-			<button style="font-family: background-color: rgb(42, 188, 26); comic sans ms,arial; font-size: 12pt; font-weight: 900; font-style: italic; font-variant: small-caps; line-height: 30px; " class="button-test1" >
-				<a href="#test">Button default style</a>
-			</button>
-			<audio
-				controls="controls" 
-				style="background-color: rgb(0, 255, 0); color: rgb(255, 0, 0); background-image:url('assets/icon.png'),url('assets/image.png');" 
-			>
- 				<source src="assets/sample.ogg" type="audio/ogg" />
- 				<source src="assets/sample.ogg" type="audio/ogg" />
-	 			Your browser does not support the audio element.
-			</audio>
-			<div style="display: inline-block;">
-				This is <strong>Page 1</strong>.
-			</div>
-			<div>
-				Test of a paragraph. And this is <a href="#page2" class="LinkToPage" >a link to page #2</a>
-			</div>
-			<div>
-				Test of a new page: <a href="#test" class="LinkToPage" >a link to "test"</a>
-			</div>
-		</div>
-		<A class="Page" name="page2" >Page 2</A>
-		<div title="Body page 2" class="Layer page2">
-			<div>
-				<h1>Page 2</h1>
-				<p>Test of a paragraph 2. Back to <a href="#page1" class="LinkToPage" >page #1</a></p>
-			</div>
-			<div>
-				This page should not been shown unless you specified <a href="#page2" >#page2 in the deeplink</a>!
-			</div>
-		</div>
-		<div title="Body page test" class="Layer test">
-			<div>
-				<h1>Test of a new page</h1>
-				<p>Back to <a href="#page1" class="LinkToPage" >page #1</a></p>
-			</div>
-			<div>
-				This page should not been shown unless you created a page named "test"!
-			</div>
-		</div>
-		<div title="Footer" class="Layer page1 page2" data-master="true">
-			<h1>Footer</h1>
-			<p>
-				And this would be the footer ... :)
-				<BR />Here is an external link to <a href="?admin">Edit this site</a>.
-			</p>
-		</div>
-	</body>
-</html>
+		<meta name="type" content="publication"> <!-- or theme, utility -->
+		<meta name="state" content="public"> <!-- or private, trashed -->
+		<link href="app.css" rel="stylesheet">
+		<script src="../../loader.js"></script>
+	
+		</HEAD>
+		<BODY class="PublicationGroup">
+			
+		
+		<a data-group-id="PublicationGroup" class="Page" name="page1">Page 1</a>
+		<div data-group-id="PublicationGroup" title="Footer" class="Layer page1 ">
+		<p data-group-id="PublicationGroup">... Text ...</p><img src="assets/image.png" title="image test" data-group-id="PublicationGroup"><p data-group-id="PublicationGroup">Text again !!</p></div>
+	
+		</BODY>
+	</HTML>
+		
