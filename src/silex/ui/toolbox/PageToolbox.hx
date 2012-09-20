@@ -50,7 +50,7 @@ class PageToolbox extends ToolboxBase
 	 */
 	public function addPage() {
 		trace("addPage - ");
-		PageModel.getInstance().addPage(Lib.window.prompt("Name for the publication"));
+		PageModel.getInstance().addPage(Lib.window.prompt("I need a name for this new page."));
 	}
 	/**
 	 * Handle toolbox events

@@ -115,6 +115,7 @@ class LayerModel extends ModelBase<Layer>{
 		// create a node for an empty new layer
 		var newNode = Lib.document.createElement("div");
 		newNode.className = "Layer " + page.name;
+		newNode.title = Lib.window.prompt("I need a name your container please.");
 
 		// add to the view DOM
 		viewHtmlDom.appendChild(newNode);
@@ -160,6 +161,9 @@ class LayerModel extends ModelBase<Layer>{
 		// remove layer from dom if it is not used on other pages and it is not marked as a master
 		if (layer.rootElement.getAttribute(MASTER_PROPERTY_NAME) == null
 			&& found == false){
+			// reset components associated wit hthis element
+			publicationModel.application.removeAllAssociatedComponent(viewHtmlDom);
+			// remove ffrom the dom
 			viewHtmlDom.parentNode.removeChild(viewHtmlDom);
 			modelHtmlDom.parentNode.removeChild(modelHtmlDom);
 			// todo: maybe free the domelement, not possible to write layer.rootElement = null;
@@ -168,6 +172,9 @@ class LayerModel extends ModelBase<Layer>{
 		else{
 			layer.hide(null, true);
 		}
+		// change selection 
+		if(selectedItem == layer)
+			selectedItem = null;
 
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE), DEBUG_INFO);

@@ -160,9 +160,16 @@ class PageModel extends ModelBase<Page>{
 			}
 		}
 
+		// reset components associated wit hthis element
+		publicationModel.application.removeAllAssociatedComponent(page.rootElement);
+		// remove element from dom
 		page.rootElement.parentNode.removeChild(page.rootElement);
 		// todo: maybe free the domelement, not possible to write page.rootElement = null;
 		// todo: unregister class from SLPLayer
+
+		// change selection 
+		if(selectedItem == page)
+			selectedItem = null;
 
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE), DEBUG_INFO);

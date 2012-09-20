@@ -16,7 +16,7 @@
 		<SCRIPT src="../../loader.js"></SCRIPT>
 	</HEAD>
 	<body class="">
-		<div class="Layer page1 page2" data-master="true">
+		<div title="header" class="Layer page1 page2" data-master="true">
 			<h1>Header</h1>
 			<img src="assets/header.jpeg" 
 				style=""/>
@@ -29,7 +29,7 @@
 
 
 
-		<div class="Layer page1 " id="testLayerForToolBox"
+		<div title="Body page 1" class="Layer page1 " id="testLayerForToolBox"
 		 style="background-color: rgb(251, 254, 57); background-image: url(assets/icon.png); background-repeat: no-repeat; background-attachment: scroll;
 		background-position: left bottom;  " >
 			<div  id="testComponentForToolBox"
@@ -63,7 +63,7 @@
 			</div>
 		</div>
 		<A class="Page" name="page2" >Page 2</A>
-		<div class="Layer page2">
+		<div title="Body page 2" class="Layer page2">
 			<div>
 				<h1>Page 2</h1>
 				<p>Test of a paragraph 2. Back to <a href="#page1" class="LinkToPage" >page #1</a></p>
@@ -72,7 +72,7 @@
 				This page should not been shown unless you specified <a href="#page2" >#page2 in the deeplink</a>!
 			</div>
 		</div>
-		<div class="Layer test">
+		<div title="Body page test" class="Layer test">
 			<div>
 				<h1>Test of a new page</h1>
 				<p>Back to <a href="#page1" class="LinkToPage" >page #1</a></p>
@@ -81,7 +81,7 @@
 				This page should not been shown unless you created a page named "test"!
 			</div>
 		</div>
-		<div class="Layer page1 page2" data-master="true">
+		<div title="Footer" class="Layer page1 page2" data-master="true">
 			<h1>Footer</h1>
 			<p>
 				And this would be the footer ... :)

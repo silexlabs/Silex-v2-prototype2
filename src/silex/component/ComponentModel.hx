@@ -119,9 +119,16 @@ class ComponentModel extends ModelBase<HtmlDom>{
 		var viewHtmlDom = element;
 		var modelHtmlDom = publicationModel.getModelFromView(element);
 
+		// reset components associated wit hthis element
+		publicationModel.application.removeAllAssociatedComponent(viewHtmlDom);
+
 		// remove element from dom
 		viewHtmlDom.parentNode.removeChild(viewHtmlDom);
 		modelHtmlDom.parentNode.removeChild(modelHtmlDom);
+
+		// change selection 
+		if(selectedItem == viewHtmlDom)
+			selectedItem = null;
 
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE), DEBUG_INFO);

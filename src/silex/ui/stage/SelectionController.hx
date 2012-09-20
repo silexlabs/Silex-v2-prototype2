@@ -8,9 +8,11 @@ import org.slplayer.util.DomTools;
 import org.slplayer.component.navigation.Layer;
 import org.slplayer.core.Application;
 
-import silex.layer.LayerModel;
-import silex.publication.PublicationModel;
+import silex.property.PropertyModel;
 import silex.component.ComponentModel;
+import silex.layer.LayerModel;
+import silex.page.PageModel;
+import silex.publication.PublicationModel;
 
 /**
  * This component listen to the mouse events and start the desired actions. 
@@ -121,11 +123,30 @@ class SelectionController extends DisplayObject
 		componentModel = ComponentModel.getInstance();
 		componentModel.addEventListener(ComponentModel.ON_SELECTION_CHANGE, onSelectionChanged, DEBUG_INFO);
 		componentModel.addEventListener(ComponentModel.ON_HOVER_CHANGE, onHoverChanged, DEBUG_INFO);
+		componentModel.addEventListener(ComponentModel.ON_LIST_CHANGE, redraw, DEBUG_INFO);
 		
 		// listen to the model events
 		layerModel = LayerModel.getInstance();
 		layerModel.addEventListener(LayerModel.ON_SELECTION_CHANGE, onLayerSelectionChanged, DEBUG_INFO);
 		layerModel.addEventListener(LayerModel.ON_HOVER_CHANGE, onLayerHoverChanged, DEBUG_INFO);
+		layerModel.addEventListener(LayerModel.ON_LIST_CHANGE, redraw, DEBUG_INFO);
+
+		// listen to the model events
+		PageModel.getInstance().addEventListener(PageModel.ON_LIST_CHANGE, redraw, DEBUG_INFO);
+		PublicationModel.getInstance().addEventListener(PublicationModel.ON_DATA, redraw, DEBUG_INFO);
+		PropertyModel.getInstance().addEventListener(PropertyModel.ON_PROPERTY_CHANGE, redraw, DEBUG_INFO);
+		PropertyModel.getInstance().addEventListener(PropertyModel.ON_STYLE_CHANGE, redraw, DEBUG_INFO);
+	}
+	/**
+	 * refresh display
+	 */
+	public function redraw(e:Event=null) {
+		if (layerModel.selectedItem == null) setMarkerPosition(selectionLayerMarker, null);
+		else setMarkerPosition(selectionLayerMarker, layerModel.selectedItem.rootElement);
+		if (layerModel.hoveredItem == null) setMarkerPosition(hoverLayerMarker, null);
+		else  setMarkerPosition(hoverLayerMarker, layerModel.hoveredItem.rootElement);
+		setMarkerPosition(selectionMarker, componentModel.selectedItem);
+		setMarkerPosition(hoverMarker, componentModel.hoveredItem);
 	}
 	//////////////////////////////////////////////////////
 	// Selection clicks
@@ -383,6 +404,7 @@ class SelectionController extends DisplayObject
 	 * todo: with transformations + rotation
 	 */
 	private function setMarkerPosition(marker:HtmlDom, target:HtmlDom){
+		// trace("setMarkerPosition ("+marker+", "+target+")");
 		if (target == null){
 			marker.style.display = "none";
 			marker.style.visibility = "hidden";
