@@ -125,11 +125,6 @@ p{
 
 }
 
-.silex-toolbox fieldset.PropertyEditor{
-	margin-left:12px;
-	width:75%;
-
-}
 
 .silex-toolbox fieldset.Backgroundstyleeditor{
 	margin-left:auto;
@@ -166,7 +161,6 @@ p{
 	margin-left:auto;
 	margin-right:auto;
 	font-size:12px;
-	height:168px;
 }
 .silex-toolbox fieldset.PropertyEditor legend{
 	margin-left:auto;

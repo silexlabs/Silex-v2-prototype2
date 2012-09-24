@@ -136,11 +136,16 @@ class SelectionController extends DisplayObject
 		PublicationModel.getInstance().addEventListener(PublicationModel.ON_DATA, redraw, DEBUG_INFO);
 		PropertyModel.getInstance().addEventListener(PropertyModel.ON_PROPERTY_CHANGE, redraw, DEBUG_INFO);
 		PropertyModel.getInstance().addEventListener(PropertyModel.ON_STYLE_CHANGE, redraw, DEBUG_INFO);
+		
+
+		rootElement.addEventListener("scroll", redraw, false);
+		Lib.window.addEventListener("resize", redraw, false);
 	}
 	/**
 	 * refresh display
 	 */
 	public function redraw(e:Event=null) {
+		trace("redraw selection");
 		if (layerModel.selectedItem == null) setMarkerPosition(selectionLayerMarker, null);
 		else setMarkerPosition(selectionLayerMarker, layerModel.selectedItem.rootElement);
 		if (layerModel.hoveredItem == null) setMarkerPosition(hoverLayerMarker, null);
@@ -235,7 +240,7 @@ class SelectionController extends DisplayObject
 		var found = false;
 		var layers = DomTools.getElementsByAttribute(rootElement, "data-silex-layer-id", "*");
 		for (idx in 0...layers.length){
-			if (checkIsOver(layers[idx], e.clientX, e.clientY)){
+			if (checkIsOver(layers[idx], e.pageX, e.pageY)){
 				// the mouse is over a layer
 				// get the SLPlayer application from the loaded publication
 				var application = PublicationModel.getInstance().application;
@@ -261,7 +266,7 @@ class SelectionController extends DisplayObject
 			// browse all components to check if it should be set as hovered
 			var comps = DomTools.getElementsByAttribute(layerModel.hoveredItem.rootElement, "data-silex-component-id", "*");
 			for (idx in 0...comps.length){
-				if (checkIsOver(comps[idx], e.clientX, e.clientY)){
+				if (checkIsOver(comps[idx], e.pageX, e.pageY)){
 					// the mouse is over a layer
 					componentModel.hoveredItem = comps[idx];
 					found = true;
@@ -321,7 +326,7 @@ class SelectionController extends DisplayObject
 /**/	
 	}
 	/**
-	 * Check if the mouse is aver a given node
+	 * Check if the mouse is over a given node
 	 */
 	private function checkIsOver(target:HtmlDom, mouseX:Int, mouseY:Int):Bool{
 		var boundingBox = DomTools.getElementBoundingBox(target);

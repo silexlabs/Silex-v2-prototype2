@@ -56,18 +56,7 @@ body{
 
 .group-main{
 	width: 100%;
-	height: 99%; 
-}
-.SelectionController{
-	width: 80%;
-	height: 100%;
-	overflow: auto;
-	border: 2px red solid;
-	top: 0px;
-	left: 0;
-	overflow: auto;
-}
-.PublicationViewer{
+	height: 100%; 
 }
 /* **************** */
 /* 	Dialogs 		*/
@@ -443,6 +432,20 @@ width:100%;
 /* 		selection 		*/
 /* **************** */
 
+.SelectionController{
+	width: 80%;
+	height: 100%;
+	overflow: auto;
+	border: 2px red solid;
+	top: 0px;
+	left: 0;
+	overflow: auto;
+}
+.PublicationViewer{
+}
+.draggable-phantom{
+    opacity: .5 !important;
+}
 .hover-marker, .selection-marker{
 	position: absolute;
 	margin:0px;
@@ -634,11 +637,6 @@ ul.ribbon-list{
 
 }
 
-.silex-toolbox fieldset.PropertyEditor{
-	margin-left:12px;
-	width:75%;
-
-}
 
 .silex-toolbox fieldset.Backgroundstyleeditor{
 	margin-left:auto;
@@ -675,7 +673,6 @@ ul.ribbon-list{
 	margin-left:auto;
 	margin-right:auto;
 	font-size:12px;
-	height:168px;
 }
 .silex-toolbox fieldset.PropertyEditor legend{
 	margin-left:auto;

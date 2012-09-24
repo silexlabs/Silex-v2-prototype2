@@ -62,6 +62,7 @@ class SelectionMarker extends DisplayObject{
 			throw ("Error: could not start dragging this component or layer, another layer is still being dragged");
 		}
 		var event:CustomEvent = cast(e);
+
 		// remove the element from the DOM
 		if(ComponentModel.getInstance().selectedItem != null){
 			// case of a component
@@ -69,9 +70,11 @@ class SelectionMarker extends DisplayObject{
 			// store the component and its parent and index
 			draggedComponent = ComponentModel.getInstance().selectedItem;
 			draggedParent = draggedComponent.parentNode;
-			draggedPosition = draggedComponent.parentNode.indexOf(draggedComponent);
+			draggedPosition = indexOfChild(draggedComponent);
+			// change the style of the phantom to erflect the element style
+			//event.detail.draggable.initPhantomStyle(draggedComponent);
 			// remove from the DOM
-			draggedParent.removeChild(draggedComponent);
+			// draggedParent.removeChild(draggedComponent);
 		}
 		else if(LayerModel.getInstance().selectedItem != null){
 			// case of a layer
@@ -79,9 +82,19 @@ class SelectionMarker extends DisplayObject{
 			// store the component 
 			draggedLayer = LayerModel.getInstance().selectedItem;
 			draggedParent = draggedLayer.rootElement.parentNode;
-			draggedPosition = draggedLayer.rootElement.parentNode.indexOf(draggedLayer.rootElement);
-			draggedParent.removeChild(draggedLayer.rootElement);
+			draggedPosition = indexOfChild(draggedLayer.rootElement);
+			// change the style of the phantom to erflect the element style
+			//event.detail.draggable.initPhantomStyle(draggedLayer.rootElement);
+			// remove from the DOM
+			// draggedParent.removeChild(draggedLayer.rootElement);
 		}
+	}
+	private static function indexOfChild(childNode:HtmlDom):Int{
+		var i = 0;
+		var child = childNode;
+		while( (child = child.previousSibling) != null ) 
+			i++;
+		return i;
 	}
 	/**
 	 * Handle Draggable events
@@ -116,7 +129,6 @@ class SelectionMarker extends DisplayObject{
 		// get where to drop
 		if (dropZone != null){
 			// a drop zone was found
-			trace("onDrop DROPPED in "+dropZone.parent+" at "+dropZone.position+" - "+dropZone.parent.childNodes[dropZone.position].nodeType);
 			position = dropZone.position;
 			parent = dropZone.parent;
 

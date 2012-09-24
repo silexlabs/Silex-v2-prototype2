@@ -29,25 +29,20 @@ p{
 .list li{
 
 }
-/* 		Publication styles 			 */
-/* 		You can edit these styles 	 */
-
-.PublicationViewer, .debug-html, .debug-raw{
-	float: left;
-	overflow: auto;
-	width: 600px;
-	height: 400px;
-	border: 2px black solid;
-}
-.ModelDebugger{
-	border: 2px red solid;
-}
-
 /* **************** */
 /* 		selection 		*/
 /* **************** */
-
-.hover-marker, .selection-marker{
+.SelectionController{
+	width: 80%;
+	height: 100%;
+	overflow: auto;
+	border: 2px red solid;
+	top: 0px;
+	left: 0;
+}
+.PublicationViewer{
+}
+.hover-marker, .selection-marker, .hover-layer-marker, .selection-layer-marker{
 	position: absolute;
 	margin:0px;
 	padding:0px;
@@ -68,11 +63,6 @@ p{
 	background-color: yellow;
 	border: 6px solid grey;
 }
-.hover-layer-marker, .selection-layer-marker{
-	position: absolute;
-	margin:0px;
-	padding:0px;
-}
 .hover-layer-marker{
 	z-index: 100;
 	opacity:0.25;
@@ -89,10 +79,28 @@ p{
 	background-color: green;
 	border: 6px solid green;
 }
-.selection-phantom{
-	opacity: .5 !important;
+
+.draggable-phantom{
+    opacity: .5 !important;
+	background-color: red !important;
+	border: 6px solid green !important;
 }
+
 
 /* **************** */
 /* /Selection */
 /* **************** */
+/* 		Publication styles 			 */
+/* 		You can edit these styles 	 */
+
+.PublicationViewer, .debug-html, .debug-raw, .SelectionController{
+	float: left;
+	overflow: none;
+	width: 600px;
+	height: 600px;
+	border: 2px black solid;
+}
+.ModelDebugger{
+	border: 2px red solid;
+}
+
