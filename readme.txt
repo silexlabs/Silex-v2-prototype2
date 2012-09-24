@@ -34,8 +34,10 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** To do **
 
-
-tiny-mce.html
+cleanup code
+- Draggable::getBestDropZone
+- SelectionMarker::onDrag
+- DomTools::getElementBoundingBox
 
 fonctionnalité
 - selection move

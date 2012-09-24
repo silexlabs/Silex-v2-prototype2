@@ -96,8 +96,8 @@ p{
 .PublicationViewer, .debug-html, .debug-raw, .SelectionController{
 	float: left;
 	overflow: none;
-	width: 600px;
-	height: 600px;
+	width: 400px;
+	height: 400px;
 	border: 2px black solid;
 }
 .ModelDebugger{

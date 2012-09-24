@@ -1,7 +1,6 @@
 <html>
 	<HEAD>
 		<META http-equiv="Content-Type" content="text/html; charset=UTF-8"></META> 
-		<META name="initialPageName" content="properties"></META>
 		<!-- plugins -->
 		<!-- info -->
 		<title>Hello Silex!</title>
@@ -38,13 +37,61 @@
 	<body>
 				<!-- 	**************************	-->
 				<!-- 		Ribbon Toolbox 		-->
-				<div class="GroupRibbon" data-initial-page-name="page-list">
+				<div class="GroupRibbon" data-initial-page-name="file-menu">
+					<!-- Menu header -->
+					<div>
+						<a href="#file-menu" class="LinkToPage" data-group-id="GroupRibbon">File</a>
+						<a href="#page-list" class="LinkToPage" data-group-id="GroupRibbon">Pages</a>
+						<a href="#layer-list" class="LinkToPage" data-group-id="GroupRibbon">Masters</a>
+						<a href="#insert-list" class="LinkToPage" data-group-id="GroupRibbon">Insert</a>
+					</div>
+					<!-- File -->
+					<a name="file-menu" class="Page" data-group-id="GroupRibbon">File</a>
+
+					<div class="PageToolbox Layer file-menu ribbon-list">
+						<ul class="">
+							<li>
+								<div class="solid"></div></br>
+								open
+							</li>
+							<li>
+								<div class="solid"></div></br>
+								save
+							</li>
+							<li>
+								<div class="solid"></div></br>
+								save as
+							</li>
+							<li>
+								<div class="solid"></div></br>
+								save copy
+							</li>
+							<li>
+								<div class="solid"></div></br>
+								close
+							</li>
+							<li>
+								<div class="solid"></div></br>
+								settings
+							</li>
+							<li>
+								<div class="solid"></div></br>
+								backup all
+							</li>
+							<li>
+								<div class="solid"></div></br>
+								export
+							</li>
+							<li>
+								<div class="solid"></div></br>
+								publish
+							</li>
+						</ul>
+					</div>
+
+					<!-- Page -->
 					<a name="page-list" class="Page" data-group-id="GroupRibbon">Pages</a>
-					<a name="layer-list" class="Page" data-group-id="GroupRibbon">Masters</a>
-					<a name="insert-list" class="Page" data-group-id="GroupRibbon">Insert</a>
-					<a href="#page-list" class="LinkToPage" data-group-id="GroupRibbon">Pages</a>
-					<a href="#layer-list" class="LinkToPage" data-group-id="GroupRibbon">Masters</a>
-					<a href="#insert-list" class="LinkToPage" data-group-id="GroupRibbon">Insert</a>
+
 					<div class="PageToolbox Layer page-list ribbon-list">
 <!--
 						<div class="assets-page">
@@ -66,6 +113,9 @@
 						<button class="add-button">Add</button>
 					</div>
 
+					<!-- Masters -->
+					<a name="layer-list" class="Page" data-group-id="GroupRibbon">Masters</a>
+
 					<div class="MasterToolbox Layer layer-list ribbon-list">
 						<ul class="LayersList">
 							<li>
@@ -75,6 +125,10 @@
 						</ul>
 						<button class="add-button">Add</button>
 					</div>
+
+					<!-- Insert -->
+					<a name="insert-list" class="Page" data-group-id="GroupRibbon">Insert</a>
+
 					<div class="InsertToolbox Layer insert-list ribbon-list">
 						<ul class="XmlList" data-items="&lt;item&gt;&lt;title&gt;Image&lt;/title&gt;&lt;type&gt;image&lt;/type&gt;&lt;/item&gt;
 						&lt;item&gt;&lt;title&gt;Text&lt;/title&gt;&lt;type&gt;text&lt;/type&gt;&lt;/item&gt;

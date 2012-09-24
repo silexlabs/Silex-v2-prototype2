@@ -802,5 +802,151 @@
 				<!-- 		/Builder mode 			-->
 				<!-- 	**************************	-->
 
+
+
+				<!-- 	**************************	-->
+				<!-- 	**************************	-->
+				<!-- 	**************************	-->
+				<!-- 	
+	<fieldset>
+		<legend>Border</legend>	
+	<td class="tdelim">&nbsp;
+			<td class="tdelim delim">&nbsp;
+			<td class="tdelim">Style
+			<td class="tdelim delim">&nbsp;
+			<td class="tdelim">Width
+			<td class="tdelim delim">&nbsp;
+			<td class="tdelim">Color
+		
+
+		<tr>
+			&nbsp;
+			<td class="delim">&nbsp;
+			<input type="checkbox" id="border_style_same" name="border_style_same" class="checkbox" checked="checked" onclick="toggleSame(this,'border_style');"> <label for="border_style_same">Same for All</label>
+			<td class="delim">&nbsp;
+			<input type="checkbox" id="border_width_same" name="border_width_same" class="checkbox" checked="checked" onclick="toggleSame(this,'border_width');"> <label for="border_width_same">Same for All</label>
+			<td class="delim">&nbsp;
+			<input type="checkbox" id="border_color_same" name="border_color_same" class="checkbox" checked="checked" onclick="toggleSame(this,'border_color');"> <label for="border_color_same">Same for All</label>
+		
+
+		<tr>
+			Top
+			<td class="delim">&nbsp;
+			<select id="border_style_top" name="border_style_top" class="mceEditableSelect"><option value=""></option><option value="none">none</option><option value="solid">solid</option><option value="dashed">dashed</option><option value="dotted">dotted</option><option value="double">double</option><option value="groove">groove</option><option value="ridge">ridge</option><option value="inset">inset</option><option value="outset">outset</option><option value="__mce_add_custom__" class="mceAddSelectValue">(value)</option></select>
+			<td class="delim">&nbsp;
+			
+				<select id="border_width_top" name="border_width_top" class="mceEditableSelect"><option value=""></option><option value="thin">thin</option><option value="medium">medium</option><option value="thick">thick</option><option value="__mce_add_custom__" class="mceAddSelectValue">(value)</option></select>
+						&nbsp;
+						
+							<label id="border_width_top_measurement_label" for="border_width_top_measurement" style="display: none; visibility: hidden;">Width top Measurement Unit</label>
+							<select id="border_width_top_measurement" name="border_width_top_measurement" aria-labelledby="border_width_top_measurement_label"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+						
+					
+				</tbody></table>
+			
+			<td class="delim">&nbsp;
+			
+				<input id="border_color_top" name="border_color_top" type="text" value="" size="9" onchange="updateColor('border_color_top_pick','border_color_top');">
+						<td id="border_color_top_pickcontainer"><a role="button" aria-labelledby="border_color_top_pick_label" id="border_color_top_pick_link" href="javascript:;" onclick="tinyMCEPopup.pickColor(event,'border_color_top');" onmousedown="return false;" class="pickcolor"><span id="border_color_top_pick" title="Browse" style="">&nbsp;<span id="border_color_top_pick_label" class="mceVoiceLabel mceIconOnly" style="display:none;">Browse</span></span></a>
+					
+				</tbody></table>
+			
+		
+
+		<tr>
+			Right
+			<td class="delim">&nbsp;
+			<select id="border_style_right" name="border_style_right" class="mceEditableSelect disabled" disabled=""><option value=""></option><option value="none">none</option><option value="solid">solid</option><option value="dashed">dashed</option><option value="dotted">dotted</option><option value="double">double</option><option value="groove">groove</option><option value="ridge">ridge</option><option value="inset">inset</option><option value="outset">outset</option><option value="__mce_add_custom__" class="mceAddSelectValue">(value)</option></select>
+			<td class="delim">&nbsp;
+			
+				<select id="border_width_right" name="border_width_right" class="mceEditableSelect disabled" disabled=""><option value=""></option><option value="thin">thin</option><option value="medium">medium</option><option value="thick">thick</option><option value="__mce_add_custom__" class="mceAddSelectValue">(value)</option></select>
+						&nbsp;
+						
+							<label id="border_width_right_measurement_label" for="border_width_right_measurement" style="display: none; visibility: hidden;">Width Right Measurement Unit</label>
+							<select id="border_width_right_measurement" name="border_width_right_measurement" disabled="" aria-labelledby="border_width_right_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+						
+					
+				</tbody></table>
+			
+			<td class="delim">&nbsp;
+			
+				<input id="border_color_right" name="border_color_right" type="text" value="" size="9" onchange="updateColor('border_color_right_pick','border_color_right');" disabled="" class="disabled">
+						<td id="border_color_right_pickcontainer"><a role="button" aria-labelledby="border_color_right_pick_label" id="border_color_right_pick_link" href="javascript:;" onclick="tinyMCEPopup.pickColor(event,'border_color_right');" onmousedown="return false;" class="pickcolor"><span id="border_color_right_pick" title="Browse" style="">&nbsp;<span id="border_color_right_pick_label" class="mceVoiceLabel mceIconOnly" style="display:none;">Browse</span></span></a>
+					
+				</tbody></table>
+			
+		
+
+		<tr>
+			Bottom
+			<td class="delim">&nbsp;
+			<select id="border_style_bottom" name="border_style_bottom" class="mceEditableSelect disabled" disabled=""><option value=""></option><option value="none">none</option><option value="solid">solid</option><option value="dashed">dashed</option><option value="dotted">dotted</option><option value="double">double</option><option value="groove">groove</option><option value="ridge">ridge</option><option value="inset">inset</option><option value="outset">outset</option><option value="__mce_add_custom__" class="mceAddSelectValue">(value)</option></select>
+			<td class="delim">&nbsp;
+			
+				<select id="border_width_bottom" name="border_width_bottom" class="mceEditableSelect disabled" disabled=""><option value=""></option><option value="thin">thin</option><option value="medium">medium</option><option value="thick">thick</option><option value="__mce_add_custom__" class="mceAddSelectValue">(value)</option></select>
+						&nbsp;
+						
+							<label id="border_width_bottom_measurement_label" for="border_width_bottom_measurement" style="display: none; visibility: hidden;">Width Bottom Measurement Unit</label>
+							<select id="border_width_bottom_measurement" name="border_width_bottom_measurement" disabled="" aria-labelledby="border_width_bottom_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+						
+					
+				</tbody></table>
+			
+			<td class="delim">&nbsp;
+			
+				<input id="border_color_bottom" name="border_color_bottom" type="text" value="" size="9" onchange="updateColor('border_color_bottom_pick','border_color_bottom');" disabled="" class="disabled">
+						<td id="border_color_bottom_pickcontainer"><a role="button" aria-labelledby="border_color_bottom_pick_label" id="border_color_bottom_pick_link" href="javascript:;" onclick="tinyMCEPopup.pickColor(event,'border_color_bottom');" onmousedown="return false;" class="pickcolor"><span id="border_color_bottom_pick" title="Browse" style="">&nbsp;<span id="border_color_bottom_pick_label" class="mceVoiceLabel mceIconOnly" style="display:none;">Browse</span></span></a>
+					
+				</tbody></table>
+			
+		
+
+		<tr>
+			Left
+			<td class="delim">&nbsp;
+			<select id="border_style_left" name="border_style_left" class="mceEditableSelect disabled" disabled=""><option value=""></option><option value="none">none</option><option value="solid">solid</option><option value="dashed">dashed</option><option value="dotted">dotted</option><option value="double">double</option><option value="groove">groove</option><option value="ridge">ridge</option><option value="inset">inset</option><option value="outset">outset</option><option value="__mce_add_custom__" class="mceAddSelectValue">(value)</option></select>
+			<td class="delim">&nbsp;
+			
+				<select id="border_width_left" name="border_width_left" class="mceEditableSelect disabled" disabled=""><option value=""></option><option value="thin">thin</option><option value="medium">medium</option><option value="thick">thick</option><option value="__mce_add_custom__" class="mceAddSelectValue">(value)</option></select>
+						&nbsp;
+						
+							<label id="border_width_left_measurement_label" for="border_width_left_measurement" style="display: none; visibility: hidden;">Width Left Measurement Unit</label>
+							<select id="border_width_left_measurement" name="border_width_left_measurement" disabled="" aria-labelledby="border_width_left_measurement_label" class="disabled"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option></select>
+						
+					
+				</tbody></table>
+			
+			<td class="delim">&nbsp;
+			
+				<input id="border_color_left" name="border_color_left" type="text" value="" size="9" onchange="updateColor('border_color_left_pick','border_color_left');" disabled="" class="disabled">
+						<td id="border_color_left_pickcontainer"><a role="button" aria-labelledby="border_color_left_pick_label" id="border_color_left_pick_link" href="javascript:;" onclick="tinyMCEPopup.pickColor(event,'border_color_left');" onmousedown="return false;" class="pickcolor"><span id="border_color_left_pick" title="Browse" style="">&nbsp;<span id="border_color_left_pick_label" class="mceVoiceLabel mceIconOnly" style="display:none;">Browse</span></span></a>
+					
+				</tbody></table>
+			
+		
+		</tbody></table>
+	</fieldset>
+</div>
+
+<fieldset>
+	<legend>List</legend>
+	<label for="list_type">Type</label>
+			<select id="list_type" name="list_type" class="mceEditableSelect"><option value=""></option><option value="disc">disc</option><option value="circle">circle</option><option value="square">square</option><option value="decimal">decimal</option><option value="lower-roman">lower-roman</option><option value="upper-roman">upper-roman</option><option value="lower-alpha">lower-alpha</option><option value="upper-alpha">upper-alpha</option><option value="none">none</option><option value="__mce_add_custom__" class="mceAddSelectValue">(value)</option></select>
+		
+
+		<tr>
+			<label for="list_bullet_image">Bullet Image</label>
+			<input id="list_bullet_image" name="list_bullet_image" type="text">
+		
+
+		<tr>
+			<label for="list_position">Position</label>
+			<select id="list_position" name="list_position" class="mceEditableSelect"><option value=""></option><option value="inside">inside</option><option value="outside">outside</option><option value="__mce_add_custom__" class="mceAddSelectValue">(value)</option></select>
+		
+	</tbody></table>
+</fieldset>
+
+				-->
+
 	</body>
 </html>
