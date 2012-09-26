@@ -18,7 +18,6 @@ import org.slplayer.util.DomTools;
  * Editors are SLPlayer components, in charge of handling HTML input elements, 
  * in order to let the user enter values and edit css style values or tag attributes.
  */
-@tagNameFilter("fieldset div")
 class PropertyEditor extends EditorBase 
 {
 	public static inline var ALL_CONTEXTS = ["context-video", "context-audio", "context-img", "context-txt", "context-layer", "context-div"];

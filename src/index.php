@@ -15,17 +15,5 @@
 -->
 	</head>
 	<body>
-		<div class="main-container">
-		</div>
-
-		<ul>
-			<li><a href="#sous-menu1">Fichier</a>
-				<ul>
-					<li>Enregistrer</li>
-					<li>Enregistrer Sous</li>
-				</ul>
-			</li>
-			<li><a href="#sous-menu2">Edition</a></li>
-		</ul>
 	</body>
 </html>

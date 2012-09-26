@@ -17,7 +17,6 @@ import silex.publication.PublicationModel;
  * The name of the style or attribute is specifiyed as data-attribute-name or data-style-name
  * And the values are given as key/value pairs
  */
-@tagNameFilter("fieldset div")
 class EditorBase extends DisplayObject 
 {
 	/**

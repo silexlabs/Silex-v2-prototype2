@@ -4,7 +4,7 @@
 -cp ../../SLPlayer/src/
 -cp ../../Cocktail/src/
 -main silex.Silex
---macro org.slplayer.core.Builder.create('index-player.html')
+--macro org.slplayer.core.Builder.create('index-player.html', 'useless.html')
 -lib hscript
 --remap js:cocktail
 -swf-version 10.2
@@ -16,3 +16,4 @@
 -D silexClientSide
 -D silexDebug
 
+#--no-traces

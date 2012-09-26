@@ -20,7 +20,6 @@ import silex.publication.PublicationModel;
  * It has to be position on the foreground with the CSS styles of the DOM element with which it is associated. 
  * &gt;div class="OpenPublicationDialog"&lt;
  */
-@tagNameFilter("div")
 class ModelDebugger extends DialogBase
 {
 	/**

@@ -25,7 +25,7 @@ import silex.publication.PublicationModel;
  * 	- on select layer, remove all other marker, display layer selection marker
  * 	- on select component, remove all other marker, display component selection marker
  */
-@tagNameFilter("a")
+@tagNameFilter("DIV")
 class SelectionController extends DisplayObject
 {
 	/**

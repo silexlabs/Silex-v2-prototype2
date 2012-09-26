@@ -15,6 +15,7 @@ import org.slplayer.component.ui.DisplayObject;
 /**
  * This class is in charge of attaching the publication to the DOM.
  */
+@tagNameFilter("DIV")
 class PublicationViewer extends DisplayObject{
 	/**
 	 * Information for debugging, e.g. the class name

@@ -14,7 +14,6 @@ import org.slplayer.util.DomTools;
  * It has to be position on the foreground with the CSS styles of the DOM element with which it is associated. 
  * &gt;div class="LoginDialog login-dialog"&lt;
  */
-@tagNameFilter("div")
 class AuthDialog extends DialogBase
 {
 	/**

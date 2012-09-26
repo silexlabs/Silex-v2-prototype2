@@ -18,7 +18,7 @@ import silex.component.ComponentModel;
  * use attribute like rthis: data-dropzones-class-name="Layer" data-dropzones-class-name="silex-view"
  * use with Draggable on the same node
  */
-@tagNameFilter("div")
+@tagNameFilter("DIV")
 class SelectionMarker extends DisplayObject{
 	/**
 	 * selected component

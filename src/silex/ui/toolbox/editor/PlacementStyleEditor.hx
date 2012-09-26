@@ -16,7 +16,6 @@ import org.slplayer.util.DomTools;
  * in order to let the user enter values and edit css style values or tag attributes.
  * todo: background alpha
  */
-@tagNameFilter("fieldset div")
 class PlacementStyleEditor extends BoxTypeEditorBase 
 {
 	/**

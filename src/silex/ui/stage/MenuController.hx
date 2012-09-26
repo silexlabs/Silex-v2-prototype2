@@ -12,7 +12,7 @@ import silex.publication.PublicationModel;
 /**
  * This component listen to the menu events and start the desired actions. 
  */
-@tagNameFilter("a")
+@tagNameFilter("DIV")
 class MenuController extends DisplayObject
 {
 	/**

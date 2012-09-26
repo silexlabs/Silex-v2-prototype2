@@ -84,12 +84,16 @@ p{
     opacity: .5 !important;
 	background-color: red !important;
 	border: 6px solid green !important;
+	min-width: 10px !important;
+	min-height: 10px !important;
 }
 
 
 /* **************** */
 /* /Selection */
 /* **************** */
+
+
 /* 		Publication styles 			 */
 /* 		You can edit these styles 	 */
 
