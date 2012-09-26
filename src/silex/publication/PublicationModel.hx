@@ -92,7 +92,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	/**
 	 * currently loaded publication name
 	 */
-	public static var currentName:String;
+	public var currentName:String;
 	/**
 	 * Currently loaded publication
 	 */
@@ -478,14 +478,50 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	// Save
 	////////////////////////////////////////////////
 	/**
-	 * Load a publication
-	 * Load the config data first if needed
+	 * Save a copy of the current publication with a new name
+	 * Save the current publication and then duplicate it
+	 * It will NOT change currentName
+	 */
+	public function saveACopy(newName:String){
+		// check that a publication is loaded
+		if (currentData == null)
+			throw("Error: can not save the publication because no publication is loaded.");
+
+		// start the save process
+		save(callback(doSaveACopy, newName));
+	}
+	/**
+	 * Save a copy of the current publication with a new name
+	 * It will NOT save the current publication
+	 * It will NOT change currentName
+	 */
+	private function doSaveACopy(newName:String){
+		// check that a publication is loaded
+		if (currentData == null)
+			throw("Error: can not save the publication because no publication is loaded.");
+
+		publicationService.duplicate(currentName, newName, callback(save), onSaveError);
+	}
+	/**
+	 * Save a publication with a new name
+	 * Duplicate the current publication and then save
+	 * It will change currentName
+	 */
+	public function saveAs(newName:String){
+		// check that a publication is loaded
+		if (currentData == null)
+			throw("Error: can not save the publication because no publication is loaded.");
+
+		var oldName = currentName;
+		currentName = newName;
+		publicationService.duplicate(oldName, newName, onSaveSuccess, onSaveError);
+	}
+	/**
+	 * Save a publication
+	 * Save the config data and then call doSavePublicationData to save publication data
 	 * Reset model selection
 	 */
-	public function save(name:String = null){
-		// default save to publication name
-		if (name == null) name = currentName;
-
+	public function save(successCallback:Void->Void=null){
 		// check that a publication is loaded
 		if (currentData == null)
 			throw("Error: can not save the publication because no publication is loaded.");
@@ -497,6 +533,17 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 
 		// dispatch the event 
 		dispatchEvent(createEvent(ON_SAVE_START), debugInfo);
+
+		// Start the saving process
+		publicationService.setPublicationConfig(currentName, currentConfig, callback(doSavePublicationData, successCallback), onSaveError);
+	}
+	/**
+	 * Save the publication data
+	 */
+	private function doSavePublicationData(successCallback:Void->Void=null){
+		// default value for success
+		if (successCallback == null)
+			successCallback = onSaveSuccess;
 
 		// duplicate the model temporarily
 		var tempModelHead = headHtmlDom.cloneNode(true);
@@ -517,8 +564,9 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		";
 
 		// Start the saving process
-		publicationService.setPublicationData(name, currentData, onSaveSuccess, onSaveError);
+		publicationService.setPublicationData(currentName, currentData, successCallback, onSaveError);
 	}
+	
 	/**
 	 * Recursively browse all html nodes and does this:
 	 * - remove the attribute data-silex-component-id and data-silex-layer-id

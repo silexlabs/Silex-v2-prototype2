@@ -39,7 +39,7 @@ class MenuController extends DisplayObject
 		if (itemName == null)
 			itemName = target.parentNode.getAttribute("data-menu-item");
 
-//		trace("Menu event "+itemName+" - "+target.className);
+		trace("Menu event "+itemName+" - "+target.className);
 
 		// take an action depending on the menu name
 		switch (itemName) {
@@ -49,6 +49,14 @@ class MenuController extends DisplayObject
 				PublicationModel.getInstance().unload();
 			case "save":
 				PublicationModel.getInstance().save();
+			case "save-as":
+				var newName = Lib.window.prompt("New name for your publication?", PublicationModel.getInstance().currentName);
+				if (newName != null)
+					PublicationModel.getInstance().saveAs(newName);
+			case "save-copy":
+				var newName = Lib.window.prompt("What name for your copy?", PublicationModel.getInstance().currentName);
+				if (newName != null)
+					PublicationModel.getInstance().saveACopy(newName);
 		}
 
 	}
