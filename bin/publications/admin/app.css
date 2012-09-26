@@ -41,7 +41,7 @@ p{
 body{
 	overflow: hidden;
 }
-.Layer{
+.PublicationViewer.Layer{
 	border: 2px dashed grey;
 }
 /* **************** */
@@ -498,43 +498,73 @@ width:100%;
 /* **************** */
 /* Ribbon Toolbox */
 /* **************** */
-.PageToolbox{
+.GroupRibbon{
 	width: 100%;
+	position: static;
+	left:0;
+	background:Gainsboro;
+	margin:0;
+	right: 0;
+	border-color:black;
+	border-style:solid;
+	border-width:1px medium;
+}
+.ribbon-tabs{
+	display:inline;
+	margin-left: 5px;
+}	
+.page-opened{
+	background-color:white;
+}
+.GroupRibbon, .ribbon-tabs a{
+	text-decoration:none;
+	color:#3C3C3C;
+	font-family:Tahoma;
+	font-size:13px;
+}
+.GroupRibbon .disabled {
+   pointer-events: none;
+   color: grey ! important;
 }
 .ribbon-list .listSelectedItem{
-	color: green;
-	width:60px;
-
+	color:#7F7F7F;
 }
-
-ul.ribbon-list{
-	margin:0;
-	padding:0;
-	width:100%;
-	height:80px;
-	margin-top:5px;
+.ribbon-tabs a{
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.ribbon-tabs a:active{
+	color:#7F7F7F;
+}
+.ribbon-tabs a:hover{
+	background-color:white;
+}
+.ribbon-list{
+	background-color:white;
 	margin-left:5px;
+	margin-right:5px;
+	margin-bottom:5px;
+	padding:0;
+	height:80px;
+}
+.ribbon-list ul{
+	margin:0;
+	padding:5px;
 }
 .ribbon-list ul li{
 	display:inline-block;
-	clear:left;
-	opacity:1;
-	padding-top:3px;
-	height:68px;
-	padding-left:8px;
-	width:60px;
-	margin:auto;
-	padding:auto;
+	padding:2px;
+}
+.ribbon-list ul li p{
+	margin: 0;
+	text-align: center;
+}
+.ribbon-list.selectable ul li{
+	cursor: pointer;
 }
 .ribbon-list li:hover{
-	
-	cursor:pointer;
-	background:LightCyan;
-	
 }
-
-
-.solid{
+.ribbon-list .solid{
 	height:35px;
 	width:50px;
 	background:LightGray;
@@ -542,6 +572,7 @@ ul.ribbon-list{
 	border:1px solid black;
 	margin-top:7px;
 
+	cursor:move;
 }
 .assets-page{
 	background:Gray;
@@ -552,6 +583,7 @@ ul.ribbon-list{
 /* **************** */
 /* /Ribbon Toolbox */
 /* **************** */
+
 /* **************** */
 /* Properties Toolbox */
 /* **************** */
@@ -887,118 +919,3 @@ color:Black;
 /* /Properties Toolbox */
 /* **************** */
 
-/* **************** */
-/* 		Menu 		*/
-/* **************** */
-.menu-item-disabled {
-       pointer-events: none;
-       cursor: default;
-       color: grey ! important;
-}
-
-.MenuController{
-	position: static;
-	left:0;
-	background:Gainsboro;
-	height:32px;
-	margin:0;
-	width:100%;
-	padding-left:80px;
-	border-color:black;
-	border-style:solid;
-	border-width:1px medium;
-}
-
-.MenuController ul{
-	list-style: none outside none;
-	padding-left:20px;
-
-
-}
-.MenuController li.main{
-	display:inline-block;
-	padding-right:50px;
-	padding-top:7px;
-
-
-}
-
-.MenuController li.main a{
-	text-decoration:none;
-	color:#3C3C3C;
-	padding:3px;
-	width:100%;
-	font-family:Tahoma;
-	font-size:13px;
-
-
-}
-
-
-
-
-.MenuController li.main a:active{
-	color:#7F7F7F;
-	
-}
-
-
-
-.MenuController ul.sub {
-    background-color: #F0F0F0;
-    float: left;
-    position: relative;
-    padding-left:15px;
-    border: 1px solid black;
-    margin-top:5px;
-    
-
-}
-.MenuController ul.sub li:hover{
-background-color:white;
-}
-.MenuController ul.sub li{
-	border-left: 1px solid black;
-    height: auto;
-    width:auto;
-    margin-left: 12px;
-    position:relative;
-    background-color:#F0F0F0;
-    padding-top:2px;
-    padding-bottom:4px;
-    padding-left:4px;
-    padding-right:3px;
-    
-}
-.MenuController ul.sub li span{
-	float:right;
-	margin-left:41px;
-	margin-right:5px;
-}
-.MenuController ul.sub li.open{
-	border-bottom: 1px solid black;
-}
-.MenuController ul.sub li.save-as{
-	border-bottom: 1px solid black;
-}
-.MenuController ul.sub li.settings{
-	border-bottom: 1px solid black;
-}
-
-.MenuController .container-sub {
-  	
-    margin: 0 auto;
-	top: 23px;
-    position: absolute;   
-}
-
-
-.menu-logo{
-	position:absolute;
-	z-index:2;
-	margin-top:5px;
-	margin-left:8px;
-}
-/* **************** */
-/* 		/Menu 		*/
-/* **************** */

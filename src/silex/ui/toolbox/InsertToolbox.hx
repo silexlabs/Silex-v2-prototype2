@@ -8,12 +8,13 @@ import silex.layer.LayerModel;
 import silex.component.ComponentModel;
 
 import org.slplayer.util.DomTools;
+import org.slplayer.component.ui.DisplayObject;
 
 /**
  * This component displays the items which the user can add to the stage
  */
 @tagNameFilter("div")
-class InsertToolbox extends ToolboxBase 
+class InsertToolbox extends DisplayObject 
 {
 	/**
 	 * class name expected for the add page button

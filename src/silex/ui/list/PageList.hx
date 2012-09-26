@@ -40,9 +40,6 @@ class PageList extends List<Page>
 
 		// update the selection
 		PropertyModel.getInstance().addEventListener(PropertyModel.ON_PROPERTY_CHANGE, onListChange, DEBUG_INFO);
-
-		// open the page when the selection changes
-		onChange = onSelectPage;
 	}
 	/**
 	 * refresh list data, and then redraw the display by calling doRedraw
@@ -66,16 +63,12 @@ class PageList extends List<Page>
 	 * selection changed, open the selected page
 	 */
 	override function setSelectedIndex(idx:Int):Int {
+		idx = super.setSelectedIndex(idx);
 		// trace("setSelectedIndex "+idx);
-		return super.setSelectedIndex(idx);
-	}
-	/**
-	 * callback for the list, dispatched when the user selection changed
-	 */
-	private function onSelectPage(page:Page){
-		if (PageModel.getInstance().selectedItem != page){
+		if (PageModel.getInstance().selectedItem != selectedItem){
 			// trace("onSelectPage("+page+")");
-			PageModel.getInstance().selectedItem = page;
+			PageModel.getInstance().selectedItem = selectedItem;
 		}
+		return idx;
 	}
 }

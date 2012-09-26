@@ -6,6 +6,7 @@ import js.Dom;
 import silex.page.PageModel;
 import silex.layer.LayerModel;
 
+import org.slplayer.component.ui.DisplayObject;
 import org.slplayer.util.DomTools;
 
 /**
@@ -14,7 +15,7 @@ import org.slplayer.util.DomTools;
  * It has to be position on the foreground with the CSS styles of the DOM element with which it is associated. 
  */
 @tagNameFilter("div")
-class MasterToolbox extends ToolboxBase 
+class MasterToolbox extends DisplayObject 
 {
 	/**
 	 * class name expected for the add page button

@@ -168,6 +168,9 @@ permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html 
   * chrome and color picker : read ok, load bug
 
 improvements
+* ajout d'un éditeur de css et de hscript
+  - utilise http://ace.ajax.org/ ou http://neutronide.com/
+  - écrire à ace@c9.io pour apparaitre ici "projects using ace" http://ace.ajax.org/#nav=about
 * add the manager, not found etc. to distrib ?
 * transitions with params on the Layer as well as on the link
 * "loading" transitions for the layers with connectors

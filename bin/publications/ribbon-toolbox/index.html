@@ -37,9 +37,9 @@
 	<body>
 				<!-- 	**************************	-->
 				<!-- 		Ribbon Toolbox 		-->
-				<div class="GroupRibbon" data-initial-page-name="file-menu">
+				<div class="GroupRibbon MenuController" data-initial-page-name="file-menu">
 					<!-- Menu header -->
-					<div>
+					<div class="ribbon-tabs">
 						<a href="#file-menu" class="LinkToPage" data-group-id="GroupRibbon">File</a>
 						<a href="#page-list" class="LinkToPage" data-group-id="GroupRibbon">Pages</a>
 						<a href="#layer-list" class="LinkToPage" data-group-id="GroupRibbon">Masters</a>
@@ -48,43 +48,43 @@
 					<!-- File -->
 					<a name="file-menu" class="Page" data-group-id="GroupRibbon">File</a>
 
-					<div class="PageToolbox Layer file-menu ribbon-list">
+					<div class="PageToolbox Layer file-menu ribbon-list selectable">
 						<ul class="">
-							<li>
+							<li data-menu-item="open">
 								<div class="solid"></div></br>
-								open
+								<p>open</p>
 							</li>
-							<li>
+							<li data-menu-item="save">
 								<div class="solid"></div></br>
-								save
+								<p>save</p>
 							</li>
-							<li>
+							<li data-menu-item="save-as">
 								<div class="solid"></div></br>
-								save as
+								<p>save as</p>
 							</li>
-							<li>
+							<li data-menu-item="save-copy">
 								<div class="solid"></div></br>
-								save copy
+								<p>save a copy</p>
 							</li>
-							<li>
+							<li data-menu-item="close">
 								<div class="solid"></div></br>
-								close
+								<p>close</p>
 							</li>
-							<li>
+							<li data-menu-item="settings" class="disabled">
 								<div class="solid"></div></br>
-								settings
+								<p>settings</p>
 							</li>
-							<li>
+							<li data-menu-item="backup-all" class="disabled">
 								<div class="solid"></div></br>
-								backup all
+								<p>backup all</p>
 							</li>
-							<li>
+							<li data-menu-item="export" class="disabled">
 								<div class="solid"></div></br>
-								export
+								<p>export</p>
 							</li>
-							<li>
+							<li data-menu-item="publish" class="disabled">
 								<div class="solid"></div></br>
-								publish
+								<p>publish</p>
 							</li>
 						</ul>
 					</div>
@@ -92,7 +92,7 @@
 					<!-- Page -->
 					<a name="page-list" class="Page" data-group-id="GroupRibbon">Pages</a>
 
-					<div class="PageToolbox Layer page-list ribbon-list">
+					<div class="PageToolbox Layer page-list ribbon-list selectable">
 <!--
 						<div class="assets-page">
 							<img src="../admin/assets/sv2-ico-add.png"></img>
@@ -103,14 +103,17 @@
 							<img src="../admin/assets/sv2-ico-rename.png"></img>
 							
 						</div>
--->						<ul class="PageList">
-							<li>
+-->
+						<ul class="PageList">
+							<li class="Draggable">
 								<div class="solid"></div></br>
-								::name::
+								<p>::name::</p>
 							</li>
 						</ul>
+<!--
 						<button class="del-button">Del</button>
 						<button class="add-button">Add</button>
+-->
 					</div>
 
 					<!-- Masters -->
@@ -118,12 +121,14 @@
 
 					<div class="MasterToolbox Layer layer-list ribbon-list">
 						<ul class="LayersList">
-							<li>
+							<li class="Draggable">
 								<div class="solid"></div></br>
-								::rootElement.title::
+								<p>::rootElement.title::</p>
 							</li>
 						</ul>
+<!--
 						<button class="add-button">Add</button>
+-->
 					</div>
 
 					<!-- Insert -->
@@ -135,23 +140,27 @@
 						&lt;item&gt;&lt;title&gt;Audio&lt;/title&gt;&lt;type&gt;audio&lt;/type&gt;&lt;/item&gt;
 						&lt;item&gt;&lt;title&gt;Video&lt;/title&gt;&lt;type&gt;video&lt;/type&gt;&lt;/item&gt;
 						&lt;item&gt;&lt;title&gt;Layer&lt;/title&gt;&lt;type&gt;layer&lt;/type&gt;&lt;/item&gt;" >
-							<li class="::type::">
+							<li class="::type:: Draggable" >
 								<div class="solid"></div></br>
-								::title::
+								<p>::title::</p>
 							</li>
 						</ul>
+<!--
 						<button class="add-button">Add</button>
+-->
 					</div>
 				</div>
 				<!-- 		/Ribbon Toolbox 		-->
 				<!-- 	**************************	-->
 
-				<!-- 		Builder mode			-->
+
+
+
+
+
+
 				<div class="PublicationViewer " >
 					LOADING PUBLICATION... HERE... 
 				</div>
-				<!-- 		/Builder mode 			-->
-				<!-- 	**************************	-->
-
 	</body>
 </html>

@@ -419,7 +419,7 @@ class SelectionController extends DisplayObject
 	 */
 	private function setMarkerPosition(marker:HtmlDom, target:HtmlDom){
 		// trace("setMarkerPosition ("+marker+", "+target+")");
-		if (target == null){
+		if (target == null || target.style.display == "none"){
 			marker.style.display = "none";
 			marker.style.visibility = "hidden";
 		}

@@ -6,6 +6,7 @@ import js.Dom;
 import silex.page.PageModel;
 
 import org.slplayer.util.DomTools;
+import org.slplayer.component.ui.DisplayObject;
 
 /**
  * This component displays the pages of the loaded publication.
@@ -13,7 +14,7 @@ import org.slplayer.util.DomTools;
  * It has to be position on the foreground with the CSS styles of the DOM element with which it is associated. 
  */
 @tagNameFilter("div")
-class PageToolbox extends ToolboxBase 
+class PageToolbox extends DisplayObject 
 {
 	/**
 	 * class name expected for the add page button

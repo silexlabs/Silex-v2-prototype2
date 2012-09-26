@@ -25,87 +25,66 @@
 			data-panel-body-class-name="panel-publication-body"
 		>
 
+			<A class="Page" name="start-page">Start Page</A>
 			<div class="panel-publication-header">
-				<!-- ----------	 -->
-				<!-- 	Menu 	 -->
-				<!-- ----------	 -->
-				<a href="#"><img src="../admin/assets/icone-menu.png" class="menu-logo" ></img></a>
-				<A class="Page" name="start-page">Start Page</A>
-				<UL class="menu MenuController group-menu panel-publication-header">
-					<!-- Menu FILE -->
-					<LI class="main"><A href="#sub-menu1" class="LinkToPage" data-group-id="group-menu">File</A><A class="Page" data-group-id="group-menu" name="sub-menu1"></A>
-						<DIV class="container-sub">
-							<UL class="Layer sub-menu1 sub">
-								<LI><A href="" target="_top" class="menu-item-disabled" >New<span>Ctrl+N</span></A></LI>
-								<LI><A href="#" class="menu-item-disabled">New from template<span>Maj+Ctrl+N</span></A></LI>
-								<LI class="open"><A href="#open-dialog" class="LinkToPage" data-group-id="group-main">Open<span>Ctrl+O</span></A></LI>
-								<LI><A href="#close-publication">Close<span>Ctrl+W</span></A></LI>
-								<LI><A href="#save-publication" >Save<span>Ctrl+S</span></A></LI>
-								<LI><A href="" class="menu-item-disabled">Save as<span>Alt+Ctrl+S</span></A></LI>
-								<LI><A href="" class="menu-item-disabled">Save as template<span>Alt+Maj+Ctrl+S</span></A></LI>
-								<LI><A href="" class="menu-item-disabled">Settings<span>Ctrl+K</span></A></LI>
-								<LI><A href="" class="menu-item-disabled">Quit<span>Ctrl+Q</span></A></LI>
-							</UL>
-						</DIV>
-				   </LI>
-					<!-- Menu EDITION -->
-					<LI class="main"><A href="#sub-menu2" class="LinkToPage" data-group-id="group-menu">Edit</A><A class="Page" data-group-id="group-menu" name="sub-menu2"></A>
-						<DIV class="container-sub">
-							<UL class="Layer sub-menu2 sub">
-								<LI><A href="" class="menu-item-disabled">Cut</A></LI>
-								<LI><A href="" class="menu-item-disabled">Copy</A></LI>
-								<LI><A href="" class="menu-item-disabled">Paste</A></LI>
-								<LI><A href="" class="menu-item-disabled">Select All</A></LI>
-							</UL>
-						</DIV>
-				   </LI>
-					<!-- Menu INSERT -->
-					<LI class="main"><A href="#sub-menu4" class="LinkToPage" data-group-id="group-menu">Insert</A><A class="Page" data-group-id="group-menu" name="sub-menu4"></A>
-						<DIV class="container-sub">
-							<UL class="Layer sub-menu4 sub-menu4-1 sub">
-								<LI><A href="" class="menu-item-disabled">Snippet</A></LI>
-								<LI><A href="#sub-menu4-1" class="LinkToPage" data-group-id="group-menu">Image &gt; </A></LI>
-								<LI><A href="" class="menu-item-disabled">Table</A></LI>
-							</UL>
-							<A class="Page" data-group-id="group-menu" name="sub-menu4-1"></A>
-							<UL class="Layer sub-menu4-1 sub sub-of-sub">
-								<LI><A href="" class="menu-item-disabled">From File</A></LI>
-								<LI><A href="" class="menu-item-disabled">From URL</A></LI>
-								<LI><A href="" class="menu-item-disabled">From Picassa</A></LI>
-							</UL>
-						</DIV>
-				   </LI>
-					<!-- Menu HELP -->
-					<LI class="main"><A href="#sub-menu5" class="LinkToPage" data-group-id="group-menu">Help</A><A class="Page" data-group-id="group-menu" name="sub-menu5"></A>
-						<DIV class="container-sub">
-							<UL class="Layer sub-menu5 sub-menu5-1 sub">
-								<LI><A href="#welcome" class="menu-item-disabled">Welcome page</A></LI>
-								<LI><A href="#sub-menu5-1" class="LinkToPage" data-group-id="group-menu">Account &gt;</A></LI>
-								<LI><A href="#about" class="menu-item-disabled">About</A></LI>
-							</UL>
-							<A class="Page" data-group-id="group-menu" name="sub-menu5-1"></A>
-							<UL class="Layer sub-menu5-1 sub sub-of-sub">
-								<LI><A href="#item-logout" class="menu-item-disabled">Logout</A></LI>
-								<LI><A href="#login-dialog" class="LinkToPage" data-group-id="group-main" target="_top">Login</A></LI>
-								<LI><A href="#item-chpwd" class="menu-item-disabled">Change password</A></LI>
-								<LI><A href="#item-users" class="menu-item-disabled">Manage Users</A></LI>
-							</UL>
-						</DIV>
-				   </LI>
-				</UL>
-				<!-- ----------	 -->
-				<!-- 	/Menu 	 -->
-				<!-- ----------	 -->
 				<!-- 	**************************	-->
 				<!-- 		Ribbon Toolbox 		-->
-				<div class="GroupRibbon" data-initial-page-name="page-list">
+				<div class="GroupRibbon MenuController" data-initial-page-name="file-menu">
+					<!-- Menu header -->
+					<div class="ribbon-tabs">
+						<a href="#file-menu" class="LinkToPage" data-group-id="GroupRibbon">File</a>
+						<a href="#page-list" class="LinkToPage" data-group-id="GroupRibbon">Pages</a>
+						<a href="#layer-list" class="LinkToPage" data-group-id="GroupRibbon">Masters</a>
+						<a href="#insert-list" class="LinkToPage" data-group-id="GroupRibbon">Insert</a>
+					</div>
+					<!-- File -->
+					<a name="file-menu" class="Page" data-group-id="GroupRibbon">File</a>
+
+					<div class="PageToolbox Layer file-menu ribbon-list selectable">
+						<ul class="">
+							<li data-menu-item="open">
+								<div class="solid"></div></br>
+								<p>open</p>
+							</li>
+							<li data-menu-item="save">
+								<div class="solid"></div></br>
+								<p>save</p>
+							</li>
+							<li data-menu-item="save-as">
+								<div class="solid"></div></br>
+								<p>save as</p>
+							</li>
+							<li data-menu-item="save-copy">
+								<div class="solid"></div></br>
+								<p>save a copy</p>
+							</li>
+							<li data-menu-item="close">
+								<div class="solid"></div></br>
+								<p>close</p>
+							</li>
+							<li data-menu-item="settings" class="disabled">
+								<div class="solid"></div></br>
+								<p>settings</p>
+							</li>
+							<li data-menu-item="backup-all" class="disabled">
+								<div class="solid"></div></br>
+								<p>backup all</p>
+							</li>
+							<li data-menu-item="export" class="disabled">
+								<div class="solid"></div></br>
+								<p>export</p>
+							</li>
+							<li data-menu-item="publish" class="disabled">
+								<div class="solid"></div></br>
+								<p>publish</p>
+							</li>
+						</ul>
+					</div>
+
+					<!-- Page -->
 					<a name="page-list" class="Page" data-group-id="GroupRibbon">Pages</a>
-					<a name="layer-list" class="Page" data-group-id="GroupRibbon">Masters</a>
-					<a name="insert-list" class="Page" data-group-id="GroupRibbon">Insert</a>
-					<a href="#page-list" class="LinkToPage" data-group-id="GroupRibbon">Pages</a>
-					<a href="#layer-list" class="LinkToPage" data-group-id="GroupRibbon">Masters</a>
-					<a href="#insert-list" class="LinkToPage" data-group-id="GroupRibbon">Insert</a>
-					<div class="PageToolbox Layer page-list ribbon-list">
+
+					<div class="PageToolbox Layer page-list ribbon-list selectable">
 <!--
 						<div class="assets-page">
 							<img src="../admin/assets/sv2-ico-add.png"></img>
@@ -116,41 +95,56 @@
 							<img src="../admin/assets/sv2-ico-rename.png"></img>
 							
 						</div>
--->						<ul class="PageList">
-							<li>
+-->
+						<ul class="PageList">
+							<li class="Draggable">
 								<div class="solid"></div></br>
-								::name::
+								<p>::name::</p>
 							</li>
 						</ul>
+<!--
 						<button class="del-button">Del</button>
 						<button class="add-button">Add</button>
+-->
 					</div>
+
+					<!-- Masters -->
+					<a name="layer-list" class="Page" data-group-id="GroupRibbon">Masters</a>
 
 					<div class="MasterToolbox Layer layer-list ribbon-list">
 						<ul class="LayersList">
-							<li>
+							<li class="Draggable">
 								<div class="solid"></div></br>
-								::rootElement.title::
+								<p>::rootElement.title::</p>
 							</li>
 						</ul>
+<!--
 						<button class="add-button">Add</button>
+-->
 					</div>
+
+					<!-- Insert -->
+					<a name="insert-list" class="Page" data-group-id="GroupRibbon">Insert</a>
+
 					<div class="InsertToolbox Layer insert-list ribbon-list">
 						<ul class="XmlList" data-items="&lt;item&gt;&lt;title&gt;Image&lt;/title&gt;&lt;type&gt;image&lt;/type&gt;&lt;/item&gt;
 						&lt;item&gt;&lt;title&gt;Text&lt;/title&gt;&lt;type&gt;text&lt;/type&gt;&lt;/item&gt;
 						&lt;item&gt;&lt;title&gt;Audio&lt;/title&gt;&lt;type&gt;audio&lt;/type&gt;&lt;/item&gt;
 						&lt;item&gt;&lt;title&gt;Video&lt;/title&gt;&lt;type&gt;video&lt;/type&gt;&lt;/item&gt;
 						&lt;item&gt;&lt;title&gt;Layer&lt;/title&gt;&lt;type&gt;layer&lt;/type&gt;&lt;/item&gt;" >
-							<li class="::type::">
+							<li class="::type:: Draggable" >
 								<div class="solid"></div></br>
-								::title::
+								<p>::title::</p>
 							</li>
 						</ul>
+<!--
 						<button class="add-button">Add</button>
+-->
 					</div>
 				</div>
 				<!-- 		/Ribbon Toolbox 		-->
 				<!-- 	**************************	-->
+
 			</div>
 			<!-- ----------	 -->
 			<!-- 	Dialogs	 -->
