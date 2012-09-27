@@ -34,19 +34,38 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** To do **
 
+
+StageDropHandler => DropHandlerBase
+SelectionMarker => SelectionDropHandler
+
+
+addAssociatedComponent etc dans les models
+dans index.html Group class au lieu des classes "résolues"
+
+remettre en place des tests unitaires
+- chaque liste
+
+
+draggable list de page => réordonner dans le dom et view
+
+
 Silex menu missing items
-- file/rename
-- manage publications
-- library (import media)
+- rename publication, 
+- create publication, create from template
+- rename page
+- transition in, out and show, hide
 - edit text
 - edit CSS
 - edit hscript
-- transition in, out and show, hide
+- manage publications
+- library (import media)
 
 missing functionality
 - deselect all
 - select empty layer or layr with onliy 1 child
 - filter publication names (",", " ", "%" ...)
+- notifications (save, loading...)
+- liste de pages réordonnable
 
 cleanup code
 - Draggable::getBestDropZone
@@ -56,7 +75,6 @@ cleanup code
 fonctionnalité
 - selection move
 - drag/drop page, layer, comp
-- stage avec scroll, Pannel pour stage et boites a outils
 - remove page, layer, comp, 
 - publication: open, close, save, save as, save a copy, delete
 - admin dans ./admin/index.html, export de la publication dans ./ 

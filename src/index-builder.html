@@ -25,13 +25,17 @@
 -->
 		<script data-slp-use="silex.ui.stage.PublicationViewer"></script>
 		<script data-slp-use="silex.ui.stage.SelectionController"></script>
-		<script data-slp-use="silex.ui.stage.SelectionMarker"></script>
 		<script data-slp-use="silex.ui.stage.MenuController"></script>
+		
+		<script data-slp-use="silex.ui.stage.SelectionMarker"></script>
+		<script data-slp-use="silex.ui.stage.MasterDropHandler"></script>
+		<script data-slp-use="silex.ui.stage.InsertDropHandler"></script>
 
 		<script data-slp-use="silex.ui.toolbox.PageToolbox"></script>
+<!--
 		<script data-slp-use="silex.ui.toolbox.MasterToolbox"></script>
 		<script data-slp-use="silex.ui.toolbox.InsertToolbox"></script>
-		
+-->		
 		<script data-slp-use="silex.ui.toolbox.editor.PropertyEditor"></script>
 		<script data-slp-use="silex.ui.toolbox.editor.RawHtmlEditor"></script>
 		<script data-slp-use="silex.ui.toolbox.editor.TextStyleEditor"></script>
@@ -59,7 +63,7 @@
 		<link href="app.css" rel="stylesheet"></link>
 		<meta name="debugModeAction" content="
 		//Lib.alert('test!');
-		// PublicationModel.getInstance().load('default');
+		PublicationModel.getInstance().load('default');
 	"></meta>
 	</head>
 	<body class="">
@@ -149,15 +153,11 @@
 							<img title="Delete selected page" class="ribbon-button del-button" src="../admin/assets/sv2-ico-delete.png"></img>
 						</div>
 						<ul class="PageList">
-							<li class="Draggable">
+							<li class="">
 								<div class="solid"></div>
 								<p>::name::</p>
 							</li>
 						</ul>
-<!--
-						<button class="del-button">Del</button>
-						<button class="add-button">Add</button>
--->
 					</div>
 
 					<!-- Masters -->
@@ -165,7 +165,9 @@
 
 					<div class="MasterToolbox Layer layer-list ribbon-list">
 						<ul class="LayersList">
-							<li class="Draggable">
+							<li class="Draggable MasterDropHandler"
+								data-dropzones-class-name="silex-view"
+								>
 								<div class="solid"></div>
 								<p>::rootElement.title::</p>
 							</li>
@@ -179,14 +181,36 @@
 					<a name="insert-list" class="Page" data-group-id="GroupRibbon">Insert</a>
 
 					<div class="InsertToolbox Layer insert-list ribbon-list">
-						<ul class="XmlList" data-items="&lt;item&gt;&lt;title&gt;Image&lt;/title&gt;&lt;type&gt;image&lt;/type&gt;&lt;/item&gt;
-						&lt;item&gt;&lt;title&gt;Text&lt;/title&gt;&lt;type&gt;text&lt;/type&gt;&lt;/item&gt;
-						&lt;item&gt;&lt;title&gt;Audio&lt;/title&gt;&lt;type&gt;audio&lt;/type&gt;&lt;/item&gt;
-						&lt;item&gt;&lt;title&gt;Video&lt;/title&gt;&lt;type&gt;video&lt;/type&gt;&lt;/item&gt;
-						&lt;item&gt;&lt;title&gt;Layer&lt;/title&gt;&lt;type&gt;layer&lt;/type&gt;&lt;/item&gt;" >
-							<li class="::type:: Draggable" >
+						<ul>
+							<li class="image Draggable InsertDropHandler" 
+								data-dropzones-class-name="Layer"
+							>
 								<div class="solid"></div>
-								<p>::title::</p>
+								<p>Image</p>
+							</li>
+							<li class="text Draggable InsertDropHandler" 
+								data-dropzones-class-name="Layer"
+							>
+								<div class="solid"></div>
+								<p>Text</p>
+							</li>
+							<li class="audio Draggable InsertDropHandler" 
+								data-dropzones-class-name="Layer"
+							>
+								<div class="solid"></div>
+								<p>Audio</p>
+							</li>
+							<li class="video Draggable InsertDropHandler" 
+								data-dropzones-class-name="Layer"
+							>
+								<div class="solid"></div>
+								<p>Video</p>
+							</li>
+							<li class="layer Draggable InsertDropHandler" 
+								data-dropzones-class-name="silex-view"
+							>
+								<div class="solid"></div>
+								<p>Layer</p>
 							</li>
 						</ul>
 <!--
