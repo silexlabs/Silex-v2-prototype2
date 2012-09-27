@@ -115,14 +115,16 @@ p{
 .ribbon-list li:hover{
 }
 .ribbon-list .solid{
+	cursor:move;
+}
+.ribbon-list .solid,
+.ribbon-list .solid-no-drag{
 	height:35px;
 	width:50px;
 	background:LightGray;
 	display:inline-block;
 	border:1px solid black;
 	margin-top:7px;
-
-	cursor:move;
 }
 .assets-page{
 	background:Gray;

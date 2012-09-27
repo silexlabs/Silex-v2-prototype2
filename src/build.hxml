@@ -1,3 +1,6 @@
+#########
+# player
+#########
 -js ../bin/libs/silex/silex.js
 -cp ../../SLPlayer/src/
 -cp ../../Cocktail/src/
@@ -18,6 +21,9 @@
 
 --next
 
+#########
+# builder
+#########
 -js ../bin/publications/admin/silex-builder.js
 -cp ../../SLPlayer/src/
 -cp ../../Cocktail/src/

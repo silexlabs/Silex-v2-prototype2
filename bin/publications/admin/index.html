@@ -86,39 +86,39 @@
 					<DIV class="PageToolbox Layer file-menu ribbon-list selectable">
 						<UL class="">
 							<LI data-menu-item="open">
-								<DIV class="solid"></DIV>
+								<DIV class="temp-icon"></DIV>
 								<P>open</P>
 							</LI>
 							<LI data-menu-item="save">
-								<DIV class="solid"></DIV>
+								<DIV class="temp-icon"></DIV>
 								<P>save</P>
 							</LI>
 							<LI data-menu-item="save-as">
-								<DIV class="solid"></DIV>
+								<DIV class="temp-icon"></DIV>
 								<P>save as</P>
 							</LI>
 							<LI data-menu-item="save-copy">
-								<DIV class="solid"></DIV>
+								<DIV class="temp-icon"></DIV>
 								<P>save a copy</P>
 							</LI>
 							<LI data-menu-item="close">
-								<DIV class="solid"></DIV>
+								<DIV class="temp-icon"></DIV>
 								<P>close</P>
 							</LI>
 							<LI class="disabled" data-menu-item="settings">
-								<DIV class="solid"></DIV>
+								<DIV class="temp-icon"></DIV>
 								<P>settings</P>
 							</LI>
 							<LI class="disabled" data-menu-item="backup-all">
-								<DIV class="solid"></DIV>
+								<DIV class="temp-icon"></DIV>
 								<P>backup all</P>
 							</LI>
 							<LI class="disabled" data-menu-item="export">
-								<DIV class="solid"></DIV>
+								<DIV class="temp-icon"></DIV>
 								<P>export</P>
 							</LI>
 							<LI class="disabled" data-menu-item="publish">
-								<DIV class="solid"></DIV>
+								<DIV class="temp-icon"></DIV>
 								<P>publish</P>
 							</LI>
 						</UL>
@@ -132,7 +132,11 @@
 					<A class="Page" name="page-list" data-group-id="GroupRibbon">Pages</A>
 
 					<DIV class="PageToolbox Layer page-list ribbon-list selectable">
+						<DIV class="assets-page">
 
+							<IMG class="ribbon-button add-button" src="../admin/assets/sv2-ico-add.png" title="Add a page"/>
+							<IMG class="ribbon-button del-button" src="../admin/assets/sv2-ico-delete.png" title="Delete selected page"/>
+						</DIV>
 						<UL class="PageList">
 							<LI class="Draggable">
 								<DIV class="solid"></DIV>
@@ -228,18 +232,9 @@
 						<DIV class="header-2">
 							<IMG src="../admin/assets/header-2.png"/>
 						</DIV>
-						<DIV class="publications">
-						
-							<DIV class="cont-1">
-									<DIV class="back-header">
-										<LEGEND>Your Publications</LEGEND>
-										<LABEL>Last Update</LABEL>
-									</DIV>
-									<UL class="PublicationList">
-										<LI>::name:: <DIV class="column"><SMALL>Last change by ::configData.lastChange.author:: on ::configData.lastChange.date::</SMALL></DIV></LI>
-									</UL>
-							</DIV>
-						</DIV>
+						<UL class="PublicationList publications">
+							<LI>::name:: <DIV class="column"><SMALL>Last change by ::configData.lastChange.author:: on ::configData.lastChange.date::</SMALL></DIV></LI>
+						</UL>
 						<DIV class="foot">
 								<DIV class="solid-3"></DIV>
 								<DIV class="solid-4"></DIV>
@@ -1022,12 +1017,10 @@
 				<DIV class="SelectionController panel-builder-body">
 					<DIV class="PublicationViewer">
 					</DIV>
-					<DIV style="">
-						<DIV data-dropzones-class-name="Layer" class="selection-marker Draggable SelectionMarker" data-phantom-class-name="selection-phantom" data-group-id="SelectionController"></DIV>
-						<DIV class="hover-marker"></DIV>
-						<DIV data-dropzones-class-name="silex-view" class="selection-layer-marker Draggable SelectionMarker" data-phantom-class-name="selection-phantom" data-group-id="SelectionController"></DIV>
-						<DIV class="hover-layer-marker"></DIV>
-					</DIV>
+					<DIV data-dropzones-class-name="Layer" class="selection-marker Draggable SelectionMarker" data-phantom-class-name="selection-phantom" data-group-id="SelectionController"></DIV>
+					<DIV class="hover-marker"></DIV>
+					<DIV data-dropzones-class-name="silex-view" class="selection-layer-marker Draggable SelectionMarker" data-phantom-class-name="selection-phantom" data-group-id="SelectionController"></DIV>
+					<DIV class="hover-layer-marker"></DIV>
 				</DIV>
 				
 				

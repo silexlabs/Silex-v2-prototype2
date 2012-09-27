@@ -34,6 +34,20 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** To do **
 
+Silex menu missing items
+- file/rename
+- manage publications
+- library (import media)
+- edit text
+- edit CSS
+- edit hscript
+- transition in, out and show, hide
+
+missing functionality
+- deselect all
+- select empty layer or layr with onliy 1 child
+- filter publication names (",", " ", "%" ...)
+
 cleanup code
 - Draggable::getBestDropZone
 - SelectionMarker::onDrag

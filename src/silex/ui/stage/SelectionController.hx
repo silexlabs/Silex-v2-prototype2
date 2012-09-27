@@ -90,14 +90,14 @@ class SelectionController extends DisplayObject
 		hoverLayerMarker = DomTools.getSingleElement(rootElement, HOVER_LAYER_MARKER_STYLE_NAME, true);
 		hoverLayerMarker.addEventListener("mousedown", onClickLayerHover, false);
 		hoverLayerMarker.addEventListener("mouseout", onOutLayerHover, false);
-		selectionContainer.appendChild(hoverLayerMarker);
+		//selectionContainer.appendChild(hoverLayerMarker);
 
 		// create the marker
 //		selectionLayerMarker = Lib.document.createElement("div");
 //		selectionLayerMarker.className = SELECTION_LAYER_MARKER_STYLE_NAME;
 		selectionLayerMarker = DomTools.getSingleElement(rootElement, SELECTION_LAYER_MARKER_STYLE_NAME, true);
 		selectionLayerMarker.addEventListener("click", onClickLayerSelection, false);
-		selectionContainer.appendChild(selectionLayerMarker);
+		//selectionContainer.appendChild(selectionLayerMarker);
 
 		// create the marker
 //		hoverMarker = Lib.document.createElement("div");
@@ -105,14 +105,14 @@ class SelectionController extends DisplayObject
 		hoverMarker = DomTools.getSingleElement(rootElement, HOVER_MARKER_STYLE_NAME, true);
 		hoverMarker.addEventListener("mousedown", onClickHover, false);
 		hoverMarker.addEventListener("mouseout", onOutHover, false);
-		selectionContainer.appendChild(hoverMarker);
+		//selectionContainer.appendChild(hoverMarker);
 
 		// create the marker
 //		selectionMarker = Lib.document.createElement("div");
 //		selectionMarker.className = SELECTION_MARKER_STYLE_NAME;
 		selectionMarker = DomTools.getSingleElement(rootElement, SELECTION_MARKER_STYLE_NAME, true);
 		selectionMarker.addEventListener("click", onClickSelection, false);
-		selectionContainer.appendChild(selectionMarker);
+		//selectionContainer.appendChild(selectionMarker);
 
 		// listen to the view events
 		Lib.document.body.addEventListener("mousemove", onMouseMove, false);
@@ -330,11 +330,17 @@ class SelectionController extends DisplayObject
 	 */
 	private function checkIsOver(target:HtmlDom, mouseX:Int, mouseY:Int):Bool{
 		var boundingBox = DomTools.getElementBoundingBox(target);
+/**/
 		var res = mouseX > boundingBox.x 
 			&& mouseX < boundingBox.x+boundingBox.w
 			&& mouseY > boundingBox.y
 			&& mouseY < boundingBox.y+boundingBox.h;
-		//trace("checkIsOver(" + target + ", " + mouseX + ", "+ mouseY + ") returns "+res);
+/*
+		var res = mouseX > target.offsetLeft 
+			&& mouseX < target.offsetLeft+target.offsetWidth
+			&& mouseY > target.offsetTop
+			&& mouseY < target.offsetTop+target.offsetHeight;
+*/		//trace("checkIsOver(" + target + ", " + mouseX + ", "+ mouseY + ") returns "+res);
 		return res;
 	}
 	/**

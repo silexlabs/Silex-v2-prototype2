@@ -90,39 +90,39 @@
 					<div class="PageToolbox Layer file-menu ribbon-list selectable">
 						<ul class="">
 							<li data-menu-item="open">
-								<div class="solid"></div>
+								<div class="temp-icon"></div>
 								<p>open</p>
 							</li>
 							<li data-menu-item="save">
-								<div class="solid"></div>
+								<div class="temp-icon"></div>
 								<p>save</p>
 							</li>
 							<li data-menu-item="save-as">
-								<div class="solid"></div>
+								<div class="temp-icon"></div>
 								<p>save as</p>
 							</li>
 							<li data-menu-item="save-copy">
-								<div class="solid"></div>
+								<div class="temp-icon"></div>
 								<p>save a copy</p>
 							</li>
 							<li data-menu-item="close">
-								<div class="solid"></div>
+								<div class="temp-icon"></div>
 								<p>close</p>
 							</li>
 							<li data-menu-item="settings" class="disabled">
-								<div class="solid"></div>
+								<div class="temp-icon"></div>
 								<p>settings</p>
 							</li>
 							<li data-menu-item="backup-all" class="disabled">
-								<div class="solid"></div>
+								<div class="temp-icon"></div>
 								<p>backup all</p>
 							</li>
 							<li data-menu-item="export" class="disabled">
-								<div class="solid"></div>
+								<div class="temp-icon"></div>
 								<p>export</p>
 							</li>
 							<li data-menu-item="publish" class="disabled">
-								<div class="solid"></div>
+								<div class="temp-icon"></div>
 								<p>publish</p>
 							</li>
 						</ul>
@@ -136,17 +136,18 @@
 					<a name="page-list" class="Page" data-group-id="GroupRibbon">Pages</a>
 
 					<div class="PageToolbox Layer page-list ribbon-list selectable">
-<!--
 						<div class="assets-page">
+<!--
 							<img src="../admin/assets/sv2-ico-add.png"></img>
-							<img src="../admin/assets/sv2-ico-delete.png"></img>
 							<img src="../admin/assets/sv2-ico-duplicate.png"></img>
 							<img src="../admin/assets/sv2-ico-snapshot.png"></img>
 							<img src="../admin/assets/sv2-ico-properties.png"></img>
 							<img src="../admin/assets/sv2-ico-rename.png"></img>
 							
-						</div>
 -->
+							<img title="Add a page" class="ribbon-button add-button" src="../admin/assets/sv2-ico-add.png"></img>
+							<img title="Delete selected page" class="ribbon-button del-button" src="../admin/assets/sv2-ico-delete.png"></img>
+						</div>
 						<ul class="PageList">
 							<li class="Draggable">
 								<div class="solid"></div>
@@ -249,18 +250,9 @@
 						<div class="header-2">
 							<img src="../admin/assets/header-2.png"></img>
 						</div>
-						<div class="publications">
-						
-							<div class="cont-1">
-									<div class="back-header">
-										<legend>Your Publications</legend>
-										<label>Last Update</label>
-									</div>
-									<ul class="PublicationList">
-										<li>::name:: <div class="column"><small>Last change by ::configData.lastChange.author:: on ::configData.lastChange.date::</small></div></li>
-									</ul>
-							</div>
-						</div>
+						<ul class="PublicationList publications">
+							<li>::name:: <div class="column"><small>Last change by ::configData.lastChange.author:: on ::configData.lastChange.date::</small></div></li>
+						</ul>
 						<div class="foot">
 								<div class="solid-3"></div>
 								<div class="solid-4"></div>
@@ -1055,20 +1047,18 @@
 				<div class="SelectionController panel-builder-body" >
 					<div class="PublicationViewer" >
 					</div>
-					<div style="">
-						<div class="selection-marker Draggable SelectionMarker"
-							data-dropzones-class-name="Layer"
-							data-phantom-class-name="selection-phantom"
-							data-group-id="SelectionController"
-						></div>
-						<div class="hover-marker"></div>
-						<div class="selection-layer-marker Draggable SelectionMarker"
-							data-dropzones-class-name="silex-view"
-							data-phantom-class-name="selection-phantom"
-							data-group-id="SelectionController"
-						></div>
-						<div class="hover-layer-marker"></div>
-					</div>
+					<div class="selection-marker Draggable SelectionMarker"
+						data-dropzones-class-name="Layer"
+						data-phantom-class-name="selection-phantom"
+						data-group-id="SelectionController"
+					></div>
+					<div class="hover-marker"></div>
+					<div class="selection-layer-marker Draggable SelectionMarker"
+						data-dropzones-class-name="silex-view"
+						data-phantom-class-name="selection-phantom"
+						data-group-id="SelectionController"
+					></div>
+					<div class="hover-layer-marker"></div>
 				</div>
 				<!-- 		/Selection and stage 			-->
 				<!-- 	**************************	-->

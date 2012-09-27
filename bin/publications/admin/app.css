@@ -38,17 +38,20 @@ p{
 /* 		test 		*/
 /* **************** */
 
-body{
-	overflow: hidden;
-}
-.PublicationViewer.Layer{
-	border: 2px dashed grey;
+.PublicationViewer .Layer{
+/*	border: 2px dashed grey; */
+	min-width: 25px;
+	min-height: 25px;
 }
 /* **************** */
 /* 	builder 		*/
 /* **************** */
+body{
+	overflow: hidden;
+}
 .panel-publication-body{
 	width: 100%;
+	position: static;
 }
 /* **************** */
 /* 		stage 		*/
@@ -73,7 +76,6 @@ max-width:300px;
 	max-width:360px;
 	max-height:100%;
 	margin:0 auto;
-	z-index:3;
 	position:relative;
 }
 
@@ -85,7 +87,6 @@ max-width:300px;
 	height:111px;
 	margin:0 auto;
 	padding-left:18px;
-	z-index:3;
 }
 
 .login-dialog fieldset{
@@ -244,29 +245,28 @@ opacity:1;
 	opacity:0.7;
 }
 .dialogs .dialog-background{
-top:0;
-width:100%;
-height:100%;
-left:0;
-z-index:1;
-position:absolute;
-background-color:Black;
-opacity:0.5;
-
-
+	top:0;
+	width:100%;
+	height:100%;
+	left:0;
+	z-index: 1000;
+	position:absolute;
+	background-color:Black;
+	opacity:0.5;
 }
 
 
 .dialogs .container-2{
-
-	max-width:633px;
-	max-height:100%;
-	margin-left:auto;
-	margin-right:auto;
-	z-index:3;
-	position:relative;
-	border: 1px solid DimGray;
-	border-radius:3px;
+    border: 1px solid DimGray;
+    border-radius: 3px 3px 3px 3px;
+    margin-left: 25%;
+    margin-right: 25%;
+    min-height: 200px;
+    height: 40%;
+    max-width: 633px;
+    position: absolute;
+    width: 50%;
+    z-index: 1100;
 }
 
 .dialogs .header-2{
@@ -305,6 +305,10 @@ width:100%;
 	padding-top:5px;
 	
 }
+.dialogs .publications li{
+	cursor: pointer;
+	line-height: 2;
+}
 .dialogs .publications .listSelectedItem{
 	color: green;
 }
@@ -312,24 +316,23 @@ width:100%;
 	max-width:100%;
 	background:Gainsboro;
 	border-radius:3px;
-	height:160px;
-	z-index:3;
-	padding:0;
 	margin:0;
-	cursor: hand;	
+	font-size: 12px;
+	height: 100%;
+	list-style-type: none;
+	overflow: auto;
+	padding: 20px;
 }
+.dialogs .publications a{
+	text-decoration: none;
+	color:#3C3C3C;
 
-.dialogs .cont-1{
-	width:100%;
-	background:Gainsboro;
-	height:100%;
-	position:relative;
-	float:left;
-	padding:0;
-	margin:0;
 
 }
+.dialogs .publications a:hover{
+	color:black;
 
+}
 
 .foot{
 	clear:both;
@@ -396,26 +399,6 @@ width:100%;
 
 }
 
-.dialogs .PublicationList{
-	font-size:12px;
-	padding-right:7px;
-	padding-top:8px;
-	list-style-type: none;
-	margin-left:-17px;
-	overflow: auto;
-	height: 100%;
-
-}
-.dialogs .PublicationList a{
-	text-decoration: none;
-	color:#3C3C3C;
-
-
-}
-.dialogs .PublicationList a:hover{
-	color:black;
-
-}
 
 
 .dialogs .column{
@@ -436,8 +419,13 @@ width:100%;
 	height: 100%;
 	overflow: auto;
 	border: 2px red solid;
-	top: 0px;
+/*
+	top: 0;
 	left: 0;
+/*
+	position: absolute;
+	z-index: 2;
+/**/
 }
 .PublicationViewer{
 }
@@ -449,7 +437,7 @@ width:100%;
 .hover-marker{
 	z-index: 300;
 	opacity:0.25;
-	background-color: red;
+	background-color: black;
 	cursor: pointer;
 }
 .selection-marker{
@@ -497,7 +485,8 @@ width:100%;
 /* **************** */
 .GroupRibbon{
 	width: 100%;
-	position: static;
+	position: relative;
+	z-index: 2000;
 	left:0;
 	background:Gainsboro;
 	margin:0;
@@ -520,8 +509,9 @@ width:100%;
 	font-size:13px;
 }
 .GroupRibbon .disabled {
-   pointer-events: none;
-   color: grey ! important;
+	pointer-events: none;
+	color: grey ! important;
+	background-color:Gainsboro;
 }
 .ribbon-list .listSelectedItem{
 	color:#7F7F7F;
@@ -562,20 +552,29 @@ width:100%;
 .ribbon-list li:hover{
 }
 .ribbon-list .solid{
+	cursor:move;
+}
+.ribbon-list .solid{
 	height:35px;
 	width:50px;
 	background:LightGray;
 	display:inline-block;
 	border:1px solid black;
 	margin-top:7px;
-
-	cursor:move;
+}
+.temp-icon {
+    background-image: url("assets/temporary-icon.png");
+    background-size: 50px auto;
+    height: 50px;
+    width: 50px;
 }
 .assets-page{
 	background:Gray;
-	width:7%;
 	border:1px solid black;
 	float: left;
+}
+.ribbon-button{
+	cursor: pointer;
 }
 /* **************** */
 /* /Ribbon Toolbox */
@@ -603,8 +602,10 @@ width:100%;
 	margin: 0;
 	border: 2px black solid;
 	border-radius: 5px;
+	overflow: hidden;
+	position: absolute;
+	right: 0;
 	z-index: 2000;
-	float: right;
 }
 .silex-toolbox .panel-body{
 	overflow: auto;
@@ -632,10 +633,6 @@ width:100%;
 
 .silex-toolbox .panel-footer {
 }
-.property-editor-delete-selected {
-	width: 80%;
-	background-color: red;
-}
 .silex-toolbox textarea,input {
 	width: 21%;
 	float:right;
@@ -658,12 +655,16 @@ width:100%;
 	min-width:100%;
 
 }
-.silex-toolbox fieldset input.name-property{
-	min-width:88%;
+.silex-toolbox fieldset input.name-property,
+.property-editor-delete-selected{
+	min-width:88%; 
 	margin-left:13px;
 	margin-top:5px;
 	float:none;
 
+}
+.property-editor-delete-selected {
+	background-color: red;
 }
 
 
