@@ -8,9 +8,11 @@ import org.slplayer.util.DomTools;
 import org.slplayer.component.navigation.Layer;
 import org.slplayer.core.Application;
 
-import silex.layer.LayerModel;
-import silex.publication.PublicationModel;
+import silex.property.PropertyModel;
 import silex.component.ComponentModel;
+import silex.layer.LayerModel;
+import silex.page.PageModel;
+import silex.publication.PublicationModel;
 
 /**
  * This component listen to the mouse events and start the desired actions. 
@@ -23,10 +25,9 @@ import silex.component.ComponentModel;
  * 	- on select layer, remove all other marker, display layer selection marker
  * 	- on select component, remove all other marker, display component selection marker
  */
-@tagNameFilter("a")
+@tagNameFilter("DIV")
 class SelectionController extends DisplayObject
 {
-	public static inline var MARKER_CONTAINER_STYLE_NAME = "selection-marker-container";
 	/**
 	 * Information for debugging, e.g. the class name
 	 */ 
@@ -81,33 +82,37 @@ class SelectionController extends DisplayObject
 	public function new(rootElement:HtmlDom, SLPId:String){
 		super(rootElement, SLPId);
 
-		//var selectionContainer = DomTools.getSingleElement(rootElement, MARKER_CONTAINER_STYLE_NAME);
-var selectionContainer = Lib.document.body;
+		var selectionContainer = Lib.document.body;
+
 		// create the marker
-		hoverLayerMarker = Lib.document.createElement("div");
-		hoverLayerMarker.className = HOVER_LAYER_MARKER_STYLE_NAME;
-		hoverLayerMarker.addEventListener("click", onClickLayerHover, false);
+//		hoverLayerMarker = Lib.document.createElement("div");
+//		hoverLayerMarker.className = HOVER_LAYER_MARKER_STYLE_NAME;
+		hoverLayerMarker = DomTools.getSingleElement(rootElement, HOVER_LAYER_MARKER_STYLE_NAME, true);
+		hoverLayerMarker.addEventListener("mousedown", onClickLayerHover, false);
 		hoverLayerMarker.addEventListener("mouseout", onOutLayerHover, false);
-		selectionContainer.appendChild(hoverLayerMarker);
+		//selectionContainer.appendChild(hoverLayerMarker);
 
 		// create the marker
-		selectionLayerMarker = Lib.document.createElement("div");
-		selectionLayerMarker.className = SELECTION_LAYER_MARKER_STYLE_NAME;
+//		selectionLayerMarker = Lib.document.createElement("div");
+//		selectionLayerMarker.className = SELECTION_LAYER_MARKER_STYLE_NAME;
+		selectionLayerMarker = DomTools.getSingleElement(rootElement, SELECTION_LAYER_MARKER_STYLE_NAME, true);
 		selectionLayerMarker.addEventListener("click", onClickLayerSelection, false);
-		selectionContainer.appendChild(selectionLayerMarker);
+		//selectionContainer.appendChild(selectionLayerMarker);
 
 		// create the marker
-		hoverMarker = Lib.document.createElement("div");
-		hoverMarker.className = HOVER_MARKER_STYLE_NAME;
-		hoverMarker.addEventListener("click", onClickHover, false);
+//		hoverMarker = Lib.document.createElement("div");
+//		hoverMarker.className = HOVER_MARKER_STYLE_NAME;
+		hoverMarker = DomTools.getSingleElement(rootElement, HOVER_MARKER_STYLE_NAME, true);
+		hoverMarker.addEventListener("mousedown", onClickHover, false);
 		hoverMarker.addEventListener("mouseout", onOutHover, false);
-		selectionContainer.appendChild(hoverMarker);
+		//selectionContainer.appendChild(hoverMarker);
 
 		// create the marker
-		selectionMarker = Lib.document.createElement("div");
-		selectionMarker.className = SELECTION_MARKER_STYLE_NAME;
+//		selectionMarker = Lib.document.createElement("div");
+//		selectionMarker.className = SELECTION_MARKER_STYLE_NAME;
+		selectionMarker = DomTools.getSingleElement(rootElement, SELECTION_MARKER_STYLE_NAME, true);
 		selectionMarker.addEventListener("click", onClickSelection, false);
-		selectionContainer.appendChild(selectionMarker);
+		//selectionContainer.appendChild(selectionMarker);
 
 		// listen to the view events
 		Lib.document.body.addEventListener("mousemove", onMouseMove, false);
@@ -118,11 +123,35 @@ var selectionContainer = Lib.document.body;
 		componentModel = ComponentModel.getInstance();
 		componentModel.addEventListener(ComponentModel.ON_SELECTION_CHANGE, onSelectionChanged, DEBUG_INFO);
 		componentModel.addEventListener(ComponentModel.ON_HOVER_CHANGE, onHoverChanged, DEBUG_INFO);
+		componentModel.addEventListener(ComponentModel.ON_LIST_CHANGE, redraw, DEBUG_INFO);
 		
 		// listen to the model events
 		layerModel = LayerModel.getInstance();
 		layerModel.addEventListener(LayerModel.ON_SELECTION_CHANGE, onLayerSelectionChanged, DEBUG_INFO);
 		layerModel.addEventListener(LayerModel.ON_HOVER_CHANGE, onLayerHoverChanged, DEBUG_INFO);
+		layerModel.addEventListener(LayerModel.ON_LIST_CHANGE, redraw, DEBUG_INFO);
+
+		// listen to the model events
+		PageModel.getInstance().addEventListener(PageModel.ON_LIST_CHANGE, redraw, DEBUG_INFO);
+		PublicationModel.getInstance().addEventListener(PublicationModel.ON_DATA, redraw, DEBUG_INFO);
+		PropertyModel.getInstance().addEventListener(PropertyModel.ON_PROPERTY_CHANGE, redraw, DEBUG_INFO);
+		PropertyModel.getInstance().addEventListener(PropertyModel.ON_STYLE_CHANGE, redraw, DEBUG_INFO);
+		
+
+		rootElement.addEventListener("scroll", redraw, false);
+		Lib.window.addEventListener("resize", redraw, false);
+	}
+	/**
+	 * refresh display
+	 */
+	public function redraw(e:Event=null) {
+		trace("redraw selection");
+		if (layerModel.selectedItem == null) setMarkerPosition(selectionLayerMarker, null);
+		else setMarkerPosition(selectionLayerMarker, layerModel.selectedItem.rootElement);
+		if (layerModel.hoveredItem == null) setMarkerPosition(hoverLayerMarker, null);
+		else  setMarkerPosition(hoverLayerMarker, layerModel.hoveredItem.rootElement);
+		setMarkerPosition(selectionMarker, componentModel.selectedItem);
+		setMarkerPosition(hoverMarker, componentModel.hoveredItem);
 	}
 	//////////////////////////////////////////////////////
 	// Selection clicks
@@ -133,9 +162,18 @@ var selectionContainer = Lib.document.body;
 	public function onClickHover(e:Event) {
 		// trace("onClickHover ");
 		// prenvent default (selection of text, call of this.onClickAnywhere)
-		e.preventDefault();
+//		e.preventDefault();
 		// set the item on the model (this will dispatch an event and we will catch it to update the marker)
 		componentModel.selectedItem = componentModel.hoveredItem;
+
+/* attempt to start drag on mouse down
+		// start drag on mouse down
+		var e:Event = Lib.document.createEvent('HTMLEvents');
+		e.initEvent('mousedown', true, false);
+		selectionMarker.dispatchEvent(cast(e));
+
+//		DomTools.doLater(callback(selectionMarker.dispatchEvent, cast(e)), 100);
+*/
 	}
 	/**
 	 * Handle mouse events
@@ -202,7 +240,7 @@ var selectionContainer = Lib.document.body;
 		var found = false;
 		var layers = DomTools.getElementsByAttribute(rootElement, "data-silex-layer-id", "*");
 		for (idx in 0...layers.length){
-			if (checkIsOver(layers[idx], e.clientX, e.clientY)){
+			if (checkIsOver(layers[idx], e.pageX, e.pageY)){
 				// the mouse is over a layer
 				// get the SLPlayer application from the loaded publication
 				var application = PublicationModel.getInstance().application;
@@ -228,7 +266,7 @@ var selectionContainer = Lib.document.body;
 			// browse all components to check if it should be set as hovered
 			var comps = DomTools.getElementsByAttribute(layerModel.hoveredItem.rootElement, "data-silex-component-id", "*");
 			for (idx in 0...comps.length){
-				if (checkIsOver(comps[idx], e.clientX, e.clientY)){
+				if (checkIsOver(comps[idx], e.pageX, e.pageY)){
 					// the mouse is over a layer
 					componentModel.hoveredItem = comps[idx];
 					found = true;
@@ -288,15 +326,21 @@ var selectionContainer = Lib.document.body;
 /**/	
 	}
 	/**
-	 * Check if the mouse is aver a given node
+	 * Check if the mouse is over a given node
 	 */
 	private function checkIsOver(target:HtmlDom, mouseX:Int, mouseY:Int):Bool{
 		var boundingBox = DomTools.getElementBoundingBox(target);
+/**/
 		var res = mouseX > boundingBox.x 
 			&& mouseX < boundingBox.x+boundingBox.w
 			&& mouseY > boundingBox.y
 			&& mouseY < boundingBox.y+boundingBox.h;
-		//trace("checkIsOver(" + target + ", " + mouseX + ", "+ mouseY + ") returns "+res);
+/*
+		var res = mouseX > target.offsetLeft 
+			&& mouseX < target.offsetLeft+target.offsetWidth
+			&& mouseY > target.offsetTop
+			&& mouseY < target.offsetTop+target.offsetHeight;
+*/		//trace("checkIsOver(" + target + ", " + mouseX + ", "+ mouseY + ") returns "+res);
 		return res;
 	}
 	/**
@@ -380,16 +424,17 @@ var selectionContainer = Lib.document.body;
 	 * todo: with transformations + rotation
 	 */
 	private function setMarkerPosition(marker:HtmlDom, target:HtmlDom){
-		if (target == null){
+		// trace("setMarkerPosition ("+marker+", "+target+")");
+		if (target == null || target.style.display == "none"){
 			marker.style.display = "none";
 			marker.style.visibility = "hidden";
 		}
 		else{			
+			marker.style.display = "inline";
+			marker.style.visibility = "visible";
 			var boundingBox = DomTools.getElementBoundingBox(target);
 			var markerMarginH = (marker.offsetWidth - marker.clientWidth)/2.0;
 			var markerMarginV = (marker.offsetHeight - marker.clientHeight)/2.0;
-			marker.style.display = "inline";
-			marker.style.visibility = "visible";
 			doSetMarkerPosition(marker,
 				Math.floor(boundingBox.x - markerMarginH/2),
 				Math.floor(boundingBox.y - markerMarginV/2),

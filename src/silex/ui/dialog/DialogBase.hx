@@ -20,7 +20,6 @@ import org.slplayer.util.DomTools;
  * You are expected to open the dialogs as popups.
  * You are expected to place the dialogs on nodes with the Layer class (to detect open/close events)
  */
-@tagNameFilter("div")
 class DialogBase extends DisplayObject 
 {
 	/**

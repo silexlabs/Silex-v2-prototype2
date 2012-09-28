@@ -45,12 +45,9 @@ class LayersList extends List<Layer>
 
 		// update the selection
 		PropertyModel.getInstance().addEventListener(PropertyModel.ON_PROPERTY_CHANGE, onListChange, DEBUG_INFO);
-
-		// open the page when the selection changes
-		onChange = onSelectLayer;
 	}
 	/**
-	 * refreh list data, and then redraw the display by calling doRedraw
+	 * refresh list data, and then redraw the display by calling doRedraw
 	 * to be overriden to handle the model or do nothing if you manipulate the list and dataProvider by composition
 	 * if you override this, either call super.reloadData() to redraw immediately, or call doRedraw() when the data is ready
 	 */
@@ -59,7 +56,7 @@ class LayersList extends List<Layer>
 
 		var publicationModel = PublicationModel.getInstance();
 		// if a publication is loaded only
-		if(publicationModel.application != null){
+		if(publicationModel.viewHtmlDom != null){
 			// get the list of all layers
 			var nodes = DomTools.getElementsByAttribute(publicationModel.viewHtmlDom, "data-master", "*");
 			// get a list of instances 
@@ -84,7 +81,7 @@ class LayersList extends List<Layer>
 			selectedItem = LayerModel.getInstance().selectedItem;
 		}
 		super.reloadData();
-			propertyChangePending = false;
+		propertyChangePending = false;
 		//haxe.Timer.delay(doRedraw, 2000);
 	}
 	public function onListChange(e:CustomEvent){
@@ -96,17 +93,12 @@ class LayersList extends List<Layer>
 	 */
 	override function setSelectedIndex(idx:Int):Int {
 		trace("setSelectedIndex "+idx);
+		idx = super.setSelectedIndex(idx);
 		if (propertyChangePending == true) return idx;
-		return super.setSelectedIndex(idx);
-	}
-	/**
-	 * callback for the list, dispatched when the user selection changed
-	 */
-	private function onSelectLayer(layer:Layer){
-		if (propertyChangePending == true) return;
-		if (LayerModel.getInstance().selectedItem != layer){
-			trace("onSelectLayer("+layer+")");
-			LayerModel.getInstance().selectedItem = layer;
+
+		if (LayerModel.getInstance().selectedItem != selectedItem){
+			LayerModel.getInstance().selectedItem = selectedItem;
 		}
+		return idx;
 	}
 }

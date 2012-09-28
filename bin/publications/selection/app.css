@@ -1,0 +1,110 @@
+/* 		Silex base styles 			 */
+/* 		Do not edit these styles 	 */
+body
+{
+	margin:0px;
+	padding:0px;
+	font-family:Tahoma, Arial, Helvetica, sans-serif;
+	overflow: hidden;
+}
+.Layer{
+
+}
+.Page{
+	display: none;
+}
+button a{
+	color: green;
+	text-decoration: none;
+}
+img{
+	
+}
+p{
+
+}
+.list ul{
+
+}
+.list li{
+
+}
+/* **************** */
+/* 		selection 		*/
+/* **************** */
+.SelectionController{
+	width: 80%;
+	height: 100%;
+	overflow: auto;
+	border: 2px red solid;
+	top: 0px;
+	left: 0;
+}
+.PublicationViewer{
+}
+.hover-marker, .selection-marker, .hover-layer-marker, .selection-layer-marker{
+	position: absolute;
+	margin:0px;
+	padding:0px;
+}
+.hover-marker{
+	z-index: 300;
+	opacity:0.25;
+	background-color: red;
+	cursor: pointer;
+}
+.selection-marker{
+	z-index: 400;
+	border: 6px solid grey;
+	cursor: move;
+}
+.selection-marker:hover{
+	opacity:0.25;
+	background-color: yellow;
+	border: 6px solid grey;
+}
+.hover-layer-marker{
+	z-index: 100;
+	opacity:0.25;
+	background-color: blue;
+	cursor: pointer;
+}
+.selection-layer-marker{
+	z-index: 200;
+	border: 6px solid green;
+	cursor: move;
+}
+.selection-layer-marker:hover{
+	opacity:0.25;
+	background-color: green;
+	border: 6px solid green;
+}
+
+.draggable-phantom{
+    opacity: .5 !important;
+	background-color: red !important;
+	border: 6px solid green !important;
+	min-width: 10px !important;
+	min-height: 10px !important;
+}
+
+
+/* **************** */
+/* /Selection */
+/* **************** */
+
+
+/* 		Publication styles 			 */
+/* 		You can edit these styles 	 */
+
+.PublicationViewer, .debug-html, .debug-raw, .SelectionController{
+	float: left;
+	overflow: none;
+	width: 400px;
+	height: 400px;
+	border: 2px black solid;
+}
+.ModelDebugger{
+	border: 2px red solid;
+}
+

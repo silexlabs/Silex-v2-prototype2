@@ -70,9 +70,21 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 */
 	public static inline var ON_CONFIG_CHANGE = "onPublicationConfigChange";
 	/**
-	 * event dispatched when an error occured 
+	 * event dispatched when an error occured while loading a publication 
 	 */
 	public static inline var ON_ERROR = "onPublicationError";
+	/**
+	 * event dispatched when the user save publication
+	 */
+	public static inline var ON_SAVE_START = "onPublicationSaveStart";
+	/**
+	 * event dispatched when save publication is done
+	 */
+	public static inline var ON_SAVE_SUCCESS = "onPublicationSaveSuccess";
+	/**
+	 * event dispatched when saving publication has failed
+	 */
+	public static inline var ON_SAVE_ERROR = "onPublicationSaveError";
 	/**
 	 * Publication service, used to load/save a publication etc.
 	 */
@@ -80,7 +92,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	/**
 	 * currently loaded publication name
 	 */
-	public static var currentName:String;
+	public var currentName:String;
 	/**
 	 * Currently loaded publication
 	 */
@@ -117,12 +129,18 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		publicationService = new PublicationService();
 	}
 #if silexClientSide
+	////////////////////////////////////////////////
+	// list
+	////////////////////////////////////////////////
 	/**
 	 * Starts the loading process of the list of available publications
 	 */
 	public function loadList(){
 		publicationService.getPublications(null, [Publication], onListResult, onError);
 	}
+	////////////////////////////////////////////////
+	// helpers
+	////////////////////////////////////////////////
 	/**
 	 * Load a publication
 	 * Load the config data first if needed
@@ -131,6 +149,54 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	public function unload(){
 		load("");
 	}
+	/**
+	 * Retrieve a reference to the selected component or layer in the PublicationModel::modelHtmlDom object
+	 */
+	public function getModelFromView(viewHtmlDom:HtmlDom):HtmlDom{
+		if (viewHtmlDom == null){
+			trace("Warning: could not retrieve the model for element because it is null.");
+			return null;
+		}
+		try{
+			//trace("getModelFromView("+viewHtmlDom.className+") ");
+
+			//if (ComponentModel.getInstance().selectedItem == null && LayerModel.getInstance().selectedItem == null)
+			//	throw ("Error: no component nor layer is selected.");
+
+			var results : Array<HtmlDom> = null;
+			var id = viewHtmlDom.getAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME);
+			if (id != null)
+			{
+				 // trace("case of component "+id);
+				// case of a component
+				results = DomTools.getElementsByAttribute(PublicationModel.getInstance().modelHtmlDom, ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, id);
+			}
+			else{
+				id = viewHtmlDom.getAttribute(LayerModel.LAYER_ID_ATTRIBUTE_NAME);
+				if (id!=null){
+					// case of a layer
+					results = DomTools.getElementsByAttribute(PublicationModel.getInstance().modelHtmlDom, LayerModel.LAYER_ID_ATTRIBUTE_NAME, id);
+					 // trace("case of layer "+id+" - "+results);
+				}
+				else{
+					throw("Error: the selected layer has not a Silex ID. It should have the ID in the "+LayerModel.LAYER_ID_ATTRIBUTE_NAME+" or "+ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME+" attributes");
+				}
+			}
+			// returns the element
+			if (results == null || results.length != 1){
+				throw ("Error: 1 and only 1 component or layer is expected to have ID \"" + id + "\" ("+results+").");
+			}
+			// trace("returns "+results[0]);
+			return results[0];
+		}catch(e:Dynamic){
+			trace("Error, could not retrieve the model for element "+viewHtmlDom+" ("+e+").");
+			throw("Error, could not retrieve the model for element "+viewHtmlDom+" ("+e+").");
+		}
+		return null;
+	}
+	////////////////////////////////////////////////
+	// load
+	////////////////////////////////////////////////
 	/**
 	 * Load a publication
 	 * Load the config data first if needed
@@ -165,6 +231,10 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		if (name == ""){
 			// unload
 			trace("unload");
+			currentConfig = null;
+			currentData = null;
+			viewHtmlDom = null;
+			modelHtmlDom = null;
 		}
 		else if (configData != null){
 			// load publication data directly
@@ -200,7 +270,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		headHtmlDom = Lib.document.createElement("div");
 
 		// parse html data as XML
-		var xml:Fast;
+/*		var xml:Fast;
 		try{
 			xml = new Fast(Xml.parse(currentData.html).firstChild());
 		}
@@ -217,6 +287,29 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			headHtmlDom.innerHTML = xml.node.head.innerHTML;
 		else if (xml.hasNode.HEAD)
 			headHtmlDom.innerHTML = xml.node.HEAD.innerHTML;
+*/
+		// split head and body tags 
+		var headOpenIdx = currentData.html.indexOf("<head");
+		if (headOpenIdx == -1) headOpenIdx = currentData.html.indexOf("<HEAD");
+		var headCloseIdx = currentData.html.indexOf("</head>");
+		if (headCloseIdx == -1) headCloseIdx = currentData.html.indexOf("</HEAD>");
+		var bodyOpenIdx = currentData.html.indexOf("<body");
+		if (bodyOpenIdx == -1) bodyOpenIdx = currentData.html.indexOf("<BODY");
+		var bodyCloseIdx = currentData.html.indexOf("</body>");
+		if (bodyCloseIdx == -1) bodyCloseIdx = currentData.html.indexOf("</BODY>");
+
+		if (headOpenIdx > -1 && headCloseIdx > -1){
+			// look for the first ">" after "<head"
+			var closingTagIdx = currentData.html.indexOf(">", headOpenIdx);
+			// extract the head section
+			headHtmlDom.innerHTML = currentData.html.substring(closingTagIdx + 1, headCloseIdx);
+		}
+		if (bodyOpenIdx > -1 && bodyCloseIdx > -1){
+			// look for the first ">" after "<body"
+			var closingTagIdx = currentData.html.indexOf(">", bodyOpenIdx);
+			// extract the body section
+			modelHtmlDom.innerHTML = currentData.html.substring(closingTagIdx + 1, bodyCloseIdx);
+		}
 
 		// add attributes to nodes recursively
 		prepareForEdit(modelHtmlDom);
@@ -235,9 +328,10 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * Initialize the SLPlayer for the view
 	 */
 	private function initViewHtmlDom():Void{
-		trace("initViewHtmlDom");
+		// trace("initViewHtmlDom");
 		// Duplicate DOM
 		viewHtmlDom = modelHtmlDom.cloneNode(true);
+		viewHtmlDom.className = "silex-view";
 
 		// Add the CSS in the body tag rather than head tag, because the later is not really added to the browser dom
 		DomTools.addCssRules(currentData.css, viewHtmlDom);
@@ -246,7 +340,8 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * Fixes the DOM root when needed
 	 * - add the PublicationGroup to the root of the DOM
 	 */
-	function fixDomRoot(modelDom:HtmlDom){
+	private function fixDomRoot(modelDom:HtmlDom){
+		// trace("fixDomRoot( "+modelDom+") - "+modelDom.parentNode);
 		// add the PublicationGroup to the root of the DOM
 		DomTools.addClass(modelDom, "PublicationGroup");
 	}
@@ -254,7 +349,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * Fixes the components, layers and pages when needed
 	 * - add the attribute data-group-id to components
 	 */
-	function fixDom(modelDom:HtmlDom){
+	private function fixDom(modelDom:HtmlDom){
 		// add the attribute data-group-id to components
 		if (modelDom.getAttribute("data-group-id") == null){
 			modelDom.setAttribute("data-group-id", "PublicationGroup");
@@ -267,7 +362,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * - call fixDom method for each component
 	 */
 	public function prepareForEdit(modelDom:HtmlDom) {
-		//trace("prepareForEdit ("+modelDom+", "+viewDom+"));
+		// trace("prepareForEdit ("+modelDom+") - "+modelDom.parentNode);
 		// Take only HtmlDom elements, not TextNode
 		if (modelDom.nodeType != 1){
 			return;
@@ -345,7 +440,6 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			context.set("LayerModel", LayerModel);
 			context.set("ComponentModel", ComponentModel);
 			context.set("PropertyModel", PropertyModel);
-			trace("slpid = "+ application.id);
 			try{
 				Interpreter.exec(StringTools.htmlUnescape(currentConfig.debugModeAction), context);
 			}catch(e:Dynamic){
@@ -360,7 +454,6 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	private function onError(msg:String):Void{
 		// todo: display notification
 		dispatchEvent(createEvent(ON_ERROR), debugInfo);
-		trace("An error occured while loading publications list ("+msg+")");
 		throw("An error occured while loading publications list ("+msg+")");
 	}
 	/**
@@ -372,7 +465,6 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		if (publications != null){
 			// browse all publications 
 			for (publicationName in publications.keys()){
-				trace("Publication "+ publicationName);
 				// create the item (name and config data)
 				var item = {name:publicationName, configData:publications.get(publicationName)};
 				// add to the data
@@ -382,5 +474,136 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		// populate the list
 		dispatchEvent(createEvent(ON_LIST, data), debugInfo);
 	}
+	////////////////////////////////////////////////
+	// Save
+	////////////////////////////////////////////////
+	/**
+	 * Save a copy of the current publication with a new name
+	 * Save the current publication and then duplicate it
+	 * It will NOT change currentName
+	 */
+	public function saveACopy(newName:String){
+		// check that a publication is loaded
+		if (currentData == null)
+			throw("Error: can not save the publication because no publication is loaded.");
+
+		// start the save process
+		save(callback(doSaveACopy, newName));
+	}
+	/**
+	 * Save a copy of the current publication with a new name
+	 * It will NOT save the current publication
+	 * It will NOT change currentName
+	 */
+	private function doSaveACopy(newName:String){
+		// check that a publication is loaded
+		if (currentData == null)
+			throw("Error: can not save the publication because no publication is loaded.");
+
+		publicationService.duplicate(currentName, newName, callback(save), onSaveError);
+	}
+	/**
+	 * Save a publication with a new name
+	 * Duplicate the current publication and then save
+	 * It will change currentName
+	 */
+	public function saveAs(newName:String){
+		// check that a publication is loaded
+		if (currentData == null)
+			throw("Error: can not save the publication because no publication is loaded.");
+
+		var oldName = currentName;
+		currentName = newName;
+		publicationService.duplicate(oldName, newName, onSaveSuccess, onSaveError);
+	}
+	/**
+	 * Save a publication
+	 * Save the config data and then call doSavePublicationData to save publication data
+	 * Reset model selection
+	 */
+	public function save(successCallback:Void->Void=null){
+		// check that a publication is loaded
+		if (currentData == null)
+			throw("Error: can not save the publication because no publication is loaded.");
+
+		// reset model selection
+		var pageModel = PageModel.getInstance();
+		pageModel.hoveredItem = null;
+		pageModel.selectedItem = null;
+
+		// dispatch the event 
+		dispatchEvent(createEvent(ON_SAVE_START), debugInfo);
+
+		// Start the saving process
+		publicationService.setPublicationConfig(currentName, currentConfig, callback(doSavePublicationData, successCallback), onSaveError);
+	}
+	/**
+	 * Save the publication data
+	 */
+	private function doSavePublicationData(successCallback:Void->Void=null){
+		// default value for success
+		if (successCallback == null)
+			successCallback = onSaveSuccess;
+
+		// duplicate the model temporarily
+		var tempModelHead = headHtmlDom.cloneNode(true);
+		var tempModelBody = modelHtmlDom.cloneNode(true);
+
+		// prepare the model for saving
+		prepareForSave(tempModelBody);
+
+		// duplicate the model and save store it into the publication data
+		currentData.html = "<HTML>
+		<HEAD>
+			"+tempModelHead.innerHTML+"
+		</HEAD>
+		<BODY>
+			"+tempModelBody.innerHTML+"
+		</BODY>
+	</HTML>
+		";
+
+		// Start the saving process
+		publicationService.setPublicationData(currentName, currentData, successCallback, onSaveError);
+	}
+	
+	/**
+	 * Recursively browse all html nodes and does this:
+	 * - remove the attribute data-silex-component-id and data-silex-layer-id
+	 */
+	public function prepareForSave(modelDom:HtmlDom) {
+		//trace("prepareForSave ("+modelDom+")");
+		// Take only HtmlDom elements, not TextNode
+		if (modelDom.nodeType != 1){
+			return;
+		}
+		// Components
+		modelDom.removeAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME);
+
+		// Layers
+		modelDom.removeAttribute(LayerModel.LAYER_ID_ATTRIBUTE_NAME);
+
+		// browse the children
+		for(idx in 0...modelDom.childNodes.length){
+			var modelChild = modelDom.childNodes[idx];
+			prepareForSave(modelChild);
+		}
+	}
+	/**
+	 * An error occured while saving
+	 */
+	private function onSaveError(msg:String):Void{
+		dispatchEvent(createEvent(ON_SAVE_ERROR), debugInfo);
+		throw("An error occured while saving the publication ("+msg+")");
+	}
+
+	/**
+	 * Saving success
+	 */
+	private function onSaveSuccess():Void{
+		dispatchEvent(createEvent(ON_SAVE_SUCCESS), debugInfo);
+		trace("PUBLICATION SAVED");
+	}
+
 #end
 }

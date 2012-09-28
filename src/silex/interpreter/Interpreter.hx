@@ -34,7 +34,7 @@ class Interpreter{
 		"Application": Application,
 		"Page": Page,
 		"Layer": Layer,
-	
+
 	};
 	/**
 	 * execute a set of actions
@@ -54,5 +54,4 @@ class Interpreter{
 		var res = interp.execute(program);
 		return res;
 	}
-
 }

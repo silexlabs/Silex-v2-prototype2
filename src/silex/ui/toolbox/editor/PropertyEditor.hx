@@ -2,12 +2,15 @@ package silex.ui.toolbox.editor;
 
 import silex.property.PropertyModel;
 import silex.component.ComponentModel;
+import silex.publication.PublicationModel;
 import silex.layer.LayerModel;
+import silex.page.PageModel;
 
 import js.Lib;
 import js.Dom;
 
 import org.slplayer.component.ui.DisplayObject;
+import org.slplayer.component.navigation.Layer;
 import org.slplayer.util.DomTools;
 
 /**
@@ -15,21 +18,48 @@ import org.slplayer.util.DomTools;
  * Editors are SLPlayer components, in charge of handling HTML input elements, 
  * in order to let the user enter values and edit css style values or tag attributes.
  */
-@tagNameFilter("fieldset div")
 class PropertyEditor extends EditorBase 
 {
 	public static inline var ALL_CONTEXTS = ["context-video", "context-audio", "context-img", "context-txt", "context-layer", "context-div"];
+	/**
+	 * class name expected for the add page button
+	 */
+	public static inline var DELETE_BUTTON_CLASS_NAME:String = "property-editor-delete-selected";
+	/**
+	 * Stores the style node with the current context as visible 
+	 */
+	private static var styleSheet:HtmlDom;
 	/**
 	 * Constructor
 	 * Start listening the input events
 	 */
 	public function new(rootElement:HtmlDom, SLPId:String){
 		super(rootElement, SLPId);
+		// listen to the click event
+		rootElement.addEventListener("click", onClick, true);
 	}
 	/**
-	 * Stores the style node with the current context as visible 
+	 * callback for toolbox events
+	 * handle the click on delete button, remove the selection from model and view
 	 */
-	private static var styleSheet:HtmlDom;
+	public function onClick(e:Event) {
+		trace("click "+e.target);
+		// retrieve the node who triggered the event
+		var target:HtmlDom = e.target;
+		// remove the selection from model and view
+		if (DomTools.hasClass(target, DELETE_BUTTON_CLASS_NAME)){
+			trace("click delete");
+			e.preventDefault();
+			if (DomTools.hasClass(selectedItem, "Layer")){
+				var layer = LayerModel.getInstance().selectedItem;
+				var page = PageModel.getInstance().selectedItem;
+				LayerModel.getInstance().removeLayer(layer, page);
+			}
+			else{
+				ComponentModel.getInstance().removeComponent(selectedItem);
+			}
+		}
+	}
 	/**
 	 * reset the values
 	 */
@@ -96,7 +126,7 @@ class PropertyEditor extends EditorBase
 		if (value != null) setInputValue("src-property", abs2rel(value));
 		else setInputValue("src-property", "");
 
-		var sources = propertyModel.getModel(element).getElementsByTagName("source");
+		var sources = PublicationModel.getInstance().getModelFromView(element).getElementsByTagName("source");
 		var value = "";
 		for (idx in 0...sources.length){
 			value += abs2rel(cast(sources[idx]).src) + "\n";
@@ -121,7 +151,7 @@ class PropertyEditor extends EditorBase
 		else
 			setInputValue("controls-property", "checked", "checked");
 
-		var value:Bool = propertyModel.getAttribute(element, "data-master");
+		var value:Bool = propertyModel.getAttribute(element, LayerModel.MASTER_PROPERTY_NAME);
 		if (value == null || value == false) 
 			setInputValue("master-property", null, "checked");
 		else
@@ -148,7 +178,7 @@ class PropertyEditor extends EditorBase
 			propertyModel.setProperty(selectedItem, "src", "");
 		}
 
-		var modelHtmlDom = propertyModel.getModel(selectedItem);
+		var modelHtmlDom = PublicationModel.getInstance().getModelFromView(selectedItem);
 		var sources = modelHtmlDom.getElementsByTagName("source");
 		for (idx in 0...sources.length){
 			// always take "0" element because this remove an item from sources 

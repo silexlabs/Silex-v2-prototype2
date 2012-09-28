@@ -1,7 +1,6 @@
 <!-- This page is used to compile bin/libs/silex/silex.js -->
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="silex.css" />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
 
 		<script data-slp-use="org.slplayer.component.interaction.Draggable"></script>
@@ -11,10 +10,12 @@
 		<script data-slp-use="org.slplayer.component.navigation.Layer"></script>
 		<script data-slp-use="org.slplayer.component.navigation.link.LinkToPage"></script>
 		<script data-slp-use="org.slplayer.component.navigation.link.LinkClosePage"></script>
+		<script data-slp-use="org.slplayer.component.navigation.link.LinkToContext"></script>
 		<script data-slp-use="org.slplayer.component.sound.SoundOn"></script>
 		<script data-slp-use="org.slplayer.component.sound.SoundOff"></script>
-		<script data-slp-use="org.slplayer.component.navigation.link.LinkToContext"></script>
+		<script data-slp-use="org.slplayer.component.list.XmlList"></script>
 
+		<script data-slp-use="silex.ui.dialog.ModelDebugger"></script>
 		<script data-slp-use="silex.ui.dialog.AuthDialog"></script>
 		<script data-slp-use="silex.ui.dialog.OpenDialog"></script>
 		<script data-slp-use="silex.ui.list.PublicationList"></script>
@@ -25,17 +26,1074 @@
 		<script data-slp-use="silex.ui.stage.PublicationViewer"></script>
 		<script data-slp-use="silex.ui.stage.SelectionController"></script>
 		<script data-slp-use="silex.ui.stage.MenuController"></script>
+		
+		<script data-slp-use="silex.ui.stage.SelectionMarker"></script>
+		<script data-slp-use="silex.ui.stage.MasterDropHandler"></script>
+		<script data-slp-use="silex.ui.stage.InsertDropHandler"></script>
 
 		<script data-slp-use="silex.ui.toolbox.PageToolbox"></script>
-		
+<!--
+		<script data-slp-use="silex.ui.toolbox.MasterToolbox"></script>
+		<script data-slp-use="silex.ui.toolbox.InsertToolbox"></script>
+-->		
 		<script data-slp-use="silex.ui.toolbox.editor.PropertyEditor"></script>
 		<script data-slp-use="silex.ui.toolbox.editor.RawHtmlEditor"></script>
 		<script data-slp-use="silex.ui.toolbox.editor.TextStyleEditor"></script>
 		<script data-slp-use="silex.ui.toolbox.editor.BackgroundStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.BlockStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.BoxStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.PaddingStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.MarginStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.PositionStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.PlacementStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.ClipStyleEditor"></script>
 <!--
 -->
+
+		<!-- info -->
+		<title>Hello Silex!</title>
+		<meta name="description" content="Silex online editor" />
+		<meta name="keywords" content="HTML,CSS,website editor" />
+		<meta name="author" content="lexoyo" />
+		<meta name="revised" content="lexoyo, 29/08/2011" />
+
+		<!-- config -->
+		<meta name="initialPageName" content="start-page"></meta>
 		<meta name="useDeeplink" content="false" />
+		<link href="app.css" rel="stylesheet"></link>
+		<meta name="debugModeAction" content="
+		//Lib.alert('test!');
+		PublicationModel.getInstance().load('default');
+	"></meta>
 	</head>
-	<body>
+	<body class="">
+		<div class="group-main Panel" 
+			data-panel-header-class-name="panel-publication-header"
+			data-panel-body-class-name="panel-publication-body"
+		>
+
+			<A class="Page" name="start-page">Start Page</A>
+			<div class="panel-publication-header">
+				<!-- 	**************************	-->
+				<!-- 		Ribbon Toolbox 		-->
+				<div class="GroupRibbon MenuController" data-initial-page-name="file-menu">
+					<!-- Menu header -->
+					<div class="ribbon-tabs">
+						<a href="#file-menu" class="LinkToPage" data-group-id="GroupRibbon">File</a>
+						<a href="#edit-menu" class="LinkToPage disabled" data-group-id="GroupRibbon">Edit</a>
+						<a href="#page-list" class="LinkToPage" data-group-id="GroupRibbon">Pages</a>
+						<a href="#layer-list" class="LinkToPage" data-group-id="GroupRibbon">Masters</a>
+						<a href="#insert-list" class="LinkToPage" data-group-id="GroupRibbon">Insert</a>
+						<a href="#user-menu" class="LinkToPage disabled" data-group-id="GroupRibbon">User</a>
+						<a href="#tool-menu" class="LinkToPage disabled" data-group-id="GroupRibbon">Tool</a>
+						<a href="#help-menu" class="LinkToPage disabled" data-group-id="GroupRibbon">Help</a>
+					</div>
+					<!-- File -->
+					<a name="file-menu" class="Page" data-group-id="GroupRibbon">File</a>
+
+					<div class="PageToolbox Layer file-menu ribbon-list selectable">
+						<ul class="">
+							<li data-menu-item="open">
+								<div class="temp-icon"></div>
+								<p>open</p>
+							</li>
+							<li data-menu-item="save">
+								<div class="temp-icon"></div>
+								<p>save</p>
+							</li>
+							<li data-menu-item="save-as">
+								<div class="temp-icon"></div>
+								<p>save as</p>
+							</li>
+							<li data-menu-item="save-copy">
+								<div class="temp-icon"></div>
+								<p>save a copy</p>
+							</li>
+							<li data-menu-item="close">
+								<div class="temp-icon"></div>
+								<p>close</p>
+							</li>
+							<li data-menu-item="settings" class="disabled">
+								<div class="temp-icon"></div>
+								<p>settings</p>
+							</li>
+							<li data-menu-item="backup-all" class="disabled">
+								<div class="temp-icon"></div>
+								<p>backup all</p>
+							</li>
+							<li data-menu-item="export" class="disabled">
+								<div class="temp-icon"></div>
+								<p>export</p>
+							</li>
+							<li data-menu-item="publish" class="disabled">
+								<div class="temp-icon"></div>
+								<p>publish</p>
+							</li>
+						</ul>
+					</div>
+					<!-- Edit -->
+					<a name="edit-menu" class="Page" data-group-id="GroupRibbon" >Edit</a>
+					<div class="PageToolbox Layer edit-menu ribbon-list selectable">
+					</div>
+
+					<!-- Page -->
+					<a name="page-list" class="Page" data-group-id="GroupRibbon">Pages</a>
+
+					<div class="PageToolbox Layer page-list ribbon-list selectable">
+						<div class="assets-page">
+<!--
+							<img src="../admin/assets/sv2-ico-add.png"></img>
+							<img src="../admin/assets/sv2-ico-duplicate.png"></img>
+							<img src="../admin/assets/sv2-ico-snapshot.png"></img>
+							<img src="../admin/assets/sv2-ico-properties.png"></img>
+							<img src="../admin/assets/sv2-ico-rename.png"></img>
+							
+-->
+							<img title="Add a page" class="ribbon-button add-button" src="../admin/assets/sv2-ico-add.png"></img>
+							<img title="Delete selected page" class="ribbon-button del-button" src="../admin/assets/sv2-ico-delete.png"></img>
+						</div>
+						<ul class="PageList">
+							<li class="">
+								<div class="solid"></div>
+								<p>::name::</p>
+							</li>
+						</ul>
+					</div>
+
+					<!-- Masters -->
+					<a name="layer-list" class="Page" data-group-id="GroupRibbon">Masters</a>
+
+					<div class="MasterToolbox Layer layer-list ribbon-list">
+						<ul class="LayersList">
+							<li class="Draggable MasterDropHandler"
+								data-dropzones-class-name="silex-view"
+								>
+								<div class="solid"></div>
+								<p>::rootElement.title::</p>
+							</li>
+						</ul>
+<!--
+						<button class="add-button">Add</button>
+-->
+					</div>
+
+					<!-- Insert -->
+					<a name="insert-list" class="Page" data-group-id="GroupRibbon">Insert</a>
+
+					<div class="InsertToolbox Layer insert-list ribbon-list">
+						<ul>
+							<li class="image Draggable InsertDropHandler" 
+								data-dropzones-class-name="Layer"
+							>
+								<div class="solid"></div>
+								<p>Image</p>
+							</li>
+							<li class="text Draggable InsertDropHandler" 
+								data-dropzones-class-name="Layer"
+							>
+								<div class="solid"></div>
+								<p>Text</p>
+							</li>
+							<li class="audio Draggable InsertDropHandler" 
+								data-dropzones-class-name="Layer"
+							>
+								<div class="solid"></div>
+								<p>Audio</p>
+							</li>
+							<li class="video Draggable InsertDropHandler" 
+								data-dropzones-class-name="Layer"
+							>
+								<div class="solid"></div>
+								<p>Video</p>
+							</li>
+							<li class="layer Draggable InsertDropHandler" 
+								data-dropzones-class-name="silex-view"
+							>
+								<div class="solid"></div>
+								<p>Layer</p>
+							</li>
+						</ul>
+<!--
+						<button class="add-button">Add</button>
+-->
+					</div>
+					<!-- User -->
+					<a name="user-menu" class="Page" data-group-id="GroupRibbon" >User</a>
+					<div class="PageToolbox Layer user-menu ribbon-list selectable">
+					</div>
+					<!-- Tool -->
+					<a name="tool-menu" class="Page" data-group-id="GroupRibbon" >Tool</a>
+					<div class="PageToolbox Layer tool-menu ribbon-list selectable">
+					</div>
+					<!-- Help -->
+					<a name="help-menu" class="Page" data-group-id="GroupRibbon" >Help</a>
+					<div class="PageToolbox Layer help-menu ribbon-list selectable">
+					</div>
+				</div>
+				<!-- 		/Ribbon Toolbox 		-->
+				<!-- 	**************************	-->
+
+			</div>
+			<!-- ----------	 -->
+			<!-- 	Dialogs	 -->
+			<!-- ----------	 -->
+			<div class="dialogs">
+				<!-- Login Dialog -->
+				<A class="Page" name="login-dialog" data-group-id="group-main"></A>
+				<div class="container">
+					<form class="Layer login-dialog dialog-foreground AuthDialog" data-dialog-name="login-dialog">
+						<div class="header">
+							<img src="../admin/assets/logo.png"></img>
+						</div>
+						<fieldset> 
+							<div class="form">
+							
+								<p class="login">Login</p><p><input type="text" class="input-field-login" size="21" max-lenght="50" > </input></p>
+								<p class="password">Password</p><p><input type="text" class="input-field-pass"size="21" max-lenght="50"></input></p>
+							</div>
+							<div class="assets-dialog">
+								
+								<input type="submit" value="Login" class="validate-button"></input>
+								<button class="cancel-button">Cancel</button>
+								<p class="error-text"></p>
+
+							</div>
+							<div class="solid"></div>
+							<div class="solid-2"></div>
+						</fieldset>
+						<footer>
+							<p><a href="http://projects.Silexlabs.org/?/silex.v2/" target="blank"> Silex Official website</a> | <a href="http://www.silexlabs.org/silex/" target="blank"> Silex Labs</a> | <a class="disabled-link">Online help</a> | <a class="disabled-link">Forums</a></p>
+						</footer>
+					</form>
+
+				</div>
+				<!-- Open Dialog -->
+				<A class="Page" name="open-dialog" data-group-id="group-main"></A>
+				<form class="Layer open-dialog dialog-foreground OpenDialog" data-dialog-name="open-dialog">
+					<div class="container-2">
+						<div class="header-2">
+							<img src="../admin/assets/header-2.png"></img>
+						</div>
+						<ul class="PublicationList publications">
+							<li>::name:: <div class="column"><small>Last change by ::configData.lastChange.author:: on ::configData.lastChange.date::</small></div></li>
+						</ul>
+						<div class="foot">
+								<div class="solid-3"></div>
+								<div class="solid-4"></div>
+								<input type="submit" value="Ok" class="validate-button"></input>
+								<button class="cancel-button">Cancel</button>
+						
+						</div>
+						
+					</div>
+				</form>
+				<!-- dialog background -->
+				<div class="Layer dialog-background login-dialog open-dialog"></div>
+			</div>
+			<!-- ----------	 -->
+			<!-- /Dialogs -->
+			<!-- ----------	 -->
+
+
+
+			<!-- ----------	 -->
+			<!-- Builder 	 -->
+			<!-- ----------	 -->
+			<div class="builder-scene panel-publication-body Panel"
+				data-panel-body-class-name="panel-builder-body"
+				data-panel-footer-class-name="panel-builder-footer"
+				data-panel-is-horizontal="true"
+			>
+
+				<!-- 	**************************	-->
+				<!-- 		Property Toolbox 		-->
+				<div class="group-property-toolbox 
+					panel-builder-footer Panel 
+					PropertiesToolbox silex-toolbox" 
+					data-initial-page-name="all-tab" 
+					data-toolbox-name="PropertiesToolbox"
+					data-toolbox-dropzones-class-name="toolbox-drop-zone"
+					data-phantom-class-name="toolbox-phantom">
+
+					<!-- Property Toolbox tabs -->
+					<A class="Page" data-group-id="group-property-toolbox" name="all-tab">All</A>
+					<A class="Page" data-group-id="group-property-toolbox" name="properties-tab">Properties</A>
+					<A class="Page" data-group-id="group-property-toolbox" name="style-text-tab">Text</A>
+					<A class="Page" data-group-id="group-property-toolbox" name="style-background-tab">Background</A>
+					<A class="Page" data-group-id="group-property-toolbox" name="style-block-tab">Block</A>
+					<A class="Page" data-group-id="group-property-toolbox" name="style-box-tab">Box</A>
+					<A class="Page" data-group-id="group-property-toolbox" name="style-positioning-tab">Positioning</A>
+					<A class="Page" data-group-id="group-property-toolbox" name="style-border-tab">Border</A>
+
+					<div class="panel-header">
+						<div class="draggable-dragzone">
+							<div class="title">
+								<h2>Toolboxes</h2>
+							</div>
+						</div>
+						<!-- Navigation -->
+						<ul class="tabs">
+							<li><a href="#all-tab" class="LinkToPage" data-group-id="group-property-toolbox">All</a></li>
+							<li><a href="#properties-tab" class="LinkToPage" data-group-id="group-property-toolbox">Properties</a></li>
+							<li><a href="#style-text-tab" class="LinkToPage" data-group-id="group-property-toolbox">Text</a></li>
+							<li><a href="#style-background-tab" class="LinkToPage" data-group-id="group-property-toolbox">Background</a></li>
+							<li><a href="#style-block-tab" class="LinkToPage" data-group-id="group-property-toolbox">Block</a></li>
+							<li><a href="#style-box-tab" class="LinkToPage" data-group-id="group-property-toolbox">Box</a></li>
+							<li><a href="#style-positioning-tab" class="LinkToPage" data-group-id="group-property-toolbox">Positioning</a></li>
+							<li><a href="#style-border-tab" class="LinkToPage" data-group-id="group-property-toolbox">Border</a></li>
+						</ul>
+						<!-- /Navigation -->
+					</div>
+					<div class="panel-body">
+						<!-- Properties editor -->
+						<form class="Layer all-tab properties-tab">
+							<fieldset class="PropertyEditor">
+								<legend>Properties</legend><br />
+							
+									<legend>Name</legend>
+									<input type="text" class="name-property" value="21" max-lenght="20"></input>
+									<!-- DELETE BUTTON -->
+									<button class="property-editor-delete-selected">Delete</button>
+									<!-- /DELETE BUTTON -->
+								<fieldset class="context-video context-audio">
+									<legend>Sources (1 by line)</legend>
+									<textarea class="multiple-src-property"></textarea>
+									<button title="Option not yet implemented." >Browse media gallery</button>
+								</fieldset>
+								<fieldset class="context-img">
+									<legend>Source</legend>
+									<input type="src" class="src-property" name="URL" />
+									<button title="Option not yet implemented.">Browse media gallery</button>
+								</fieldset>
+								<fieldset 
+									class="context-video context-audio">
+									<legend>Autoplay</legend>
+									<input type="checkbox" class="auto-start-property" /> On/Off
+								</fieldset>
+								<fieldset 
+									class="context-video context-audio">
+									<legend>Controls</legend>
+									<input type="checkbox" class="controls-property" /> On/Off
+								</fieldset>
+								<fieldset 
+									class="context-video context-audio">
+									<legend>Loop or stop at the end</legend>
+									<input type="checkbox" class="loop-property" /> On/Off
+								</fieldset>
+								<fieldset 
+									class="context-layer">
+									<legend>Set as master</legend>
+									 <div class="check"><input type="checkbox" class="master-property" /> <p>On/Off</p></div>
+								</fieldset>
+							</fieldset><br />
+							<fieldset class="RawHtmlEditor">
+								<legend>HTML content</legend>
+								<textarea class="text-input"></textarea>
+							</fieldset>
+						</form>
+						<!-- /Properties editor -->
+						<!-- Style Text -->
+						<form class="Layer all-tab style-text-tab">
+							<fieldset class="TextStyleEditor">
+								<legend>Text</legend><br />
+
+								<label for="text_font">Font</label>
+								<input class="text_font" type="text" value="" /><br /><br />
+
+								<label for="text_decoration">Decoration</label>
+								<select class="text_decoration">
+									<option value=""></option>
+									<option value="underline">Underline</option>
+									<option value="overline">Overline</option>
+									<option value="line-through">Line through</option>
+									<option value="blink">Blink</option>
+								</select><br /><br />
+
+
+
+
+								<label for="text_weight">Weight</label>
+								<select class="text_weight"><option value=""></option><option value="normal">normal</option><option value="bold">bold</option><option value="bolder">bolder</option><option value="lighter">lighter</option><option value="100">100</option><option value="200">200</option><option value="300">300</option><option value="400">400</option><option value="500">500</option><option value="600">600</option><option value="700">700</option><option value="800">800</option><option value="900">900</option>
+								</select><br /><br />
+
+
+								<label for="text_style">Style</label>
+								<select class="text_style" ><option value=""></option><option value="normal">normal</option><option value="italic">italic</option><option value="oblique">oblique</option>
+								</select><br /><br />
+
+								<label for="text_variant">Variant</label>
+								<select class="text_variant"><option value=""></option><option value="normal">normal</option><option value="small-caps">small-caps</option>
+								</select><br /><br />
+
+								<label for="text_lineheight">Line Height</label>
+								
+								<label style="display: none; ">Line Height Measurement Unit</label>
+								<select class="text_lineheight_unit"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select><br /><br />
+								
+
+								<label for="text_color">Color</label>
+								<input class="text_color" type="color"/><br /><br />
+
+								<label for="text_case">Case</label>
+								<select class="text_case"><option value=""></option><option value="capitalize">capitalize</option><option value="uppercase">uppercase</option><option value="lowercase">lowercase</option>
+								</select>
+								<input type="number" class="text_lineheight" min="0" max="5000" /><br /><br />
+
+								<label for="text_size">Size</label>
+								<select class="text_size"><option value=""></option><option value="xx-small">xx-small</option><option value="x-small">x-small</option><option value="small">small</option><option value="medium">medium</option><option value="large">large</option><option value="x-large">x-large</option><option value="xx-large">xx-large</option><option value="smaller">smaller</option><option value="larger">larger</option><br />
+								</select>
+
+								
+								<label class="text_size_measurement_label" for="text_size_measurement" style="display: none; ">Text Size Measurement Unit</label>
+								<select class="text_size_unit"><option value=""></option><option value="px">pixels</option><option value="pt">points</option><option value="in">inches</option><option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select><input type="number" class="text_size_num" min="0" max="5000" /><br /><br />
+
+								
+							</fieldset>
+						</form>
+						<!-- /Style Text -->
+						<!-- Style Background -->
+						<form class="Layer all-tab style-background-tab">
+							<fieldset class="BackgroundStyleEditor">
+								<legend>Background</legend><br />
+								<label for="background_color">Background Color</label><br />
+								<input class="background_color" type="color"/><br /><br />
+							
+								<label>Sources (1 by line)</label><br />
+								<textarea class="multiple-src-property"></textarea><br />
+								<button title="Option not yet implemented." >Browse media gallery</button><br /><br />
+
+								<label for="background_repeat">Repeat</label>
+								<select class="background_repeat">
+									<option value="">
+									</option><option value="no-repeat">no-repeat</option>
+									<option value="repeat">repeat</option>
+									<option value="repeat-x">repeat-x</option>
+									<option value="repeat-y">repeat-y</option>
+								</select><br /><br />
+
+								<label for="background_attachment">Attachment</label>
+								<select class="background_attachment">
+									<option value=""></option>
+									<option value="fixed">fixed</option>
+									<option value="scroll">scroll</option>
+								</select><br /><br />
+							
+							
+								<label class="hop"for="background_hpos">Horizontal Position</label>
+								<select class="background_hpos">
+									<option value=""></option>
+									<option value="left">left</option>
+									<option value="center">center</option>
+									<option value="right">right</option>
+								</select><br />
+								<label for="background_hpos_measurement" style="display: none; ">Horizontal position measurement unit</label><br />
+								<select class="background_hpos_unit">
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="number" class="background_hpos_num" min="-5000" max="5000" />
+								<br /><br />
+											
+							
+								<label class="hop2"for="background_vpos">Vertical Position</label>
+								<select class="background_vpos">
+									<option value=""></option>
+									<option value="top">top</option>
+									<option value="center">center</option>
+									<option value="bottom">bottom</option>
+								</select><br />
+								<label for="background_vpos_measurement" style="display: none; ">Vertical position measurement unit</label><br />
+								<select class="background_vpos_unit" >
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="number" class="background_vpos_num" min="-5000" max="5000" />
+								
+							</fieldset>
+						</form>
+						<!-- /Style Background -->
+						<!-- Style Block -->
+						<form class="Layer all-tab style-block-tab">
+							<fieldset class="BlockStyleEditor">
+								<legend>Block</legend><br />
+								<label for="block_wordspacing">Word<br /> Spacing</label>
+								<select class="block_wordspacing">
+									<option value=""></option>
+									<option value="normal">normal</option>
+								</select>
+											
+								<input type="number" class="block_wordspacing_num" min="-5000" max="5000" />
+								<label class="block_wordspacing_measurement_label" for="block_wordspacing_measurement" style="display: none; ">Word spacing measurement unit</label>
+								<select class="block_wordspacing_unit" >
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select><br /><br />
+											
+							
+								<input type="number" class="block_letterspacing_num" min="-5000" max="5000" />
+								<label for="block_letterspacing">Letter<br /> Spacing</label>
+								<select class="block_letterspacing" >
+									<option value=""></option>
+									<option value="normal">normal</option>
+								</select>
+											
+								<label class="block_letterspacing_measurement_label" for="block_letterspacing_measurement" style="display: none; ">Letter spacing measurement unit</label>
+								<select class="block_letterspacing_unit">
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select><br /><br />
+											
+								<label for="block_text_indent">Text Indent</label>
+								<select class="block_text_indent_unit">
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="block_text_indent" />
+								<label class="block_text_indent_measurement_label" for="block_text_indent_measurement" style="display: none; ">Text Indent Measurement Unit</label>
+
+								<br /><br />
+								
+							
+								<label for="block_text_align">Text Align</label>
+								<select class="block_text_align">
+									<option value=""></option>
+									<option value="left">left</option>
+									<option value="right">right</option>
+									<option value="center">center</option>
+									<option value="justify">justify</option>
+								</select><br /><br />
+
+								<label for="block_vertical_alignment">Vertical Alignment</label>
+								<select class="block_vertical_alignment">
+									<option value=""></option>
+									<option value="baseline">baseline</option>
+									<option value="sub">sub</option>
+									<option value="super">super</option>
+									<option value="top">top</option>
+									<option value="text-top">text-top</option>
+									<option value="middle">middle</option>
+									<option value="bottom">bottom</option>
+									<option value="text-bottom">text-bottom</option>
+								</select><br /><br />
+
+								<label for="block_whitespace">Whitespace</label>
+								<select class="block_whitespace">
+									<option value=""></option>
+									<option value="normal">normal</option>
+									<option value="pre">pre</option>
+									<option value="nowrap">nowrap</option>
+									<option value="pre-wrap">pre-wrap</option>
+									<option value="pre-line">pre-line</option>
+								</select><br /><br />
+							
+								<label for="block_display">Display</label>
+								<select class="block_display" >
+									<option value=""></option>
+									<option value="inline">inline</option>
+									<option value="block">block</option>
+									<option value="inline-block">inline-block</option>
+									<option value="list-item">list-item</option>
+									<option value="run-in">run-in</option>
+									<option value="compact">compact</option>
+									<option value="marker">marker</option>
+									<option value="table">table</option>
+									<option value="inline-table">inline-table</option>
+									<option value="table-row-group">table-row-group</option>
+									<option value="table-header-group">table-header-group</option>
+									<option value="table-footer-group">table-footer-group</option>
+									<option value="table-row">table-row</option>
+									<option value="table-column-group">table-column-group</option>
+									<option value="table-column">table-column</option>
+									<option value="table-cell">table-cell</option>
+									<option value="table-caption">table-caption</option>
+									<option value="none">none</option>
+								</select>
+							</fieldset>
+						</form>
+						<!-- /Style Block -->
+						<!-- Style Box -->
+						<form class="Layer all-tab style-box-tab">
+							<fieldset class="BoxStyleEditor">
+								<legend>Box</legend><br />
+								<label for="box_width">Width</label>
+								
+											
+								<label class="box_width_measurement_label" for="box_width_measurement" style="display: none; ">Box Width Measurement Unit</label>
+								<select class="box_width_unit" >
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="box_width" /><br /><br />
+
+								<label for="box_height">Height</label>
+								
+											
+								<label class="box_height_measurement_label" for="box_height_measurement" style="display: none; ">Box Height Measurement Unit</label>
+								<select class="box_height_unit">
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="box_height" /><br /><br />
+											
+								<label for="box_float">Float</label>
+								<select class="box_float">
+									<option value=""></option>
+									<option value="left">left</option>
+									<option value="right">right</option>
+									<option value="none">none</option>
+								</select><br /><br />
+							
+								<label for="box_clear">Clear</label>
+								<select class="box_clear">
+									<option value=""></option>
+									<option value="left">left</option>
+									<option value="right">right</option>
+									<option value="both">both</option>
+									<option value="none">none</option>
+								</select>
+							</fieldset><br />
+							<!-- ///////////////////////////////////////////////////////////////////////////// -->
+							<fieldset class="PaddingStyleEditor">
+								<legend>Padding</legend><br />
+
+								<label for="box_padding_top">Top</label>
+								
+													
+								<label class="box_padding_top_measurement_label" for="box_padding_top_measurement" style="display: none; ">Padding Top Measurement Unit</label>
+								<select class="box_padding_top_unit" >
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="box_padding_top"/><br /><br />
+													
+								<label for="box_padding_right">Right</label>
+								
+													
+								<label class="box_padding_right_measurement_label" for="box_padding_right_measurement" style="display: none; ">Padding Right Measurement Unit</label>
+								<select class="box_padding_right_unit">
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="box_padding_right"  /><br /><br />
+													
+								<label for="box_padding_bottom">Bottom</label>
+								
+													
+								<label class="box_padding_bottom_measurement_label" for="box_padding_bottom_measurement" style="display: none; ">Padding Bottom Measurement Unit</label>
+								<select class="box_padding_bottom_unit">
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="box_padding_bottom"  /><br /><br />
+													
+								<label for="box_padding_left">Left</label>
+								
+													
+								<label class="box_padding_left_measurement_label" for="box_padding_left_measurement" style="display: none; ">Padding Left Measurement Unit</label>
+								<select class="box_padding_left_unit">
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="box_padding_left"  /><br /><br />
+													
+							</fieldset><br />
+							<!-- ///////////////////////////////////////////////////////////////////////////// -->
+							<fieldset class="MarginStyleEditor">
+								<legend>Margin</legend><br />
+
+								<label for="box_margin_top">Top</label>
+								
+													
+								<label class="box_margin_top_measurement_label" for="box_margin_top_measurement" style="display: none; ">Margin Top Measurement Unit</label>
+								<select class="box_margin_top_unit" >
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="box_margin_top" /><br /><br />
+													
+								<label for="box_margin_right">Right</label>
+								
+													
+								<label class="box_margin_right_measurement_label" for="box_margin_right_measurement" style="display: none; ">Margin Right Measurement Unit</label>
+								<select class="box_margin_right_unit">
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="box_margin_right"  /><br /><br />
+								
+								<label for="box_margin_bottom">Bottom</label>
+								
+
+								<label class="box_margin_bottom_measurement_label" for="box_margin_bottom_measurement" style="display: none; ">Margin Bottom Measurement Unit</label>
+								<select class="box_margin_bottom_unit">
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="box_margin_bottom"  /><br /><br />
+							
+								<label for="box_margin_left">Left</label>
+								
+													
+								<label class="box_margin_left_measurement_label" for="box_margin_left_measurement" style="display: none; ">Margin Left Measurement Unit</label>
+								<select class="box_margin_left_unit">
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="box_margin_left"  /><br /><br />
+
+							</fieldset>
+						</form>
+						<!-- /Style Box -->
+						<!-- Style Positioning -->
+						<form class="Layer all-tab style-positioning-tab">
+							<fieldset class="PositionStyleEditor">
+								<legend>Position</legend><br />
+								<label for="positioning_type">Type</label>
+								<select class="positioning_type" >
+									<option value=""></option>
+									<option value="absolute">absolute</option>
+									<option value="relative">relative</option>
+									<option value="static">static</option>
+								</select><br /><br />
+								
+								<label for="positioning_visibility">Visibility</label>
+								<select class="positioning_visibility" >
+									<option value=""></option>
+									<option value="visible">visible</option>
+									<option value="hidden">hidden</option>
+								</select><br /><br />
+								
+								<label for="positioning_width">Width</label>
+								<select class="positioning_width_unit" >
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select><br /><br />
+								<input type="text" class="positioning_width"  /><br /><br />
+												
+								<label for="positioning_zindex">Z-index</label>
+								<input type="number" class="positioning_zindex" min="-5000" max="5000" /><br /><br />
+
+								<label for="positioning_height">Height</label>
+								<select class="positioning_height_unit" >
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select><br /><br />
+								<input type="text" class="positioning_height"  /><br /><br />
+
+								<label for="positioning_overflow">Overflow</label>
+								<select class="positioning_overflow" >
+									<option value=""></option>
+									<option value="visible">visible</option>
+									<option value="hidden">hidden</option>
+									<option value="scroll">scroll</option>
+									<option value="auto">auto</option>
+								</select><br /><br />
+								
+							</fieldset><br />
+							<!-- ///////////////////////////////////////////////////////////////////////////// -->
+							<fieldset class="PlacementStyleEditor">
+								<legend>Placement</legend><br />
+								<label for="positioning_top">Top</label>
+								
+								<select class="positioning_placement_top_unit" >
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="positioning_placement_top" /><br /><br />
+													
+								<label for="positioningright">Right</label>
+								
+								<select class="positioning_placement_right_unit" >
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="positioning_placement_right"   /><br /><br />
+													
+								<label for="positioning_placement_bottom_unit">Bottom</label>
+								
+								<select class="positioning_placement_bottom_unit" >
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="positioning_placement_bottom"   /><br /><br />
+
+								<label for="positioning_placement_left_unit" >Left</label>
+								
+								<select class="positioning_placement_left_unit" >
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="positioning_placement_left"   /><br /><br />
+							</fieldset><br />
+							<!-- ///////////////////////////////////////////////////////////////////////////// -->
+							<fieldset class="ClipStyleEditor">
+								<legend>Clip</legend><br />
+
+								<label for="positioning_clip_top_unit" >Clip Top</label>
+								
+								<select class="positioning_clip_top_unit" >
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="positioning_clip_top" /><br /><br />
+														
+								<label for="positioning_clip_right_unit" >Clip Right</label>
+								
+								<select class="positioning_clip_right_unit"  >
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="positioning_clip_right"  /><br /><br />
+														
+								<label for="positioning_clip_bottom_unit" >Clip Bottom</label>
+								
+								<select class="positioning_clip_bottom_unit"  >
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option><option value="mm">millimetres</option><option value="pc">picas</option><option value="em">ems</option><option value="ex">exs</option><option value="%">%</option>
+								</select>
+								<input type="text" class="positioning_clip_bottom"  /><br /><br />
+														
+								<label for="positioning_clip_left_unit" >Clip Left</label>
+								
+								<select class="positioning_clip_left_unit"  >
+									<option value=""></option>
+									<option value="px">pixels</option>
+									<option value="pt">points</option>
+									<option value="in">inches</option>
+									<option value="cm">centimetres</option>
+									<option value="mm">millimetres</option>
+									<option value="pc">picas</option>
+									<option value="em">ems</option>
+									<option value="ex">exs</option>
+									<option value="%">%</option>
+								</select>
+								<input type="text" class="positioning_clip_left"  /><br /><br />
+							</fieldset>
+						</form>
+						<!-- /Style Positioning -->
+					</div>
+				</div>
+				<!-- 		/Property Toolbox 		-->
+				<!-- 	**************************	-->
+
+
+				<!-- 	**************************	-->
+				<!-- 		Selection and stage			-->
+				<div class="SelectionController panel-builder-body" >
+					<div class="PublicationViewer" >
+					</div>
+					<div class="selection-marker Draggable SelectionMarker"
+						data-dropzones-class-name="Layer"
+						data-phantom-class-name="selection-phantom"
+						data-group-id="SelectionController"
+					></div>
+					<div class="hover-marker"></div>
+					<div class="selection-layer-marker Draggable SelectionMarker"
+						data-dropzones-class-name="silex-view"
+						data-phantom-class-name="selection-phantom"
+						data-group-id="SelectionController"
+					></div>
+					<div class="hover-layer-marker"></div>
+				</div>
+				<!-- 		/Selection and stage 			-->
+				<!-- 	**************************	-->
+
+
+			</div>
+			<!-- ----------	 -->
+			<!-- /Builder 	 -->
+			<!-- ----------	 -->
+
+
+		</div>
 	</body>
 </html>

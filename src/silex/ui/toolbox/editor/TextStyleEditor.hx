@@ -15,7 +15,6 @@ import org.slplayer.util.DomTools;
  * Editors are SLPlayer components, in charge of handling HTML input elements, 
  * in order to let the user enter values and edit css style values or tag attributes.
  */
-@tagNameFilter("fieldset div")
 class TextStyleEditor extends EditorBase 
 {
 	/**

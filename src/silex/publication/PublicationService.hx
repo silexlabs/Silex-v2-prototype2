@@ -56,6 +56,12 @@ class PublicationService extends ServiceBase{
 		callServerMethod("getPublicationConfig", [publicationName, publicationFolder], onResult, onError);
 	}
 	/**
+	 * Set the publication config
+	 */
+	public function setPublicationConfig(publicationName:String, publicationConfigData:PublicationConfigData, onResult:Void->Void, onError:String->Void=null) {
+		callServerMethod("setPublicationConfig", [publicationName, publicationConfigData, publicationFolder], onResult, onError);
+	}
+	/**
 	 * Retrieve a publication data
 	 */
 	public function getPublicationData(publicationName:String, onResult:PublicationData->Void, onError:String->Void=null) {
@@ -287,7 +293,6 @@ class PublicationService extends ServiceBase{
 	}
 	/**
 	 * Retrieve a publication raw HTML/CSS string and the config
-	 * TODO: handle the case where the publication does not exist
 	 */
 	public function getPublicationData(publicationName:String, publicationFolder:String = PublicationConfig.DEFAULT_PUBLICATION_FOLDER):Null<PublicationData> {
 		try{
@@ -304,7 +309,6 @@ class PublicationService extends ServiceBase{
 	}
 	/**
 	 * Set a publication raw HTML and css
-	 * TODO: handle the case where the publication does not exist
 	 */
 	public function setPublicationData(publicationName:String, publicationData:PublicationData, publicationFolder:String = PublicationConfig.DEFAULT_PUBLICATION_FOLDER) {
 		try{
