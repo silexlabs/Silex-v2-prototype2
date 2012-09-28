@@ -4,7 +4,8 @@ import js.Lib;
 import js.Dom;
 
 import silex.ModelBase;
-import silex.property.PropertyModel;
+import silex.publication.PublicationModel;
+import org.slplayer.component.navigation.Layer;
 
 
 /**
@@ -52,6 +53,10 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	 */
 	public static inline var ON_HOVER_CHANGE = "onComponentHoverChange";
 	/**
+	 * event dispatched when the list of components changes
+	 */
+	public static inline var ON_LIST_CHANGE = "onComponentListChange";
+	/**
 	 * Models are singletons
 	 * Constructor is private
 	 */
@@ -71,4 +76,83 @@ class ComponentModel extends ModelBase<HtmlDom>{
 		*/
 		return super.setSelectedItem(item);
 	}
+	/**
+	 * add a component to a layer (view and model)
+	 * dispatch the change event
+	 * @return 	the created component, i.e. a dom element added to the view
+	 */
+	public function addComponent(nodeName:String, layer:Layer, position:Int = 0):HtmlDom{
+		trace("addComponent "+nodeName+", "+layer+", "+position);
+		// get the publication model
+		var publicationModel = PublicationModel.getInstance();
+		// get the view and model DOM
+		var viewHtmlDom = layer.rootElement;
+		var modelHtmlDom = publicationModel.getModelFromView(layer.rootElement);
+
+		// create a node for an empty new layer
+		var newNode = Lib.document.createElement(nodeName);
+
+		// add to the view DOM
+		if (position > viewHtmlDom.childNodes.length - 1){
+			// at the end
+			viewHtmlDom.appendChild(newNode);
+		}
+		else{
+			// at a given position
+			viewHtmlDom.insertBefore(newNode, viewHtmlDom.childNodes[position]);
+		}
+		
+		// add the layer id
+		publicationModel.prepareForEdit(newNode);
+
+		// clone the node for the model
+		var cloneNode = newNode.cloneNode(true);
+
+		// add to the model DOM
+		if (position > modelHtmlDom.childNodes.length - 1){
+			// at the end
+			modelHtmlDom.appendChild(cloneNode);
+		}
+		else{
+			// at a given position
+			modelHtmlDom.insertBefore(cloneNode, modelHtmlDom.childNodes[position]);
+		}
+/*
+		publicationModel.application.initDom(newNode);
+		publicationModel.application.initComponents();
+*/
+		// dispatch the change event
+		dispatchEvent(createEvent(ON_LIST_CHANGE, newNode), DEBUG_INFO);
+
+		// return the new dom element
+		return newNode;
+	}
+	/**
+	 * remove a page from the view and model of the publication
+	 * remove the page from all layers css class name
+	 * dispatch the change event
+	 */
+	public function removeComponent(element:HtmlDom){
+		// get the publication model
+		var publicationModel = PublicationModel.getInstance();
+
+		// get the view and model DOM
+		var viewHtmlDom = element;
+		var modelHtmlDom = publicationModel.getModelFromView(element);
+
+		// reset components associated wit hthis element
+		publicationModel.application.removeAllAssociatedComponent(viewHtmlDom);
+
+		// remove element from dom
+		viewHtmlDom.parentNode.removeChild(viewHtmlDom);
+		modelHtmlDom.parentNode.removeChild(modelHtmlDom);
+
+		// change selection 
+		if(selectedItem == viewHtmlDom)
+			selectedItem = null;
+
+		// dispatch the change event
+		dispatchEvent(createEvent(ON_LIST_CHANGE), DEBUG_INFO);
+	}
+
 }

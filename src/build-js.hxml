@@ -1,3 +1,6 @@
+#########
+# player
+#########
 -js ../bin/libs/silex/silex.js
 -cp ../../SLPlayer/src/
 -cp ../../Cocktail/src/
@@ -6,7 +9,7 @@
 -lib hscript
 
 -main silex.Silex
---macro org.slplayer.core.Builder.create('index-builder.html')
+--macro org.slplayer.core.Builder.create('index-player.html', 'useless.html')
 
 #-D slpdebug
 -D disableEmbedHtml
@@ -16,4 +19,26 @@
 -D silexClientSide
 -D silexDebug
 
+--next
+
+#########
+# builder
+#########
+-js ../bin/publications/admin/silex-builder.js
+-cp ../../SLPlayer/src/
+-cp ../../Cocktail/src/
+#--no-traces
+-debug
+-lib hscript
+
+-main silex.Silex
+--macro org.slplayer.core.Builder.create('index-builder.html', '../bin/publications/admin/index.html')
+
+#-D slpdebug
+-D disableEmbedHtml
+-D noAutoStart
+-D stopOnError
+
+-D silexClientSide
+-D silexDebug
 

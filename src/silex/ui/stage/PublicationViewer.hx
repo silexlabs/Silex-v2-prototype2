@@ -10,13 +10,12 @@ import silex.publication.PublicationData;
 import org.slplayer.component.navigation.Page;
 import org.slplayer.component.navigation.transition.TransitionData;
 
-import org.slplayer.util.DomTools;
-
 import org.slplayer.component.ui.DisplayObject;
 
 /**
  * This class is in charge of attaching the publication to the DOM.
  */
+@tagNameFilter("DIV")
 class PublicationViewer extends DisplayObject{
 	/**
 	 * Information for debugging, e.g. the class name
@@ -74,14 +73,10 @@ class PublicationViewer extends DisplayObject{
 	 * Open the selected page in the view
 	 */
 	public function onPageChange(event:CustomEvent){
-		if (pageModel.selectedItem==null){
-			// open the builder initial page
-//			var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME);
-//			if (initialPageName != null)
-//				Page.openPage(initialPageName, false, null, null, SLPlayerInstanceId);
-		}
-		else{
+		trace("onPageChange");
+		if (pageModel.selectedItem!=null){
 			Page.openPage(pageModel.selectedItem.name, false, null, null, publicationModel.application.id, publicationModel.viewHtmlDom);
 		}
+		trace("onPageChange");
 	}
 }

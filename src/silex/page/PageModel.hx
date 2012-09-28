@@ -54,6 +54,10 @@ class PageModel extends ModelBase<Page>{
 	 */
 	public static inline var ON_LIST_CHANGE = "onPageListChange";
 	/**
+	 * name of the layer automatically created with a new page
+	 */
+	public static inline var NEW_LAYER_NAME = "body";
+	/**
 	 * Models are singletons
 	 * Constructor is private
 	 */
@@ -96,27 +100,21 @@ class PageModel extends ModelBase<Page>{
 		modelHtmlDom.appendChild(newNode.cloneNode(true));
 		viewHtmlDom.appendChild(newNode);
 
-		PublicationModel.getInstance().prepareForEdit(newNode);
+		// add the needed data to edit the component
+		publicationModel.prepareForEdit(newNode);
 
 		// create the Page instance
+/**/
 		var newPage:Page = new Page(newNode, publicationModel.application.id);
 		//publicationModel.application.addAssociatedComponent(newNode, newPage);
 		newPage.init();
-
-		// create a node for an empty new layer
-		var newNode = Lib.document.createElement("div");
-		newNode.className = "Layer "+className;
-
-		// add to the view and model DOMs
-		modelHtmlDom.appendChild(newNode.cloneNode(true));
-		viewHtmlDom.appendChild(newNode);
-
-		PublicationModel.getInstance().prepareForEdit(newNode);
-
-		// create the Layer instance
-		var newLayer:Layer = new Layer(newNode, publicationModel.application.id);
-		//publicationModel.application.addAssociatedComponent(newNode, newLayer);
-		newLayer.init();
+/*
+		publicationModel.application.initDom(newNode);
+		publicationModel.application.initComponents();
+		var newPage:Page = publicationModel.application.getAssociatedComponents(newNode, Page).first();
+/**/
+		// create an empty new layer
+		LayerModel.getInstance().addLayer(newPage, NEW_LAYER_NAME);
 
 		// open the new page
 		Page.getPageByName(className, publicationModel.application.id, viewHtmlDom).open(null, null, true, true);
@@ -126,6 +124,7 @@ class PageModel extends ModelBase<Page>{
 	}
 	/** 
 	 * build a new unique name
+	 * todo: page1 page2 ...
 	 */
 	public function getNewName():String{
 		return "New Page Name "+Math.round(Math.random()*999999);
@@ -142,12 +141,20 @@ class PageModel extends ModelBase<Page>{
 		var viewHtmlDom = publicationModel.viewHtmlDom;
 		var modelHtmlDom = publicationModel.modelHtmlDom;
 
-		// close the page
-		//page.close(null, null, true);
-
 		// open the default page
 		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, publicationModel.headHtmlDom);
 		Page.getPageByName(initialPageName, publicationModel.application.id, viewHtmlDom).open(null, null, true, true);
+
+		// remove the page from all layers which has the class name as css rule
+		var nodes = Layer.getLayerNodes(page.name, publicationModel.application.id, viewHtmlDom);
+
+		// browse the layers
+		for (idxLayerNode in 0...nodes.length){
+			// always take the 1st element since the HtmlList is updated, and the nodes are removed automatically
+			var layerNode = nodes[0];
+			var layerInstance:Layer = publicationModel.application.getAssociatedComponents(layerNode, Layer).first();
+			LayerModel.getInstance().removeLayer(layerInstance, page);
+		}
 
 		// retrieve the node in the model, which is associated to the page instance
 		// get all pages, i.e. all element with class name "page"
@@ -162,25 +169,18 @@ class PageModel extends ModelBase<Page>{
 			}
 		}
 
+		// reset components associated wit hthis element
+		publicationModel.application.removeAllAssociatedComponent(page.rootElement);
+		// remove element from dom
 		page.rootElement.parentNode.removeChild(page.rootElement);
-		//page.rootElement = null;
+		// todo: maybe free the domelement, not possible to write page.rootElement = null;
+		// todo: unregister class from SLPLayer
 
-		// remove the page from all layers css class name
-		removeClassFromLayers(page.name, publicationModel.application.id, modelHtmlDom);
-		removeClassFromLayers(page.name, publicationModel.application.id, viewHtmlDom);
+		// change selection 
+		if(selectedItem == page)
+			selectedItem = null;
 
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE), DEBUG_INFO);
-	}
-	public function removeClassFromLayers(className:String, slPlayerId:String, htmlDom:HtmlDom) {
-		trace("removeClassFromLayers("+className+", "+slPlayerId+", "+htmlDom+")");
-		var nodes = Layer.getLayerNodes(className, slPlayerId, htmlDom);
-		// browse the layers
-		for (idxLayerNode in 0...nodes.length){
-			trace("found "+nodes[0].className);
-
-			// always take the 1st element since the HtmlList is updated, and the nodes are removed automatically
-			DomTools.removeClass(nodes[0], className);
-		}
 	}
 }

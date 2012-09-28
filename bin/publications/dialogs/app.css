@@ -30,9 +30,9 @@ p{
 .list li{
 
 }
-/* **************** */
-/* 	Dialogs 		*/
-/* **************** */
+/* 		Publication styles 			 */
+/* 		You can edit these styles 	 */
+
 a.LinkToPage{
 	color:Gray;	
 }
@@ -45,14 +45,17 @@ a.LinkToPage:active{
 
 }
 
-.header{
+/* **************** */
+/* 	Dialogs 		*/
+/* **************** */
+.dialogs .header{
 margin-left:auto;
 margin-right:auto;
 max-width:300px;
 
 }
 
-.container{
+.dialogs .container{
 
 	max-width:360px;
 	max-height:100%;
@@ -61,7 +64,7 @@ max-width:300px;
 	position:relative;
 }
 
-.form{
+.dialogs .form{
 	max-width:100%;
 	background:Lightgray;
 	padding-top:17px;
@@ -174,19 +177,19 @@ outline-color:DimGray;
     color:red;
 
 }
-.solid{
+.dialogs .solid{
 	height:1px;
 	width:100%;
 	background:LightGray;
 	margin-top:14px;
 }
-.solid-2{
+.dialogs .solid-2{
 	margin-top:63px;
 	height:1px;
 	width:100%;
 	background:LightGray;
 }
-p.error-text{
+.dialogs .error-text{
 
 
 	color:#FFFF00;
@@ -199,7 +202,7 @@ p.error-text{
 
 }
 
-footer{
+.dialogs footer{
 	color:LightGray;
 	padding-left:4px;
 	display:block;
@@ -208,26 +211,26 @@ footer{
 
 }
 
-footer p a{
+.dialogs footer p a{
 	font-size:14px;
 	text-decoration:none;
 	color:LightGray;
 }
 
-footer p a:hover{
+.dialogs footer p a:hover{
 opacity:0.7;
 
 }
-footer p a:active{
+.dialogs footer p a:active{
 opacity:1;
 
 }
 
-.disabled-link{
+.dialogs .disabled-link{
 	color:LightGray;
 	opacity:0.7;
 }
-.dialog-background{
+.dialogs .dialog-background{
 top:0;
 width:100%;
 height:100%;
@@ -241,7 +244,7 @@ opacity:0.5;
 }
 
 
-.container-2{
+.dialogs .container-2{
 
 	max-width:633px;
 	max-height:100%;
@@ -253,23 +256,26 @@ opacity:0.5;
 	border-radius:3px;
 }
 
-.header-2{
+.dialogs .header-2{
 
 width:100%;
 
 }
-.header-2 img{
+.dialogs .header-2 img{
 	margin-left:67px;
 
 }
-.back-header{
+.dialogs .back-header{
 	
 	width:100%;
 	border-top:1px black solid;
 	height:17px;
 
 }
-legend{
+
+/*   PUBLICATION LIST  */
+
+.dialogs legend{
 
 	float:left;
 	display:block;
@@ -278,7 +284,7 @@ legend{
 	
 }
 
-label{
+.dialogs label{
 	
 	float:right;
 	display:block;
@@ -286,8 +292,10 @@ label{
 	padding-top:5px;
 	
 }
-
-.publications{
+.dialogs .publications .listSelectedItem{
+	color: green;
+}
+.dialogs .publications{
 	max-width:100%;
 	background:Gainsboro;
 	border-radius:3px;
@@ -295,10 +303,10 @@ label{
 	z-index:3;
 	padding:0;
 	margin:0;
-	
+	cursor: hand;	
 }
 
-.cont-1{
+.dialogs .cont-1{
 	width:100%;
 	background:Gainsboro;
 	height:100%;
@@ -318,7 +326,7 @@ label{
 	background:Gainsboro;
 
 }
-.foot .validate-button{
+.dialogs .foot .validate-button{
 	cursor:pointer;
  	float:right;
     position:relative;
@@ -327,38 +335,38 @@ label{
     margin-right:9px;
 }
 
-.foot .validate-button:hover{
+.dialogs .foot .validate-button:hover{
 	cursor:pointer;
     color:green;
 }
 
-.foot .validate-button:active{
+.dialogs .foot .validate-button:active{
 	cursor:pointer;
     color:green;
 }
 
 
-.foot .cancel-button{
+.dialogs .foot .cancel-button{
 	cursor:pointer;
     float:right;
     position:relative;
     margin-top:10px;
 }
 
-.foot .cancel-button:hover{
+.dialogs .foot .cancel-button:hover{
 	cursor:pointer;
 	color:red;
 
 }
 
-.foot .cancel-button:active{
+.dialogs .foot .cancel-button:active{
 	cursor:pointer;
 	color:red;
     
 }
 
 
-.solid-3{
+.dialogs .solid-3{
 	height:1px;
 	width:97%;
 	background:White;
@@ -366,7 +374,7 @@ label{
 	margin-right:auto;
 	
 }
-.solid-4{
+.dialogs .solid-4{
 	height:1px;
 	width:97%;
 	background:DimGray;
@@ -375,28 +383,29 @@ label{
 
 }
 
-ul.PublicationList{
+.dialogs .PublicationList{
 	font-size:12px;
 	padding-right:7px;
 	padding-top:8px;
 	list-style-type: none;
 	margin-left:-17px;
-
+	overflow: auto;
+	height: 100%;
 
 }
-ul.PublicationList a{
+.dialogs .PublicationList a{
 	text-decoration: none;
 	color:#3C3C3C;
 
 
 }
-ul.PublicationList a:hover{
+.dialogs .PublicationList a:hover{
 	color:black;
 
 }
 
 
-.column{
+.dialogs .column{
 	float:right;
 	padding-right:3px;
 	font-size:12px;

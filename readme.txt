@@ -35,34 +35,75 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 ** To do **
 
 
-tiny-mce.html
+StageDropHandler => DropHandlerBase
+SelectionMarker => SelectionDropHandler
 
-fin toolbox props
-+anims de transition show/hide
-+styles de textes contextuels (boutons, textes, ??)
-ordre dans le flow?
-save
-selection move
-toolbox page
-toolbox media
-selection resize / rotate
-editeur texte
 
-en cours
-- PropertiesToolbox, 
-- PropertyEditor, StyleEditor, RawHtmlEditor ?
-  Properties
-    ajout preload etc pour les medias : http://www.w3schools.com/html5/tag_audio.asp
-  Text
-    ajouter des sliders http://www.w3schools.com/html5/tryit.asp?filename=tryhtml5_input_type_range
-  Background
-  Block
-  Box
-  Border
-  List
-  Positioning
-- UrlInput, BackgroundInput, ...
+addAssociatedComponent etc dans les models
+dans index.html Group class au lieu des classes "résolues"
 
+remettre en place des tests unitaires
+- chaque liste
+
+
+draggable list de page => réordonner dans le dom et view
+
+
+Silex menu missing items
+- rename publication, 
+- create publication, create from template
+- rename page
+- transition in, out and show, hide
+- edit text
+- edit CSS
+- edit hscript
+- manage publications
+- library (import media)
+
+missing functionality
+- deselect all
+- select empty layer or layr with onliy 1 child
+- filter publication names (",", " ", "%" ...)
+- notifications (save, loading...)
+- liste de pages réordonnable
+
+cleanup code
+- Draggable::getBestDropZone
+- SelectionMarker::onDrag
+- DomTools::getElementBoundingBox
+
+fonctionnalité
+- selection move
+- drag/drop page, layer, comp
+- remove page, layer, comp, 
+- publication: open, close, save, save as, save a copy, delete
+- admin dans ./admin/index.html, export de la publication dans ./ 
+  =>  ./admin/index.html est compilée a partir de src/index-builder.html
+- ------
+- selection resize
+- selection rotate
+- toolbox media
+- editeur texte
+- boites a outil
+  . ajout preload etc pour les medias : http://www.w3schools.com/html5/tag_audio.asp
+  . ajouter des sliders http://www.w3schools.com/html5/tryit.asp?filename=tryhtml5_input_type_range
+  . UrlInput, BackgroundInput, ...
+  . Border
+- publier une publication
+
+design
+- dans text, "Line Height" a son text input dans "Case"
+- style menu / ribbon
+- style des boites a outils
+- anims de transition show/hide sur selection, position des layers, des composants...
+
+
+
+== tool tips for beginners ==
+
+Put them in the app by default
+
+* to create a new master, insert a container in a page, select it on the stage and check the property "Set as master"
 
 == edition of properties ==
 
@@ -140,7 +181,6 @@ mise a jour version Cocktail => typedef audio et video => changer dans SLPLayer 
 contexts: generalize the toolbox contexts
 
 selection
-- detecter en fonction d'un "hittest"?
 - ecoute window.resize, et dispatcher window.resize dans Page::open
 
 le builder qui ouvre une publication devrait se servir des fonctions de Silex.hx?
@@ -160,6 +200,9 @@ permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html 
   * chrome and color picker : read ok, load bug
 
 improvements
+* ajout d'un éditeur de css et de hscript
+  - utilise http://ace.ajax.org/ ou http://neutronide.com/
+  - écrire à ace@c9.io pour apparaitre ici "projects using ace" http://ace.ajax.org/#nav=about
 * add the manager, not found etc. to distrib ?
 * transitions with params on the Layer as well as on the link
 * "loading" transitions for the layers with connectors

@@ -17,7 +17,6 @@ import silex.publication.PublicationModel;
  * The name of the style or attribute is specifiyed as data-attribute-name or data-style-name
  * And the values are given as key/value pairs
  */
-@tagNameFilter("fieldset div")
 class EditorBase extends DisplayObject 
 {
 	/**
@@ -36,14 +35,12 @@ class EditorBase extends DisplayObject
 	 * Constructor
 	 * Start listening the input events
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String)
-	{
+	public function new(rootElement:HtmlDom, SLPId:String){
 		super(rootElement, SLPId);
 		// listen to the change event of HTML inputs
-		if (onInput != null){
-			rootElement.addEventListener("input", onInput, true);
-			rootElement.addEventListener("change", onInput, true);
-		}
+		rootElement.addEventListener("input", onInput, true);
+		rootElement.addEventListener("change", onInput, true);
+
 		// listen to the property change event
 		PropertyModel.getInstance().addEventListener(PropertyModel.ON_PROPERTY_CHANGE, onPropertyChange, DEBUG_INFO);
 		// listen to the component change event
@@ -212,7 +209,7 @@ class EditorBase extends DisplayObject
 		if (url == "")
 			return "";
 
-		var pubUrl = "publications/" + PublicationModel.currentName + "/";
+		var pubUrl = "publications/" + PublicationModel.getInstance().currentName + "/";
 		var idxPubFolder = url.indexOf(pubUrl);
 		if (idxPubFolder >= 0){
 			// remove file name if there is one

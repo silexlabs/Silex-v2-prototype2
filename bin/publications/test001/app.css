@@ -1,0 +1,32 @@
+/* 		Silex base styles 			 */
+/* 		Do not edit these styles 	 */
+body
+{
+	margin:0px;
+	padding:0px;
+	font-family:Arial, Helvetica, sans-serif;
+}
+.Layer{
+
+}
+.Page{
+	display: none;
+}
+button a{
+	color: black;
+	text-decoration: none;
+}
+img{
+	
+}
+p{
+
+}
+.list ul{
+
+}
+.list li{
+
+}
+
+/* Publication styles */

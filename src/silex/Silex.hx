@@ -58,7 +58,7 @@ class Silex {
 	/**
 	 * constant, path and file names
 	 */
-	public static inline var LOADER_SCRIPT_PATH:String = "../../loader.js";
+	public static inline var LOADER_SCRIPT_PATH:String = "../../libs/silex/loader.js";
 	/**
 	 * Publication name
 	 * It is provided in the URL as http://my.domain.com/?publication_name
@@ -172,6 +172,11 @@ class Silex {
 		if( HttpConnection.handleRequest(ServiceBase.context) )
 		  return;
 
+		//php.Lib.print("this is a haxe remoting gateway");
+
+		// redirect to the builder
+		Web.setHeader("Location", PublicationService.PUBLICATION_FOLDER + PublicationService.BUILDER_PUBLICATION_NAME);
+/*
 		// Retrieve the publication name from the URL
 		var urlParamsString:String = Web.getParamsString();
 		var params:Array<String> = (urlParamsString.split("&")[0]).split("/");
@@ -242,6 +247,7 @@ class Silex {
 
 		// Output the code to load Silex client in Javascript or in Flash version 
 		php.Lib.print(Lib.document.innerHTML);
+*/
 	}
 #end
 }

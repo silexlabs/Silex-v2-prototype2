@@ -3,6 +3,7 @@ package silex.ui.stage;
 import js.Lib;
 import js.Dom;
 
+import org.slplayer.component.navigation.Page;
 import org.slplayer.component.ui.DisplayObject;
 import org.slplayer.util.DomTools;
 
@@ -11,7 +12,7 @@ import silex.publication.PublicationModel;
 /**
  * This component listen to the menu events and start the desired actions. 
  */
-@tagNameFilter("a")
+@tagNameFilter("DIV")
 class MenuController extends DisplayObject
 {
 	/**
@@ -27,21 +28,35 @@ class MenuController extends DisplayObject
 	 * Handle menu events
 	 */
 	public function onClick(e:Event) {
-		// retrieve the node who triggered the event
-		var target:Anchor = cast(e.target);
+		// prevent default links behavior
+		// e.preventDefault();
 
-		// it is supposed to be a A tag with href attribute
-		if (target.href==""){
-			throw("The menu items are expectted to be A tags with href set to the page name. ("+target.nodeName+", "+ target.href+")");
-		}
-		// retrieve the page name from the href attribute, without the "#"
-		var menuPageName = target.href.substr(target.href.indexOf("#")+1);
-		trace("Menu event "+menuPageName);
+		// retrieve the node who triggered the event
+		var target:HtmlDom = e.target;
+
+		// retrieve the item name from the href attribute, without the "#"
+		var itemName = target.getAttribute("data-menu-item");
+		if (itemName == null)
+			itemName = target.parentNode.getAttribute("data-menu-item");
+
+		trace("Menu event "+itemName+" - "+target.className);
 
 		// take an action depending on the menu name
-		switch (menuPageName) {
-			case "close-publication":
+		switch (itemName) {
+			case "open":
+				Page.openPage("open-dialog", true, null, null, SLPlayerInstanceId);
+			case "close":
 				PublicationModel.getInstance().unload();
+			case "save":
+				PublicationModel.getInstance().save();
+			case "save-as":
+				var newName = Lib.window.prompt("New name for your publication?", PublicationModel.getInstance().currentName);
+				if (newName != null)
+					PublicationModel.getInstance().saveAs(newName);
+			case "save-copy":
+				var newName = Lib.window.prompt("What name for your copy?", PublicationModel.getInstance().currentName);
+				if (newName != null)
+					PublicationModel.getInstance().saveACopy(newName);
 		}
 
 	}
