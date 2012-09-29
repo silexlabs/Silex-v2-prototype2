@@ -81,8 +81,7 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	 * dispatch the change event
 	 * @return 	the created component, i.e. a dom element added to the view
 	 */
-	public function addComponent(nodeName:String, layer:Layer, position:Int = 0):HtmlDom{
-		trace("addComponent "+nodeName+", "+layer+", "+position);
+	public function addComponent(nodeName:String, layer:Layer):HtmlDom{
 		// get the publication model
 		var publicationModel = PublicationModel.getInstance();
 		// get the view and model DOM
@@ -93,30 +92,13 @@ class ComponentModel extends ModelBase<HtmlDom>{
 		var newNode = Lib.document.createElement(nodeName);
 
 		// add to the view DOM
-		if (position > viewHtmlDom.childNodes.length - 1){
-			// at the end
-			viewHtmlDom.appendChild(newNode);
-		}
-		else{
-			// at a given position
-			viewHtmlDom.insertBefore(newNode, viewHtmlDom.childNodes[position]);
-		}
+		viewHtmlDom.appendChild(newNode);
 		
 		// add the layer id
 		publicationModel.prepareForEdit(newNode);
 
-		// clone the node for the model
-		var cloneNode = newNode.cloneNode(true);
-
 		// add to the model DOM
-		if (position > modelHtmlDom.childNodes.length - 1){
-			// at the end
-			modelHtmlDom.appendChild(cloneNode);
-		}
-		else{
-			// at a given position
-			modelHtmlDom.insertBefore(cloneNode, modelHtmlDom.childNodes[position]);
-		}
+		modelHtmlDom.appendChild(newNode.cloneNode(true));
 /*
 		publicationModel.application.initDom(newNode);
 		publicationModel.application.initComponents();
