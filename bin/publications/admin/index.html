@@ -26,9 +26,10 @@
 		
 		
 		
+		
+		
+		
 
-		
-		
 		
 		
 		
@@ -57,7 +58,7 @@
 		<LINK href="app.css" rel="stylesheet"></LINK>
 		<META name="debugModeAction" content="
 		//Lib.alert('test!');
-		// PublicationModel.getInstance().load('default');
+		PublicationModel.getInstance().load('default');
 	"></META>
 	<SCRIPT src="silex-builder.js"></SCRIPT></HEAD>
 	
@@ -138,12 +139,11 @@
 							<IMG class="ribbon-button del-button" src="../admin/assets/sv2-ico-delete.png" title="Delete selected page"/>
 						</DIV>
 						<UL class="PageList">
-							<LI class="Draggable">
+							<LI class="">
 								<DIV class="solid"></DIV>
 								<P>::name::</P>
 							</LI>
 						</UL>
-
 					</DIV>
 
 					
@@ -151,7 +151,7 @@
 
 					<DIV class="MasterToolbox Layer layer-list ribbon-list">
 						<UL class="LayersList">
-							<LI class="Draggable">
+							<LI data-dropzones-class-name="silex-view" class="Draggable MasterDropHandler">
 								<DIV class="solid"></DIV>
 								<P>::rootElement.title::</P>
 							</LI>
@@ -163,14 +163,26 @@
 					<A class="Page" name="insert-list" data-group-id="GroupRibbon">Insert</A>
 
 					<DIV class="InsertToolbox Layer insert-list ribbon-list">
-						<UL class="XmlList" data-items="&lt;item&gt;&lt;title&gt;Image&lt;/title&gt;&lt;type&gt;image&lt;/type&gt;&lt;/item&gt;
-						&lt;item&gt;&lt;title&gt;Text&lt;/title&gt;&lt;type&gt;text&lt;/type&gt;&lt;/item&gt;
-						&lt;item&gt;&lt;title&gt;Audio&lt;/title&gt;&lt;type&gt;audio&lt;/type&gt;&lt;/item&gt;
-						&lt;item&gt;&lt;title&gt;Video&lt;/title&gt;&lt;type&gt;video&lt;/type&gt;&lt;/item&gt;
-						&lt;item&gt;&lt;title&gt;Layer&lt;/title&gt;&lt;type&gt;layer&lt;/type&gt;&lt;/item&gt;">
-							<LI class="::type:: Draggable">
+						<UL>
+							<LI data-dropzones-class-name="Layer" class="image Draggable InsertDropHandler">
 								<DIV class="solid"></DIV>
-								<P>::title::</P>
+								<P>Image</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="text Draggable InsertDropHandler">
+								<DIV class="solid"></DIV>
+								<P>Text</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="audio Draggable InsertDropHandler">
+								<DIV class="solid"></DIV>
+								<P>Audio</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="video Draggable InsertDropHandler">
+								<DIV class="solid"></DIV>
+								<P>Video</P>
+							</LI>
+							<LI data-dropzones-class-name="silex-view" class="layer Draggable InsertDropHandler">
+								<DIV class="solid"></DIV>
+								<P>Layer</P>
 							</LI>
 						</UL>
 

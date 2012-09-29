@@ -105,7 +105,8 @@ class LayerModel extends ModelBase<Layer>{
 	 * add a layer to the page (view and model)
 	 * dispatch the change event
 	 */
-	public function addLayer(page:Page, layerName:String){
+	public function addLayer(page:Page, layerName:String, position:Int = 0){
+		trace("addLayer "+page+", "+layerName+", "+position);
 		// get the publication model
 		var publicationModel = PublicationModel.getInstance();
 		// get the view and model DOM
@@ -118,13 +119,27 @@ class LayerModel extends ModelBase<Layer>{
 		newNode.title = layerName;
 
 		// add to the view DOM
-		viewHtmlDom.appendChild(newNode);
+		if (position > viewHtmlDom.childNodes.length - 1){
+			// at the end
+			viewHtmlDom.appendChild(newNode);
+		}
+		else{
+			// at a given position
+			viewHtmlDom.insertBefore(newNode, viewHtmlDom.childNodes[position]);
+		}
 
 		// add the layer id
 		publicationModel.prepareForEdit(newNode);
 
 		// add to the model DOM
-		modelHtmlDom.appendChild(newNode.cloneNode(true));
+		if (position > modelHtmlDom.childNodes.length - 1){
+			// at the end
+			modelHtmlDom.appendChild(newNode.cloneNode(true));
+		}
+		else{
+			// at a given position
+			modelHtmlDom.insertBefore(newNode.cloneNode(true), modelHtmlDom.childNodes[position]);
+		}
 
 
 		// create the Layer instance

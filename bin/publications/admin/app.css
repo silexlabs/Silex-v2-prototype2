@@ -467,7 +467,7 @@ width:100%;
 	border: 6px solid green;
 }
 
-.draggable-phantom{
+.PublicationViewer .draggable-phantom{
     opacity: .5 !important;
 	background-color: red !important;
 	border: 6px solid green !important;
@@ -552,7 +552,6 @@ width:100%;
 .ribbon-list li:hover{
 }
 .ribbon-list .solid{
-	cursor:move;
 }
 .ribbon-list .solid{
 	height:35px;
