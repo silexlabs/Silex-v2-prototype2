@@ -7540,7 +7540,7 @@ silex.publication.PublicationModel.__super__ = silex.ModelBase;
 silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onPublicationSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 605, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 609, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
 	}
 	,onSaveError: function(msg) {
 		this.dispatchEvent(this.createEvent("onPublicationSaveError"),this.debugInfo);
@@ -7550,6 +7550,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		if(modelDom.nodeType != 1) return;
 		modelDom.removeAttribute("data-silex-component-id");
 		modelDom.removeAttribute("data-silex-layer-id");
+		if(modelDom.getAttribute("data-group-id") == "PublicationGroup") modelDom.removeAttribute("data-group-id");
 		var _g1 = 0, _g = modelDom.childNodes.length;
 		while(_g1 < _g) {
 			var idx = _g1++;

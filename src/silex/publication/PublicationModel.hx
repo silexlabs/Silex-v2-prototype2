@@ -583,6 +583,10 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		// Layers
 		modelDom.removeAttribute(LayerModel.LAYER_ID_ATTRIBUTE_NAME);
 
+		// Publication group
+		if (modelDom.getAttribute("data-group-id") == "PublicationGroup")
+			modelDom.removeAttribute("data-group-id");
+
 		// browse the children
 		for(idx in 0...modelDom.childNodes.length){
 			var modelChild = modelDom.childNodes[idx];
