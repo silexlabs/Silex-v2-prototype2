@@ -1,0 +1,649 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ht",
+				"HtmlDom	js.Dom"
+			],
+			[
+				"Html",
+				"HtmlCollection	js.Dom"
+			],
+			[
+				"init",
+				"initMediaElements"
+			],
+			[
+				"audio",
+				"audioNodes"
+			],
+			[
+				"au",
+				"audioNodes"
+			],
+			[
+				"ro",
+				"rootElement	var"
+			],
+			[
+				"pos",
+				"position"
+			],
+			[
+				"page",
+				"pageY"
+			],
+			[
+				"pa",
+				"parseInt"
+			],
+			[
+				"sele",
+				"selectedItem"
+			],
+			[
+				"get",
+				"getInstance"
+			],
+			[
+				"Layer",
+				"LayerModel"
+			],
+			[
+				"new",
+				"newNode"
+			],
+			[
+				"node",
+				"nodeName	var"
+			],
+			[
+				"P",
+				"PublicationModel	class"
+			],
+			[
+				"co",
+				"component	package"
+			],
+			[
+				"mode",
+				"modelHtmlDom"
+			],
+			[
+				"head",
+				"headCloseIdx"
+			],
+			[
+				"he",
+				"headOpenIdx"
+			],
+			[
+				"curre",
+				"currentData"
+			],
+			[
+				"vie",
+				"viewHtmlDom	var"
+			],
+			[
+				"lin",
+				"linkName"
+			],
+			[
+				"Publication",
+				"PublicationViewer"
+			],
+			[
+				"CO",
+				"ComponentModel	class"
+			],
+			[
+				"ba",
+				"background-color"
+			],
+			[
+				"Pub",
+				"Publication"
+			],
+			[
+				"Dom",
+				"DomTools"
+			],
+			[
+				"tran",
+				"transitionData	var"
+			],
+			[
+				"tra",
+				"transitionData	var"
+			],
+			[
+				"inner",
+				"innerHTML	String"
+			],
+			[
+				"Publi",
+				"PublicationConfigData"
+			],
+			[
+				"de",
+				"debugModeAction"
+			],
+			[
+				"con",
+				"config"
+			],
+			[
+				"String",
+				"StringTools"
+			],
+			[
+				"param",
+				"paramName"
+			],
+			[
+				"p",
+				"PublicationName"
+			],
+			[
+				"pu",
+				"publicationBody"
+			],
+			[
+				"html",
+				"htmlEscape"
+			],
+			[
+				"publica",
+				"publicationName"
+			],
+			[
+				"a",
+				"appendChild( child : js.HtmlDom )	Void"
+			],
+			[
+				"selected",
+				"selectedIndex"
+			],
+			[
+				"pages",
+				"pagesIds"
+			],
+			[
+				"d",
+				"display"
+			],
+			[
+				"Arr",
+				"Array"
+			],
+			[
+				"Array",
+				"ArrayStore"
+			],
+			[
+				"bo",
+				"border	border-bottom-style: style"
+			],
+			[
+				"bac",
+				"background	background-color: rgb"
+			],
+			[
+				"on",
+				"onclick"
+			],
+			[
+				"cre",
+				"createElement"
+			],
+			[
+				"displ",
+				"displayName"
+			],
+			[
+				"add",
+				"addBtn"
+			],
+			[
+				"L",
+				"Layer"
+			],
+			[
+				"s",
+				"style"
+			],
+			[
+				"Proper",
+				"properties"
+			],
+			[
+				"proper",
+				"property"
+			],
+			[
+				"pro",
+				"propArray"
+			],
+			[
+				"getC",
+				"getComponents"
+			],
+			[
+				"class",
+				"className"
+			],
+			[
+				"elem",
+				"elementIdx"
+			],
+			[
+				"Ht",
+				"HtmlDom"
+			],
+			[
+				"Str",
+				"String"
+			],
+			[
+				"ele",
+				"elementIdx"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "Packages/HaXe/Hxml.sublime-build",
+	"command_palette":
+	{
+		"height": 348.0,
+		"selected_items":
+		[
+			[
+				"Pack",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 139.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/build/build-js.hxml",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/build/build-flash.hxml",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/changelog.txt",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/readme.txt",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/build/build.hxml",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/build/build-php.hxml",
+		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/Layer.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/data/IDataConsumer.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/readme.txt",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/build/silex/view/drag-drop/MasterDropHandler.hx",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/build/silex/publication/PublicationModel.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/view/PublicationViewer.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/controller/InsertDropHandler.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/controller/DropHandlerBase.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/controller/SelectionDropHandler.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/interpreter/Interpreter.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/util/DomTools.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/demo/tool_box_demo/bin/dragDrop.css",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/interaction/Draggable.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/layout/Panel.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/selection/app.css",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/admin/app.css",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ui/stage/SelectionMarker.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/lex-test-zabo/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/default/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/publication/PublicationModel.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/admin/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/dialogs/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/menu/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/property-toolbox/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/test-toolboxes/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/ribbon-toolbox/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/selection/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ui/stage/StageDropHandler.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/editor/PositionStyleEditor.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/editor/PaddingStyleEditor.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/index-builder.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/editor/EditorBase.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/property-toolbox/app.css",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/component/ComponentModel.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/MasterToolbox.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/InsertToolbox.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/demo/tool_box_demo/src/lists.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/ribbon-toolbox/app.css",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/layer/LayerModel.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/editor/PropertyEditor.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/property/PropertyModel.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/index-player.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/list/XmlList.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/dialogs/app.css",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ui/stage/MenuController.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/publication/PublicationService.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ui/stage/PublicationViewer.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/test-properties-toolbox/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/PropertiesToolbox.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ui/toolbox/editor/BackgroundStyleEditor.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/page/PageModel.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/admin/conf/config.xml.php",
+		"/home/lexa/Documents/repositories/Dropbox/EuropaApps-livraison/app.html",
+		"/home/lexa/Desktop/temp.txt",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/EuropaApps/src/content-design/SWFImport.as",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/build.hxml",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/changelog.txt",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/build-php.hxml",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/build-js.hxml",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/build-flash.hxml",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/Silex.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/silex/ServiceBase.hx",
+		"/usr/lib/haxe/std/haxe/macro/Context.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/ConfigBase.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/ModelBase.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/ServiceBase.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationModel.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationService.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationConfig.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/property/PropertyModel.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/page/PageModel.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/layer/LayerModel.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/component/ComponentModel.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/server/ServerConfig.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/Silex.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/ui/stage/MenuController.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/link/LinkToPage.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/link/LinkBase.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/ui/dialog/OpenDialog.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/ui/stage/PublicationViewer.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/ui/list/MenuController.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/ui/stage/SelectionController.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/builder-ui/dialog/AuthDialog.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/builder-ui/dialog/DialogBase.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/builder-ui/dialog/OpenDialog.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/builder-ui/list/ApplicationMenu.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/builder-ui/list/PublicationList.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/builder-ui/stage/SelectionController.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/builder-ui/stage/Stage.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/builder-ui/toolbox/PropertiesToolbox.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/builder-ui/toolbox/ToolboxBase.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/component/stage/Stage.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/default/app.css",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/index.php",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/default/conf/config.xml.php",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/component/builder/SelectionManager.hx",
+		"/media/Windows/Documents and Settings/lexa/Recent/Private Casting - Pierre Woodman - Tatiana.avi.lnk",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/split-bot/start_game_for_test.sh",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/conf/server-config.xml.php",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/test1/index.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/Layer.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/navigation/Page.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/core/Silex.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/core/Application.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/demo/my_custom_components/src/slplayer/prototype/player/ImagePlayer.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/demo/discover_slplayer/source.html",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/group/GroupBuilder.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/component/builder/Builder.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/component/MenuManager.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/component/PublicationConnector.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/bin/publications/test1/conf/config.xml.php",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/component/dialog/SelectPublication.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/publication/PublicationData.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/index.php",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/Silex/src/org/silex/interpreter/Interpreter.hx",
+		"/home/lexa/Documents/repositories/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/component/list/List.hx",
+		"/Users/lexa/Downloads/Menu example 2.html",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/admin/app.css",
+		"/Users/lexa/Dropbox/fdt-workspace/Silex/bin/publications/admin/index.html",
+		"/Users/lexa/Dropbox/fdt-workspace/SLPlayer/src/org/slplayer/util/DomTools.hx",
+		"/Users/lexa/Downloads/Menu example 2_files/toolbar.js"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"setupMediaElements",
+			"audio",
+			"setupMediaElements",
+			"cleanupMediaElements",
+			"setupMediaElements",
+			"audioElement",
+			"cleanupMediaElements",
+			"setupMediaElements",
+			"AudioOrVideo",
+			"audioElement",
+			"audio",
+			"video\n",
+			"bug",
+			"PublicationGroup",
+			"interpreter",
+			"PublicationGroup",
+			"data-group-id=\"null\"",
+			"prepareForSave",
+			"PublicationGroup",
+			"BODY",
+			"		\n",
+			"			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n			\n",
+			"phantomClassName",
+			"initPhantomStyle",
+			"rootElement",
+			"initPhantomStyle",
+			"phantom",
+			"initPhantomStyle",
+			"initRootElementStyle",
+			"miniPhantom",
+			"phantom",
+			"localToGlobal",
+			"clientX",
+			"indexo",
+			"localToGlobal",
+			"panel-builder-body",
+			"PublicationViewer",
+			"draggable-phantom",
+			"selection",
+			"SelectionController",
+			"group-main",
+			"selection",
+			"selex",
+			"builder-body",
+			"Layer",
+			"type=\"number\"",
+			"position",
+			"positioning_type",
+			"positioning_zindex",
+			"positioning_visibility",
+			"positioning_type",
+			"// position",
+			"positioning_type",
+			"positioning_width",
+			"box_padding_top",
+			"positioning_height",
+			"positioning_width",
+			"box_padding_top",
+			"width",
+			"box_padding",
+			"measurement",
+			"MarginStyleEditor",
+			"fieldset class=\"",
+			"box_padding_top",
+			"silex-toolbox .panel-footer",
+			"legend>Properties",
+			"PageModel",
+			"PublicationModel",
+			"getAssociatedComponents",
+			"getass",
+			"onInput",
+			"ribb",
+			"addComponent",
+			"PropertyModel",
+			"ON_LIST_CHANGE",
+			"IMAGE_TYPE",
+			"= IMAGE_TYPE",
+			"IMAGE_TYPE",
+			"\"image\"",
+			"IMAGE_",
+			"class",
+			"MasterToolbox",
+			"&lg;title&gt;",
+			"PageList",
+			"layer-list",
+			"layer",
+			"getModel",
+			"PublicationModel",
+			"getModel",
+			"PublicationModel",
+			"img",
+			"img src=\"",
+			"img",
+			"headOpenIdx",
+			"onData",
+			"getPublicationData",
+			"ON_SAVE",
+			"fixDom",
+			"prepareFor",
+			"currentData.html",
+			"currentData",
+			"setPublicationData",
+			"PublicationConfig",
+			"PublicationService",
+			"prepareForSave",
+			"prepare",
+			"ON_ERROR",
+			"currentConfig",
+			"configData",
+			"loaded"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"components"
+		],
+		"reverse": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 213.0
+	},
+	"output.haxe":
+	{
+		"height": 112.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 306.0,
+	"status_bar_visible": true
+}

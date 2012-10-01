@@ -1,0 +1,38 @@
+###################
+# Client
+###################
+
+-js ../bin/automatic-tests.js
+-cp ../src/
+-cp ../../src/
+-cp ../../../Cocktail/src/
+-cp ../../../SLPlayer/src/
+-main AllTestsClient
+-D silexClientSide
+-lib utest
+
+#-D slpdebug
+-D disableEmbedHtml
+-D noAutoStart
+-lib hscript
+
+--next
+
+###################
+# Server
+###################
+
+-php ../bin/automatic-tests.php
+-cp ../src/
+-cp ../../src/
+-cp ../../../Cocktail/src/
+-cp ../../../SLPlayer/src/
+--remap js:cocktail
+-main AllTestsServer
+-D silexServerSide
+-lib utest
+
+-D slpdebug
+-D disableEmbedHtml
+-D noAutoStart
+-lib hscript

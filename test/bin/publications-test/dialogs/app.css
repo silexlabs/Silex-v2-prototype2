@@ -1,0 +1,397 @@
+/* 		Silex base styles 			 */
+/* 		Do not edit these styles 	 */
+body
+{
+	margin:0px;
+	padding:0px;
+	font-family:Arial, Helvetica, sans-serif;
+
+	background:#464B50;
+}
+.Layer{
+
+}
+.Page{
+	display: none;
+}
+button a{
+	color: blue;
+	text-decoration: none;
+}
+img{
+	
+}
+p{
+
+}
+.list ul{
+
+}
+.list li{
+
+}
+/* 		Publication styles 			 */
+/* 		You can edit these styles 	 */
+
+a.LinkToPage{
+	color:Gray;	
+}
+a.LinkToPage:hover{
+	color:LightGray;
+
+}
+a.LinkToPage:active{
+	color:Gray;
+
+}
+
+/* **************** */
+/* 	Dialogs 		*/
+/* **************** */
+.dialogs .header{
+margin-left:auto;
+margin-right:auto;
+max-width:300px;
+
+}
+
+.dialogs .container{
+
+	max-width:360px;
+	max-height:100%;
+	margin:0 auto;
+	position:relative;
+	z-index: 1010;
+}
+
+.dialogs .form{
+	max-width:100%;
+	background:Lightgray;
+	padding-top:17px;
+	border-radius:3px;
+	height:111px;
+	margin:0 auto;
+	padding-left:18px;
+}
+
+.login-dialog fieldset{
+
+max-width:300px;
+border:none;
+margin-left:auto;
+margin-right:auto;
+
+
+}
+
+
+.login-dialog fieldset .login{
+
+	
+	display:block;
+	position:absolute;
+	padding-left:11px;
+	color:DimGray;
+	font-size:15px;
+
+}
+
+.login-dialog fieldset .password{
+	
+
+	display:block;
+	position:absolute;
+	padding-left:11px;
+	color:DimGray;
+	font-size:15px;
+	margin-top:1px;
+
+}
+
+.login-dialog fieldset .input-field-login{
+	margin-left:95px;
+	
+
+}
+
+.login-dialog fieldset .input-field-pass{
+	margin-left:95px;
+
+
+}
+
+.login-dialog fieldset .input-field-login:focus{
+	margin-left:95px;
+	outline-color:DimGray;
+
+}
+
+.login-dialog fieldset .input-field-pass:focus{
+outline-color:DimGray;
+	
+}
+.assets-dialog{
+	max-width:100%;
+	max-height:19px;
+
+}
+
+.login-dialog .validate-button{
+    cursor:pointer;
+ 	float:right;
+   position:relative;
+   margin-left:14px;
+
+}
+.login-dialog .validate-button:hover{
+    cursor:pointer;
+    color:green;
+
+    
+   
+}
+.login-dialog .validate-button:active{
+    cursor:pointer;
+    color:green;
+
+
+}
+
+.login-dialog .cancel-button{
+    cursor:pointer;
+    float:right;
+    position:relative;
+ 
+
+
+
+}
+.login-dialog .cancel-button:hover{
+    cursor:pointer;
+    color:red;
+   
+}
+.login-dialog .cancel-button:active{
+    cursor:pointer;
+    color:red;
+
+}
+.dialogs .solid{
+	height:1px;
+	width:100%;
+	background:LightGray;
+	margin-top:14px;
+}
+.dialogs .solid-2{
+	margin-top:63px;
+	height:1px;
+	width:100%;
+	background:LightGray;
+}
+.dialogs .error-text{
+
+
+	color:#FFFF00;
+	display:block;
+	max-width:159px;
+	height:20px;
+	padding-top:58px;
+	margin-left:auto;
+	margin-right:auto;
+
+}
+
+.dialogs footer{
+	color:LightGray;
+	padding-left:4px;
+	display:block;
+	width:100%;
+	margin-top:23px;
+
+}
+
+.dialogs footer p a{
+	font-size:14px;
+	text-decoration:none;
+	color:LightGray;
+}
+
+.dialogs footer p a:hover{
+opacity:0.7;
+
+}
+.dialogs footer p a:active{
+opacity:1;
+
+}
+
+.dialogs .disabled-link{
+	color:LightGray;
+	opacity:0.7;
+}
+.dialogs .dialog-background{
+	top:0;
+	width:100%;
+	height:100%;
+	left:0;
+	z-index: 1000;
+	position:absolute;
+	background-color:Black;
+	opacity:0.5;
+}
+
+
+.dialogs .container-2{
+    border: 1px solid DimGray;
+    border-radius: 3px 3px 3px 3px;
+    margin-left: 25%;
+    margin-right: 25%;
+    min-height: 200px;
+    height: 40%;
+    max-width: 633px;
+    position: absolute;
+    width: 50%;
+    z-index: 1100;
+}
+
+.dialogs .header-2{
+
+width:100%;
+
+}
+.dialogs .header-2 img{
+	margin-left:67px;
+
+}
+.dialogs .back-header{
+	
+	width:100%;
+	border-top:1px black solid;
+	height:17px;
+
+}
+
+/*   PUBLICATION LIST  */
+
+.dialogs legend{
+
+	float:left;
+	display:block;
+	padding-top:5px;
+	padding-left:20px;
+	
+}
+
+.dialogs label{
+	
+	float:right;
+	display:block;
+	padding-right:250px;
+	padding-top:5px;
+	
+}
+.dialogs .publications li{
+	cursor: pointer;
+	line-height: 2;
+}
+.dialogs .publications .listSelectedItem{
+	color: green;
+}
+.dialogs .publications{
+	max-width:100%;
+	background:Gainsboro;
+	border-radius:3px;
+	margin:0;
+	font-size: 12px;
+	height: 100%;
+	list-style-type: none;
+	overflow: auto;
+	padding: 20px;
+}
+.dialogs .publications a{
+	text-decoration: none;
+	color:#3C3C3C;
+
+
+}
+.dialogs .publications a:hover{
+	color:black;
+
+}
+
+.foot{
+	clear:both;
+	position:relative;
+	width:100%;
+	height:37px;
+	background:Gainsboro;
+
+}
+.dialogs .foot .validate-button{
+	cursor:pointer;
+ 	float:right;
+    position:relative;
+    margin-left:14px;
+    margin-top:10px;
+    margin-right:9px;
+}
+
+.dialogs .foot .validate-button:hover{
+	cursor:pointer;
+    color:green;
+}
+
+.dialogs .foot .validate-button:active{
+	cursor:pointer;
+    color:green;
+}
+
+
+.dialogs .foot .cancel-button{
+	cursor:pointer;
+    float:right;
+    position:relative;
+    margin-top:10px;
+}
+
+.dialogs .foot .cancel-button:hover{
+	cursor:pointer;
+	color:red;
+
+}
+
+.dialogs .foot .cancel-button:active{
+	cursor:pointer;
+	color:red;
+    
+}
+
+
+.dialogs .solid-3{
+	height:1px;
+	width:97%;
+	background:White;
+	margin-left:auto;
+	margin-right:auto;
+	
+}
+.dialogs .solid-4{
+	height:1px;
+	width:97%;
+	background:DimGray;
+	margin-left:auto;
+	margin-right:auto;
+
+}
+
+
+
+.dialogs .column{
+	float:right;
+	padding-right:3px;
+	font-size:12px;
+	color:DimGray;
+}
+/* **************** */
+/* 	/Dialogs 		*/
+/* **************** */
