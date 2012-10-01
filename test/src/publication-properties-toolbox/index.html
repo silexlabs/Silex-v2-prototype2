@@ -1,5 +1,36 @@
 <html>
 	<HEAD>
+
+		<script data-slp-use="org.slplayer.component.interaction.Draggable"></script>
+		<script data-slp-use="org.slplayer.component.layout.Panel"></script>
+
+		<script data-slp-use="org.slplayer.component.navigation.Page"></script>
+		<script data-slp-use="org.slplayer.component.navigation.Layer"></script>
+		<script data-slp-use="org.slplayer.component.navigation.link.LinkToPage"></script>
+		<script data-slp-use="org.slplayer.component.navigation.link.LinkClosePage"></script>
+		<script data-slp-use="org.slplayer.component.navigation.link.LinkToContext"></script>
+		<script data-slp-use="silex.ui.dialog.ModelDebugger"></script>
+
+		<script data-slp-use="silex.ui.stage.PublicationViewer"></script>
+		<script data-slp-use="silex.ui.stage.SelectionController"></script>
+		<script data-slp-use="silex.ui.stage.MenuController"></script>
+		
+		<script data-slp-use="silex.ui.stage.SelectionMarker"></script>
+		<script data-slp-use="silex.ui.stage.MasterDropHandler"></script>
+		<script data-slp-use="silex.ui.stage.InsertDropHandler"></script>
+
+		<script data-slp-use="silex.ui.toolbox.editor.PropertyEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.RawHtmlEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.TextStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.BackgroundStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.BlockStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.BoxStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.PaddingStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.MarginStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.PositionStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.PlacementStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.ClipStyleEditor"></script>
+
 		<META http-equiv="Content-Type" content="text/html; charset=UTF-8"></META> 
 		<META name="initialPageName" content="properties"></META>
 		<!-- plugins -->
@@ -14,12 +45,11 @@
 		<meta name="state" content="public" /> <!-- or private, trashed -->
 		<meta name="useDeeplink" content="false" />
 		<LINK href="app.css" rel="stylesheet"></LINK>
-		<SCRIPT src="../../libs/silex/silex.js"></SCRIPT>
 
 		<META name="debugModeAction" content="
-			trace('properties toolbox - Loading publication');
-			PublicationModel.getInstance().load('test-toolboxes');
-			/*  */
+			trace('properties toolbox - Loading publication  ');
+			PublicationModel.getInstance().load('test-publication');
+
 			Timer.delay(function(){
 				var element = Lib.document.getElementById('testComponentForToolBox');
 				trace('properties toolbox - Selecting element '+element);
@@ -31,7 +61,6 @@
 				trace('properties toolbox - Selecting element '+element);
 				*/
 			}, 1000)
-			/*   */
 			"></META>
 	</HEAD>
 	<body>
@@ -537,7 +566,7 @@
 									<option value="ex">exs</option>
 									<option value="%">%</option>
 								</select>
-								<input type="text" class="box_margin_top" ><br /><br />
+								<input type="text" class="box_margin_top" /><br /><br />
 													
 								<label for="box_margin_right">Right</label>
 								

@@ -11,8 +11,8 @@
 -debug
 -lib hscript
 
--main selection.TestClient
---macro org.slplayer.core.Builder.create('../src/selection/index.html')
+-main PublicationsTestClient
+--macro org.slplayer.core.Builder.create('../src/publication-selection/index.html')
 
 #-D slpdebug
 -D disableEmbedHtml
@@ -37,8 +37,59 @@
 -debug
 -lib hscript
 
--main dialogs.TestClient
---macro org.slplayer.core.Builder.create('../src/dialogs/index.html')
+-main PublicationsTestClient
+--macro org.slplayer.core.Builder.create('../src/publication-dialogs/index.html')
+
+#-D slpdebug
+-D disableEmbedHtml
+-D noAutoStart
+-D stopOnError
+
+-D silexClientSide
+-D silexDebug
+
+--next
+
+###################
+# Properties toolbox
+###################
+
+-js ../bin/publications-test/property-toolbox/silex-builder.js
+-cp ../src/
+-cp ../../src/
+-cp ../../../SLPlayer/src/
+-cp ../../../Cocktail/src/
+#--no-traces
+-debug
+-lib hscript
+
+-main PublicationsTestClient
+--macro org.slplayer.core.Builder.create('../src/publication-properties-toolbox/index.html')
+
+#-D slpdebug
+-D disableEmbedHtml
+-D noAutoStart
+-D stopOnError
+
+-D silexClientSide
+-D silexDebug
+
+--next
+###################
+# Ribbon toolbox
+###################
+
+-js ../bin/publications-test/ribbon-toolbox/silex-builder.js
+-cp ../src/
+-cp ../../src/
+-cp ../../../SLPlayer/src/
+-cp ../../../Cocktail/src/
+#--no-traces
+-debug
+-lib hscript
+
+-main PublicationsTestClient
+--macro org.slplayer.core.Builder.create('../src/publication-ribbon-toolbox/index.html')
 
 #-D slpdebug
 -D disableEmbedHtml

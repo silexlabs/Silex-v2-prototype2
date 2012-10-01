@@ -1,9 +1,54 @@
 <html>
 	<HEAD>
 		<META http-equiv="Content-Type" content="text/html; charset=UTF-8"></META> 
-		<!-- plugins -->
+
+		<script data-slp-use="org.slplayer.component.interaction.Draggable"></script>
+		<script data-slp-use="org.slplayer.component.layout.Panel"></script>
+
+		<script data-slp-use="org.slplayer.component.navigation.Page"></script>
+		<script data-slp-use="org.slplayer.component.navigation.Layer"></script>
+		<script data-slp-use="org.slplayer.component.navigation.link.LinkToPage"></script>
+		<script data-slp-use="org.slplayer.component.navigation.link.LinkClosePage"></script>
+		<script data-slp-use="org.slplayer.component.navigation.link.LinkToContext"></script>
+		<script data-slp-use="org.slplayer.component.sound.SoundOn"></script>
+		<script data-slp-use="org.slplayer.component.sound.SoundOff"></script>
+		<script data-slp-use="org.slplayer.component.list.XmlList"></script>
+
+		<script data-slp-use="silex.ui.dialog.ModelDebugger"></script>
+		<script data-slp-use="silex.ui.dialog.AuthDialog"></script>
+		<script data-slp-use="silex.ui.dialog.OpenDialog"></script>
+		<script data-slp-use="silex.ui.list.PublicationList"></script>
+		<script data-slp-use="silex.ui.list.PageList"></script>
+		<script data-slp-use="silex.ui.list.LayersList"></script>
+<!--
+-->
+		<script data-slp-use="silex.ui.stage.PublicationViewer"></script>
+		<script data-slp-use="silex.ui.stage.SelectionController"></script>
+		<script data-slp-use="silex.ui.stage.MenuController"></script>
+		
+		<script data-slp-use="silex.ui.stage.SelectionMarker"></script>
+		<script data-slp-use="silex.ui.stage.MasterDropHandler"></script>
+		<script data-slp-use="silex.ui.stage.InsertDropHandler"></script>
+
+		<script data-slp-use="silex.ui.toolbox.PageToolbox"></script>
+<!--
+		<script data-slp-use="silex.ui.toolbox.MasterToolbox"></script>
+		<script data-slp-use="silex.ui.toolbox.InsertToolbox"></script>
+-->		
+		<script data-slp-use="silex.ui.toolbox.editor.PropertyEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.RawHtmlEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.TextStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.BackgroundStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.BlockStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.BoxStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.PaddingStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.MarginStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.PositionStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.PlacementStyleEditor"></script>
+		<script data-slp-use="silex.ui.toolbox.editor.ClipStyleEditor"></script>
+
 		<!-- info -->
-		<title>Hello Silex!</title>
+		<title>Ribbon!</title>
 		<meta name="description" content="A 1st test of Silex publication" />
 		<meta name="keywords" content="HTML,CSS,website editor" />
 		<meta name="author" content="lexoyo" />
@@ -13,11 +58,10 @@
 		<meta name="state" content="public" /> <!-- or private, trashed -->
 		<meta name="useDeeplink" content="false" />
 		<LINK href="app.css" rel="stylesheet"></LINK>
-		<SCRIPT src="../../libs/silex/silex.js"></SCRIPT>
 
 		<META name="debugModeAction" content="
 			trace('properties toolbox - Loading publication');
-			PublicationModel.getInstance().load('test-toolboxes');
+			PublicationModel.getInstance().load('test-publication');
 			Timer.delay(function(){
 /*				
 				var element = Lib.document.getElementById('testComponentForToolBox');
@@ -55,39 +99,39 @@
 					<div class="PageToolbox Layer file-menu ribbon-list selectable">
 						<ul class="">
 							<li data-menu-item="open">
-								<div class="solid"></div></br>
+								<div class="temp-icon"></div>
 								<p>open</p>
 							</li>
 							<li data-menu-item="save">
-								<div class="solid"></div></br>
+								<div class="temp-icon"></div>
 								<p>save</p>
 							</li>
 							<li data-menu-item="save-as">
-								<div class="solid"></div></br>
+								<div class="temp-icon"></div>
 								<p>save as</p>
 							</li>
 							<li data-menu-item="save-copy">
-								<div class="solid"></div></br>
+								<div class="temp-icon"></div>
 								<p>save a copy</p>
 							</li>
 							<li data-menu-item="close">
-								<div class="solid"></div></br>
+								<div class="temp-icon"></div>
 								<p>close</p>
 							</li>
 							<li data-menu-item="settings" class="disabled">
-								<div class="solid"></div></br>
+								<div class="temp-icon"></div>
 								<p>settings</p>
 							</li>
 							<li data-menu-item="backup-all" class="disabled">
-								<div class="solid"></div></br>
+								<div class="temp-icon"></div>
 								<p>backup all</p>
 							</li>
 							<li data-menu-item="export" class="disabled">
-								<div class="solid"></div></br>
+								<div class="temp-icon"></div>
 								<p>export</p>
 							</li>
 							<li data-menu-item="publish" class="disabled">
-								<div class="solid"></div></br>
+								<div class="temp-icon"></div>
 								<p>publish</p>
 							</li>
 						</ul>
@@ -101,27 +145,24 @@
 					<a name="page-list" class="Page" data-group-id="GroupRibbon">Pages</a>
 
 					<div class="PageToolbox Layer page-list ribbon-list selectable">
-<!--
 						<div class="assets-page">
+<!--
 							<img src="../admin/assets/sv2-ico-add.png"></img>
-							<img src="../admin/assets/sv2-ico-delete.png"></img>
-							<img src="../admin/assets/sv2-ico-duplicate.png"></img></br>
+							<img src="../admin/assets/sv2-ico-duplicate.png"></img>
 							<img src="../admin/assets/sv2-ico-snapshot.png"></img>
 							<img src="../admin/assets/sv2-ico-properties.png"></img>
 							<img src="../admin/assets/sv2-ico-rename.png"></img>
 							
-						</div>
 -->
+							<img title="Add a page" class="ribbon-button add-button" src="../admin/assets/sv2-ico-add.png"></img>
+							<img title="Delete selected page" class="ribbon-button del-button" src="../admin/assets/sv2-ico-delete.png"></img>
+						</div>
 						<ul class="PageList">
-							<li class="Draggable">
-								<div class="solid"></div></br>
+							<li class="">
+								<div class="solid"></div>
 								<p>::name::</p>
 							</li>
 						</ul>
-<!--
-						<button class="del-button">Del</button>
-						<button class="add-button">Add</button>
--->
 					</div>
 
 					<!-- Masters -->
@@ -129,8 +170,10 @@
 
 					<div class="MasterToolbox Layer layer-list ribbon-list">
 						<ul class="LayersList">
-							<li class="Draggable">
-								<div class="solid"></div></br>
+							<li class="Draggable MasterDropHandler"
+								data-dropzones-class-name="silex-view"
+								>
+								<div class="solid"></div>
 								<p>::rootElement.title::</p>
 							</li>
 						</ul>
@@ -143,14 +186,36 @@
 					<a name="insert-list" class="Page" data-group-id="GroupRibbon">Insert</a>
 
 					<div class="InsertToolbox Layer insert-list ribbon-list">
-						<ul class="XmlList" data-items="&lt;item&gt;&lt;title&gt;Image&lt;/title&gt;&lt;type&gt;image&lt;/type&gt;&lt;/item&gt;
-						&lt;item&gt;&lt;title&gt;Text&lt;/title&gt;&lt;type&gt;text&lt;/type&gt;&lt;/item&gt;
-						&lt;item&gt;&lt;title&gt;Audio&lt;/title&gt;&lt;type&gt;audio&lt;/type&gt;&lt;/item&gt;
-						&lt;item&gt;&lt;title&gt;Video&lt;/title&gt;&lt;type&gt;video&lt;/type&gt;&lt;/item&gt;
-						&lt;item&gt;&lt;title&gt;Layer&lt;/title&gt;&lt;type&gt;layer&lt;/type&gt;&lt;/item&gt;" >
-							<li class="::type:: Draggable" >
-								<div class="solid"></div></br>
-								<p>::title::</p>
+						<ul>
+							<li class="image Draggable InsertDropHandler" 
+								data-dropzones-class-name="Layer"
+							>
+								<div class="solid"></div>
+								<p>Image</p>
+							</li>
+							<li class="text Draggable InsertDropHandler" 
+								data-dropzones-class-name="Layer"
+							>
+								<div class="solid"></div>
+								<p>Text</p>
+							</li>
+							<li class="audio Draggable InsertDropHandler" 
+								data-dropzones-class-name="Layer"
+							>
+								<div class="solid"></div>
+								<p>Audio</p>
+							</li>
+							<li class="video Draggable InsertDropHandler" 
+								data-dropzones-class-name="Layer"
+							>
+								<div class="solid"></div>
+								<p>Video</p>
+							</li>
+							<li class="layer Draggable InsertDropHandler" 
+								data-dropzones-class-name="silex-view"
+							>
+								<div class="solid"></div>
+								<p>Layer</p>
 							</li>
 						</ul>
 <!--
@@ -172,6 +237,7 @@
 				</div>
 				<!-- 		/Ribbon Toolbox 		-->
 				<!-- 	**************************	-->
+
 
 
 

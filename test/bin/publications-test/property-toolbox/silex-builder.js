@@ -5,149 +5,6 @@ function $extend(from, fields) {
 	for (var name in fields) proto[name] = fields[name];
 	return proto;
 }
-var DateTools = function() { }
-$hxClasses["DateTools"] = DateTools;
-DateTools.__name__ = ["DateTools"];
-DateTools.__format_get = function(d,e) {
-	return (function($this) {
-		var $r;
-		switch(e) {
-		case "%":
-			$r = "%";
-			break;
-		case "C":
-			$r = StringTools.lpad(Std.string(d.getFullYear() / 100 | 0),"0",2);
-			break;
-		case "d":
-			$r = StringTools.lpad(Std.string(d.getDate()),"0",2);
-			break;
-		case "D":
-			$r = DateTools.__format(d,"%m/%d/%y");
-			break;
-		case "e":
-			$r = Std.string(d.getDate());
-			break;
-		case "H":case "k":
-			$r = StringTools.lpad(Std.string(d.getHours()),e == "H"?"0":" ",2);
-			break;
-		case "I":case "l":
-			$r = (function($this) {
-				var $r;
-				var hour = d.getHours() % 12;
-				$r = StringTools.lpad(Std.string(hour == 0?12:hour),e == "I"?"0":" ",2);
-				return $r;
-			}($this));
-			break;
-		case "m":
-			$r = StringTools.lpad(Std.string(d.getMonth() + 1),"0",2);
-			break;
-		case "M":
-			$r = StringTools.lpad(Std.string(d.getMinutes()),"0",2);
-			break;
-		case "n":
-			$r = "\n";
-			break;
-		case "p":
-			$r = d.getHours() > 11?"PM":"AM";
-			break;
-		case "r":
-			$r = DateTools.__format(d,"%I:%M:%S %p");
-			break;
-		case "R":
-			$r = DateTools.__format(d,"%H:%M");
-			break;
-		case "s":
-			$r = Std.string(d.getTime() / 1000 | 0);
-			break;
-		case "S":
-			$r = StringTools.lpad(Std.string(d.getSeconds()),"0",2);
-			break;
-		case "t":
-			$r = "\t";
-			break;
-		case "T":
-			$r = DateTools.__format(d,"%H:%M:%S");
-			break;
-		case "u":
-			$r = (function($this) {
-				var $r;
-				var t = d.getDay();
-				$r = t == 0?"7":Std.string(t);
-				return $r;
-			}($this));
-			break;
-		case "w":
-			$r = Std.string(d.getDay());
-			break;
-		case "y":
-			$r = StringTools.lpad(Std.string(d.getFullYear() % 100),"0",2);
-			break;
-		case "Y":
-			$r = Std.string(d.getFullYear());
-			break;
-		default:
-			$r = (function($this) {
-				var $r;
-				throw "Date.format %" + e + "- not implemented yet.";
-				return $r;
-			}($this));
-		}
-		return $r;
-	}(this));
-}
-DateTools.__format = function(d,f) {
-	var r = new StringBuf();
-	var p = 0;
-	while(true) {
-		var np = f.indexOf("%",p);
-		if(np < 0) break;
-		r.b += HxOverrides.substr(f,p,np - p);
-		r.b += Std.string(DateTools.__format_get(d,HxOverrides.substr(f,np + 1,1)));
-		p = np + 2;
-	}
-	r.b += HxOverrides.substr(f,p,f.length - p);
-	return r.b;
-}
-DateTools.format = function(d,f) {
-	return DateTools.__format(d,f);
-}
-DateTools.delta = function(d,t) {
-	return (function($this) {
-		var $r;
-		var d1 = new Date();
-		d1.setTime(d.getTime() + t);
-		$r = d1;
-		return $r;
-	}(this));
-}
-DateTools.getMonthDays = function(d) {
-	var month = d.getMonth();
-	var year = d.getFullYear();
-	if(month != 1) return DateTools.DAYS_OF_MONTH[month];
-	var isB = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
-	return isB?29:28;
-}
-DateTools.seconds = function(n) {
-	return n * 1000.0;
-}
-DateTools.minutes = function(n) {
-	return n * 60.0 * 1000.0;
-}
-DateTools.hours = function(n) {
-	return n * 60.0 * 60.0 * 1000.0;
-}
-DateTools.days = function(n) {
-	return n * 24.0 * 60.0 * 60.0 * 1000.0;
-}
-DateTools.parse = function(t) {
-	var s = t / 1000;
-	var m = s / 60;
-	var h = m / 60;
-	return { ms : t % 1000, seconds : s % 60 | 0, minutes : m % 60 | 0, hours : h % 24 | 0, days : h / 24 | 0};
-}
-DateTools.make = function(o) {
-	return o.ms + 1000.0 * (o.seconds + 60.0 * (o.minutes + 60.0 * (o.hours + 24.0 * o.days)));
-}
 var EReg = function(r,opt) {
 	opt = opt.split("u").join("");
 	this.r = new RegExp(r,opt);
@@ -5899,173 +5756,6 @@ org.slplayer.component.layout.Panel.prototype = $extend(org.slplayer.component.u
 	,isHorizontal: null
 	,__class__: org.slplayer.component.layout.Panel
 });
-org.slplayer.component.list = {}
-org.slplayer.component.list.List = function(rootElement,SLPId) {
-	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
-	this._selectedIndex = -1;
-	this.dataProvider = [];
-	this.listTemplate = rootElement.innerHTML;
-	rootElement.innerHTML = "";
-};
-$hxClasses["org.slplayer.component.list.List"] = org.slplayer.component.list.List;
-org.slplayer.component.list.List.__name__ = ["org","slplayer","component","list","List"];
-org.slplayer.component.list.List.__super__ = org.slplayer.component.ui.DisplayObject;
-org.slplayer.component.list.List.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
-	setSelectedIndex: function(idx) {
-		if(idx != this._selectedIndex) {
-			if(idx >= 0 && this.dataProvider.length > idx && this.dataProvider[idx] != null) this._selectedIndex = idx; else this._selectedIndex = -1;
-			this.updateSelectionDisplay([this.getSelectedItem()]);
-			var event = js.Lib.document.createEvent("CustomEvent");
-			event.initCustomEvent("listChange",false,false,{ target : this.rootElement, item : this.getSelectedItem()});
-			this.rootElement.dispatchEvent(event);
-		}
-		return idx;
-	}
-	,getSelectedIndex: function() {
-		return this._selectedIndex;
-	}
-	,setSelectedItem: function(selected) {
-		if(selected != this.getSelectedItem()) {
-			if(selected != null) {
-				var tmpIdx = -1;
-				var _g1 = 0, _g = this.dataProvider.length;
-				while(_g1 < _g) {
-					var idx = _g1++;
-					if(this.dataProvider[idx] == selected) {
-						tmpIdx = idx;
-						break;
-					}
-				}
-				this.setSelectedIndex(tmpIdx);
-			} else this.setSelectedIndex(-1);
-		}
-		return selected;
-	}
-	,getSelectedItem: function() {
-		return this.dataProvider[this._selectedIndex];
-	}
-	,updateSelectionDisplay: function(selection) {
-		var children = this.rootElement.getElementsByTagName("li");
-		var _g1 = 0, _g = children.length;
-		while(_g1 < _g) {
-			var idx = _g1++;
-			var idxElem = this.getItemID(children[idx]);
-			if(idxElem >= 0) {
-				var found = false;
-				var _g2 = 0;
-				while(_g2 < selection.length) {
-					var elem = selection[_g2];
-					++_g2;
-					if(elem == this.dataProvider[idxElem]) {
-						found = true;
-						break;
-					}
-				}
-				if(children[idx] == null) {
-					haxe.Log.trace("--workaround--" + idx + "- " + Std.string(children[idx]),{ fileName : "List.hx", lineNumber : 288, className : "org.slplayer.component.list.List", methodName : "updateSelectionDisplay"});
-					continue;
-				}
-				if(found) org.slplayer.util.DomTools.addClass(children[idx],"listSelectedItem"); else org.slplayer.util.DomTools.removeClass(children[idx],"listSelectedItem");
-			}
-		}
-	}
-	,rollOver: function(e) {
-		var element = e.target;
-		var idx = this.getItemID(element);
-		var event = js.Lib.document.createEvent("CustomEvent");
-		event.initCustomEvent("listChange",false,false,{ target : this.rootElement, item : this.dataProvider[idx]});
-		this.rootElement.dispatchEvent(event);
-	}
-	,click: function(e) {
-		var element = e.target;
-		var idx = this.getItemID(element);
-		this.setSelectedItem(this.dataProvider[idx]);
-		var event = js.Lib.document.createEvent("CustomEvent");
-		event.initCustomEvent("listClick",false,false,{ target : this.rootElement, item : this.getSelectedItem()});
-		this.rootElement.dispatchEvent(event);
-	}
-	,getItemID: function(childElement) {
-		if(childElement == this.rootElement || childElement == null) throw "Error, could not find the element clicked in the list.";
-		if(childElement.nodeType != this.rootElement.nodeType || childElement.getAttribute("data-list-item-idx") == null) return this.getItemID(childElement.parentNode);
-		return Std.parseInt(childElement.getAttribute("data-list-item-idx"));
-	}
-	,setItemIds: function(reset) {
-		if(reset == null) reset = false;
-		var idx = 0;
-		var _g1 = 0, _g = this.rootElement.childNodes.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			if(this.rootElement.childNodes[i].nodeType != this.rootElement.nodeType || reset && this.rootElement.childNodes[i].getAttribute("data-list-item-idx") == null) continue;
-			this.rootElement.childNodes[i].setAttribute("data-list-item-idx",Std.string(idx));
-			idx++;
-		}
-	}
-	,reloadData: function() {
-		this.doRedraw();
-	}
-	,doRedraw: function() {
-		var listInnerHtml = "";
-		var t = new haxe.Template(this.listTemplate);
-		var _g = 0, _g1 = this.dataProvider;
-		while(_g < _g1.length) {
-			var elem = _g1[_g];
-			++_g;
-			try {
-				listInnerHtml += t.execute(elem,org.slplayer.component.template.TemplateMacros);
-			} catch( e ) {
-				throw "Error: an error occured while interpreting the template - " + this.listTemplate + " - for the element " + Std.string(elem);
-			}
-		}
-		var _g1 = 0, _g = this.rootElement.childNodes.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			this.getSLPlayer().cleanNode(this.rootElement.childNodes[i]);
-		}
-		this.rootElement.innerHTML = listInnerHtml;
-		var _g1 = 0, _g = this.rootElement.childNodes.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			this.getSLPlayer().initNode(this.rootElement.childNodes[i]);
-		}
-		this.setItemIds();
-		this.updateSelectionDisplay([this.getSelectedItem()]);
-	}
-	,listDOMChanged: function(e) {
-		e.stopPropagation();
-		var newDataProvider = new Array();
-		var _g1 = 0, _g = this.rootElement.childNodes.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			if(this.rootElement.childNodes[i].nodeType != this.rootElement.nodeType || this.rootElement.childNodes[i].getAttribute("data-list-item-idx") == null) continue;
-			newDataProvider.push(this.dataProvider[Std.parseInt(this.rootElement.childNodes[i].getAttribute("data-list-item-idx"))]);
-		}
-		this.dataProvider = newDataProvider;
-		this.setItemIds(true);
-		haxe.Log.trace("new dataProvider = " + Std.string(this.dataProvider),{ fileName : "List.hx", lineNumber : 146, className : "org.slplayer.component.list.List", methodName : "listDOMChanged"});
-	}
-	,redraw: function() {
-		this.reloadData();
-	}
-	,clean: function() {
-		org.slplayer.component.ui.DisplayObject.prototype.clean.call(this);
-		this.rootElement.removeEventListener("click",$bind(this,this.click),false);
-		this.rootElement.removeEventListener("rollOver",$bind(this,this.rollOver),false);
-		this.rootElement.removeEventListener("dragEventDropped",$bind(this,this.listDOMChanged),false);
-	}
-	,init: function() {
-		org.slplayer.component.ui.DisplayObject.prototype.init.call(this);
-		this.rootElement.addEventListener("click",$bind(this,this.click),false);
-		this.rootElement.addEventListener("rollOver",$bind(this,this.rollOver),false);
-		this.rootElement.addEventListener("dragEventDropped",$bind(this,this.listDOMChanged),false);
-	}
-	,_selectedIndex: null
-	,selectedIndex: null
-	,selectedItem: null
-	,dataProvider: null
-	,listTemplate: null
-	,__class__: org.slplayer.component.list.List
-	,__properties__: {set_selectedItem:"setSelectedItem",get_selectedItem:"getSelectedItem",set_selectedIndex:"setSelectedIndex",get_selectedIndex:"getSelectedIndex"}
-});
 org.slplayer.component.navigation = {}
 org.slplayer.component.navigation.LayerStatus = $hxClasses["org.slplayer.component.navigation.LayerStatus"] = { __ename__ : ["org","slplayer","component","navigation","LayerStatus"], __constructs__ : ["showTransition","hideTransition","visible","hidden","notInit"] }
 org.slplayer.component.navigation.LayerStatus.showTransition = ["showTransition",0];
@@ -6649,31 +6339,6 @@ org.slplayer.component.sound.SoundOff.prototype = $extend(org.slplayer.component
 	}
 	,__class__: org.slplayer.component.sound.SoundOff
 });
-org.slplayer.component.template = {}
-org.slplayer.component.template.TemplateMacros = function() { }
-$hxClasses["org.slplayer.component.template.TemplateMacros"] = org.slplayer.component.template.TemplateMacros;
-org.slplayer.component.template.TemplateMacros.__name__ = ["org","slplayer","component","template","TemplateMacros"];
-org.slplayer.component.template.TemplateMacros.makeDateReadable = function(resolve,dateOrString,format) {
-	if(format == null) format = "%Y/%m/%d %H:%M";
-	var date;
-	if(js.Boot.__instanceof(dateOrString,String)) {
-		date = HxOverrides.strDate(dateOrString);
-		haxe.Log.trace("makeDateReadable string " + Std.string(dateOrString),{ fileName : "TemplateMacros.hx", lineNumber : 38, className : "org.slplayer.component.template.TemplateMacros", methodName : "makeDateReadable"});
-	} else if(js.Boot.__instanceof(dateOrString,Date)) {
-		haxe.Log.trace("makeDateReadable date ",{ fileName : "TemplateMacros.hx", lineNumber : 41, className : "org.slplayer.component.template.TemplateMacros", methodName : "makeDateReadable"});
-		date = dateOrString;
-	} else {
-		date = null;
-		throw "Error, the parameter is supposed to be String or Date";
-	}
-	var res = DateTools.format(date,format);
-	haxe.Log.trace("makeDateReadable returns " + res,{ fileName : "TemplateMacros.hx", lineNumber : 50, className : "org.slplayer.component.template.TemplateMacros", methodName : "makeDateReadable"});
-	return res;
-}
-org.slplayer.component.template.TemplateMacros.trace = function(resolve,obj) {
-	haxe.Log.trace(obj,{ fileName : "TemplateMacros.hx", lineNumber : 58, className : "org.slplayer.component.template.TemplateMacros", methodName : "trace"});
-	return "";
-}
 org.slplayer.core = {}
 org.slplayer.core.Application = function(id,args) {
 	this.dataObject = args;
@@ -6885,28 +6550,56 @@ $hxClasses["org.slplayer.core.ApplicationContext"] = org.slplayer.core.Applicati
 org.slplayer.core.ApplicationContext.__name__ = ["org","slplayer","core","ApplicationContext"];
 org.slplayer.core.ApplicationContext.prototype = {
 	registerComponentsforInit: function() {
-		org.slplayer.component.layout.Panel;
-		this.registeredUIComponents.push({ classname : "org.slplayer.component.layout.Panel", args : null});
-		org.slplayer.component.navigation.Layer;
-		this.registeredUIComponents.push({ classname : "org.slplayer.component.navigation.Layer", args : null});
-		org.slplayer.component.navigation.link.LinkToPage;
-		this.registeredUIComponents.push({ classname : "org.slplayer.component.navigation.link.LinkToPage", args : null});
-		org.slplayer.component.navigation.link.LinkToContext;
-		this.registeredUIComponents.push({ classname : "org.slplayer.component.navigation.link.LinkToContext", args : null});
-		silex.ui.list.PublicationList;
-		this.registeredUIComponents.push({ classname : "silex.ui.list.PublicationList", args : null});
 		org.slplayer.component.interaction.Draggable;
 		this.registeredUIComponents.push({ classname : "org.slplayer.component.interaction.Draggable", args : null});
+		silex.ui.toolbox.editor.BackgroundStyleEditor;
+		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.BackgroundStyleEditor", args : null});
+		silex.ui.stage.PublicationViewer;
+		this.registeredUIComponents.push({ classname : "silex.ui.stage.PublicationViewer", args : null});
+		silex.ui.stage.MasterDropHandler;
+		this.registeredUIComponents.push({ classname : "silex.ui.stage.MasterDropHandler", args : null});
+		org.slplayer.component.navigation.link.LinkToPage;
+		this.registeredUIComponents.push({ classname : "org.slplayer.component.navigation.link.LinkToPage", args : null});
 		org.slplayer.component.navigation.link.LinkClosePage;
 		this.registeredUIComponents.push({ classname : "org.slplayer.component.navigation.link.LinkClosePage", args : null});
-		silex.ui.dialog.OpenDialog;
-		this.registeredUIComponents.push({ classname : "silex.ui.dialog.OpenDialog", args : null});
-		silex.ui.dialog.ModelDebugger;
-		this.registeredUIComponents.push({ classname : "silex.ui.dialog.ModelDebugger", args : null});
+		org.slplayer.component.navigation.link.LinkToContext;
+		this.registeredUIComponents.push({ classname : "org.slplayer.component.navigation.link.LinkToContext", args : null});
+		silex.ui.toolbox.editor.BlockStyleEditor;
+		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.BlockStyleEditor", args : null});
+		org.slplayer.component.navigation.Layer;
+		this.registeredUIComponents.push({ classname : "org.slplayer.component.navigation.Layer", args : null});
+		silex.ui.toolbox.editor.PositionStyleEditor;
+		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.PositionStyleEditor", args : null});
+		silex.ui.toolbox.editor.RawHtmlEditor;
+		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.RawHtmlEditor", args : null});
 		org.slplayer.component.navigation.Page;
 		this.registeredUIComponents.push({ classname : "org.slplayer.component.navigation.Page", args : null});
-		silex.ui.dialog.AuthDialog;
-		this.registeredUIComponents.push({ classname : "silex.ui.dialog.AuthDialog", args : null});
+		silex.ui.stage.SelectionController;
+		this.registeredUIComponents.push({ classname : "silex.ui.stage.SelectionController", args : null});
+		silex.ui.stage.InsertDropHandler;
+		this.registeredUIComponents.push({ classname : "silex.ui.stage.InsertDropHandler", args : null});
+		silex.ui.toolbox.editor.BoxStyleEditor;
+		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.BoxStyleEditor", args : null});
+		silex.ui.toolbox.editor.PlacementStyleEditor;
+		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.PlacementStyleEditor", args : null});
+		silex.ui.stage.MenuController;
+		this.registeredUIComponents.push({ classname : "silex.ui.stage.MenuController", args : null});
+		silex.ui.toolbox.editor.TextStyleEditor;
+		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.TextStyleEditor", args : null});
+		silex.ui.toolbox.editor.PaddingStyleEditor;
+		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.PaddingStyleEditor", args : null});
+		silex.ui.toolbox.editor.MarginStyleEditor;
+		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.MarginStyleEditor", args : null});
+		silex.ui.toolbox.editor.ClipStyleEditor;
+		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.ClipStyleEditor", args : null});
+		silex.ui.dialog.ModelDebugger;
+		this.registeredUIComponents.push({ classname : "silex.ui.dialog.ModelDebugger", args : null});
+		silex.ui.toolbox.editor.PropertyEditor;
+		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.PropertyEditor", args : null});
+		silex.ui.stage.SelectionMarker;
+		this.registeredUIComponents.push({ classname : "silex.ui.stage.SelectionMarker", args : null});
+		org.slplayer.component.layout.Panel;
+		this.registeredUIComponents.push({ classname : "org.slplayer.component.layout.Panel", args : null});
 	}
 	,registeredNonUIComponents: null
 	,registeredUIComponents: null
@@ -7811,46 +7504,6 @@ silex.ui.dialog.DialogBase.prototype = $extend(org.slplayer.component.ui.Display
 	,onShow: null
 	,__class__: silex.ui.dialog.DialogBase
 });
-silex.ui.dialog.AuthDialog = function(rootElement,SLPId) {
-	silex.ui.dialog.DialogBase.call(this,rootElement,SLPId,null,null,$bind(this,this.validate),$bind(this,this.cancel));
-};
-$hxClasses["silex.ui.dialog.AuthDialog"] = silex.ui.dialog.AuthDialog;
-silex.ui.dialog.AuthDialog.__name__ = ["silex","ui","dialog","AuthDialog"];
-silex.ui.dialog.AuthDialog.__super__ = silex.ui.dialog.DialogBase;
-silex.ui.dialog.AuthDialog.prototype = $extend(silex.ui.dialog.DialogBase.prototype,{
-	onLoginError: function(msg) {
-		haxe.Log.trace("onLoginError " + msg,{ fileName : "AuthDialog.hx", lineNumber : 100, className : "silex.ui.dialog.AuthDialog", methodName : "onLoginError"});
-		org.slplayer.component.navigation.Page.openPage(this.dialogName,true,null,null,this.SLPlayerInstanceId);
-		var inputElements = this.rootElement.getElementsByClassName("error-text");
-		if(inputElements.length > 0) inputElements[0].innerHTML = msg;
-	}
-	,cancel: function() {
-		this.close();
-	}
-	,validate: function() {
-		var login;
-		try {
-			login = org.slplayer.util.DomTools.getSingleElement(this.rootElement,"input-field-login",true).value;
-		} catch( e ) {
-			throw "Could not find the input field for password. It is expected to have input-field-pass as a css class name.";
-		}
-		var pass;
-		try {
-			pass = org.slplayer.util.DomTools.getSingleElement(this.rootElement,"input-field-pass",true).value;
-		} catch( e ) {
-			throw "Could not find the input field for password. It is expected to have input-field-pass as a css class name.";
-		}
-		if(login == "" || pass == "") this.onLoginError("All fields are required."); else {
-			org.slplayer.component.navigation.Page.openPage("loading-pending",true,null,null,this.SLPlayerInstanceId);
-			haxe.Timer.delay((function(f,a1) {
-				return function() {
-					return f(a1);
-				};
-			})($bind(this,this.onLoginError),"Network error."),2000);
-		}
-	}
-	,__class__: silex.ui.dialog.AuthDialog
-});
 silex.ui.dialog.ModelDebugger = function(rootElement,SLPId) {
 	silex.ui.dialog.DialogBase.call(this,rootElement,SLPId,null,null,null,null);
 	new haxe.Timer(200).run = (function(f) {
@@ -7877,59 +7530,179 @@ silex.ui.dialog.ModelDebugger.prototype = $extend(silex.ui.dialog.DialogBase.pro
 	}
 	,__class__: silex.ui.dialog.ModelDebugger
 });
-silex.ui.dialog.OpenDialog = function(rootElement,SLPId) {
-	silex.ui.dialog.DialogBase.call(this,rootElement,SLPId,$bind(this,this.requestRedraw),null,$bind(this,this.validateSelection),$bind(this,this.cancelSelection));
+silex.ui.stage = {}
+silex.ui.stage.StageDropHandler = function(rootElement,SLPId) {
+	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
+	this.initialMarkerParent = rootElement.parentNode;
+	rootElement.addEventListener("dragEventDropped",$bind(this,this.onDrop),false);
+	rootElement.addEventListener("dragEventDrag",$bind(this,this.onDrag),false);
 };
-$hxClasses["silex.ui.dialog.OpenDialog"] = silex.ui.dialog.OpenDialog;
-silex.ui.dialog.OpenDialog.__name__ = ["silex","ui","dialog","OpenDialog"];
-silex.ui.dialog.OpenDialog.__super__ = silex.ui.dialog.DialogBase;
-silex.ui.dialog.OpenDialog.prototype = $extend(silex.ui.dialog.DialogBase.prototype,{
-	close: function() {
-		var list = this.getListComponent();
-		list.setSelectedItem(null);
-		silex.ui.dialog.DialogBase.prototype.close.call(this);
+$hxClasses["silex.ui.stage.StageDropHandler"] = silex.ui.stage.StageDropHandler;
+silex.ui.stage.StageDropHandler.__name__ = ["silex","ui","stage","StageDropHandler"];
+silex.ui.stage.StageDropHandler.__super__ = org.slplayer.component.ui.DisplayObject;
+silex.ui.stage.StageDropHandler.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
+	resetDraggedMarker: function() {
+		if(this.rootElement.parentNode != this.initialMarkerParent) this.initialMarkerParent.appendChild(this.rootElement);
+		haxe.Log.trace("ON DROP COMPLETE",{ fileName : "StageDropHandler.hx", lineNumber : 171, className : "silex.ui.stage.StageDropHandler", methodName : "resetDraggedMarker"});
 	}
-	,cancelSelection: function() {
-		this.close();
+	,onDrop: function(e) {
+		haxe.Log.trace("onDrop " + Std.string(e),{ fileName : "StageDropHandler.hx", lineNumber : 59, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
+		var event = e;
+		var dropZone = event.detail.dropZone;
+		var element;
+		var position;
+		var parent;
+		element = this.getDraggedElement(event.detail);
+		if(element != null) {
+			var beforeElement = null;
+			if(dropZone != null) {
+				position = dropZone.position;
+				parent = dropZone.parent;
+				haxe.Log.trace("parent = " + Std.string(parent) + "  - position= " + position,{ fileName : "StageDropHandler.hx", lineNumber : 85, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
+				if(parent.childNodes.length > position) {
+					var before = parent.childNodes[position];
+					while(before != null && (before.nodeType != 1 || before.getAttribute("data-silex-component-id") == null && before.getAttribute("data-silex-layer-id") == null)) before = before.nextSibling;
+					beforeElement = before;
+				}
+				if(parent.childNodes.length <= position) parent.appendChild(element); else parent.insertBefore(element,parent.childNodes[position + 1]);
+				haxe.Log.trace("Model 002",{ fileName : "StageDropHandler.hx", lineNumber : 119, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
+				var modelElement = silex.publication.PublicationModel.getInstance().getModelFromView(element);
+				haxe.Log.trace("Model 004",{ fileName : "StageDropHandler.hx", lineNumber : 121, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
+				var modelBeforeElement = silex.publication.PublicationModel.getInstance().getModelFromView(beforeElement);
+				haxe.Log.trace("Model 006 " + Std.string(parent),{ fileName : "StageDropHandler.hx", lineNumber : 123, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
+				var modelParent = silex.publication.PublicationModel.getInstance().getModelFromView(parent);
+				haxe.Log.trace("Model 008",{ fileName : "StageDropHandler.hx", lineNumber : 125, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
+				if(modelElement == null) throw "Error while moving the element: could not retrieve the element in the model.";
+				if(modelElement.parentNode == null) throw "Error while moving the element: the element in the model has no parent.";
+				if(modelBeforeElement == null) modelParent.appendChild(modelElement); else modelParent.insertBefore(modelElement,modelBeforeElement);
+			} else haxe.Log.trace("a drop zone was NOT found",{ fileName : "StageDropHandler.hx", lineNumber : 155, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
+		} else haxe.Log.trace("Nothing being dragged",{ fileName : "StageDropHandler.hx", lineNumber : 159, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
+		this.resetDraggedMarker();
 	}
-	,getListComponent: function() {
-		var listNode = org.slplayer.util.DomTools.getSingleElement(this.rootElement,"PublicationList",true);
-		return this.getSLPlayer().getAssociatedComponents(listNode,silex.ui.list.PublicationList).first();
+	,onDrag: function(e) {
+		haxe.Log.trace("onDrag " + Std.string(e),{ fileName : "StageDropHandler.hx", lineNumber : 50, className : "silex.ui.stage.StageDropHandler", methodName : "onDrag"});
+		var event = e;
+		this.setDraggedElement(event.detail);
 	}
-	,validateSelection: function() {
-		var list = this.getListComponent();
-		var item = list.getSelectedItem();
-		if(item != null) {
-			silex.publication.PublicationModel.getInstance().load(item.name,item.configData);
-			this.close();
+	,setDraggedElement: function(draggableEvent) {
+		throw "virtual method to be implemented in derived classes";
+	}
+	,getDraggedElement: function(draggableEvent) {
+		throw "virtual method to be implemented in derived classes";
+		return null;
+	}
+	,initialMarkerParent: null
+	,__class__: silex.ui.stage.StageDropHandler
+});
+silex.ui.stage.InsertDropHandler = function(rootElement,SLPId) {
+	silex.ui.stage.StageDropHandler.call(this,rootElement,SLPId);
+};
+$hxClasses["silex.ui.stage.InsertDropHandler"] = silex.ui.stage.InsertDropHandler;
+silex.ui.stage.InsertDropHandler.__name__ = ["silex","ui","stage","InsertDropHandler"];
+silex.ui.stage.InsertDropHandler.__super__ = silex.ui.stage.StageDropHandler;
+silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.StageDropHandler.prototype,{
+	addLayer: function(dropZone,page) {
+		if(page == null) throw "Error: No selected page. Could not add a layer to the page " + page.name + ".";
+		silex.layer.LayerModel.getInstance().addLayer(page,js.Lib.window.prompt("I need a name for your new container please."),dropZone.position);
+	}
+	,addComponent: function(dropZone,nodeName) {
+		var layers = silex.publication.PublicationModel.getInstance().application.getAssociatedComponents(dropZone.parent,org.slplayer.component.navigation.Layer);
+		if(layers.length != 1) throw "Error: search for the layer gave " + layers.length + " results";
+		return silex.component.ComponentModel.getInstance().addComponent(nodeName,layers.first(),dropZone.position);
+	}
+	,onDrop: function(e) {
+		haxe.Log.trace("onDrop " + Std.string(e),{ fileName : "InsertDropHandler.hx", lineNumber : 81, className : "silex.ui.stage.InsertDropHandler", methodName : "onDrop"});
+		silex.ui.stage.StageDropHandler.prototype.onDrop.call(this,e);
+		var event = e;
+		var dropZone = event.detail.dropZone;
+		if(dropZone != null) {
+			if(org.slplayer.util.DomTools.hasClass(this.rootElement,"image")) this.addComponent(dropZone,"img").setAttribute("src","enter image url here"); else if(org.slplayer.util.DomTools.hasClass(this.rootElement,"text")) this.addComponent(dropZone,"p").innerHTML = "Insert text here."; else if(org.slplayer.util.DomTools.hasClass(this.rootElement,"audio")) {
+				var element = this.addComponent(dropZone,"audio");
+				element.innerHTML = "<source>enter media url here</source>";
+				element.setAttribute("controls","controls");
+			} else if(org.slplayer.util.DomTools.hasClass(this.rootElement,"video")) {
+				var element = this.addComponent(dropZone,"video");
+				element.innerHTML = "<source>enter media url here</source>";
+				element.setAttribute("controls","controls");
+			} else if(org.slplayer.util.DomTools.hasClass(this.rootElement,"layer")) this.addLayer(dropZone,silex.page.PageModel.getInstance().selectedItem);
+		} else haxe.Log.trace("onDrop - a drop zone was NOT found",{ fileName : "InsertDropHandler.hx", lineNumber : 109, className : "silex.ui.stage.InsertDropHandler", methodName : "onDrop"});
+	}
+	,onDrag: function(e) {
+		haxe.Log.trace("onDrag " + Std.string(e),{ fileName : "InsertDropHandler.hx", lineNumber : 72, className : "silex.ui.stage.InsertDropHandler", methodName : "onDrag"});
+		silex.ui.stage.StageDropHandler.prototype.onDrag.call(this,e);
+		var event = e;
+		event.detail.draggable.groupElement = silex.publication.PublicationModel.getInstance().viewHtmlDom.parentNode;
+	}
+	,getDraggedElement: function(draggableEvent) {
+		return null;
+	}
+	,setDraggedElement: function(draggableEvent) {
+		haxe.Log.trace("setDraggedElement " + Std.string(draggableEvent),{ fileName : "InsertDropHandler.hx", lineNumber : 60, className : "silex.ui.stage.InsertDropHandler", methodName : "setDraggedElement"});
+	}
+	,__class__: silex.ui.stage.InsertDropHandler
+});
+silex.ui.stage.MasterDropHandler = function(rootElement,SLPId) {
+	silex.ui.stage.StageDropHandler.call(this,rootElement,SLPId);
+};
+$hxClasses["silex.ui.stage.MasterDropHandler"] = silex.ui.stage.MasterDropHandler;
+silex.ui.stage.MasterDropHandler.__name__ = ["silex","ui","stage","MasterDropHandler"];
+silex.ui.stage.MasterDropHandler.__super__ = silex.ui.stage.StageDropHandler;
+silex.ui.stage.MasterDropHandler.prototype = $extend(silex.ui.stage.StageDropHandler.prototype,{
+	addLayer: function() {
+		haxe.Log.trace("addLayer " + Std.string(silex.layer.LayerModel.getInstance().selectedItem),{ fileName : "MasterDropHandler.hx", lineNumber : 52, className : "silex.ui.stage.MasterDropHandler", methodName : "addLayer"});
+		var layer = silex.layer.LayerModel.getInstance().selectedItem;
+		var page = silex.page.PageModel.getInstance().selectedItem;
+		silex.layer.LayerModel.getInstance().addMaster(layer,page);
+	}
+	,onDrop: function(e) {
+		haxe.Log.trace("onDrop " + Std.string(e),{ fileName : "MasterDropHandler.hx", lineNumber : 46, className : "silex.ui.stage.MasterDropHandler", methodName : "onDrop"});
+		silex.ui.stage.StageDropHandler.prototype.onDrop.call(this,e);
+		var event = e;
+		org.slplayer.util.DomTools.doLater($bind(this,this.addLayer));
+	}
+	,getDraggedElement: function(draggableEvent) {
+		return null;
+	}
+	,setDraggedElement: function(draggableEvent) {
+		haxe.Log.trace("setDraggedElement " + Std.string(draggableEvent),{ fileName : "MasterDropHandler.hx", lineNumber : 34, className : "silex.ui.stage.MasterDropHandler", methodName : "setDraggedElement"});
+	}
+	,__class__: silex.ui.stage.MasterDropHandler
+});
+silex.ui.stage.MenuController = function(rootElement,SLPId) {
+	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
+	rootElement.addEventListener("click",$bind(this,this.onClick),false);
+};
+$hxClasses["silex.ui.stage.MenuController"] = silex.ui.stage.MenuController;
+silex.ui.stage.MenuController.__name__ = ["silex","ui","stage","MenuController"];
+silex.ui.stage.MenuController.__super__ = org.slplayer.component.ui.DisplayObject;
+silex.ui.stage.MenuController.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
+	onClick: function(e) {
+		var target = e.target;
+		var itemName = target.getAttribute("data-menu-item");
+		if(itemName == null) itemName = target.parentNode.getAttribute("data-menu-item");
+		haxe.Log.trace("Menu event " + itemName + " - " + target.className,{ fileName : "MenuController.hx", lineNumber : 42, className : "silex.ui.stage.MenuController", methodName : "onClick"});
+		switch(itemName) {
+		case "open":
+			org.slplayer.component.navigation.Page.openPage("open-dialog",true,null,null,this.SLPlayerInstanceId);
+			break;
+		case "close":
+			silex.publication.PublicationModel.getInstance().unload();
+			break;
+		case "save":
+			silex.publication.PublicationModel.getInstance().save();
+			break;
+		case "save-as":
+			var newName = js.Lib.window.prompt("New name for your publication?",silex.publication.PublicationModel.getInstance().currentName);
+			if(newName != null) silex.publication.PublicationModel.getInstance().saveAs(newName);
+			break;
+		case "save-copy":
+			var newName = js.Lib.window.prompt("What name for your copy?",silex.publication.PublicationModel.getInstance().currentName);
+			if(newName != null) silex.publication.PublicationModel.getInstance().saveACopy(newName);
+			break;
 		}
 	}
-	,requestRedraw: function(transitionData) {
-		this.getListComponent().redraw();
-	}
-	,__class__: silex.ui.dialog.OpenDialog
+	,__class__: silex.ui.stage.MenuController
 });
-silex.ui.list = {}
-silex.ui.list.PublicationList = function(rootElement,SLPId) {
-	org.slplayer.component.list.List.call(this,rootElement,SLPId);
-	this.publicationModel = silex.publication.PublicationModel.getInstance();
-	this.publicationModel.addEventListener("onPublicationList",$bind(this,this.onListResult),"PublicationList class");
-};
-$hxClasses["silex.ui.list.PublicationList"] = silex.ui.list.PublicationList;
-silex.ui.list.PublicationList.__name__ = ["silex","ui","list","PublicationList"];
-silex.ui.list.PublicationList.__super__ = org.slplayer.component.list.List;
-silex.ui.list.PublicationList.prototype = $extend(org.slplayer.component.list.List.prototype,{
-	onListResult: function(event) {
-		this.dataProvider = event.detail;
-		this.doRedraw();
-	}
-	,reloadData: function() {
-		silex.publication.PublicationModel.getInstance().loadList();
-	}
-	,publicationModel: null
-	,__class__: silex.ui.list.PublicationList
-});
-silex.ui.stage = {}
 silex.ui.stage.PublicationViewer = function(rootElement,SLPId) {
 	haxe.Log.trace("PublicationViewer INIT",{ fileName : "PublicationViewer.hx", lineNumber : 42, className : "silex.ui.stage.PublicationViewer", methodName : "new"});
 	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
@@ -7960,6 +7733,1173 @@ silex.ui.stage.PublicationViewer.prototype = $extend(org.slplayer.component.ui.D
 	,pageModel: null
 	,publicationModel: null
 	,__class__: silex.ui.stage.PublicationViewer
+});
+silex.ui.stage.SelectionController = function(rootElement,SLPId) {
+	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
+	var selectionContainer = js.Lib.document.body;
+	this.hoverLayerMarker = org.slplayer.util.DomTools.getSingleElement(rootElement,"hover-layer-marker",true);
+	this.hoverLayerMarker.addEventListener("mousedown",$bind(this,this.onClickLayerHover),false);
+	this.hoverLayerMarker.addEventListener("mouseout",$bind(this,this.onOutLayerHover),false);
+	this.selectionLayerMarker = org.slplayer.util.DomTools.getSingleElement(rootElement,"selection-layer-marker",true);
+	this.selectionLayerMarker.addEventListener("click",$bind(this,this.onClickLayerSelection),false);
+	this.hoverMarker = org.slplayer.util.DomTools.getSingleElement(rootElement,"hover-marker",true);
+	this.hoverMarker.addEventListener("mousedown",$bind(this,this.onClickHover),false);
+	this.hoverMarker.addEventListener("mouseout",$bind(this,this.onOutHover),false);
+	this.selectionMarker = org.slplayer.util.DomTools.getSingleElement(rootElement,"selection-marker",true);
+	this.selectionMarker.addEventListener("click",$bind(this,this.onClickSelection),false);
+	js.Lib.document.body.addEventListener("mousemove",$bind(this,this.onMouseMove),false);
+	this.componentModel = silex.component.ComponentModel.getInstance();
+	this.componentModel.addEventListener("onComponentSelectionChange",$bind(this,this.onSelectionChanged),"SelectionController class");
+	this.componentModel.addEventListener("onComponentHoverChange",$bind(this,this.onHoverChanged),"SelectionController class");
+	this.componentModel.addEventListener("onComponentListChange",$bind(this,this.redraw),"SelectionController class");
+	this.layerModel = silex.layer.LayerModel.getInstance();
+	this.layerModel.addEventListener("onLayerSelectionChange",$bind(this,this.onLayerSelectionChanged),"SelectionController class");
+	this.layerModel.addEventListener("onLayerHoverChange",$bind(this,this.onLayerHoverChanged),"SelectionController class");
+	this.layerModel.addEventListener("onLayerListChange",$bind(this,this.redraw),"SelectionController class");
+	silex.page.PageModel.getInstance().addEventListener("onPageListChange",$bind(this,this.redraw),"SelectionController class");
+	silex.publication.PublicationModel.getInstance().addEventListener("onPublicationData",$bind(this,this.redraw),"SelectionController class");
+	silex.property.PropertyModel.getInstance().addEventListener("onPropertyChange",$bind(this,this.redraw),"SelectionController class");
+	silex.property.PropertyModel.getInstance().addEventListener("onStyleChange",$bind(this,this.redraw),"SelectionController class");
+	rootElement.addEventListener("scroll",$bind(this,this.redraw),false);
+	js.Lib.window.addEventListener("resize",$bind(this,this.redraw),false);
+};
+$hxClasses["silex.ui.stage.SelectionController"] = silex.ui.stage.SelectionController;
+silex.ui.stage.SelectionController.__name__ = ["silex","ui","stage","SelectionController"];
+silex.ui.stage.SelectionController.__super__ = org.slplayer.component.ui.DisplayObject;
+silex.ui.stage.SelectionController.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
+	doSetMarkerPosition: function(marker,left,top,width,height) {
+		marker.style.left = left + "px";
+		marker.style.top = top + "px";
+		marker.style.width = width + "px";
+		marker.style.height = height + "px";
+	}
+	,setMarkerPosition: function(marker,target) {
+		if(target == null || target.style.display == "none") {
+			marker.style.display = "none";
+			marker.style.visibility = "hidden";
+		} else {
+			marker.style.display = "inline";
+			marker.style.visibility = "visible";
+			var boundingBox = org.slplayer.util.DomTools.getElementBoundingBox(target);
+			var markerMarginH = (marker.offsetWidth - marker.clientWidth) / 2.0;
+			var markerMarginV = (marker.offsetHeight - marker.clientHeight) / 2.0;
+			this.doSetMarkerPosition(marker,Math.floor(boundingBox.x - markerMarginH / 2),Math.floor(boundingBox.y - markerMarginV / 2),Math.floor(boundingBox.w - markerMarginH),Math.floor(boundingBox.h - markerMarginV));
+		}
+	}
+	,onHoverChanged: function(event) {
+		this.setMarkerPosition(this.hoverMarker,this.componentModel.hoveredItem);
+		if(this.componentModel.hoveredItem != null) this.setMarkerPosition(this.hoverLayerMarker,null);
+	}
+	,onSelectionChanged: function(event) {
+		this.setMarkerPosition(this.selectionMarker,this.componentModel.selectedItem);
+		if(this.componentModel.selectedItem != null) this.setMarkerPosition(this.selectionLayerMarker,null);
+	}
+	,onLayerHoverChanged: function(event) {
+		if(this.layerModel.hoveredItem == null || this.componentModel.hoveredItem != null) this.setMarkerPosition(this.hoverLayerMarker,null); else this.setMarkerPosition(this.hoverLayerMarker,this.layerModel.hoveredItem.rootElement);
+	}
+	,onLayerSelectionChanged: function(event) {
+		if(this.layerModel.selectedItem == null || this.componentModel.selectedItem != null) this.setMarkerPosition(this.selectionLayerMarker,null); else this.setMarkerPosition(this.selectionLayerMarker,this.layerModel.selectedItem.rootElement);
+	}
+	,checkIsOver: function(target,mouseX,mouseY) {
+		var boundingBox = org.slplayer.util.DomTools.getElementBoundingBox(target);
+		var res = mouseX > boundingBox.x && mouseX < boundingBox.x + boundingBox.w && mouseY > boundingBox.y && mouseY < boundingBox.y + boundingBox.h;
+		return res;
+	}
+	,onMouseMove: function(e) {
+		var found = false;
+		var layers = org.slplayer.util.DomTools.getElementsByAttribute(this.rootElement,"data-silex-layer-id","*");
+		var _g1 = 0, _g = layers.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			if(this.checkIsOver(layers[idx],e.pageX,e.pageY)) {
+				var application = silex.publication.PublicationModel.getInstance().application;
+				var layerList = application.getAssociatedComponents(layers[idx],org.slplayer.component.navigation.Layer);
+				if(layerList.length != 1) haxe.Log.trace("Warning: there should be 1 and only 1 Layer instance associated with this node, not " + layerList.length,{ fileName : "SelectionController.hx", lineNumber : 250, className : "silex.ui.stage.SelectionController", methodName : "onMouseMove"});
+				this.layerModel.setHoveredItem(layerList.first());
+				found = true;
+				break;
+			}
+		}
+		if(found == false) this.layerModel.setHoveredItem(null); else {
+		}
+		var found1 = false;
+		if(this.layerModel.hoveredItem != null) {
+			var comps = org.slplayer.util.DomTools.getElementsByAttribute(this.layerModel.hoveredItem.rootElement,"data-silex-component-id","*");
+			var _g1 = 0, _g = comps.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(this.checkIsOver(comps[idx],e.pageX,e.pageY)) {
+					this.componentModel.setHoveredItem(comps[idx]);
+					found1 = true;
+					break;
+				}
+			}
+		}
+		if(found1 == false) this.componentModel.setHoveredItem(null); else {
+		}
+	}
+	,onOutLayerHover: function(e) {
+		this.layerModel.setHoveredItem(null);
+	}
+	,onOutHover: function(e) {
+		this.componentModel.setHoveredItem(null);
+	}
+	,onClickLayerSelection: function(e) {
+		e.preventDefault();
+	}
+	,onClickSelection: function(e) {
+		e.preventDefault();
+	}
+	,onClickLayerHover: function(e) {
+		e.preventDefault();
+		this.layerModel.setSelectedItem(this.layerModel.hoveredItem);
+	}
+	,onClickHover: function(e) {
+		this.componentModel.setSelectedItem(this.componentModel.hoveredItem);
+	}
+	,redraw: function(e) {
+		haxe.Log.trace("redraw selection",{ fileName : "SelectionController.hx", lineNumber : 148, className : "silex.ui.stage.SelectionController", methodName : "redraw"});
+		if(this.layerModel.selectedItem == null) this.setMarkerPosition(this.selectionLayerMarker,null); else this.setMarkerPosition(this.selectionLayerMarker,this.layerModel.selectedItem.rootElement);
+		if(this.layerModel.hoveredItem == null) this.setMarkerPosition(this.hoverLayerMarker,null); else this.setMarkerPosition(this.hoverLayerMarker,this.layerModel.hoveredItem.rootElement);
+		this.setMarkerPosition(this.selectionMarker,this.componentModel.selectedItem);
+		this.setMarkerPosition(this.hoverMarker,this.componentModel.hoveredItem);
+	}
+	,layerModel: null
+	,componentModel: null
+	,hoverLayerMarker: null
+	,selectionLayerMarker: null
+	,hoverMarker: null
+	,selectionMarker: null
+	,__class__: silex.ui.stage.SelectionController
+});
+silex.ui.stage.SelectionMarker = function(rootElement,SLPId) {
+	silex.ui.stage.StageDropHandler.call(this,rootElement,SLPId);
+};
+$hxClasses["silex.ui.stage.SelectionMarker"] = silex.ui.stage.SelectionMarker;
+silex.ui.stage.SelectionMarker.__name__ = ["silex","ui","stage","SelectionMarker"];
+silex.ui.stage.SelectionMarker.draggedComponent = null;
+silex.ui.stage.SelectionMarker.draggedLayer = null;
+silex.ui.stage.SelectionMarker.indexOfChild = function(childNode) {
+	var i = 0;
+	var child = childNode;
+	while((child = child.previousSibling) != null) i++;
+	return i;
+}
+silex.ui.stage.SelectionMarker.__super__ = silex.ui.stage.StageDropHandler;
+silex.ui.stage.SelectionMarker.prototype = $extend(silex.ui.stage.StageDropHandler.prototype,{
+	onDrop: function(e) {
+		haxe.Log.trace("onDrop " + Std.string(e),{ fileName : "SelectionMarker.hx", lineNumber : 96, className : "silex.ui.stage.SelectionMarker", methodName : "onDrop"});
+		silex.ui.stage.StageDropHandler.prototype.onDrop.call(this,e);
+		if(silex.ui.stage.SelectionMarker.draggedComponent != null) silex.component.ComponentModel.getInstance().setSelectedItem(silex.component.ComponentModel.getInstance().selectedItem); else if(silex.ui.stage.SelectionMarker.draggedLayer != null) silex.layer.LayerModel.getInstance().setSelectedItem(silex.layer.LayerModel.getInstance().selectedItem);
+		silex.ui.stage.SelectionMarker.draggedComponent = null;
+		silex.ui.stage.SelectionMarker.draggedLayer = null;
+	}
+	,getDraggedElement: function(draggableEvent) {
+		haxe.Log.trace("getDraggedElement " + Std.string(draggableEvent),{ fileName : "SelectionMarker.hx", lineNumber : 78, className : "silex.ui.stage.SelectionMarker", methodName : "getDraggedElement"});
+		if(silex.ui.stage.SelectionMarker.draggedComponent != null) return silex.ui.stage.SelectionMarker.draggedComponent; else if(silex.ui.stage.SelectionMarker.draggedLayer != null) return silex.ui.stage.SelectionMarker.draggedLayer.rootElement; else throw "No component nor layer being dragged";
+	}
+	,setDraggedElement: function(draggableEvent) {
+		haxe.Log.trace("setDraggedElement " + Std.string(draggableEvent),{ fileName : "SelectionMarker.hx", lineNumber : 44, className : "silex.ui.stage.SelectionMarker", methodName : "setDraggedElement"});
+		if(silex.ui.stage.SelectionMarker.draggedComponent != null || silex.ui.stage.SelectionMarker.draggedLayer != null) throw "Error: could not start dragging this component or layer, another layer is still being dragged";
+		if(silex.component.ComponentModel.getInstance().selectedItem != null) {
+			haxe.Log.trace("setDraggedElement COMPONENT ",{ fileName : "SelectionMarker.hx", lineNumber : 52, className : "silex.ui.stage.SelectionMarker", methodName : "setDraggedElement"});
+			silex.ui.stage.SelectionMarker.draggedComponent = silex.component.ComponentModel.getInstance().selectedItem;
+		} else if(silex.layer.LayerModel.getInstance().selectedItem != null) {
+			haxe.Log.trace("setDraggedElement LAYER ",{ fileName : "SelectionMarker.hx", lineNumber : 60, className : "silex.ui.stage.SelectionMarker", methodName : "setDraggedElement"});
+			silex.ui.stage.SelectionMarker.draggedLayer = silex.layer.LayerModel.getInstance().selectedItem;
+		}
+	}
+	,__class__: silex.ui.stage.SelectionMarker
+});
+silex.ui.toolbox = {}
+silex.ui.toolbox.editor = {}
+silex.ui.toolbox.editor.EditorBase = function(rootElement,SLPId) {
+	this.propertyChangePending = false;
+	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
+	rootElement.addEventListener("input",$bind(this,this.onInput),true);
+	rootElement.addEventListener("change",$bind(this,this.onInput),true);
+	silex.property.PropertyModel.getInstance().addEventListener("onPropertyChange",$bind(this,this.onPropertyChange),"silex.ui.toolbox.editor.EditorBase class");
+	silex.component.ComponentModel.getInstance().addEventListener("onComponentSelectionChange",$bind(this,this.onSelectComponent),"silex.ui.toolbox.editor.EditorBase class");
+	silex.layer.LayerModel.getInstance().addEventListener("onLayerSelectionChange",$bind(this,this.onSelectLayer),"silex.ui.toolbox.editor.EditorBase class");
+	this.reset();
+};
+$hxClasses["silex.ui.toolbox.editor.EditorBase"] = silex.ui.toolbox.editor.EditorBase;
+silex.ui.toolbox.editor.EditorBase.__name__ = ["silex","ui","toolbox","editor","EditorBase"];
+silex.ui.toolbox.editor.EditorBase.__super__ = org.slplayer.component.ui.DisplayObject;
+silex.ui.toolbox.editor.EditorBase.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
+	abs2rel: function(url) {
+		if(url == null) return null;
+		if(url == "") return "";
+		var pubUrl = "publications/" + silex.publication.PublicationModel.getInstance().currentName + "/";
+		var idxPubFolder = url.indexOf(pubUrl);
+		if(idxPubFolder >= 0) {
+			var idxSlash = pubUrl.lastIndexOf("/");
+			var idxDot = pubUrl.lastIndexOf(".");
+			if(idxSlash < idxDot) pubUrl = HxOverrides.substr(pubUrl,idxSlash,null);
+			url = HxOverrides.substr(url,idxPubFolder + pubUrl.length,null);
+			haxe.Log.trace(" url " + url,{ fileName : "EditorBase.hx", lineNumber : 222, className : "silex.ui.toolbox.editor.EditorBase", methodName : "abs2rel"});
+		}
+		return url;
+	}
+	,onSelectLayer: function(e) {
+		if(e.detail == null) this.setSelectedItem(null); else this.setSelectedItem(e.detail.rootElement);
+	}
+	,onSelectComponent: function(e) {
+		this.setSelectedItem(e.detail);
+	}
+	,onPropertyChange: function(e) {
+		if(this.propertyChangePending) return;
+		this.refresh();
+	}
+	,onInput: function(e) {
+		e.preventDefault();
+		this.beforeApply();
+		this.apply();
+		this.afterApply();
+	}
+	,getInputValue: function(name,inputProperty) {
+		if(inputProperty == null) inputProperty = "value";
+		var element = org.slplayer.util.DomTools.getSingleElement(this.rootElement,name,true);
+		return Reflect.field(element,inputProperty);
+	}
+	,setInputValue: function(name,value,inputProperty) {
+		if(inputProperty == null) inputProperty = "value";
+		var element = org.slplayer.util.DomTools.getSingleElement(this.rootElement,name,true);
+		element[inputProperty] = value;
+	}
+	,getOptions: function(name) {
+		var element = org.slplayer.util.DomTools.getSingleElement(this.rootElement,name,true);
+		var options = element.getElementsByTagName("option");
+		return options;
+	}
+	,hasOptionValue: function(name,value) {
+		var element = org.slplayer.util.DomTools.getSingleElement(this.rootElement,name,true);
+		var options = element.getElementsByTagName("option");
+		var _g1 = 0, _g = options.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			if(options[idx].value == value) return true;
+		}
+		return false;
+	}
+	,refresh: function() {
+		if(this.selectedItem != null) this.load(this.selectedItem); else this.reset();
+	}
+	,setSelectedItem: function(item) {
+		this.selectedItem = item;
+		this.refresh();
+		return this.selectedItem;
+	}
+	,afterApply: function() {
+		this.propertyChangePending = false;
+	}
+	,beforeApply: function() {
+		this.propertyChangePending = true;
+	}
+	,apply: function() {
+		throw "this method should be implemented in the derived class";
+	}
+	,load: function(element) {
+		throw "this method should be implemented in the derived class";
+	}
+	,reset: function() {
+		throw "this method should be implemented in the derived class";
+	}
+	,propertyChangePending: null
+	,selectedItem: null
+	,__class__: silex.ui.toolbox.editor.EditorBase
+	,__properties__: {set_selectedItem:"setSelectedItem"}
+});
+silex.ui.toolbox.editor.BackgroundStyleEditor = function(rootElement,SLPId) {
+	silex.ui.toolbox.editor.EditorBase.call(this,rootElement,SLPId);
+};
+$hxClasses["silex.ui.toolbox.editor.BackgroundStyleEditor"] = silex.ui.toolbox.editor.BackgroundStyleEditor;
+silex.ui.toolbox.editor.BackgroundStyleEditor.__name__ = ["silex","ui","toolbox","editor","BackgroundStyleEditor"];
+silex.ui.toolbox.editor.BackgroundStyleEditor.__super__ = silex.ui.toolbox.editor.EditorBase;
+silex.ui.toolbox.editor.BackgroundStyleEditor.prototype = $extend(silex.ui.toolbox.editor.EditorBase.prototype,{
+	apply: function() {
+		haxe.Log.trace("apply " + Std.string(this.selectedItem),{ fileName : "BackgroundStyleEditor.hx", lineNumber : 171, className : "silex.ui.toolbox.editor.BackgroundStyleEditor", methodName : "apply"});
+		var propertyModel = silex.property.PropertyModel.getInstance();
+		var value = this.getInputValue("background_color");
+		propertyModel.setStyle(this.selectedItem,"backgroundColor",value);
+		var urls = this.getInputValue("multiple-src-property").split("\n");
+		var value1 = "";
+		var _g = 0;
+		while(_g < urls.length) {
+			var entry = urls[_g];
+			++_g;
+			if(StringTools.trim(entry) == "") continue;
+			if(value1 != "") value1 += ", ";
+			if(entry == "none" || entry == "inherit") value1 += entry; else value1 += "url('" + this.abs2rel(entry) + "')";
+		}
+		haxe.Log.trace("apply " + value1,{ fileName : "BackgroundStyleEditor.hx", lineNumber : 192, className : "silex.ui.toolbox.editor.BackgroundStyleEditor", methodName : "apply"});
+		propertyModel.setStyle(this.selectedItem,"backgroundImage","");
+		propertyModel.setStyle(this.selectedItem,"backgroundImage",value1);
+		var value2 = this.getInputValue("background_repeat");
+		propertyModel.setStyle(this.selectedItem,"backgroundRepeat",value2);
+		var value3 = this.getInputValue("background_attachment");
+		propertyModel.setStyle(this.selectedItem,"backgroundAttachment",value3);
+		var hpos = "";
+		var vpos = "";
+		var value4 = this.getInputValue("background_hpos");
+		if(value4 != "") hpos = value4; else {
+			var value5 = this.getInputValue("background_hpos_num");
+			var unit = this.getInputValue("background_hpos_unit");
+			hpos = value5 + unit;
+		}
+		var value5 = this.getInputValue("background_vpos");
+		if(value5 != "") vpos = value5; else {
+			var value6 = this.getInputValue("background_vpos_num");
+			var unit = this.getInputValue("background_vpos_unit");
+			vpos = value6 + unit;
+		}
+		propertyModel.setStyle(this.selectedItem,"backgroundPosition",hpos + " " + vpos);
+	}
+	,load: function(element) {
+		haxe.Log.trace("load " + Std.string(element),{ fileName : "BackgroundStyleEditor.hx", lineNumber : 56, className : "silex.ui.toolbox.editor.BackgroundStyleEditor", methodName : "load"});
+		var value = element.style.backgroundColor;
+		if(StringTools.startsWith(value.toLowerCase(),"rgb(") || StringTools.startsWith(value.toLowerCase(),"rgba(")) {
+			var decValue = 0;
+			value = HxOverrides.substr(value,value.indexOf("(") + 1,null);
+			value = HxOverrides.substr(value,0,value.lastIndexOf(")"));
+			var values = value.split(",");
+			decValue = Std.parseInt(values[0]) * 255 * 255 + Std.parseInt(values[1]) * 255 + Std.parseInt(values[2]);
+			if(values.length == 4) {
+				decValue *= 255;
+				decValue += Math.round(Std.parseFloat(values[3]) * 255);
+			}
+			this.setInputValue("background_color","#" + StringTools.hex(decValue,6));
+			haxe.Log.trace("load " + Std.string(values) + " -> " + decValue + " -> " + StringTools.hex(decValue),{ fileName : "BackgroundStyleEditor.hx", lineNumber : 74, className : "silex.ui.toolbox.editor.BackgroundStyleEditor", methodName : "load"});
+		} else this.setInputValue("background_color",value);
+		var values = element.style.backgroundImage.split(",");
+		var urls = new Array();
+		var _g1 = 0, _g = values.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			var value1 = values[idx];
+			value1 = StringTools.trim(value1);
+			if(StringTools.startsWith(value1.toLowerCase(),"url")) {
+				value1 = HxOverrides.substr(value1,value1.indexOf("(") + 1,null);
+				value1 = HxOverrides.substr(value1,0,value1.lastIndexOf(")"));
+				value1 = StringTools.trim(value1);
+				if(StringTools.startsWith(value1,"\"") || StringTools.startsWith(value1,"'")) {
+					value1 = HxOverrides.substr(value1,1,null);
+					value1 = HxOverrides.substr(value1,0,value1.length - 1);
+					value1 = StringTools.trim(value1);
+				}
+				value1 = this.abs2rel(value1);
+			}
+			urls.push(value1);
+		}
+		this.setInputValue("multiple-src-property",urls.join("\n"));
+		var value1 = element.style.backgroundRepeat;
+		this.setInputValue("background_repeat",value1);
+		var value2 = element.style.backgroundAttachment;
+		this.setInputValue("background_attachment",value2);
+		var hpos = "";
+		var vpos = "";
+		var value3 = element.style.backgroundPosition;
+		if(value3 != null || value3 != "") {
+			var values1 = value3.split(" ");
+			if(values1.length > 0) {
+				hpos = values1[0];
+				if(values1.length > 1) vpos = values1[1];
+			}
+		}
+		if(this.hasOptionValue("background_hpos",hpos)) {
+			this.setInputValue("background_hpos",hpos);
+			this.setInputValue("background_hpos_unit","");
+			this.setInputValue("background_hpos_num","");
+		} else {
+			var options = this.getOptions("background_hpos_unit");
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(hpos,options[idx].value)) {
+					this.setInputValue("background_hpos","");
+					this.setInputValue("background_hpos_num",Std.string(Std.parseInt(hpos)));
+					this.setInputValue("background_hpos_unit",options[idx].value);
+				}
+			}
+		}
+		if(this.hasOptionValue("background_vpos",vpos)) {
+			this.setInputValue("background_vpos",vpos);
+			this.setInputValue("background_vpos_unit","");
+			this.setInputValue("background_vpos_num","");
+		} else {
+			var options = this.getOptions("background_vpos_unit");
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(vpos,options[idx].value)) {
+					this.setInputValue("background_vpos","");
+					this.setInputValue("background_vpos_num",Std.string(Std.parseInt(vpos)));
+					this.setInputValue("background_vpos_unit",options[idx].value);
+				}
+			}
+		}
+	}
+	,reset: function() {
+		haxe.Log.trace("reset ",{ fileName : "BackgroundStyleEditor.hx", lineNumber : 32, className : "silex.ui.toolbox.editor.BackgroundStyleEditor", methodName : "reset"});
+		this.setInputValue("background_color","");
+		this.setInputValue("multiple-src-property","");
+		this.setInputValue("background_repeat","");
+		this.setInputValue("background_hpos","");
+		this.setInputValue("background_hpos_unit","");
+		this.setInputValue("background_hpos_num","");
+		this.setInputValue("background_vpos","");
+		this.setInputValue("background_vpos_unit","");
+		this.setInputValue("background_vpos_num","");
+	}
+	,__class__: silex.ui.toolbox.editor.BackgroundStyleEditor
+});
+silex.ui.toolbox.editor.BlockStyleEditor = function(rootElement,SLPId) {
+	silex.ui.toolbox.editor.EditorBase.call(this,rootElement,SLPId);
+};
+$hxClasses["silex.ui.toolbox.editor.BlockStyleEditor"] = silex.ui.toolbox.editor.BlockStyleEditor;
+silex.ui.toolbox.editor.BlockStyleEditor.__name__ = ["silex","ui","toolbox","editor","BlockStyleEditor"];
+silex.ui.toolbox.editor.BlockStyleEditor.__super__ = silex.ui.toolbox.editor.EditorBase;
+silex.ui.toolbox.editor.BlockStyleEditor.prototype = $extend(silex.ui.toolbox.editor.EditorBase.prototype,{
+	apply: function() {
+		var propertyModel = silex.property.PropertyModel.getInstance();
+		var pos = "";
+		var value = this.getInputValue("block_wordspacing");
+		if(value != "") pos = value; else {
+			var value1 = this.getInputValue("block_wordspacing_num");
+			var unit = this.getInputValue("block_wordspacing_unit");
+			pos = value1 + unit;
+		}
+		propertyModel.setStyle(this.selectedItem,"wordSpacing",pos);
+		var pos1 = "";
+		var value1 = this.getInputValue("block_letterspacing");
+		if(value1 != "") pos1 = value1; else {
+			var value2 = this.getInputValue("block_letterspacing_num");
+			var unit = this.getInputValue("block_letterspacing_unit");
+			pos1 = value2 + unit;
+		}
+		propertyModel.setStyle(this.selectedItem,"letterSpacing",pos1);
+		var value2 = this.getInputValue("block_text_indent");
+		var unit = this.getInputValue("block_text_indent_unit");
+		propertyModel.setStyle(this.selectedItem,"textIndent",value2 + unit);
+		propertyModel.setStyle(this.selectedItem,"textAlign",this.getInputValue("block_text_align"));
+		propertyModel.setStyle(this.selectedItem,"verticalAlign",this.getInputValue("block_vertical_alignment"));
+		propertyModel.setStyle(this.selectedItem,"whiteSpace",this.getInputValue("block_whitespace"));
+		propertyModel.setStyle(this.selectedItem,"display",this.getInputValue("block_display"));
+	}
+	,load: function(element) {
+		var value = element.style.wordSpacing;
+		if(this.hasOptionValue("block_wordspacing",value)) {
+			this.setInputValue("block_wordspacing",value);
+			this.setInputValue("block_wordspacing_unit","");
+			this.setInputValue("block_wordspacing_num","");
+		} else {
+			var options = this.getOptions("block_wordspacing_unit");
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(value,options[idx].value)) {
+					this.setInputValue("block_wordspacing","");
+					this.setInputValue("block_wordspacing_num",Std.string(Std.parseInt(value)));
+					this.setInputValue("block_wordspacing_unit",options[idx].value);
+				}
+			}
+		}
+		var value1 = element.style.letterSpacing;
+		if(this.hasOptionValue("block_letterspacing",value1)) {
+			this.setInputValue("block_letterspacing",value1);
+			this.setInputValue("block_letterspacing_unit","");
+			this.setInputValue("block_letterspacing_num","");
+		} else {
+			var options = this.getOptions("block_letterspacing_unit");
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(value1,options[idx].value)) {
+					this.setInputValue("block_letterspacing","");
+					this.setInputValue("block_letterspacing_num",Std.string(Std.parseInt(value1)));
+					this.setInputValue("block_letterspacing_unit",options[idx].value);
+				}
+			}
+		}
+		var value2 = element.style.textIndent;
+		if(value2 == null || value2 == "") {
+			this.setInputValue("block_text_indent","");
+			this.setInputValue("block_text_indent_unit","");
+		} else {
+			var options = this.getOptions("block_text_indent_unit");
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(value2,options[idx].value)) {
+					this.setInputValue("block_text_indent",Std.string(Std.parseInt(value2)));
+					this.setInputValue("block_text_indent_unit",options[idx].value);
+				}
+			}
+		}
+		this.setInputValue("block_text_align",element.style.textAlign);
+		this.setInputValue("block_vertical_alignment",element.style.verticalAlign);
+		this.setInputValue("block_whitespace",element.style.whiteSpace);
+		this.setInputValue("block_display",element.style.display);
+	}
+	,reset: function() {
+		this.setInputValue("block_wordspacing","");
+		this.setInputValue("block_wordspacing_unit","");
+		this.setInputValue("block_wordspacing_num","");
+		this.setInputValue("block_letterspacing","");
+		this.setInputValue("block_letterspacing_unit","");
+		this.setInputValue("block_letterspacing_num","");
+		this.setInputValue("block_text_indent","");
+		this.setInputValue("block_text_indent_unit","");
+		this.setInputValue("block_text_align","");
+		this.setInputValue("block_vertical_alignment","");
+		this.setInputValue("block_whitespace","");
+		this.setInputValue("block_display","");
+	}
+	,__class__: silex.ui.toolbox.editor.BlockStyleEditor
+});
+silex.ui.toolbox.editor.BoxStyleEditor = function(rootElement,SLPId) {
+	silex.ui.toolbox.editor.EditorBase.call(this,rootElement,SLPId);
+};
+$hxClasses["silex.ui.toolbox.editor.BoxStyleEditor"] = silex.ui.toolbox.editor.BoxStyleEditor;
+silex.ui.toolbox.editor.BoxStyleEditor.__name__ = ["silex","ui","toolbox","editor","BoxStyleEditor"];
+silex.ui.toolbox.editor.BoxStyleEditor.__super__ = silex.ui.toolbox.editor.EditorBase;
+silex.ui.toolbox.editor.BoxStyleEditor.prototype = $extend(silex.ui.toolbox.editor.EditorBase.prototype,{
+	apply: function() {
+		var propertyModel = silex.property.PropertyModel.getInstance();
+		var value = this.getInputValue("box_width");
+		var unit = this.getInputValue("box_width_unit");
+		propertyModel.setStyle(this.selectedItem,"width",value + unit);
+		var value1 = this.getInputValue("box_height");
+		var unit1 = this.getInputValue("box_height_unit");
+		propertyModel.setStyle(this.selectedItem,"height",value1 + unit1);
+		propertyModel.setStyle(this.selectedItem,"cssFloat",this.getInputValue("box_float"));
+		propertyModel.setStyle(this.selectedItem,"clear",this.getInputValue("box_clear"));
+	}
+	,load: function(element) {
+		var value = element.style.width;
+		if(value == null || value == "") {
+			this.setInputValue("box_width","");
+			this.setInputValue("box_width_unit","");
+		} else {
+			var options = this.getOptions("box_width_unit");
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(value,options[idx].value)) {
+					this.setInputValue("box_width",Std.string(Std.parseInt(value)));
+					this.setInputValue("box_width_unit",options[idx].value);
+				}
+			}
+		}
+		var value1 = element.style.height;
+		if(value1 == null || value1 == "") {
+			this.setInputValue("box_height","");
+			this.setInputValue("box_height_unit","");
+		} else {
+			var options = this.getOptions("box_height_unit");
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(value1,options[idx].value)) {
+					this.setInputValue("box_height",Std.string(Std.parseInt(value1)));
+					this.setInputValue("box_height_unit",options[idx].value);
+				}
+			}
+		}
+		this.setInputValue("box_float",element.style.cssFloat);
+		this.setInputValue("box_clear",element.style.clear);
+	}
+	,reset: function() {
+		this.setInputValue("box_width","");
+		this.setInputValue("box_width_unit","");
+		this.setInputValue("box_height","");
+		this.setInputValue("box_height_unit","");
+		this.setInputValue("box_float","");
+		this.setInputValue("box_clear","");
+	}
+	,__class__: silex.ui.toolbox.editor.BoxStyleEditor
+});
+silex.ui.toolbox.editor.BoxTypeEditorBase = function(rootElement,SLPId,prefix,stylePrefix,topStyleSufix,leftStyleSufix,rightStyleSufix,bottomStyleSufix) {
+	if(bottomStyleSufix == null) bottomStyleSufix = "Bottom";
+	if(rightStyleSufix == null) rightStyleSufix = "Right";
+	if(leftStyleSufix == null) leftStyleSufix = "Left";
+	if(topStyleSufix == null) topStyleSufix = "Top";
+	this.prefix = prefix;
+	this.stylePrefix = stylePrefix;
+	this.topStyleSufix = topStyleSufix;
+	this.leftStyleSufix = leftStyleSufix;
+	this.rightStyleSufix = rightStyleSufix;
+	this.bottomStyleSufix = bottomStyleSufix;
+	silex.ui.toolbox.editor.EditorBase.call(this,rootElement,SLPId);
+};
+$hxClasses["silex.ui.toolbox.editor.BoxTypeEditorBase"] = silex.ui.toolbox.editor.BoxTypeEditorBase;
+silex.ui.toolbox.editor.BoxTypeEditorBase.__name__ = ["silex","ui","toolbox","editor","BoxTypeEditorBase"];
+silex.ui.toolbox.editor.BoxTypeEditorBase.__super__ = silex.ui.toolbox.editor.EditorBase;
+silex.ui.toolbox.editor.BoxTypeEditorBase.prototype = $extend(silex.ui.toolbox.editor.EditorBase.prototype,{
+	apply: function() {
+		var propertyModel = silex.property.PropertyModel.getInstance();
+		haxe.Log.trace("apply " + this.stylePrefix + this.topStyleSufix,{ fileName : "BoxTypeEditorBase.hx", lineNumber : 146, className : "silex.ui.toolbox.editor.BoxTypeEditorBase", methodName : "apply"});
+		var value = this.getInputValue(this.prefix + "_top");
+		var unit = this.getInputValue(this.prefix + "_top_unit");
+		propertyModel.setStyle(this.selectedItem,this.stylePrefix + this.topStyleSufix,value + unit);
+		var value1 = this.getInputValue(this.prefix + "_left");
+		var unit1 = this.getInputValue(this.prefix + "_left_unit");
+		propertyModel.setStyle(this.selectedItem,this.stylePrefix + this.leftStyleSufix,value1 + unit1);
+		var value2 = this.getInputValue(this.prefix + "_right");
+		var unit2 = this.getInputValue(this.prefix + "_right_unit");
+		propertyModel.setStyle(this.selectedItem,this.stylePrefix + this.rightStyleSufix,value2 + unit2);
+		var value3 = this.getInputValue(this.prefix + "_bottom");
+		var unit3 = this.getInputValue(this.prefix + "_bottom_unit");
+		propertyModel.setStyle(this.selectedItem,this.stylePrefix + this.bottomStyleSufix,value3 + unit3);
+	}
+	,load: function(element) {
+		var propertyModel = silex.property.PropertyModel.getInstance();
+		var value = propertyModel.getStyle(element,this.stylePrefix + this.topStyleSufix);
+		if(value == null || value == "") {
+			this.setInputValue(this.prefix + "_top","");
+			this.setInputValue(this.prefix + "_top_unit","");
+		} else {
+			var options = this.getOptions(this.prefix + "_top_unit");
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(value,options[idx].value)) {
+					this.setInputValue(this.prefix + "_top",Std.string(Std.parseInt(value)));
+					this.setInputValue(this.prefix + "_top_unit",options[idx].value);
+				}
+			}
+		}
+		var value1 = propertyModel.getStyle(element,this.stylePrefix + this.leftStyleSufix);
+		if(value1 == null || value1 == "") {
+			this.setInputValue(this.prefix + "_left","");
+			this.setInputValue(this.prefix + "_left_unit","");
+		} else {
+			var options = this.getOptions(this.prefix + "_left_unit");
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(value1,options[idx].value)) {
+					this.setInputValue(this.prefix + "_left",Std.string(Std.parseInt(value1)));
+					this.setInputValue(this.prefix + "_left_unit",options[idx].value);
+				}
+			}
+		}
+		var value2 = propertyModel.getStyle(element,this.stylePrefix + this.rightStyleSufix);
+		if(value2 == null || value2 == "") {
+			this.setInputValue(this.prefix + "_right","");
+			this.setInputValue(this.prefix + "_right_unit","");
+		} else {
+			var options = this.getOptions(this.prefix + "_right_unit");
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(value2,options[idx].value)) {
+					this.setInputValue(this.prefix + "_right",Std.string(Std.parseInt(value2)));
+					this.setInputValue(this.prefix + "_right_unit",options[idx].value);
+				}
+			}
+		}
+		var value3 = propertyModel.getStyle(element,this.stylePrefix + this.bottomStyleSufix);
+		if(value3 == null || value3 == "") {
+			this.setInputValue(this.prefix + "_bottom","");
+			this.setInputValue(this.prefix + "_bottom_unit","");
+		} else {
+			var options = this.getOptions(this.prefix + "_bottom_unit");
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(value3,options[idx].value)) {
+					this.setInputValue(this.prefix + "_bottom",Std.string(Std.parseInt(value3)));
+					this.setInputValue(this.prefix + "_bottom_unit",options[idx].value);
+				}
+			}
+		}
+	}
+	,reset: function() {
+		this.setInputValue(this.prefix + "_top","");
+		this.setInputValue(this.prefix + "_top_unit","");
+		this.setInputValue(this.prefix + "_left","");
+		this.setInputValue(this.prefix + "_left_unit","");
+		this.setInputValue(this.prefix + "_right","");
+		this.setInputValue(this.prefix + "_right_unit","");
+		this.setInputValue(this.prefix + "_bottom","");
+		this.setInputValue(this.prefix + "_bottom_unit","");
+	}
+	,bottomStyleSufix: null
+	,rightStyleSufix: null
+	,leftStyleSufix: null
+	,topStyleSufix: null
+	,stylePrefix: null
+	,prefix: null
+	,__class__: silex.ui.toolbox.editor.BoxTypeEditorBase
+});
+silex.ui.toolbox.editor.ClipStyleEditor = function(rootElement,SLPId) {
+	silex.ui.toolbox.editor.EditorBase.call(this,rootElement,SLPId);
+};
+$hxClasses["silex.ui.toolbox.editor.ClipStyleEditor"] = silex.ui.toolbox.editor.ClipStyleEditor;
+silex.ui.toolbox.editor.ClipStyleEditor.__name__ = ["silex","ui","toolbox","editor","ClipStyleEditor"];
+silex.ui.toolbox.editor.ClipStyleEditor.__super__ = silex.ui.toolbox.editor.EditorBase;
+silex.ui.toolbox.editor.ClipStyleEditor.prototype = $extend(silex.ui.toolbox.editor.EditorBase.prototype,{
+	apply: function() {
+		var propertyModel = silex.property.PropertyModel.getInstance();
+		var top, right, bottom, left;
+		var value = this.getInputValue("positioning_clip_top");
+		var unit = this.getInputValue("positioning_clip_top_unit");
+		top = value + unit;
+		var value1 = this.getInputValue("positioning_clip_right");
+		var unit1 = this.getInputValue("positioning_clip_right_unit");
+		right = value1 + unit1;
+		var value2 = this.getInputValue("positioning_clip_bottom");
+		var unit2 = this.getInputValue("positioning_clip_bottom_unit");
+		bottom = value2 + unit2;
+		var value3 = this.getInputValue("positioning_clip_left");
+		var unit3 = this.getInputValue("positioning_clip_left_unit");
+		left = value3 + unit3;
+		propertyModel.setStyle(this.selectedItem,"clip","rect(" + top + ", " + right + ", " + bottom + ", " + left + ")");
+	}
+	,load: function(element) {
+		var propertyModel = silex.property.PropertyModel.getInstance();
+		var value = propertyModel.getStyle(element,"clip");
+		var initialValue = value;
+		if(value == null) this.reset(); else {
+			value = StringTools.trim(value.toLowerCase());
+			if(StringTools.startsWith(value,"rect")) {
+				var top, right, bottom, left;
+				value = StringTools.replace(value,"rect","");
+				value = StringTools.replace(value,"(","");
+				value = StringTools.replace(value,")","");
+				value = StringTools.trim(value);
+				var splitVal = value.split(",");
+				if(splitVal.length != 4) throw "Error: could not extract values for clip style (clip=\"" + initialValue + "\";)";
+				top = StringTools.trim(splitVal[0]);
+				right = StringTools.trim(splitVal[1]);
+				bottom = StringTools.trim(splitVal[2]);
+				left = StringTools.trim(splitVal[3]);
+				var options = this.getOptions("positioning_clip_top_unit");
+				var _g1 = 0, _g = options.length;
+				while(_g1 < _g) {
+					var idx = _g1++;
+					if(StringTools.endsWith(top,options[idx].value)) {
+						this.setInputValue("positioning_clip_top",Std.string(Std.parseInt(top)));
+						this.setInputValue("positioning_clip_top_unit",options[idx].value);
+					}
+				}
+				var options1 = this.getOptions("positioning_clip_right_unit");
+				var _g1 = 0, _g = options1.length;
+				while(_g1 < _g) {
+					var idx = _g1++;
+					if(StringTools.endsWith(right,options1[idx].value)) {
+						this.setInputValue("positioning_clip_right",Std.string(Std.parseInt(right)));
+						this.setInputValue("positioning_clip_right_unit",options1[idx].value);
+					}
+				}
+				var options2 = this.getOptions("positioning_clip_bottom_unit");
+				var _g1 = 0, _g = options2.length;
+				while(_g1 < _g) {
+					var idx = _g1++;
+					if(StringTools.endsWith(bottom,options2[idx].value)) {
+						this.setInputValue("positioning_clip_bottom",Std.string(Std.parseInt(bottom)));
+						this.setInputValue("positioning_clip_bottom_unit",options2[idx].value);
+					}
+				}
+				var options3 = this.getOptions("positioning_clip_left_unit");
+				var _g1 = 0, _g = options3.length;
+				while(_g1 < _g) {
+					var idx = _g1++;
+					if(StringTools.endsWith(left,options3[idx].value)) {
+						this.setInputValue("positioning_clip_left",Std.string(Std.parseInt(left)));
+						this.setInputValue("positioning_clip_left_unit",options3[idx].value);
+					}
+				}
+			} else this.reset();
+		}
+	}
+	,reset: function() {
+		this.setInputValue("positioning_clip_top","");
+		this.setInputValue("positioning_clip_top_unit","");
+		this.setInputValue("positioning_clip_right","");
+		this.setInputValue("positioning_clip_right_unit","");
+		this.setInputValue("positioning_clip_bottom","");
+		this.setInputValue("positioning_clip_bottom_unit","");
+		this.setInputValue("positioning_clip_left","");
+		this.setInputValue("positioning_clip_left_unit","");
+	}
+	,__class__: silex.ui.toolbox.editor.ClipStyleEditor
+});
+silex.ui.toolbox.editor.MarginStyleEditor = function(rootElement,SLPId) {
+	silex.ui.toolbox.editor.BoxTypeEditorBase.call(this,rootElement,SLPId,"box_margin","margin");
+};
+$hxClasses["silex.ui.toolbox.editor.MarginStyleEditor"] = silex.ui.toolbox.editor.MarginStyleEditor;
+silex.ui.toolbox.editor.MarginStyleEditor.__name__ = ["silex","ui","toolbox","editor","MarginStyleEditor"];
+silex.ui.toolbox.editor.MarginStyleEditor.__super__ = silex.ui.toolbox.editor.BoxTypeEditorBase;
+silex.ui.toolbox.editor.MarginStyleEditor.prototype = $extend(silex.ui.toolbox.editor.BoxTypeEditorBase.prototype,{
+	__class__: silex.ui.toolbox.editor.MarginStyleEditor
+});
+silex.ui.toolbox.editor.PaddingStyleEditor = function(rootElement,SLPId) {
+	silex.ui.toolbox.editor.BoxTypeEditorBase.call(this,rootElement,SLPId,"box_padding","padding");
+};
+$hxClasses["silex.ui.toolbox.editor.PaddingStyleEditor"] = silex.ui.toolbox.editor.PaddingStyleEditor;
+silex.ui.toolbox.editor.PaddingStyleEditor.__name__ = ["silex","ui","toolbox","editor","PaddingStyleEditor"];
+silex.ui.toolbox.editor.PaddingStyleEditor.__super__ = silex.ui.toolbox.editor.BoxTypeEditorBase;
+silex.ui.toolbox.editor.PaddingStyleEditor.prototype = $extend(silex.ui.toolbox.editor.BoxTypeEditorBase.prototype,{
+	__class__: silex.ui.toolbox.editor.PaddingStyleEditor
+});
+silex.ui.toolbox.editor.PlacementStyleEditor = function(rootElement,SLPId) {
+	silex.ui.toolbox.editor.BoxTypeEditorBase.call(this,rootElement,SLPId,"positioning_placement","","top","left","right","bottom");
+};
+$hxClasses["silex.ui.toolbox.editor.PlacementStyleEditor"] = silex.ui.toolbox.editor.PlacementStyleEditor;
+silex.ui.toolbox.editor.PlacementStyleEditor.__name__ = ["silex","ui","toolbox","editor","PlacementStyleEditor"];
+silex.ui.toolbox.editor.PlacementStyleEditor.__super__ = silex.ui.toolbox.editor.BoxTypeEditorBase;
+silex.ui.toolbox.editor.PlacementStyleEditor.prototype = $extend(silex.ui.toolbox.editor.BoxTypeEditorBase.prototype,{
+	__class__: silex.ui.toolbox.editor.PlacementStyleEditor
+});
+silex.ui.toolbox.editor.PositionStyleEditor = function(rootElement,SLPId) {
+	silex.ui.toolbox.editor.EditorBase.call(this,rootElement,SLPId);
+};
+$hxClasses["silex.ui.toolbox.editor.PositionStyleEditor"] = silex.ui.toolbox.editor.PositionStyleEditor;
+silex.ui.toolbox.editor.PositionStyleEditor.__name__ = ["silex","ui","toolbox","editor","PositionStyleEditor"];
+silex.ui.toolbox.editor.PositionStyleEditor.__super__ = silex.ui.toolbox.editor.EditorBase;
+silex.ui.toolbox.editor.PositionStyleEditor.prototype = $extend(silex.ui.toolbox.editor.EditorBase.prototype,{
+	apply: function() {
+		var propertyModel = silex.property.PropertyModel.getInstance();
+		var value = this.getInputValue("positioning_type");
+		if(value == "") value = null;
+		propertyModel.setStyle(this.selectedItem,"position",value);
+		var value1 = this.getInputValue("positioning_visibility");
+		if(value1 == "") value1 = null;
+		propertyModel.setStyle(this.selectedItem,"visibility",value1);
+		var value2 = this.getInputValue("positioning_zindex");
+		if(value2 == "") value2 = null;
+		propertyModel.setStyle(this.selectedItem,"zIndex",value2);
+		var value3 = this.getInputValue("positioning_overflow");
+		if(value3 == "") value3 = null;
+		propertyModel.setStyle(this.selectedItem,"overflow",value3);
+		var value4 = this.getInputValue("positioning_width");
+		var unit = this.getInputValue("positioning_width_unit");
+		propertyModel.setStyle(this.selectedItem,"width",value4 + unit);
+		var value5 = this.getInputValue("positioning_height");
+		var unit1 = this.getInputValue("positioning_height_unit");
+		propertyModel.setStyle(this.selectedItem,"height",value5 + unit1);
+	}
+	,load: function(element) {
+		var value = element.style.position;
+		if(value == null || value == "") this.setInputValue("positioning_type",""); else this.setInputValue("positioning_type",value);
+		var value1 = element.style.visibility;
+		if(value1 == null || value1 == "") this.setInputValue("positioning_visibility",""); else this.setInputValue("positioning_visibility",value1);
+		var value2 = element.style.zIndex;
+		if(value2 == null) this.setInputValue("positioning_zindex",""); else this.setInputValue("positioning_zindex",value2);
+		var value3 = element.style.overflow;
+		if(value3 == null) this.setInputValue("positioning_overflow",""); else this.setInputValue("positioning_overflow",value3);
+		var value4 = element.style.width;
+		if(value4 == null || value4 == "") {
+			this.setInputValue("positioning_width","");
+			this.setInputValue("positioning_width_unit","");
+		} else {
+			var options = this.getOptions("positioning_width_unit");
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(value4,options[idx].value)) {
+					this.setInputValue("positioning_width",Std.string(Std.parseInt(value4)));
+					this.setInputValue("positioning_width_unit",options[idx].value);
+				}
+			}
+		}
+		var value5 = element.style.height;
+		if(value5 == null || value5 == "") {
+			this.setInputValue("positioning_height","");
+			this.setInputValue("positioning_height_unit","");
+		} else {
+			var options = this.getOptions("positioning_height_unit");
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(value5,options[idx].value)) {
+					this.setInputValue("positioning_height",Std.string(Std.parseInt(value5)));
+					this.setInputValue("positioning_height_unit",options[idx].value);
+				}
+			}
+		}
+	}
+	,reset: function() {
+		this.setInputValue("positioning_type","");
+		this.setInputValue("positioning_visibility","");
+		this.setInputValue("positioning_zindex","");
+		this.setInputValue("positioning_overflow","");
+		this.setInputValue("positioning_width","");
+		this.setInputValue("positioning_width_unit","");
+		this.setInputValue("positioning_height","");
+		this.setInputValue("positioning_height_unit","");
+	}
+	,__class__: silex.ui.toolbox.editor.PositionStyleEditor
+});
+silex.ui.toolbox.editor.PropertyEditor = function(rootElement,SLPId) {
+	silex.ui.toolbox.editor.EditorBase.call(this,rootElement,SLPId);
+	rootElement.addEventListener("click",$bind(this,this.onClick),true);
+};
+$hxClasses["silex.ui.toolbox.editor.PropertyEditor"] = silex.ui.toolbox.editor.PropertyEditor;
+silex.ui.toolbox.editor.PropertyEditor.__name__ = ["silex","ui","toolbox","editor","PropertyEditor"];
+silex.ui.toolbox.editor.PropertyEditor.styleSheet = null;
+silex.ui.toolbox.editor.PropertyEditor.__super__ = silex.ui.toolbox.editor.EditorBase;
+silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.editor.EditorBase.prototype,{
+	apply: function() {
+		var propertyModel = silex.property.PropertyModel.getInstance();
+		var value = this.getInputValue("name-property");
+		if(value != null && value != "") propertyModel.setProperty(this.selectedItem,"title",this.getInputValue("name-property")); else propertyModel.setProperty(this.selectedItem,"title",null);
+		var value1 = this.getInputValue("src-property");
+		if(value1 != null && value1 != "") propertyModel.setProperty(this.selectedItem,"src",this.abs2rel(value1)); else if(Reflect.hasField(this.selectedItem,"src")) propertyModel.setProperty(this.selectedItem,"src","");
+		var modelHtmlDom = silex.publication.PublicationModel.getInstance().getModelFromView(this.selectedItem);
+		var sources = modelHtmlDom.getElementsByTagName("source");
+		var _g1 = 0, _g = sources.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			sources[0].parentNode.removeChild(sources[0]);
+		}
+		var sources1 = this.selectedItem.getElementsByTagName("source");
+		var _g1 = 0, _g = sources1.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			sources1[0].parentNode.removeChild(sources1[0]);
+		}
+		var value2 = this.getInputValue("multiple-src-property");
+		if(value2 != null) {
+			var urls = value2.split("\n");
+			var _g = 0;
+			while(_g < urls.length) {
+				var sourceUrl = urls[_g];
+				++_g;
+				if(sourceUrl != "") {
+					var sourceElement = js.Lib.document.createElement("source");
+					sourceElement.src = this.abs2rel(sourceUrl);
+					modelHtmlDom.appendChild(sourceElement);
+					var sourceElement1 = js.Lib.document.createElement("source");
+					sourceElement1.src = this.abs2rel(sourceUrl);
+					this.selectedItem.appendChild(sourceElement1);
+				}
+			}
+		}
+		var value3 = this.getInputValue("auto-start-property","checked");
+		propertyModel.setProperty(this.selectedItem,"autoplay",value3);
+		var value4 = this.getInputValue("controls-property","checked");
+		propertyModel.setProperty(this.selectedItem,"controls",value4);
+		var value5 = this.getInputValue("loop-property","checked");
+		propertyModel.setProperty(this.selectedItem,"loop",value5);
+		var value6 = this.getInputValue("master-property","checked");
+		if(value6 == true) propertyModel.setAttribute(this.selectedItem,"data-master","true"); else propertyModel.setAttribute(this.selectedItem,"data-master",null);
+	}
+	,load: function(element) {
+		haxe.Log.trace("load " + Std.string(element),{ fileName : "PropertyEditor.hx", lineNumber : 97, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "load"});
+		var contextArray = [];
+		if(org.slplayer.util.DomTools.hasClass(element,"Layer")) contextArray.push("context-layer"); else switch(element.nodeName.toLowerCase()) {
+		case "audio":
+			contextArray.push("context-audio");
+			break;
+		case "video":
+			contextArray.push("context-video");
+			break;
+		case "p":
+			contextArray.push("context-txt");
+			break;
+		case "img":
+			contextArray.push("context-img");
+			break;
+		case "div":
+			contextArray.push("context-div");
+			break;
+		}
+		this.updateContext(contextArray);
+		var propertyModel = silex.property.PropertyModel.getInstance();
+		var value = propertyModel.getProperty(element,"title");
+		if(value != null) this.setInputValue("name-property",value);
+		var value1 = propertyModel.getProperty(element,"src");
+		if(value1 != null) this.setInputValue("src-property",this.abs2rel(value1)); else this.setInputValue("src-property","");
+		var sources = silex.publication.PublicationModel.getInstance().getModelFromView(element).getElementsByTagName("source");
+		var value2 = "";
+		var _g1 = 0, _g = sources.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			value2 += this.abs2rel(sources[idx].src) + "\n";
+		}
+		this.setInputValue("multiple-src-property",value2);
+		var value3 = propertyModel.getProperty(element,"autoplay");
+		if(value3 == null || value3 == false) this.setInputValue("auto-start-property",null,"checked"); else this.setInputValue("auto-start-property","checked","checked");
+		var value4 = propertyModel.getProperty(element,"loop");
+		if(value4 == null || value4 == false) this.setInputValue("loop-property",null,"checked"); else this.setInputValue("loop-property","checked","checked");
+		var value5 = propertyModel.getProperty(element,"controls");
+		if(value5 == null || value5 == false) this.setInputValue("controls-property",null,"checked"); else this.setInputValue("controls-property","checked","checked");
+		var value6 = propertyModel.getAttribute(element,"data-master");
+		if(value6 == null || value6 == false) this.setInputValue("master-property",null,"checked"); else this.setInputValue("master-property","checked","checked");
+	}
+	,updateContext: function(contextArray) {
+		if(silex.ui.toolbox.editor.PropertyEditor.styleSheet != null) js.Lib.document.getElementsByTagName("head")[0].removeChild(silex.ui.toolbox.editor.PropertyEditor.styleSheet);
+		var cssText = "";
+		var _g = 0, _g1 = ["context-video","context-audio","context-img","context-txt","context-layer","context-div"];
+		while(_g < _g1.length) {
+			var context = _g1[_g];
+			++_g;
+			cssText += "." + context + " { display : none; visibility : hidden; } ";
+		}
+		var _g = 0;
+		while(_g < contextArray.length) {
+			var context = contextArray[_g];
+			++_g;
+			cssText += "." + context + " { display : inline; visibility : visible; } ";
+		}
+		silex.ui.toolbox.editor.PropertyEditor.styleSheet = org.slplayer.util.DomTools.addCssRules(cssText);
+	}
+	,reset: function() {
+		this.setInputValue("name-property","");
+		this.setInputValue("multiple-src-property","");
+		this.setInputValue("src-property","");
+		this.setInputValue("auto-start-property",null,"checked");
+		this.setInputValue("controls-property",null,"checked");
+		this.setInputValue("loop-property",null,"checked");
+		this.setInputValue("master-property",null,"checked");
+		this.updateContext([]);
+	}
+	,onClick: function(e) {
+		haxe.Log.trace("click " + Std.string(e.target),{ fileName : "PropertyEditor.hx", lineNumber : 46, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "onClick"});
+		var target = e.target;
+		if(org.slplayer.util.DomTools.hasClass(target,"property-editor-delete-selected")) {
+			haxe.Log.trace("click delete",{ fileName : "PropertyEditor.hx", lineNumber : 51, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "onClick"});
+			e.preventDefault();
+			if(org.slplayer.util.DomTools.hasClass(this.selectedItem,"Layer")) {
+				var layer = silex.layer.LayerModel.getInstance().selectedItem;
+				var page = silex.page.PageModel.getInstance().selectedItem;
+				silex.layer.LayerModel.getInstance().removeLayer(layer,page);
+			} else silex.component.ComponentModel.getInstance().removeComponent(this.selectedItem);
+		}
+	}
+	,__class__: silex.ui.toolbox.editor.PropertyEditor
+});
+silex.ui.toolbox.editor.RawHtmlEditor = function(rootElement,SLPId) {
+	silex.ui.toolbox.editor.EditorBase.call(this,rootElement,SLPId);
+};
+$hxClasses["silex.ui.toolbox.editor.RawHtmlEditor"] = silex.ui.toolbox.editor.RawHtmlEditor;
+silex.ui.toolbox.editor.RawHtmlEditor.__name__ = ["silex","ui","toolbox","editor","RawHtmlEditor"];
+silex.ui.toolbox.editor.RawHtmlEditor.__super__ = silex.ui.toolbox.editor.EditorBase;
+silex.ui.toolbox.editor.RawHtmlEditor.prototype = $extend(silex.ui.toolbox.editor.EditorBase.prototype,{
+	reset: function() {
+		var textArea = org.slplayer.util.DomTools.getSingleElement(this.rootElement,"text-input",true);
+		textArea.value = "";
+	}
+	,load: function(element) {
+		var textArea = org.slplayer.util.DomTools.getSingleElement(this.rootElement,"text-input",true);
+		textArea.value = element.innerHTML;
+	}
+	,apply: function() {
+		var textArea = org.slplayer.util.DomTools.getSingleElement(this.rootElement,"text-input",true);
+		var value = textArea.value;
+		silex.property.PropertyModel.getInstance().setProperty(this.selectedItem,"innerHTML",value);
+	}
+	,__class__: silex.ui.toolbox.editor.RawHtmlEditor
+});
+silex.ui.toolbox.editor.TextStyleEditor = function(rootElement,SLPId) {
+	silex.ui.toolbox.editor.EditorBase.call(this,rootElement,SLPId);
+};
+$hxClasses["silex.ui.toolbox.editor.TextStyleEditor"] = silex.ui.toolbox.editor.TextStyleEditor;
+silex.ui.toolbox.editor.TextStyleEditor.__name__ = ["silex","ui","toolbox","editor","TextStyleEditor"];
+silex.ui.toolbox.editor.TextStyleEditor.__super__ = silex.ui.toolbox.editor.EditorBase;
+silex.ui.toolbox.editor.TextStyleEditor.prototype = $extend(silex.ui.toolbox.editor.EditorBase.prototype,{
+	apply: function() {
+		var propertyModel = silex.property.PropertyModel.getInstance();
+		var value = this.getInputValue("text_font");
+		propertyModel.setStyle(this.selectedItem,"fontFamily",value);
+		var value1 = this.getInputValue("text_size");
+		if(value1 != "") propertyModel.setStyle(this.selectedItem,"fontSize",value1); else {
+			var value2 = this.getInputValue("text_size_num");
+			var unit = this.getInputValue("text_size_unit");
+			propertyModel.setStyle(this.selectedItem,"fontSize",value2 + unit);
+		}
+		var value2 = this.getInputValue("text_weight");
+		propertyModel.setStyle(this.selectedItem,"fontWeight",value2);
+		var value3 = this.getInputValue("text_style");
+		propertyModel.setStyle(this.selectedItem,"fontStyle",value3);
+		var value4 = this.getInputValue("text_variant");
+		propertyModel.setStyle(this.selectedItem,"fontVariant",value4);
+		var value5 = this.getInputValue("text_lineheight");
+		var unit = this.getInputValue("text_lineheight_unit");
+		propertyModel.setStyle(this.selectedItem,"lineHeight",value5 + unit);
+		var value6 = this.getInputValue("text_case");
+		propertyModel.setStyle(this.selectedItem,"textTransform",value6);
+		var value7 = this.getInputValue("text_color");
+		propertyModel.setStyle(this.selectedItem,"color",value7);
+		var value8 = this.getInputValue("text_decoration");
+		propertyModel.setStyle(this.selectedItem,"textDecoration",value8);
+	}
+	,load: function(element) {
+		var value = element.style.fontFamily;
+		this.setInputValue("text_font",value);
+		var value1 = element.style.fontSize;
+		if(this.hasOptionValue("text_size",value1)) {
+			this.setInputValue("text_size",value1);
+			this.setInputValue("text_size_unit","");
+			this.setInputValue("text_size_num","");
+		} else {
+			var options = this.getOptions("text_size_unit");
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(value1,options[idx].value)) {
+					this.setInputValue("text_size","");
+					this.setInputValue("text_size_num",Std.string(Std.parseInt(value1)));
+					this.setInputValue("text_size_unit",options[idx].value);
+				}
+			}
+		}
+		var value2 = element.style.fontWeight;
+		this.setInputValue("text_weight",value2);
+		var value3 = element.style.fontStyle;
+		this.setInputValue("text_style",value3);
+		var value4 = element.style.fontVariant;
+		this.setInputValue("text_variant",value4);
+		var value5 = element.style.lineHeight;
+		var options = this.getOptions("text_lineheight_unit");
+		var _g1 = 0, _g = options.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			if(StringTools.endsWith(value5,options[idx].value)) {
+				var valInt = Std.parseInt(value5);
+				var valStr = "";
+				if(valInt != null) valStr = Std.string(valInt);
+				this.setInputValue("text_lineheight",valStr);
+				this.setInputValue("text_lineheight_unit",options[idx].value);
+			}
+		}
+		var value6 = element.style.textTransform;
+		this.setInputValue("text_case",value6);
+		var value7 = element.style.color;
+		if(StringTools.startsWith(value7.toLowerCase(),"rgb(") || StringTools.startsWith(value7.toLowerCase(),"rgba(")) {
+			var decValue = 0;
+			value7 = HxOverrides.substr(value7,value7.indexOf("(") + 1,null);
+			value7 = HxOverrides.substr(value7,0,value7.lastIndexOf(")"));
+			var values = value7.split(",");
+			decValue = Std.parseInt(values[0]) * 255 * 255 + Std.parseInt(values[1]) * 255 + Std.parseInt(values[2]);
+			if(values.length == 4) {
+				decValue *= 255;
+				decValue += Math.round(Std.parseFloat(values[3]) * 255);
+			}
+			this.setInputValue("text_color","#" + StringTools.hex(decValue,6));
+			haxe.Log.trace("load " + Std.string(values) + " -> " + decValue + " -> " + StringTools.hex(decValue),{ fileName : "TextStyleEditor.hx", lineNumber : 128, className : "silex.ui.toolbox.editor.TextStyleEditor", methodName : "load"});
+		} else this.setInputValue("text_color",value7);
+		var value8 = element.style.textDecoration;
+		this.setInputValue("text_decoration",value8);
+	}
+	,reset: function() {
+		this.setInputValue("text_font","");
+		this.setInputValue("text_size","");
+		this.setInputValue("text_size_unit","");
+		this.setInputValue("text_size_num","");
+		this.setInputValue("text_weight","");
+		this.setInputValue("text_style","");
+		this.setInputValue("text_variant","");
+		this.setInputValue("text_lineheight","");
+		this.setInputValue("text_lineheight_unit","");
+		this.setInputValue("text_case","");
+		this.setInputValue("text_color","");
+		this.setInputValue("text_decoration","");
+	}
+	,__class__: silex.ui.toolbox.editor.TextStyleEditor
 });
 function $iterator(o) { if( o instanceof Array ) return function() { return HxOverrides.iter(o); }; return typeof(o.iterator) == 'function' ? $bind(o,o.iterator) : o.iterator; };
 var $_;
@@ -8027,7 +8967,6 @@ js.XMLHttpRequest = window.XMLHttpRequest?XMLHttpRequest:window.ActiveXObject?fu
 	throw "Unable to create XMLHttpRequest object.";
 	return $r;
 }(this));
-DateTools.DAYS_OF_MONTH = [31,28,31,30,31,30,31,31,30,31,30,31];
 haxe.Serializer.USE_CACHE = false;
 haxe.Serializer.USE_ENUM_INDEX = false;
 haxe.Serializer.BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%:";
@@ -8061,12 +9000,6 @@ org.slplayer.component.layout.Panel.ATTR_CSS_CLASS_HEADER = "data-panel-header-c
 org.slplayer.component.layout.Panel.ATTR_CSS_CLASS_BODY = "data-panel-body-class-name";
 org.slplayer.component.layout.Panel.ATTR_CSS_CLASS_FOOTER = "data-panel-footer-class-name";
 org.slplayer.component.layout.Panel.ATTR_IS_HORIZONTAL = "data-panel-is-horizontal";
-org.slplayer.component.list.List.__meta__ = { obj : { tagNameFilter : ["ul"]}};
-org.slplayer.component.list.List.LIST_SELECTED_ITEM_CSS_CLASS = "listSelectedItem";
-org.slplayer.component.list.List.DATA_ATTR_LIST_ITEM_INDEX = "data-list-item-idx";
-org.slplayer.component.list.List.EVENT_CHANGE = "listChange";
-org.slplayer.component.list.List.EVENT_CLICK = "listClick";
-org.slplayer.component.list.List.EVENT_ROLL_OVER = "listRollOver";
 org.slplayer.component.navigation.Layer.EVENT_TYPE_SHOW = "onLayerShow";
 org.slplayer.component.navigation.Layer.EVENT_TYPE_HIDE = "onLayerHide";
 org.slplayer.component.navigation.Page.__meta__ = { obj : { tagNameFilter : ["a"]}};
@@ -8137,21 +9070,28 @@ silex.publication.PublicationService.BUILDER_PUBLICATION_NAME = "admin";
 silex.ui.dialog.DialogBase.SUBMIT_BUTTON_CLASS_NAME = "validate-button";
 silex.ui.dialog.DialogBase.CANCEL_BUTTON_CLASS_NAME = "cancel-button";
 silex.ui.dialog.DialogBase.CONFIG_DIALOG_NAME = "data-dialog-name";
-silex.ui.dialog.AuthDialog.LOADING_PAGE_NAME = "loading-pending";
-silex.ui.dialog.AuthDialog.ERROR_TEXT_FIELD_CLASS_NAME = "error-text";
-silex.ui.dialog.AuthDialog.LOGIN_INPUT_FIELD_CLASS_NAME = "input-field-login";
-silex.ui.dialog.AuthDialog.PASSWORD_INPUT_FIELD_CLASS_NAME = "input-field-pass";
-silex.ui.dialog.AuthDialog.LOGIN_INPUT_FIELD_NOT_FOUND = "Could not find the input field for login. It is expected to have input-field-login as a css class name.";
-silex.ui.dialog.AuthDialog.PASSWORD_INPUT_FIELD_NOT_FOUND = "Could not find the input field for password. It is expected to have input-field-pass as a css class name.";
-silex.ui.dialog.AuthDialog.ALL_FIELDS_REQUIRED = "All fields are required.";
-silex.ui.dialog.AuthDialog.NETWORK_ERROR = "Network error.";
 silex.ui.dialog.ModelDebugger.DEBUG_INFO = "ModelDebugger class";
-silex.ui.dialog.OpenDialog.LIST_CLASS_NAME = "PublicationList";
-silex.ui.list.PublicationList.__meta__ = { obj : { tagNameFilter : ["ul"]}};
-silex.ui.list.PublicationList.DEBUG_INFO = "PublicationList class";
+silex.ui.stage.StageDropHandler.__meta__ = { obj : { tagNameFilter : ["DIV"]}};
+silex.ui.stage.InsertDropHandler.IMAGE_TYPE = "image";
+silex.ui.stage.InsertDropHandler.TEXT_TYPE = "text";
+silex.ui.stage.InsertDropHandler.LAYER_TYPE = "layer";
+silex.ui.stage.InsertDropHandler.AUDIO_TYPE = "audio";
+silex.ui.stage.InsertDropHandler.VIDEO_TYPE = "video";
+silex.ui.stage.MenuController.__meta__ = { obj : { tagNameFilter : ["DIV"]}};
 silex.ui.stage.PublicationViewer.__meta__ = { obj : { tagNameFilter : ["DIV"]}};
 silex.ui.stage.PublicationViewer.DEBUG_INFO = "PublicationViewer class";
 silex.ui.stage.PublicationViewer.BUILDER_MODE_PAGE_NAME = "builder-mode";
+silex.ui.stage.SelectionController.__meta__ = { obj : { tagNameFilter : ["DIV"]}};
+silex.ui.stage.SelectionController.DEBUG_INFO = "SelectionController class";
+silex.ui.stage.SelectionController.SELECTION_MARKER_STYLE_NAME = "selection-marker";
+silex.ui.stage.SelectionController.SELECTION_LAYER_MARKER_STYLE_NAME = "selection-layer-marker";
+silex.ui.stage.SelectionController.HOVER_MARKER_STYLE_NAME = "hover-marker";
+silex.ui.stage.SelectionController.HOVER_LAYER_MARKER_STYLE_NAME = "hover-layer-marker";
+silex.ui.stage.SelectionMarker.__meta__ = { obj : { tagNameFilter : ["DIV"]}};
+silex.ui.toolbox.editor.EditorBase.DEBUG_INFO = "silex.ui.toolbox.editor.EditorBase class";
+silex.ui.toolbox.editor.PropertyEditor.ALL_CONTEXTS = ["context-video","context-audio","context-img","context-txt","context-layer","context-div"];
+silex.ui.toolbox.editor.PropertyEditor.DELETE_BUTTON_CLASS_NAME = "property-editor-delete-selected";
+silex.ui.toolbox.editor.RawHtmlEditor.TEXT_INPUT_CLASS_NAME = "text-input";
 PublicationsTestClient.main();
 function $hxExpose(src, path) {
 	var o = window;

@@ -1,4 +1,4 @@
-package selection;
+package ;
 
 import silex.publication.PublicationService;
 import silex.publication.PublicationModel;
@@ -21,7 +21,7 @@ import js.Dom;
 import js.XMLHttpRequest;
 
 
-class TestClient {
+class PublicationsTestClient {
 
 
 	public function new(){

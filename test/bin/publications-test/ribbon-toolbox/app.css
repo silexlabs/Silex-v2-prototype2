@@ -50,7 +50,8 @@ p{
 /* **************** */
 .GroupRibbon{
 	width: 100%;
-	position: static;
+	position: relative;
+	z-index: 2000;
 	left:0;
 	background:Gainsboro;
 	margin:0;
@@ -73,8 +74,9 @@ p{
 	font-size:13px;
 }
 .GroupRibbon .disabled {
-   pointer-events: none;
-   color: grey ! important;
+	pointer-events: none;
+	color: grey ! important;
+	background-color:Gainsboro;
 }
 .ribbon-list .listSelectedItem{
 	color:#7F7F7F;
@@ -115,10 +117,8 @@ p{
 .ribbon-list li:hover{
 }
 .ribbon-list .solid{
-	cursor:move;
 }
-.ribbon-list .solid,
-.ribbon-list .solid-no-drag{
+.ribbon-list .solid{
 	height:35px;
 	width:50px;
 	background:LightGray;
@@ -126,11 +126,19 @@ p{
 	border:1px solid black;
 	margin-top:7px;
 }
+.temp-icon {
+    background-image: url("../admin/assets/temporary-icon.png");
+    background-size: 50px auto;
+    height: 50px;
+    width: 50px;
+}
 .assets-page{
 	background:Gray;
-	width:7%;
 	border:1px solid black;
 	float: left;
+}
+.ribbon-button{
+	cursor: pointer;
 }
 /* **************** */
 /* /Ribbon Toolbox */

@@ -49,6 +49,12 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 */ 
 	public static inline var DEBUG_INFO = "PublicationModel class";
 	/**
+	 * Class name of the root node
+	 * It is put by the PublicationModel class on the model and the view DOMs
+	 * when they are retrieved from the server
+	 */ 
+	public static inline var BUILDER_ROOT_NODE_CLASS = "silex-view";
+	/**
 	 * event dispatched when the list of publications is updated successfully
 	 */
 	public static inline var ON_CHANGE = "onPublicationChange";
@@ -162,6 +168,10 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 
 			//if (ComponentModel.getInstance().selectedItem == null && LayerModel.getInstance().selectedItem == null)
 			//	throw ("Error: no component nor layer is selected.");
+
+			// case of the builder root node
+			if (DomTools.hasClass(viewHtmlDom, BUILDER_ROOT_NODE_CLASS))
+				return modelHtmlDom;
 
 			var results : Array<HtmlDom> = null;
 			var id = viewHtmlDom.getAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME);
@@ -316,7 +326,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		// trace("initViewHtmlDom");
 		// Duplicate DOM
 		viewHtmlDom = modelHtmlDom.cloneNode(true);
-		viewHtmlDom.className = "silex-view";
+		viewHtmlDom.className = BUILDER_ROOT_NODE_CLASS;
 
 		// Add the CSS in the body tag rather than head tag, because the later is not really added to the browser dom
 		DomTools.addCssRules(currentData.css, viewHtmlDom);
@@ -577,6 +587,9 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		// Publication group
 		if (modelDom.getAttribute("data-group-id") == "PublicationGroup")
 			modelDom.removeAttribute("data-group-id");
+
+		// Builder root node
+		DomTools.removeClass(modelDom, BUILDER_ROOT_NODE_CLASS);
 
 		// browse the children
 		for(idx in 0...modelDom.childNodes.length){

@@ -62,8 +62,10 @@ p{
 	margin: 0;
 	border: 2px black solid;
 	border-radius: 5px;
+	overflow: hidden;
+	position: absolute;
+	right: 0;
 	z-index: 2000;
-	float: right;
 }
 .silex-toolbox .panel-body{
 	overflow: auto;
@@ -91,10 +93,6 @@ p{
 
 .silex-toolbox .panel-footer {
 }
-.property-editor-delete-selected {
-	width: 80%;
-	background-color: red;
-}
 .silex-toolbox textarea,input {
 	width: 21%;
 	float:right;
@@ -117,12 +115,16 @@ p{
 	min-width:100%;
 
 }
-.silex-toolbox fieldset input.name-property{
-	min-width:88%;
+.silex-toolbox fieldset input.name-property,
+.property-editor-delete-selected{
+	min-width:88%; 
 	margin-left:13px;
 	margin-top:5px;
 	float:none;
 
+}
+.property-editor-delete-selected {
+	background-color: red;
 }
 
 
@@ -374,3 +376,4 @@ color:Black;
 /* **************** */
 /* /Properties Toolbox */
 /* **************** */
+

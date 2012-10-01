@@ -11,7 +11,7 @@ class PublicationsTestGateway {
 			$GLOBALS['%s']->pop();
 			return;
 		}
-		php_Lib::hprint("This is a haxe remoting gateway. Go to the <a href='../publications-test/'>tests here</a>.");
+		php_Lib::hprint("This is a haxe remoting gateway. Go to the <a href='../publications-test/'>tests here</a>!");
 		$GLOBALS['%s']->pop();
 	}
 	function __toString() { return 'PublicationsTestGateway'; }

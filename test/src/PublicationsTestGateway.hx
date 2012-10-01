@@ -23,7 +23,7 @@ class PublicationsTestGateway {
 		if( HttpConnection.handleRequest(ServiceBase.context) )
 		  return;
 
-		php.Lib.print("This is a haxe remoting gateway. Go to the <a href='../publications-test/'>tests here</a>.");
+		php.Lib.print("This is a haxe remoting gateway. Go to the <a href='../publications-test/'>tests here</a>!");
 
 		// redirect to the builder
 //		Web.setHeader("Location", "../publications-test/");
