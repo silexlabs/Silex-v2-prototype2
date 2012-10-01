@@ -1,0 +1,104 @@
+<HTML>
+	<HEAD>
+
+		
+		
+
+		
+		
+		
+		
+		
+		
+
+		
+		
+		
+
+
+
+		<META http-equiv="Content-Type" content="text/html; charset=UTF-8"></META> 
+		<META name="initialPageName" content="empty-page"></META>
+		
+		
+		<TITLE>DIALOGS!</TITLE>
+		<META name="description" content="A 1st test of Silex publication"></META>
+		<META name="keywords" content="HTML,CSS,website editor"></META>
+		<META name="author" content="lexoyo"></META>
+		<META name="revised" content="lexoyo, 29/08/2011"></META>
+		
+		<META name="type" content="publication"></META> 
+		<META name="state" content="public"></META> 
+		<META name="useDeeplink" content="false"></META>
+		<LINK href="app.css" rel="stylesheet"></LINK>
+
+	<SCRIPT src="silex-builder.js"></SCRIPT></HEAD>
+	
+</HTML><BODY class="group-main">
+			<P><A href="#empty-page" class="LinkToPage" data-group-id="group-main">Empty page</A></P>
+			<P><A href="#login-dialog" class="LinkToPage" data-group-id="group-main">Login</A></P>
+			<P><A href="#open-dialog" class="LinkToPage" data-group-id="group-main">Open publication</A></P>
+
+			<A class="Page" name="empty-page" data-group-id="group-main"></A>
+
+			
+			
+			
+			<DIV class="dialogs">
+				
+				<A class="Page" name="login-dialog" data-group-id="group-main"></A>
+				<DIV class="container">
+					<FORM class="Layer login-dialog dialog-foreground AuthDialog" data-dialog-name="login-dialog">
+						<DIV class="header">
+							<IMG src="../admin/assets/logo.png"/>
+						</DIV>
+						<FIELDSET> 
+							<DIV class="form">
+							
+								<P class="login">Login</P><P><INPUT class="input-field-login" size="21" type="text" max-lenght="50"> </INPUT></P>
+								<P class="password">Password</P><P><INPUT class="input-field-pass" size="21" type="text" max-lenght="50"/></P>
+							</DIV>
+							<DIV class="assets-dialog">
+								
+								<INPUT class="validate-button" type="submit" value="Login"/>
+								<BUTTON class="cancel-button">Cancel</BUTTON>
+								<P class="error-text"></P>
+
+							</DIV>
+							<DIV class="solid"></DIV>
+							<DIV class="solid-2"></DIV>
+						</FIELDSET>
+						<FOOTER>
+							<P><A href="http://projects.Silexlabs.org/?/silex.v2/" target="blank"> Silex Official website</A> | <A href="http://www.silexlabs.org/silex/" target="blank"> Silex Labs</A> | <A class="disabled-link">Online help</A> | <A class="disabled-link">Forums</A></P>
+						</FOOTER>
+					</FORM>
+
+				</DIV>
+				
+				<A class="Page" name="open-dialog" data-group-id="group-main"></A>
+				<FORM class="Layer open-dialog dialog-foreground OpenDialog" data-dialog-name="open-dialog">
+					<DIV class="container-2">
+						<DIV class="header-2">
+							<IMG src="../admin/assets/header-2.png"/>
+						</DIV>
+						<UL class="PublicationList publications">
+							<LI>::name:: <DIV class="column"><SMALL>Last change by ::configData.lastChange.author:: on ::configData.lastChange.date::</SMALL></DIV></LI>
+						</UL>
+						<DIV class="foot">
+								<DIV class="solid-3"></DIV>
+								<DIV class="solid-4"></DIV>
+								<INPUT class="validate-button" type="submit" value="Ok"/>
+								<BUTTON class="cancel-button">Cancel</BUTTON>
+						
+						</DIV>
+						
+					</DIV>
+				</FORM>
+				
+				<DIV class="Layer dialog-background login-dialog open-dialog"></DIV>
+			</DIV>
+			
+			
+			
+			
+	</BODY>

@@ -562,7 +562,7 @@ width:100%;
 	margin-top:7px;
 }
 .temp-icon {
-    background-image: url("assets/temporary-icon.png");
+    background-image: url("../admin/assets/temporary-icon.png");
     background-size: 50px auto;
     height: 50px;
     width: 50px;
