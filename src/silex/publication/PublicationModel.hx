@@ -269,25 +269,6 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		modelHtmlDom = Lib.document.createElement("div");
 		headHtmlDom = Lib.document.createElement("div");
 
-		// parse html data as XML
-/*		var xml:Fast;
-		try{
-			xml = new Fast(Xml.parse(currentData.html).firstChild());
-		}
-		catch(e:Dynamic){
-			throw("Error in the HTML data of the publication "+currentName+". Note that valid XHTML is expected. Error message: "+e);
-		}
-
-		// Convert xml to DOM/html
-		if (xml.hasNode.body)
-			modelHtmlDom.innerHTML = xml.node.body.innerHTML;
-		else if (xml.hasNode.BODY)
-			modelHtmlDom.innerHTML = xml.node.BODY.innerHTML;
-		if (xml.hasNode.head)
-			headHtmlDom.innerHTML = xml.node.head.innerHTML;
-		else if (xml.hasNode.HEAD)
-			headHtmlDom.innerHTML = xml.node.HEAD.innerHTML;
-*/
 		// split head and body tags 
 		var headOpenIdx = currentData.html.indexOf("<head");
 		if (headOpenIdx == -1) headOpenIdx = currentData.html.indexOf("<HEAD");
@@ -310,18 +291,22 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			// extract the body section
 			modelHtmlDom.innerHTML = currentData.html.substring(closingTagIdx + 1, bodyCloseIdx);
 		}
-
+		trace("Publication data is loaded 02");
 		// add attributes to nodes recursively
 		prepareForEdit(modelHtmlDom);
 
+		trace("Publication data is loaded 04");
 		// init the view
 		initViewHtmlDom();
 
+		trace("Publication data is loaded 06");
 		// dispatch the event, the DOM is then assumed to be attached to the browser DOM
 		dispatchEvent(createEvent(ON_DATA), debugInfo);
 
+		trace("Publication data is loaded 08");
 		// init the SLPlayer application
 		initSLPlayerApplication(viewHtmlDom);
+		trace("Publication data is loaded 10");
 	}
 	/**
 	 * Duplicate the loaded DOM
@@ -407,13 +392,16 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * init the SLPlayer application
 	 */
 	private function initSLPlayerApplication(rootElement:HtmlDom):Void{
+		trace("init the SLPlayer application 02");
 		// create an SLPlayer app
 		application = Application.createApplication();
 
+		trace("init the SLPlayer application 04");
 		// init SLPlayer
 		application.initDom(rootElement);
 		application.initComponents();
 
+		trace("init the SLPlayer application 06");
 		// initial page
 		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, headHtmlDom);
 		if (initialPageName != null){
@@ -424,11 +412,13 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			else{
 				trace("Warning: could not resolve default page name ("+initialPageName+")");
 			}
+			trace("init the SLPlayer application 08	");
 		}
 		else{
 			trace("Warning: no initial page found");
 		}
 
+		trace("init the SLPlayer application 10");
 		// execute debug actions
 		#if silexDebug
 		// execute an action when needed for debug (publication and server config)
@@ -447,6 +437,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			}
 		}
 		#end
+		trace("init the SLPlayer application 12");
 	}
 	/**
 	 * An error occured

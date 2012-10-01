@@ -6094,13 +6094,71 @@ org.slplayer.component.navigation.Layer.getLayerNodes = function(pageName,slPlay
 }
 org.slplayer.component.navigation.Layer.__super__ = org.slplayer.component.ui.DisplayObject;
 org.slplayer.component.navigation.Layer.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
-	doHide: function(transitionData,preventTransitions,e) {
+	cleanupVideoElements: function(nodeList) {
+		var _g1 = 0, _g = nodeList.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			try {
+				var element = nodeList[idx];
+				element.pause();
+				element.currentTime = 0;
+			} catch( e ) {
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 505, className : "org.slplayer.component.navigation.Layer", methodName : "cleanupVideoElements"});
+			}
+		}
+	}
+	,cleanupAudioElements: function(nodeList) {
+		var _g1 = 0, _g = nodeList.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			try {
+				var element = nodeList[idx];
+				element.pause();
+				element.currentTime = 0;
+			} catch( e ) {
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 483, className : "org.slplayer.component.navigation.Layer", methodName : "cleanupAudioElements"});
+			}
+		}
+	}
+	,setupVideoElements: function(nodeList) {
+		var _g1 = 0, _g = nodeList.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			try {
+				var element = nodeList[idx];
+				if(element.autoplay == true) {
+					element.currentTime = 0;
+					element.play();
+				}
+				element.muted = org.slplayer.component.sound.SoundOn.isMuted;
+			} catch( e ) {
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 461, className : "org.slplayer.component.navigation.Layer", methodName : "setupVideoElements"});
+			}
+		}
+	}
+	,setupAudioElements: function(nodeList) {
+		var _g1 = 0, _g = nodeList.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			try {
+				var element = nodeList[idx];
+				if(element.autoplay == true) {
+					element.currentTime = 0;
+					element.play();
+				}
+				element.muted = org.slplayer.component.sound.SoundOn.isMuted;
+			} catch( e ) {
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 436, className : "org.slplayer.component.navigation.Layer", methodName : "setupAudioElements"});
+			}
+		}
+	}
+	,doHide: function(transitionData,preventTransitions,e) {
 		if(e != null && e.target != this.rootElement) {
-			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 381, className : "org.slplayer.component.navigation.Layer", methodName : "doHide"});
+			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 367, className : "org.slplayer.component.navigation.Layer", methodName : "doHide"});
 			return;
 		}
 		if(preventTransitions == false && this.doHideCallback == null) {
-			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 385, className : "org.slplayer.component.navigation.Layer", methodName : "doHide"});
+			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 371, className : "org.slplayer.component.navigation.Layer", methodName : "doHide"});
 			return;
 		}
 		if(preventTransitions == false) {
@@ -6113,30 +6171,27 @@ org.slplayer.component.navigation.Layer.prototype = $extend(org.slplayer.compone
 			event.initCustomEvent("onLayerHide",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
 			this.rootElement.dispatchEvent(event);
 		} catch( e1 ) {
-			haxe.Log.trace("Error: could not dispatch event " + Std.string(e1),{ fileName : "Layer.hx", lineNumber : 408, className : "org.slplayer.component.navigation.Layer", methodName : "doHide"});
+			haxe.Log.trace("Error: could not dispatch event " + Std.string(e1),{ fileName : "Layer.hx", lineNumber : 394, className : "org.slplayer.component.navigation.Layer", methodName : "doHide"});
 		}
+		var audioNodes = this.rootElement.getElementsByTagName("audio");
+		this.cleanupAudioElements(audioNodes);
+		var videoNodes = this.rootElement.getElementsByTagName("video");
+		this.cleanupVideoElements(videoNodes);
 		while(this.rootElement.childNodes.length > 0) {
 			var element = this.rootElement.childNodes[0];
 			this.rootElement.removeChild(element);
 			this.childrenArray.push(element);
-			if(element.tagName != null && (element.tagName.toLowerCase() == "audio" || element.tagName.toLowerCase() == "video")) try {
-				var audioElement = element;
-				audioElement.pause();
-				audioElement.currentTime = 0;
-			} catch( e1 ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 430, className : "org.slplayer.component.navigation.Layer", methodName : "doHide"});
-			}
 		}
 		this.rootElement.style.display = "none";
 	}
 	,hide: function(transitionData,preventTransitions) {
 		if(this.status != org.slplayer.component.navigation.LayerStatus.visible && this.status != org.slplayer.component.navigation.LayerStatus.notInit) return;
 		if(this.status == org.slplayer.component.navigation.LayerStatus.hideTransition) {
-			haxe.Log.trace("Warning: hide break previous transition hide",{ fileName : "Layer.hx", lineNumber : 349, className : "org.slplayer.component.navigation.Layer", methodName : "hide"});
+			haxe.Log.trace("Warning: hide break previous transition hide",{ fileName : "Layer.hx", lineNumber : 335, className : "org.slplayer.component.navigation.Layer", methodName : "hide"});
 			this.doHideCallback(null);
 			this.removeTransitionEvent(this.doHideCallback);
 		} else if(this.status == org.slplayer.component.navigation.LayerStatus.showTransition) {
-			haxe.Log.trace("Warning: hide break previous transition show",{ fileName : "Layer.hx", lineNumber : 355, className : "org.slplayer.component.navigation.Layer", methodName : "hide"});
+			haxe.Log.trace("Warning: hide break previous transition show",{ fileName : "Layer.hx", lineNumber : 341, className : "org.slplayer.component.navigation.Layer", methodName : "hide"});
 			this.doShowCallback(null);
 			this.removeTransitionEvent(this.doShowCallback);
 		}
@@ -6152,11 +6207,11 @@ org.slplayer.component.navigation.Layer.prototype = $extend(org.slplayer.compone
 	}
 	,doShow: function(transitionData,preventTransitions,e) {
 		if(e != null && e.target != this.rootElement) {
-			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 319, className : "org.slplayer.component.navigation.Layer", methodName : "doShow"});
+			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 305, className : "org.slplayer.component.navigation.Layer", methodName : "doShow"});
 			return;
 		}
 		if(preventTransitions == false && this.doShowCallback == null) {
-			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 323, className : "org.slplayer.component.navigation.Layer", methodName : "doShow"});
+			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 309, className : "org.slplayer.component.navigation.Layer", methodName : "doShow"});
 			return;
 		}
 		if(preventTransitions == false) this.endTransition(org.slplayer.component.navigation.transition.TransitionType.show,transitionData,this.doShowCallback);
@@ -6182,23 +6237,17 @@ org.slplayer.component.navigation.Layer.prototype = $extend(org.slplayer.compone
 		while(this.childrenArray.length > 0) {
 			var element = this.childrenArray.shift();
 			this.rootElement.appendChild(element);
-			if(element.tagName != null && (element.tagName.toLowerCase() == "audio" || element.tagName.toLowerCase() == "video")) try {
-				var audioElement = element;
-				if(audioElement.autoplay == true) {
-					audioElement.currentTime = 0;
-					audioElement.play();
-				}
-				audioElement.muted = org.slplayer.component.sound.SoundOn.isMuted;
-			} catch( e ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 280, className : "org.slplayer.component.navigation.Layer", methodName : "show"});
-			}
 		}
+		var audioNodes = this.rootElement.getElementsByTagName("audio");
+		this.setupAudioElements(audioNodes);
+		var videoNodes = this.rootElement.getElementsByTagName("video");
+		this.setupVideoElements(videoNodes);
 		try {
 			var event = js.Lib.document.createEvent("CustomEvent");
 			event.initCustomEvent("onLayerShow",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
 			this.rootElement.dispatchEvent(event);
 		} catch( e ) {
-			haxe.Log.trace("Error: could not dispatch event " + Std.string(e),{ fileName : "Layer.hx", lineNumber : 296, className : "org.slplayer.component.navigation.Layer", methodName : "show"});
+			haxe.Log.trace("Error: could not dispatch event " + Std.string(e),{ fileName : "Layer.hx", lineNumber : 282, className : "org.slplayer.component.navigation.Layer", methodName : "show"});
 		}
 		if(preventTransitions == false) {
 			this.doShowCallback = (function(f,a1,a2) {
@@ -7154,10 +7203,9 @@ silex.ModelBase.prototype = {
 	,__class__: silex.ModelBase
 	,__properties__: {set_selectedItem:"setSelectedItem",set_hoveredItem:"setHoveredItem"}
 }
-silex.ServiceBase = function(serviceName,gatewayUrl) {
-	if(gatewayUrl == null) gatewayUrl = "../../";
+silex.ServiceBase = function(serviceName) {
 	this.serviceName = serviceName;
-	this.connection = haxe.remoting.HttpAsyncConnection.urlConnect(gatewayUrl);
+	this.connection = haxe.remoting.HttpAsyncConnection.urlConnect(silex.ServiceBase.GATEWAY_URL);
 };
 $hxClasses["silex.ServiceBase"] = silex.ServiceBase;
 silex.ServiceBase.__name__ = ["silex","ServiceBase"];
@@ -7188,7 +7236,7 @@ silex.Silex.init = function(unused) {
 	var publicationBody = org.slplayer.util.DomTools.getMeta("publicationBody");
 	if(publicationBody != null) {
 		js.Lib.document.body.innerHTML = StringTools.htmlUnescape(org.slplayer.util.DomTools.getMeta("publicationBody"));
-		org.slplayer.util.DomTools.setBaseTag("./publications/" + silex.Silex.publicationName + "/");
+		org.slplayer.util.DomTools.setBaseTag(silex.publication.PublicationService.PUBLICATION_FOLDER + silex.Silex.publicationName + "/");
 	}
 	haxe.Log.trace(" application.init " + Std.string(js.Lib.document.body),{ fileName : "Silex.hx", lineNumber : 128, className : "silex.Silex", methodName : "init"});
 	application.initComponents();
@@ -7540,7 +7588,7 @@ silex.publication.PublicationModel.__super__ = silex.ModelBase;
 silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onPublicationSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 609, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 600, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
 	}
 	,onSaveError: function(msg) {
 		this.dispatchEvent(this.createEvent("onPublicationSaveError"),this.debugInfo);
@@ -7617,14 +7665,19 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		throw "An error occured while loading publications list (" + msg + ")";
 	}
 	,initSLPlayerApplication: function(rootElement) {
+		haxe.Log.trace("init the SLPlayer application 02",{ fileName : "PublicationModel.hx", lineNumber : 395, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
 		this.application = org.slplayer.core.Application.createApplication();
+		haxe.Log.trace("init the SLPlayer application 04",{ fileName : "PublicationModel.hx", lineNumber : 399, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
 		this.application.initDom(rootElement);
 		this.application.initComponents();
+		haxe.Log.trace("init the SLPlayer application 06",{ fileName : "PublicationModel.hx", lineNumber : 404, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
 		var initialPageName = org.slplayer.util.DomTools.getMeta("initialPageName",null,this.headHtmlDom);
 		if(initialPageName != null) {
 			var page = org.slplayer.component.navigation.Page.getPageByName(initialPageName,this.application.id,this.viewHtmlDom);
-			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "PublicationModel.hx", lineNumber : 425, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
-		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "PublicationModel.hx", lineNumber : 429, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
+			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "PublicationModel.hx", lineNumber : 413, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
+			haxe.Log.trace("init the SLPlayer application 08\t",{ fileName : "PublicationModel.hx", lineNumber : 415, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
+		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "PublicationModel.hx", lineNumber : 418, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
+		haxe.Log.trace("init the SLPlayer application 10",{ fileName : "PublicationModel.hx", lineNumber : 421, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
 		if(this.currentConfig.debugModeAction != null) {
 			var context = new Hash();
 			context.set("slpid",this.application.id);
@@ -7639,6 +7692,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 				throw "Error while executing the script in the config file of the publication (debugModeAction variable). The error: " + Std.string(e);
 			}
 		}
+		haxe.Log.trace("init the SLPlayer application 12",{ fileName : "PublicationModel.hx", lineNumber : 440, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
 	}
 	,generateNewId: function() {
 		return silex.publication.PublicationModel.nextId++ + "";
@@ -7690,10 +7744,15 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 			var closingTagIdx = this.currentData.html.indexOf(">",bodyOpenIdx);
 			this.modelHtmlDom.innerHTML = this.currentData.html.substring(closingTagIdx + 1,bodyCloseIdx);
 		}
+		haxe.Log.trace("Publication data is loaded 02",{ fileName : "PublicationModel.hx", lineNumber : 294, className : "silex.publication.PublicationModel", methodName : "onData"});
 		this.prepareForEdit(this.modelHtmlDom);
+		haxe.Log.trace("Publication data is loaded 04",{ fileName : "PublicationModel.hx", lineNumber : 298, className : "silex.publication.PublicationModel", methodName : "onData"});
 		this.initViewHtmlDom();
+		haxe.Log.trace("Publication data is loaded 06",{ fileName : "PublicationModel.hx", lineNumber : 302, className : "silex.publication.PublicationModel", methodName : "onData"});
 		this.dispatchEvent(this.createEvent("onPublicationData"),this.debugInfo);
+		haxe.Log.trace("Publication data is loaded 08",{ fileName : "PublicationModel.hx", lineNumber : 306, className : "silex.publication.PublicationModel", methodName : "onData"});
 		this.initSLPlayerApplication(this.viewHtmlDom);
+		haxe.Log.trace("Publication data is loaded 10",{ fileName : "PublicationModel.hx", lineNumber : 309, className : "silex.publication.PublicationModel", methodName : "onData"});
 	}
 	,onConfig: function(publicationConfig) {
 		this.currentConfig = publicationConfig;
@@ -7702,7 +7761,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 	}
 	,load: function(name,configData) {
 		var currentBasTag = org.slplayer.util.DomTools.getBaseTag();
-		if(currentBasTag == "./publications/" + this.currentName + "/" || currentBasTag == "./publications/" + "admin" + "/") org.slplayer.util.DomTools.setBaseTag("./publications/" + name + "/"); else org.slplayer.util.DomTools.setBaseTag("../" + name + "/");
+		if(currentBasTag == silex.publication.PublicationService.PUBLICATION_FOLDER + this.currentName + "/" || currentBasTag == silex.publication.PublicationService.PUBLICATION_FOLDER + silex.publication.PublicationService.BUILDER_PUBLICATION_NAME + "/") org.slplayer.util.DomTools.setBaseTag(silex.publication.PublicationService.PUBLICATION_FOLDER + name + "/"); else org.slplayer.util.DomTools.setBaseTag("../" + name + "/");
 		this.currentName = name;
 		var pageModel = silex.page.PageModel.getInstance();
 		pageModel.setHoveredItem(null);
@@ -7752,46 +7811,43 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 	,publicationService: null
 	,__class__: silex.publication.PublicationModel
 });
-silex.publication.PublicationService = function(publicationFolder,gatewayUrl) {
-	if(gatewayUrl == null) gatewayUrl = "../../";
-	silex.ServiceBase.call(this,"publicationService",gatewayUrl);
-	this.publicationFolder = publicationFolder;
+silex.publication.PublicationService = function() {
+	silex.ServiceBase.call(this,silex.publication.PublicationService.SERVICE_NAME);
 };
 $hxClasses["silex.publication.PublicationService"] = silex.publication.PublicationService;
 silex.publication.PublicationService.__name__ = ["silex","publication","PublicationService"];
 silex.publication.PublicationService.__super__ = silex.ServiceBase;
 silex.publication.PublicationService.prototype = $extend(silex.ServiceBase.prototype,{
 	getPublications: function(stateFilter,categoryFilter,onResult,onError) {
-		this.callServerMethod("getPublications",[stateFilter,categoryFilter,this.publicationFolder],onResult,onError);
+		this.callServerMethod("getPublications",[stateFilter,categoryFilter],onResult,onError);
 	}
 	,rename: function(srcPublicationName,publicationName,onResult,onError) {
-		this.callServerMethod("rename",[srcPublicationName,publicationName,this.publicationFolder],onResult,onError);
+		this.callServerMethod("rename",[srcPublicationName,publicationName],onResult,onError);
 	}
 	,duplicate: function(srcPublicationName,publicationName,onResult,onError) {
-		this.callServerMethod("duplicate",[srcPublicationName,publicationName,this.publicationFolder],onResult,onError);
+		this.callServerMethod("duplicate",[srcPublicationName,publicationName],onResult,onError);
 	}
 	,emptyTrash: function(onResult,onError) {
-		this.callServerMethod("emptyTrash",[this.publicationFolder],onResult,onError);
+		this.callServerMethod("emptyTrash",[],onResult,onError);
 	}
 	,trash: function(publicationName,onResult,onError) {
-		this.callServerMethod("trash",[publicationName,this.publicationFolder],onResult,onError);
+		this.callServerMethod("trash",[publicationName],onResult,onError);
 	}
 	,create: function(publicationName,publicationData,onResult,onError) {
-		this.callServerMethod("create",[publicationName,publicationData,this.publicationFolder],onResult,onError);
+		this.callServerMethod("create",[publicationName,publicationData],onResult,onError);
 	}
 	,setPublicationData: function(publicationName,publicationData,onResult,onError) {
-		this.callServerMethod("setPublicationData",[publicationName,publicationData,this.publicationFolder],onResult,onError);
+		this.callServerMethod("setPublicationData",[publicationName,publicationData],onResult,onError);
 	}
 	,getPublicationData: function(publicationName,onResult,onError) {
-		this.callServerMethod("getPublicationData",[publicationName,this.publicationFolder],onResult,onError);
+		this.callServerMethod("getPublicationData",[publicationName],onResult,onError);
 	}
 	,setPublicationConfig: function(publicationName,publicationConfigData,onResult,onError) {
-		this.callServerMethod("setPublicationConfig",[publicationName,publicationConfigData,this.publicationFolder],onResult,onError);
+		this.callServerMethod("setPublicationConfig",[publicationName,publicationConfigData],onResult,onError);
 	}
 	,getPublicationConfig: function(publicationName,onResult,onError) {
-		this.callServerMethod("getPublicationConfig",[publicationName,this.publicationFolder],onResult,onError);
+		this.callServerMethod("getPublicationConfig",[publicationName],onResult,onError);
 	}
-	,publicationFolder: null
 	,__class__: silex.publication.PublicationService
 });
 silex.ui = {}
@@ -8206,6 +8262,7 @@ silex.ui.stage.MenuController.prototype = $extend(org.slplayer.component.ui.Disp
 	,__class__: silex.ui.stage.MenuController
 });
 silex.ui.stage.PublicationViewer = function(rootElement,SLPId) {
+	haxe.Log.trace("PublicationViewer INIT",{ fileName : "PublicationViewer.hx", lineNumber : 42, className : "silex.ui.stage.PublicationViewer", methodName : "new"});
 	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
 	this.publicationModel = silex.publication.PublicationModel.getInstance();
 	this.publicationModel.addEventListener("onPublicationData",$bind(this,this.onPublicationData),"PublicationViewer class");
@@ -8218,13 +8275,15 @@ silex.ui.stage.PublicationViewer.__name__ = ["silex","ui","stage","PublicationVi
 silex.ui.stage.PublicationViewer.__super__ = org.slplayer.component.ui.DisplayObject;
 silex.ui.stage.PublicationViewer.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
 	onPageChange: function(event) {
-		haxe.Log.trace("onPageChange",{ fileName : "PublicationViewer.hx", lineNumber : 76, className : "silex.ui.stage.PublicationViewer", methodName : "onPageChange"});
+		haxe.Log.trace("onPageChange",{ fileName : "PublicationViewer.hx", lineNumber : 79, className : "silex.ui.stage.PublicationViewer", methodName : "onPageChange"});
 		if(this.pageModel.selectedItem != null) org.slplayer.component.navigation.Page.openPage(this.pageModel.selectedItem.name,false,null,null,this.publicationModel.application.id,this.publicationModel.viewHtmlDom);
-		haxe.Log.trace("onPageChange",{ fileName : "PublicationViewer.hx", lineNumber : 80, className : "silex.ui.stage.PublicationViewer", methodName : "onPageChange"});
+		haxe.Log.trace("onPageChange",{ fileName : "PublicationViewer.hx", lineNumber : 83, className : "silex.ui.stage.PublicationViewer", methodName : "onPageChange"});
 	}
 	,onPublicationData: function(event) {
+		haxe.Log.trace("onPublicationData 01",{ fileName : "PublicationViewer.hx", lineNumber : 68, className : "silex.ui.stage.PublicationViewer", methodName : "onPublicationData"});
 		this.rootElement.innerHTML = "";
 		this.rootElement.appendChild(this.publicationModel.viewHtmlDom);
+		haxe.Log.trace("onPublicationData 02",{ fileName : "PublicationViewer.hx", lineNumber : 72, className : "silex.ui.stage.PublicationViewer", methodName : "onPublicationData"});
 	}
 	,onPublicationChange: function(event) {
 		this.rootElement.innerHTML = "";
@@ -9561,7 +9620,7 @@ org.slplayer.component.sound.SoundOff.__meta__ = { obj : { tagNameFilter : ["a"]
 org.slplayer.component.sound.SoundOff.CLASS_NAME = "SoundOff";
 org.slplayer.core.Application.SLPID_ATTR_NAME = "slpid";
 org.slplayer.core.Application.instances = new Hash();
-silex.ServiceBase.DEFAULT_GATEWAY_URL = "../../";
+silex.ServiceBase.GATEWAY_URL = "../../";
 silex.Silex.CONFIG_PUBLICATION_NAME = "publicationName";
 silex.Silex.CONFIG_PUBLICATION_BODY = "publicationBody";
 silex.Silex.CONFIG_USE_DEEPLINK = "useDeeplink";

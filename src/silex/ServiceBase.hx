@@ -21,7 +21,7 @@ class ServiceBase{
 	/**
 	 * Default Silex server URL
 	 */
-	public static inline var DEFAULT_GATEWAY_URL:String = "../../";
+	public static var GATEWAY_URL:String = "../../";
 	/**
 	 * Connection to the gateway (Haxe remoting)
 	 */
@@ -30,11 +30,11 @@ class ServiceBase{
 	 * Constructor
 	 * Store the gateway URL
 	 */
-	public function new(serviceName:String, gatewayUrl:String = DEFAULT_GATEWAY_URL){
+	public function new(serviceName:String){
 		// store the service name
 		this.serviceName = serviceName;
 		// init connection to the server
-		connection = HttpAsyncConnection.urlConnect(gatewayUrl);
+		connection = HttpAsyncConnection.urlConnect(GATEWAY_URL);
 	}
 	/**
 	 * Make a remoting call

@@ -1,0 +1,71 @@
+<html>
+	<HEAD>
+
+		<script data-slp-use="org.slplayer.component.interaction.Draggable"></script>
+		<script data-slp-use="org.slplayer.component.layout.Panel"></script>
+
+		<script data-slp-use="org.slplayer.component.navigation.Page"></script>
+		<script data-slp-use="org.slplayer.component.navigation.Layer"></script>
+		<script data-slp-use="org.slplayer.component.navigation.link.LinkToPage"></script>
+		<script data-slp-use="org.slplayer.component.navigation.link.LinkClosePage"></script>
+		<script data-slp-use="org.slplayer.component.navigation.link.LinkToContext"></script>
+		<script data-slp-use="silex.ui.dialog.ModelDebugger"></script>
+
+		<script data-slp-use="silex.ui.stage.PublicationViewer"></script>
+		<script data-slp-use="silex.ui.stage.SelectionController"></script>
+		<script data-slp-use="silex.ui.stage.MenuController"></script>
+		
+		<script data-slp-use="silex.ui.stage.SelectionMarker"></script>
+		<script data-slp-use="silex.ui.stage.MasterDropHandler"></script>
+		<script data-slp-use="silex.ui.stage.InsertDropHandler"></script>
+
+
+		<META http-equiv="Content-Type" content="text/html; charset=UTF-8"></META> 
+		<META name="initialPageName" content="properties"></META>
+		<!-- plugins -->
+		<!-- info -->
+		<title>Hello Silex!</title>
+		<meta name="description" content="A 1st test of Silex publication" />
+		<meta name="keywords" content="HTML,CSS,website editor" />
+		<meta name="author" content="lexoyo" />
+		<meta name="revised" content="lexoyo, 29/08/2011" />
+		<!-- config -->
+		<meta name="type" content="publication" /> <!-- or theme, utility -->
+		<meta name="state" content="public" /> <!-- or private, trashed -->
+		<meta name="useDeeplink" content="false" />
+		<LINK href="app.css" rel="stylesheet"></LINK>
+
+		<META name="debugModeAction" content="
+			trace('properties toolbox - Loading publication');
+			PublicationModel.getInstance().load('test-publication');
+			"></META>
+	</HEAD>
+	<body>
+				<!-- 	**************************	-->
+				<!-- 		Selection and stage			-->
+				<div class="SelectionController panel-builder-body" >
+					<div class="PublicationViewer" >
+					</div>
+					<div class="selection-marker Draggable SelectionMarker"
+						data-dropzones-class-name="Layer"
+						data-phantom-class-name="selection-phantom"
+						data-group-id="SelectionController"
+					></div>
+					<div class="hover-marker"></div>
+					<div class="selection-layer-marker Draggable SelectionMarker"
+						data-dropzones-class-name="silex-view"
+						data-phantom-class-name="selection-phantom"
+						data-group-id="SelectionController"
+					></div>
+					<div class="hover-layer-marker"></div>
+				</div>
+				<!-- 		/Selection and stage 			-->
+				<!-- 	**************************	-->
+
+
+				<div class="ModelDebugger">
+					<div class="debug-raw"></div>
+					<div class="debug-html"></div>
+				</div>
+	</body>
+</html>

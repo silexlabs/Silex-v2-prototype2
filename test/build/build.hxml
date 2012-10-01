@@ -1,0 +1,75 @@
+###################
+# Selection
+###################
+
+-js ../bin/publications-test/selection-publication/silex-builder.js
+-cp ../src/
+-cp ../../src/
+-cp ../../../SLPlayer/src/
+-cp ../../../Cocktail/src/
+#--no-traces
+-debug
+-lib hscript
+
+-main selection.TestClient
+--macro org.slplayer.core.Builder.create('../src/selection/index.html')
+
+#-D slpdebug
+-D disableEmbedHtml
+-D noAutoStart
+-D stopOnError
+
+-D silexClientSide
+-D silexDebug
+
+--next
+
+###################
+# Dialogs
+###################
+
+-js ../bin/publications-test/dialogs/silex-builder.js
+-cp ../src/
+-cp ../../src/
+-cp ../../../SLPlayer/src/
+-cp ../../../Cocktail/src/
+#--no-traces
+-debug
+-lib hscript
+
+-main dialogs.TestClient
+--macro org.slplayer.core.Builder.create('../src/dialogs/index.html')
+
+#-D slpdebug
+-D disableEmbedHtml
+-D noAutoStart
+-D stopOnError
+
+-D silexClientSide
+-D silexDebug
+
+--next
+
+###################
+# Gateway
+###################
+
+-php ../bin/gateway.php
+-cp ../src/
+-cp ../../src/
+-cp ../../../SLPlayer/src/
+-cp ../../../Cocktail/src/
+#--no-traces
+-debug
+--remap js:cocktail
+-lib hscript
+
+-main PublicationsTestGateway
+
+#-D slpdebug
+-D disableEmbedHtml
+-D silexServerSide
+#-D noAutoStart
+-D stopOnError
+-D silexDebug
+
