@@ -11,10 +11,6 @@ import silex.util.FileSystemTools;
  */
 class PublicationConfig extends ConfigBase{
 	/**
-	 * Default folder where publications are stored
-	 */
-	public static inline var DEFAULT_PUBLICATION_FOLDER:String = "publications/";
-	/**
 	 * constant, path and file names
 	 */
 	public static inline var PUBLICATION_HTML_FILE:String = "index.html";
