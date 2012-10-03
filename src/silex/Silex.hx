@@ -46,7 +46,7 @@ class Silex {
 	/**
 	 * constant, name of attribute
 	 */
-	public static inline var CONFIG_PUBLICATION_NAME:String = "publicationName";
+	//public static inline var CONFIG_PUBLICATION_NAME:String = "publicationName";
 	/**
 	 * constant, name of attribute
 	 */
@@ -63,7 +63,7 @@ class Silex {
 	 * Publication name
 	 * It is provided in the URL as http://my.domain.com/?publication_name
 	 */
-	static public var publicationName:String;
+	//static public var publicationName:String;
 
 
 #if silexClientSide
@@ -77,17 +77,20 @@ class Silex {
 	 * Open the default page or the page designated by the deeplink
 	 */
 	static public function main() {
-		// workaround, bug https://github.com/silexlabs/Cocktail/issues/207
-		#if js
+		if (Lib.document.body == null){
+			// the script has been loaded at start
 			Lib.window.onload = init;
-		#else
+		}
+		else{
+			// the script has been loaded after the html page
 			init();
-		#end
+		}
 	}
 	/**
 	 * Init Silex app
 	 */
 	static public function init(unused:Dynamic=null){
+		trace("Hello Silex!");
 		// create an SLPlayer app
 		var application = Application.createApplication();
 		application.initDom();
@@ -96,7 +99,9 @@ class Silex {
 		// retrieve config data from flashvars, add all flashvars to the meta
 		var params:Dynamic<String> = flash.Lib.current.loaderInfo.parameters;
 		for (paramName in Reflect.fields(params)){
-			DomTools.setMeta(paramName, StringTools.urlDecode(Reflect.field(params, paramName)));
+			var value = Reflect.field(params, paramName);
+			// trace("Flashvar "+paramName+"="+value);
+			DomTools.setMeta(paramName, StringTools.urlDecode(value));
 		}
 	#elseif js
 		// retrieve initialPageName
@@ -109,19 +114,22 @@ class Silex {
 	#end
 
 		// retrieve publicationName
-		publicationName = DomTools.getMeta(CONFIG_PUBLICATION_NAME);
+		//publicationName = DomTools.getMeta(CONFIG_PUBLICATION_NAME);
 
 		// set the body of the publication if it is provided in the meta
 		var publicationBody = DomTools.getMeta(CONFIG_PUBLICATION_BODY);
 		if (publicationBody != null){
+			trace("A body was found!");
 			/*
 			var node = Lib.document.createElement("DIV");
 			node.innerHTML = StringTools.htmlUnescape(DomTools.getMeta(CONFIG_PUBLICATION_BODY));
 			Lib.document.body.appendChild(node);
 			/**/
-			Lib.document.body.innerHTML = StringTools.htmlUnescape(DomTools.getMeta(CONFIG_PUBLICATION_BODY));
+			var value = DomTools.getMeta(CONFIG_PUBLICATION_BODY);
+			// var value = StringTools.htmlUnescape(DomTools.getMeta(CONFIG_PUBLICATION_BODY));
+			Lib.document.body.innerHTML = value;
 			// set base tag so the ./ is the publicaiton folder
-			DomTools.setBaseTag(PublicationService.PUBLICATION_FOLDER+publicationName+"/");
+			//DomTools.setBaseTag(PublicationService.PUBLICATION_FOLDER+publicationName+"/");
 		}
 		
 		// init SLPlayer components

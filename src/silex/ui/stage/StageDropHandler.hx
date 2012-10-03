@@ -167,7 +167,15 @@ trace("parent = "+parent+"  - position= "+position);
 			//	generate an exception?		rootElement.parentNode.removeChild(rootElement.parentNode);
 			initialMarkerParent.appendChild(rootElement);
 		}
-
+		// refresh the builder display
+		if (ComponentModel.getInstance().selectedItem != null){
+			// case of a component
+			ComponentModel.getInstance().selectedItem = ComponentModel.getInstance().selectedItem;
+		}
+		else if (LayerModel.getInstance().selectedItem != null){
+			// case of a layer
+			LayerModel.getInstance().selectedItem = LayerModel.getInstance().selectedItem;
+		}
 		trace("ON DROP COMPLETE");
 	}
 }

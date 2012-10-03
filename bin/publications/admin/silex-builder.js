@@ -6981,40 +6981,32 @@ org.slplayer.util.DomTools.getSingleElement = function(rootElement,className,req
 	}
 }
 org.slplayer.util.DomTools.getElementBoundingBox = function(htmlDom) {
-	var halfBorderH = 0;
-	var halfBorderV = 0;
-	var scrollTop = 0;
-	var scrollLeft = 0;
+	if(htmlDom.nodeType != 1) return null;
+	var offsetTop = 0;
+	var offsetLeft = 0;
+	var offsetWidth = 0.0;
+	var offsetHeight = 0.0;
 	var element = htmlDom;
-	while(element.parentNode != null && element.tagName.toLowerCase() != "body") {
-		scrollTop -= element.scrollTop;
-		scrollLeft -= element.scrollLeft;
-		element = element.parentNode;
+	while(element != null) {
+		var halfBorderH = (element.offsetWidth - element.clientWidth) / 2.0;
+		var halfBorderV = (element.offsetHeight - element.clientHeight) / 2.0;
+		offsetTop -= element.scrollTop;
+		offsetLeft -= element.scrollLeft;
+		offsetTop += element.offsetTop;
+		offsetLeft += element.offsetLeft;
+		element = element.offsetParent;
 	}
-	scrollTop -= element.scrollTop;
-	scrollLeft -= element.scrollLeft;
-	return { x : Math.floor(htmlDom.offsetLeft - halfBorderH) + scrollLeft, y : Math.floor(htmlDom.offsetTop - halfBorderV) + scrollTop, w : Math.floor(htmlDom.offsetWidth - halfBorderH), h : Math.floor(htmlDom.offsetHeight - halfBorderV)};
-}
-org.slplayer.util.DomTools.localToGlobal = function(x,y,htmlDom) {
-	var element = htmlDom;
-	while(element.parentNode != null && element.tagName.toLowerCase() != "body") {
-		x -= element.offsetLeft;
-		y -= element.offsetTop;
-		element = element.parentNode;
-	}
-	x -= element.offsetLeft;
-	y -= element.offsetTop;
-	return { x : x, y : y};
+	return { x : Math.round(offsetLeft), y : Math.round(offsetTop), w : Math.round(htmlDom.offsetWidth + offsetWidth), h : Math.round(htmlDom.offsetHeight + offsetHeight)};
 }
 org.slplayer.util.DomTools.inspectTrace = function(obj,callingClass) {
-	haxe.Log.trace("-- " + callingClass + " inspecting element --",{ fileName : "DomTools.hx", lineNumber : 156, className : "org.slplayer.util.DomTools", methodName : "inspectTrace"});
+	haxe.Log.trace("-- " + callingClass + " inspecting element --",{ fileName : "DomTools.hx", lineNumber : 145, className : "org.slplayer.util.DomTools", methodName : "inspectTrace"});
 	var _g = 0, _g1 = Reflect.fields(obj);
 	while(_g < _g1.length) {
 		var prop = _g1[_g];
 		++_g;
-		haxe.Log.trace("- " + prop + " = " + Std.string(Reflect.field(obj,prop)),{ fileName : "DomTools.hx", lineNumber : 159, className : "org.slplayer.util.DomTools", methodName : "inspectTrace"});
+		haxe.Log.trace("- " + prop + " = " + Std.string(Reflect.field(obj,prop)),{ fileName : "DomTools.hx", lineNumber : 148, className : "org.slplayer.util.DomTools", methodName : "inspectTrace"});
 	}
-	haxe.Log.trace("-- --",{ fileName : "DomTools.hx", lineNumber : 161, className : "org.slplayer.util.DomTools", methodName : "inspectTrace"});
+	haxe.Log.trace("-- --",{ fileName : "DomTools.hx", lineNumber : 150, className : "org.slplayer.util.DomTools", methodName : "inspectTrace"});
 }
 org.slplayer.util.DomTools.toggleClass = function(element,className) {
 	if(org.slplayer.util.DomTools.hasClass(element,className)) org.slplayer.util.DomTools.removeClass(element,className); else org.slplayer.util.DomTools.addClass(element,className);
@@ -7117,7 +7109,7 @@ org.slplayer.util.DomTools.setBaseTag = function(href) {
 	var head = js.Lib.document.getElementsByTagName("head")[0];
 	var baseNodes = js.Lib.document.getElementsByTagName("base");
 	if(baseNodes.length > 0) {
-		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 340, className : "org.slplayer.util.DomTools", methodName : "setBaseTag"});
+		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 329, className : "org.slplayer.util.DomTools", methodName : "setBaseTag"});
 		baseNodes[0].setAttribute("href",href);
 	} else {
 		var node = js.Lib.document.createElement("base");
@@ -7221,24 +7213,24 @@ silex.ServiceBase.prototype = {
 silex.Silex = function() { }
 $hxClasses["silex.Silex"] = silex.Silex;
 silex.Silex.__name__ = ["silex","Silex"];
-silex.Silex.publicationName = null;
 silex.Silex.main = function() {
-	js.Lib.window.onload = silex.Silex.init;
+	if(js.Lib.document.body == null) js.Lib.window.onload = silex.Silex.init; else silex.Silex.init();
 }
 silex.Silex.init = function(unused) {
+	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 93, className : "silex.Silex", methodName : "init"});
 	var application = org.slplayer.core.Application.createApplication();
 	application.initDom();
 	if(js.Lib.window.location.hash != "" && org.slplayer.util.DomTools.getMeta("useDeeplink") != "false") {
 		var initialPageName = HxOverrides.substr(js.Lib.window.location.hash,1,null);
 		org.slplayer.util.DomTools.setMeta("initialPageName",initialPageName);
 	}
-	silex.Silex.publicationName = org.slplayer.util.DomTools.getMeta("publicationName");
 	var publicationBody = org.slplayer.util.DomTools.getMeta("publicationBody");
 	if(publicationBody != null) {
-		js.Lib.document.body.innerHTML = StringTools.htmlUnescape(org.slplayer.util.DomTools.getMeta("publicationBody"));
-		org.slplayer.util.DomTools.setBaseTag(silex.publication.PublicationService.PUBLICATION_FOLDER + silex.Silex.publicationName + "/");
+		haxe.Log.trace("A body was found!",{ fileName : "Silex.hx", lineNumber : 122, className : "silex.Silex", methodName : "init"});
+		var value = org.slplayer.util.DomTools.getMeta("publicationBody");
+		js.Lib.document.body.innerHTML = value;
 	}
-	haxe.Log.trace(" application.init " + Std.string(js.Lib.document.body),{ fileName : "Silex.hx", lineNumber : 128, className : "silex.Silex", methodName : "init"});
+	haxe.Log.trace(" application.init " + Std.string(js.Lib.document.body),{ fileName : "Silex.hx", lineNumber : 136, className : "silex.Silex", methodName : "init"});
 	application.initComponents();
 	haxe.Timer.delay((function(f,a1) {
 		return function() {
@@ -7374,7 +7366,7 @@ silex.layer.LayerModel.prototype = $extend(silex.ModelBase.prototype,{
 		var modelHtmlDom = publicationModel.modelHtmlDom;
 		var newNode = js.Lib.document.createElement("div");
 		newNode.className = "Layer " + page.name;
-		newNode.title = layerName;
+		newNode.setAttribute("title",layerName);
 		if(position > viewHtmlDom.childNodes.length - 1) viewHtmlDom.appendChild(newNode); else viewHtmlDom.insertBefore(newNode,viewHtmlDom.childNodes[position]);
 		publicationModel.prepareForEdit(newNode);
 		if(position > modelHtmlDom.childNodes.length - 1) modelHtmlDom.appendChild(newNode.cloneNode(true)); else modelHtmlDom.insertBefore(newNode.cloneNode(true),modelHtmlDom.childNodes[position]);
@@ -7588,7 +7580,7 @@ silex.publication.PublicationModel.__super__ = silex.ModelBase;
 silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onPublicationSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 600, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 612, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
 	}
 	,onSaveError: function(msg) {
 		this.dispatchEvent(this.createEvent("onPublicationSaveError"),this.debugInfo);
@@ -7599,6 +7591,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		modelDom.removeAttribute("data-silex-component-id");
 		modelDom.removeAttribute("data-silex-layer-id");
 		if(modelDom.getAttribute("data-group-id") == "PublicationGroup") modelDom.removeAttribute("data-group-id");
+		org.slplayer.util.DomTools.removeClass(modelDom,"silex-view");
 		var _g1 = 0, _g = modelDom.childNodes.length;
 		while(_g1 < _g) {
 			var idx = _g1++;
@@ -7665,19 +7658,19 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		throw "An error occured while loading publications list (" + msg + ")";
 	}
 	,initSLPlayerApplication: function(rootElement) {
-		haxe.Log.trace("init the SLPlayer application 02",{ fileName : "PublicationModel.hx", lineNumber : 395, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
+		haxe.Log.trace("init the SLPlayer application 02",{ fileName : "PublicationModel.hx", lineNumber : 404, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
 		this.application = org.slplayer.core.Application.createApplication();
-		haxe.Log.trace("init the SLPlayer application 04",{ fileName : "PublicationModel.hx", lineNumber : 399, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
+		haxe.Log.trace("init the SLPlayer application 04",{ fileName : "PublicationModel.hx", lineNumber : 408, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
 		this.application.initDom(rootElement);
 		this.application.initComponents();
-		haxe.Log.trace("init the SLPlayer application 06",{ fileName : "PublicationModel.hx", lineNumber : 404, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
+		haxe.Log.trace("init the SLPlayer application 06",{ fileName : "PublicationModel.hx", lineNumber : 413, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
 		var initialPageName = org.slplayer.util.DomTools.getMeta("initialPageName",null,this.headHtmlDom);
 		if(initialPageName != null) {
 			var page = org.slplayer.component.navigation.Page.getPageByName(initialPageName,this.application.id,this.viewHtmlDom);
-			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "PublicationModel.hx", lineNumber : 413, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
-			haxe.Log.trace("init the SLPlayer application 08\t",{ fileName : "PublicationModel.hx", lineNumber : 415, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
-		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "PublicationModel.hx", lineNumber : 418, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
-		haxe.Log.trace("init the SLPlayer application 10",{ fileName : "PublicationModel.hx", lineNumber : 421, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
+			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "PublicationModel.hx", lineNumber : 422, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
+			haxe.Log.trace("init the SLPlayer application 08\t",{ fileName : "PublicationModel.hx", lineNumber : 424, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
+		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "PublicationModel.hx", lineNumber : 427, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
+		haxe.Log.trace("init the SLPlayer application 10",{ fileName : "PublicationModel.hx", lineNumber : 430, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
 		if(this.currentConfig.debugModeAction != null) {
 			var context = new Hash();
 			context.set("slpid",this.application.id);
@@ -7692,7 +7685,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 				throw "Error while executing the script in the config file of the publication (debugModeAction variable). The error: " + Std.string(e);
 			}
 		}
-		haxe.Log.trace("init the SLPlayer application 12",{ fileName : "PublicationModel.hx", lineNumber : 440, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
+		haxe.Log.trace("init the SLPlayer application 12",{ fileName : "PublicationModel.hx", lineNumber : 449, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
 	}
 	,generateNewId: function() {
 		return silex.publication.PublicationModel.nextId++ + "";
@@ -7744,15 +7737,15 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 			var closingTagIdx = this.currentData.html.indexOf(">",bodyOpenIdx);
 			this.modelHtmlDom.innerHTML = this.currentData.html.substring(closingTagIdx + 1,bodyCloseIdx);
 		}
-		haxe.Log.trace("Publication data is loaded 02",{ fileName : "PublicationModel.hx", lineNumber : 294, className : "silex.publication.PublicationModel", methodName : "onData"});
+		haxe.Log.trace("Publication data is loaded 02",{ fileName : "PublicationModel.hx", lineNumber : 303, className : "silex.publication.PublicationModel", methodName : "onData"});
 		this.prepareForEdit(this.modelHtmlDom);
-		haxe.Log.trace("Publication data is loaded 04",{ fileName : "PublicationModel.hx", lineNumber : 298, className : "silex.publication.PublicationModel", methodName : "onData"});
+		haxe.Log.trace("Publication data is loaded 04",{ fileName : "PublicationModel.hx", lineNumber : 307, className : "silex.publication.PublicationModel", methodName : "onData"});
 		this.initViewHtmlDom();
-		haxe.Log.trace("Publication data is loaded 06",{ fileName : "PublicationModel.hx", lineNumber : 302, className : "silex.publication.PublicationModel", methodName : "onData"});
+		haxe.Log.trace("Publication data is loaded 06",{ fileName : "PublicationModel.hx", lineNumber : 311, className : "silex.publication.PublicationModel", methodName : "onData"});
 		this.dispatchEvent(this.createEvent("onPublicationData"),this.debugInfo);
-		haxe.Log.trace("Publication data is loaded 08",{ fileName : "PublicationModel.hx", lineNumber : 306, className : "silex.publication.PublicationModel", methodName : "onData"});
+		haxe.Log.trace("Publication data is loaded 08",{ fileName : "PublicationModel.hx", lineNumber : 315, className : "silex.publication.PublicationModel", methodName : "onData"});
 		this.initSLPlayerApplication(this.viewHtmlDom);
-		haxe.Log.trace("Publication data is loaded 10",{ fileName : "PublicationModel.hx", lineNumber : 309, className : "silex.publication.PublicationModel", methodName : "onData"});
+		haxe.Log.trace("Publication data is loaded 10",{ fileName : "PublicationModel.hx", lineNumber : 318, className : "silex.publication.PublicationModel", methodName : "onData"});
 	}
 	,onConfig: function(publicationConfig) {
 		this.currentConfig = publicationConfig;
@@ -7768,7 +7761,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		pageModel.setSelectedItem(null);
 		this.dispatchEvent(this.createEvent("onPublicationChange"),this.debugInfo);
 		if(name == "") {
-			haxe.Log.trace("unload",{ fileName : "PublicationModel.hx", lineNumber : 233, className : "silex.publication.PublicationModel", methodName : "load"});
+			haxe.Log.trace("unload",{ fileName : "PublicationModel.hx", lineNumber : 242, className : "silex.publication.PublicationModel", methodName : "load"});
 			this.currentConfig = null;
 			this.currentData = null;
 			this.viewHtmlDom = null;
@@ -7777,10 +7770,11 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 	}
 	,getModelFromView: function(viewHtmlDom) {
 		if(viewHtmlDom == null) {
-			haxe.Log.trace("Warning: could not retrieve the model for element because it is null.",{ fileName : "PublicationModel.hx", lineNumber : 157, className : "silex.publication.PublicationModel", methodName : "getModelFromView"});
+			haxe.Log.trace("Warning: could not retrieve the model for element because it is null.",{ fileName : "PublicationModel.hx", lineNumber : 162, className : "silex.publication.PublicationModel", methodName : "getModelFromView"});
 			return null;
 		}
 		try {
+			if(org.slplayer.util.DomTools.hasClass(viewHtmlDom,"silex-view")) return this.modelHtmlDom;
 			var results = null;
 			var id = viewHtmlDom.getAttribute("data-silex-component-id");
 			if(id != null) results = org.slplayer.util.DomTools.getElementsByAttribute(silex.publication.PublicationModel.getInstance().modelHtmlDom,"data-silex-component-id",id); else {
@@ -7790,7 +7784,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 			if(results == null || results.length != 1) throw "Error: 1 and only 1 component or layer is expected to have ID \"" + id + "\" (" + Std.string(results) + ").";
 			return results[0];
 		} catch( e ) {
-			haxe.Log.trace("Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").",{ fileName : "PublicationModel.hx", lineNumber : 192, className : "silex.publication.PublicationModel", methodName : "getModelFromView"});
+			haxe.Log.trace("Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").",{ fileName : "PublicationModel.hx", lineNumber : 201, className : "silex.publication.PublicationModel", methodName : "getModelFromView"});
 			throw "Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").";
 		}
 		return null;
@@ -8100,7 +8094,8 @@ silex.ui.stage.StageDropHandler.__super__ = org.slplayer.component.ui.DisplayObj
 silex.ui.stage.StageDropHandler.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
 	resetDraggedMarker: function() {
 		if(this.rootElement.parentNode != this.initialMarkerParent) this.initialMarkerParent.appendChild(this.rootElement);
-		haxe.Log.trace("ON DROP COMPLETE",{ fileName : "StageDropHandler.hx", lineNumber : 165, className : "silex.ui.stage.StageDropHandler", methodName : "resetDraggedMarker"});
+		if(silex.component.ComponentModel.getInstance().selectedItem != null) silex.component.ComponentModel.getInstance().setSelectedItem(silex.component.ComponentModel.getInstance().selectedItem); else if(silex.layer.LayerModel.getInstance().selectedItem != null) silex.layer.LayerModel.getInstance().setSelectedItem(silex.layer.LayerModel.getInstance().selectedItem);
+		haxe.Log.trace("ON DROP COMPLETE",{ fileName : "StageDropHandler.hx", lineNumber : 179, className : "silex.ui.stage.StageDropHandler", methodName : "resetDraggedMarker"});
 	}
 	,onDrop: function(e) {
 		haxe.Log.trace("onDrop " + Std.string(e),{ fileName : "StageDropHandler.hx", lineNumber : 59, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
@@ -8115,26 +8110,25 @@ silex.ui.stage.StageDropHandler.prototype = $extend(org.slplayer.component.ui.Di
 			if(dropZone != null) {
 				position = dropZone.position;
 				parent = dropZone.parent;
+				haxe.Log.trace("parent = " + Std.string(parent) + "  - position= " + position,{ fileName : "StageDropHandler.hx", lineNumber : 85, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
 				if(parent.childNodes.length > position) {
 					var before = parent.childNodes[position];
 					while(before != null && (before.nodeType != 1 || before.getAttribute("data-silex-component-id") == null && before.getAttribute("data-silex-layer-id") == null)) before = before.nextSibling;
 					beforeElement = before;
 				}
 				if(parent.childNodes.length <= position) parent.appendChild(element); else parent.insertBefore(element,parent.childNodes[position + 1]);
-				try {
-					if(dropZone != null) {
-						var modelElement = silex.publication.PublicationModel.getInstance().getModelFromView(element);
-						var modelBeforeElement = silex.publication.PublicationModel.getInstance().getModelFromView(beforeElement);
-						var modelParent = silex.publication.PublicationModel.getInstance().getModelFromView(parent);
-						if(modelElement == null) throw "Error while moving the element: could not retrieve the element in the model.";
-						if(modelElement.parentNode == null) throw "Error while moving the element: the element in the model has no parent.";
-						if(modelBeforeElement == null) modelParent.appendChild(modelElement); else modelParent.insertBefore(modelElement,modelBeforeElement);
-					}
-				} catch( e1 ) {
-					haxe.Log.trace("ON DROP ERROR: " + Std.string(e1) + "(" + Std.string(element) + " , " + Std.string(beforeElement) + ", " + Std.string(parent) + ")",{ fileName : "StageDropHandler.hx", lineNumber : 142, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
-				}
-			} else haxe.Log.trace("a drop zone was NOT found",{ fileName : "StageDropHandler.hx", lineNumber : 149, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
-		} else haxe.Log.trace("Nothing being dragged",{ fileName : "StageDropHandler.hx", lineNumber : 153, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
+				haxe.Log.trace("Model 002",{ fileName : "StageDropHandler.hx", lineNumber : 119, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
+				var modelElement = silex.publication.PublicationModel.getInstance().getModelFromView(element);
+				haxe.Log.trace("Model 004",{ fileName : "StageDropHandler.hx", lineNumber : 121, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
+				var modelBeforeElement = silex.publication.PublicationModel.getInstance().getModelFromView(beforeElement);
+				haxe.Log.trace("Model 006 " + Std.string(parent),{ fileName : "StageDropHandler.hx", lineNumber : 123, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
+				var modelParent = silex.publication.PublicationModel.getInstance().getModelFromView(parent);
+				haxe.Log.trace("Model 008",{ fileName : "StageDropHandler.hx", lineNumber : 125, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
+				if(modelElement == null) throw "Error while moving the element: could not retrieve the element in the model.";
+				if(modelElement.parentNode == null) throw "Error while moving the element: the element in the model has no parent.";
+				if(modelBeforeElement == null) modelParent.appendChild(modelElement); else modelParent.insertBefore(modelElement,modelBeforeElement);
+			} else haxe.Log.trace("a drop zone was NOT found",{ fileName : "StageDropHandler.hx", lineNumber : 155, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
+		} else haxe.Log.trace("Nothing being dragged",{ fileName : "StageDropHandler.hx", lineNumber : 159, className : "silex.ui.stage.StageDropHandler", methodName : "onDrop"});
 		this.resetDraggedMarker();
 	}
 	,onDrag: function(e) {
@@ -9621,7 +9615,6 @@ org.slplayer.component.sound.SoundOff.CLASS_NAME = "SoundOff";
 org.slplayer.core.Application.SLPID_ATTR_NAME = "slpid";
 org.slplayer.core.Application.instances = new Hash();
 silex.ServiceBase.GATEWAY_URL = "../../";
-silex.Silex.CONFIG_PUBLICATION_NAME = "publicationName";
 silex.Silex.CONFIG_PUBLICATION_BODY = "publicationBody";
 silex.Silex.CONFIG_USE_DEEPLINK = "useDeeplink";
 silex.Silex.LOADER_SCRIPT_PATH = "../../libs/silex/loader.js";
@@ -9647,6 +9640,7 @@ silex.property.PropertyModel.DEBUG_INFO = "PropertyModel class";
 silex.property.PropertyModel.ON_STYLE_CHANGE = "onStyleChange";
 silex.property.PropertyModel.ON_PROPERTY_CHANGE = "onPropertyChange";
 silex.publication.PublicationModel.DEBUG_INFO = "PublicationModel class";
+silex.publication.PublicationModel.BUILDER_ROOT_NODE_CLASS = "silex-view";
 silex.publication.PublicationModel.ON_CHANGE = "onPublicationChange";
 silex.publication.PublicationModel.ON_LIST = "onPublicationList";
 silex.publication.PublicationModel.ON_DATA = "onPublicationData";

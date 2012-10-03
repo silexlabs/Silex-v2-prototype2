@@ -1,8 +1,8 @@
 
---next
 #########
 # server
 #########
+--next
 
 -php ../bin/libs/silex/silex.php
 -cp ../src/
