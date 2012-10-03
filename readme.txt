@@ -38,8 +38,9 @@ En cours
 
 ** To do **
 a discuter avec thomas
+- brix et flex jusqu ou?
 - mvc? 
-- drazg drop avec "proxy"
+- drag drop avec "proxy"
 
 remettre en place des tests unitaires
 - chaque liste
@@ -104,6 +105,10 @@ missing functionality
 - liste de pages réordonnable
 
 fonctionnalité
+- text editor and file manager
+  http://ckeditor.com/demo ("Kama" skin) and http://sourceforge.net/projects/pdwfilebrowser/
+- code editor
+  http://ace.ajax.org/
 - selection move
 - drag/drop page, layer, comp
 - remove page, layer, comp, 

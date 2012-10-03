@@ -41,6 +41,8 @@ function startSilexJs(){
 function startSilexFlash(){
 	var node = document.createElement("div");
 	node.id = "flashContainer";
+
+	//document.body.innerHTML = "";
 	document.body.appendChild(node);
 
 	var node = addScript("../../libs/swfobject.js");
@@ -51,34 +53,55 @@ function startSilexFlash(){
  * embed silex.swf
  */
 function swfobjectLoaded(){
-		// retrieve all config tags (the meta tags)
-		var metaTags = document.getElementsByTagName("META");
+	// retrieve all config tags (the meta tags)
+	var metaTags = document.getElementsByTagName("META");
 
-		// the flashvars object passed to flash
-		var flashvars = {};
+	// the flashvars object passed to flash
+	var flashvars = {};
 
-		// for each config element, store the name/value pair
-		for (idxNode=0; idxNode<metaTags.length; idxNode++){
-			var node = metaTags[idxNode];
-			var configName = node.getAttribute("name");
-			var configValue = node.getAttribute("content");
-			if (configName!=null && configValue!=null){
-				flashvars[configName] = escape(configValue);
-				console.log(flashvars);
-			}
+	// for each config element, store the name/value pair
+	for (idxNode=0; idxNode<metaTags.length; idxNode++){
+		var node = metaTags[idxNode];
+		var configName = node.getAttribute("name");
+		var configValue = node.getAttribute("content");
+		if (configName!=null && configValue!=null){
+			flashvars[configName] = escape(configValue);
+			//console.log(flashvars);
 		}
+	}
+	// add html data
+	flashvars["publicationBody"] = document.getElementsByTagName("body")[0].innerHTML;
+
+	// retrieve initialPageName from deeplink
+	if (window.location.hash != "" && flashvars["useDeeplink"]!="false"){
+		// hash is the page name after the # in the URL
+		var initialPageName = window.location.hash.substr(1);
+		// set initial page 
+		flashvars["initialPageName"] = initialPageName;
+	}
 
 	// embed silex
-	swfobject.embedSWF("libs/silex/silex.swf", "flashContainer", "100%", "400", "10.2.0", null, flashvars);
+	swfobject.embedSWF("../../libs/silex/silex.swf", "flashContainer", "100%", "100%", "10.2.0", null, flashvars);
+
+	var node = document.getElementById("flashContainer");
+	node.style.position = "absolute";
+	node.style.width = "100%";
+	node.style.height = "100%";
+	node.style.left = "0";
+	node.style.top = "0";
 }
 
-var _hasHtml5 = hasHtml5();
+window.onload = function (){
+	var _hasHtml5 = hasHtml5();
 
-// debug only 
-//_hasHtml5 = false;
+	// debug only 
+//	_hasHtml5 = false;
 
-// flash or html version
-if (_hasHtml5)
-	startSilexJs();
-else
-	startSilexFlash();
+	// flash or html version
+	if (_hasHtml5){	
+		startSilexJs();
+	}
+	else{
+		startSilexFlash();
+	}
+}
