@@ -116,7 +116,7 @@ class LayerModel extends ModelBase<Layer>{
 		// create a node for an empty new layer
 		var newNode = Lib.document.createElement("div");
 		newNode.className = "Layer " + page.name;
-		newNode.title = layerName;
+		newNode.setAttribute("title", layerName);
 
 		// add to the view DOM
 		if (position > viewHtmlDom.childNodes.length - 1){

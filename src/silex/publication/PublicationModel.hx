@@ -134,7 +134,6 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		// store the service provider
 		publicationService = new PublicationService();
 	}
-#if silexClientSide
 	////////////////////////////////////////////////
 	// list
 	////////////////////////////////////////////////
@@ -613,5 +612,4 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		trace("PUBLICATION SAVED");
 	}
 
-#end
 }
