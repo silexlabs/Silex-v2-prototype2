@@ -58,7 +58,6 @@ body{
 }
 .panel-publication-body{
 	width: 100%;
-	position: absolute;
 }
 /* **************** */
 /* 		stage 		*/
@@ -609,9 +608,8 @@ width:100%;
 	border: 2px black solid;
 	border-radius: 5px;
 	overflow: hidden;
-	position: absolute;
-	right: 0;
 	z-index: 2000;
+	float: right;
 }
 .silex-toolbox .draggable-dragzone{
 	background-color: Gainsboro;
@@ -672,6 +670,27 @@ width:100%;
 	float:right;
 	margin-left:5px;
 }
+
+.silex-toolbox .LinkToPage:hover{
+	background-color:#F93;
+}
+.silex-toolbox .page-opened{
+	background-color:#F93;
+}
+
+.silex-toolbox .LinkToPage{
+	text-decoration: none;
+	color:#3C3C3C;
+	font-size:12px;
+}
+
+
+.silex-toolbox select{
+	width:31%;
+	float:right;
+	margin-left:5px;
+}
+>>>>>>> d2f411a081d91f0845ed6c16322e821c7d84ec0c
 
 
 

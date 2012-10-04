@@ -1612,12 +1612,32 @@ brix.component.layout.Accordion.prototype = $extend(brix.component.layout.Layout
 		var bodySize;
 		var boundingBox = brix.util.DomTools.getElementBoundingBox(this.rootElement);
 		if(this.isHorizontal) {
+			bodySize = boundingBox.w;
+			var margin = this.rootElement.offsetWidth - this.rootElement.clientWidth;
+			bodySize -= margin;
+			var elements = this.rootElement.getElementsByClassName("accordion-header");
+			if(elements == null || elements.length == 0) throw "No headers found for the accordion.";
+			var _g1 = 0, _g = elements.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				var element = elements[idx];
+				bodySize -= element.offsetWidth;
+				var margin1 = element.offsetWidth - element.clientWidth;
+				bodySize -= margin1;
+			}
+			var elements1 = this.rootElement.getElementsByClassName("accordion-item");
+			var _g1 = 0, _g = elements1.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				var element = elements1[idx];
+				var margin1 = element.offsetWidth - element.clientWidth;
+				element.style.width = bodySize - margin1 + "px";
+			}
 		} else {
 			bodySize = boundingBox.h;
 			var margin = this.rootElement.offsetHeight - this.rootElement.clientHeight;
 			bodySize -= margin;
 			var elements = this.rootElement.getElementsByClassName("accordion-header");
-			haxe.Log.trace("****** " + elements.length + " found",{ fileName : "Accordion.hx", lineNumber : 86, className : "brix.component.layout.Accordion", methodName : "redraw"});
 			if(elements == null || elements.length == 0) throw "No headers found for the accordion.";
 			var _g1 = 0, _g = elements.length;
 			while(_g1 < _g) {
