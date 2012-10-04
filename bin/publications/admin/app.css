@@ -671,6 +671,27 @@ width:100%;
 	margin-left:5px;
 }
 
+.silex-toolbox .LinkToPage:hover{
+	background-color:#F93;
+}
+.silex-toolbox .page-opened{
+	background-color:#F93;
+}
+
+.silex-toolbox .LinkToPage{
+	text-decoration: none;
+	color:#3C3C3C;
+	font-size:12px;
+}
+
+
+.silex-toolbox select{
+	width:31%;
+	float:right;
+	margin-left:5px;
+}
+>>>>>>> d2f411a081d91f0845ed6c16322e821c7d84ec0c
+
 
 
 .silex-toolbox textarea,input {
