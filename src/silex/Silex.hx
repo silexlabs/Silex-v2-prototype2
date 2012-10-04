@@ -8,10 +8,10 @@ import js.Dom;
 // Imports
 //////////////////////////////////////////////////
 
-import org.slplayer.core.Application;
-import org.slplayer.util.DomTools;
+import brix.core.Application;
+import brix.util.DomTools;
 
-import org.slplayer.component.navigation.Page;
+import brix.component.navigation.Page;
 
 import silex.publication.PublicationService;
 import silex.interpreter.Interpreter;
@@ -91,7 +91,7 @@ class Silex {
 	 */
 	static public function init(unused:Dynamic=null){
 		trace("Hello Silex!");
-		// create an SLPlayer app
+		// create a Brix app
 		var application = Application.createApplication();
 		application.initDom();
 
@@ -132,7 +132,7 @@ class Silex {
 			//DomTools.setBaseTag(PublicationService.PUBLICATION_FOLDER+publicationName+"/");
 		}
 		
-		// init SLPlayer components
+		// init Brix components
 		trace(" application.init "+Lib.document.body);
 		application.initComponents();
 
@@ -144,7 +144,7 @@ class Silex {
 		var debugModeAction = DomTools.getMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION);
 		if (debugModeAction != null){
 			var context:Hash<Dynamic> = new Hash();
-			context.set("slpid", application.id);
+			context.set("BrixId", application.id);
 			context.set("PublicationModel", PublicationModel);
 			context.set("PageModel", PageModel);
 			context.set("LayerModel", LayerModel);
@@ -247,7 +247,7 @@ class Silex {
 		// add loader script
 		DomTools.embedScript(LOADER_SCRIPT_PATH);
 
-		// create an SLPlayer app
+		// create a Brix app
 		var application = Application.createApplication();
 
 		// init SLPayer

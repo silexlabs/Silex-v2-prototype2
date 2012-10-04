@@ -1272,6 +1272,1603 @@ Xml.prototype = {
 	,__class__: Xml
 	,__properties__: {set_nodeName:"setNodeName",get_nodeName:"getNodeName",set_nodeValue:"setNodeValue",get_nodeValue:"getNodeValue",get_parent:"getParent"}
 }
+var brix = {}
+brix.component = {}
+brix.component.IBrixComponent = function() { }
+$hxClasses["brix.component.IBrixComponent"] = brix.component.IBrixComponent;
+brix.component.IBrixComponent.__name__ = ["brix","component","IBrixComponent"];
+brix.component.IBrixComponent.prototype = {
+	getBrixApplication: null
+	,brixInstanceId: null
+	,__class__: brix.component.IBrixComponent
+}
+brix.component.BrixComponent = function() { }
+$hxClasses["brix.component.BrixComponent"] = brix.component.BrixComponent;
+brix.component.BrixComponent.__name__ = ["brix","component","BrixComponent"];
+brix.component.BrixComponent.initBrixComponent = function(component,brixInstanceId) {
+	component.brixInstanceId = brixInstanceId;
+}
+brix.component.BrixComponent.getBrixApplication = function(component) {
+	return brix.core.Application.get(component.brixInstanceId);
+}
+brix.component.BrixComponent.checkRequiredParameters = function(cmpClass,elt) {
+	var requires = haxe.rtti.Meta.getType(cmpClass).requires;
+	if(requires == null) return;
+	var _g = 0;
+	while(_g < requires.length) {
+		var r = requires[_g];
+		++_g;
+		if(elt.getAttribute(Std.string(r)) == null || StringTools.trim(elt.getAttribute(Std.string(r))) == "") throw Std.string(r) + " parameter is required for " + Type.getClassName(cmpClass);
+	}
+}
+brix.component.ui = {}
+brix.component.ui.IDisplayObject = function() { }
+$hxClasses["brix.component.ui.IDisplayObject"] = brix.component.ui.IDisplayObject;
+brix.component.ui.IDisplayObject.__name__ = ["brix","component","ui","IDisplayObject"];
+brix.component.ui.IDisplayObject.__interfaces__ = [brix.component.IBrixComponent];
+brix.component.ui.IDisplayObject.prototype = {
+	rootElement: null
+	,__class__: brix.component.ui.IDisplayObject
+}
+brix.component.group = {}
+brix.component.group.IGroupable = function() { }
+$hxClasses["brix.component.group.IGroupable"] = brix.component.group.IGroupable;
+brix.component.group.IGroupable.__name__ = ["brix","component","group","IGroupable"];
+brix.component.group.IGroupable.__interfaces__ = [brix.component.ui.IDisplayObject];
+brix.component.group.IGroupable.prototype = {
+	groupElement: null
+	,__class__: brix.component.group.IGroupable
+}
+brix.component.group.Groupable = function() { }
+$hxClasses["brix.component.group.Groupable"] = brix.component.group.Groupable;
+brix.component.group.Groupable.__name__ = ["brix","component","group","Groupable"];
+brix.component.group.Groupable.startGroupable = function(groupable) {
+	var groupId = groupable.rootElement.getAttribute("data-group-id");
+	if(groupId == null) return;
+	var groupElements = js.Lib.document.getElementsByClassName(groupId);
+	if(groupElements.length < 1) {
+		haxe.Log.trace("WARNING: could not find the group component " + groupId,{ fileName : "IGroupable.hx", lineNumber : 50, className : "brix.component.group.Groupable", methodName : "startGroupable"});
+		return;
+	}
+	if(groupElements.length > 1) throw "ERROR " + groupElements.length + " Group components are declared with the same group id " + groupId;
+	groupable.groupElement = groupElements[0];
+}
+brix.component.interaction = {}
+brix.component.interaction.DraggableState = $hxClasses["brix.component.interaction.DraggableState"] = { __ename__ : ["brix","component","interaction","DraggableState"], __constructs__ : ["none","dragging"] }
+brix.component.interaction.DraggableState.none = ["none",0];
+brix.component.interaction.DraggableState.none.toString = $estr;
+brix.component.interaction.DraggableState.none.__enum__ = brix.component.interaction.DraggableState;
+brix.component.interaction.DraggableState.dragging = ["dragging",1];
+brix.component.interaction.DraggableState.dragging.toString = $estr;
+brix.component.interaction.DraggableState.dragging.__enum__ = brix.component.interaction.DraggableState;
+brix.component.ui.DisplayObject = function(rootElement,BrixId) {
+	this.rootElement = rootElement;
+	brix.component.BrixComponent.initBrixComponent(this,BrixId);
+	this.getBrixApplication().addAssociatedComponent(rootElement,this);
+};
+$hxClasses["brix.component.ui.DisplayObject"] = brix.component.ui.DisplayObject;
+brix.component.ui.DisplayObject.__name__ = ["brix","component","ui","DisplayObject"];
+brix.component.ui.DisplayObject.__interfaces__ = [brix.component.ui.IDisplayObject];
+brix.component.ui.DisplayObject.isDisplayObject = function(cmpClass) {
+	if(cmpClass == Type.resolveClass("brix.component.ui.DisplayObject")) return true;
+	if(Type.getSuperClass(cmpClass) != null) return brix.component.ui.DisplayObject.isDisplayObject(Type.getSuperClass(cmpClass));
+	return false;
+}
+brix.component.ui.DisplayObject.checkFilterOnElt = function(cmpClass,elt) {
+	if(elt.nodeType != js.Lib.document.body.nodeType) throw "cannot instantiate " + Type.getClassName(cmpClass) + " on a non element node.";
+	var tagFilter = haxe.rtti.Meta.getType(cmpClass) != null?haxe.rtti.Meta.getType(cmpClass).tagNameFilter:null;
+	if(tagFilter == null) return;
+	if(Lambda.exists(tagFilter,function(s) {
+		return elt.nodeName.toLowerCase() == Std.string(s).toLowerCase();
+	})) return;
+	throw "cannot instantiate " + Type.getClassName(cmpClass) + " on this type of HTML element: " + elt.nodeName.toLowerCase();
+}
+brix.component.ui.DisplayObject.prototype = {
+	clean: function() {
+	}
+	,init: function() {
+	}
+	,remove: function() {
+		this.clean();
+		this.getBrixApplication().removeAssociatedComponent(this.rootElement,this);
+	}
+	,getBrixApplication: function() {
+		return brix.component.BrixComponent.getBrixApplication(this);
+	}
+	,rootElement: null
+	,brixInstanceId: null
+	,__class__: brix.component.ui.DisplayObject
+}
+brix.component.interaction.Draggable = function(rootElement,BrixId) {
+	brix.component.ui.DisplayObject.call(this,rootElement,BrixId);
+	brix.component.group.Groupable.startGroupable(this);
+	if(this.groupElement == null) this.groupElement = js.Lib.document.body;
+	this.state = brix.component.interaction.DraggableState.none;
+	this.phantomClassName = rootElement.getAttribute("data-phantom-class-name");
+	if(this.phantomClassName == null || this.phantomClassName == "") this.phantomClassName = "draggable-phantom";
+	this.dropZonesClassName = rootElement.getAttribute("data-dropzones-class-name");
+	if(this.dropZonesClassName == null || this.dropZonesClassName == "") this.dropZonesClassName = "draggable-dropzone";
+};
+$hxClasses["brix.component.interaction.Draggable"] = brix.component.interaction.Draggable;
+brix.component.interaction.Draggable.__name__ = ["brix","component","interaction","Draggable"];
+brix.component.interaction.Draggable.__interfaces__ = [brix.component.group.IGroupable];
+brix.component.interaction.Draggable.__super__ = brix.component.ui.DisplayObject;
+brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
+	setAsBestDropZone: function(zone) {
+		if(zone == this.bestDropZone) return;
+		if(this.bestDropZone != null) this.bestDropZone.parent.removeChild(this.phantom);
+		if(zone != null) {
+			if(zone.parent.childNodes.length <= zone.position) zone.parent.appendChild(this.phantom); else zone.parent.insertBefore(this.phantom,zone.parent.childNodes[zone.position]);
+		}
+		this.bestDropZone = zone;
+	}
+	,computeDistance: function(bb,mouseX,mouseY) {
+		return Math.sqrt(Math.pow(bb.x - mouseX,2) + Math.pow(bb.y - mouseY,2));
+		var x = bb.x + bb.w / 2.0 + mouseX - this.initialMouseX - this.initialX;
+		var y = bb.y + bb.h / 2.0 + mouseY - this.initialMouseY - this.initialY;
+		return Math.sqrt(Math.pow(x - mouseX,2) + Math.pow(y - mouseY,2));
+	}
+	,getBestDropZone: function(mouseX,mouseY) {
+		var dropZones = new List();
+		var taggedDropZones = this.groupElement.getElementsByClassName(this.dropZonesClassName);
+		var _g1 = 0, _g = taggedDropZones.length;
+		while(_g1 < _g) {
+			var dzi = _g1++;
+			dropZones.add(taggedDropZones[dzi]);
+		}
+		if(dropZones.isEmpty()) dropZones.add(this.rootElement.parentNode);
+		var $it0 = dropZones.iterator();
+		while( $it0.hasNext() ) {
+			var zone = $it0.next();
+			if(mouseX > zone.offsetLeft && mouseX < zone.offsetLeft + zone.offsetWidth && mouseY > zone.offsetTop && mouseY < zone.offsetTop + zone.offsetHeight) {
+				var lastChildIdx = 0;
+				var nearestDistance = 999999999999;
+				var _g1 = 0, _g = zone.childNodes.length;
+				while(_g1 < _g) {
+					var childIdx = _g1++;
+					var child = zone.childNodes[childIdx];
+					zone.insertBefore(this.miniPhantom,child);
+					var bb = brix.util.DomTools.getElementBoundingBox(this.miniPhantom);
+					var dist = this.computeDistance(bb,mouseX,mouseY);
+					if(dist < nearestDistance) {
+						nearestDistance = dist;
+						lastChildIdx = childIdx;
+					}
+				}
+				zone.appendChild(this.miniPhantom);
+				var bb = brix.util.DomTools.getElementBoundingBox(this.miniPhantom);
+				var dist = this.computeDistance(bb,mouseX,mouseY);
+				if(dist < nearestDistance) {
+					nearestDistance = dist;
+					lastChildIdx = zone.childNodes.length + 1;
+				}
+				zone.removeChild(this.miniPhantom);
+				return { parent : zone, position : lastChildIdx};
+			}
+		}
+		return null;
+	}
+	,move: function(e) {
+		if(this.state == brix.component.interaction.DraggableState.dragging) {
+			var x = e.clientX - this.initialMouseX + this.initialX;
+			var y = e.clientY - this.initialMouseY + this.initialY;
+			this.rootElement.style.left = x + "px";
+			this.rootElement.style.top = y + "px";
+			this.setAsBestDropZone(this.getBestDropZone(e.clientX,e.clientY));
+			var event = js.Lib.document.createEvent("CustomEvent");
+			event.initCustomEvent("dragEventMove",false,false,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
+			this.rootElement.dispatchEvent(event);
+		}
+	}
+	,stopDrag: function(e) {
+		if(this.state == brix.component.interaction.DraggableState.dragging) {
+			if(this.bestDropZone != null) {
+				this.rootElement.parentNode.removeChild(this.rootElement);
+				this.bestDropZone.parent.insertBefore(this.rootElement,this.bestDropZone.parent.childNodes[this.bestDropZone.position]);
+				var event = js.Lib.document.createEvent("CustomEvent");
+				event.initCustomEvent("dragEventDropped",false,false,{ dropZone : this.bestDropZone, target : this.bestDropZone.parent, draggable : this});
+				this.bestDropZone.parent.dispatchEvent(event);
+			}
+			var event = js.Lib.document.createEvent("CustomEvent");
+			event.initCustomEvent("dragEventDropped",false,false,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
+			this.rootElement.dispatchEvent(event);
+			this.state = brix.component.interaction.DraggableState.none;
+			this.resetRootElementStyle();
+			js.Lib.document.body.removeEventListener("mousemove",this.moveCallback,false);
+			this.setAsBestDropZone(null);
+			e.preventDefault();
+		}
+	}
+	,startDrag: function(e) {
+		if(this.state == brix.component.interaction.DraggableState.none) {
+			var boundingBox = brix.util.DomTools.getElementBoundingBox(this.rootElement);
+			this.state = brix.component.interaction.DraggableState.dragging;
+			this.initialX = boundingBox.x;
+			this.initialY = boundingBox.y;
+			this.initialMouseX = e.clientX;
+			this.initialMouseY = e.clientY;
+			this.initPhantomStyle();
+			this.initPhantomStyle();
+			this.initRootElementStyle();
+			this.moveCallback = (function(f) {
+				return function(e1) {
+					return f(e1);
+				};
+			})($bind(this,this.move));
+			js.Lib.document.body.addEventListener("mousemove",this.moveCallback,false);
+			this.move(e);
+			var event = js.Lib.document.createEvent("CustomEvent");
+			event.initCustomEvent("dragEventDrag",false,false,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
+			this.rootElement.dispatchEvent(event);
+		}
+		e.preventDefault();
+	}
+	,resetRootElementStyle: function() {
+		var _g = 0, _g1 = Reflect.fields(this.initialStyle);
+		while(_g < _g1.length) {
+			var styleName = _g1[_g];
+			++_g;
+			var val = Reflect.field(this.initialStyle,styleName);
+			this.rootElement.style[styleName] = val;
+		}
+	}
+	,initPhantomStyle: function(refHtmlDom) {
+		if(refHtmlDom == null) refHtmlDom = this.rootElement;
+		this.phantom.className = refHtmlDom.className + " " + this.phantomClassName;
+		this.miniPhantom.className = refHtmlDom.className + " " + this.phantomClassName;
+	}
+	,initRootElementStyle: function() {
+		this.initialStyle = { };
+		this.initialStyle.width = this.rootElement.style.width;
+		this.rootElement.style.width = this.rootElement.clientWidth + "px";
+		this.initialStyle.height = this.rootElement.style.height;
+		this.rootElement.style.height = this.rootElement.clientHeight + "px";
+		this.initialStyle.position = this.rootElement.style.position;
+		this.rootElement.style.position = "absolute";
+	}
+	,clean: function() {
+		brix.component.ui.DisplayObject.prototype.clean.call(this);
+		this.dragZone.removeEventListener("mousedown",$bind(this,this.startDrag),false);
+		js.Lib.document.body.removeEventListener("mouseup",this.mouseUpCallback,false);
+	}
+	,init: function() {
+		brix.component.ui.DisplayObject.prototype.init.call(this);
+		this.phantom = js.Lib.document.createElement("div");
+		this.miniPhantom = js.Lib.document.createElement("div");
+		this.dragZone = brix.util.DomTools.getSingleElement(this.rootElement,"draggable-dragzone",false);
+		if(this.dragZone == null) this.dragZone = this.rootElement;
+		this.dragZone.addEventListener("mousedown",$bind(this,this.startDrag),false);
+		this.mouseUpCallback = (function(f) {
+			return function(e) {
+				return f(e);
+			};
+		})($bind(this,this.stopDrag));
+		js.Lib.document.body.addEventListener("mouseup",this.mouseUpCallback,false);
+		this.dragZone.style.cursor = "move";
+	}
+	,initialY: null
+	,initialX: null
+	,initialMouseY: null
+	,initialMouseX: null
+	,initialStyle: null
+	,bestDropZone: null
+	,phantomClassName: null
+	,dropZonesClassName: null
+	,dragZone: null
+	,state: null
+	,miniPhantom: null
+	,phantom: null
+	,mouseUpCallback: null
+	,moveCallback: null
+	,groupElement: null
+	,__class__: brix.component.interaction.Draggable
+});
+brix.component.layout = {}
+brix.component.layout.Panel = function(rootElement,BrixId) {
+	brix.component.ui.DisplayObject.call(this,rootElement,BrixId);
+	var _this_ = this;
+	js.Lib.window.addEventListener("resize",(function(f) {
+		return function(e) {
+			return f(e);
+		};
+	})($bind(this,this.redrawCallback)),false);
+};
+$hxClasses["brix.component.layout.Panel"] = brix.component.layout.Panel;
+brix.component.layout.Panel.__name__ = ["brix","component","layout","Panel"];
+brix.component.layout.Panel.__super__ = brix.component.ui.DisplayObject;
+brix.component.layout.Panel.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
+	redraw: function() {
+		var bodySize;
+		var boundingBox = brix.util.DomTools.getElementBoundingBox(this.rootElement);
+		if(this.isHorizontal) {
+			var margin = this.rootElement.offsetWidth - this.rootElement.clientWidth;
+			var bodyMargin = this.body.offsetWidth - this.body.clientWidth;
+			bodySize = boundingBox.w;
+			bodySize += bodyMargin;
+			bodySize -= margin;
+			bodySize -= this.body.offsetLeft;
+			if(this.footer != null) {
+				var footerMargin = this.footer.offsetWidth - this.footer.clientWidth;
+				var boundingBox1 = brix.util.DomTools.getElementBoundingBox(this.footer);
+				bodySize -= boundingBox1.w;
+				bodySize -= footerMargin;
+			}
+			bodySize -= 5;
+			this.body.style.width = bodySize + "px";
+		} else {
+			var margin = this.rootElement.offsetHeight - this.rootElement.clientHeight;
+			var bodyMargin = this.body.offsetHeight - this.body.clientHeight;
+			if(this.header != null) this.body.style.top = this.header.offsetHeight + "px";
+			bodySize = boundingBox.h;
+			bodySize += bodyMargin;
+			bodySize -= margin;
+			bodySize -= this.body.offsetTop;
+			bodySize += boundingBox.y;
+			if(this.footer != null) {
+				var footerMargin = this.footer.offsetHeight - this.footer.clientHeight;
+				var boundingBox1 = brix.util.DomTools.getElementBoundingBox(this.footer);
+				bodySize -= boundingBox1.h;
+				bodySize -= footerMargin;
+			}
+			bodySize -= 5;
+			this.body.style.height = bodySize + "px";
+		}
+	}
+	,redrawCallback: function(e) {
+		this.redraw();
+	}
+	,init: function() {
+		brix.component.ui.DisplayObject.prototype.init.call(this);
+		var cssClassName = this.rootElement.getAttribute("data-panel-header-class-name");
+		if(cssClassName == null) cssClassName = "panel-header";
+		this.header = brix.util.DomTools.getSingleElement(this.rootElement,cssClassName,false);
+		if(this.header == null) haxe.Log.trace("Warning, no header for Panel component",{ fileName : "Panel.hx", lineNumber : 97, className : "brix.component.layout.Panel", methodName : "init"});
+		var cssClassName1 = this.rootElement.getAttribute("data-panel-body-class-name");
+		if(cssClassName1 == null) cssClassName1 = "panel-body";
+		this.body = brix.util.DomTools.getSingleElement(this.rootElement,cssClassName1,true);
+		var cssClassName2 = this.rootElement.getAttribute("data-panel-footer-class-name");
+		if(cssClassName2 == null) cssClassName2 = "panel-footer";
+		this.footer = brix.util.DomTools.getSingleElement(this.rootElement,cssClassName2,false);
+		if(this.footer == null) haxe.Log.trace("Warning, no footer for Panel component",{ fileName : "Panel.hx", lineNumber : 106, className : "brix.component.layout.Panel", methodName : "init"});
+		if(this.rootElement.getAttribute("data-panel-is-horizontal") == "true") this.isHorizontal = true; else this.isHorizontal = false;
+		brix.util.DomTools.doLater($bind(this,this.redraw));
+	}
+	,footer: null
+	,header: null
+	,body: null
+	,isHorizontal: null
+	,__class__: brix.component.layout.Panel
+});
+brix.component.list = {}
+brix.component.list.List = function(rootElement,BrixId) {
+	brix.component.ui.DisplayObject.call(this,rootElement,BrixId);
+	this._selectedIndex = -1;
+	this.dataProvider = [];
+	this.listTemplate = rootElement.innerHTML;
+	rootElement.innerHTML = "";
+};
+$hxClasses["brix.component.list.List"] = brix.component.list.List;
+brix.component.list.List.__name__ = ["brix","component","list","List"];
+brix.component.list.List.__super__ = brix.component.ui.DisplayObject;
+brix.component.list.List.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
+	setSelectedIndex: function(idx) {
+		if(idx != this._selectedIndex) {
+			if(idx >= 0 && this.dataProvider.length > idx && this.dataProvider[idx] != null) this._selectedIndex = idx; else this._selectedIndex = -1;
+			this.updateSelectionDisplay([this.getSelectedItem()]);
+			var event = js.Lib.document.createEvent("CustomEvent");
+			event.initCustomEvent("listChange",false,false,{ target : this.rootElement, item : this.getSelectedItem()});
+			this.rootElement.dispatchEvent(event);
+		}
+		return idx;
+	}
+	,getSelectedIndex: function() {
+		return this._selectedIndex;
+	}
+	,setSelectedItem: function(selected) {
+		if(selected != this.getSelectedItem()) {
+			if(selected != null) {
+				var tmpIdx = -1;
+				var _g1 = 0, _g = this.dataProvider.length;
+				while(_g1 < _g) {
+					var idx = _g1++;
+					if(this.dataProvider[idx] == selected) {
+						tmpIdx = idx;
+						break;
+					}
+				}
+				this.setSelectedIndex(tmpIdx);
+			} else this.setSelectedIndex(-1);
+		}
+		return selected;
+	}
+	,getSelectedItem: function() {
+		return this.dataProvider[this._selectedIndex];
+	}
+	,updateSelectionDisplay: function(selection) {
+		var children = this.rootElement.getElementsByTagName("li");
+		var _g1 = 0, _g = children.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			var idxElem = this.getItemID(children[idx]);
+			if(idxElem >= 0) {
+				var found = false;
+				var _g2 = 0;
+				while(_g2 < selection.length) {
+					var elem = selection[_g2];
+					++_g2;
+					if(elem == this.dataProvider[idxElem]) {
+						found = true;
+						break;
+					}
+				}
+				if(children[idx] == null) {
+					haxe.Log.trace("--workaround--" + idx + "- " + Std.string(children[idx]),{ fileName : "List.hx", lineNumber : 277, className : "brix.component.list.List", methodName : "updateSelectionDisplay"});
+					continue;
+				}
+				if(found) brix.util.DomTools.addClass(children[idx],"listSelectedItem"); else brix.util.DomTools.removeClass(children[idx],"listSelectedItem");
+			}
+		}
+	}
+	,rollOver: function(e) {
+		var element = e.target;
+		var idx = this.getItemID(element);
+		var event = js.Lib.document.createEvent("CustomEvent");
+		event.initCustomEvent("listChange",false,false,{ target : this.rootElement, item : this.dataProvider[idx]});
+		this.rootElement.dispatchEvent(event);
+	}
+	,click: function(e) {
+		var element = e.target;
+		var idx = this.getItemID(element);
+		this.setSelectedItem(this.dataProvider[idx]);
+		var event = js.Lib.document.createEvent("CustomEvent");
+		event.initCustomEvent("listClick",false,false,{ target : this.rootElement, item : this.getSelectedItem()});
+		this.rootElement.dispatchEvent(event);
+	}
+	,getItemID: function(childElement) {
+		if(childElement == this.rootElement || childElement == null) throw "Error, could not find the element clicked in the list.";
+		if(childElement.nodeType != this.rootElement.nodeType || childElement.getAttribute("data-list-item-idx") == null) return this.getItemID(childElement.parentNode);
+		return Std.parseInt(childElement.getAttribute("data-list-item-idx"));
+	}
+	,setItemIds: function(reset) {
+		if(reset == null) reset = false;
+		var idx = 0;
+		var _g1 = 0, _g = this.rootElement.childNodes.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			if(this.rootElement.childNodes[i].nodeType != this.rootElement.nodeType || reset && this.rootElement.childNodes[i].getAttribute("data-list-item-idx") == null) continue;
+			this.rootElement.childNodes[i].setAttribute("data-list-item-idx",Std.string(idx));
+			idx++;
+		}
+	}
+	,reloadData: function() {
+		this.doRedraw();
+	}
+	,doRedraw: function() {
+		var listInnerHtml = "";
+		var t = new haxe.Template(this.listTemplate);
+		var _g = 0, _g1 = this.dataProvider;
+		while(_g < _g1.length) {
+			var elem = _g1[_g];
+			++_g;
+			try {
+				listInnerHtml += t.execute(elem,brix.component.template.TemplateMacros);
+			} catch( e ) {
+				throw "Error: an error occured while interpreting the template - " + this.listTemplate + " - for the element " + Std.string(elem);
+			}
+		}
+		var _g1 = 0, _g = this.rootElement.childNodes.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			this.getBrixApplication().cleanNode(this.rootElement.childNodes[i]);
+		}
+		this.rootElement.innerHTML = listInnerHtml;
+		var _g1 = 0, _g = this.rootElement.childNodes.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			this.getBrixApplication().initNode(this.rootElement.childNodes[i]);
+		}
+		this.setItemIds();
+		this.updateSelectionDisplay([this.getSelectedItem()]);
+	}
+	,listDOMChanged: function(e) {
+		e.stopPropagation();
+		var newDataProvider = new Array();
+		var _g1 = 0, _g = this.rootElement.childNodes.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			if(this.rootElement.childNodes[i].nodeType != this.rootElement.nodeType || this.rootElement.childNodes[i].getAttribute("data-list-item-idx") == null) continue;
+			newDataProvider.push(this.dataProvider[Std.parseInt(this.rootElement.childNodes[i].getAttribute("data-list-item-idx"))]);
+		}
+		this.dataProvider = newDataProvider;
+		this.setItemIds(true);
+	}
+	,redraw: function() {
+		this.reloadData();
+	}
+	,clean: function() {
+		brix.component.ui.DisplayObject.prototype.clean.call(this);
+		this.rootElement.removeEventListener("click",$bind(this,this.click),false);
+		this.rootElement.removeEventListener("rollOver",$bind(this,this.rollOver),false);
+		this.rootElement.removeEventListener("dragEventDropped",$bind(this,this.listDOMChanged),false);
+	}
+	,init: function() {
+		brix.component.ui.DisplayObject.prototype.init.call(this);
+		this.rootElement.addEventListener("click",$bind(this,this.click),false);
+		this.rootElement.addEventListener("rollOver",$bind(this,this.rollOver),false);
+		this.rootElement.addEventListener("dragEventDropped",$bind(this,this.listDOMChanged),false);
+	}
+	,_selectedIndex: null
+	,selectedIndex: null
+	,selectedItem: null
+	,dataProvider: null
+	,listTemplate: null
+	,__class__: brix.component.list.List
+	,__properties__: {set_selectedItem:"setSelectedItem",get_selectedItem:"getSelectedItem",set_selectedIndex:"setSelectedIndex",get_selectedIndex:"getSelectedIndex"}
+});
+brix.component.list.XmlList = function(rootElement,BrixId) {
+	brix.component.list.List.call(this,rootElement,BrixId);
+	var attr = rootElement.getAttribute("data-items");
+	var xmlData = Xml.parse(StringTools.htmlUnescape(attr));
+	this.dataProvider = [];
+	var $it0 = xmlData.elements();
+	while( $it0.hasNext() ) {
+		var item = $it0.next();
+		this.dataProvider.push(this.xmlToObj(item));
+	}
+	haxe.Log.trace("dataProvider = " + Std.string(this.dataProvider),{ fileName : "XmlList.hx", lineNumber : 37, className : "brix.component.list.XmlList", methodName : "new"});
+};
+$hxClasses["brix.component.list.XmlList"] = brix.component.list.XmlList;
+brix.component.list.XmlList.__name__ = ["brix","component","list","XmlList"];
+brix.component.list.XmlList.__super__ = brix.component.list.List;
+brix.component.list.XmlList.prototype = $extend(brix.component.list.List.prototype,{
+	xmlToObj: function(xml) {
+		var res = { };
+		var $it0 = xml.iterator();
+		while( $it0.hasNext() ) {
+			var item = $it0.next();
+			if(item.nodeType == Xml.PCData || item.nodeType == Xml.CData || item.nodeType == Xml.Prolog) return item.getNodeValue(); else res[item.getNodeName()] = this.xmlToObj(item);
+		}
+		return res;
+	}
+	,init: function() {
+		this.redraw();
+		brix.component.list.List.prototype.init.call(this);
+	}
+	,__class__: brix.component.list.XmlList
+});
+brix.component.navigation = {}
+brix.component.navigation.LayerStatus = $hxClasses["brix.component.navigation.LayerStatus"] = { __ename__ : ["brix","component","navigation","LayerStatus"], __constructs__ : ["showTransition","hideTransition","visible","hidden","notInit"] }
+brix.component.navigation.LayerStatus.showTransition = ["showTransition",0];
+brix.component.navigation.LayerStatus.showTransition.toString = $estr;
+brix.component.navigation.LayerStatus.showTransition.__enum__ = brix.component.navigation.LayerStatus;
+brix.component.navigation.LayerStatus.hideTransition = ["hideTransition",1];
+brix.component.navigation.LayerStatus.hideTransition.toString = $estr;
+brix.component.navigation.LayerStatus.hideTransition.__enum__ = brix.component.navigation.LayerStatus;
+brix.component.navigation.LayerStatus.visible = ["visible",2];
+brix.component.navigation.LayerStatus.visible.toString = $estr;
+brix.component.navigation.LayerStatus.visible.__enum__ = brix.component.navigation.LayerStatus;
+brix.component.navigation.LayerStatus.hidden = ["hidden",3];
+brix.component.navigation.LayerStatus.hidden.toString = $estr;
+brix.component.navigation.LayerStatus.hidden.__enum__ = brix.component.navigation.LayerStatus;
+brix.component.navigation.LayerStatus.notInit = ["notInit",4];
+brix.component.navigation.LayerStatus.notInit.toString = $estr;
+brix.component.navigation.LayerStatus.notInit.__enum__ = brix.component.navigation.LayerStatus;
+brix.component.navigation.Layer = function(rootElement,BrixId) {
+	this.hasTransitionStarted = false;
+	brix.component.ui.DisplayObject.call(this,rootElement,BrixId);
+	this.childrenArray = new Array();
+	this.status = brix.component.navigation.LayerStatus.notInit;
+	this.styleAttrDisplay = rootElement.style.display;
+};
+$hxClasses["brix.component.navigation.Layer"] = brix.component.navigation.Layer;
+brix.component.navigation.Layer.__name__ = ["brix","component","navigation","Layer"];
+brix.component.navigation.Layer.getLayerNodes = function(pageName,brixId,root) {
+	var document = root;
+	if(root == null) document = js.Lib.document.documentElement;
+	return document.getElementsByClassName(pageName);
+}
+brix.component.navigation.Layer.__super__ = brix.component.ui.DisplayObject;
+brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
+	cleanupVideoElements: function(nodeList) {
+		var _g1 = 0, _g = nodeList.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			try {
+				var element = nodeList[idx];
+				element.pause();
+				element.currentTime = 0;
+			} catch( e ) {
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 509, className : "brix.component.navigation.Layer", methodName : "cleanupVideoElements"});
+			}
+		}
+	}
+	,cleanupAudioElements: function(nodeList) {
+		var _g1 = 0, _g = nodeList.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			try {
+				var element = nodeList[idx];
+				element.pause();
+				element.currentTime = 0;
+			} catch( e ) {
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 487, className : "brix.component.navigation.Layer", methodName : "cleanupAudioElements"});
+			}
+		}
+	}
+	,setupVideoElements: function(nodeList) {
+		var _g1 = 0, _g = nodeList.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			try {
+				var element = nodeList[idx];
+				if(element.autoplay == true) {
+					element.currentTime = 0;
+					element.play();
+				}
+				element.muted = brix.component.sound.SoundOn.isMuted;
+			} catch( e ) {
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 465, className : "brix.component.navigation.Layer", methodName : "setupVideoElements"});
+			}
+		}
+	}
+	,setupAudioElements: function(nodeList) {
+		var _g1 = 0, _g = nodeList.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			try {
+				var element = nodeList[idx];
+				if(element.autoplay == true) {
+					element.currentTime = 0;
+					element.play();
+				}
+				element.muted = brix.component.sound.SoundOn.isMuted;
+			} catch( e ) {
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 440, className : "brix.component.navigation.Layer", methodName : "setupAudioElements"});
+			}
+		}
+	}
+	,doHide: function(transitionData,preventTransitions,e) {
+		if(e != null && e.target != this.rootElement) {
+			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 371, className : "brix.component.navigation.Layer", methodName : "doHide"});
+			return;
+		}
+		if(preventTransitions == false && this.doHideCallback == null) {
+			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 375, className : "brix.component.navigation.Layer", methodName : "doHide"});
+			return;
+		}
+		if(preventTransitions == false) {
+			this.endTransition(brix.component.navigation.transition.TransitionType.hide,transitionData,this.doHideCallback);
+			this.doHideCallback = null;
+		}
+		this.status = brix.component.navigation.LayerStatus.hidden;
+		try {
+			var event = js.Lib.document.createEvent("CustomEvent");
+			event.initCustomEvent("onLayerHide",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
+			this.rootElement.dispatchEvent(event);
+		} catch( e1 ) {
+			haxe.Log.trace("Error: could not dispatch event " + Std.string(e1),{ fileName : "Layer.hx", lineNumber : 398, className : "brix.component.navigation.Layer", methodName : "doHide"});
+		}
+		var audioNodes = this.rootElement.getElementsByTagName("audio");
+		this.cleanupAudioElements(audioNodes);
+		var videoNodes = this.rootElement.getElementsByTagName("video");
+		this.cleanupVideoElements(videoNodes);
+		while(this.rootElement.childNodes.length > 0) {
+			var element = this.rootElement.childNodes[0];
+			this.rootElement.removeChild(element);
+			this.childrenArray.push(element);
+		}
+		this.rootElement.style.display = "none";
+	}
+	,hide: function(transitionData,preventTransitions) {
+		if(this.status != brix.component.navigation.LayerStatus.visible && this.status != brix.component.navigation.LayerStatus.notInit) return;
+		if(this.status == brix.component.navigation.LayerStatus.hideTransition) {
+			haxe.Log.trace("Warning: hide break previous transition hide",{ fileName : "Layer.hx", lineNumber : 339, className : "brix.component.navigation.Layer", methodName : "hide"});
+			this.doHideCallback(null);
+			this.removeTransitionEvent(this.doHideCallback);
+		} else if(this.status == brix.component.navigation.LayerStatus.showTransition) {
+			haxe.Log.trace("Warning: hide break previous transition show",{ fileName : "Layer.hx", lineNumber : 345, className : "brix.component.navigation.Layer", methodName : "hide"});
+			this.doShowCallback(null);
+			this.removeTransitionEvent(this.doShowCallback);
+		}
+		this.status = brix.component.navigation.LayerStatus.hideTransition;
+		if(preventTransitions == false) {
+			this.doHideCallback = (function(f,a1,a2) {
+				return function(e) {
+					return f(a1,a2,e);
+				};
+			})($bind(this,this.doHide),transitionData,preventTransitions);
+			this.startTransition(brix.component.navigation.transition.TransitionType.hide,transitionData,this.doHideCallback);
+		} else this.doHide(transitionData,preventTransitions,null);
+	}
+	,doShow: function(transitionData,preventTransitions,e) {
+		if(e != null && e.target != this.rootElement) {
+			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 309, className : "brix.component.navigation.Layer", methodName : "doShow"});
+			return;
+		}
+		if(preventTransitions == false && this.doShowCallback == null) {
+			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 313, className : "brix.component.navigation.Layer", methodName : "doShow"});
+			return;
+		}
+		if(preventTransitions == false) this.endTransition(brix.component.navigation.transition.TransitionType.show,transitionData,this.doShowCallback);
+		this.doShowCallback = null;
+		this.status = brix.component.navigation.LayerStatus.visible;
+	}
+	,show: function(transitionData,preventTransitions) {
+		if(preventTransitions == null) preventTransitions = false;
+		if(this.status != brix.component.navigation.LayerStatus.hidden && this.status != brix.component.navigation.LayerStatus.notInit) {
+			haxe.Log.trace("Warning: can not show the layer, since it has the status '" + Std.string(this.status) + "'",{ fileName : "Layer.hx", lineNumber : 241, className : "brix.component.navigation.Layer", methodName : "show"});
+			return;
+		}
+		if(this.status == brix.component.navigation.LayerStatus.hideTransition) {
+			haxe.Log.trace("Warning: hide break previous transition hide",{ fileName : "Layer.hx", lineNumber : 247, className : "brix.component.navigation.Layer", methodName : "show"});
+			this.doHideCallback(null);
+			this.removeTransitionEvent(this.doHideCallback);
+		} else if(this.status == brix.component.navigation.LayerStatus.showTransition) {
+			haxe.Log.trace("Warning: hide break previous transition show",{ fileName : "Layer.hx", lineNumber : 254, className : "brix.component.navigation.Layer", methodName : "show"});
+			this.doShowCallback(null);
+			this.removeTransitionEvent(this.doShowCallback);
+		}
+		this.status = brix.component.navigation.LayerStatus.showTransition;
+		while(this.childrenArray.length > 0) {
+			var element = this.childrenArray.shift();
+			this.rootElement.appendChild(element);
+		}
+		var audioNodes = this.rootElement.getElementsByTagName("audio");
+		this.setupAudioElements(audioNodes);
+		var videoNodes = this.rootElement.getElementsByTagName("video");
+		this.setupVideoElements(videoNodes);
+		try {
+			var event = js.Lib.document.createEvent("CustomEvent");
+			event.initCustomEvent("onLayerShow",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
+			this.rootElement.dispatchEvent(event);
+		} catch( e ) {
+			haxe.Log.trace("Error: could not dispatch event " + Std.string(e),{ fileName : "Layer.hx", lineNumber : 287, className : "brix.component.navigation.Layer", methodName : "show"});
+		}
+		if(preventTransitions == false) {
+			this.doShowCallback = (function(f,a1,a2) {
+				return function(e) {
+					return f(a1,a2,e);
+				};
+			})($bind(this,this.doShow),transitionData,preventTransitions);
+			this.startTransition(brix.component.navigation.transition.TransitionType.show,transitionData,this.doShowCallback);
+		} else this.doShow(transitionData,preventTransitions,null);
+		this.rootElement.style.display = this.styleAttrDisplay;
+	}
+	,removeTransitionEvent: function(onEndCallback) {
+		this.rootElement.removeEventListener("transitionend",onEndCallback,false);
+		this.rootElement.removeEventListener("transitionEnd",onEndCallback,false);
+		this.rootElement.removeEventListener("webkitTransitionEnd",onEndCallback,false);
+		this.rootElement.removeEventListener("oTransitionEnd",onEndCallback,false);
+		this.rootElement.removeEventListener("MSTransitionEnd",onEndCallback,false);
+	}
+	,addTransitionEvent: function(onEndCallback) {
+		this.rootElement.addEventListener("transitionend",onEndCallback,false);
+		this.rootElement.addEventListener("transitionEnd",onEndCallback,false);
+		this.rootElement.addEventListener("webkitTransitionEnd",onEndCallback,false);
+		this.rootElement.addEventListener("oTransitionEnd",onEndCallback,false);
+		this.rootElement.addEventListener("MSTransitionEnd",onEndCallback,false);
+	}
+	,endTransition: function(type,transitionData,onComplete) {
+		this.removeTransitionEvent(onComplete);
+		if(transitionData != null) brix.util.DomTools.removeClass(this.rootElement,transitionData.endStyleName);
+		var transitionData2 = brix.component.navigation.transition.TransitionTools.getTransitionData(this.rootElement,type);
+		if(transitionData2 != null) brix.util.DomTools.removeClass(this.rootElement,transitionData2.endStyleName);
+	}
+	,doStartTransition: function(sumOfTransitions,onComplete) {
+		var _g = 0;
+		while(_g < sumOfTransitions.length) {
+			var transition = sumOfTransitions[_g];
+			++_g;
+			brix.util.DomTools.removeClass(this.rootElement,transition.startStyleName);
+		}
+		if(onComplete != null) this.addTransitionEvent(onComplete);
+		brix.component.navigation.transition.TransitionTools.setTransitionProperty(this.rootElement,"transitionDuration",null);
+		var _g = 0;
+		while(_g < sumOfTransitions.length) {
+			var transition = sumOfTransitions[_g];
+			++_g;
+			brix.util.DomTools.addClass(this.rootElement,transition.endStyleName);
+		}
+	}
+	,startTransition: function(type,transitionData,onComplete) {
+		var transitionData2 = brix.component.navigation.transition.TransitionTools.getTransitionData(this.rootElement,type);
+		var sumOfTransitions = new Array();
+		if(transitionData != null) sumOfTransitions.push(transitionData);
+		if(transitionData2 != null) sumOfTransitions.push(transitionData2);
+		if(sumOfTransitions.length == 0) {
+			if(onComplete != null) onComplete(null);
+		} else {
+			this.hasTransitionStarted = true;
+			brix.component.navigation.transition.TransitionTools.setTransitionProperty(this.rootElement,"transitionDuration","0");
+			var _g = 0;
+			while(_g < sumOfTransitions.length) {
+				var transition = sumOfTransitions[_g];
+				++_g;
+				brix.util.DomTools.addClass(this.rootElement,transition.startStyleName);
+			}
+			brix.util.DomTools.doLater((function(f,a1,a2) {
+				return function() {
+					return f(a1,a2);
+				};
+			})($bind(this,this.doStartTransition),sumOfTransitions,onComplete));
+		}
+	}
+	,doHideCallback: null
+	,doShowCallback: null
+	,styleAttrDisplay: null
+	,hasTransitionStarted: null
+	,status: null
+	,childrenArray: null
+	,__class__: brix.component.navigation.Layer
+});
+brix.component.navigation.Page = function(rootElement,BrixId) {
+	brix.component.ui.DisplayObject.call(this,rootElement,BrixId);
+	brix.component.group.Groupable.startGroupable(this);
+	this.name = rootElement.getAttribute("name");
+	if(this.name == null || this.name == "") throw "Pages have to have a 'name' attribute";
+};
+$hxClasses["brix.component.navigation.Page"] = brix.component.navigation.Page;
+brix.component.navigation.Page.__name__ = ["brix","component","navigation","Page"];
+brix.component.navigation.Page.__interfaces__ = [brix.component.group.IGroupable];
+brix.component.navigation.Page.openPage = function(pageName,isPopup,transitionDataShow,transitionDataHide,brixId,root) {
+	var document = root;
+	if(root == null) document = js.Lib.document.documentElement;
+	var page = brix.component.navigation.Page.getPageByName(pageName,brixId,document);
+	if(page == null) {
+		page = brix.component.navigation.Page.getPageByName(pageName,brixId);
+		if(page == null) throw "Error, could not find a page with name " + pageName;
+	}
+	page.open(transitionDataShow,transitionDataHide,!isPopup);
+}
+brix.component.navigation.Page.closePage = function(pageName,transitionData,brixId,root) {
+	var document = root;
+	if(root == null) document = js.Lib.document.documentElement;
+	var page = brix.component.navigation.Page.getPageByName(pageName,brixId,document);
+	if(page == null) {
+		page = brix.component.navigation.Page.getPageByName(pageName,brixId);
+		if(page == null) throw "Error, could not find a page with name " + pageName;
+	}
+	page.close(transitionData);
+}
+brix.component.navigation.Page.getPageNodes = function(brixId,root) {
+	var document = root;
+	if(root == null) document = js.Lib.document.documentElement;
+	return document.getElementsByClassName("Page");
+}
+brix.component.navigation.Page.getPageByName = function(pageName,brixId,root) {
+	var document = root;
+	if(root == null) document = js.Lib.document.documentElement;
+	var pages = brix.component.navigation.Page.getPageNodes(brixId,document);
+	var _g1 = 0, _g = pages.length;
+	while(_g1 < _g) {
+		var pageIdx = _g1++;
+		if(pages[pageIdx].getAttribute("name") == pageName) {
+			var pageInstances = brix.core.Application.get(brixId).getAssociatedComponents(pages[pageIdx],brix.component.navigation.Page);
+			var $it0 = pageInstances.iterator();
+			while( $it0.hasNext() ) {
+				var page = $it0.next();
+				return page;
+			}
+			return null;
+		}
+	}
+	return null;
+}
+brix.component.navigation.Page.__super__ = brix.component.ui.DisplayObject;
+brix.component.navigation.Page.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
+	close: function(transitionData,preventCloseByClassName,preventTransitions) {
+		if(preventTransitions == null) preventTransitions = false;
+		haxe.Log.trace("close " + Std.string(transitionData) + ", " + this.name + " - " + Std.string(preventTransitions) + " - " + Std.string(this.groupElement),{ fileName : "Page.hx", lineNumber : 267, className : "brix.component.navigation.Page", methodName : "close"});
+		if(preventCloseByClassName == null) preventCloseByClassName = new Array();
+		var nodes = brix.component.navigation.Layer.getLayerNodes(this.name,this.brixInstanceId,this.groupElement);
+		var _g1 = 0, _g = nodes.length;
+		while(_g1 < _g) {
+			var idxLayerNode = _g1++;
+			var layerNode = nodes[idxLayerNode];
+			var hasForbiddenClass = false;
+			var _g2 = 0;
+			while(_g2 < preventCloseByClassName.length) {
+				var className = preventCloseByClassName[_g2];
+				++_g2;
+				if(brix.util.DomTools.hasClass(layerNode,className)) {
+					hasForbiddenClass = true;
+					break;
+				}
+			}
+			if(!hasForbiddenClass) {
+				var layerInstances = this.getBrixApplication().getAssociatedComponents(layerNode,brix.component.navigation.Layer);
+				var $it0 = layerInstances.iterator();
+				while( $it0.hasNext() ) {
+					var layerInstance = $it0.next();
+					(js.Boot.__cast(layerInstance , brix.component.navigation.Layer)).hide(transitionData,preventTransitions);
+				}
+			}
+		}
+		var nodes1 = brix.util.DomTools.getElementsByAttribute(this.groupElement,"href",this.name);
+		var _g1 = 0, _g = nodes1.length;
+		while(_g1 < _g) {
+			var idxLayerNode = _g1++;
+			var element = nodes1[idxLayerNode];
+			brix.util.DomTools.removeClass(element,"page-opened");
+		}
+		var nodes2 = brix.util.DomTools.getElementsByAttribute(this.groupElement,"href","#" + this.name);
+		var _g1 = 0, _g = nodes2.length;
+		while(_g1 < _g) {
+			var idxLayerNode = _g1++;
+			var element = nodes2[idxLayerNode];
+			brix.util.DomTools.removeClass(element,"page-opened");
+		}
+	}
+	,doOpen: function(transitionData,preventTransitions) {
+		if(preventTransitions == null) preventTransitions = false;
+		var nodes = brix.component.navigation.Layer.getLayerNodes(this.name,this.brixInstanceId,this.groupElement);
+		var _g1 = 0, _g = nodes.length;
+		while(_g1 < _g) {
+			var idxLayerNode = _g1++;
+			var layerNode = nodes[idxLayerNode];
+			var layerInstances = this.getBrixApplication().getAssociatedComponents(layerNode,brix.component.navigation.Layer);
+			var $it0 = layerInstances.iterator();
+			while( $it0.hasNext() ) {
+				var layerInstance = $it0.next();
+				layerInstance.show(transitionData,preventTransitions);
+			}
+		}
+		var nodes1 = brix.util.DomTools.getElementsByAttribute(this.groupElement,"href",this.name);
+		var _g1 = 0, _g = nodes1.length;
+		while(_g1 < _g) {
+			var idxLayerNode = _g1++;
+			var element = nodes1[idxLayerNode];
+			brix.util.DomTools.addClass(element,"page-opened");
+		}
+		var nodes2 = brix.util.DomTools.getElementsByAttribute(this.groupElement,"href","#" + this.name);
+		var _g1 = 0, _g = nodes2.length;
+		while(_g1 < _g) {
+			var idxLayerNode = _g1++;
+			var element = nodes2[idxLayerNode];
+			brix.util.DomTools.addClass(element,"page-opened");
+		}
+	}
+	,closeOthers: function(transitionData,preventTransitions) {
+		if(preventTransitions == null) preventTransitions = false;
+		var nodes = brix.component.navigation.Page.getPageNodes(this.brixInstanceId,this.groupElement);
+		var _g1 = 0, _g = nodes.length;
+		while(_g1 < _g) {
+			var idxPageNode = _g1++;
+			var pageNode = nodes[idxPageNode];
+			var pageInstances = this.getBrixApplication().getAssociatedComponents(pageNode,brix.component.navigation.Page);
+			var $it0 = pageInstances.iterator();
+			while( $it0.hasNext() ) {
+				var pageInstance = $it0.next();
+				if(pageInstance != this) pageInstance.close(transitionData,[this.name],preventTransitions);
+			}
+		}
+	}
+	,open: function(transitionDataShow,transitionDataHide,doCloseOthers,preventTransitions) {
+		if(preventTransitions == null) preventTransitions = false;
+		if(doCloseOthers == null) doCloseOthers = true;
+		if(doCloseOthers) this.closeOthers(transitionDataHide,preventTransitions);
+		this.doOpen(transitionDataShow,preventTransitions);
+	}
+	,init: function() {
+		brix.component.ui.DisplayObject.prototype.init.call(this);
+		if(this.groupElement == null) this.groupElement = js.Lib.document.body;
+		if(brix.util.DomTools.getMeta("initialPageName") == this.name || this.groupElement.getAttribute("data-initial-page-name") == this.name) brix.util.DomTools.doLater((function(f,a1,a2,a3,a4) {
+			return function() {
+				return f(a1,a2,a3,a4);
+			};
+		})($bind(this,this.open),null,null,true,true));
+	}
+	,groupElement: null
+	,name: null
+	,__class__: brix.component.navigation.Page
+});
+brix.component.navigation.link = {}
+brix.component.navigation.link.LinkBase = function(rootElement,BrixId) {
+	brix.component.ui.DisplayObject.call(this,rootElement,BrixId);
+	brix.component.group.Groupable.startGroupable(this);
+	rootElement.addEventListener("click",$bind(this,this.onClick),false);
+	if(rootElement.getAttribute("href") != null) {
+		this.linkName = StringTools.trim(rootElement.getAttribute("href"));
+		this.linkName = HxOverrides.substr(this.linkName,this.linkName.indexOf("#") + 1,null);
+	} else haxe.Log.trace("Warning: the link has no href atribute (" + Std.string(rootElement) + ")",{ fileName : "LinkBase.hx", lineNumber : 88, className : "brix.component.navigation.link.LinkBase", methodName : "new"});
+	if(rootElement.getAttribute("target") != null && StringTools.trim(rootElement.getAttribute("target")) != "") this.targetAttr = StringTools.trim(rootElement.getAttribute("target"));
+};
+$hxClasses["brix.component.navigation.link.LinkBase"] = brix.component.navigation.link.LinkBase;
+brix.component.navigation.link.LinkBase.__name__ = ["brix","component","navigation","link","LinkBase"];
+brix.component.navigation.link.LinkBase.__interfaces__ = [brix.component.group.IGroupable];
+brix.component.navigation.link.LinkBase.__super__ = brix.component.ui.DisplayObject;
+brix.component.navigation.link.LinkBase.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
+	onClick: function(e) {
+		e.preventDefault();
+		this.transitionDataShow = brix.component.navigation.transition.TransitionTools.getTransitionData(this.rootElement,brix.component.navigation.transition.TransitionType.show);
+		this.transitionDataHide = brix.component.navigation.transition.TransitionTools.getTransitionData(this.rootElement,brix.component.navigation.transition.TransitionType.hide);
+	}
+	,transitionDataHide: null
+	,transitionDataShow: null
+	,targetAttr: null
+	,linkName: null
+	,groupElement: null
+	,__class__: brix.component.navigation.link.LinkBase
+});
+brix.component.navigation.link.LinkClosePage = function(rootElement,BrixId) {
+	brix.component.navigation.link.LinkBase.call(this,rootElement,BrixId);
+};
+$hxClasses["brix.component.navigation.link.LinkClosePage"] = brix.component.navigation.link.LinkClosePage;
+brix.component.navigation.link.LinkClosePage.__name__ = ["brix","component","navigation","link","LinkClosePage"];
+brix.component.navigation.link.LinkClosePage.__super__ = brix.component.navigation.link.LinkBase;
+brix.component.navigation.link.LinkClosePage.prototype = $extend(brix.component.navigation.link.LinkBase.prototype,{
+	onClick: function(e) {
+		brix.component.navigation.link.LinkBase.prototype.onClick.call(this,e);
+		brix.component.navigation.Page.closePage(this.linkName,this.transitionDataHide,this.brixInstanceId);
+	}
+	,__class__: brix.component.navigation.link.LinkClosePage
+});
+brix.component.navigation.link.LinkToContext = function(rootElement,BrixId) {
+	brix.component.navigation.link.LinkBase.call(this,rootElement,BrixId);
+	if(rootElement.getAttribute("data-context") != null) this.linkName = rootElement.getAttribute("data-context");
+	haxe.Log.trace("LinkToContext " + this.linkName,{ fileName : "LinkToContext.hx", lineNumber : 44, className : "brix.component.navigation.link.LinkToContext", methodName : "new"});
+};
+$hxClasses["brix.component.navigation.link.LinkToContext"] = brix.component.navigation.link.LinkToContext;
+brix.component.navigation.link.LinkToContext.__name__ = ["brix","component","navigation","link","LinkToContext"];
+brix.component.navigation.link.LinkToContext.styleSheet = null;
+brix.component.navigation.link.LinkToContext.__super__ = brix.component.navigation.link.LinkBase;
+brix.component.navigation.link.LinkToContext.prototype = $extend(brix.component.navigation.link.LinkBase.prototype,{
+	onClick: function(e) {
+		brix.component.navigation.link.LinkBase.prototype.onClick.call(this,e);
+		if(brix.component.navigation.link.LinkToContext.styleSheet != null) js.Lib.document.getElementsByTagName("head")[0].removeChild(brix.component.navigation.link.LinkToContext.styleSheet);
+		var cssText = "." + this.linkName + " { display : inline; visibility : visible; }";
+		brix.component.navigation.link.LinkToContext.styleSheet = brix.util.DomTools.addCssRules(cssText);
+	}
+	,__class__: brix.component.navigation.link.LinkToContext
+});
+brix.component.navigation.link.LinkToPage = function(rootElement,BrixId) {
+	brix.component.navigation.link.LinkBase.call(this,rootElement,BrixId);
+};
+$hxClasses["brix.component.navigation.link.LinkToPage"] = brix.component.navigation.link.LinkToPage;
+brix.component.navigation.link.LinkToPage.__name__ = ["brix","component","navigation","link","LinkToPage"];
+brix.component.navigation.link.LinkToPage.__super__ = brix.component.navigation.link.LinkBase;
+brix.component.navigation.link.LinkToPage.prototype = $extend(brix.component.navigation.link.LinkBase.prototype,{
+	onClick: function(e) {
+		brix.component.navigation.link.LinkBase.prototype.onClick.call(this,e);
+		brix.component.navigation.Page.openPage(this.linkName,this.targetAttr == "_top",this.transitionDataShow,this.transitionDataHide,this.brixInstanceId,this.groupElement);
+	}
+	,__class__: brix.component.navigation.link.LinkToPage
+});
+brix.component.navigation.transition = {}
+brix.component.navigation.transition.TransitionType = $hxClasses["brix.component.navigation.transition.TransitionType"] = { __ename__ : ["brix","component","navigation","transition","TransitionType"], __constructs__ : ["show","hide"] }
+brix.component.navigation.transition.TransitionType.show = ["show",0];
+brix.component.navigation.transition.TransitionType.show.toString = $estr;
+brix.component.navigation.transition.TransitionType.show.__enum__ = brix.component.navigation.transition.TransitionType;
+brix.component.navigation.transition.TransitionType.hide = ["hide",1];
+brix.component.navigation.transition.TransitionType.hide.toString = $estr;
+brix.component.navigation.transition.TransitionType.hide.__enum__ = brix.component.navigation.transition.TransitionType;
+brix.component.navigation.transition.TransitionTools = function() { }
+$hxClasses["brix.component.navigation.transition.TransitionTools"] = brix.component.navigation.transition.TransitionTools;
+brix.component.navigation.transition.TransitionTools.__name__ = ["brix","component","navigation","transition","TransitionTools"];
+brix.component.navigation.transition.TransitionTools.getTransitionData = function(rootElement,type) {
+	var res = null;
+	if(type == brix.component.navigation.transition.TransitionType.show) {
+		var start = rootElement.getAttribute("data-show-start-style");
+		var end = rootElement.getAttribute("data-show-end-style");
+		if(start != null && end != null) res = { startStyleName : start, endStyleName : end};
+	} else {
+		var start = rootElement.getAttribute("data-hide-start-style");
+		var end = rootElement.getAttribute("data-hide-end-style");
+		if(start != null && end != null) res = { startStyleName : start, endStyleName : end};
+	}
+	return res;
+}
+brix.component.navigation.transition.TransitionTools.setTransitionProperty = function(rootElement,name,value) {
+	Reflect.setProperty(rootElement.style,name,value);
+	var prefixed = "MozT" + HxOverrides.substr(name,1,null);
+	rootElement.style[prefixed] = value;
+	var prefixed1 = "webkitT" + HxOverrides.substr(name,1,null);
+	rootElement.style[prefixed1] = value;
+	var prefixed2 = "oT" + HxOverrides.substr(name,1,null);
+	rootElement.style[prefixed2] = value;
+}
+brix.component.sound = {}
+brix.component.sound.SoundOn = function(rootElement,BrixId) {
+	brix.component.ui.DisplayObject.call(this,rootElement,BrixId);
+	rootElement.onclick = $bind(this,this.onClick);
+};
+$hxClasses["brix.component.sound.SoundOn"] = brix.component.sound.SoundOn;
+brix.component.sound.SoundOn.__name__ = ["brix","component","sound","SoundOn"];
+brix.component.sound.SoundOn.mute = function(doMute) {
+	haxe.Log.trace("Sound mute " + Std.string(doMute),{ fileName : "SoundOn.hx", lineNumber : 54, className : "brix.component.sound.SoundOn", methodName : "mute"});
+	var audioTags = js.Lib.document.getElementsByTagName("audio");
+	var _g1 = 0, _g = audioTags.length;
+	while(_g1 < _g) {
+		var idx = _g1++;
+		audioTags[idx].muted = doMute;
+	}
+	brix.component.sound.SoundOn.isMuted = doMute;
+	var soundOffButtons = js.Lib.document.getElementsByClassName("SoundOff");
+	var soundOnButtons = js.Lib.document.getElementsByClassName("SoundOn");
+	var _g1 = 0, _g = soundOffButtons.length;
+	while(_g1 < _g) {
+		var idx = _g1++;
+		if(doMute) soundOffButtons[idx].style.visibility = "hidden"; else soundOffButtons[idx].style.visibility = "visible";
+	}
+	var _g1 = 0, _g = soundOnButtons.length;
+	while(_g1 < _g) {
+		var idx = _g1++;
+		if(!doMute) soundOnButtons[idx].style.visibility = "hidden"; else soundOnButtons[idx].style.visibility = "visible";
+	}
+}
+brix.component.sound.SoundOn.__super__ = brix.component.ui.DisplayObject;
+brix.component.sound.SoundOn.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
+	onClick: function(e) {
+		brix.component.sound.SoundOn.mute(false);
+	}
+	,init: function() {
+		brix.component.sound.SoundOn.mute(false);
+	}
+	,__class__: brix.component.sound.SoundOn
+});
+brix.component.sound.SoundOff = function(rootElement,BrixId) {
+	brix.component.sound.SoundOn.call(this,rootElement,BrixId);
+};
+$hxClasses["brix.component.sound.SoundOff"] = brix.component.sound.SoundOff;
+brix.component.sound.SoundOff.__name__ = ["brix","component","sound","SoundOff"];
+brix.component.sound.SoundOff.__super__ = brix.component.sound.SoundOn;
+brix.component.sound.SoundOff.prototype = $extend(brix.component.sound.SoundOn.prototype,{
+	onClick: function(e) {
+		haxe.Log.trace("Sound onClick",{ fileName : "SoundOff.hx", lineNumber : 23, className : "brix.component.sound.SoundOff", methodName : "onClick"});
+		brix.component.sound.SoundOn.mute(true);
+	}
+	,__class__: brix.component.sound.SoundOff
+});
+brix.component.template = {}
+brix.component.template.TemplateMacros = function() { }
+$hxClasses["brix.component.template.TemplateMacros"] = brix.component.template.TemplateMacros;
+brix.component.template.TemplateMacros.__name__ = ["brix","component","template","TemplateMacros"];
+brix.component.template.TemplateMacros.makeDateReadable = function(resolve,dateOrString,format) {
+	if(format == null) format = "%Y/%m/%d %H:%M";
+	var date;
+	if(js.Boot.__instanceof(dateOrString,String)) {
+		date = HxOverrides.strDate(dateOrString);
+		haxe.Log.trace("makeDateReadable string " + Std.string(dateOrString),{ fileName : "TemplateMacros.hx", lineNumber : 31, className : "brix.component.template.TemplateMacros", methodName : "makeDateReadable"});
+	} else if(js.Boot.__instanceof(dateOrString,Date)) {
+		haxe.Log.trace("makeDateReadable date ",{ fileName : "TemplateMacros.hx", lineNumber : 34, className : "brix.component.template.TemplateMacros", methodName : "makeDateReadable"});
+		date = dateOrString;
+	} else {
+		date = null;
+		throw "Error, the parameter is supposed to be String or Date";
+	}
+	var res = DateTools.format(date,format);
+	haxe.Log.trace("makeDateReadable returns " + res,{ fileName : "TemplateMacros.hx", lineNumber : 43, className : "brix.component.template.TemplateMacros", methodName : "makeDateReadable"});
+	return res;
+}
+brix.component.template.TemplateMacros.trace = function(resolve,obj) {
+	haxe.Log.trace(obj,{ fileName : "TemplateMacros.hx", lineNumber : 51, className : "brix.component.template.TemplateMacros", methodName : "trace"});
+	return "";
+}
+brix.core = {}
+brix.core.Application = function(id,args) {
+	this.dataObject = args;
+	this.id = id;
+	this.nodesIdSequence = 0;
+	this.registeredUIComponents = new Array();
+	this.registeredNonUIComponents = new Array();
+	this.nodeToCmpInstances = new Hash();
+	this.applicationContext = new brix.core.ApplicationContext();
+};
+$hxClasses["brix.core.Application"] = brix.core.Application;
+$hxExpose(brix.core.Application, "silex");
+brix.core.Application.__name__ = ["brix","core","Application"];
+brix.core.Application.get = function(BrixId) {
+	return brix.core.Application.instances.get(BrixId);
+}
+brix.core.Application.main = function() {
+}
+brix.core.Application.createApplication = function(args) {
+	var newId = brix.core.Application.generateUniqueId();
+	var newInstance = new brix.core.Application(newId,args);
+	brix.core.Application.instances.set(newId,newInstance);
+	return newInstance;
+}
+brix.core.Application.generateUniqueId = function() {
+	return Std.string(Math.round(Math.random() * 10000));
+}
+brix.core.Application.prototype = {
+	getUnconflictedClassTag: function(displayObjectClassName) {
+		var classTag = displayObjectClassName;
+		if(classTag.indexOf(".") != -1) classTag = HxOverrides.substr(classTag,classTag.lastIndexOf(".") + 1,null);
+		var _g = 0, _g1 = this.getRegisteredUIComponents();
+		while(_g < _g1.length) {
+			var rc = _g1[_g];
+			++_g;
+			if(rc.classname != displayObjectClassName && classTag == HxOverrides.substr(rc.classname,classTag.lastIndexOf(".") + 1,null)) return displayObjectClassName;
+		}
+		return classTag;
+	}
+	,getAssociatedComponents: function(node,typeFilter) {
+		var nodeId = node.getAttribute("data-brix-id");
+		if(nodeId != null) {
+			var l = new List();
+			if(this.nodeToCmpInstances.exists(nodeId)) {
+				var $it0 = this.nodeToCmpInstances.get(nodeId).iterator();
+				while( $it0.hasNext() ) {
+					var i = $it0.next();
+					if(js.Boot.__instanceof(i,typeFilter)) {
+						var inst = i;
+						l.add(inst);
+					}
+				}
+			}
+			return l;
+		}
+		return new List();
+	}
+	,removeAllAssociatedComponent: function(node) {
+		var nodeId = node.getAttribute("data-brix-id");
+		if(nodeId != null) {
+			node.removeAttribute("data-brix-id");
+			var isError = !this.nodeToCmpInstances.remove(nodeId);
+			if(isError) throw "Could not find the node in the associated components list.";
+		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 611, className : "brix.core.Application", methodName : "removeAllAssociatedComponent"});
+	}
+	,removeAssociatedComponent: function(node,cmp) {
+		var nodeId = node.getAttribute("data-brix-id");
+		var associatedCmps;
+		if(nodeId != null) {
+			associatedCmps = this.nodeToCmpInstances.get(nodeId);
+			var isError = !associatedCmps.remove(cmp);
+			if(isError) throw "Could not find the component in the node's associated components list.";
+			if(associatedCmps.isEmpty()) {
+				node.removeAttribute("data-brix-id");
+				this.nodeToCmpInstances.remove(nodeId);
+			}
+		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 586, className : "brix.core.Application", methodName : "removeAssociatedComponent"});
+	}
+	,addAssociatedComponent: function(node,cmp) {
+		var nodeId = node.getAttribute("data-brix-id");
+		var associatedCmps;
+		if(nodeId != null) associatedCmps = this.nodeToCmpInstances.get(nodeId); else {
+			this.nodesIdSequence++;
+			nodeId = Std.string(this.nodesIdSequence);
+			node.setAttribute("data-brix-id",nodeId);
+			associatedCmps = new List();
+		}
+		associatedCmps.add(cmp);
+		this.nodeToCmpInstances.set(nodeId,associatedCmps);
+	}
+	,cleanNode: function(node) {
+		if(node.nodeType != js.Lib.document.body.nodeType) return;
+		haxe.Log.trace("clean " + node.tagName,{ fileName : "Application.hx", lineNumber : 515, className : "brix.core.Application", methodName : "cleanNode"});
+		var comps = this.getAssociatedComponents(node,brix.component.ui.DisplayObject);
+		var $it0 = comps.iterator();
+		while( $it0.hasNext() ) {
+			var c = $it0.next();
+			c.remove();
+		}
+		var _g1 = 0, _g = node.childNodes.length;
+		while(_g1 < _g) {
+			var childCnt = _g1++;
+			this.cleanNode(node.childNodes[childCnt]);
+		}
+	}
+	,resolveCompClass: function(classname) {
+		var componentClass = Type.resolveClass(classname);
+		if(componentClass == null) {
+			throw "ERROR cannot resolve " + classname;
+			haxe.Log.trace("ERROR cannot resolve " + classname,{ fileName : "Application.hx", lineNumber : 498, className : "brix.core.Application", methodName : "resolveCompClass"});
+		}
+		return componentClass;
+	}
+	,createNonUIComponents: function() {
+		var _g = 0, _g1 = this.getRegisteredNonUIComponents();
+		while(_g < _g1.length) {
+			var rc = _g1[_g];
+			++_g;
+			var componentClass = this.resolveCompClass(rc.classname);
+			if(componentClass == null) continue;
+			var cmpInstance = null;
+			if(rc.args != null) cmpInstance = Type.createInstance(componentClass,[rc.args]); else cmpInstance = Type.createInstance(componentClass,[]);
+			if(cmpInstance != null && js.Boot.__instanceof(cmpInstance,brix.component.IBrixComponent)) cmpInstance.initBrixComponent(this.id);
+		}
+	}
+	,initUIComponents: function(compInstances) {
+		var $it0 = compInstances.iterator();
+		while( $it0.hasNext() ) {
+			var ci = $it0.next();
+			ci.init();
+		}
+	}
+	,createUIComponents: function(node) {
+		if(node.nodeType != 1) return null;
+		if(node.getAttribute("data-brix-id") != null) return null;
+		var compsToInit = new List();
+		if(node.getAttribute("class") != null) {
+			var _g = 0, _g1 = node.getAttribute("class").split(" ");
+			while(_g < _g1.length) {
+				var classValue = [_g1[_g]];
+				++_g;
+				var _g2 = 0, _g3 = this.getRegisteredUIComponents();
+				while(_g2 < _g3.length) {
+					var rc = _g3[_g2];
+					++_g2;
+					var componentClassAttrValues = [this.getUnconflictedClassTag(rc.classname)];
+					if(componentClassAttrValues[0] != rc.classname) componentClassAttrValues.push(rc.classname);
+					if(!Lambda.exists(componentClassAttrValues,(function(classValue) {
+						return function(s) {
+							return s == classValue[0];
+						};
+					})(classValue))) continue;
+					var componentClass = this.resolveCompClass(rc.classname);
+					if(componentClass == null) continue;
+					var newDisplayObject = null;
+					newDisplayObject = Type.createInstance(componentClass,[node,this.id]);
+					compsToInit.add(newDisplayObject);
+				}
+			}
+		}
+		var _g1 = 0, _g = node.childNodes.length;
+		while(_g1 < _g) {
+			var cc = _g1++;
+			var res = this.createUIComponents(node.childNodes[cc]);
+			if(res != null) compsToInit = Lambda.concat(compsToInit,res);
+		}
+		return compsToInit;
+	}
+	,initNode: function(node) {
+		var comps = this.createUIComponents(node);
+		if(comps == null) return;
+		this.initUIComponents(comps);
+	}
+	,initComponents: function() {
+		this.initNode(this.htmlRootElement);
+		this.createNonUIComponents();
+	}
+	,initDom: function(appendTo) {
+		this.htmlRootElement = appendTo;
+		if(this.htmlRootElement == null || this.htmlRootElement.nodeType != js.Lib.document.documentElement.nodeType) this.htmlRootElement = js.Lib.document.documentElement;
+		if(this.htmlRootElement == null) {
+			haxe.Log.trace("ERROR Lib.document.documentElement is null => You are trying to start your application while the document loading is probably not complete yet." + " To fix that, add the noAutoStart option to your Brix application and control the application startup with: window.onload = function() { myApplication.init() };",{ fileName : "Application.hx", lineNumber : 217, className : "brix.core.Application", methodName : "initDom"});
+			return;
+		}
+	}
+	,getRegisteredNonUIComponents: function() {
+		return this.applicationContext.registeredNonUIComponents;
+	}
+	,registeredNonUIComponents: null
+	,getRegisteredUIComponents: function() {
+		return this.applicationContext.registeredUIComponents;
+	}
+	,registeredUIComponents: null
+	,applicationContext: null
+	,dataObject: null
+	,htmlRootElement: null
+	,nodeToCmpInstances: null
+	,nodesIdSequence: null
+	,id: null
+	,__class__: brix.core.Application
+	,__properties__: {get_registeredUIComponents:"getRegisteredUIComponents",get_registeredNonUIComponents:"getRegisteredNonUIComponents"}
+}
+brix.core.ApplicationContext = function() {
+	this.registeredUIComponents = new Array();
+	this.registeredNonUIComponents = new Array();
+	this.registerComponentsforInit();
+};
+$hxClasses["brix.core.ApplicationContext"] = brix.core.ApplicationContext;
+brix.core.ApplicationContext.__name__ = ["brix","core","ApplicationContext"];
+brix.core.ApplicationContext.prototype = {
+	registerComponentsforInit: function() {
+		brix.component.navigation.link.LinkClosePage;
+		this.registeredUIComponents.push({ classname : "brix.component.navigation.link.LinkClosePage", args : null});
+		brix.component.navigation.link.LinkToPage;
+		this.registeredUIComponents.push({ classname : "brix.component.navigation.link.LinkToPage", args : null});
+		brix.component.navigation.Layer;
+		this.registeredUIComponents.push({ classname : "brix.component.navigation.Layer", args : null});
+		brix.component.navigation.Page;
+		this.registeredUIComponents.push({ classname : "brix.component.navigation.Page", args : null});
+		brix.component.sound.SoundOn;
+		this.registeredUIComponents.push({ classname : "brix.component.sound.SoundOn", args : null});
+		brix.component.interaction.Draggable;
+		this.registeredUIComponents.push({ classname : "brix.component.interaction.Draggable", args : null});
+		brix.component.navigation.link.LinkToContext;
+		this.registeredUIComponents.push({ classname : "brix.component.navigation.link.LinkToContext", args : null});
+		brix.component.layout.Panel;
+		this.registeredUIComponents.push({ classname : "brix.component.layout.Panel", args : null});
+		brix.component.sound.SoundOff;
+		this.registeredUIComponents.push({ classname : "brix.component.sound.SoundOff", args : null});
+		brix.component.list.XmlList;
+		this.registeredUIComponents.push({ classname : "brix.component.list.XmlList", args : null});
+	}
+	,registeredNonUIComponents: null
+	,registeredUIComponents: null
+	,__class__: brix.core.ApplicationContext
+}
+brix.util = {}
+brix.util.DomTools = function() { }
+$hxClasses["brix.util.DomTools"] = brix.util.DomTools;
+brix.util.DomTools.__name__ = ["brix","util","DomTools"];
+brix.util.DomTools.doLater = function(callbackFunction,nFrames) {
+	if(nFrames == null) nFrames = 1;
+	haxe.Timer.delay(callbackFunction,Math.round(200 * nFrames));
+}
+brix.util.DomTools.getElementsByAttribute = function(elt,attr,value) {
+	var childElts = elt.getElementsByTagName("*");
+	var filteredChildElts = new Array();
+	var _g1 = 0, _g = childElts.length;
+	while(_g1 < _g) {
+		var cCount = _g1++;
+		if(childElts[cCount].getAttribute(attr) != null && (value == "*" || childElts[cCount].getAttribute(attr) == value)) filteredChildElts.push(childElts[cCount]);
+	}
+	return filteredChildElts;
+}
+brix.util.DomTools.getSingleElement = function(rootElement,className,required) {
+	if(required == null) required = true;
+	var domElements = rootElement.getElementsByClassName(className);
+	if(domElements.length > 1) throw "Error: search for the element with class name \"" + className + "\" gave " + domElements.length + " results";
+	if(domElements != null && domElements.length == 1) return domElements[0]; else {
+		if(required) throw "Error: search for the element with class name \"" + className + "\" gave " + domElements.length + " results";
+		return null;
+	}
+}
+brix.util.DomTools.getElementBoundingBox = function(htmlDom) {
+	if(htmlDom.nodeType != 1) return null;
+	var offsetTop = 0;
+	var offsetLeft = 0;
+	var offsetWidth = 0.0;
+	var offsetHeight = 0.0;
+	var element = htmlDom;
+	while(element != null) {
+		var halfBorderH = (element.offsetWidth - element.clientWidth) / 2.0;
+		var halfBorderV = (element.offsetHeight - element.clientHeight) / 2.0;
+		offsetTop -= element.scrollTop;
+		offsetLeft -= element.scrollLeft;
+		offsetTop += element.offsetTop;
+		offsetLeft += element.offsetLeft;
+		element = element.offsetParent;
+	}
+	return { x : Math.round(offsetLeft), y : Math.round(offsetTop), w : Math.round(htmlDom.offsetWidth + offsetWidth), h : Math.round(htmlDom.offsetHeight + offsetHeight)};
+}
+brix.util.DomTools.inspectTrace = function(obj,callingClass) {
+	haxe.Log.trace("-- " + callingClass + " inspecting element --",{ fileName : "DomTools.hx", lineNumber : 140, className : "brix.util.DomTools", methodName : "inspectTrace"});
+	var _g = 0, _g1 = Reflect.fields(obj);
+	while(_g < _g1.length) {
+		var prop = _g1[_g];
+		++_g;
+		haxe.Log.trace("- " + prop + " = " + Std.string(Reflect.field(obj,prop)),{ fileName : "DomTools.hx", lineNumber : 143, className : "brix.util.DomTools", methodName : "inspectTrace"});
+	}
+	haxe.Log.trace("-- --",{ fileName : "DomTools.hx", lineNumber : 145, className : "brix.util.DomTools", methodName : "inspectTrace"});
+}
+brix.util.DomTools.toggleClass = function(element,className) {
+	if(brix.util.DomTools.hasClass(element,className)) brix.util.DomTools.removeClass(element,className); else brix.util.DomTools.addClass(element,className);
+}
+brix.util.DomTools.addClass = function(element,className) {
+	if(element.className == null) element.className = "";
+	Lambda.iter(className.split(" "),function(cn) {
+		if(!Lambda.has(element.className.split(" "),cn)) {
+			if(element.className != "") element.className += " ";
+			element.className += cn;
+		}
+	});
+}
+brix.util.DomTools.removeClass = function(element,className) {
+	if(element.className == null || StringTools.trim(element.className) == "") return;
+	var classNamesToKeep = new Array();
+	var cns = className.split(" ");
+	Lambda.iter(element.className.split(" "),function(ecn) {
+		if(!Lambda.has(cns,ecn)) classNamesToKeep.push(ecn);
+	});
+	element.className = classNamesToKeep.join(" ");
+}
+brix.util.DomTools.hasClass = function(element,className,orderedClassName) {
+	if(orderedClassName == null) orderedClassName = false;
+	if(element.className == null || StringTools.trim(element.className) == "" || className == null || StringTools.trim(className) == "") return false;
+	if(orderedClassName) {
+		var cns = className.split(" ");
+		var ecns = element.className.split(" ");
+		var result = Lambda.map(cns,function(cn) {
+			return Lambda.indexOf(ecns,cn);
+		});
+		var prevR = 0;
+		var $it0 = result.iterator();
+		while( $it0.hasNext() ) {
+			var r = $it0.next();
+			if(r < prevR) return false;
+			prevR = r;
+		}
+		return true;
+	} else {
+		var _g = 0, _g1 = className.split(" ");
+		while(_g < _g1.length) {
+			var cn = _g1[_g];
+			++_g;
+			if(cn == null || StringTools.trim(cn) == "") continue;
+			var found = Lambda.has(element.className.split(" "),cn);
+			if(!found) return false;
+		}
+		return true;
+	}
+}
+brix.util.DomTools.setMeta = function(metaName,metaValue,attributeName) {
+	if(attributeName == null) attributeName = "content";
+	var res = new Hash();
+	var metaTags = js.Lib.document.getElementsByTagName("META");
+	var found = false;
+	var _g1 = 0, _g = metaTags.length;
+	while(_g1 < _g) {
+		var idxNode = _g1++;
+		var node = metaTags[idxNode];
+		var configName = node.getAttribute("name");
+		var configValue = node.getAttribute(attributeName);
+		if(configName != null && configValue != null) {
+			if(configName == metaName) {
+				configValue = metaValue;
+				node.setAttribute(attributeName,metaValue);
+				found = true;
+			}
+			res.set(configName,configValue);
+		}
+	}
+	if(!found) {
+		var node = js.Lib.document.createElement("meta");
+		node.setAttribute("name",metaName);
+		node.setAttribute("content",metaValue);
+		var head = js.Lib.document.getElementsByTagName("head")[0];
+		head.appendChild(node);
+		res.set(metaName,metaValue);
+	}
+	return res;
+}
+brix.util.DomTools.getMeta = function(name,attributeName,head) {
+	if(attributeName == null) attributeName = "content";
+	if(head == null) head = js.Lib.document.documentElement.getElementsByTagName("head")[0];
+	var metaTags = head.getElementsByTagName("meta");
+	var _g1 = 0, _g = metaTags.length;
+	while(_g1 < _g) {
+		var idxNode = _g1++;
+		var node = metaTags[idxNode];
+		var configName = node.getAttribute("name");
+		var configValue = node.getAttribute(attributeName);
+		if(configName == name) return configValue;
+	}
+	return null;
+}
+brix.util.DomTools.addCssRules = function(css,head) {
+	if(head == null) head = js.Lib.document.documentElement.getElementsByTagName("head")[0];
+	var node = js.Lib.document.createElement("style");
+	node.setAttribute("type","text/css");
+	node.appendChild(js.Lib.document.createTextNode(css));
+	head.appendChild(node);
+	return node;
+}
+brix.util.DomTools.embedScript = function(src) {
+	var head = js.Lib.document.getElementsByTagName("head")[0];
+	var scriptNodes = js.Lib.document.getElementsByTagName("script");
+	var _g1 = 0, _g = scriptNodes.length;
+	while(_g1 < _g) {
+		var idxNode = _g1++;
+		var node = scriptNodes[idxNode];
+		if(node.getAttribute("src") == src) return node;
+	}
+	var node = js.Lib.document.createElement("script");
+	node.setAttribute("src",src);
+	head.appendChild(node);
+	return node;
+}
+brix.util.DomTools.getBaseTag = function() {
+	var head = js.Lib.document.getElementsByTagName("head")[0];
+	var baseNodes = js.Lib.document.getElementsByTagName("base");
+	if(baseNodes.length > 0) return baseNodes[0].getAttribute("href"); else return null;
+}
+brix.util.DomTools.setBaseTag = function(href) {
+	var head = js.Lib.document.getElementsByTagName("head")[0];
+	var baseNodes = js.Lib.document.getElementsByTagName("base");
+	if(baseNodes.length > 0) {
+		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 366, className : "brix.util.DomTools", methodName : "setBaseTag"});
+		baseNodes[0].setAttribute("href",href);
+	} else {
+		var node = js.Lib.document.createElement("base");
+		node.setAttribute("href",href);
+		node.setAttribute("target","_self");
+		if(head.childNodes.length > 0) head.insertBefore(node,head.childNodes[0]); else head.appendChild(node);
+	}
+}
 var haxe = {}
 haxe.FastCell = function(elt,next) {
 	this.elt = elt;
@@ -5495,1581 +7092,6 @@ js.Lib["eval"] = function(code) {
 js.Lib.setErrorHandler = function(f) {
 	js.Lib.onerror = f;
 }
-var org = {}
-org.slplayer = {}
-org.slplayer.component = {}
-org.slplayer.component.ISLPlayerComponent = function() { }
-$hxClasses["org.slplayer.component.ISLPlayerComponent"] = org.slplayer.component.ISLPlayerComponent;
-org.slplayer.component.ISLPlayerComponent.__name__ = ["org","slplayer","component","ISLPlayerComponent"];
-org.slplayer.component.ISLPlayerComponent.prototype = {
-	getSLPlayer: null
-	,SLPlayerInstanceId: null
-	,__class__: org.slplayer.component.ISLPlayerComponent
-}
-org.slplayer.component.SLPlayerComponent = function() { }
-$hxClasses["org.slplayer.component.SLPlayerComponent"] = org.slplayer.component.SLPlayerComponent;
-org.slplayer.component.SLPlayerComponent.__name__ = ["org","slplayer","component","SLPlayerComponent"];
-org.slplayer.component.SLPlayerComponent.initSLPlayerComponent = function(component,SLPlayerInstanceId) {
-	component.SLPlayerInstanceId = SLPlayerInstanceId;
-}
-org.slplayer.component.SLPlayerComponent.getSLPlayer = function(component) {
-	return org.slplayer.core.Application.get(component.SLPlayerInstanceId);
-}
-org.slplayer.component.SLPlayerComponent.checkRequiredParameters = function(cmpClass,elt) {
-	var requires = haxe.rtti.Meta.getType(cmpClass).requires;
-	if(requires == null) return;
-	var _g = 0;
-	while(_g < requires.length) {
-		var r = requires[_g];
-		++_g;
-		if(elt.getAttribute(Std.string(r)) == null || StringTools.trim(elt.getAttribute(Std.string(r))) == "") throw Std.string(r) + " parameter is required for " + Type.getClassName(cmpClass);
-	}
-}
-org.slplayer.component.ui = {}
-org.slplayer.component.ui.IDisplayObject = function() { }
-$hxClasses["org.slplayer.component.ui.IDisplayObject"] = org.slplayer.component.ui.IDisplayObject;
-org.slplayer.component.ui.IDisplayObject.__name__ = ["org","slplayer","component","ui","IDisplayObject"];
-org.slplayer.component.ui.IDisplayObject.__interfaces__ = [org.slplayer.component.ISLPlayerComponent];
-org.slplayer.component.ui.IDisplayObject.prototype = {
-	rootElement: null
-	,__class__: org.slplayer.component.ui.IDisplayObject
-}
-org.slplayer.component.group = {}
-org.slplayer.component.group.IGroupable = function() { }
-$hxClasses["org.slplayer.component.group.IGroupable"] = org.slplayer.component.group.IGroupable;
-org.slplayer.component.group.IGroupable.__name__ = ["org","slplayer","component","group","IGroupable"];
-org.slplayer.component.group.IGroupable.__interfaces__ = [org.slplayer.component.ui.IDisplayObject];
-org.slplayer.component.group.IGroupable.prototype = {
-	groupElement: null
-	,__class__: org.slplayer.component.group.IGroupable
-}
-org.slplayer.component.group.Groupable = function() { }
-$hxClasses["org.slplayer.component.group.Groupable"] = org.slplayer.component.group.Groupable;
-org.slplayer.component.group.Groupable.__name__ = ["org","slplayer","component","group","Groupable"];
-org.slplayer.component.group.Groupable.startGroupable = function(groupable) {
-	var groupId = groupable.rootElement.getAttribute("data-group-id");
-	if(groupId == null) return;
-	var groupElements = js.Lib.document.getElementsByClassName(groupId);
-	if(groupElements.length < 1) {
-		haxe.Log.trace("WARNING: could not find the group component " + groupId,{ fileName : "IGroupable.hx", lineNumber : 57, className : "org.slplayer.component.group.Groupable", methodName : "startGroupable"});
-		return;
-	}
-	if(groupElements.length > 1) throw "ERROR " + groupElements.length + " Group components are declared with the same group id " + groupId;
-	groupable.groupElement = groupElements[0];
-}
-org.slplayer.component.interaction = {}
-org.slplayer.component.interaction.DraggableState = $hxClasses["org.slplayer.component.interaction.DraggableState"] = { __ename__ : ["org","slplayer","component","interaction","DraggableState"], __constructs__ : ["none","dragging"] }
-org.slplayer.component.interaction.DraggableState.none = ["none",0];
-org.slplayer.component.interaction.DraggableState.none.toString = $estr;
-org.slplayer.component.interaction.DraggableState.none.__enum__ = org.slplayer.component.interaction.DraggableState;
-org.slplayer.component.interaction.DraggableState.dragging = ["dragging",1];
-org.slplayer.component.interaction.DraggableState.dragging.toString = $estr;
-org.slplayer.component.interaction.DraggableState.dragging.__enum__ = org.slplayer.component.interaction.DraggableState;
-org.slplayer.component.ui.DisplayObject = function(rootElement,SLPId) {
-	this.rootElement = rootElement;
-	org.slplayer.component.SLPlayerComponent.initSLPlayerComponent(this,SLPId);
-	this.getSLPlayer().addAssociatedComponent(rootElement,this);
-};
-$hxClasses["org.slplayer.component.ui.DisplayObject"] = org.slplayer.component.ui.DisplayObject;
-org.slplayer.component.ui.DisplayObject.__name__ = ["org","slplayer","component","ui","DisplayObject"];
-org.slplayer.component.ui.DisplayObject.__interfaces__ = [org.slplayer.component.ui.IDisplayObject];
-org.slplayer.component.ui.DisplayObject.isDisplayObject = function(cmpClass) {
-	if(cmpClass == Type.resolveClass("org.slplayer.component.ui.DisplayObject")) return true;
-	if(Type.getSuperClass(cmpClass) != null) return org.slplayer.component.ui.DisplayObject.isDisplayObject(Type.getSuperClass(cmpClass));
-	return false;
-}
-org.slplayer.component.ui.DisplayObject.checkFilterOnElt = function(cmpClass,elt) {
-	if(elt.nodeType != js.Lib.document.body.nodeType) throw "cannot instantiate " + Type.getClassName(cmpClass) + " on a non element node.";
-	var tagFilter = haxe.rtti.Meta.getType(cmpClass) != null?haxe.rtti.Meta.getType(cmpClass).tagNameFilter:null;
-	if(tagFilter == null) return;
-	if(Lambda.exists(tagFilter,function(s) {
-		return elt.nodeName.toLowerCase() == Std.string(s).toLowerCase();
-	})) return;
-	throw "cannot instantiate " + Type.getClassName(cmpClass) + " on this type of HTML element: " + elt.nodeName.toLowerCase();
-}
-org.slplayer.component.ui.DisplayObject.prototype = {
-	clean: function() {
-	}
-	,init: function() {
-	}
-	,remove: function() {
-		this.clean();
-		this.getSLPlayer().removeAssociatedComponent(this.rootElement,this);
-	}
-	,getSLPlayer: function() {
-		return org.slplayer.component.SLPlayerComponent.getSLPlayer(this);
-	}
-	,rootElement: null
-	,SLPlayerInstanceId: null
-	,__class__: org.slplayer.component.ui.DisplayObject
-}
-org.slplayer.component.interaction.Draggable = function(rootElement,SLPId) {
-	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
-	org.slplayer.component.group.Groupable.startGroupable(this);
-	if(this.groupElement == null) this.groupElement = js.Lib.document.body;
-	this.state = org.slplayer.component.interaction.DraggableState.none;
-	this.phantomClassName = rootElement.getAttribute("data-phantom-class-name");
-	if(this.phantomClassName == null || this.phantomClassName == "") this.phantomClassName = "draggable-phantom";
-	this.dropZonesClassName = rootElement.getAttribute("data-dropzones-class-name");
-	if(this.dropZonesClassName == null || this.dropZonesClassName == "") this.dropZonesClassName = "draggable-dropzone";
-};
-$hxClasses["org.slplayer.component.interaction.Draggable"] = org.slplayer.component.interaction.Draggable;
-org.slplayer.component.interaction.Draggable.__name__ = ["org","slplayer","component","interaction","Draggable"];
-org.slplayer.component.interaction.Draggable.__interfaces__ = [org.slplayer.component.group.IGroupable];
-org.slplayer.component.interaction.Draggable.__super__ = org.slplayer.component.ui.DisplayObject;
-org.slplayer.component.interaction.Draggable.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
-	setAsBestDropZone: function(zone) {
-		if(zone == this.bestDropZone) return;
-		if(this.bestDropZone != null) this.bestDropZone.parent.removeChild(this.phantom);
-		if(zone != null) {
-			if(zone.parent.childNodes.length <= zone.position) zone.parent.appendChild(this.phantom); else zone.parent.insertBefore(this.phantom,zone.parent.childNodes[zone.position]);
-		}
-		this.bestDropZone = zone;
-	}
-	,computeDistance: function(bb,mouseX,mouseY) {
-		return Math.sqrt(Math.pow(bb.x - mouseX,2) + Math.pow(bb.y - mouseY,2));
-		var x = bb.x + bb.w / 2.0 + mouseX - this.initialMouseX - this.initialX;
-		var y = bb.y + bb.h / 2.0 + mouseY - this.initialMouseY - this.initialY;
-		return Math.sqrt(Math.pow(x - mouseX,2) + Math.pow(y - mouseY,2));
-	}
-	,getBestDropZone: function(mouseX,mouseY) {
-		var dropZones = new List();
-		var taggedDropZones = this.groupElement.getElementsByClassName(this.dropZonesClassName);
-		var _g1 = 0, _g = taggedDropZones.length;
-		while(_g1 < _g) {
-			var dzi = _g1++;
-			dropZones.add(taggedDropZones[dzi]);
-		}
-		if(dropZones.isEmpty()) dropZones.add(this.rootElement.parentNode);
-		var $it0 = dropZones.iterator();
-		while( $it0.hasNext() ) {
-			var zone = $it0.next();
-			if(mouseX > zone.offsetLeft && mouseX < zone.offsetLeft + zone.offsetWidth && mouseY > zone.offsetTop && mouseY < zone.offsetTop + zone.offsetHeight) {
-				var lastChildIdx = 0;
-				var nearestDistance = 999999999999;
-				var _g1 = 0, _g = zone.childNodes.length;
-				while(_g1 < _g) {
-					var childIdx = _g1++;
-					var child = zone.childNodes[childIdx];
-					zone.insertBefore(this.miniPhantom,child);
-					var bb = org.slplayer.util.DomTools.getElementBoundingBox(this.miniPhantom);
-					var dist = this.computeDistance(bb,mouseX,mouseY);
-					if(dist < nearestDistance) {
-						nearestDistance = dist;
-						lastChildIdx = childIdx;
-					}
-				}
-				zone.appendChild(this.miniPhantom);
-				var bb = org.slplayer.util.DomTools.getElementBoundingBox(this.miniPhantom);
-				var dist = this.computeDistance(bb,mouseX,mouseY);
-				if(dist < nearestDistance) {
-					nearestDistance = dist;
-					lastChildIdx = zone.childNodes.length + 1;
-				}
-				zone.removeChild(this.miniPhantom);
-				return { parent : zone, position : lastChildIdx};
-			}
-		}
-		return null;
-	}
-	,move: function(e) {
-		if(this.state == org.slplayer.component.interaction.DraggableState.dragging) {
-			var x = e.clientX - this.initialMouseX + this.initialX;
-			var y = e.clientY - this.initialMouseY + this.initialY;
-			this.rootElement.style.left = x + "px";
-			this.rootElement.style.top = y + "px";
-			this.setAsBestDropZone(this.getBestDropZone(e.clientX,e.clientY));
-			var event = js.Lib.document.createEvent("CustomEvent");
-			event.initCustomEvent("dragEventMove",false,false,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
-			this.rootElement.dispatchEvent(event);
-		}
-	}
-	,stopDrag: function(e) {
-		if(this.state == org.slplayer.component.interaction.DraggableState.dragging) {
-			if(this.bestDropZone != null) {
-				this.rootElement.parentNode.removeChild(this.rootElement);
-				this.bestDropZone.parent.insertBefore(this.rootElement,this.bestDropZone.parent.childNodes[this.bestDropZone.position]);
-				var event = js.Lib.document.createEvent("CustomEvent");
-				event.initCustomEvent("dragEventDropped",false,false,{ dropZone : this.bestDropZone, target : this.bestDropZone.parent, draggable : this});
-				this.bestDropZone.parent.dispatchEvent(event);
-			}
-			var event = js.Lib.document.createEvent("CustomEvent");
-			event.initCustomEvent("dragEventDropped",false,false,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
-			this.rootElement.dispatchEvent(event);
-			this.state = org.slplayer.component.interaction.DraggableState.none;
-			this.resetRootElementStyle();
-			js.Lib.document.body.removeEventListener("mousemove",this.moveCallback,false);
-			this.setAsBestDropZone(null);
-			e.preventDefault();
-		}
-	}
-	,startDrag: function(e) {
-		if(this.state == org.slplayer.component.interaction.DraggableState.none) {
-			var boundingBox = org.slplayer.util.DomTools.getElementBoundingBox(this.rootElement);
-			this.state = org.slplayer.component.interaction.DraggableState.dragging;
-			this.initialX = boundingBox.x;
-			this.initialY = boundingBox.y;
-			this.initialMouseX = e.clientX;
-			this.initialMouseY = e.clientY;
-			this.initPhantomStyle();
-			this.initPhantomStyle();
-			this.initRootElementStyle();
-			this.moveCallback = (function(f) {
-				return function(e1) {
-					return f(e1);
-				};
-			})($bind(this,this.move));
-			js.Lib.document.body.addEventListener("mousemove",this.moveCallback,false);
-			this.move(e);
-			var event = js.Lib.document.createEvent("CustomEvent");
-			event.initCustomEvent("dragEventDrag",false,false,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
-			this.rootElement.dispatchEvent(event);
-		}
-		e.preventDefault();
-	}
-	,resetRootElementStyle: function() {
-		var _g = 0, _g1 = Reflect.fields(this.initialStyle);
-		while(_g < _g1.length) {
-			var styleName = _g1[_g];
-			++_g;
-			var val = Reflect.field(this.initialStyle,styleName);
-			this.rootElement.style[styleName] = val;
-		}
-	}
-	,initPhantomStyle: function(refHtmlDom) {
-		if(refHtmlDom == null) refHtmlDom = this.rootElement;
-		this.phantom.className = refHtmlDom.className + " " + this.phantomClassName;
-		this.miniPhantom.className = refHtmlDom.className + " " + this.phantomClassName;
-	}
-	,initRootElementStyle: function() {
-		this.initialStyle = { };
-		this.initialStyle.width = this.rootElement.style.width;
-		this.rootElement.style.width = this.rootElement.clientWidth + "px";
-		this.initialStyle.height = this.rootElement.style.height;
-		this.rootElement.style.height = this.rootElement.clientHeight + "px";
-		this.initialStyle.position = this.rootElement.style.position;
-		this.rootElement.style.position = "absolute";
-	}
-	,clean: function() {
-		org.slplayer.component.ui.DisplayObject.prototype.clean.call(this);
-		this.dragZone.removeEventListener("mousedown",$bind(this,this.startDrag),false);
-		js.Lib.document.body.removeEventListener("mouseup",this.mouseUpCallback,false);
-	}
-	,init: function() {
-		org.slplayer.component.ui.DisplayObject.prototype.init.call(this);
-		this.phantom = js.Lib.document.createElement("div");
-		this.miniPhantom = js.Lib.document.createElement("div");
-		this.dragZone = org.slplayer.util.DomTools.getSingleElement(this.rootElement,"draggable-dragzone",false);
-		if(this.dragZone == null) this.dragZone = this.rootElement;
-		this.dragZone.addEventListener("mousedown",$bind(this,this.startDrag),false);
-		this.mouseUpCallback = (function(f) {
-			return function(e) {
-				return f(e);
-			};
-		})($bind(this,this.stopDrag));
-		js.Lib.document.body.addEventListener("mouseup",this.mouseUpCallback,false);
-		this.dragZone.style.cursor = "move";
-	}
-	,initialY: null
-	,initialX: null
-	,initialMouseY: null
-	,initialMouseX: null
-	,initialStyle: null
-	,bestDropZone: null
-	,phantomClassName: null
-	,dropZonesClassName: null
-	,dragZone: null
-	,state: null
-	,miniPhantom: null
-	,phantom: null
-	,mouseUpCallback: null
-	,moveCallback: null
-	,groupElement: null
-	,__class__: org.slplayer.component.interaction.Draggable
-});
-org.slplayer.component.layout = {}
-org.slplayer.component.layout.Panel = function(rootElement,SLPId) {
-	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
-	var _this_ = this;
-	js.Lib.window.addEventListener("resize",(function(f) {
-		return function(e) {
-			return f(e);
-		};
-	})($bind(this,this.redrawCallback)),false);
-};
-$hxClasses["org.slplayer.component.layout.Panel"] = org.slplayer.component.layout.Panel;
-org.slplayer.component.layout.Panel.__name__ = ["org","slplayer","component","layout","Panel"];
-org.slplayer.component.layout.Panel.__super__ = org.slplayer.component.ui.DisplayObject;
-org.slplayer.component.layout.Panel.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
-	redraw: function() {
-		var bodySize;
-		var boundingBox = org.slplayer.util.DomTools.getElementBoundingBox(this.rootElement);
-		if(this.isHorizontal) {
-			var margin = this.rootElement.offsetWidth - this.rootElement.clientWidth;
-			var bodyMargin = this.body.offsetWidth - this.body.clientWidth;
-			bodySize = boundingBox.w;
-			bodySize += bodyMargin;
-			bodySize -= margin;
-			bodySize -= this.body.offsetLeft;
-			if(this.footer != null) {
-				var footerMargin = this.footer.offsetWidth - this.footer.clientWidth;
-				var boundingBox1 = org.slplayer.util.DomTools.getElementBoundingBox(this.footer);
-				bodySize -= boundingBox1.w;
-				bodySize -= footerMargin;
-			}
-			bodySize -= 5;
-			this.body.style.width = bodySize + "px";
-		} else {
-			var margin = this.rootElement.offsetHeight - this.rootElement.clientHeight;
-			var bodyMargin = this.body.offsetHeight - this.body.clientHeight;
-			if(this.header != null) this.body.style.top = this.header.offsetHeight + "px";
-			bodySize = boundingBox.h;
-			bodySize += bodyMargin;
-			bodySize -= margin;
-			bodySize -= this.body.offsetTop;
-			bodySize += boundingBox.y;
-			if(this.footer != null) {
-				var footerMargin = this.footer.offsetHeight - this.footer.clientHeight;
-				var boundingBox1 = org.slplayer.util.DomTools.getElementBoundingBox(this.footer);
-				bodySize -= boundingBox1.h;
-				bodySize -= footerMargin;
-			}
-			bodySize -= 5;
-			this.body.style.height = bodySize + "px";
-		}
-	}
-	,redrawCallback: function(e) {
-		this.redraw();
-	}
-	,init: function() {
-		org.slplayer.component.ui.DisplayObject.prototype.init.call(this);
-		var cssClassName = this.rootElement.getAttribute("data-panel-header-class-name");
-		if(cssClassName == null) cssClassName = "panel-header";
-		this.header = org.slplayer.util.DomTools.getSingleElement(this.rootElement,cssClassName,false);
-		if(this.header == null) haxe.Log.trace("Warning, no header for Panel component",{ fileName : "Panel.hx", lineNumber : 103, className : "org.slplayer.component.layout.Panel", methodName : "init"});
-		var cssClassName1 = this.rootElement.getAttribute("data-panel-body-class-name");
-		if(cssClassName1 == null) cssClassName1 = "panel-body";
-		this.body = org.slplayer.util.DomTools.getSingleElement(this.rootElement,cssClassName1,true);
-		var cssClassName2 = this.rootElement.getAttribute("data-panel-footer-class-name");
-		if(cssClassName2 == null) cssClassName2 = "panel-footer";
-		this.footer = org.slplayer.util.DomTools.getSingleElement(this.rootElement,cssClassName2,false);
-		if(this.footer == null) haxe.Log.trace("Warning, no footer for Panel component",{ fileName : "Panel.hx", lineNumber : 112, className : "org.slplayer.component.layout.Panel", methodName : "init"});
-		if(this.rootElement.getAttribute("data-panel-is-horizontal") == "true") this.isHorizontal = true; else this.isHorizontal = false;
-		org.slplayer.util.DomTools.doLater($bind(this,this.redraw));
-	}
-	,footer: null
-	,header: null
-	,body: null
-	,isHorizontal: null
-	,__class__: org.slplayer.component.layout.Panel
-});
-org.slplayer.component.list = {}
-org.slplayer.component.list.List = function(rootElement,SLPId) {
-	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
-	this._selectedIndex = -1;
-	this.dataProvider = [];
-	this.listTemplate = rootElement.innerHTML;
-	rootElement.innerHTML = "";
-};
-$hxClasses["org.slplayer.component.list.List"] = org.slplayer.component.list.List;
-org.slplayer.component.list.List.__name__ = ["org","slplayer","component","list","List"];
-org.slplayer.component.list.List.__super__ = org.slplayer.component.ui.DisplayObject;
-org.slplayer.component.list.List.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
-	setSelectedIndex: function(idx) {
-		if(idx != this._selectedIndex) {
-			if(idx >= 0 && this.dataProvider.length > idx && this.dataProvider[idx] != null) this._selectedIndex = idx; else this._selectedIndex = -1;
-			this.updateSelectionDisplay([this.getSelectedItem()]);
-			var event = js.Lib.document.createEvent("CustomEvent");
-			event.initCustomEvent("listChange",false,false,{ target : this.rootElement, item : this.getSelectedItem()});
-			this.rootElement.dispatchEvent(event);
-		}
-		return idx;
-	}
-	,getSelectedIndex: function() {
-		return this._selectedIndex;
-	}
-	,setSelectedItem: function(selected) {
-		if(selected != this.getSelectedItem()) {
-			if(selected != null) {
-				var tmpIdx = -1;
-				var _g1 = 0, _g = this.dataProvider.length;
-				while(_g1 < _g) {
-					var idx = _g1++;
-					if(this.dataProvider[idx] == selected) {
-						tmpIdx = idx;
-						break;
-					}
-				}
-				this.setSelectedIndex(tmpIdx);
-			} else this.setSelectedIndex(-1);
-		}
-		return selected;
-	}
-	,getSelectedItem: function() {
-		return this.dataProvider[this._selectedIndex];
-	}
-	,updateSelectionDisplay: function(selection) {
-		var children = this.rootElement.getElementsByTagName("li");
-		var _g1 = 0, _g = children.length;
-		while(_g1 < _g) {
-			var idx = _g1++;
-			var idxElem = this.getItemID(children[idx]);
-			if(idxElem >= 0) {
-				var found = false;
-				var _g2 = 0;
-				while(_g2 < selection.length) {
-					var elem = selection[_g2];
-					++_g2;
-					if(elem == this.dataProvider[idxElem]) {
-						found = true;
-						break;
-					}
-				}
-				if(children[idx] == null) {
-					haxe.Log.trace("--workaround--" + idx + "- " + Std.string(children[idx]),{ fileName : "List.hx", lineNumber : 288, className : "org.slplayer.component.list.List", methodName : "updateSelectionDisplay"});
-					continue;
-				}
-				if(found) org.slplayer.util.DomTools.addClass(children[idx],"listSelectedItem"); else org.slplayer.util.DomTools.removeClass(children[idx],"listSelectedItem");
-			}
-		}
-	}
-	,rollOver: function(e) {
-		var element = e.target;
-		var idx = this.getItemID(element);
-		var event = js.Lib.document.createEvent("CustomEvent");
-		event.initCustomEvent("listChange",false,false,{ target : this.rootElement, item : this.dataProvider[idx]});
-		this.rootElement.dispatchEvent(event);
-	}
-	,click: function(e) {
-		var element = e.target;
-		var idx = this.getItemID(element);
-		this.setSelectedItem(this.dataProvider[idx]);
-		var event = js.Lib.document.createEvent("CustomEvent");
-		event.initCustomEvent("listClick",false,false,{ target : this.rootElement, item : this.getSelectedItem()});
-		this.rootElement.dispatchEvent(event);
-	}
-	,getItemID: function(childElement) {
-		if(childElement == this.rootElement || childElement == null) throw "Error, could not find the element clicked in the list.";
-		if(childElement.nodeType != this.rootElement.nodeType || childElement.getAttribute("data-list-item-idx") == null) return this.getItemID(childElement.parentNode);
-		return Std.parseInt(childElement.getAttribute("data-list-item-idx"));
-	}
-	,setItemIds: function(reset) {
-		if(reset == null) reset = false;
-		var idx = 0;
-		var _g1 = 0, _g = this.rootElement.childNodes.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			if(this.rootElement.childNodes[i].nodeType != this.rootElement.nodeType || reset && this.rootElement.childNodes[i].getAttribute("data-list-item-idx") == null) continue;
-			this.rootElement.childNodes[i].setAttribute("data-list-item-idx",Std.string(idx));
-			idx++;
-		}
-	}
-	,reloadData: function() {
-		this.doRedraw();
-	}
-	,doRedraw: function() {
-		var listInnerHtml = "";
-		var t = new haxe.Template(this.listTemplate);
-		var _g = 0, _g1 = this.dataProvider;
-		while(_g < _g1.length) {
-			var elem = _g1[_g];
-			++_g;
-			try {
-				listInnerHtml += t.execute(elem,org.slplayer.component.template.TemplateMacros);
-			} catch( e ) {
-				throw "Error: an error occured while interpreting the template - " + this.listTemplate + " - for the element " + Std.string(elem);
-			}
-		}
-		var _g1 = 0, _g = this.rootElement.childNodes.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			this.getSLPlayer().cleanNode(this.rootElement.childNodes[i]);
-		}
-		this.rootElement.innerHTML = listInnerHtml;
-		var _g1 = 0, _g = this.rootElement.childNodes.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			this.getSLPlayer().initNode(this.rootElement.childNodes[i]);
-		}
-		this.setItemIds();
-		this.updateSelectionDisplay([this.getSelectedItem()]);
-	}
-	,listDOMChanged: function(e) {
-		e.stopPropagation();
-		var newDataProvider = new Array();
-		var _g1 = 0, _g = this.rootElement.childNodes.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			if(this.rootElement.childNodes[i].nodeType != this.rootElement.nodeType || this.rootElement.childNodes[i].getAttribute("data-list-item-idx") == null) continue;
-			newDataProvider.push(this.dataProvider[Std.parseInt(this.rootElement.childNodes[i].getAttribute("data-list-item-idx"))]);
-		}
-		this.dataProvider = newDataProvider;
-		this.setItemIds(true);
-		haxe.Log.trace("new dataProvider = " + Std.string(this.dataProvider),{ fileName : "List.hx", lineNumber : 146, className : "org.slplayer.component.list.List", methodName : "listDOMChanged"});
-	}
-	,redraw: function() {
-		this.reloadData();
-	}
-	,clean: function() {
-		org.slplayer.component.ui.DisplayObject.prototype.clean.call(this);
-		this.rootElement.removeEventListener("click",$bind(this,this.click),false);
-		this.rootElement.removeEventListener("rollOver",$bind(this,this.rollOver),false);
-		this.rootElement.removeEventListener("dragEventDropped",$bind(this,this.listDOMChanged),false);
-	}
-	,init: function() {
-		org.slplayer.component.ui.DisplayObject.prototype.init.call(this);
-		this.rootElement.addEventListener("click",$bind(this,this.click),false);
-		this.rootElement.addEventListener("rollOver",$bind(this,this.rollOver),false);
-		this.rootElement.addEventListener("dragEventDropped",$bind(this,this.listDOMChanged),false);
-	}
-	,_selectedIndex: null
-	,selectedIndex: null
-	,selectedItem: null
-	,dataProvider: null
-	,listTemplate: null
-	,__class__: org.slplayer.component.list.List
-	,__properties__: {set_selectedItem:"setSelectedItem",get_selectedItem:"getSelectedItem",set_selectedIndex:"setSelectedIndex",get_selectedIndex:"getSelectedIndex"}
-});
-org.slplayer.component.list.XmlList = function(rootElement,SLPId) {
-	org.slplayer.component.list.List.call(this,rootElement,SLPId);
-	var attr = rootElement.getAttribute("data-items");
-	var xmlData = Xml.parse(StringTools.htmlUnescape(attr));
-	this.dataProvider = [];
-	var $it0 = xmlData.elements();
-	while( $it0.hasNext() ) {
-		var item = $it0.next();
-		this.dataProvider.push(this.xmlToObj(item));
-	}
-	haxe.Log.trace("dataProvider = " + Std.string(this.dataProvider),{ fileName : "XmlList.hx", lineNumber : 44, className : "org.slplayer.component.list.XmlList", methodName : "new"});
-};
-$hxClasses["org.slplayer.component.list.XmlList"] = org.slplayer.component.list.XmlList;
-org.slplayer.component.list.XmlList.__name__ = ["org","slplayer","component","list","XmlList"];
-org.slplayer.component.list.XmlList.__super__ = org.slplayer.component.list.List;
-org.slplayer.component.list.XmlList.prototype = $extend(org.slplayer.component.list.List.prototype,{
-	xmlToObj: function(xml) {
-		var res = { };
-		var $it0 = xml.iterator();
-		while( $it0.hasNext() ) {
-			var item = $it0.next();
-			if(item.nodeType == Xml.PCData || item.nodeType == Xml.CData || item.nodeType == Xml.Prolog) return item.getNodeValue(); else res[item.getNodeName()] = this.xmlToObj(item);
-		}
-		return res;
-	}
-	,init: function() {
-		this.redraw();
-		org.slplayer.component.list.List.prototype.init.call(this);
-	}
-	,__class__: org.slplayer.component.list.XmlList
-});
-org.slplayer.component.navigation = {}
-org.slplayer.component.navigation.LayerStatus = $hxClasses["org.slplayer.component.navigation.LayerStatus"] = { __ename__ : ["org","slplayer","component","navigation","LayerStatus"], __constructs__ : ["showTransition","hideTransition","visible","hidden","notInit"] }
-org.slplayer.component.navigation.LayerStatus.showTransition = ["showTransition",0];
-org.slplayer.component.navigation.LayerStatus.showTransition.toString = $estr;
-org.slplayer.component.navigation.LayerStatus.showTransition.__enum__ = org.slplayer.component.navigation.LayerStatus;
-org.slplayer.component.navigation.LayerStatus.hideTransition = ["hideTransition",1];
-org.slplayer.component.navigation.LayerStatus.hideTransition.toString = $estr;
-org.slplayer.component.navigation.LayerStatus.hideTransition.__enum__ = org.slplayer.component.navigation.LayerStatus;
-org.slplayer.component.navigation.LayerStatus.visible = ["visible",2];
-org.slplayer.component.navigation.LayerStatus.visible.toString = $estr;
-org.slplayer.component.navigation.LayerStatus.visible.__enum__ = org.slplayer.component.navigation.LayerStatus;
-org.slplayer.component.navigation.LayerStatus.hidden = ["hidden",3];
-org.slplayer.component.navigation.LayerStatus.hidden.toString = $estr;
-org.slplayer.component.navigation.LayerStatus.hidden.__enum__ = org.slplayer.component.navigation.LayerStatus;
-org.slplayer.component.navigation.LayerStatus.notInit = ["notInit",4];
-org.slplayer.component.navigation.LayerStatus.notInit.toString = $estr;
-org.slplayer.component.navigation.LayerStatus.notInit.__enum__ = org.slplayer.component.navigation.LayerStatus;
-org.slplayer.component.navigation.Layer = function(rootElement,SLPId) {
-	this.hasTransitionStarted = false;
-	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
-	this.childrenArray = new Array();
-	this.status = org.slplayer.component.navigation.LayerStatus.notInit;
-	this.styleAttrDisplay = rootElement.style.display;
-};
-$hxClasses["org.slplayer.component.navigation.Layer"] = org.slplayer.component.navigation.Layer;
-org.slplayer.component.navigation.Layer.__name__ = ["org","slplayer","component","navigation","Layer"];
-org.slplayer.component.navigation.Layer.getLayerNodes = function(pageName,slPlayerId,root) {
-	var document = root;
-	if(root == null) document = js.Lib.document.documentElement;
-	return document.getElementsByClassName(pageName);
-}
-org.slplayer.component.navigation.Layer.__super__ = org.slplayer.component.ui.DisplayObject;
-org.slplayer.component.navigation.Layer.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
-	cleanupVideoElements: function(nodeList) {
-		var _g1 = 0, _g = nodeList.length;
-		while(_g1 < _g) {
-			var idx = _g1++;
-			try {
-				var element = nodeList[idx];
-				element.pause();
-				element.currentTime = 0;
-			} catch( e ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 505, className : "org.slplayer.component.navigation.Layer", methodName : "cleanupVideoElements"});
-			}
-		}
-	}
-	,cleanupAudioElements: function(nodeList) {
-		var _g1 = 0, _g = nodeList.length;
-		while(_g1 < _g) {
-			var idx = _g1++;
-			try {
-				var element = nodeList[idx];
-				element.pause();
-				element.currentTime = 0;
-			} catch( e ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 483, className : "org.slplayer.component.navigation.Layer", methodName : "cleanupAudioElements"});
-			}
-		}
-	}
-	,setupVideoElements: function(nodeList) {
-		var _g1 = 0, _g = nodeList.length;
-		while(_g1 < _g) {
-			var idx = _g1++;
-			try {
-				var element = nodeList[idx];
-				if(element.autoplay == true) {
-					element.currentTime = 0;
-					element.play();
-				}
-				element.muted = org.slplayer.component.sound.SoundOn.isMuted;
-			} catch( e ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 461, className : "org.slplayer.component.navigation.Layer", methodName : "setupVideoElements"});
-			}
-		}
-	}
-	,setupAudioElements: function(nodeList) {
-		var _g1 = 0, _g = nodeList.length;
-		while(_g1 < _g) {
-			var idx = _g1++;
-			try {
-				var element = nodeList[idx];
-				if(element.autoplay == true) {
-					element.currentTime = 0;
-					element.play();
-				}
-				element.muted = org.slplayer.component.sound.SoundOn.isMuted;
-			} catch( e ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 436, className : "org.slplayer.component.navigation.Layer", methodName : "setupAudioElements"});
-			}
-		}
-	}
-	,doHide: function(transitionData,preventTransitions,e) {
-		if(e != null && e.target != this.rootElement) {
-			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 367, className : "org.slplayer.component.navigation.Layer", methodName : "doHide"});
-			return;
-		}
-		if(preventTransitions == false && this.doHideCallback == null) {
-			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 371, className : "org.slplayer.component.navigation.Layer", methodName : "doHide"});
-			return;
-		}
-		if(preventTransitions == false) {
-			this.endTransition(org.slplayer.component.navigation.transition.TransitionType.hide,transitionData,this.doHideCallback);
-			this.doHideCallback = null;
-		}
-		this.status = org.slplayer.component.navigation.LayerStatus.hidden;
-		try {
-			var event = js.Lib.document.createEvent("CustomEvent");
-			event.initCustomEvent("onLayerHide",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
-			this.rootElement.dispatchEvent(event);
-		} catch( e1 ) {
-			haxe.Log.trace("Error: could not dispatch event " + Std.string(e1),{ fileName : "Layer.hx", lineNumber : 394, className : "org.slplayer.component.navigation.Layer", methodName : "doHide"});
-		}
-		var audioNodes = this.rootElement.getElementsByTagName("audio");
-		this.cleanupAudioElements(audioNodes);
-		var videoNodes = this.rootElement.getElementsByTagName("video");
-		this.cleanupVideoElements(videoNodes);
-		while(this.rootElement.childNodes.length > 0) {
-			var element = this.rootElement.childNodes[0];
-			this.rootElement.removeChild(element);
-			this.childrenArray.push(element);
-		}
-		this.rootElement.style.display = "none";
-	}
-	,hide: function(transitionData,preventTransitions) {
-		if(this.status != org.slplayer.component.navigation.LayerStatus.visible && this.status != org.slplayer.component.navigation.LayerStatus.notInit) return;
-		if(this.status == org.slplayer.component.navigation.LayerStatus.hideTransition) {
-			haxe.Log.trace("Warning: hide break previous transition hide",{ fileName : "Layer.hx", lineNumber : 335, className : "org.slplayer.component.navigation.Layer", methodName : "hide"});
-			this.doHideCallback(null);
-			this.removeTransitionEvent(this.doHideCallback);
-		} else if(this.status == org.slplayer.component.navigation.LayerStatus.showTransition) {
-			haxe.Log.trace("Warning: hide break previous transition show",{ fileName : "Layer.hx", lineNumber : 341, className : "org.slplayer.component.navigation.Layer", methodName : "hide"});
-			this.doShowCallback(null);
-			this.removeTransitionEvent(this.doShowCallback);
-		}
-		this.status = org.slplayer.component.navigation.LayerStatus.hideTransition;
-		if(preventTransitions == false) {
-			this.doHideCallback = (function(f,a1,a2) {
-				return function(e) {
-					return f(a1,a2,e);
-				};
-			})($bind(this,this.doHide),transitionData,preventTransitions);
-			this.startTransition(org.slplayer.component.navigation.transition.TransitionType.hide,transitionData,this.doHideCallback);
-		} else this.doHide(transitionData,preventTransitions,null);
-	}
-	,doShow: function(transitionData,preventTransitions,e) {
-		if(e != null && e.target != this.rootElement) {
-			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 305, className : "org.slplayer.component.navigation.Layer", methodName : "doShow"});
-			return;
-		}
-		if(preventTransitions == false && this.doShowCallback == null) {
-			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 309, className : "org.slplayer.component.navigation.Layer", methodName : "doShow"});
-			return;
-		}
-		if(preventTransitions == false) this.endTransition(org.slplayer.component.navigation.transition.TransitionType.show,transitionData,this.doShowCallback);
-		this.doShowCallback = null;
-		this.status = org.slplayer.component.navigation.LayerStatus.visible;
-	}
-	,show: function(transitionData,preventTransitions) {
-		if(preventTransitions == null) preventTransitions = false;
-		if(this.status != org.slplayer.component.navigation.LayerStatus.hidden && this.status != org.slplayer.component.navigation.LayerStatus.notInit) {
-			haxe.Log.trace("Warning: can not show the layer, since it has the status '" + Std.string(this.status) + "'",{ fileName : "Layer.hx", lineNumber : 240, className : "org.slplayer.component.navigation.Layer", methodName : "show"});
-			return;
-		}
-		if(this.status == org.slplayer.component.navigation.LayerStatus.hideTransition) {
-			haxe.Log.trace("Warning: hide break previous transition hide",{ fileName : "Layer.hx", lineNumber : 245, className : "org.slplayer.component.navigation.Layer", methodName : "show"});
-			this.doHideCallback(null);
-			this.removeTransitionEvent(this.doHideCallback);
-		} else if(this.status == org.slplayer.component.navigation.LayerStatus.showTransition) {
-			haxe.Log.trace("Warning: hide break previous transition show",{ fileName : "Layer.hx", lineNumber : 251, className : "org.slplayer.component.navigation.Layer", methodName : "show"});
-			this.doShowCallback(null);
-			this.removeTransitionEvent(this.doShowCallback);
-		}
-		this.status = org.slplayer.component.navigation.LayerStatus.showTransition;
-		while(this.childrenArray.length > 0) {
-			var element = this.childrenArray.shift();
-			this.rootElement.appendChild(element);
-		}
-		var audioNodes = this.rootElement.getElementsByTagName("audio");
-		this.setupAudioElements(audioNodes);
-		var videoNodes = this.rootElement.getElementsByTagName("video");
-		this.setupVideoElements(videoNodes);
-		try {
-			var event = js.Lib.document.createEvent("CustomEvent");
-			event.initCustomEvent("onLayerShow",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
-			this.rootElement.dispatchEvent(event);
-		} catch( e ) {
-			haxe.Log.trace("Error: could not dispatch event " + Std.string(e),{ fileName : "Layer.hx", lineNumber : 282, className : "org.slplayer.component.navigation.Layer", methodName : "show"});
-		}
-		if(preventTransitions == false) {
-			this.doShowCallback = (function(f,a1,a2) {
-				return function(e) {
-					return f(a1,a2,e);
-				};
-			})($bind(this,this.doShow),transitionData,preventTransitions);
-			this.startTransition(org.slplayer.component.navigation.transition.TransitionType.show,transitionData,this.doShowCallback);
-		} else this.doShow(transitionData,preventTransitions,null);
-		this.rootElement.style.display = this.styleAttrDisplay;
-	}
-	,removeTransitionEvent: function(onEndCallback) {
-		this.rootElement.removeEventListener("transitionend",onEndCallback,false);
-		this.rootElement.removeEventListener("transitionEnd",onEndCallback,false);
-		this.rootElement.removeEventListener("webkitTransitionEnd",onEndCallback,false);
-		this.rootElement.removeEventListener("oTransitionEnd",onEndCallback,false);
-		this.rootElement.removeEventListener("MSTransitionEnd",onEndCallback,false);
-	}
-	,addTransitionEvent: function(onEndCallback) {
-		this.rootElement.addEventListener("transitionend",onEndCallback,false);
-		this.rootElement.addEventListener("transitionEnd",onEndCallback,false);
-		this.rootElement.addEventListener("webkitTransitionEnd",onEndCallback,false);
-		this.rootElement.addEventListener("oTransitionEnd",onEndCallback,false);
-		this.rootElement.addEventListener("MSTransitionEnd",onEndCallback,false);
-	}
-	,endTransition: function(type,transitionData,onComplete) {
-		this.removeTransitionEvent(onComplete);
-		if(transitionData != null) org.slplayer.util.DomTools.removeClass(this.rootElement,transitionData.endStyleName);
-		var transitionData2 = org.slplayer.component.navigation.transition.TransitionTools.getTransitionData(this.rootElement,type);
-		if(transitionData2 != null) org.slplayer.util.DomTools.removeClass(this.rootElement,transitionData2.endStyleName);
-	}
-	,doStartTransition: function(sumOfTransitions,onComplete) {
-		var _g = 0;
-		while(_g < sumOfTransitions.length) {
-			var transition = sumOfTransitions[_g];
-			++_g;
-			org.slplayer.util.DomTools.removeClass(this.rootElement,transition.startStyleName);
-		}
-		if(onComplete != null) this.addTransitionEvent(onComplete);
-		org.slplayer.component.navigation.transition.TransitionTools.setTransitionProperty(this.rootElement,"transitionDuration",null);
-		var _g = 0;
-		while(_g < sumOfTransitions.length) {
-			var transition = sumOfTransitions[_g];
-			++_g;
-			org.slplayer.util.DomTools.addClass(this.rootElement,transition.endStyleName);
-		}
-	}
-	,startTransition: function(type,transitionData,onComplete) {
-		var transitionData2 = org.slplayer.component.navigation.transition.TransitionTools.getTransitionData(this.rootElement,type);
-		var sumOfTransitions = new Array();
-		if(transitionData != null) sumOfTransitions.push(transitionData);
-		if(transitionData2 != null) sumOfTransitions.push(transitionData2);
-		if(sumOfTransitions.length == 0) {
-			if(onComplete != null) onComplete(null);
-		} else {
-			this.hasTransitionStarted = true;
-			org.slplayer.component.navigation.transition.TransitionTools.setTransitionProperty(this.rootElement,"transitionDuration","0");
-			var _g = 0;
-			while(_g < sumOfTransitions.length) {
-				var transition = sumOfTransitions[_g];
-				++_g;
-				org.slplayer.util.DomTools.addClass(this.rootElement,transition.startStyleName);
-			}
-			org.slplayer.util.DomTools.doLater((function(f,a1,a2) {
-				return function() {
-					return f(a1,a2);
-				};
-			})($bind(this,this.doStartTransition),sumOfTransitions,onComplete));
-		}
-	}
-	,doHideCallback: null
-	,doShowCallback: null
-	,styleAttrDisplay: null
-	,hasTransitionStarted: null
-	,status: null
-	,childrenArray: null
-	,__class__: org.slplayer.component.navigation.Layer
-});
-org.slplayer.component.navigation.Page = function(rootElement,SLPId) {
-	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
-	org.slplayer.component.group.Groupable.startGroupable(this);
-	this.name = rootElement.getAttribute("name");
-	if(this.name == null || this.name == "") throw "Pages have to have a 'name' attribute";
-};
-$hxClasses["org.slplayer.component.navigation.Page"] = org.slplayer.component.navigation.Page;
-org.slplayer.component.navigation.Page.__name__ = ["org","slplayer","component","navigation","Page"];
-org.slplayer.component.navigation.Page.__interfaces__ = [org.slplayer.component.group.IGroupable];
-org.slplayer.component.navigation.Page.openPage = function(pageName,isPopup,transitionDataShow,transitionDataHide,slPlayerId,root) {
-	var document = root;
-	if(root == null) document = js.Lib.document.documentElement;
-	var page = org.slplayer.component.navigation.Page.getPageByName(pageName,slPlayerId,document);
-	if(page == null) {
-		page = org.slplayer.component.navigation.Page.getPageByName(pageName,slPlayerId);
-		if(page == null) throw "Error, could not find a page with name " + pageName;
-	}
-	page.open(transitionDataShow,transitionDataHide,!isPopup);
-}
-org.slplayer.component.navigation.Page.closePage = function(pageName,transitionData,slPlayerId,root) {
-	var document = root;
-	if(root == null) document = js.Lib.document.documentElement;
-	var page = org.slplayer.component.navigation.Page.getPageByName(pageName,slPlayerId,document);
-	if(page == null) {
-		page = org.slplayer.component.navigation.Page.getPageByName(pageName,slPlayerId);
-		if(page == null) throw "Error, could not find a page with name " + pageName;
-	}
-	page.close(transitionData);
-}
-org.slplayer.component.navigation.Page.getPageNodes = function(slPlayerId,root) {
-	var document = root;
-	if(root == null) document = js.Lib.document.documentElement;
-	return document.getElementsByClassName("Page");
-}
-org.slplayer.component.navigation.Page.getPageByName = function(pageName,slPlayerId,root) {
-	var document = root;
-	if(root == null) document = js.Lib.document.documentElement;
-	var pages = org.slplayer.component.navigation.Page.getPageNodes(slPlayerId,document);
-	var _g1 = 0, _g = pages.length;
-	while(_g1 < _g) {
-		var pageIdx = _g1++;
-		if(pages[pageIdx].getAttribute("name") == pageName) {
-			var pageInstances = org.slplayer.core.Application.get(slPlayerId).getAssociatedComponents(pages[pageIdx],org.slplayer.component.navigation.Page);
-			var $it0 = pageInstances.iterator();
-			while( $it0.hasNext() ) {
-				var page = $it0.next();
-				return page;
-			}
-			return null;
-		}
-	}
-	return null;
-}
-org.slplayer.component.navigation.Page.__super__ = org.slplayer.component.ui.DisplayObject;
-org.slplayer.component.navigation.Page.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
-	close: function(transitionData,preventCloseByClassName,preventTransitions) {
-		if(preventTransitions == null) preventTransitions = false;
-		haxe.Log.trace("close " + Std.string(transitionData) + ", " + this.name + " - " + Std.string(preventTransitions) + " - " + Std.string(this.groupElement),{ fileName : "Page.hx", lineNumber : 262, className : "org.slplayer.component.navigation.Page", methodName : "close"});
-		if(preventCloseByClassName == null) preventCloseByClassName = new Array();
-		var nodes = org.slplayer.component.navigation.Layer.getLayerNodes(this.name,this.SLPlayerInstanceId,this.groupElement);
-		var _g1 = 0, _g = nodes.length;
-		while(_g1 < _g) {
-			var idxLayerNode = _g1++;
-			var layerNode = nodes[idxLayerNode];
-			var hasForbiddenClass = false;
-			var _g2 = 0;
-			while(_g2 < preventCloseByClassName.length) {
-				var className = preventCloseByClassName[_g2];
-				++_g2;
-				if(org.slplayer.util.DomTools.hasClass(layerNode,className)) {
-					hasForbiddenClass = true;
-					break;
-				}
-			}
-			if(!hasForbiddenClass) {
-				var layerInstances = this.getSLPlayer().getAssociatedComponents(layerNode,org.slplayer.component.navigation.Layer);
-				var $it0 = layerInstances.iterator();
-				while( $it0.hasNext() ) {
-					var layerInstance = $it0.next();
-					(js.Boot.__cast(layerInstance , org.slplayer.component.navigation.Layer)).hide(transitionData,preventTransitions);
-				}
-			}
-		}
-		var nodes1 = org.slplayer.util.DomTools.getElementsByAttribute(this.groupElement,"href",this.name);
-		var _g1 = 0, _g = nodes1.length;
-		while(_g1 < _g) {
-			var idxLayerNode = _g1++;
-			var element = nodes1[idxLayerNode];
-			org.slplayer.util.DomTools.removeClass(element,"page-opened");
-		}
-		var nodes2 = org.slplayer.util.DomTools.getElementsByAttribute(this.groupElement,"href","#" + this.name);
-		var _g1 = 0, _g = nodes2.length;
-		while(_g1 < _g) {
-			var idxLayerNode = _g1++;
-			var element = nodes2[idxLayerNode];
-			org.slplayer.util.DomTools.removeClass(element,"page-opened");
-		}
-	}
-	,doOpen: function(transitionData,preventTransitions) {
-		if(preventTransitions == null) preventTransitions = false;
-		var nodes = org.slplayer.component.navigation.Layer.getLayerNodes(this.name,this.SLPlayerInstanceId,this.groupElement);
-		var _g1 = 0, _g = nodes.length;
-		while(_g1 < _g) {
-			var idxLayerNode = _g1++;
-			var layerNode = nodes[idxLayerNode];
-			var layerInstances = this.getSLPlayer().getAssociatedComponents(layerNode,org.slplayer.component.navigation.Layer);
-			var $it0 = layerInstances.iterator();
-			while( $it0.hasNext() ) {
-				var layerInstance = $it0.next();
-				layerInstance.show(transitionData,preventTransitions);
-			}
-		}
-		var nodes1 = org.slplayer.util.DomTools.getElementsByAttribute(this.groupElement,"href",this.name);
-		var _g1 = 0, _g = nodes1.length;
-		while(_g1 < _g) {
-			var idxLayerNode = _g1++;
-			var element = nodes1[idxLayerNode];
-			org.slplayer.util.DomTools.addClass(element,"page-opened");
-		}
-		var nodes2 = org.slplayer.util.DomTools.getElementsByAttribute(this.groupElement,"href","#" + this.name);
-		var _g1 = 0, _g = nodes2.length;
-		while(_g1 < _g) {
-			var idxLayerNode = _g1++;
-			var element = nodes2[idxLayerNode];
-			org.slplayer.util.DomTools.addClass(element,"page-opened");
-		}
-	}
-	,closeOthers: function(transitionData,preventTransitions) {
-		if(preventTransitions == null) preventTransitions = false;
-		var nodes = org.slplayer.component.navigation.Page.getPageNodes(this.SLPlayerInstanceId,this.groupElement);
-		var _g1 = 0, _g = nodes.length;
-		while(_g1 < _g) {
-			var idxPageNode = _g1++;
-			var pageNode = nodes[idxPageNode];
-			var pageInstances = this.getSLPlayer().getAssociatedComponents(pageNode,org.slplayer.component.navigation.Page);
-			var $it0 = pageInstances.iterator();
-			while( $it0.hasNext() ) {
-				var pageInstance = $it0.next();
-				if(pageInstance != this) pageInstance.close(transitionData,[this.name],preventTransitions);
-			}
-		}
-	}
-	,open: function(transitionDataShow,transitionDataHide,doCloseOthers,preventTransitions) {
-		if(preventTransitions == null) preventTransitions = false;
-		if(doCloseOthers == null) doCloseOthers = true;
-		if(doCloseOthers) this.closeOthers(transitionDataHide,preventTransitions);
-		this.doOpen(transitionDataShow,preventTransitions);
-	}
-	,init: function() {
-		org.slplayer.component.ui.DisplayObject.prototype.init.call(this);
-		if(this.groupElement == null) this.groupElement = js.Lib.document.body;
-		if(org.slplayer.util.DomTools.getMeta("initialPageName") == this.name || this.groupElement.getAttribute("data-initial-page-name") == this.name) org.slplayer.util.DomTools.doLater((function(f,a1,a2,a3,a4) {
-			return function() {
-				return f(a1,a2,a3,a4);
-			};
-		})($bind(this,this.open),null,null,true,true));
-	}
-	,groupElement: null
-	,name: null
-	,__class__: org.slplayer.component.navigation.Page
-});
-org.slplayer.component.navigation.link = {}
-org.slplayer.component.navigation.link.LinkBase = function(rootElement,SLPId) {
-	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
-	org.slplayer.component.group.Groupable.startGroupable(this);
-	rootElement.addEventListener("click",$bind(this,this.onClick),false);
-	if(rootElement.getAttribute("href") != null) {
-		this.linkName = StringTools.trim(rootElement.getAttribute("href"));
-		this.linkName = HxOverrides.substr(this.linkName,this.linkName.indexOf("#") + 1,null);
-	} else haxe.Log.trace("Warning: the link has no href atribute (" + Std.string(rootElement) + ")",{ fileName : "LinkBase.hx", lineNumber : 93, className : "org.slplayer.component.navigation.link.LinkBase", methodName : "new"});
-	if(rootElement.getAttribute("target") != null && StringTools.trim(rootElement.getAttribute("target")) != "") this.targetAttr = StringTools.trim(rootElement.getAttribute("target"));
-};
-$hxClasses["org.slplayer.component.navigation.link.LinkBase"] = org.slplayer.component.navigation.link.LinkBase;
-org.slplayer.component.navigation.link.LinkBase.__name__ = ["org","slplayer","component","navigation","link","LinkBase"];
-org.slplayer.component.navigation.link.LinkBase.__interfaces__ = [org.slplayer.component.group.IGroupable];
-org.slplayer.component.navigation.link.LinkBase.__super__ = org.slplayer.component.ui.DisplayObject;
-org.slplayer.component.navigation.link.LinkBase.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
-	onClick: function(e) {
-		e.preventDefault();
-		this.transitionDataShow = org.slplayer.component.navigation.transition.TransitionTools.getTransitionData(this.rootElement,org.slplayer.component.navigation.transition.TransitionType.show);
-		this.transitionDataHide = org.slplayer.component.navigation.transition.TransitionTools.getTransitionData(this.rootElement,org.slplayer.component.navigation.transition.TransitionType.hide);
-	}
-	,transitionDataHide: null
-	,transitionDataShow: null
-	,targetAttr: null
-	,linkName: null
-	,groupElement: null
-	,__class__: org.slplayer.component.navigation.link.LinkBase
-});
-org.slplayer.component.navigation.link.LinkClosePage = function(rootElement,SLPId) {
-	org.slplayer.component.navigation.link.LinkBase.call(this,rootElement,SLPId);
-};
-$hxClasses["org.slplayer.component.navigation.link.LinkClosePage"] = org.slplayer.component.navigation.link.LinkClosePage;
-org.slplayer.component.navigation.link.LinkClosePage.__name__ = ["org","slplayer","component","navigation","link","LinkClosePage"];
-org.slplayer.component.navigation.link.LinkClosePage.__super__ = org.slplayer.component.navigation.link.LinkBase;
-org.slplayer.component.navigation.link.LinkClosePage.prototype = $extend(org.slplayer.component.navigation.link.LinkBase.prototype,{
-	onClick: function(e) {
-		org.slplayer.component.navigation.link.LinkBase.prototype.onClick.call(this,e);
-		org.slplayer.component.navigation.Page.closePage(this.linkName,this.transitionDataHide,this.SLPlayerInstanceId);
-	}
-	,__class__: org.slplayer.component.navigation.link.LinkClosePage
-});
-org.slplayer.component.navigation.link.LinkToContext = function(rootElement,SLPId) {
-	org.slplayer.component.navigation.link.LinkBase.call(this,rootElement,SLPId);
-	if(rootElement.getAttribute("data-context") != null) this.linkName = rootElement.getAttribute("data-context");
-	haxe.Log.trace("LinkToContext " + this.linkName,{ fileName : "LinkToContext.hx", lineNumber : 51, className : "org.slplayer.component.navigation.link.LinkToContext", methodName : "new"});
-};
-$hxClasses["org.slplayer.component.navigation.link.LinkToContext"] = org.slplayer.component.navigation.link.LinkToContext;
-org.slplayer.component.navigation.link.LinkToContext.__name__ = ["org","slplayer","component","navigation","link","LinkToContext"];
-org.slplayer.component.navigation.link.LinkToContext.styleSheet = null;
-org.slplayer.component.navigation.link.LinkToContext.__super__ = org.slplayer.component.navigation.link.LinkBase;
-org.slplayer.component.navigation.link.LinkToContext.prototype = $extend(org.slplayer.component.navigation.link.LinkBase.prototype,{
-	onClick: function(e) {
-		org.slplayer.component.navigation.link.LinkBase.prototype.onClick.call(this,e);
-		if(org.slplayer.component.navigation.link.LinkToContext.styleSheet != null) js.Lib.document.getElementsByTagName("head")[0].removeChild(org.slplayer.component.navigation.link.LinkToContext.styleSheet);
-		var cssText = "." + this.linkName + " { display : inline; visibility : visible; }";
-		org.slplayer.component.navigation.link.LinkToContext.styleSheet = org.slplayer.util.DomTools.addCssRules(cssText);
-	}
-	,__class__: org.slplayer.component.navigation.link.LinkToContext
-});
-org.slplayer.component.navigation.link.LinkToPage = function(rootElement,SLPId) {
-	org.slplayer.component.navigation.link.LinkBase.call(this,rootElement,SLPId);
-};
-$hxClasses["org.slplayer.component.navigation.link.LinkToPage"] = org.slplayer.component.navigation.link.LinkToPage;
-org.slplayer.component.navigation.link.LinkToPage.__name__ = ["org","slplayer","component","navigation","link","LinkToPage"];
-org.slplayer.component.navigation.link.LinkToPage.__super__ = org.slplayer.component.navigation.link.LinkBase;
-org.slplayer.component.navigation.link.LinkToPage.prototype = $extend(org.slplayer.component.navigation.link.LinkBase.prototype,{
-	onClick: function(e) {
-		org.slplayer.component.navigation.link.LinkBase.prototype.onClick.call(this,e);
-		org.slplayer.component.navigation.Page.openPage(this.linkName,this.targetAttr == "_top",this.transitionDataShow,this.transitionDataHide,this.SLPlayerInstanceId,this.groupElement);
-	}
-	,__class__: org.slplayer.component.navigation.link.LinkToPage
-});
-org.slplayer.component.navigation.transition = {}
-org.slplayer.component.navigation.transition.TransitionType = $hxClasses["org.slplayer.component.navigation.transition.TransitionType"] = { __ename__ : ["org","slplayer","component","navigation","transition","TransitionType"], __constructs__ : ["show","hide"] }
-org.slplayer.component.navigation.transition.TransitionType.show = ["show",0];
-org.slplayer.component.navigation.transition.TransitionType.show.toString = $estr;
-org.slplayer.component.navigation.transition.TransitionType.show.__enum__ = org.slplayer.component.navigation.transition.TransitionType;
-org.slplayer.component.navigation.transition.TransitionType.hide = ["hide",1];
-org.slplayer.component.navigation.transition.TransitionType.hide.toString = $estr;
-org.slplayer.component.navigation.transition.TransitionType.hide.__enum__ = org.slplayer.component.navigation.transition.TransitionType;
-org.slplayer.component.navigation.transition.TransitionTools = function() { }
-$hxClasses["org.slplayer.component.navigation.transition.TransitionTools"] = org.slplayer.component.navigation.transition.TransitionTools;
-org.slplayer.component.navigation.transition.TransitionTools.__name__ = ["org","slplayer","component","navigation","transition","TransitionTools"];
-org.slplayer.component.navigation.transition.TransitionTools.getTransitionData = function(rootElement,type) {
-	var res = null;
-	if(type == org.slplayer.component.navigation.transition.TransitionType.show) {
-		var start = rootElement.getAttribute("data-show-start-style");
-		var end = rootElement.getAttribute("data-show-end-style");
-		if(start != null && end != null) res = { startStyleName : start, endStyleName : end};
-	} else {
-		var start = rootElement.getAttribute("data-hide-start-style");
-		var end = rootElement.getAttribute("data-hide-end-style");
-		if(start != null && end != null) res = { startStyleName : start, endStyleName : end};
-	}
-	return res;
-}
-org.slplayer.component.navigation.transition.TransitionTools.setTransitionProperty = function(rootElement,name,value) {
-	Reflect.setProperty(rootElement.style,name,value);
-	var prefixed = "MozT" + HxOverrides.substr(name,1,null);
-	rootElement.style[prefixed] = value;
-	var prefixed1 = "webkitT" + HxOverrides.substr(name,1,null);
-	rootElement.style[prefixed1] = value;
-	var prefixed2 = "oT" + HxOverrides.substr(name,1,null);
-	rootElement.style[prefixed2] = value;
-}
-org.slplayer.component.sound = {}
-org.slplayer.component.sound.SoundOn = function(rootElement,SLPId) {
-	org.slplayer.component.ui.DisplayObject.call(this,rootElement,SLPId);
-	rootElement.onclick = $bind(this,this.onClick);
-};
-$hxClasses["org.slplayer.component.sound.SoundOn"] = org.slplayer.component.sound.SoundOn;
-org.slplayer.component.sound.SoundOn.__name__ = ["org","slplayer","component","sound","SoundOn"];
-org.slplayer.component.sound.SoundOn.mute = function(doMute) {
-	haxe.Log.trace("Sound mute " + Std.string(doMute),{ fileName : "SoundOn.hx", lineNumber : 54, className : "org.slplayer.component.sound.SoundOn", methodName : "mute"});
-	var audioTags = js.Lib.document.getElementsByTagName("audio");
-	var _g1 = 0, _g = audioTags.length;
-	while(_g1 < _g) {
-		var idx = _g1++;
-		audioTags[idx].muted = doMute;
-	}
-	org.slplayer.component.sound.SoundOn.isMuted = doMute;
-	var soundOffButtons = js.Lib.document.getElementsByClassName("SoundOff");
-	var soundOnButtons = js.Lib.document.getElementsByClassName("SoundOn");
-	var _g1 = 0, _g = soundOffButtons.length;
-	while(_g1 < _g) {
-		var idx = _g1++;
-		if(doMute) soundOffButtons[idx].style.visibility = "hidden"; else soundOffButtons[idx].style.visibility = "visible";
-	}
-	var _g1 = 0, _g = soundOnButtons.length;
-	while(_g1 < _g) {
-		var idx = _g1++;
-		if(!doMute) soundOnButtons[idx].style.visibility = "hidden"; else soundOnButtons[idx].style.visibility = "visible";
-	}
-}
-org.slplayer.component.sound.SoundOn.__super__ = org.slplayer.component.ui.DisplayObject;
-org.slplayer.component.sound.SoundOn.prototype = $extend(org.slplayer.component.ui.DisplayObject.prototype,{
-	onClick: function(e) {
-		org.slplayer.component.sound.SoundOn.mute(false);
-	}
-	,init: function() {
-		org.slplayer.component.sound.SoundOn.mute(false);
-	}
-	,__class__: org.slplayer.component.sound.SoundOn
-});
-org.slplayer.component.sound.SoundOff = function(rootElement,SLPId) {
-	org.slplayer.component.sound.SoundOn.call(this,rootElement,SLPId);
-};
-$hxClasses["org.slplayer.component.sound.SoundOff"] = org.slplayer.component.sound.SoundOff;
-org.slplayer.component.sound.SoundOff.__name__ = ["org","slplayer","component","sound","SoundOff"];
-org.slplayer.component.sound.SoundOff.__super__ = org.slplayer.component.sound.SoundOn;
-org.slplayer.component.sound.SoundOff.prototype = $extend(org.slplayer.component.sound.SoundOn.prototype,{
-	onClick: function(e) {
-		haxe.Log.trace("Sound onClick",{ fileName : "SoundOff.hx", lineNumber : 23, className : "org.slplayer.component.sound.SoundOff", methodName : "onClick"});
-		org.slplayer.component.sound.SoundOn.mute(true);
-	}
-	,__class__: org.slplayer.component.sound.SoundOff
-});
-org.slplayer.component.template = {}
-org.slplayer.component.template.TemplateMacros = function() { }
-$hxClasses["org.slplayer.component.template.TemplateMacros"] = org.slplayer.component.template.TemplateMacros;
-org.slplayer.component.template.TemplateMacros.__name__ = ["org","slplayer","component","template","TemplateMacros"];
-org.slplayer.component.template.TemplateMacros.makeDateReadable = function(resolve,dateOrString,format) {
-	if(format == null) format = "%Y/%m/%d %H:%M";
-	var date;
-	if(js.Boot.__instanceof(dateOrString,String)) {
-		date = HxOverrides.strDate(dateOrString);
-		haxe.Log.trace("makeDateReadable string " + Std.string(dateOrString),{ fileName : "TemplateMacros.hx", lineNumber : 38, className : "org.slplayer.component.template.TemplateMacros", methodName : "makeDateReadable"});
-	} else if(js.Boot.__instanceof(dateOrString,Date)) {
-		haxe.Log.trace("makeDateReadable date ",{ fileName : "TemplateMacros.hx", lineNumber : 41, className : "org.slplayer.component.template.TemplateMacros", methodName : "makeDateReadable"});
-		date = dateOrString;
-	} else {
-		date = null;
-		throw "Error, the parameter is supposed to be String or Date";
-	}
-	var res = DateTools.format(date,format);
-	haxe.Log.trace("makeDateReadable returns " + res,{ fileName : "TemplateMacros.hx", lineNumber : 50, className : "org.slplayer.component.template.TemplateMacros", methodName : "makeDateReadable"});
-	return res;
-}
-org.slplayer.component.template.TemplateMacros.trace = function(resolve,obj) {
-	haxe.Log.trace(obj,{ fileName : "TemplateMacros.hx", lineNumber : 58, className : "org.slplayer.component.template.TemplateMacros", methodName : "trace"});
-	return "";
-}
-org.slplayer.core = {}
-org.slplayer.core.Application = function(id,args) {
-	this.dataObject = args;
-	this.id = id;
-	this.nodesIdSequence = 0;
-	this.registeredUIComponents = new Array();
-	this.registeredNonUIComponents = new Array();
-	this.nodeToCmpInstances = new Hash();
-	this.applicationContext = new org.slplayer.core.ApplicationContext();
-};
-$hxClasses["org.slplayer.core.Application"] = org.slplayer.core.Application;
-$hxExpose(org.slplayer.core.Application, "silex");
-org.slplayer.core.Application.__name__ = ["org","slplayer","core","Application"];
-org.slplayer.core.Application.get = function(SLPId) {
-	return org.slplayer.core.Application.instances.get(SLPId);
-}
-org.slplayer.core.Application.main = function() {
-}
-org.slplayer.core.Application.createApplication = function(args) {
-	var newId = org.slplayer.core.Application.generateUniqueId();
-	var newInstance = new org.slplayer.core.Application(newId,args);
-	org.slplayer.core.Application.instances.set(newId,newInstance);
-	return newInstance;
-}
-org.slplayer.core.Application.generateUniqueId = function() {
-	return Std.string(Math.round(Math.random() * 10000));
-}
-org.slplayer.core.Application.prototype = {
-	getUnconflictedClassTag: function(displayObjectClassName) {
-		var classTag = displayObjectClassName;
-		if(classTag.indexOf(".") != -1) classTag = HxOverrides.substr(classTag,classTag.lastIndexOf(".") + 1,null);
-		var _g = 0, _g1 = this.getRegisteredUIComponents();
-		while(_g < _g1.length) {
-			var rc = _g1[_g];
-			++_g;
-			if(rc.classname != displayObjectClassName && classTag == HxOverrides.substr(rc.classname,classTag.lastIndexOf(".") + 1,null)) return displayObjectClassName;
-		}
-		return classTag;
-	}
-	,getAssociatedComponents: function(node,typeFilter) {
-		var nodeId = node.getAttribute("data-" + "slpid");
-		if(nodeId != null) {
-			var l = new List();
-			if(this.nodeToCmpInstances.exists(nodeId)) {
-				var $it0 = this.nodeToCmpInstances.get(nodeId).iterator();
-				while( $it0.hasNext() ) {
-					var i = $it0.next();
-					if(js.Boot.__instanceof(i,typeFilter)) {
-						var inst = i;
-						l.add(inst);
-					}
-				}
-			}
-			return l;
-		}
-		return new List();
-	}
-	,removeAllAssociatedComponent: function(node) {
-		var nodeId = node.getAttribute("data-" + "slpid");
-		if(nodeId != null) {
-			node.removeAttribute("data-" + "slpid");
-			var isError = !this.nodeToCmpInstances.remove(nodeId);
-			if(isError) throw "Could not find the node in the associated components list.";
-		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 612, className : "org.slplayer.core.Application", methodName : "removeAllAssociatedComponent"});
-	}
-	,removeAssociatedComponent: function(node,cmp) {
-		var nodeId = node.getAttribute("data-" + "slpid");
-		var associatedCmps;
-		if(nodeId != null) {
-			associatedCmps = this.nodeToCmpInstances.get(nodeId);
-			var isError = !associatedCmps.remove(cmp);
-			if(isError) throw "Could not find the component in the node's associated components list.";
-			if(associatedCmps.isEmpty()) {
-				node.removeAttribute("data-" + "slpid");
-				this.nodeToCmpInstances.remove(nodeId);
-			}
-		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 587, className : "org.slplayer.core.Application", methodName : "removeAssociatedComponent"});
-	}
-	,addAssociatedComponent: function(node,cmp) {
-		var nodeId = node.getAttribute("data-" + "slpid");
-		var associatedCmps;
-		if(nodeId != null) associatedCmps = this.nodeToCmpInstances.get(nodeId); else {
-			this.nodesIdSequence++;
-			nodeId = Std.string(this.nodesIdSequence);
-			node.setAttribute("data-" + "slpid",nodeId);
-			associatedCmps = new List();
-		}
-		associatedCmps.add(cmp);
-		this.nodeToCmpInstances.set(nodeId,associatedCmps);
-	}
-	,cleanNode: function(node) {
-		if(node.nodeType != js.Lib.document.body.nodeType) return;
-		haxe.Log.trace("clean " + node.tagName,{ fileName : "Application.hx", lineNumber : 516, className : "org.slplayer.core.Application", methodName : "cleanNode"});
-		var comps = this.getAssociatedComponents(node,org.slplayer.component.ui.DisplayObject);
-		var $it0 = comps.iterator();
-		while( $it0.hasNext() ) {
-			var c = $it0.next();
-			c.remove();
-		}
-		var _g1 = 0, _g = node.childNodes.length;
-		while(_g1 < _g) {
-			var childCnt = _g1++;
-			this.cleanNode(node.childNodes[childCnt]);
-		}
-	}
-	,resolveCompClass: function(classname) {
-		var componentClass = Type.resolveClass(classname);
-		if(componentClass == null) {
-			throw "ERROR cannot resolve " + classname;
-			haxe.Log.trace("ERROR cannot resolve " + classname,{ fileName : "Application.hx", lineNumber : 499, className : "org.slplayer.core.Application", methodName : "resolveCompClass"});
-		}
-		return componentClass;
-	}
-	,createNonUIComponents: function() {
-		var _g = 0, _g1 = this.getRegisteredNonUIComponents();
-		while(_g < _g1.length) {
-			var rc = _g1[_g];
-			++_g;
-			var componentClass = this.resolveCompClass(rc.classname);
-			if(componentClass == null) continue;
-			var cmpInstance = null;
-			if(rc.args != null) cmpInstance = Type.createInstance(componentClass,[rc.args]); else cmpInstance = Type.createInstance(componentClass,[]);
-			if(cmpInstance != null && js.Boot.__instanceof(cmpInstance,org.slplayer.component.ISLPlayerComponent)) cmpInstance.initSLPlayerComponent(this.id);
-		}
-	}
-	,initUIComponents: function(compInstances) {
-		var $it0 = compInstances.iterator();
-		while( $it0.hasNext() ) {
-			var ci = $it0.next();
-			ci.init();
-		}
-	}
-	,createUIComponents: function(node) {
-		if(node.nodeType != js.Lib.document.body.nodeType) return null;
-		if(node.getAttribute("data-" + "slpid") != null) return null;
-		var compsToInit = new List();
-		if(node.getAttribute("class") != null) {
-			var _g = 0, _g1 = node.getAttribute("class").split(" ");
-			while(_g < _g1.length) {
-				var classValue = [_g1[_g]];
-				++_g;
-				var _g2 = 0, _g3 = this.getRegisteredUIComponents();
-				while(_g2 < _g3.length) {
-					var rc = _g3[_g2];
-					++_g2;
-					var componentClassAttrValues = [this.getUnconflictedClassTag(rc.classname)];
-					if(componentClassAttrValues[0] != rc.classname) componentClassAttrValues.push(rc.classname);
-					if(!Lambda.exists(componentClassAttrValues,(function(classValue) {
-						return function(s) {
-							return s == classValue[0];
-						};
-					})(classValue))) continue;
-					var componentClass = this.resolveCompClass(rc.classname);
-					if(componentClass == null) continue;
-					var newDisplayObject = null;
-					newDisplayObject = Type.createInstance(componentClass,[node,this.id]);
-					compsToInit.add(newDisplayObject);
-				}
-			}
-		}
-		var _g1 = 0, _g = node.childNodes.length;
-		while(_g1 < _g) {
-			var cc = _g1++;
-			var res = this.createUIComponents(node.childNodes[cc]);
-			if(res != null) compsToInit = Lambda.concat(compsToInit,res);
-		}
-		return compsToInit;
-	}
-	,initNode: function(node) {
-		var comps = this.createUIComponents(node);
-		if(comps == null) return;
-		this.initUIComponents(comps);
-	}
-	,initComponents: function() {
-		this.initNode(this.htmlRootElement);
-		this.createNonUIComponents();
-	}
-	,initDom: function(appendTo) {
-		this.htmlRootElement = appendTo;
-		if(this.htmlRootElement == null || this.htmlRootElement.nodeType != js.Lib.document.documentElement.nodeType) this.htmlRootElement = js.Lib.document.documentElement;
-		if(this.htmlRootElement == null) {
-			haxe.Log.trace("ERROR Lib.document.documentElement is null => You are trying to start your application while the document loading is probably not complete yet." + " To fix that, add the noAutoStart option to your slplayer application and control the application startup with: window.onload = function() { myApplication.init() };",{ fileName : "Application.hx", lineNumber : 224, className : "org.slplayer.core.Application", methodName : "initDom"});
-			return;
-		}
-	}
-	,getRegisteredNonUIComponents: function() {
-		return this.applicationContext.registeredNonUIComponents;
-	}
-	,registeredNonUIComponents: null
-	,getRegisteredUIComponents: function() {
-		return this.applicationContext.registeredUIComponents;
-	}
-	,registeredUIComponents: null
-	,applicationContext: null
-	,dataObject: null
-	,htmlRootElement: null
-	,nodeToCmpInstances: null
-	,nodesIdSequence: null
-	,id: null
-	,__class__: org.slplayer.core.Application
-	,__properties__: {get_registeredUIComponents:"getRegisteredUIComponents",get_registeredNonUIComponents:"getRegisteredNonUIComponents"}
-}
-org.slplayer.core.ApplicationContext = function() {
-	this.registeredUIComponents = new Array();
-	this.registeredNonUIComponents = new Array();
-	this.registerComponentsforInit();
-};
-$hxClasses["org.slplayer.core.ApplicationContext"] = org.slplayer.core.ApplicationContext;
-org.slplayer.core.ApplicationContext.__name__ = ["org","slplayer","core","ApplicationContext"];
-org.slplayer.core.ApplicationContext.prototype = {
-	registerComponentsforInit: function() {
-		org.slplayer.component.layout.Panel;
-		this.registeredUIComponents.push({ classname : "org.slplayer.component.layout.Panel", args : null});
-		org.slplayer.component.navigation.Layer;
-		this.registeredUIComponents.push({ classname : "org.slplayer.component.navigation.Layer", args : null});
-		org.slplayer.component.navigation.link.LinkToPage;
-		this.registeredUIComponents.push({ classname : "org.slplayer.component.navigation.link.LinkToPage", args : null});
-		org.slplayer.component.navigation.link.LinkToContext;
-		this.registeredUIComponents.push({ classname : "org.slplayer.component.navigation.link.LinkToContext", args : null});
-		org.slplayer.component.sound.SoundOff;
-		this.registeredUIComponents.push({ classname : "org.slplayer.component.sound.SoundOff", args : null});
-		org.slplayer.component.list.XmlList;
-		this.registeredUIComponents.push({ classname : "org.slplayer.component.list.XmlList", args : null});
-		org.slplayer.component.interaction.Draggable;
-		this.registeredUIComponents.push({ classname : "org.slplayer.component.interaction.Draggable", args : null});
-		org.slplayer.component.navigation.link.LinkClosePage;
-		this.registeredUIComponents.push({ classname : "org.slplayer.component.navigation.link.LinkClosePage", args : null});
-		org.slplayer.component.sound.SoundOn;
-		this.registeredUIComponents.push({ classname : "org.slplayer.component.sound.SoundOn", args : null});
-		org.slplayer.component.navigation.Page;
-		this.registeredUIComponents.push({ classname : "org.slplayer.component.navigation.Page", args : null});
-	}
-	,registeredNonUIComponents: null
-	,registeredUIComponents: null
-	,__class__: org.slplayer.core.ApplicationContext
-}
-org.slplayer.util = {}
-org.slplayer.util.DomTools = function() { }
-$hxClasses["org.slplayer.util.DomTools"] = org.slplayer.util.DomTools;
-org.slplayer.util.DomTools.__name__ = ["org","slplayer","util","DomTools"];
-org.slplayer.util.DomTools.doLater = function(callbackFunction,nFrames) {
-	if(nFrames == null) nFrames = 1;
-	haxe.Timer.delay(callbackFunction,Math.round(200 * nFrames));
-}
-org.slplayer.util.DomTools.getElementsByAttribute = function(elt,attr,value) {
-	var childElts = elt.getElementsByTagName("*");
-	var filteredChildElts = new Array();
-	var _g1 = 0, _g = childElts.length;
-	while(_g1 < _g) {
-		var cCount = _g1++;
-		if(childElts[cCount].getAttribute(attr) != null && (value == "*" || childElts[cCount].getAttribute(attr) == value)) filteredChildElts.push(childElts[cCount]);
-	}
-	return filteredChildElts;
-}
-org.slplayer.util.DomTools.getSingleElement = function(rootElement,className,required) {
-	if(required == null) required = true;
-	var domElements = rootElement.getElementsByClassName(className);
-	if(domElements.length > 1) throw "Error: search for the element with class name \"" + className + "\" gave " + domElements.length + " results";
-	if(domElements != null && domElements.length == 1) return domElements[0]; else {
-		if(required) throw "Error: search for the element with class name \"" + className + "\" gave " + domElements.length + " results";
-		return null;
-	}
-}
-org.slplayer.util.DomTools.getElementBoundingBox = function(htmlDom) {
-	if(htmlDom.nodeType != 1) return null;
-	var offsetTop = 0;
-	var offsetLeft = 0;
-	var offsetWidth = 0.0;
-	var offsetHeight = 0.0;
-	var element = htmlDom;
-	while(element != null) {
-		var halfBorderH = (element.offsetWidth - element.clientWidth) / 2.0;
-		var halfBorderV = (element.offsetHeight - element.clientHeight) / 2.0;
-		offsetTop -= element.scrollTop;
-		offsetLeft -= element.scrollLeft;
-		offsetTop += element.offsetTop;
-		offsetLeft += element.offsetLeft;
-		element = element.offsetParent;
-	}
-	return { x : Math.round(offsetLeft), y : Math.round(offsetTop), w : Math.round(htmlDom.offsetWidth + offsetWidth), h : Math.round(htmlDom.offsetHeight + offsetHeight)};
-}
-org.slplayer.util.DomTools.inspectTrace = function(obj,callingClass) {
-	haxe.Log.trace("-- " + callingClass + " inspecting element --",{ fileName : "DomTools.hx", lineNumber : 145, className : "org.slplayer.util.DomTools", methodName : "inspectTrace"});
-	var _g = 0, _g1 = Reflect.fields(obj);
-	while(_g < _g1.length) {
-		var prop = _g1[_g];
-		++_g;
-		haxe.Log.trace("- " + prop + " = " + Std.string(Reflect.field(obj,prop)),{ fileName : "DomTools.hx", lineNumber : 148, className : "org.slplayer.util.DomTools", methodName : "inspectTrace"});
-	}
-	haxe.Log.trace("-- --",{ fileName : "DomTools.hx", lineNumber : 150, className : "org.slplayer.util.DomTools", methodName : "inspectTrace"});
-}
-org.slplayer.util.DomTools.toggleClass = function(element,className) {
-	if(org.slplayer.util.DomTools.hasClass(element,className)) org.slplayer.util.DomTools.removeClass(element,className); else org.slplayer.util.DomTools.addClass(element,className);
-}
-org.slplayer.util.DomTools.addClass = function(element,className) {
-	if(element.className == null) element.className = "";
-	if(!org.slplayer.util.DomTools.hasClass(element,className)) {
-		if(element.className != "") element.className += " ";
-		element.className += className;
-	}
-}
-org.slplayer.util.DomTools.removeClass = function(element,className) {
-	if(element.className == null) return;
-	if(org.slplayer.util.DomTools.hasClass(element,className)) {
-		var arr = element.className.split(" ");
-		var _g1 = 0, _g = arr.length;
-		while(_g1 < _g) {
-			var idx = _g1++;
-			if(arr[idx] == className) arr[idx] = "";
-		}
-		element.className = arr.join(" ");
-	}
-}
-org.slplayer.util.DomTools.hasClass = function(element,className) {
-	if(element.className == null) return false;
-	return Lambda.has(element.className.split(" "),className);
-}
-org.slplayer.util.DomTools.setMeta = function(metaName,metaValue,attributeName) {
-	if(attributeName == null) attributeName = "content";
-	var res = new Hash();
-	var metaTags = js.Lib.document.getElementsByTagName("META");
-	var found = false;
-	var _g1 = 0, _g = metaTags.length;
-	while(_g1 < _g) {
-		var idxNode = _g1++;
-		var node = metaTags[idxNode];
-		var configName = node.getAttribute("name");
-		var configValue = node.getAttribute(attributeName);
-		if(configName != null && configValue != null) {
-			if(configName == metaName) {
-				configValue = metaValue;
-				node.setAttribute(attributeName,metaValue);
-				found = true;
-			}
-			res.set(configName,configValue);
-		}
-	}
-	if(!found) {
-		var node = js.Lib.document.createElement("meta");
-		node.setAttribute("name",metaName);
-		node.setAttribute("content",metaValue);
-		var head = js.Lib.document.getElementsByTagName("head")[0];
-		head.appendChild(node);
-		res.set(metaName,metaValue);
-	}
-	return res;
-}
-org.slplayer.util.DomTools.getMeta = function(name,attributeName,head) {
-	if(attributeName == null) attributeName = "content";
-	if(head == null) head = js.Lib.document.documentElement.getElementsByTagName("head")[0];
-	var metaTags = head.getElementsByTagName("meta");
-	var _g1 = 0, _g = metaTags.length;
-	while(_g1 < _g) {
-		var idxNode = _g1++;
-		var node = metaTags[idxNode];
-		var configName = node.getAttribute("name");
-		var configValue = node.getAttribute(attributeName);
-		if(configName == name) return configValue;
-	}
-	return null;
-}
-org.slplayer.util.DomTools.addCssRules = function(css,head) {
-	if(head == null) head = js.Lib.document.documentElement.getElementsByTagName("head")[0];
-	var node = js.Lib.document.createElement("style");
-	node.setAttribute("type","text/css");
-	node.appendChild(js.Lib.document.createTextNode(css));
-	head.appendChild(node);
-	return node;
-}
-org.slplayer.util.DomTools.embedScript = function(src) {
-	var head = js.Lib.document.getElementsByTagName("head")[0];
-	var scriptNodes = js.Lib.document.getElementsByTagName("script");
-	var _g1 = 0, _g = scriptNodes.length;
-	while(_g1 < _g) {
-		var idxNode = _g1++;
-		var node = scriptNodes[idxNode];
-		if(node.getAttribute("src") == src) return node;
-	}
-	var node = js.Lib.document.createElement("script");
-	node.setAttribute("src",src);
-	head.appendChild(node);
-	return node;
-}
-org.slplayer.util.DomTools.getBaseTag = function() {
-	var head = js.Lib.document.getElementsByTagName("head")[0];
-	var baseNodes = js.Lib.document.getElementsByTagName("base");
-	if(baseNodes.length > 0) return baseNodes[0].getAttribute("href"); else return null;
-}
-org.slplayer.util.DomTools.setBaseTag = function(href) {
-	var head = js.Lib.document.getElementsByTagName("head")[0];
-	var baseNodes = js.Lib.document.getElementsByTagName("base");
-	if(baseNodes.length > 0) {
-		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 329, className : "org.slplayer.util.DomTools", methodName : "setBaseTag"});
-		baseNodes[0].setAttribute("href",href);
-	} else {
-		var node = js.Lib.document.createElement("base");
-		node.setAttribute("href",href);
-		node.setAttribute("target","_self");
-		if(head.childNodes.length > 0) head.insertBefore(node,head.childNodes[0]); else head.appendChild(node);
-	}
-}
 var silex = {}
 silex.ModelBase = function(hoverChangeEventName,selectionChangeEventName,debugInfo) {
 	this.listeners = new List();
@@ -7130,7 +7152,7 @@ silex.ModelBase.prototype = {
 	,hoveredItem: null
 	,selectedItem: null
 	,debugInfo: null
-	,getClasses: function(viewHtmlDom,slPlayerId,finalType) {
+	,getClasses: function(viewHtmlDom,brixInstanceId,finalType) {
 		var classes = new Array();
 		if(viewHtmlDom == null) return classes;
 		var className = Type.getClassName(finalType);
@@ -7139,7 +7161,7 @@ silex.ModelBase.prototype = {
 		var _g1 = 0, _g = nodes.length;
 		while(_g1 < _g) {
 			var idx = _g1++;
-			var instances = org.slplayer.core.Application.get(slPlayerId).getAssociatedComponents(nodes[idx],finalType);
+			var instances = brix.core.Application.get(brixInstanceId).getAssociatedComponents(nodes[idx],finalType);
 			if(instances.length == 1) classes.push(instances.first()); else throw "Error: there should be 1 and only 1 instance of " + Type.getClassName(finalType) + " associated with this node, and there is " + instances.length + " (" + nodes[idx].className + ")";
 		}
 		return classes;
@@ -7170,16 +7192,16 @@ silex.Silex.main = function() {
 }
 silex.Silex.init = function(unused) {
 	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 93, className : "silex.Silex", methodName : "init"});
-	var application = org.slplayer.core.Application.createApplication();
+	var application = brix.core.Application.createApplication();
 	application.initDom();
-	if(js.Lib.window.location.hash != "" && org.slplayer.util.DomTools.getMeta("useDeeplink") != "false") {
+	if(js.Lib.window.location.hash != "" && brix.util.DomTools.getMeta("useDeeplink") != "false") {
 		var initialPageName = HxOverrides.substr(js.Lib.window.location.hash,1,null);
-		org.slplayer.util.DomTools.setMeta("initialPageName",initialPageName);
+		brix.util.DomTools.setMeta("initialPageName",initialPageName);
 	}
-	var publicationBody = org.slplayer.util.DomTools.getMeta("publicationBody");
+	var publicationBody = brix.util.DomTools.getMeta("publicationBody");
 	if(publicationBody != null) {
 		haxe.Log.trace("A body was found!",{ fileName : "Silex.hx", lineNumber : 122, className : "silex.Silex", methodName : "init"});
-		var value = org.slplayer.util.DomTools.getMeta("publicationBody");
+		var value = brix.util.DomTools.getMeta("publicationBody");
 		js.Lib.document.body.innerHTML = value;
 	}
 	haxe.Log.trace(" application.init " + Std.string(js.Lib.document.body),{ fileName : "Silex.hx", lineNumber : 136, className : "silex.Silex", methodName : "init"});
@@ -7191,10 +7213,10 @@ silex.Silex.init = function(unused) {
 	})(silex.Silex.doAfterInit,application),1000);
 }
 silex.Silex.doAfterInit = function(application) {
-	var debugModeAction = org.slplayer.util.DomTools.getMeta("debugModeAction");
+	var debugModeAction = brix.util.DomTools.getMeta("debugModeAction");
 	if(debugModeAction != null) {
 		var context = new Hash();
-		context.set("slpid",application.id);
+		context.set("BrixId",application.id);
 		context.set("PublicationModel",silex.publication.PublicationModel);
 		context.set("PageModel",silex.page.PageModel);
 		context.set("LayerModel",silex.layer.LayerModel);
@@ -7257,11 +7279,11 @@ silex.interpreter.Interpreter.exec = function(script,context) {
 	var parser = new hscript.Parser();
 	var program = parser.parseString(script);
 	var interp = new hscript.Interp();
-	var _g = 0, _g1 = Reflect.fields({ Lib : js.Lib, Math : Math, Timer : haxe.Timer, StringTools : StringTools, DomTools : org.slplayer.util.DomTools, Application : org.slplayer.core.Application, Page : org.slplayer.component.navigation.Page, Layer : org.slplayer.component.navigation.Layer});
+	var _g = 0, _g1 = Reflect.fields({ Lib : js.Lib, Math : Math, Timer : haxe.Timer, StringTools : StringTools, DomTools : brix.util.DomTools, Application : brix.core.Application, Page : brix.component.navigation.Page, Layer : brix.component.navigation.Layer});
 	while(_g < _g1.length) {
 		var varName = _g1[_g];
 		++_g;
-		interp.variables.set(varName,Reflect.getProperty({ Lib : js.Lib, Math : Math, Timer : haxe.Timer, StringTools : StringTools, DomTools : org.slplayer.util.DomTools, Application : org.slplayer.core.Application, Page : org.slplayer.component.navigation.Page, Layer : org.slplayer.component.navigation.Layer},varName));
+		interp.variables.set(varName,Reflect.getProperty({ Lib : js.Lib, Math : Math, Timer : haxe.Timer, StringTools : StringTools, DomTools : brix.util.DomTools, Application : brix.core.Application, Page : brix.component.navigation.Page, Layer : brix.component.navigation.Layer},varName));
 	}
 	if(context != null) {
 		var $it0 = context.keys();
@@ -7290,14 +7312,14 @@ silex.layer.LayerModel.prototype = $extend(silex.ModelBase.prototype,{
 		var publicationModel = silex.publication.PublicationModel.getInstance();
 		var viewHtmlDom = layer.rootElement;
 		var modelHtmlDom = publicationModel.getModelFromView(layer.rootElement);
-		org.slplayer.util.DomTools.removeClass(viewHtmlDom,page.name);
-		org.slplayer.util.DomTools.removeClass(modelHtmlDom,page.name);
-		var allPageNodes = org.slplayer.component.navigation.Page.getPageNodes(publicationModel.application.id,publicationModel.viewHtmlDom);
+		brix.util.DomTools.removeClass(viewHtmlDom,page.name);
+		brix.util.DomTools.removeClass(modelHtmlDom,page.name);
+		var allPageNodes = brix.component.navigation.Page.getPageNodes(publicationModel.application.id,publicationModel.viewHtmlDom);
 		var found = false;
 		var _g1 = 0, _g = allPageNodes.length;
 		while(_g1 < _g) {
 			var idx = _g1++;
-			if(org.slplayer.util.DomTools.hasClass(viewHtmlDom,allPageNodes[idx].getAttribute("name"))) {
+			if(brix.util.DomTools.hasClass(viewHtmlDom,allPageNodes[idx].getAttribute("name"))) {
 				found = true;
 				break;
 			}
@@ -7322,14 +7344,14 @@ silex.layer.LayerModel.prototype = $extend(silex.ModelBase.prototype,{
 		if(position > viewHtmlDom.childNodes.length - 1) viewHtmlDom.appendChild(newNode); else viewHtmlDom.insertBefore(newNode,viewHtmlDom.childNodes[position]);
 		publicationModel.prepareForEdit(newNode);
 		if(position > modelHtmlDom.childNodes.length - 1) modelHtmlDom.appendChild(newNode.cloneNode(true)); else modelHtmlDom.insertBefore(newNode.cloneNode(true),modelHtmlDom.childNodes[position]);
-		var newLayer = new org.slplayer.component.navigation.Layer(newNode,publicationModel.application.id);
+		var newLayer = new brix.component.navigation.Layer(newNode,publicationModel.application.id);
 		newLayer.init();
 		this.dispatchEvent(this.createEvent("onLayerListChange",newLayer),"LayerModel class");
 	}
 	,addMaster: function(layer,page) {
 		haxe.Log.trace("addMaster(" + Std.string(layer) + ", " + Std.string(page) + ")",{ fileName : "LayerModel.hx", lineNumber : 94, className : "silex.layer.LayerModel", methodName : "addMaster"});
-		org.slplayer.util.DomTools.addClass(layer.rootElement,page.name);
-		org.slplayer.util.DomTools.addClass(silex.publication.PublicationModel.getInstance().getModelFromView(layer.rootElement),page.name);
+		brix.util.DomTools.addClass(layer.rootElement,page.name);
+		brix.util.DomTools.addClass(silex.publication.PublicationModel.getInstance().getModelFromView(layer.rootElement),page.name);
 		layer.show();
 		this.dispatchEvent(this.createEvent("onLayerListChange",layer),"LayerModel class");
 	}
@@ -7359,17 +7381,17 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		var publicationModel = silex.publication.PublicationModel.getInstance();
 		var viewHtmlDom = publicationModel.viewHtmlDom;
 		var modelHtmlDom = publicationModel.modelHtmlDom;
-		var initialPageName = org.slplayer.util.DomTools.getMeta("initialPageName",null,publicationModel.headHtmlDom);
-		org.slplayer.component.navigation.Page.getPageByName(initialPageName,publicationModel.application.id,viewHtmlDom).open(null,null,true,true);
-		var nodes = org.slplayer.component.navigation.Layer.getLayerNodes(page.name,publicationModel.application.id,viewHtmlDom);
+		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,publicationModel.headHtmlDom);
+		brix.component.navigation.Page.getPageByName(initialPageName,publicationModel.application.id,viewHtmlDom).open(null,null,true,true);
+		var nodes = brix.component.navigation.Layer.getLayerNodes(page.name,publicationModel.application.id,viewHtmlDom);
 		var _g1 = 0, _g = nodes.length;
 		while(_g1 < _g) {
 			var idxLayerNode = _g1++;
 			var layerNode = nodes[0];
-			var layerInstance = publicationModel.application.getAssociatedComponents(layerNode,org.slplayer.component.navigation.Layer).first();
+			var layerInstance = publicationModel.application.getAssociatedComponents(layerNode,brix.component.navigation.Layer).first();
 			silex.layer.LayerModel.getInstance().removeLayer(layerInstance,page);
 		}
-		var pages = org.slplayer.component.navigation.Page.getPageNodes(publicationModel.application.id,modelHtmlDom);
+		var pages = brix.component.navigation.Page.getPageNodes(publicationModel.application.id,modelHtmlDom);
 		var _g1 = 0, _g = pages.length;
 		while(_g1 < _g) {
 			var pageIdx = _g1++;
@@ -7400,10 +7422,10 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		modelHtmlDom.appendChild(newNode.cloneNode(true));
 		viewHtmlDom.appendChild(newNode);
 		publicationModel.prepareForEdit(newNode);
-		var newPage = new org.slplayer.component.navigation.Page(newNode,publicationModel.application.id);
+		var newPage = new brix.component.navigation.Page(newNode,publicationModel.application.id);
 		newPage.init();
 		silex.layer.LayerModel.getInstance().addLayer(newPage,"body");
-		org.slplayer.component.navigation.Page.getPageByName(className,publicationModel.application.id,viewHtmlDom).open(null,null,true,true);
+		brix.component.navigation.Page.getPageByName(className,publicationModel.application.id,viewHtmlDom).open(null,null,true,true);
 		this.dispatchEvent(this.createEvent("onPageListChange",newPage),"PageModel class");
 	}
 	,setSelectedItem: function(item) {
@@ -7532,7 +7554,7 @@ silex.publication.PublicationModel.__super__ = silex.ModelBase;
 silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onPublicationSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 612, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 602, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
 	}
 	,onSaveError: function(msg) {
 		this.dispatchEvent(this.createEvent("onPublicationSaveError"),this.debugInfo);
@@ -7543,7 +7565,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		modelDom.removeAttribute("data-silex-component-id");
 		modelDom.removeAttribute("data-silex-layer-id");
 		if(modelDom.getAttribute("data-group-id") == "PublicationGroup") modelDom.removeAttribute("data-group-id");
-		org.slplayer.util.DomTools.removeClass(modelDom,"silex-view");
+		brix.util.DomTools.removeClass(modelDom,"silex-view");
 		var _g1 = 0, _g = modelDom.childNodes.length;
 		while(_g1 < _g) {
 			var idx = _g1++;
@@ -7609,23 +7631,18 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		this.dispatchEvent(this.createEvent("onPublicationError"),this.debugInfo);
 		throw "An error occured while loading publications list (" + msg + ")";
 	}
-	,initSLPlayerApplication: function(rootElement) {
-		haxe.Log.trace("init the SLPlayer application 02",{ fileName : "PublicationModel.hx", lineNumber : 404, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
-		this.application = org.slplayer.core.Application.createApplication();
-		haxe.Log.trace("init the SLPlayer application 04",{ fileName : "PublicationModel.hx", lineNumber : 408, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
+	,initBrixApplication: function(rootElement) {
+		this.application = brix.core.Application.createApplication();
 		this.application.initDom(rootElement);
 		this.application.initComponents();
-		haxe.Log.trace("init the SLPlayer application 06",{ fileName : "PublicationModel.hx", lineNumber : 413, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
-		var initialPageName = org.slplayer.util.DomTools.getMeta("initialPageName",null,this.headHtmlDom);
+		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,this.headHtmlDom);
 		if(initialPageName != null) {
-			var page = org.slplayer.component.navigation.Page.getPageByName(initialPageName,this.application.id,this.viewHtmlDom);
-			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "PublicationModel.hx", lineNumber : 422, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
-			haxe.Log.trace("init the SLPlayer application 08\t",{ fileName : "PublicationModel.hx", lineNumber : 424, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
-		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "PublicationModel.hx", lineNumber : 427, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
-		haxe.Log.trace("init the SLPlayer application 10",{ fileName : "PublicationModel.hx", lineNumber : 430, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
+			var page = brix.component.navigation.Page.getPageByName(initialPageName,this.application.id,this.viewHtmlDom);
+			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "PublicationModel.hx", lineNumber : 415, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
+		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "PublicationModel.hx", lineNumber : 419, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
 		if(this.currentConfig.debugModeAction != null) {
 			var context = new Hash();
-			context.set("slpid",this.application.id);
+			context.set("BrixId",this.application.id);
 			context.set("PublicationModel",silex.publication.PublicationModel);
 			context.set("PageModel",silex.page.PageModel);
 			context.set("LayerModel",silex.layer.LayerModel);
@@ -7637,20 +7654,19 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 				throw "Error while executing the script in the config file of the publication (debugModeAction variable). The error: " + Std.string(e);
 			}
 		}
-		haxe.Log.trace("init the SLPlayer application 12",{ fileName : "PublicationModel.hx", lineNumber : 449, className : "silex.publication.PublicationModel", methodName : "initSLPlayerApplication"});
 	}
 	,generateNewId: function() {
 		return silex.publication.PublicationModel.nextId++ + "";
 	}
 	,prepareForEdit: function(modelDom) {
 		if(modelDom.nodeType != 1) return;
-		if(modelDom.parentNode == null) this.fixDomRoot(modelDom); else if(org.slplayer.util.DomTools.hasClass(modelDom.parentNode,"Layer")) {
+		if(modelDom.parentNode == null) this.fixDomRoot(modelDom); else if(brix.util.DomTools.hasClass(modelDom.parentNode,"Layer")) {
 			modelDom.setAttribute("data-silex-component-id",this.generateNewId());
 			this.fixDom(modelDom);
-		} else if(org.slplayer.util.DomTools.hasClass(modelDom,"Layer")) {
+		} else if(brix.util.DomTools.hasClass(modelDom,"Layer")) {
 			modelDom.setAttribute("data-silex-layer-id",this.generateNewId());
 			this.fixDom(modelDom);
-		} else if(org.slplayer.util.DomTools.hasClass(modelDom,"Page")) this.fixDom(modelDom);
+		} else if(brix.util.DomTools.hasClass(modelDom,"Page")) this.fixDom(modelDom);
 		var _g1 = 0, _g = modelDom.childNodes.length;
 		while(_g1 < _g) {
 			var idx = _g1++;
@@ -7662,12 +7678,12 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		if(modelDom.getAttribute("data-group-id") == null) modelDom.setAttribute("data-group-id","PublicationGroup");
 	}
 	,fixDomRoot: function(modelDom) {
-		org.slplayer.util.DomTools.addClass(modelDom,"PublicationGroup");
+		brix.util.DomTools.addClass(modelDom,"PublicationGroup");
 	}
 	,initViewHtmlDom: function() {
 		this.viewHtmlDom = this.modelHtmlDom.cloneNode(true);
 		this.viewHtmlDom.className = "silex-view";
-		org.slplayer.util.DomTools.addCssRules(this.currentData.css,this.viewHtmlDom);
+		brix.util.DomTools.addCssRules(this.currentData.css,this.viewHtmlDom);
 	}
 	,onData: function(publicationData) {
 		this.currentData = publicationData;
@@ -7689,15 +7705,10 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 			var closingTagIdx = this.currentData.html.indexOf(">",bodyOpenIdx);
 			this.modelHtmlDom.innerHTML = this.currentData.html.substring(closingTagIdx + 1,bodyCloseIdx);
 		}
-		haxe.Log.trace("Publication data is loaded 02",{ fileName : "PublicationModel.hx", lineNumber : 303, className : "silex.publication.PublicationModel", methodName : "onData"});
 		this.prepareForEdit(this.modelHtmlDom);
-		haxe.Log.trace("Publication data is loaded 04",{ fileName : "PublicationModel.hx", lineNumber : 307, className : "silex.publication.PublicationModel", methodName : "onData"});
 		this.initViewHtmlDom();
-		haxe.Log.trace("Publication data is loaded 06",{ fileName : "PublicationModel.hx", lineNumber : 311, className : "silex.publication.PublicationModel", methodName : "onData"});
 		this.dispatchEvent(this.createEvent("onPublicationData"),this.debugInfo);
-		haxe.Log.trace("Publication data is loaded 08",{ fileName : "PublicationModel.hx", lineNumber : 315, className : "silex.publication.PublicationModel", methodName : "onData"});
-		this.initSLPlayerApplication(this.viewHtmlDom);
-		haxe.Log.trace("Publication data is loaded 10",{ fileName : "PublicationModel.hx", lineNumber : 318, className : "silex.publication.PublicationModel", methodName : "onData"});
+		this.initBrixApplication(this.viewHtmlDom);
 	}
 	,onConfig: function(publicationConfig) {
 		this.currentConfig = publicationConfig;
@@ -7705,8 +7716,8 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		this.dispatchEvent(this.createEvent("onPublicationConfigChange"),this.debugInfo);
 	}
 	,load: function(name,configData) {
-		var currentBasTag = org.slplayer.util.DomTools.getBaseTag();
-		if(currentBasTag == silex.publication.PublicationService.PUBLICATION_FOLDER + this.currentName + "/" || currentBasTag == silex.publication.PublicationService.PUBLICATION_FOLDER + silex.publication.PublicationService.BUILDER_PUBLICATION_NAME + "/") org.slplayer.util.DomTools.setBaseTag(silex.publication.PublicationService.PUBLICATION_FOLDER + name + "/"); else org.slplayer.util.DomTools.setBaseTag("../" + name + "/");
+		var currentBasTag = brix.util.DomTools.getBaseTag();
+		if(currentBasTag == silex.publication.PublicationService.PUBLICATION_FOLDER + this.currentName + "/" || currentBasTag == silex.publication.PublicationService.PUBLICATION_FOLDER + silex.publication.PublicationService.BUILDER_PUBLICATION_NAME + "/") brix.util.DomTools.setBaseTag(silex.publication.PublicationService.PUBLICATION_FOLDER + name + "/"); else brix.util.DomTools.setBaseTag("../" + name + "/");
 		this.currentName = name;
 		var pageModel = silex.page.PageModel.getInstance();
 		pageModel.setHoveredItem(null);
@@ -7726,12 +7737,12 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 			return null;
 		}
 		try {
-			if(org.slplayer.util.DomTools.hasClass(viewHtmlDom,"silex-view")) return this.modelHtmlDom;
+			if(brix.util.DomTools.hasClass(viewHtmlDom,"silex-view")) return this.modelHtmlDom;
 			var results = null;
 			var id = viewHtmlDom.getAttribute("data-silex-component-id");
-			if(id != null) results = org.slplayer.util.DomTools.getElementsByAttribute(silex.publication.PublicationModel.getInstance().modelHtmlDom,"data-silex-component-id",id); else {
+			if(id != null) results = brix.util.DomTools.getElementsByAttribute(silex.publication.PublicationModel.getInstance().modelHtmlDom,"data-silex-component-id",id); else {
 				id = viewHtmlDom.getAttribute("data-silex-layer-id");
-				if(id != null) results = org.slplayer.util.DomTools.getElementsByAttribute(silex.publication.PublicationModel.getInstance().modelHtmlDom,"data-silex-layer-id",id); else throw "Error: the selected layer has not a Silex ID. It should have the ID in the " + "data-silex-layer-id" + " or " + "data-silex-component-id" + " attributes";
+				if(id != null) results = brix.util.DomTools.getElementsByAttribute(silex.publication.PublicationModel.getInstance().modelHtmlDom,"data-silex-layer-id",id); else throw "Error: the selected layer has not a Silex ID. It should have the ID in the " + "data-silex-layer-id" + " or " + "data-silex-component-id" + " attributes";
 			}
 			if(results == null || results.length != 1) throw "Error: 1 and only 1 component or layer is expected to have ID \"" + id + "\" (" + Std.string(results) + ").";
 			return results[0];
@@ -7863,6 +7874,58 @@ js.XMLHttpRequest = window.XMLHttpRequest?XMLHttpRequest:window.ActiveXObject?fu
 	return $r;
 }(this));
 DateTools.DAYS_OF_MONTH = [31,28,31,30,31,30,31,31,30,31,30,31];
+brix.component.interaction.Draggable.CSS_CLASS_DRAGZONE = "draggable-dragzone";
+brix.component.interaction.Draggable.DEFAULT_CSS_CLASS_DROPZONE = "draggable-dropzone";
+brix.component.interaction.Draggable.DEFAULT_CSS_CLASS_PHANTOM = "draggable-phantom";
+brix.component.interaction.Draggable.ATTR_PHANTOM = "data-phantom-class-name";
+brix.component.interaction.Draggable.ATTR_DROPZONE = "data-dropzones-class-name";
+brix.component.interaction.Draggable.EVENT_DRAG = "dragEventDrag";
+brix.component.interaction.Draggable.EVENT_DROPPED = "dragEventDropped";
+brix.component.interaction.Draggable.EVENT_MOVE = "dragEventMove";
+brix.component.layout.Panel.DEFAULT_CSS_CLASS_HEADER = "panel-header";
+brix.component.layout.Panel.DEFAULT_CSS_CLASS_BODY = "panel-body";
+brix.component.layout.Panel.DEFAULT_CSS_CLASS_FOOTER = "panel-footer";
+brix.component.layout.Panel.ATTR_CSS_CLASS_HEADER = "data-panel-header-class-name";
+brix.component.layout.Panel.ATTR_CSS_CLASS_BODY = "data-panel-body-class-name";
+brix.component.layout.Panel.ATTR_CSS_CLASS_FOOTER = "data-panel-footer-class-name";
+brix.component.layout.Panel.ATTR_IS_HORIZONTAL = "data-panel-is-horizontal";
+brix.component.list.List.__meta__ = { obj : { tagNameFilter : ["ul"]}};
+brix.component.list.List.LIST_SELECTED_ITEM_CSS_CLASS = "listSelectedItem";
+brix.component.list.List.DATA_ATTR_LIST_ITEM_INDEX = "data-list-item-idx";
+brix.component.list.List.EVENT_CHANGE = "listChange";
+brix.component.list.List.EVENT_CLICK = "listClick";
+brix.component.list.List.EVENT_ROLL_OVER = "listRollOver";
+brix.component.list.XmlList.ATTR_ITEMS = "data-items";
+brix.component.navigation.Layer.EVENT_TYPE_SHOW = "onLayerShow";
+brix.component.navigation.Layer.EVENT_TYPE_HIDE = "onLayerHide";
+brix.component.navigation.Page.__meta__ = { obj : { tagNameFilter : ["a"]}};
+brix.component.navigation.Page.CLASS_NAME = "Page";
+brix.component.navigation.Page.CONFIG_NAME_ATTR = "name";
+brix.component.navigation.Page.CONFIG_INITIAL_PAGE_NAME = "initialPageName";
+brix.component.navigation.Page.ATTRIBUTE_INITIAL_PAGE_NAME = "data-initial-page-name";
+brix.component.navigation.Page.OPENED_PAGE_CSS_CLASS = "page-opened";
+brix.component.navigation.link.LinkBase.__meta__ = { obj : { tagNameFilter : ["a"]}};
+brix.component.navigation.link.LinkBase.CONFIG_PAGE_NAME_ATTR = "href";
+brix.component.navigation.link.LinkBase.CONFIG_TARGET_ATTR = "target";
+brix.component.navigation.link.LinkBase.CONFIG_TARGET_IS_POPUP = "_top";
+brix.component.navigation.link.LinkClosePage.__meta__ = { obj : { tagNameFilter : ["a"]}};
+brix.component.navigation.link.LinkToContext.__meta__ = { obj : { tagNameFilter : ["a"]}};
+brix.component.navigation.link.LinkToContext.CONFIG_TRANSITION_DURATION = "data-context";
+brix.component.navigation.link.LinkToPage.__meta__ = { obj : { tagNameFilter : ["a"]}};
+brix.component.navigation.transition.TransitionTools.SHOW_START_STYLE_ATTR_NAME = "data-show-start-style";
+brix.component.navigation.transition.TransitionTools.SHOW_END_STYLE_ATTR_NAME = "data-show-end-style";
+brix.component.navigation.transition.TransitionTools.HIDE_START_STYLE_ATTR_NAME = "data-hide-start-style";
+brix.component.navigation.transition.TransitionTools.HIDE_END_STYLE_ATTR_NAME = "data-hide-end-style";
+brix.component.navigation.transition.TransitionTools.EVENT_TYPE_REQUEST = "transitionEventTypeRequest";
+brix.component.navigation.transition.TransitionTools.EVENT_TYPE_STARTED = "transitionEventTypeStarted";
+brix.component.navigation.transition.TransitionTools.EVENT_TYPE_ENDED = "transitionEventTypeEnded";
+brix.component.sound.SoundOn.__meta__ = { obj : { tagNameFilter : ["a"]}};
+brix.component.sound.SoundOn.CLASS_NAME = "SoundOn";
+brix.component.sound.SoundOn.isMuted = false;
+brix.component.sound.SoundOff.__meta__ = { obj : { tagNameFilter : ["a"]}};
+brix.component.sound.SoundOff.CLASS_NAME = "SoundOff";
+brix.core.Application.BRIX_ID_ATTR_NAME = "data-brix-id";
+brix.core.Application.instances = new Hash();
 haxe.Serializer.USE_CACHE = false;
 haxe.Serializer.USE_ENUM_INDEX = false;
 haxe.Serializer.BASE64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%:";
@@ -7881,58 +7944,6 @@ hscript.Parser.readPos = 0;
 hscript.Parser.tokenMin = 0;
 hscript.Parser.tokenMax = 0;
 js.Lib.onerror = null;
-org.slplayer.component.interaction.Draggable.CSS_CLASS_DRAGZONE = "draggable-dragzone";
-org.slplayer.component.interaction.Draggable.DEFAULT_CSS_CLASS_DROPZONE = "draggable-dropzone";
-org.slplayer.component.interaction.Draggable.DEFAULT_CSS_CLASS_PHANTOM = "draggable-phantom";
-org.slplayer.component.interaction.Draggable.ATTR_PHANTOM = "data-phantom-class-name";
-org.slplayer.component.interaction.Draggable.ATTR_DROPZONE = "data-dropzones-class-name";
-org.slplayer.component.interaction.Draggable.EVENT_DRAG = "dragEventDrag";
-org.slplayer.component.interaction.Draggable.EVENT_DROPPED = "dragEventDropped";
-org.slplayer.component.interaction.Draggable.EVENT_MOVE = "dragEventMove";
-org.slplayer.component.layout.Panel.DEFAULT_CSS_CLASS_HEADER = "panel-header";
-org.slplayer.component.layout.Panel.DEFAULT_CSS_CLASS_BODY = "panel-body";
-org.slplayer.component.layout.Panel.DEFAULT_CSS_CLASS_FOOTER = "panel-footer";
-org.slplayer.component.layout.Panel.ATTR_CSS_CLASS_HEADER = "data-panel-header-class-name";
-org.slplayer.component.layout.Panel.ATTR_CSS_CLASS_BODY = "data-panel-body-class-name";
-org.slplayer.component.layout.Panel.ATTR_CSS_CLASS_FOOTER = "data-panel-footer-class-name";
-org.slplayer.component.layout.Panel.ATTR_IS_HORIZONTAL = "data-panel-is-horizontal";
-org.slplayer.component.list.List.__meta__ = { obj : { tagNameFilter : ["ul"]}};
-org.slplayer.component.list.List.LIST_SELECTED_ITEM_CSS_CLASS = "listSelectedItem";
-org.slplayer.component.list.List.DATA_ATTR_LIST_ITEM_INDEX = "data-list-item-idx";
-org.slplayer.component.list.List.EVENT_CHANGE = "listChange";
-org.slplayer.component.list.List.EVENT_CLICK = "listClick";
-org.slplayer.component.list.List.EVENT_ROLL_OVER = "listRollOver";
-org.slplayer.component.list.XmlList.ATTR_ITEMS = "data-items";
-org.slplayer.component.navigation.Layer.EVENT_TYPE_SHOW = "onLayerShow";
-org.slplayer.component.navigation.Layer.EVENT_TYPE_HIDE = "onLayerHide";
-org.slplayer.component.navigation.Page.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.slplayer.component.navigation.Page.CLASS_NAME = "Page";
-org.slplayer.component.navigation.Page.CONFIG_NAME_ATTR = "name";
-org.slplayer.component.navigation.Page.CONFIG_INITIAL_PAGE_NAME = "initialPageName";
-org.slplayer.component.navigation.Page.ATTRIBUTE_INITIAL_PAGE_NAME = "data-initial-page-name";
-org.slplayer.component.navigation.Page.OPENED_PAGE_CSS_CLASS = "page-opened";
-org.slplayer.component.navigation.link.LinkBase.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.slplayer.component.navigation.link.LinkBase.CONFIG_PAGE_NAME_ATTR = "href";
-org.slplayer.component.navigation.link.LinkBase.CONFIG_TARGET_ATTR = "target";
-org.slplayer.component.navigation.link.LinkBase.CONFIG_TARGET_IS_POPUP = "_top";
-org.slplayer.component.navigation.link.LinkClosePage.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.slplayer.component.navigation.link.LinkToContext.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.slplayer.component.navigation.link.LinkToContext.CONFIG_TRANSITION_DURATION = "data-context";
-org.slplayer.component.navigation.link.LinkToPage.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.slplayer.component.navigation.transition.TransitionTools.SHOW_START_STYLE_ATTR_NAME = "data-show-start-style";
-org.slplayer.component.navigation.transition.TransitionTools.SHOW_END_STYLE_ATTR_NAME = "data-show-end-style";
-org.slplayer.component.navigation.transition.TransitionTools.HIDE_START_STYLE_ATTR_NAME = "data-hide-start-style";
-org.slplayer.component.navigation.transition.TransitionTools.HIDE_END_STYLE_ATTR_NAME = "data-hide-end-style";
-org.slplayer.component.navigation.transition.TransitionTools.EVENT_TYPE_REQUEST = "transitionEventTypeRequest";
-org.slplayer.component.navigation.transition.TransitionTools.EVENT_TYPE_STARTED = "transitionEventTypeStarted";
-org.slplayer.component.navigation.transition.TransitionTools.EVENT_TYPE_ENDED = "transitionEventTypeEnded";
-org.slplayer.component.sound.SoundOn.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.slplayer.component.sound.SoundOn.CLASS_NAME = "SoundOn";
-org.slplayer.component.sound.SoundOn.isMuted = false;
-org.slplayer.component.sound.SoundOff.__meta__ = { obj : { tagNameFilter : ["a"]}};
-org.slplayer.component.sound.SoundOff.CLASS_NAME = "SoundOff";
-org.slplayer.core.Application.SLPID_ATTR_NAME = "slpid";
-org.slplayer.core.Application.instances = new Hash();
 silex.ServiceBase.GATEWAY_URL = "../../";
 silex.Silex.CONFIG_PUBLICATION_BODY = "publicationBody";
 silex.Silex.CONFIG_USE_DEEPLINK = "useDeeplink";
@@ -7943,7 +7954,7 @@ silex.component.ComponentModel.ON_SELECTION_CHANGE = "onComponentSelectionChange
 silex.component.ComponentModel.ON_HOVER_CHANGE = "onComponentHoverChange";
 silex.component.ComponentModel.ON_LIST_CHANGE = "onComponentListChange";
 silex.interpreter.Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION = "debugModeAction";
-silex.interpreter.Interpreter.BASIC_CONTEXT = { Lib : js.Lib, Math : Math, Timer : haxe.Timer, StringTools : StringTools, DomTools : org.slplayer.util.DomTools, Application : org.slplayer.core.Application, Page : org.slplayer.component.navigation.Page, Layer : org.slplayer.component.navigation.Layer};
+silex.interpreter.Interpreter.BASIC_CONTEXT = { Lib : js.Lib, Math : Math, Timer : haxe.Timer, StringTools : StringTools, DomTools : brix.util.DomTools, Application : brix.core.Application, Page : brix.component.navigation.Page, Layer : brix.component.navigation.Layer};
 silex.layer.LayerModel.LAYER_ID_ATTRIBUTE_NAME = "data-silex-layer-id";
 silex.layer.LayerModel.DEBUG_INFO = "LayerModel class";
 silex.layer.LayerModel.ON_SELECTION_CHANGE = "onLayerSelectionChange";

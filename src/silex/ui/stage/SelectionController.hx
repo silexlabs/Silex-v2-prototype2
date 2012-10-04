@@ -3,10 +3,10 @@ package silex.ui.stage;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.ui.DisplayObject;
-import org.slplayer.util.DomTools;
-import org.slplayer.component.navigation.Layer;
-import org.slplayer.core.Application;
+import brix.component.ui.DisplayObject;
+import brix.util.DomTools;
+import brix.component.navigation.Layer;
+import brix.core.Application;
 
 import silex.property.PropertyModel;
 import silex.component.ComponentModel;
@@ -79,8 +79,8 @@ class SelectionController extends DisplayObject
 	 * Create the markers
 	 * Start listening the node (view) and to the model
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String){
-		super(rootElement, SLPId);
+	public function new(rootElement:HtmlDom, BrixId:String){
+		super(rootElement, BrixId);
 
 		var selectionContainer = Lib.document.body;
 
@@ -242,7 +242,7 @@ class SelectionController extends DisplayObject
 		for (idx in 0...layers.length){
 			if (checkIsOver(layers[idx], e.pageX, e.pageY)){
 				// the mouse is over a layer
-				// get the SLPlayer application from the loaded publication
+				// get the Brix application from the loaded publication
 				var application = PublicationModel.getInstance().application;
 				// get the Layer instance associated with the layers[idx]
 				var layerList = application.getAssociatedComponents(layers[idx], Layer); // there should be 1 and only 1 element here
@@ -291,7 +291,7 @@ class SelectionController extends DisplayObject
 			// check if this is a Layer component
 			if (target != null){
 				// trace("LAYER!");
-				// get the SLPlayer application from the loaded publication
+				// get the Brix application from the loaded publication
 				var application = PublicationModel.getInstance().application;
 				// get the Layer instance associated with the target
 				var layerList = application.getAssociatedComponents(target, Layer); // there should be 1 and only 1 element here
@@ -308,7 +308,7 @@ class SelectionController extends DisplayObject
 		// check if this is a Layer component
 		if (DomTools.hasClass(target, "Layer")){
 			trace("LAYER!");
-			// get the SLPlayer application from the loaded publication
+			// get the Brix application from the loaded publication
 			var application = PublicationModel.getInstance().application;
 			// get the Layer instance associated with the target
 			var layerList = application.getAssociatedComponents(target, Layer); // there should be 1 and only 1 element here

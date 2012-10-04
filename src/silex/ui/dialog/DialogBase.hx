@@ -3,13 +3,13 @@ package silex.ui.dialog;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.ui.DisplayObject;
-import org.slplayer.component.navigation.transition.TransitionData;
-import org.slplayer.component.navigation.transition.TransitionTools;
-import org.slplayer.component.navigation.link.LinkToPage;
-import org.slplayer.component.navigation.Page;
-import org.slplayer.component.navigation.Layer;
-import org.slplayer.util.DomTools;
+import brix.component.ui.DisplayObject;
+import brix.component.navigation.transition.TransitionData;
+import brix.component.navigation.transition.TransitionTools;
+import brix.component.navigation.link.LinkToPage;
+import brix.component.navigation.Page;
+import brix.component.navigation.Layer;
+import brix.util.DomTools;
 
 /**
  * This component displays a window. Derive this class in order to make a new Dialog.
@@ -66,11 +66,11 @@ class DialogBase extends DisplayObject
 	 * Constructor
 	 * Start listening the buttons
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String, 
+	public function new(rootElement:HtmlDom, BrixId:String, 
 		onShow:Null<TransitionData->Void>, onHide:Null<TransitionData->Void>, 
 		onSubmit:Null<Void->Void>, onCancel:Null<Void->Void>)
 	{
-		super(rootElement, SLPId);
+		super(rootElement, BrixId);
 
 		// store the callbacks
 		this.onShow = onShow;
@@ -120,7 +120,7 @@ class DialogBase extends DisplayObject
 	 * It uses the dialog name as a css class
 	 */
 	public function close() {
-		Page.closePage(dialogName, null, SLPlayerInstanceId);
+		Page.closePage(dialogName, null, brixInstanceId);
 	}
 	/**
 	 * Handle click on buttons

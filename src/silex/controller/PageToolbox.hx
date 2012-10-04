@@ -5,8 +5,8 @@ import js.Dom;
 
 import silex.page.PageModel;
 
-import org.slplayer.util.DomTools;
-import org.slplayer.component.ui.DisplayObject;
+import brix.util.DomTools;
+import brix.component.ui.DisplayObject;
 
 /**
  * This component displays the pages of the loaded publication.
@@ -28,9 +28,9 @@ class PageToolbox extends DisplayObject
 	 * Constructor
 	 * Start listening the input events
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String)
+	public function new(rootElement:HtmlDom, BrixId:String)
 	{
-		super(rootElement, SLPId);
+		super(rootElement, BrixId);
 		// listen to the input event
 		rootElement.addEventListener("click", onClick, true);
 	}

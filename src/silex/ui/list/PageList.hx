@@ -3,9 +3,9 @@ package silex.ui.list;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.navigation.Page;
-import org.slplayer.component.list.List;
-import org.slplayer.util.DomTools;
+import brix.component.navigation.Page;
+import brix.component.list.List;
+import brix.util.DomTools;
 
 import silex.page.PageModel;
 import silex.publication.PublicationModel;
@@ -26,8 +26,8 @@ class PageList extends List<Page>
 	/**
 	 * constructor
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String){
-		super(rootElement, SLPId);
+	public function new(rootElement:HtmlDom, BrixId:String){
+		super(rootElement, BrixId);
 
 		// store a reference to the model
 		var pageModel = PageModel.getInstance();

@@ -3,9 +3,9 @@ package silex.ui.stage;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.navigation.Page;
-import org.slplayer.component.ui.DisplayObject;
-import org.slplayer.util.DomTools;
+import brix.component.navigation.Page;
+import brix.component.ui.DisplayObject;
+import brix.util.DomTools;
 
 import silex.publication.PublicationModel;
 
@@ -19,8 +19,8 @@ class MenuController extends DisplayObject
 	 * Constructor
 	 * Start listening the node
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String){
-		super(rootElement, SLPId);
+	public function new(rootElement:HtmlDom, BrixId:String){
+		super(rootElement, BrixId);
 		rootElement.addEventListener("click", onClick, false);
 	}
 
@@ -44,7 +44,7 @@ class MenuController extends DisplayObject
 		// take an action depending on the menu name
 		switch (itemName) {
 			case "open":
-				Page.openPage("open-dialog", true, null, null, SLPlayerInstanceId);
+				Page.openPage("open-dialog", true, null, null, brixInstanceId);
 			case "close":
 				PublicationModel.getInstance().unload();
 			case "save":

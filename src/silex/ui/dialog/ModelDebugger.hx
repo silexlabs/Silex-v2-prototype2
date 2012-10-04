@@ -3,11 +3,11 @@ package silex.ui.dialog;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.ui.DisplayObject;
-import org.slplayer.component.navigation.transition.TransitionData;
-import org.slplayer.component.navigation.link.LinkToPage;
-import org.slplayer.component.navigation.Page;
-import org.slplayer.util.DomTools;
+import brix.component.ui.DisplayObject;
+import brix.component.navigation.transition.TransitionData;
+import brix.component.navigation.link.LinkToPage;
+import brix.component.navigation.Page;
+import brix.util.DomTools;
 
 import silex.property.PropertyModel;
 import silex.component.ComponentModel;
@@ -30,8 +30,8 @@ class ModelDebugger extends DialogBase
 	 * Constructor
 	 * Define the callbacks
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String){
-		super(rootElement, SLPId, null, null, null, null);
+	public function new(rootElement:HtmlDom, BrixId:String){
+		super(rootElement, BrixId, null, null, null, null);
 		// listen to the model events
 /*
 		ComponentModel.getInstance().addEventListener(ComponentModel.ON_LIST_CHANGE, redraw, DEBUG_INFO);
