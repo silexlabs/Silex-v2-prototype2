@@ -1564,20 +1564,100 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 	,__class__: brix.component.interaction.Draggable
 });
 brix.component.layout = {}
-brix.component.layout.Panel = function(rootElement,BrixId) {
+brix.component.layout.LayoutBase = function(rootElement,BrixId) {
+	this.preventRedraw = false;
 	brix.component.ui.DisplayObject.call(this,rootElement,BrixId);
-	var _this_ = this;
-	js.Lib.window.addEventListener("resize",(function(f) {
-		return function(e) {
-			return f(e);
-		};
-	})($bind(this,this.redrawCallback)),false);
+	js.Lib.window.addEventListener("resize",$bind(this,this.redrawCallback),false);
+	js.Lib.document.addEventListener("layoutRedraw",$bind(this,this.redrawCallback),false);
+};
+$hxClasses["brix.component.layout.LayoutBase"] = brix.component.layout.LayoutBase;
+brix.component.layout.LayoutBase.__name__ = ["brix","component","layout","LayoutBase"];
+brix.component.layout.LayoutBase.__super__ = brix.component.ui.DisplayObject;
+brix.component.layout.LayoutBase.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
+	redraw: function() {
+		if(this.preventRedraw) {
+			haxe.Log.trace("Redraw layout stopped",{ fileName : "LayoutBase.hx", lineNumber : 71, className : "brix.component.layout.LayoutBase", methodName : "redraw"});
+			return;
+		}
+		haxe.Log.trace("Redraw layout",{ fileName : "LayoutBase.hx", lineNumber : 74, className : "brix.component.layout.LayoutBase", methodName : "redraw"});
+		this.preventRedraw = true;
+		var event = js.Lib.document.createEvent("CustomEvent");
+		event.initCustomEvent("layoutRedraw",true,true,{ target : this.rootElement, component : this});
+		this.rootElement.dispatchEvent(event);
+		this.preventRedraw = false;
+	}
+	,redrawCallback: function(e) {
+		this.redraw();
+	}
+	,init: function() {
+		brix.component.ui.DisplayObject.prototype.init.call(this);
+		brix.util.DomTools.doLater($bind(this,this.redraw));
+	}
+	,preventRedraw: null
+	,__class__: brix.component.layout.LayoutBase
+});
+brix.component.layout.Accordion = function(rootElement,BrixId) {
+	brix.component.layout.LayoutBase.call(this,rootElement,BrixId);
+};
+$hxClasses["brix.component.layout.Accordion"] = brix.component.layout.Accordion;
+brix.component.layout.Accordion.__name__ = ["brix","component","layout","Accordion"];
+brix.component.layout.Accordion.__super__ = brix.component.layout.LayoutBase;
+brix.component.layout.Accordion.prototype = $extend(brix.component.layout.LayoutBase.prototype,{
+	redraw: function() {
+		if(this.preventRedraw) {
+			haxe.Log.trace("Redraw layout stopped",{ fileName : "Accordion.hx", lineNumber : 67, className : "brix.component.layout.Accordion", methodName : "redraw"});
+			return;
+		}
+		haxe.Log.trace("Redraw layout",{ fileName : "Accordion.hx", lineNumber : 70, className : "brix.component.layout.Accordion", methodName : "redraw"});
+		var bodySize;
+		var boundingBox = brix.util.DomTools.getElementBoundingBox(this.rootElement);
+		if(this.isHorizontal) {
+		} else {
+			bodySize = boundingBox.h;
+			var margin = this.rootElement.offsetHeight - this.rootElement.clientHeight;
+			bodySize -= margin;
+			var elements = this.rootElement.getElementsByClassName("accordion-header");
+			haxe.Log.trace("****** " + elements.length + " found",{ fileName : "Accordion.hx", lineNumber : 86, className : "brix.component.layout.Accordion", methodName : "redraw"});
+			if(elements == null || elements.length == 0) throw "No headers found for the accordion.";
+			var _g1 = 0, _g = elements.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				var element = elements[idx];
+				bodySize -= element.offsetHeight;
+				var margin1 = element.offsetHeight - element.clientHeight;
+				bodySize -= margin1;
+			}
+			var elements1 = this.rootElement.getElementsByClassName("accordion-item");
+			var _g1 = 0, _g = elements1.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				var element = elements1[idx];
+				var margin1 = element.offsetHeight - element.clientHeight;
+				element.style.height = bodySize - margin1 + "px";
+			}
+		}
+		brix.component.layout.LayoutBase.prototype.redraw.call(this);
+	}
+	,init: function() {
+		brix.component.layout.LayoutBase.prototype.init.call(this);
+		if(this.rootElement.getAttribute("data-accordion-is-horizontal") == "true") this.isHorizontal = true; else this.isHorizontal = false;
+	}
+	,isHorizontal: null
+	,__class__: brix.component.layout.Accordion
+});
+brix.component.layout.Panel = function(rootElement,BrixId) {
+	brix.component.layout.LayoutBase.call(this,rootElement,BrixId);
 };
 $hxClasses["brix.component.layout.Panel"] = brix.component.layout.Panel;
 brix.component.layout.Panel.__name__ = ["brix","component","layout","Panel"];
-brix.component.layout.Panel.__super__ = brix.component.ui.DisplayObject;
-brix.component.layout.Panel.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
+brix.component.layout.Panel.__super__ = brix.component.layout.LayoutBase;
+brix.component.layout.Panel.prototype = $extend(brix.component.layout.LayoutBase.prototype,{
 	redraw: function() {
+		if(this.preventRedraw) {
+			haxe.Log.trace("Redraw layout stopped",{ fileName : "Panel.hx", lineNumber : 113, className : "brix.component.layout.Panel", methodName : "redraw"});
+			return;
+		}
+		haxe.Log.trace("Redraw layout",{ fileName : "Panel.hx", lineNumber : 116, className : "brix.component.layout.Panel", methodName : "redraw"});
 		var bodySize;
 		var boundingBox = brix.util.DomTools.getElementBoundingBox(this.rootElement);
 		if(this.isHorizontal) {
@@ -1613,25 +1693,22 @@ brix.component.layout.Panel.prototype = $extend(brix.component.ui.DisplayObject.
 			bodySize -= 5;
 			this.body.style.height = bodySize + "px";
 		}
-	}
-	,redrawCallback: function(e) {
-		this.redraw();
+		brix.component.layout.LayoutBase.prototype.redraw.call(this);
 	}
 	,init: function() {
-		brix.component.ui.DisplayObject.prototype.init.call(this);
+		brix.component.layout.LayoutBase.prototype.init.call(this);
 		var cssClassName = this.rootElement.getAttribute("data-panel-header-class-name");
 		if(cssClassName == null) cssClassName = "panel-header";
 		this.header = brix.util.DomTools.getSingleElement(this.rootElement,cssClassName,false);
-		if(this.header == null) haxe.Log.trace("Warning, no header for Panel component",{ fileName : "Panel.hx", lineNumber : 97, className : "brix.component.layout.Panel", methodName : "init"});
+		if(this.header == null) haxe.Log.trace("Warning, no header for Panel component",{ fileName : "Panel.hx", lineNumber : 90, className : "brix.component.layout.Panel", methodName : "init"});
 		var cssClassName1 = this.rootElement.getAttribute("data-panel-body-class-name");
 		if(cssClassName1 == null) cssClassName1 = "panel-body";
 		this.body = brix.util.DomTools.getSingleElement(this.rootElement,cssClassName1,true);
 		var cssClassName2 = this.rootElement.getAttribute("data-panel-footer-class-name");
 		if(cssClassName2 == null) cssClassName2 = "panel-footer";
 		this.footer = brix.util.DomTools.getSingleElement(this.rootElement,cssClassName2,false);
-		if(this.footer == null) haxe.Log.trace("Warning, no footer for Panel component",{ fileName : "Panel.hx", lineNumber : 106, className : "brix.component.layout.Panel", methodName : "init"});
+		if(this.footer == null) haxe.Log.trace("Warning, no footer for Panel component",{ fileName : "Panel.hx", lineNumber : 99, className : "brix.component.layout.Panel", methodName : "init"});
 		if(this.rootElement.getAttribute("data-panel-is-horizontal") == "true") this.isHorizontal = true; else this.isHorizontal = false;
-		brix.util.DomTools.doLater($bind(this,this.redraw));
 	}
 	,footer: null
 	,header: null
@@ -2697,6 +2774,8 @@ brix.core.ApplicationContext.prototype = {
 		this.registeredUIComponents.push({ classname : "silex.ui.list.LayersList", args : null});
 		silex.ui.toolbox.editor.MarginStyleEditor;
 		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.MarginStyleEditor", args : null});
+		brix.component.layout.Accordion;
+		this.registeredUIComponents.push({ classname : "brix.component.layout.Accordion", args : null});
 		brix.component.navigation.Page;
 		this.registeredUIComponents.push({ classname : "brix.component.navigation.Page", args : null});
 		silex.ui.toolbox.editor.BackgroundStyleEditor;
@@ -9563,6 +9642,10 @@ brix.component.interaction.Draggable.ATTR_DROPZONE = "data-dropzones-class-name"
 brix.component.interaction.Draggable.EVENT_DRAG = "dragEventDrag";
 brix.component.interaction.Draggable.EVENT_DROPPED = "dragEventDropped";
 brix.component.interaction.Draggable.EVENT_MOVE = "dragEventMove";
+brix.component.layout.LayoutBase.EVENT_LAYOUT_REDRAW = "layoutRedraw";
+brix.component.layout.Accordion.DEFAULT_CSS_CLASS_HEADER = "accordion-header";
+brix.component.layout.Accordion.DEFAULT_CSS_CLASS_ITEM = "accordion-item";
+brix.component.layout.Accordion.ATTR_IS_HORIZONTAL = "data-accordion-is-horizontal";
 brix.component.layout.Panel.DEFAULT_CSS_CLASS_HEADER = "panel-header";
 brix.component.layout.Panel.DEFAULT_CSS_CLASS_BODY = "panel-body";
 brix.component.layout.Panel.DEFAULT_CSS_CLASS_FOOTER = "panel-footer";
