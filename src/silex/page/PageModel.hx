@@ -7,9 +7,9 @@ import silex.ModelBase;
 import silex.publication.PublicationModel;
 import silex.layer.LayerModel;
 
-import org.slplayer.component.navigation.Page;
-import org.slplayer.component.navigation.Layer;
-import org.slplayer.util.DomTools;
+import brix.component.navigation.Page;
+import brix.component.navigation.Layer;
+import brix.util.DomTools;
 
 /**
  * Manipulation of pages, remove, add, etc. 
@@ -174,7 +174,7 @@ class PageModel extends ModelBase<Page>{
 		// remove element from dom
 		page.rootElement.parentNode.removeChild(page.rootElement);
 		// todo: maybe free the domelement, not possible to write page.rootElement = null;
-		// todo: unregister class from SLPLayer
+		// todo: unregister class from Brix
 
 		// change selection 
 		if(selectedItem == page)

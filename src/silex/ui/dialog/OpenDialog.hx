@@ -3,11 +3,11 @@ package silex.ui.dialog;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.ui.DisplayObject;
-import org.slplayer.component.navigation.transition.TransitionData;
-import org.slplayer.component.navigation.link.LinkToPage;
-import org.slplayer.component.navigation.Page;
-import org.slplayer.util.DomTools;
+import brix.component.ui.DisplayObject;
+import brix.component.navigation.transition.TransitionData;
+import brix.component.navigation.link.LinkToPage;
+import brix.component.navigation.Page;
+import brix.util.DomTools;
 
 import silex.publication.PublicationData;
 import silex.publication.PublicationModel;
@@ -30,8 +30,8 @@ class OpenDialog extends DialogBase
 	 * Constructor
 	 * Define the callbacks
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String){
-		super(rootElement, SLPId, requestRedraw, null, validateSelection, cancelSelection);
+	public function new(rootElement:HtmlDom, BrixId:String){
+		super(rootElement, BrixId, requestRedraw, null, validateSelection, cancelSelection);
 	}
 	/**
 	 * Callback for the "show" event of the Layer class
@@ -63,7 +63,7 @@ class OpenDialog extends DialogBase
 		// get the node with the list
 		var listNode = DomTools.getSingleElement(rootElement, LIST_CLASS_NAME, true);
 		// returns the list instance
-		return getSLPlayer().getAssociatedComponents(listNode, PublicationList).first();
+		return getBrixApplication().getAssociatedComponents(listNode, PublicationList).first();
 	}
 	/**
 	 * Called after a click on the cancel button

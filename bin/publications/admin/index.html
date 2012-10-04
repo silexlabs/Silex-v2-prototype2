@@ -3,17 +3,63 @@
 	<HEAD>
 		<META http-equiv="Content-Type" content="text/html; charset=UTF-8"></META> 
 
+		
+		
+		
+
+		
+		
+		
+		
+		
+		
+		
+		
+
+		
+		
+		
+		
+		
+		
+
+		
+		
+		
+		
+		
+		
+		
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+
+		
 		<TITLE>Hello Silex!</TITLE>
 		<META name="description" content="Silex online editor"></META>
 		<META name="keywords" content="HTML,CSS,website editor"></META>
 		<META name="author" content="lexoyo"></META>
-		<META name="revised" content="lexoyo, 29/08/2011"></META>	
+		<META name="revised" content="lexoyo, 29/08/2011"></META>
+
+		
 		<META name="initialPageName" content="start-page"></META>
 		<META name="useDeeplink" content="false"></META>
 		<LINK href="app.css" rel="stylesheet"></LINK>
 		<META name="debugModeAction" content="
 		//Lib.alert('test!');
-		PublicationModel.getInstance().load('default');
+		//PublicationModel.getInstance().load('default');
 	"></META>
 	<SCRIPT src="silex-builder.js"></SCRIPT></HEAD>
 	
@@ -229,11 +275,11 @@
 				
 				
 				<DIV class="group-property-toolbox 
-					panel-builder-footer Panel 
-					PropertiesToolbox silex-toolbox" data-toolbox-name="PropertiesToolbox" data-phantom-class-name="toolbox-phantom" data-toolbox-dropzones-class-name="toolbox-drop-zone" data-initial-page-name="all-tab">
+					panel-builder-footer  
+					PropertiesToolbox silex-toolbox" data-toolbox-name="PropertiesToolbox" data-phantom-class-name="toolbox-phantom" data-toolbox-dropzones-class-name="toolbox-drop-zone" data-initial-page-name="properties-tab">
 
 					
-					<!--<A class="Page" name="all-tab" data-group-id="group-property-toolbox">All</A>-->
+					
 					<A class="Page" name="properties-tab" data-group-id="group-property-toolbox">Properties</A>
 					<A class="Page" name="style-text-tab" data-group-id="group-property-toolbox">Text</A>
 					<A class="Page" name="style-background-tab" data-group-id="group-property-toolbox">Background</A>
@@ -242,33 +288,19 @@
 					<A class="Page" name="style-positioning-tab" data-group-id="group-property-toolbox">Positioning</A>
 					<A class="Page" name="style-border-tab" data-group-id="group-property-toolbox">Border</A>
 
-					<DIV class="panel-header">
-						<DIV class="draggable-dragzone">
+					<DIV class="Accordion">
+						<DIV class="draggable-dragzone accordion-header">
 							<DIV class="title">
 								<H2>Toolboxes</H2>
 							</DIV>
 						</DIV>
 						
-						<!--<UL class="tabs">
-							<LI><A href="#all-tab" class="LinkToPage" data-group-id="group-property-toolbox">All</A></LI>
-							<LI><A href="#properties-tab" class="LinkToPage" data-group-id="group-property-toolbox">Properties</A></LI>
-                            <LI><A href="#style-box-tab" class="LinkToPage" data-group-id="group-property-toolbox">Box</A></LI>
-                            <LI><A href="#style-positioning-tab" class="LinkToPage" data-group-id="group-property-toolbox">Positioning</A></LI>
-							<LI><A href="#style-border-tab" class="LinkToPage" data-group-id="group-property-toolbox">Border</A></LI>
-                            <LI><A href="#style-background-tab" class="LinkToPage" data-group-id="group-property-toolbox">Background</A></LI>
-							<LI><A href="#style-text-tab" class="LinkToPage" data-group-id="group-property-toolbox">Text</A></LI>
-							<LI><A href="#style-block-tab" class="LinkToPage" data-group-id="group-property-toolbox">Block</A></LI>
-						</UL>-->
 						
-					</DIV>
-					<DIV class="panel-body">
-						<UL class="tabs">
-							<LI><A href="#properties-tab" class="LinkToPage" data-group-id="group-property-toolbox">Properties</A></LI>
-						</UL>
-						<FORM class="Layer all-tab properties-tab">
+						<A href="#properties-tab" class="LinkToPage accordion-header" data-group-id="group-property-toolbox">
+							Properties
+						</A>
+						<FORM class="Layer all-tab accordion-item properties-tab">
 							<FIELDSET class="PropertyEditor">
-								<LEGEND>Properties</LEGEND><BR></BR>
-							
 									<LEGEND>Name</LEGEND>
 									<INPUT class="name-property" type="text" max-lenght="20" value="21"/>
 									
@@ -308,12 +340,10 @@
 						</FORM>
 				   
                         
-                        <UL class="tabs">
-                            <LI><A href="#style-box-tab" class="LinkToPage" data-group-id="group-property-toolbox">Box</A></LI>
-						</UL>
-                        <FORM class="Layer all-tab style-box-tab">
+                        <A href="#style-box-tab" class="LinkToPage accordion-header" data-group-id="group-property-toolbox">Box</A>
+                        <FORM class="Layer all-tab accordion-item style-box-tab">
 							<FIELDSET class="BoxStyleEditor">
-								<LEGEND>Box</LEGEND><BR></BR>
+								<LEGEND>Size</LEGEND><BR></BR>
 								<LABEL for="box_width">Width</LABEL>
 								
 											
@@ -523,10 +553,8 @@
 							</FIELDSET>
 						</FORM>
                         
-                        <UL class="tabs">
-                            <LI><A href="#style-positioning-tab" class="LinkToPage" data-group-id="group-property-toolbox">Positioning</A></LI>
-						</UL>
-                        <FORM class="Layer all-tab style-positioning-tab">
+                        <A href="#style-positioning-tab" class="LinkToPage accordion-header" data-group-id="group-property-toolbox">Positioning</A>
+                        <FORM class="Layer all-tab accordion-item style-positioning-tab">
 							<FIELDSET class="PositionStyleEditor">
 								<LEGEND>Position</LEGEND><BR></BR>
 								<LABEL for="positioning_type">Type</LABEL>
@@ -719,17 +747,13 @@
 							</FIELDSET>
 						</FORM>
                         
-                        <UL class="tabs">
-							<LI><A href="#style-border-tab" class="LinkToPage" data-group-id="group-property-toolbox">Border</A></LI>
-						</UL>
-                        <FORM class="Layer all-tab style-border-tab">
+						<A href="#style-border-tab" class="LinkToPage accordion-header" data-group-id="group-property-toolbox">Border</A>
+                        <FORM class="Layer all-tab accordion-item style-border-tab">
                         	...
                         </FORM>						
 						
-						<UL class="tabs">
-                            <LI><A href="#style-background-tab" class="LinkToPage" data-group-id="group-property-toolbox">Background</A></LI>
-						</UL>
-						<FORM class="Layer all-tab style-background-tab">
+                        <A href="#style-background-tab" class="LinkToPage accordion-header" data-group-id="group-property-toolbox">Background</A>
+						<FORM class="Layer all-tab accordion-item style-background-tab">
 							<FIELDSET class="BackgroundStyleEditor">
 								<LEGEND>Background</LEGEND><BR></BR>
 								<LABEL for="background_color">Background Color</LABEL><BR></BR>
@@ -805,10 +829,8 @@
 							</FIELDSET>
 						</FORM>
 						
-                        <UL class="tabs">
-							<LI><A href="#style-text-tab" class="LinkToPage" data-group-id="group-property-toolbox">Text</A></LI>
-						</UL>
-                        <FORM class="Layer all-tab style-text-tab">
+						<A href="#style-text-tab" class="LinkToPage accordion-header" data-group-id="group-property-toolbox">Text</A>
+                        <FORM class="Layer all-tab accordion-item style-text-tab">
 							<FIELDSET class="TextStyleEditor">
 								<LEGEND>Text</LEGEND><BR></BR>
 
@@ -868,10 +890,8 @@
 							</FIELDSET>
 						</FORM>
 						
-                        <UL class="tabs">
-							<LI><A href="#style-block-tab" class="LinkToPage" data-group-id="group-property-toolbox">Block</A></LI>
-						</UL>
-						<FORM class="Layer all-tab style-block-tab">
+						<A href="#style-block-tab" class="LinkToPage accordion-header" data-group-id="group-property-toolbox">Block</A>
+						<FORM class="Layer all-tab accordion-item style-block-tab">
 							<FIELDSET class="BlockStyleEditor">
 								<LEGEND>Block</LEGEND><BR></BR>
 								<LABEL for="block_wordspacing">Word<BR></BR> Spacing</LABEL>
@@ -992,10 +1012,13 @@
 								</SELECT>
 							</FIELDSET>
 						</FORM>
-										
 					</DIV>
 				</DIV>
-			
+				
+				
+
+
+				
 				
 				<DIV class="SelectionController panel-builder-body">
 					<DIV class="PublicationViewer">
@@ -1005,8 +1028,15 @@
 					<DIV data-dropzones-class-name="silex-view" class="selection-layer-marker Draggable SelectionMarker" data-phantom-class-name="selection-phantom" data-group-id="SelectionController"></DIV>
 					<DIV class="hover-layer-marker"></DIV>
 				</DIV>
+				
+				
+
 
 			</DIV>
+			
+			
+			
+
 
 		</DIV>
-</BODY>
+	</BODY>
