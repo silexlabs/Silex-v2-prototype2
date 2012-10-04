@@ -3,11 +3,11 @@ package silex.ui.dialog;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.ui.DisplayObject;
-import org.slplayer.component.navigation.transition.TransitionData;
-import org.slplayer.component.navigation.Page;
-import org.slplayer.component.navigation.link.LinkToPage;
-import org.slplayer.util.DomTools;
+import brix.component.ui.DisplayObject;
+import brix.component.navigation.transition.TransitionData;
+import brix.component.navigation.Page;
+import brix.component.navigation.link.LinkToPage;
+import brix.util.DomTools;
 
 /**
  * This component displays the login window and prevent interactions with the UI.
@@ -52,8 +52,8 @@ class AuthDialog extends DialogBase
 	 * Constructor
 	 * Define the callbacks
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String){
-		super(rootElement, SLPId, null, null, validate, cancel);
+	public function new(rootElement:HtmlDom, BrixId:String){
+		super(rootElement, BrixId, null, null, validate, cancel);
 	}
 	/**
 	 * Called after a click on the submit button
@@ -82,7 +82,7 @@ class AuthDialog extends DialogBase
 		}
 		else{
 			// submit form
-			Page.openPage(LOADING_PAGE_NAME, true, null, null, SLPlayerInstanceId);
+			Page.openPage(LOADING_PAGE_NAME, true, null, null, brixInstanceId);
 			haxe.Timer.delay(callback(onLoginError, NETWORK_ERROR),2000);
 			// todo : implement authentication here
 		}
@@ -98,7 +98,7 @@ class AuthDialog extends DialogBase
 	 */
 	private function onLoginError(msg:String){
 		trace("onLoginError "+msg);
-		Page.openPage(dialogName, true, null, null, SLPlayerInstanceId);
+		Page.openPage(dialogName, true, null, null, brixInstanceId);
 		var inputElements:HtmlCollection<HtmlDom> = rootElement.getElementsByClassName(ERROR_TEXT_FIELD_CLASS_NAME);
 		if(inputElements.length>0){
 			inputElements[0].innerHTML = msg;

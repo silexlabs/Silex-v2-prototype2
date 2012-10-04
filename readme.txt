@@ -38,9 +38,27 @@ En cours
 
 ** To do **
 a discuter avec thomas
-- brix et flex jusqu ou?
-- mvc? 
+- listes, templates et données en xml
+  > mettre en attente et thomas le fait
+  > doit pouvoir etre fait a la compil, probleme de la RFE
+- drag / drop et reverse des templates
+  > marche, à tester par lex
+  > add/suppr elements ne fonctionne pas
 - drag drop avec "proxy"
+  > pas tout de suite, a discuter plus tard ensemble
+- brix et flex jusqu ou?
+  > on devrait faire les comp flex
+  > data binding? a faire bientot
+- mvc? 
+  > thomas est pour les packages mvc
+
+SEO and brix
+- php with deeplink in get
+- php open html page, interprete with brix (and cocktail)
+- echo of interpreted dom (innerHTML)
+- js is loaded
+- replace the body with the raw html of the page (get it from a web service or php can put it in a meta tag in <head>)
+- opens the page corresonding to the deeplink
 
 remettre en place des tests unitaires
 - chaque liste
@@ -59,6 +77,10 @@ cleanup code
 
 selection
 - ecoute window.resize, et dispatcher window.resize dans Page::open
+
+drag drop avec "proxy"
+> le style doit etre celui du layer / comp
+
 
 StageDropHandler => DropHandlerBase
 SelectionMarker => SelectionDropHandler
@@ -94,9 +116,11 @@ Silex menu missing items
 - edit CSS
 - edit hscript
 - manage publications
-- library (import media)
+- library (import/manage media)
+- cf functionnalities, put disabled buttons
 
 missing functionality
+- page opens => page title changes
 - draggable list de page => réordonner dans le dom et view
 - deselect all
 - select empty layer or layr with onliy 1 child
@@ -109,12 +133,19 @@ fonctionnalité
   http://ckeditor.com/demo ("Kama" skin) and http://sourceforge.net/projects/pdwfilebrowser/
 - code editor
   http://ace.ajax.org/
-- selection move
-- drag/drop page, layer, comp
-- remove page, layer, comp, 
+- loading page (juste définir dans les css le style .loading et .loaded, et les définir pendant le loading a visible et invisible puis inverser)
+- page settings (keywords, title, ...)
+- publication settings (align h/v, size, ...)
+- selection move when absolute
+- selection resize
+- drag/drop page
+- ergo de remove page, layer, comp, 
 - publication: open, close, save, save as, save a copy, delete
 - admin dans ./admin/index.html, export de la publication dans ./ 
   =>  ./admin/index.html est compilée a partir de src/index-builder.html
+- 
+
+
 - ------
 - selection resize
 - selection rotate

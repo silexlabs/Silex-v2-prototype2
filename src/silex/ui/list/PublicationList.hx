@@ -3,8 +3,8 @@ package silex.ui.list;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.list.List;
-import org.slplayer.util.DomTools;
+import brix.component.list.List;
+import brix.util.DomTools;
 
 import silex.publication.PublicationModel;
 import silex.publication.PublicationData;
@@ -31,8 +31,8 @@ class PublicationList extends List<PublicationListItem>
 	/**
 	 * constructor
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String){
-		super(rootElement, SLPId);
+	public function new(rootElement:HtmlDom, BrixId:String){
+		super(rootElement, BrixId);
 
 		// store a reference to the model
 		publicationModel = PublicationModel.getInstance();

@@ -7,12 +7,12 @@ import silex.layer.LayerModel;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.ui.DisplayObject;
-import org.slplayer.util.DomTools;
+import brix.component.ui.DisplayObject;
+import brix.util.DomTools;
 
 /**
  * Editor for text styles. 
- * Editors are SLPlayer components, in charge of handling HTML input elements, 
+ * Editors are Brix components, in charge of handling HTML input elements, 
  * in order to let the user enter values and edit css style values or tag attributes.
  */
 class TextStyleEditor extends EditorBase 
@@ -21,8 +21,8 @@ class TextStyleEditor extends EditorBase
 	 * Constructor
 	 * Start listening the input events
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String){
-		super(rootElement, SLPId);
+	public function new(rootElement:HtmlDom, BrixId:String){
+		super(rootElement, BrixId);
 	}
 	/**
 	 * reset the values

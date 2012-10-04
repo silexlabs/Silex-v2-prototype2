@@ -14,9 +14,9 @@ import silex.layer.LayerModel;
 import silex.page.PageModel;
 import silex.publication.PublicationModel;
 
-import org.slplayer.core.Application;
-import org.slplayer.util.DomTools;
-import org.slplayer.component.navigation.Page;
+import brix.core.Application;
+import brix.util.DomTools;
+import brix.component.navigation.Page;
 
 
 /**
@@ -120,7 +120,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 */
 	 public var viewHtmlDom:HtmlDom;
 	/**
-	 * SLPlayer application used to create the components in the loaded publication (the view)
+	 * Brix application used to create the components in the loaded publication (the view)
 	 */
 	public var application:Application;
 
@@ -300,26 +300,22 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			// extract the body section
 			modelHtmlDom.innerHTML = currentData.html.substring(closingTagIdx + 1, bodyCloseIdx);
 		}
-		trace("Publication data is loaded 02");
+
 		// add attributes to nodes recursively
 		prepareForEdit(modelHtmlDom);
 
-		trace("Publication data is loaded 04");
 		// init the view
 		initViewHtmlDom();
 
-		trace("Publication data is loaded 06");
 		// dispatch the event, the DOM is then assumed to be attached to the browser DOM
 		dispatchEvent(createEvent(ON_DATA), debugInfo);
 
-		trace("Publication data is loaded 08");
-		// init the SLPlayer application
-		initSLPlayerApplication(viewHtmlDom);
-		trace("Publication data is loaded 10");
+		// init the Brix application
+		initBrixApplication(viewHtmlDom);
 	}
 	/**
 	 * Duplicate the loaded DOM
-	 * Initialize the SLPlayer for the view
+	 * Initialize the Brix for the view
 	 */
 	private function initViewHtmlDom():Void{
 		// trace("initViewHtmlDom");
@@ -398,19 +394,16 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		return (nextId++)+"";
 	}
 	/**
-	 * init the SLPlayer application
+	 * init the Brix application
 	 */
-	private function initSLPlayerApplication(rootElement:HtmlDom):Void{
-		trace("init the SLPlayer application 02");
-		// create an SLPlayer app
+	private function initBrixApplication(rootElement:HtmlDom):Void{
+		// create an Brix app
 		application = Application.createApplication();
 
-		trace("init the SLPlayer application 04");
-		// init SLPlayer
+		// init Brix
 		application.initDom(rootElement);
 		application.initComponents();
 
-		trace("init the SLPlayer application 06");
 		// initial page
 		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, headHtmlDom);
 		if (initialPageName != null){
@@ -421,19 +414,17 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			else{
 				trace("Warning: could not resolve default page name ("+initialPageName+")");
 			}
-			trace("init the SLPlayer application 08	");
 		}
 		else{
 			trace("Warning: no initial page found");
 		}
 
-		trace("init the SLPlayer application 10");
 		// execute debug actions
 		#if silexDebug
 		// execute an action when needed for debug (publication and server config)
 		if (currentConfig.debugModeAction != null){
 			var context:Hash<Dynamic> = new Hash();
-			context.set("slpid", application.id);
+			context.set("BrixId", application.id);
 			context.set("PublicationModel", PublicationModel);
 			context.set("PageModel", PageModel);
 			context.set("LayerModel", LayerModel);
@@ -446,7 +437,6 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			}
 		}
 		#end
-		trace("init the SLPlayer application 12");
 	}
 	/**
 	 * An error occured

@@ -8,10 +8,10 @@ import silex.layer.LayerModel;
 import silex.component.ComponentModel;
 import silex.property.PropertyModel;
 
-import org.slplayer.core.Application;
-import org.slplayer.util.DomTools;
+import brix.core.Application;
+import brix.util.DomTools;
 
-import org.slplayer.component.navigation.Page;
+import brix.component.navigation.Page;
 
 import silex.publication.PublicationService;
 import silex.interpreter.Interpreter;
@@ -44,11 +44,11 @@ class PublicationsTestClient {
 	 * Init Silex app
 	 */
 	static public function init(unused:Dynamic=null){
-		// create an SLPlayer app
+		// create an Brix app
 		var application = Application.createApplication();
 		application.initDom();
 
-		// init SLPlayer components
+		// init Brix components
 		trace(" application.init ");
 		application.initComponents();
 

@@ -6,7 +6,7 @@ import silex.component.ComponentModel;
 import silex.publication.PublicationModel;
 import silex.layer.LayerModel;
 
-import org.slplayer.util.DomTools;
+import brix.util.DomTools;
 
 import js.Lib;
 import js.Dom;

@@ -9,13 +9,13 @@ import silex.page.PageModel;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.ui.DisplayObject;
-import org.slplayer.component.navigation.Layer;
-import org.slplayer.util.DomTools;
+import brix.component.ui.DisplayObject;
+import brix.component.navigation.Layer;
+import brix.util.DomTools;
 
 /**
  * Editor for component properties, e.g. the URL of the image tag. 
- * Editors are SLPlayer components, in charge of handling HTML input elements, 
+ * Editors are Brix components, in charge of handling HTML input elements, 
  * in order to let the user enter values and edit css style values or tag attributes.
  */
 class PropertyEditor extends EditorBase 
@@ -33,8 +33,8 @@ class PropertyEditor extends EditorBase
 	 * Constructor
 	 * Start listening the input events
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String){
-		super(rootElement, SLPId);
+	public function new(rootElement:HtmlDom, BrixId:String){
+		super(rootElement, BrixId);
 		// listen to the click event
 		rootElement.addEventListener("click", onClick, true);
 	}
