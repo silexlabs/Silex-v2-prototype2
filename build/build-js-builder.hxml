@@ -1,0 +1,22 @@
+#########
+# builder
+#########
+-js ../bin/publications/admin/silex-builder.js
+-cp ../src/
+-cp ../../Brix/src/
+-cp ../../Cocktail/src/
+#--no-traces
+-debug
+-lib hscript
+
+-main silex.Silex
+--macro brix.core.Builder.create('../src/index-builder.html', '../bin/publications/admin/index.html')
+
+#-D slpdebug
+-D disableEmbedHtml
+-D noAutoStart
+-D stopOnError
+
+-D silexClientSide
+-D silexDebug
+

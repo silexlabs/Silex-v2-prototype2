@@ -8,9 +8,9 @@ import silex.component.ComponentModel;
 import silex.publication.PublicationModel;
 import silex.property.PropertyModel;
 
-import org.slplayer.component.navigation.Layer;
-import org.slplayer.component.navigation.Page;
-import org.slplayer.util.DomTools;
+import brix.component.navigation.Layer;
+import brix.component.navigation.Page;
+import brix.util.DomTools;
 
 /**
  * Manipulation of layers, remove, add, etc. 
@@ -116,7 +116,7 @@ class LayerModel extends ModelBase<Layer>{
 		// create a node for an empty new layer
 		var newNode = Lib.document.createElement("div");
 		newNode.className = "Layer " + page.name;
-		newNode.title = layerName;
+		newNode.setAttribute("title", layerName);
 
 		// add to the view DOM
 		if (position > viewHtmlDom.childNodes.length - 1){
@@ -187,7 +187,7 @@ class LayerModel extends ModelBase<Layer>{
 			viewHtmlDom.parentNode.removeChild(viewHtmlDom);
 			modelHtmlDom.parentNode.removeChild(modelHtmlDom);
 			// todo: maybe free the domelement, not possible to write layer.rootElement = null;
-			// todo: unregister class from SLPLayer
+			// todo: unregister class from Brix
 		}
 		else{
 			layer.hide(null, true);

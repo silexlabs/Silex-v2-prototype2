@@ -3,9 +3,9 @@ package silex.ui.list;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.navigation.Layer;
-import org.slplayer.component.list.List;
-import org.slplayer.util.DomTools;
+import brix.component.navigation.Layer;
+import brix.component.list.List;
+import brix.util.DomTools;
 
 import silex.layer.LayerModel;
 import silex.publication.PublicationModel;
@@ -31,8 +31,8 @@ class LayersList extends List<Layer>
 	/**
 	 * constructor
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String){
-		super(rootElement, SLPId);
+	public function new(rootElement:HtmlDom, BrixId:String){
+		super(rootElement, BrixId);
 
 		// store a reference to the model
 		var layerModel = LayerModel.getInstance();

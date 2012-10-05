@@ -7,8 +7,8 @@ import silex.layer.LayerModel;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.ui.DisplayObject;
-import org.slplayer.util.DomTools;
+import brix.component.ui.DisplayObject;
+import brix.util.DomTools;
 
 /**
  * Base class for editor for styles which have top, left, bottom and right properties,
@@ -17,7 +17,7 @@ import org.slplayer.util.DomTools;
  * and a combo box for unit with class name prefix + "_top_unit".
  * The style prefix is the prefix for the property on the style, e.g. "margin" for element.style.marginTop
  * 
- * Editors are SLPlayer components, in charge of handling HTML input elements, 
+ * Editors are Brix components, in charge of handling HTML input elements, 
  * in order to let the user enter values and edit css style values or tag attributes.
  * todo: background alpha
  */
@@ -33,7 +33,7 @@ class BoxTypeEditorBase extends EditorBase
 	 * Constructor
 	 * store the prefix values 
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String, prefix:String, stylePrefix:String, topStyleSufix:String="Top", leftStyleSufix:String="Left", rightStyleSufix:String="Right", bottomStyleSufix:String="Bottom"){
+	public function new(rootElement:HtmlDom, BrixId:String, prefix:String, stylePrefix:String, topStyleSufix:String="Top", leftStyleSufix:String="Left", rightStyleSufix:String="Right", bottomStyleSufix:String="Bottom"){
 		this.prefix = prefix;
 		this.stylePrefix = stylePrefix;
 		this.topStyleSufix = topStyleSufix;
@@ -41,7 +41,7 @@ class BoxTypeEditorBase extends EditorBase
 		this.rightStyleSufix = rightStyleSufix;
 		this.bottomStyleSufix = bottomStyleSufix;
 
-		super(rootElement, SLPId);
+		super(rootElement, BrixId);
 	}
 	/**
 	 * reset the values

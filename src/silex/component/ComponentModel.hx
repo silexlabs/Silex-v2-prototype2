@@ -5,7 +5,7 @@ import js.Dom;
 
 import silex.ModelBase;
 import silex.publication.PublicationModel;
-import org.slplayer.component.navigation.Layer;
+import brix.component.navigation.Layer;
 
 
 /**

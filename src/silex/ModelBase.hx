@@ -3,8 +3,8 @@ package silex;
 import js.Dom;
 import js.Lib;
 
-import org.slplayer.core.Application;
-import org.slplayer.component.ui.DisplayObject;
+import brix.core.Application;
+import brix.component.ui.DisplayObject;
 
 /**
  * structure used to store the listeners and the event they are listening to
@@ -39,7 +39,7 @@ class ModelBase <FinalType>{
 	 * retrieve all the instances of a given component
 	 * @example 	all the layers: LayerModel.getInstance().getClasses(publicationModel.viewHtmlDom, publicationModel.application.id, Layer);
 	 */
-	public function getClasses(viewHtmlDom:HtmlDom, slPlayerId:String, finalType:Class<DisplayObject>):Array<FinalType>{
+	public function getClasses(viewHtmlDom:HtmlDom, brixInstanceId:String, finalType:Class<DisplayObject>):Array<FinalType>{
 		// get all nodes which have instances of FinalType, i.e. all element with class name "FinalType"
 		var classes:Array<FinalType> = new Array();
 
@@ -57,7 +57,7 @@ class ModelBase <FinalType>{
 		for (idx in 0...nodes.length)
 		{
 			// retrieve the class instance associated with this node
-			var instances:List<DisplayObject> = Application.get(slPlayerId).getAssociatedComponents(nodes[idx], finalType);
+			var instances:List<DisplayObject> = Application.get(brixInstanceId).getAssociatedComponents(nodes[idx], finalType);
 
 			if (instances.length == 1){
 				// store the first instance
@@ -115,6 +115,12 @@ class ModelBase <FinalType>{
 			dispatchEvent(createEvent(selectionChangeEventName, item), debugInfo);
 		}
 		return item;
+	}
+	/**
+	 * Refresh selection, this wil dispatch a change event but keep current selection
+	 */
+	public function refresh() {
+		dispatchEvent(createEvent(selectionChangeEventName, selectedItem), debugInfo);
 	}
 	////////////////////////////////////////////////
 	// Event system implementation

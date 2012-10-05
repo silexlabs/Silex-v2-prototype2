@@ -3,8 +3,8 @@ package silex.ui.toolbox.editor;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.ui.DisplayObject;
-import org.slplayer.util.DomTools;
+import brix.component.ui.DisplayObject;
+import brix.util.DomTools;
 import silex.property.PropertyModel;
 import silex.component.ComponentModel;
 import silex.layer.LayerModel;
@@ -12,7 +12,7 @@ import silex.publication.PublicationModel;
 
 /**
  * This component is the base class for all editors in Silex. 
- * Editors are SLPlayer components, in charge of handling HTML input elements, 
+ * Editors are Brix components, in charge of handling HTML input elements, 
  * in order to let the user enter values and edit css style values or tag attributes.
  * The name of the style or attribute is specifiyed as data-attribute-name or data-style-name
  * And the values are given as key/value pairs
@@ -35,8 +35,8 @@ class EditorBase extends DisplayObject
 	 * Constructor
 	 * Start listening the input events
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String){
-		super(rootElement, SLPId);
+	public function new(rootElement:HtmlDom, BrixId:String){
+		super(rootElement, BrixId);
 		// listen to the change event of HTML inputs
 		rootElement.addEventListener("input", onInput, true);
 		rootElement.addEventListener("change", onInput, true);

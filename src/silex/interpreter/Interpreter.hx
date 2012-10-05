@@ -3,10 +3,10 @@ package silex.interpreter;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.core.Application;
-import org.slplayer.component.navigation.Page;
-import org.slplayer.component.navigation.Layer;
-import org.slplayer.util.DomTools;
+import brix.core.Application;
+import brix.component.navigation.Page;
+import brix.component.navigation.Layer;
+import brix.util.DomTools;
 
 import hscript.Interp;
 import hscript.Parser;

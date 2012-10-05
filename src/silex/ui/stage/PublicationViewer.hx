@@ -7,10 +7,10 @@ import silex.page.PageModel;
 import silex.publication.PublicationModel;
 import silex.publication.PublicationData;
 
-import org.slplayer.component.navigation.Page;
-import org.slplayer.component.navigation.transition.TransitionData;
+import brix.component.navigation.Page;
+import brix.component.navigation.transition.TransitionData;
 
-import org.slplayer.component.ui.DisplayObject;
+import brix.component.ui.DisplayObject;
 
 /**
  * This class is in charge of attaching the publication to the DOM.
@@ -38,9 +38,9 @@ class PublicationViewer extends DisplayObject{
 	 * Constructor
 	 * Define the callbacks
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String){
+	public function new(rootElement:HtmlDom, BrixId:String){
 		trace("PublicationViewer INIT");
-		super(rootElement, SLPId);
+		super(rootElement, BrixId);
 
 		// store a reference to the model
 		publicationModel = PublicationModel.getInstance();
