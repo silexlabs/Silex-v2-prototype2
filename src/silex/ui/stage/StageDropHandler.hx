@@ -170,11 +170,11 @@ trace("parent = "+parent+"  - position= "+position);
 		// refresh the builder display
 		if (ComponentModel.getInstance().selectedItem != null){
 			// case of a component
-			ComponentModel.getInstance().selectedItem = ComponentModel.getInstance().selectedItem;
+			ComponentModel.getInstance().refresh();
 		}
 		else if (LayerModel.getInstance().selectedItem != null){
 			// case of a layer
-			LayerModel.getInstance().selectedItem = LayerModel.getInstance().selectedItem;
+			LayerModel.getInstance().refresh();
 		}
 		trace("ON DROP COMPLETE");
 	}

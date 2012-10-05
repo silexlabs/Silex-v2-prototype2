@@ -1,4 +1,4 @@
-package silex.ui.stage;
+package silex.ui.toolbox;
 
 import js.Lib;
 import js.Dom;
@@ -8,6 +8,7 @@ import brix.component.ui.DisplayObject;
 import brix.util.DomTools;
 
 import silex.publication.PublicationModel;
+import silex.page.PageModel;
 
 /**
  * This component listen to the menu events and start the desired actions. 
@@ -43,20 +44,34 @@ class MenuController extends DisplayObject
 
 		// take an action depending on the menu name
 		switch (itemName) {
-			case "open":
+			case "create-publication":
+				var newName = Lib.window.prompt("I need a name for your publication.", PublicationModel.getInstance().currentName);
+				if (newName != null)
+					PublicationModel.getInstance().create(newName);
+			case "trash-publication":
+				var confirm = Lib.window.confirm("I am about to trash the publication "+PublicationModel.getInstance().currentName+". Are you sure?");
+				if (confirm == true)
+					PublicationModel.getInstance().trash(PublicationModel.getInstance().currentName);
+			case "open-publication":
 				Page.openPage("open-dialog", true, null, null, brixInstanceId);
-			case "close":
+			case "close-publication":
 				PublicationModel.getInstance().unload();
-			case "save":
+			case "save-publication":
 				PublicationModel.getInstance().save();
-			case "save-as":
+			case "save-publication-as":
 				var newName = Lib.window.prompt("New name for your publication?", PublicationModel.getInstance().currentName);
 				if (newName != null)
 					PublicationModel.getInstance().saveAs(newName);
-			case "save-copy":
+			case "save-publication-copy":
 				var newName = Lib.window.prompt("What name for your copy?", PublicationModel.getInstance().currentName);
 				if (newName != null)
 					PublicationModel.getInstance().saveACopy(newName);
+			case "add-page":
+				PageModel.getInstance().addPage(Lib.window.prompt("I need a name for this new page."));
+			case "del-page":
+				var pageModel = PageModel.getInstance();
+				// remove the page
+				pageModel.removePage(pageModel.selectedItem);
 		}
 
 	}

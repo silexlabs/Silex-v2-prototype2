@@ -145,7 +145,7 @@ class SelectionController extends DisplayObject
 	 * refresh display
 	 */
 	public function redraw(e:Event=null) {
-		trace("redraw selection");
+		// trace("redraw selection");
 		if (layerModel.selectedItem == null) setMarkerPosition(selectionLayerMarker, null);
 		else setMarkerPosition(selectionLayerMarker, layerModel.selectedItem.rootElement);
 		if (layerModel.hoveredItem == null) setMarkerPosition(hoverLayerMarker, null);
@@ -317,7 +317,7 @@ class SelectionController extends DisplayObject
 			}
 			layerModel.hoveredItem = layerList.first();
 		}else{
-			trace("COMPONENT!");
+			// trace("COMPONENT!");
 			// retrieve the node which is a component, i.e. the one whise parent node has the Layer class
 			var component:HtmlDom = getComponent(e.target);
 			// set the item on the model (this will dispatch an event and we will catch it to update the marker)
