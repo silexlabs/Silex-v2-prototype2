@@ -116,6 +116,12 @@ class ModelBase <FinalType>{
 		}
 		return item;
 	}
+	/**
+	 * Refresh selection, this wil dispatch a change event but keep current selection
+	 */
+	public function refresh() {
+		dispatchEvent(createEvent(selectionChangeEventName, selectedItem), debugInfo);
+	}
 	////////////////////////////////////////////////
 	// Event system implementation
 	////////////////////////////////////////////////

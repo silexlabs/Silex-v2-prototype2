@@ -99,11 +99,11 @@ class SelectionMarker extends StageDropHandler{
 		// refresh the builder display
 		if (draggedComponent != null){
 			// case of a component
-			ComponentModel.getInstance().selectedItem = ComponentModel.getInstance().selectedItem;
+			ComponentModel.getInstance().refresh();
 		}
 		else if (draggedLayer != null){
 			// case of a layer
-			LayerModel.getInstance().selectedItem = LayerModel.getInstance().selectedItem;
+			LayerModel.getInstance().refresh();
 		}
 		// **
 		// reset state

@@ -141,7 +141,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * Starts the loading process of the list of available publications
 	 */
 	public function loadList(){
-		publicationService.getPublications(null, [Publication], onListResult, onError);
+		publicationService.getPublications([Published(null), Private], [Publication], onListResult, onError);
 	}
 	////////////////////////////////////////////////
 	// helpers
@@ -307,11 +307,18 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		// init the view
 		initViewHtmlDom();
 
+		// init the Brix application
+		initBrixApplication(viewHtmlDom);
+
 		// dispatch the event, the DOM is then assumed to be attached to the browser DOM
 		dispatchEvent(createEvent(ON_DATA), debugInfo);
 
-		// init the Brix application
-		initBrixApplication(viewHtmlDom);
+		// refresh selection
+		refresh();
+		PageModel.getInstance().refresh();
+		LayerModel.getInstance().refresh();
+		ComponentModel.getInstance().refresh();
+		PropertyModel.getInstance().refresh();
 	}
 	/**
 	 * Duplicate the loaded DOM
@@ -467,6 +474,43 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	////////////////////////////////////////////////
 	// Save
 	////////////////////////////////////////////////
+	/**
+	 * Create a publication
+	 * TODO: handle errors specific to creation
+	 */
+	public function create(newName:String){
+		unload();
+
+		var publicationData:PublicationData = {
+			html: "",
+			css: ""
+		}
+
+		// start the save process
+		publicationService.create(newName, publicationData, callback(onCreateSuccess, newName), onSaveError);
+	}
+	/**
+	 * Creation success
+	 */
+	private function onCreateSuccess(name:String):Void{
+		trace("PUBLICATION CREATED "+name);
+		load(name);
+	}
+	/**
+	 * Delete a publication
+	 * TODO: handle errors specific to deletion
+	 */
+	public function trash(name:String){
+		// start the save process
+		publicationService.trash(name, onDeleteSuccess, onSaveError);
+	}
+	/**
+	 * Deletion success
+	 */
+	private function onDeleteSuccess():Void{
+		trace("PUBLICATION DELETED ");
+		unload();
+	}
 	/**
 	 * Save a copy of the current publication with a new name
 	 * Save the current publication and then duplicate it
