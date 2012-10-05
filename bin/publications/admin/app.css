@@ -964,4 +964,24 @@ min-width:105px;
 /* **************** */
 /* /Properties Toolbox */
 /* **************** */
+fieldset {
+}
 
+fieldset label {
+	height:20px;
+	margin-top:15px;
+}
+
+/* input */
+fieldset input {
+	width:45px;
+	height:20px;
+	float:right;
+}
+
+/* select */
+fieldset select {
+	width:auto;
+	height:20px;
+	float:right;
+}
