@@ -489,7 +489,7 @@ width:100%;
 /* **************** */
 /* Ribbon Toolbox */
 /* **************** */
-.GroupRibbon{
+.group-ribbon{
 	width: 100%;
 	position: relative;
 	z-index: 2000;
@@ -508,13 +508,13 @@ width:100%;
 .page-opened{
 	background-color:white;
 }
-.GroupRibbon, .ribbon-tabs a{
+.group-ribbon, .ribbon-tabs a{
 	text-decoration:none;
 	color:#3C3C3C;
 	font-family:Tahoma;
 	font-size:13px;
 }
-.GroupRibbon .disabled {
+.group-ribbon .disabled {
 	pointer-events: none;
 	color: grey ! important;
 	background-color:Gainsboro;
