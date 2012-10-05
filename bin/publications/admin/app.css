@@ -439,6 +439,7 @@ width:100%;
 	position: absolute;
 	margin:0px;
 	padding:0px;
+	display: none;
 }
 .hover-marker{
 	z-index: 300;

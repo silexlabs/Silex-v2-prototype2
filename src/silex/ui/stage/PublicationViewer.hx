@@ -39,7 +39,6 @@ class PublicationViewer extends DisplayObject{
 	 * Define the callbacks
 	 */
 	public function new(rootElement:HtmlDom, BrixId:String){
-		trace("PublicationViewer INIT");
 		super(rootElement, BrixId);
 
 		// store a reference to the model
@@ -65,21 +64,17 @@ class PublicationViewer extends DisplayObject{
 	 * Attach the publication view, i.e. add the duplicated DOM to the browser DOM.
 	 */
 	public function onPublicationData(event:CustomEvent){
-		trace("onPublicationData 01");
 		// display the publication for editing
 		rootElement.innerHTML = "";
 		rootElement.appendChild(publicationModel.viewHtmlDom);
-		trace("onPublicationData 02");
 	}
 	/**
 	 * Callback for the event dispatched when the page selection changes.
 	 * Open the selected page in the view
 	 */
 	public function onPageChange(event:CustomEvent){
-		trace("onPageChange");
 		if (pageModel.selectedItem!=null){
 			Page.openPage(pageModel.selectedItem.name, false, null, null, publicationModel.application.id, publicationModel.viewHtmlDom);
 		}
-		trace("onPageChange");
 	}
 }

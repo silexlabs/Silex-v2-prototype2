@@ -60,7 +60,7 @@
 		<LINK href="app.css" rel="stylesheet"></LINK>
 		<META name="debugModeAction" content="
 		//Lib.alert('test!');
-		//PublicationModel.getInstance().load('default');
+		PublicationModel.getInstance().load('default');
 	"></META>
 	<SCRIPT src="silex-builder.js"></SCRIPT></HEAD>
 	
@@ -116,6 +116,10 @@
 								<DIV class="temp-icon"></DIV>
 								<P>close</P>
 							</LI>
+							<LI data-menu-item="view-publication">
+								<DIV class="temp-icon"></DIV>
+								<P>view</P>
+							</LI>
 							<LI data-menu-item="trash-publication">
 								<DIV class="temp-icon"></DIV>
 								<P>delete</P>
@@ -150,6 +154,7 @@
 						<DIV class="assets-page">
 							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-add.png" title="Add a page" data-menu-item="add-page"/>
 							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-delete.png" title="Delete selected page" data-menu-item="del-page"/>
+							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-rename.png" title="Rename selected page" data-menu-item="rename-page"/>
 						</DIV>
 						<UL class="PageList">
 							<LI class="">

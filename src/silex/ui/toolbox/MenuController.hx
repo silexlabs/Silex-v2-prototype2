@@ -44,6 +44,9 @@ class MenuController extends DisplayObject
 
 		// take an action depending on the menu name
 		switch (itemName) {
+			/////////////
+			// file
+			/////////////
 			case "create-publication":
 				var newName = Lib.window.prompt("I need a name for your publication.", PublicationModel.getInstance().currentName);
 				if (newName != null)
@@ -56,6 +59,8 @@ class MenuController extends DisplayObject
 				Page.openPage("open-dialog", true, null, null, brixInstanceId);
 			case "close-publication":
 				PublicationModel.getInstance().unload();
+			case "view-publication":
+				Lib.window.open("../"+PublicationModel.getInstance().currentName, '_blank');
 			case "save-publication":
 				PublicationModel.getInstance().save();
 			case "save-publication-as":
@@ -66,12 +71,23 @@ class MenuController extends DisplayObject
 				var newName = Lib.window.prompt("What name for your copy?", PublicationModel.getInstance().currentName);
 				if (newName != null)
 					PublicationModel.getInstance().saveACopy(newName);
+
+			/////////////
+			// page
+			/////////////
 			case "add-page":
-				PageModel.getInstance().addPage(Lib.window.prompt("I need a name for this new page."));
+				var newName = Lib.window.prompt("What name for your new page?");
+				if (newName != null)
+					PageModel.getInstance().addPage(newName);
 			case "del-page":
-				var pageModel = PageModel.getInstance();
 				// remove the page
-				pageModel.removePage(pageModel.selectedItem);
+				var confirm = Lib.window.confirm("I am about to delete the page "+PageModel.getInstance().selectedItem.name+". Are you sure?");
+				if (confirm == true)
+					PageModel.getInstance().removePage(PageModel.getInstance().selectedItem);
+			case "rename-page":
+				var newName = Lib.window.prompt("What name do your want to give to the page "+PageModel.getInstance().selectedItem.name+"?");
+				if (newName != null)
+					PageModel.getInstance().renamePage(PageModel.getInstance().selectedItem, newName);
 		}
 
 	}

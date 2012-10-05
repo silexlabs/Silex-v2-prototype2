@@ -240,7 +240,7 @@ class SelectionController extends DisplayObject
 		var found = false;
 		var layers = DomTools.getElementsByAttribute(rootElement, "data-silex-layer-id", "*");
 		for (idx in 0...layers.length){
-			if (checkIsOver(layers[idx], e.pageX, e.pageY)){
+			if (checkIsOver(layers[idx], e.clientX, e.clientY)){
 				// the mouse is over a layer
 				// get the Brix application from the loaded publication
 				var application = PublicationModel.getInstance().application;
@@ -266,7 +266,7 @@ class SelectionController extends DisplayObject
 			// browse all components to check if it should be set as hovered
 			var comps = DomTools.getElementsByAttribute(layerModel.hoveredItem.rootElement, "data-silex-component-id", "*");
 			for (idx in 0...comps.length){
-				if (checkIsOver(comps[idx], e.pageX, e.pageY)){
+				if (checkIsOver(comps[idx], e.clientX, e.clientY)){
 					// the mouse is over a layer
 					componentModel.hoveredItem = comps[idx];
 					found = true;

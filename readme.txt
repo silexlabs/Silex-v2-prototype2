@@ -38,9 +38,9 @@ En cours
 
 ** To do **
 
-remettre en place des tests unitaires
-- chaque liste
-- bouger les publications de test
+
+integrer taf de woodoo (properties tool box)
+
 
 cleanup code
 - PublicationModel
@@ -79,15 +79,9 @@ permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html 
   * memory leak in the Layer, Page and transition classes
   * in the List class, listen to the click on the container instead of each cell, to prevent memory leak
   * chrome and color picker : read ok, load bug
-
-* creation de publication : initialPage?, créer un calque vide?
-* close publication => refresh des boites a outil page et master
-
-
+  * delete a container when it is a master or not, and uncheck master when the container is not on any page
 
 Silex menu missing items
-- view publication
-- rename page
 - transition in, out and show, hide
 - edit text
 - edit CSS
@@ -107,6 +101,13 @@ missing functionality
 - liste de pages réordonnable
 
 fonctionnalité
+- create publication
+  . choose a theme (css)
+  . automatic add header, footer, aside, nav tags
+  . nav tag = list of all pages (possible to prevent a page to appear there)
+  . creation de page => ajoute un lien dans header
+- creer une page a partir d'une autre page (DUPLICATE)
+- detecter quand il y a des modifs non sauvée et demander confirmation de close, open...
 - text editor and file manager
   http://ckeditor.com/demo ("Kama" skin) and http://sourceforge.net/projects/pdwfilebrowser/
 - code editor
@@ -118,10 +119,8 @@ fonctionnalité
 - selection resize
 - drag/drop page
 - ergo de remove page, layer, comp, 
-- publication: open, close, save, save as, save a copy, delete
 - admin dans ./admin/index.html, export de la publication dans ./ 
   =>  ./admin/index.html est compilée a partir de src/index-builder.html
-
 
 
 - ------
