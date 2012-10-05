@@ -7,12 +7,12 @@ import silex.property.PropertyModel;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.ui.DisplayObject;
-import org.slplayer.util.DomTools;
+import brix.component.ui.DisplayObject;
+import brix.util.DomTools;
 
 /**
  * Editor for raw HTML input. data-attribute-name is not used since it is always used to edit the innerHTML attribute
- * Editors are SLPlayer components, in charge of handling HTML input elements, 
+ * Editors are Brix components, in charge of handling HTML input elements, 
  * in order to let the user enter values and edit css style values or tag attributes.
  * The name of the style or attribute is specifiyed as data-attribute-name or data-style-name
  * And the values are given as key/value pairs
@@ -28,9 +28,9 @@ class RawHtmlEditor extends EditorBase
 	 * Constructor
 	 * Start listening the input events
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String)
+	public function new(rootElement:HtmlDom, BrixId:String)
 	{
-		super(rootElement, SLPId);
+		super(rootElement, BrixId);
 	}
 	/**
 	 * apply the property value

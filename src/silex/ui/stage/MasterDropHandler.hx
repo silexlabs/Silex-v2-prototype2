@@ -3,10 +3,10 @@ package silex.ui.stage;
 import js.Lib;
 import js.Dom;
 
-import org.slplayer.component.ui.DisplayObject;
-import org.slplayer.util.DomTools;
-import org.slplayer.component.navigation.Layer;
-import org.slplayer.component.interaction.Draggable;
+import brix.component.ui.DisplayObject;
+import brix.util.DomTools;
+import brix.component.navigation.Layer;
+import brix.component.interaction.Draggable;
 import silex.page.PageModel;
 import silex.layer.LayerModel;
 import silex.publication.PublicationModel;
@@ -24,8 +24,8 @@ class MasterDropHandler extends StageDropHandler{
 	 * constructor
 	 * listen to the Draggable class events
 	 */
-	public function new(rootElement:HtmlDom, SLPId:String){
-		super(rootElement, SLPId);
+	public function new(rootElement:HtmlDom, BrixId:String){
+		super(rootElement, BrixId);
 	}
 	/**
 	 * virtual method to be implemented in derived classes

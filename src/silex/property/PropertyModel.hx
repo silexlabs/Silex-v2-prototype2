@@ -6,7 +6,7 @@ import silex.component.ComponentModel;
 import silex.publication.PublicationModel;
 import silex.layer.LayerModel;
 
-import org.slplayer.util.DomTools;
+import brix.util.DomTools;
 
 import js.Lib;
 import js.Dom;
@@ -99,7 +99,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * @param 	value 	a value to be set on the view and html dom elements, can be null to remove the attribute, and of different types, e.g. Bool for the autostart param of an audio element 
 	 */
 	public function setAttribute(viewHtmlDom:HtmlDom, name:String, value:Null<Dynamic>){
-		trace("setAttribute("+viewHtmlDom+", "+name+", "+Type.typeof(value)+")");
+		// trace("setAttribute("+viewHtmlDom+", "+name+", "+Type.typeof(value)+")");
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
@@ -150,7 +150,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * @param 	value 	a value to be set on the view and html dom elements, can be null to remove the attribute, and of different types, e.g. Bool for the autostart param of an audio element 
 	 */
 	public function setProperty(viewHtmlDom:HtmlDom, name:String, value:Null<Dynamic>){
-		trace("setProperty("+viewHtmlDom+", "+name+", "+Type.typeof(value)+")");
+		// trace("setProperty("+viewHtmlDom+", "+name+", "+Type.typeof(value)+")");
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
@@ -194,7 +194,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * This dispatches a onStyleChange event with event.detail set to the PropertyData object 
 	 */
 	public function setStyle(viewHtmlDom:HtmlDom, name:String, value:String){
-		trace("setStyle("+viewHtmlDom+", "+name+", "+value+")");
+		// trace("setStyle("+viewHtmlDom+", "+name+", "+value+")");
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 

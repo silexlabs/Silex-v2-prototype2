@@ -4,7 +4,7 @@ rename meta data "HomePage" to "initialPageName" in html
 
 Refactoring
 - dialogs in org.silex.component.dialog
-- links in org.slplayer.component.navigation.link
+- links in brix.component.navigation.link
 
 in the hxml, renamed flags SilexClientSide and SilexServerSide as silexClientSide and silexServerSide 
 

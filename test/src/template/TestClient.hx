@@ -1,6 +1,6 @@
 package template;
 
-import org.slplayer.component.template.TemplateMacros;
+import brix.component.template.TemplateMacros;
 
 import js.Dom;
 import js.XMLHttpRequest;
