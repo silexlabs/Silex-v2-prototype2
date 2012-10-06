@@ -21,6 +21,7 @@
 		<script data-brix-use="silex.ui.dialog.ModelDebugger"></script>
 		<script data-brix-use="silex.ui.dialog.AuthDialog"></script>
 		<script data-brix-use="silex.ui.dialog.OpenDialog"></script>
+		<script data-brix-use="silex.ui.dialog.FileBrowserDialog"></script>
 		<script data-brix-use="silex.ui.list.PublicationList"></script>
 		<script data-brix-use="silex.ui.list.PageList"></script>
 		<script data-brix-use="silex.ui.list.LayersList"></script>
@@ -308,8 +309,28 @@
 						
 					</DIV>
 				</form>
+				<!-- FileBrowser Dialog -->
+				<A class="Page" name="file-browser-dialog" ></A>
+				<form class="Layer file-browser-dialog dialog-foreground FileBrowserDialog" data-dialog-name="file-browser-dialog">
+					<DIV class="container-2">
+						<DIV class="header-2">
+							<img src="../admin/assets/header-2.png"></img>
+						</DIV>
+						<DIV class="file-browser-div">
+						</DIV>
+						<DIV class="foot">
+								<DIV class="solid-3"></DIV>
+								<DIV class="solid-4"></DIV>
+<!--								<input type="submit" value="Ok" class="validate-button"></input>
+-->
+								<button class="cancel-button">Cancel</button>
+						
+						</DIV>
+						
+					</DIV>
+				</form>
 				<!-- dialog background -->
-				<DIV class="Layer dialog-background login-dialog open-dialog"></DIV>
+				<DIV class="Layer dialog-background login-dialog open-dialog file-browser-dialog"></DIV>
 			</DIV>
 			<!-- ----------	 -->
 			<!-- /Dialogs -->
@@ -377,12 +398,14 @@
 								<FIELDSET class="context-video context-audio">
 									<LEGEND>Sources (1 by line)</LEGEND>
 									<TEXTAREA class="multiple-src-property"></TEXTAREA>
-									<BUTTON title="Option not yet implemented.">Browse media gallery</BUTTON>
+									<BUTTON class="select-file-button" title="Browse media gallery"
+										data-fb-target="multiple-src-property">Browse media gallery</BUTTON>
 								</FIELDSET>
 								<FIELDSET class="context-img">
 									<LEGEND>Source</LEGEND>
 									<INPUT class="src-property" name="URL" type="src"/>
-									<BUTTON title="Option not yet implemented.">Browse media gallery</BUTTON>
+									<BUTTON class="select-file-button" title="Browse media gallery"
+										data-fb-target="src-property">Browse media gallery</BUTTON>
 								</FIELDSET>
 								<FIELDSET class="context-video context-audio">
 									<LEGEND>Autoplay</LEGEND>
@@ -871,7 +894,8 @@
 							
 								<LABEL>Sources (1 by line)</LABEL><BR></BR>
 								<TEXTAREA class="multiple-src-property"></TEXTAREA>
-								<BUTTON title="Option not yet implemented.">Browse media gallery</BUTTON>
+								<BUTTON class="select-file-button" title="Browse media gallery"
+									data-fb-target="multiple-src-property">Browse media gallery</BUTTON>
                                 <hr />
 
 								<LABEL for="background_repeat">Repeat</LABEL>

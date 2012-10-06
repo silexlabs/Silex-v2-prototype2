@@ -36,11 +36,9 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 En cours
 -------------------
 
-** To do **
+file browser : manque multiple urls
 
-
-integrer taf de woodoo (properties tool box)
-
+**refactoring**
 
 cleanup code
 - PublicationModel
@@ -51,7 +49,6 @@ cleanup code
 - refactoring: mvc + API publique à overrider + éventuellement une api de plugins pour débutants?
 
 
-**refactoring**
 
 selection
 - ecoute window.resize, et dispatcher window.resize dans Page::open
@@ -81,6 +78,8 @@ permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html 
   * chrome and color picker : read ok, load bug
   * delete a container when it is a master or not, and uncheck master when the container is not on any page
 
+** To do **
+
 Silex menu missing items
 - transition in, out and show, hide
 - edit text
@@ -90,6 +89,8 @@ Silex menu missing items
 - library (import/manage media)
 - cf functionnalities, put disabled buttons
 - restore from trash, empty trash
+- delete comp and layer in the roll over marker
+- idem for name (layer) or media url (comp)
 
 missing functionality
 - page opens => page title changes

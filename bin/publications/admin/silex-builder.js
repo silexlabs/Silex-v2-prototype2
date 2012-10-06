@@ -2800,10 +2800,10 @@ brix.core.ApplicationContext.prototype = {
 		this.registeredUIComponents.push({ classname : "brix.component.list.XmlList", args : null});
 		silex.ui.dialog.OpenDialog;
 		this.registeredUIComponents.push({ classname : "silex.ui.dialog.OpenDialog", args : null});
-		silex.ui.toolbox.editor.PaddingStyleEditor;
-		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.PaddingStyleEditor", args : null});
 		silex.ui.list.PublicationList;
 		this.registeredUIComponents.push({ classname : "silex.ui.list.PublicationList", args : null});
+		silex.ui.toolbox.editor.PaddingStyleEditor;
+		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.PaddingStyleEditor", args : null});
 		brix.component.sound.SoundOff;
 		this.registeredUIComponents.push({ classname : "brix.component.sound.SoundOff", args : null});
 		silex.ui.dialog.ModelDebugger;
@@ -2830,6 +2830,8 @@ brix.core.ApplicationContext.prototype = {
 		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.BoxStyleEditor", args : null});
 		silex.ui.list.LayersList;
 		this.registeredUIComponents.push({ classname : "silex.ui.list.LayersList", args : null});
+		silex.ui.dialog.FileBrowserDialog;
+		this.registeredUIComponents.push({ classname : "silex.ui.dialog.FileBrowserDialog", args : null});
 		brix.component.group.Group;
 		this.registeredUIComponents.push({ classname : "brix.component.group.Group", args : null});
 		silex.ui.toolbox.editor.MarginStyleEditor;
@@ -7735,6 +7737,9 @@ silex.property.PropertyModel.prototype = $extend(silex.ModelBase.prototype,{
 	,__class__: silex.property.PropertyModel
 });
 silex.publication = {}
+silex.publication.PublicationConstants = function() { }
+$hxClasses["silex.publication.PublicationConstants"] = silex.publication.PublicationConstants;
+silex.publication.PublicationConstants.__name__ = ["silex","publication","PublicationConstants"];
 silex.publication.PublicationCategory = $hxClasses["silex.publication.PublicationCategory"] = { __ename__ : ["silex","publication","PublicationCategory"], __constructs__ : ["Publication","Utility","Theme"] }
 silex.publication.PublicationCategory.Publication = ["Publication",0];
 silex.publication.PublicationCategory.Publication.toString = $estr;
@@ -7954,7 +7959,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 	}
 	,load: function(name,configData) {
 		var currentBasTag = brix.util.DomTools.getBaseTag();
-		if(currentBasTag == silex.publication.PublicationService.PUBLICATION_FOLDER + this.currentName + "/" || currentBasTag == silex.publication.PublicationService.PUBLICATION_FOLDER + silex.publication.PublicationService.BUILDER_PUBLICATION_NAME + "/") brix.util.DomTools.setBaseTag(silex.publication.PublicationService.PUBLICATION_FOLDER + name + "/"); else brix.util.DomTools.setBaseTag("../" + name + "/");
+		if(currentBasTag == silex.publication.PublicationConstants.PUBLICATION_FOLDER + this.currentName + "/" || currentBasTag == silex.publication.PublicationConstants.PUBLICATION_FOLDER + silex.publication.PublicationConstants.BUILDER_PUBLICATION_NAME + "/") brix.util.DomTools.setBaseTag(silex.publication.PublicationConstants.PUBLICATION_FOLDER + name + "/"); else brix.util.DomTools.setBaseTag("../" + name + "/");
 		this.currentName = name;
 		var pageModel = silex.page.PageModel.getInstance();
 		pageModel.setHoveredItem(null);
@@ -8128,6 +8133,37 @@ silex.ui.dialog.AuthDialog.prototype = $extend(silex.ui.dialog.DialogBase.protot
 		}
 	}
 	,__class__: silex.ui.dialog.AuthDialog
+});
+silex.ui.dialog.FileBrowserDialog = function(rootElement,BrixId) {
+	silex.ui.dialog.DialogBase.call(this,rootElement,BrixId,$bind(this,this.requestRedraw),null,null,$bind(this,this.cancelSelection));
+};
+$hxClasses["silex.ui.dialog.FileBrowserDialog"] = silex.ui.dialog.FileBrowserDialog;
+silex.ui.dialog.FileBrowserDialog.__name__ = ["silex","ui","dialog","FileBrowserDialog"];
+silex.ui.dialog.FileBrowserDialog.onValidate = null;
+silex.ui.dialog.FileBrowserDialog.__super__ = silex.ui.dialog.DialogBase;
+silex.ui.dialog.FileBrowserDialog.prototype = $extend(silex.ui.dialog.DialogBase.prototype,{
+	close: function() {
+		silex.ui.dialog.DialogBase.prototype.close.call(this);
+	}
+	,cancelSelection: function() {
+		this.close();
+	}
+	,validateSelection: function(url) {
+		if(url != null) {
+			if(silex.ui.dialog.FileBrowserDialog.onValidate != null) {
+				url = StringTools.replace(url,silex.publication.PublicationConstants.PUBLICATION_FOLDER + silex.publication.PublicationModel.getInstance().currentName,"");
+				while(StringTools.startsWith(url,"/")) url = url.substring(1);
+				silex.ui.dialog.FileBrowserDialog.onValidate(url);
+			}
+			this.close();
+		}
+	}
+	,requestRedraw: function(transitionData) {
+		var fbDiv = brix.util.DomTools.getSingleElement(this.rootElement,"file-browser-div",true);
+		fbDiv.innerHTML = "<iframe name=\"kcfinder_iframe\" src=\"../../third-party-tools/kcfinder/browse.php?type=publications&dir=" + silex.publication.PublicationConstants.PUBLICATION_FOLDER + silex.publication.PublicationModel.getInstance().currentName + "/" + "assets/" + "/\" " + "frameborder=\"0\" width=\"100%\" height=\"100%\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" />";
+		js.Lib.window.KCFinder = { callBack : $bind(this,this.validateSelection)};
+	}
+	,__class__: silex.ui.dialog.FileBrowserDialog
 });
 silex.ui.dialog.ModelDebugger = function(rootElement,BrixId) {
 	silex.ui.dialog.DialogBase.call(this,rootElement,BrixId,null,null,null,null);
@@ -8688,6 +8724,7 @@ silex.ui.toolbox.editor.EditorBase = function(rootElement,BrixId) {
 	brix.component.ui.DisplayObject.call(this,rootElement,BrixId);
 	rootElement.addEventListener("input",$bind(this,this.onInput),true);
 	rootElement.addEventListener("change",$bind(this,this.onInput),true);
+	rootElement.addEventListener("click",$bind(this,this.onClick),true);
 	silex.property.PropertyModel.getInstance().addEventListener("onPropertyChange",$bind(this,this.onPropertyChange),"silex.ui.toolbox.editor.EditorBase class");
 	silex.component.ComponentModel.getInstance().addEventListener("onComponentSelectionChange",$bind(this,this.onSelectComponent),"silex.ui.toolbox.editor.EditorBase class");
 	silex.layer.LayerModel.getInstance().addEventListener("onLayerSelectionChange",$bind(this,this.onSelectLayer),"silex.ui.toolbox.editor.EditorBase class");
@@ -8697,7 +8734,11 @@ $hxClasses["silex.ui.toolbox.editor.EditorBase"] = silex.ui.toolbox.editor.Edito
 silex.ui.toolbox.editor.EditorBase.__name__ = ["silex","ui","toolbox","editor","EditorBase"];
 silex.ui.toolbox.editor.EditorBase.__super__ = brix.component.ui.DisplayObject;
 silex.ui.toolbox.editor.EditorBase.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
-	abs2rel: function(url) {
+	selectFile: function(userMessage,validateCallback) {
+		silex.ui.dialog.FileBrowserDialog.onValidate = validateCallback;
+		brix.component.navigation.Page.openPage("file-browser-dialog",true,null,null,this.brixInstanceId);
+	}
+	,abs2rel: function(url) {
 		if(url == null) return null;
 		if(url == "") return "";
 		var pubUrl = "publications/" + silex.publication.PublicationModel.getInstance().currentName + "/";
@@ -8707,7 +8748,7 @@ silex.ui.toolbox.editor.EditorBase.prototype = $extend(brix.component.ui.Display
 			var idxDot = pubUrl.lastIndexOf(".");
 			if(idxSlash < idxDot) pubUrl = HxOverrides.substr(pubUrl,idxSlash,null);
 			url = HxOverrides.substr(url,idxPubFolder + pubUrl.length,null);
-			haxe.Log.trace(" url " + url,{ fileName : "EditorBase.hx", lineNumber : 222, className : "silex.ui.toolbox.editor.EditorBase", methodName : "abs2rel"});
+			haxe.Log.trace(" url " + url,{ fileName : "EditorBase.hx", lineNumber : 253, className : "silex.ui.toolbox.editor.EditorBase", methodName : "abs2rel"});
 		}
 		return url;
 	}
@@ -8720,6 +8761,25 @@ silex.ui.toolbox.editor.EditorBase.prototype = $extend(brix.component.ui.Display
 	,onPropertyChange: function(e) {
 		if(this.propertyChangePending) return;
 		this.refresh();
+	}
+	,onFileChosen: function(propertyName,inputControlClassName,fileUrl) {
+		haxe.Log.trace("onFileChosen(" + propertyName + ", " + inputControlClassName + ", " + fileUrl + ")",{ fileName : "EditorBase.hx", lineNumber : 188, className : "silex.ui.toolbox.editor.EditorBase", methodName : "onFileChosen"});
+		var inputElement = brix.util.DomTools.getSingleElement(this.rootElement,inputControlClassName,true);
+		inputElement.value = fileUrl;
+		this.beforeApply();
+		this.apply();
+		this.afterApply();
+	}
+	,onClick: function(e) {
+		if(brix.util.DomTools.hasClass(e.target,"select-file-button")) {
+			e.preventDefault();
+			var inputControlClassName = e.target.getAttribute("data-fb-target");
+			this.selectFile("Which file will you put here?",(function(f,a1,a2) {
+				return function(a3) {
+					return f(a1,a2,a3);
+				};
+			})($bind(this,this.onFileChosen),"test",inputControlClassName));
+		}
 	}
 	,onInput: function(e) {
 		e.preventDefault();
@@ -9405,7 +9465,6 @@ silex.ui.toolbox.editor.PositionStyleEditor.prototype = $extend(silex.ui.toolbox
 });
 silex.ui.toolbox.editor.PropertyEditor = function(rootElement,BrixId) {
 	silex.ui.toolbox.editor.EditorBase.call(this,rootElement,BrixId);
-	rootElement.addEventListener("click",$bind(this,this.onClick),true);
 };
 $hxClasses["silex.ui.toolbox.editor.PropertyEditor"] = silex.ui.toolbox.editor.PropertyEditor;
 silex.ui.toolbox.editor.PropertyEditor.__name__ = ["silex","ui","toolbox","editor","PropertyEditor"];
@@ -9458,7 +9517,7 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 		if(value6 == true) propertyModel.setAttribute(this.selectedItem,"data-master","true"); else propertyModel.setAttribute(this.selectedItem,"data-master",null);
 	}
 	,load: function(element) {
-		haxe.Log.trace("load " + Std.string(element),{ fileName : "PropertyEditor.hx", lineNumber : 97, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "load"});
+		haxe.Log.trace("load " + Std.string(element),{ fileName : "PropertyEditor.hx", lineNumber : 96, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "load"});
 		var contextArray = [];
 		if(brix.util.DomTools.hasClass(element,"Layer")) contextArray.push("context-layer"); else switch(element.nodeName.toLowerCase()) {
 		case "audio":
@@ -9528,10 +9587,11 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 		this.updateContext([]);
 	}
 	,onClick: function(e) {
-		haxe.Log.trace("click " + Std.string(e.target),{ fileName : "PropertyEditor.hx", lineNumber : 46, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "onClick"});
+		haxe.Log.trace("click " + Std.string(e.target),{ fileName : "PropertyEditor.hx", lineNumber : 44, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "onClick"});
+		silex.ui.toolbox.editor.EditorBase.prototype.onClick.call(this,e);
 		var target = e.target;
 		if(brix.util.DomTools.hasClass(target,"property-editor-delete-selected")) {
-			haxe.Log.trace("click delete",{ fileName : "PropertyEditor.hx", lineNumber : 51, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "onClick"});
+			haxe.Log.trace("click delete",{ fileName : "PropertyEditor.hx", lineNumber : 50, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "onClick"});
 			e.preventDefault();
 			if(brix.util.DomTools.hasClass(this.selectedItem,"Layer")) {
 				var layer = silex.layer.LayerModel.getInstance().selectedItem;
@@ -9839,6 +9899,13 @@ silex.page.PageModel.NEW_LAYER_NAME = "body";
 silex.property.PropertyModel.DEBUG_INFO = "PropertyModel class";
 silex.property.PropertyModel.ON_STYLE_CHANGE = "onStyleChange";
 silex.property.PropertyModel.ON_PROPERTY_CHANGE = "onPropertyChange";
+silex.publication.PublicationConstants.PUBLICATION_HTML_FILE = "index.html";
+silex.publication.PublicationConstants.PUBLICATION_CSS_FILE = "app.css";
+silex.publication.PublicationConstants.PUBLICATION_ASSETS_FOLDER = "assets/";
+silex.publication.PublicationConstants.PUBLICATION_CONFIG_FOLDER = "conf/";
+silex.publication.PublicationConstants.PUBLICATION_CONFIG_FILE = "config.xml.php";
+silex.publication.PublicationConstants.PUBLICATION_FOLDER = "publications/";
+silex.publication.PublicationConstants.BUILDER_PUBLICATION_NAME = "admin";
 silex.publication.PublicationModel.DEBUG_INFO = "PublicationModel class";
 silex.publication.PublicationModel.BUILDER_ROOT_NODE_CLASS = "silex-view";
 silex.publication.PublicationModel.ON_CHANGE = "onPublicationChange";
@@ -9852,8 +9919,6 @@ silex.publication.PublicationModel.ON_SAVE_SUCCESS = "onPublicationSaveSuccess";
 silex.publication.PublicationModel.ON_SAVE_ERROR = "onPublicationSaveError";
 silex.publication.PublicationModel.nextId = 0;
 silex.publication.PublicationService.SERVICE_NAME = "publicationService";
-silex.publication.PublicationService.PUBLICATION_FOLDER = "./publications/";
-silex.publication.PublicationService.BUILDER_PUBLICATION_NAME = "admin";
 silex.ui.dialog.DialogBase.SUBMIT_BUTTON_CLASS_NAME = "validate-button";
 silex.ui.dialog.DialogBase.CANCEL_BUTTON_CLASS_NAME = "cancel-button";
 silex.ui.dialog.DialogBase.CONFIG_DIALOG_NAME = "data-dialog-name";
@@ -9865,6 +9930,8 @@ silex.ui.dialog.AuthDialog.LOGIN_INPUT_FIELD_NOT_FOUND = "Could not find the inp
 silex.ui.dialog.AuthDialog.PASSWORD_INPUT_FIELD_NOT_FOUND = "Could not find the input field for password. It is expected to have input-field-pass as a css class name.";
 silex.ui.dialog.AuthDialog.ALL_FIELDS_REQUIRED = "All fields are required.";
 silex.ui.dialog.AuthDialog.NETWORK_ERROR = "Network error.";
+silex.ui.dialog.FileBrowserDialog.FB_CLASS_NAME = "file-browser-div";
+silex.ui.dialog.FileBrowserDialog.FB_PAGE_NAME = "file-browser-dialog";
 silex.ui.dialog.ModelDebugger.DEBUG_INFO = "ModelDebugger class";
 silex.ui.dialog.OpenDialog.LIST_CLASS_NAME = "PublicationList";
 silex.ui.list.LayersList.__meta__ = { obj : { tagNameFilter : ["ul"]}};
@@ -9891,6 +9958,7 @@ silex.ui.stage.SelectionController.HOVER_LAYER_MARKER_STYLE_NAME = "hover-layer-
 silex.ui.stage.SelectionMarker.__meta__ = { obj : { tagNameFilter : ["DIV"]}};
 silex.ui.toolbox.MenuController.__meta__ = { obj : { tagNameFilter : ["DIV"]}};
 silex.ui.toolbox.editor.EditorBase.DEBUG_INFO = "silex.ui.toolbox.editor.EditorBase class";
+silex.ui.toolbox.editor.EditorBase.OPEN_FILE_BROWSER_CLASS_NAME = "select-file-button";
 silex.ui.toolbox.editor.PropertyEditor.ALL_CONTEXTS = ["context-video","context-audio","context-img","context-txt","context-layer","context-div"];
 silex.ui.toolbox.editor.PropertyEditor.DELETE_BUTTON_CLASS_NAME = "property-editor-delete-selected";
 silex.ui.toolbox.editor.RawHtmlEditor.TEXT_INPUT_CLASS_NAME = "text-input";
