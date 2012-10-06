@@ -7590,7 +7590,6 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		viewPageNode.setAttribute("name",newName);
 		modelPageNode.setAttribute("name",newName);
 		page.setPageName(newName);
-		haxe.Log.trace("pageModel.selectedItem.name=" + this.selectedItem.name,{ fileName : "PageModel.hx", lineNumber : 221, className : "silex.page.PageModel", methodName : "renamePage"});
 		this.refresh();
 	}
 	,removePage: function(page) {
@@ -8423,7 +8422,6 @@ silex.ui.stage.MasterDropHandler.prototype = $extend(silex.ui.stage.StageDropHan
 	,__class__: silex.ui.stage.MasterDropHandler
 });
 silex.ui.stage.PublicationViewer = function(rootElement,BrixId) {
-	haxe.Log.trace("PublicationViewer INIT",{ fileName : "PublicationViewer.hx", lineNumber : 42, className : "silex.ui.stage.PublicationViewer", methodName : "new"});
 	brix.component.ui.DisplayObject.call(this,rootElement,BrixId);
 	this.publicationModel = silex.publication.PublicationModel.getInstance();
 	this.publicationModel.addEventListener("onPublicationData",$bind(this,this.onPublicationData),"PublicationViewer class");
@@ -8436,17 +8434,11 @@ silex.ui.stage.PublicationViewer.__name__ = ["silex","ui","stage","PublicationVi
 silex.ui.stage.PublicationViewer.__super__ = brix.component.ui.DisplayObject;
 silex.ui.stage.PublicationViewer.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
 	onPageChange: function(event) {
-		haxe.Log.trace("onPageChange",{ fileName : "PublicationViewer.hx", lineNumber : 79, className : "silex.ui.stage.PublicationViewer", methodName : "onPageChange"});
-		if(this.pageModel.selectedItem != null) {
-			haxe.Log.trace("onPageChange " + this.pageModel.selectedItem.name,{ fileName : "PublicationViewer.hx", lineNumber : 81, className : "silex.ui.stage.PublicationViewer", methodName : "onPageChange"});
-			brix.component.navigation.Page.openPage(this.pageModel.selectedItem.name,false,null,null,this.publicationModel.application.id,this.publicationModel.viewHtmlDom);
-		}
+		if(this.pageModel.selectedItem != null) brix.component.navigation.Page.openPage(this.pageModel.selectedItem.name,false,null,null,this.publicationModel.application.id,this.publicationModel.viewHtmlDom);
 	}
 	,onPublicationData: function(event) {
-		haxe.Log.trace("onPublicationData 01",{ fileName : "PublicationViewer.hx", lineNumber : 68, className : "silex.ui.stage.PublicationViewer", methodName : "onPublicationData"});
 		this.rootElement.innerHTML = "";
 		this.rootElement.appendChild(this.publicationModel.viewHtmlDom);
-		haxe.Log.trace("onPublicationData 02",{ fileName : "PublicationViewer.hx", lineNumber : 72, className : "silex.ui.stage.PublicationViewer", methodName : "onPublicationData"});
 	}
 	,onPublicationChange: function(event) {
 		this.rootElement.innerHTML = "";

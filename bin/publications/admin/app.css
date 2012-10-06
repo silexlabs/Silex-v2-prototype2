@@ -961,9 +961,6 @@ min-width:105px;
 	margin-left:36px;
 	float:none;
 }
-/* **************** */
-/* /Properties Toolbox */
-/* **************** */
 fieldset {
 }
 
@@ -985,3 +982,6 @@ fieldset select {
 	height:20px;
 	float:right;
 }
+/* **************** */
+/* /Properties Toolbox */
+/* **************** */
