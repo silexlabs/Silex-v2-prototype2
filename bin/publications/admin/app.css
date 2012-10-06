@@ -424,8 +424,9 @@ width:100%;
 	width: 80%;
 	height: 100%;
 	overflow: auto;
-	border: 2px red solid;
-/*
+	padding:4px;
+/*	border: 2px red solid;
+
 	top: 0;
 	left: 0;
 /*
@@ -433,54 +434,84 @@ width:100%;
 	z-index: 2;
 /**/
 }
-.PublicationViewer{
+
+.PublicationViewer div {
+	border: 1px dotted #CCC;
 }
+
 .hover-marker, .selection-marker, .hover-layer-marker, .selection-layer-marker{
-	position: absolute;
-	margin:0px;
+	position:absolute;
+	margin:1px;
 	padding:0px;
+	/*border: 1px groove #CCC;*/
 }
 .hover-marker{
 	z-index: 300;
-	opacity:0.25;
-	background-color: black;
+	opacity:0.3;
+	background-color:#FFFF00;
 	cursor: pointer;
 }
 .selection-marker{
 	z-index: 400;
-	border: 6px solid grey;
+	border: 2px dotted #FFFF00;
 	cursor: move;
+	min-height:27px;
 }
 .selection-marker:hover{
-	opacity:0.25;
-	background-color: yellow;
-	border: 6px solid grey;
+	/*opacity:0.3;
+	background-color:#FF0000;
+	border: 1px solid grey;*/
 }
 .hover-layer-marker{
 	z-index: 100;
-	opacity:0.25;
-	background-color: blue;
+	opacity:0.2;
+	background-color:green;
 	cursor: pointer;
 }
 .selection-layer-marker{
 	z-index: 200;
-	border: 6px solid green;
+	border: 2px dotted green;
 	cursor: move;
 }
 .selection-layer-marker:hover{
-	opacity:0.25;
+	/*opacity:0.25;
 	background-color: green;
-	border: 6px solid green;
+	border: 1px solid green;*/
 }
 
 .PublicationViewer .draggable-phantom{
-    opacity: .5 !important;
+    /*opacity: .5 !important;
 	background-color: red !important;
-	border: 6px solid green !important;
+	border: 1px solid green !important;*/
 	min-width: 10px !important;
 	min-height: 10px !important;
 }
 
+.selection-layer-marker-delete, .selection-marker-delete {
+	width:27px;
+	height:27px;
+	margin:0;
+	padding:0;
+	float:right;
+	vertical-align:top;
+	z-index:1000;
+	cursor:pointer;
+	background-image:url(./assets/sv2-ico-delete.png);
+	background-color:#666;
+}
+
+.selection-layer-marker-name, .selection-marker-name  {
+	width:98%;
+	min-height:20px;
+	background-color:#666666;
+	font-size:10px;
+	color:#FFF;
+	z-index:500;
+	position:absolute;
+	bottom:-22px;
+	padding:3px;
+	margin-left:1%;
+}
 
 /* **************** */
 /* /Selection */
@@ -505,9 +536,7 @@ width:100%;
 	display:inline;
 	margin-left: 5px;
 }	
-.page-opened{
-	background-color:white;
-}
+
 .group-ribbon, .ribbon-tabs a{
 	text-decoration:none;
 	color:#3C3C3C;
@@ -664,7 +693,6 @@ width:100%;
 	font-size:12px;
 }
 
-
 .silex-toolbox select{
 	width:31%;
 	float:right;
@@ -672,9 +700,6 @@ width:100%;
 }
 
 .silex-toolbox .LinkToPage:hover{
-	background-color:#F93;
-}
-.silex-toolbox .page-opened{
 	background-color:#F93;
 }
 
@@ -716,16 +741,24 @@ width:100%;
 	min-width:100%;
 
 }
-.silex-toolbox fieldset input.name-property,
-.property-editor-delete-selected{
-	min-width:88%; 
-	margin-left:13px;
-	margin-top:5px;
-	float:none;
+.silex-toolbox fieldset input.name-property {
+	width:230px;
+	height:27px;
+	/*margin-left:13px;
+	margin-top:5px;*/
+	float:left;
 
 }
 .property-editor-delete-selected {
-	background-color: red;
+	border:none;
+	width:27px;
+	height:27px;
+	margin:0;
+	padding:2px;
+	background-image:url(./assets/sv2-ico-delete.png);
+	background-color:#666;
+	float:right;
+	cursor:pointer;
 }
 
 
