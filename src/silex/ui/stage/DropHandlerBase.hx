@@ -12,14 +12,28 @@ import silex.publication.PublicationModel;
 import silex.component.ComponentModel;
 
 /**
- * use with Draggable on the same node
+ * use with Draggable on the same node, on the markers
+ * This class catches Draggable events and moves an element of the stage along with the dragged element
+ * After the drop, it puts the dragged element back in place
  */
 @tagNameFilter("DIV")
-class StageDropHandler extends DisplayObject{
+class DropHandlerBase extends DisplayObject{
 	/**
-	 * marker initial position in the DOM (reset after each drop)
+	 * marker initial parent in the DOM
 	 */
 	private var initialMarkerParent:HtmlDom;
+	/**
+	 * marker initial position in the DOM
+	 */
+	private var initialMarkerPopsition:Int;
+	/**
+	 * dragged element initial parent in the DOM
+	 */
+	private var draggedElementParent:HtmlDom;
+	/**
+	 * dragged element initial position in the DOM
+	 */
+	private var draggedElementPosition:Int;
 	/**
 	 * constructor
 	 * listen to the Draggable class events
@@ -27,8 +41,19 @@ class StageDropHandler extends DisplayObject{
 	public function new(rootElement:HtmlDom, BrixId:String){
 		super(rootElement, BrixId);
 		initialMarkerParent = rootElement.parentNode;
+		initialMarkerPopsition = indexOfChild(rootElement);
 		rootElement.addEventListener(Draggable.EVENT_DROPPED, onDrop, false);
 		rootElement.addEventListener(Draggable.EVENT_DRAG, onDrag, false);
+	}
+	/**
+	 * retrieve the postion of a node in its parent's children
+	 */
+	private static function indexOfChild(childNode:HtmlDom):Int{
+		var i = 0;
+		var child = childNode;
+		while( (child = child.previousSibling) != null ) 
+			i++;
+		return i;
 	}
 	/**
 	 * virtual method to be implemented in derived classes
@@ -51,6 +76,17 @@ class StageDropHandler extends DisplayObject{
 		// check that we have finished dragging any other element
 		var event:CustomEvent = cast(e);
 		setDraggedElement(event.detail);
+		var draggedElement = getDraggedElement(event.detail);
+
+		if (draggedElement!= null){
+			// store the initial info in case it is droped outside a drop zone
+			draggedElementParent = draggedElement.parentNode;
+			draggedElementPosition = indexOfChild(draggedElement);
+			// change the phantom style
+			event.detail.draggable.initPhantomStyle(draggedElement);
+			// remove the element from stage
+			draggedElement.parentNode.removeChild(draggedElement);
+		}
 	}
 	/**
 	 * Handle Draggable events
@@ -82,7 +118,6 @@ class StageDropHandler extends DisplayObject{
 				// a drop zone was found
 				position = dropZone.position;
 				parent = dropZone.parent;
-trace("parent = "+parent+"  - position= "+position);
 				// find the component before the insetion position
 				// only if the insert position is not the end
 				if (parent.childNodes.length > position){
@@ -111,18 +146,14 @@ trace("parent = "+parent+"  - position= "+position);
 				}
 				else{
 					// at a given position
-					parent.insertBefore(element, parent.childNodes[position+1]);
+					parent.insertBefore(element, parent.childNodes[position]);
 				}
-//		try{
+		try{
 				// and also move in the model if needed
 				// link view to model
-				trace("Model 002");
 				var modelElement = PublicationModel.getInstance().getModelFromView(element);
-				trace("Model 004");
 				var modelBeforeElement = PublicationModel.getInstance().getModelFromView(beforeElement);
-				trace("Model 006 "+parent);
 				var modelParent = PublicationModel.getInstance().getModelFromView(parent);
-				trace("Model 008");
 
 				// remove the element from the model
 				if (modelElement == null) 
@@ -142,17 +173,27 @@ trace("parent = "+parent+"  - position= "+position);
 					// at a given position
 					modelParent.insertBefore(modelElement, modelBeforeElement);
 				}
-/*
+/**/
 		}
 		catch(e:Dynamic){
 				trace("ON DROP ERROR: "+e+ "("+element+" , "+beforeElement+", "+parent+")");
 		}
-*/			}
+/**/
+			}
 			else{
 				// a drop zone was NOT found , put the element back to the previous parent and position
 				// position = initialDraggedPosition;
 				// parent = initialDraggedParent;
 				trace("a drop zone was NOT found");
+				// put the element back in place
+				if (draggedElementParent.childNodes.length > draggedElementPosition){
+					// insert at the right position
+					draggedElementParent.insertBefore(element, draggedElementParent.childNodes[draggedElementPosition]);
+				}
+				else{
+					// drop at the end 
+					draggedElementParent.appendChild(element);
+				}
 			}
 		}
 		else{
@@ -165,7 +206,14 @@ trace("parent = "+parent+"  - position= "+position);
 		// reset the marker position in the DOM
 		if (rootElement.parentNode != initialMarkerParent){
 			//	generate an exception?		rootElement.parentNode.removeChild(rootElement.parentNode);
-			initialMarkerParent.appendChild(rootElement);
+			if (initialMarkerParent.childNodes.length > initialMarkerPopsition){
+				// insert at the right position
+				initialMarkerParent.insertBefore(rootElement, initialMarkerParent.childNodes[initialMarkerPopsition]);
+			}
+			else{
+				// drop at the end 
+				initialMarkerParent.appendChild(rootElement);
+			}
 		}
 		// refresh the builder display
 		if (ComponentModel.getInstance().selectedItem != null){

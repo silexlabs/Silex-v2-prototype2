@@ -19,6 +19,7 @@ import silex.ui.stage.PublicationViewer;
 /**
  * This component displays a file browser and let's one choose a file or manage them
  * It opens in the publication's folder
+ * It is mainly used in silex.ui.toolbox.editor.EditorBase class
  */
 class FileBrowserDialog extends DialogBase
 {
@@ -27,6 +28,10 @@ class FileBrowserDialog extends DialogBase
 	 */
 	public static inline var FB_CLASS_NAME = "file-browser-div";
 	/**
+	 * The css class name of the element used to display a message for the user
+	 */
+	public static inline var FB_MESSAGE_CLASS_NAME = "file-browser-message";
+	/**
 	 * The page name of this dialog
 	 */
 	public static inline var FB_PAGE_NAME = "file-browser-dialog";
@@ -34,6 +39,11 @@ class FileBrowserDialog extends DialogBase
 	 * static callback method
 	 */
 	public static var onValidate:String->Void;
+	/**
+	 * static meddage property to be set before openning this dialog
+	 * it will be placed in the element with class name "file-browser-message"
+	 */
+	public static var message:String;
 	/**
 	 * Constructor
 	 * Define the callbacks
@@ -47,10 +57,18 @@ class FileBrowserDialog extends DialogBase
 	 */
 	public function requestRedraw(transitionData:TransitionData) {
 		// redraw the list, which will reload data and then refresh the list when onListData is dispatched by the model
-		var fbDiv = DomTools.getSingleElement(rootElement, FB_CLASS_NAME, true);
-		fbDiv.innerHTML = '<iframe name="kcfinder_iframe" src="../../third-party-tools/kcfinder/browse.php?type=publications&dir='+
+		var element = DomTools.getSingleElement(rootElement, FB_CLASS_NAME, true);
+		element.innerHTML = '<iframe name="kcfinder_iframe" src="../../third-party-tools/kcfinder/browse.php?type=publications&dir='+
 		PublicationConstants.PUBLICATION_FOLDER+PublicationModel.getInstance().currentName+"/"+PublicationConstants.PUBLICATION_ASSETS_FOLDER+'/" ' +
         'frameborder="0" width="100%" height="100%" marginwidth="0" marginheight="0" scrolling="no" />';
+
+		// display the message in the element
+		if (message!=null){
+			var element = DomTools.getSingleElement(rootElement, FB_MESSAGE_CLASS_NAME, false);
+			if (element != null){
+				element.innerHTML = message;
+			}
+		}
 
         Reflect.setField(Lib.window, "KCFinder", {
 		    callBack: validateSelection
@@ -83,6 +101,10 @@ class FileBrowserDialog extends DialogBase
 	 * It uses the dialog name as a css class
 	 */
 	override public function close() {
+		// cleanup
+		var element = DomTools.getSingleElement(rootElement, FB_CLASS_NAME, true);
+		element.innerHTML = "";
+        Reflect.setField(Lib.window, "KCFinder", null);
 		// now do the default behavior
 		super.close();
 	}

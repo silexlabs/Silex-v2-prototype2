@@ -181,7 +181,7 @@ class EditorBase extends DisplayObject
 		if (DomTools.hasClass(e.target, OPEN_FILE_BROWSER_CLASS_NAME)){
 			e.preventDefault();
 			var inputControlClassName = e.target.getAttribute("data-fb-target");
-			selectFile("Which file will you put here?", callback(onFileChosen, "test", inputControlClassName));
+			selectFile("Double click to select a file!", callback(onFileChosen, "test", inputControlClassName));
 		}
 	}
 	private function onFileChosen(propertyName:String, inputControlClassName:String, fileUrl:String){
@@ -191,6 +191,20 @@ class EditorBase extends DisplayObject
 		beforeApply();
 		apply();
 		afterApply();
+		DomTools.doLater(refreshSelection);
+	}
+	private function refreshSelection(){
+		LayerModel.getInstance().refresh();
+		ComponentModel.getInstance().refresh();
+	}
+	/**
+	 * open file browser
+	 * called when the user clicks on a button with "select-file-button" class
+	 */
+	private function selectFile(userMessage:String, validateCallback:String->Void){
+		FileBrowserDialog.onValidate = validateCallback;
+		FileBrowserDialog.message = userMessage;
+		Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, brixInstanceId);
 	}
 	////////////////////////////////////////////
 	// Callbacks for the model
@@ -253,13 +267,5 @@ class EditorBase extends DisplayObject
 			trace(" url "+ url );
 		}
 		return url;
-	}
-	/**
-	 * open file browser
-	 * called when the user clicks on a button with "select-file-button" class
-	 */
-	private function selectFile(userMessage:String, validateCallback:String->Void){
-		FileBrowserDialog.onValidate = validateCallback;
-		Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, brixInstanceId);
 	}
 }

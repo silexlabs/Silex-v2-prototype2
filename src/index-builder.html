@@ -30,7 +30,7 @@
 		<script data-brix-use="silex.ui.stage.PublicationViewer"></script>
 		<script data-brix-use="silex.ui.stage.SelectionController"></script>
 		
-		<script data-brix-use="silex.ui.stage.SelectionMarker"></script>
+		<script data-brix-use="silex.ui.stage.SelectionDropHandler"></script>
 		<script data-brix-use="silex.ui.stage.MasterDropHandler"></script>
 		<script data-brix-use="silex.ui.stage.InsertDropHandler"></script>
 
@@ -189,6 +189,7 @@
 						<ul class="LayersList">
 							<li class="Draggable MasterDropHandler"
 								data-dropzones-class-name="silex-view"
+								data-phantom-class-name="selection-phantom"
 								>
 								<DIV class="solid"></DIV>
 								<p>::rootElement.title::</p>
@@ -205,30 +206,35 @@
 					<DIV class="InsertToolbox Layer insert-list ribbon-list">
 						<ul>
 							<li class="image Draggable InsertDropHandler" 
+								data-phantom-class-name="selection-phantom"
 								data-dropzones-class-name="Layer"
 							>
 								<DIV class="solid"></DIV>
 								<p>Image</p>
 							</li>
 							<li class="text Draggable InsertDropHandler" 
+								data-phantom-class-name="selection-phantom"
 								data-dropzones-class-name="Layer"
 							>
 								<DIV class="solid"></DIV>
 								<p>Text</p>
 							</li>
 							<li class="audio Draggable InsertDropHandler" 
+								data-phantom-class-name="selection-phantom"
 								data-dropzones-class-name="Layer"
 							>
 								<DIV class="solid"></DIV>
 								<p>Audio</p>
 							</li>
 							<li class="video Draggable InsertDropHandler" 
+								data-phantom-class-name="selection-phantom"
 								data-dropzones-class-name="Layer"
 							>
 								<DIV class="solid"></DIV>
 								<p>Video</p>
 							</li>
 							<li class="layer Draggable InsertDropHandler" 
+								data-phantom-class-name="selection-phantom"
 								data-dropzones-class-name="silex-view"
 							>
 								<DIV class="solid"></DIV>
@@ -293,39 +299,39 @@
 				<A class="Page" name="open-dialog" ></A>
 				<form class="Layer open-dialog dialog-foreground OpenDialog" data-dialog-name="open-dialog">
 					<DIV class="container-2">
-						<DIV class="header-2">
-							<img src="../admin/assets/header-2.png"></img>
-						</DIV>
+						<header>
+							<p>Silex Publications Browser</p>
+						</header>
 						<ul class="PublicationList publications">
 							<li>::name:: <DIV class="column"><small>Last change by ::configData.lastChange.author:: on ::configData.lastChange.date::</small></DIV></li>
 						</ul>
-						<DIV class="foot">
-								<DIV class="solid-3"></DIV>
-								<DIV class="solid-4"></DIV>
-								<input type="submit" value="Ok" class="validate-button"></input>
-								<button class="cancel-button">Cancel</button>
+						<footer class="foot">
+							<hr />
+							<input type="submit" value="Ok" class="validate-button"></input>
+							<button class="cancel-button">Cancel</button>
 						
-						</DIV>
+						</footer>
 						
 					</DIV>
 				</form>
 				<!-- FileBrowser Dialog -->
 				<A class="Page" name="file-browser-dialog" ></A>
-				<form class="Layer file-browser-dialog dialog-foreground FileBrowserDialog" data-dialog-name="file-browser-dialog">
+				<form class="Layer file-browser-dialog dialog-foreground FileBrowserDialog" 
+					data-dialog-name="file-browser-dialog">
 					<DIV class="container-2">
-						<DIV class="header-2">
-							<img src="../admin/assets/header-2.png"></img>
-						</DIV>
+						<header>
+							<p>Silex File Browser</p>
+						</header>
 						<DIV class="file-browser-div">
 						</DIV>
-						<DIV class="foot">
-								<DIV class="solid-3"></DIV>
-								<DIV class="solid-4"></DIV>
+						<footer class="foot">
+							<hr />
 <!--								<input type="submit" value="Ok" class="validate-button"></input>
 -->
-								<button class="cancel-button">Cancel</button>
+							<button class="cancel-button">Cancel</button>
+							<label class="file-browser-message"></label>
 						
-						</DIV>
+						</footer>
 						
 					</DIV>
 				</form>
@@ -353,7 +359,7 @@
 					data-initial-page-name="properties-tab"
 					data-toolbox-name="PropertiesToolbox"
 					data-toolbox-dropzones-class-name="toolbox-drop-zone"
-					data-phantom-class-name="toolbox-phantom">
+					>
 
 					<!-- Property Toolbox tabs -->
 					<!-- 
@@ -367,7 +373,7 @@
 					<A class="Page"  name="style-border-tab">Border</A>
 
 					<DIV class="Accordion">
-						<DIV class="draggable-dragzone accordion-header">
+						<DIV class="accordion-header">
 							<DIV class="title">
 								<h2>Toolboxes</h2>
 							</DIV>
@@ -1244,12 +1250,12 @@
 				<DIV class="Group SelectionController panel-builder-body" >
 					<DIV class="PublicationViewer" >
 					</DIV>
-					<DIV class="selection-marker Draggable SelectionMarker"
+					<DIV class="selection-marker Draggable SelectionDropHandler"
 						data-dropzones-class-name="Layer"
 						data-phantom-class-name="selection-phantom"
 					></DIV>
 					<DIV class="hover-marker"></DIV>
-					<DIV class="selection-layer-marker Draggable SelectionMarker"
+					<DIV class="selection-layer-marker Draggable SelectionDropHandler"
 						data-dropzones-class-name="silex-view"
 						data-phantom-class-name="selection-phantom"
 					></DIV>

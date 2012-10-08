@@ -48,14 +48,8 @@ cleanup code
   => use jquery ??
 - refactoring: mvc + API publique à overrider + éventuellement une api de plugins pour débutants?
 
-
-
-selection
-- ecoute window.resize, et dispatcher window.resize dans Page::open
-
 drag drop avec "proxy"
 > le style doit etre celui du layer / comp
-
 
 StageDropHandler => DropHandlerBase
 SelectionMarker => SelectionDropHandler
@@ -77,36 +71,51 @@ permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html 
   * in the List class, listen to the click on the container instead of each cell, to prevent memory leak
   * chrome and color picker : read ok, load bug
   * delete a container when it is a master or not, and uncheck master when the container is not on any page
+  * ecouter window.resize, et dispatcher window.resize dans Page::open
+  * display block
 
 ** To do **
 
+borders dans properties tool box
+
 Silex menu missing items
+- manage assets/files
 - transition in, out and show, hide
-- edit text
+- edit text - xhtml ckeditor/_samples/output_xhtml.html
 - edit CSS
 - edit hscript
+- save as css style, css style for a component/container/page/publication
 - manage publications
 - library (import/manage media)
 - cf functionnalities, put disabled buttons
 - restore from trash, empty trash
 - delete comp and layer in the roll over marker
-- idem for name (layer) or media url (comp)
+- idem for name (layer) and media url (comp)
+- suppr display lock et options inutiles
 
 missing functionality
-- page opens => page title changes
 - draggable list de page => réordonner dans le dom et view
 - deselect all
 - select empty layer or layr with onliy 1 child
-- filter publication names (",", " ", "%" ...)
+- filter publication/page/layer names (",", " ", "%", start with ".", ...)
 - notifications (save, loading...)
 - liste de pages réordonnable
+- multiple selection and multiple urls in FB
+- page properties in the properties toolbox
+- page opens => page title changes
+- publication settings
+  . css style?
+  . size, align...
+  . seo, title, description...
+  . use deeplining, initial page...
 
 fonctionnalité
 - create publication
   . choose a theme (css)
-  . automatic add header, footer, aside, nav tags
-  . nav tag = list of all pages (possible to prevent a page to appear there)
-  . creation de page => ajoute un lien dans header
+  . automatic add header, footer, aside, nav tags, content
+  . all layers in content
+  . nav tag = list of all pages
+  . creation de page => ajoute un lien dans nav
 - creer une page a partir d'une autre page (DUPLICATE)
 - detecter quand il y a des modifs non sauvée et demander confirmation de close, open...
 - text editor and file manager
@@ -123,6 +132,8 @@ fonctionnalité
 - admin dans ./admin/index.html, export de la publication dans ./ 
   =>  ./admin/index.html est compilée a partir de src/index-builder.html
 
+- kcfinder dans les credits
+- GPL dans les source et .txt
 
 - ------
 - selection resize

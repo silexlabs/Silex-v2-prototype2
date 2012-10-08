@@ -118,56 +118,60 @@ class PublicationService extends ServiceBase{
 	public function getPublications(stateFilter:Null<Array<PublicationState>> = null, 
 		categoryFilter:Null<Array<PublicationCategory>> = null):Hash<PublicationConfigData> {
 		// browse all folders in the publications directory
-		var files:Array<String> = FileSystem.readDirectory(PUBLICATION_FOLDER);
+		var files:Array<String> = FileSystem.readDirectory(PublicationConstants.PUBLICATION_FOLDER);
 		// keep only the folders and the publication with the desired states
 		var publications:Hash<PublicationConfigData> = new Hash();
 		for(name in files){
-			// check that the publication folder is not a file
-			var path = PUBLICATION_FOLDER + name + "/";
-			if (FileSystem.isDirectory(path)){
-				var configData = getPublicationConfig(name);
-				// variable used to know if we should return this publication or not
-				var fitStateFilter = false;
-				var fitCategoryFilter = false;
-				// if no filter is provided, add anyway
-				if (stateFilter == null || stateFilter.length == 0){
-					fitStateFilter = true;
-				}
-				else{
-					// filter
-					switch (configData.state) {
-						case Private:
-							if (Lambda.has(stateFilter, Private))
-								fitStateFilter = true;
-						case Trashed(data):
-							if (Lambda.has(stateFilter, Trashed(null)))
-								fitStateFilter = true;
-						case Published(data):
-							if (Lambda.has(stateFilter, Published(null)))
-								fitStateFilter = true;
+			// check publication name is authorized
+			if (!StringTools.startsWith(name, ".") 
+				&& name.indexOf("..")<0){				
+				// check that the publication folder is not a file
+				var path = PublicationConstants.PUBLICATION_FOLDER + name + "/";
+				if (FileSystem.isDirectory(path)){
+					var configData = getPublicationConfig(name);
+					// variable used to know if we should return this publication or not
+					var fitStateFilter = false;
+					var fitCategoryFilter = false;
+					// if no filter is provided, add anyway
+					if (stateFilter == null || stateFilter.length == 0){
+						fitStateFilter = true;
 					}
-				}
-				// if no filter is provided, add anyway
-				if (categoryFilter == null || categoryFilter.length == 0){
-					fitCategoryFilter = true;
-				}
-				else{
-					// filter
-					switch (configData.category) {
-						case Publication:
-							if (Lambda.has(categoryFilter, Publication))
-								fitCategoryFilter = true;
-						case Utility:
-							if (Lambda.has(categoryFilter, Utility))
-								fitCategoryFilter = true;
-						case Theme:
-							if (Lambda.has(categoryFilter, Theme))
-								fitCategoryFilter = true;
+					else{
+						// filter
+						switch (configData.state) {
+							case Private:
+								if (Lambda.has(stateFilter, Private))
+									fitStateFilter = true;
+							case Trashed(data):
+								if (Lambda.has(stateFilter, Trashed(null)))
+									fitStateFilter = true;
+							case Published(data):
+								if (Lambda.has(stateFilter, Published(null)))
+									fitStateFilter = true;
+						}
 					}
+					// if no filter is provided, add anyway
+					if (categoryFilter == null || categoryFilter.length == 0){
+						fitCategoryFilter = true;
+					}
+					else{
+						// filter
+						switch (configData.category) {
+							case Publication:
+								if (Lambda.has(categoryFilter, Publication))
+									fitCategoryFilter = true;
+							case Utility:
+								if (Lambda.has(categoryFilter, Utility))
+									fitCategoryFilter = true;
+							case Theme:
+								if (Lambda.has(categoryFilter, Theme))
+									fitCategoryFilter = true;
+						}
+					}
+					// add the publication to the returned hash
+					if(fitStateFilter && fitCategoryFilter)
+						publications.set(name, configData);
 				}
-				// add the publication to the returned hash
-				if(fitStateFilter && fitCategoryFilter)
-					publications.set(name, configData);
 			}
 		}
 		return publications;
@@ -180,7 +184,7 @@ class PublicationService extends ServiceBase{
 		var publications:Hash<PublicationConfigData> = getPublications([Trashed(null)]);
 		// browse all publications
 		for (publicationName in publications.keys()){
-			FileSystemTools.recursiveDelete(PUBLICATION_FOLDER + publicationName + "/");
+			FileSystemTools.recursiveDelete(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/");
 		}
 	}
 	/**
@@ -203,9 +207,9 @@ class PublicationService extends ServiceBase{
 				debugModeAction: null
 			};
 			// create the empty directory for the publication
-			FileSystem.createDirectory(PUBLICATION_FOLDER + publicationName);
+			FileSystem.createDirectory(PublicationConstants.PUBLICATION_FOLDER + publicationName);
 			// create other empty directories
-			FileSystem.createDirectory(PUBLICATION_FOLDER + publicationName + "/" + PublicationConfig.PUBLICATION_CONFIG_FOLDER);
+			FileSystem.createDirectory(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/" + PublicationConstants.PUBLICATION_CONFIG_FOLDER);
 			// set the publication config
 			setPublicationConfig(publicationName, configData);
 			// set the publication data
@@ -243,7 +247,7 @@ class PublicationService extends ServiceBase{
 			create(publicationName, publicationData);
 
 			// permanently delete this publication
-			FileSystemTools.recursiveDelete(PUBLICATION_FOLDER+srcPublicationName);
+			FileSystemTools.recursiveDelete(PublicationConstants.PUBLICATION_FOLDER+srcPublicationName);
 		}
 		catch(e:Dynamic){
 			throw(e);
@@ -281,8 +285,8 @@ class PublicationService extends ServiceBase{
 	 */
 	public function getPublicationData(publicationName:String):Null<PublicationData> {
 		try{
-			var html = File.getContent(PUBLICATION_FOLDER + publicationName + "/" + PublicationConfig.PUBLICATION_HTML_FILE);
-			var css = File.getContent(PUBLICATION_FOLDER + publicationName + "/" + PublicationConfig.PUBLICATION_CSS_FILE);
+			var html = File.getContent(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/" + PublicationConstants.PUBLICATION_HTML_FILE);
+			var css = File.getContent(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/" + PublicationConstants.PUBLICATION_CSS_FILE);
 			return {
 				html : html,
 				css: css,
@@ -297,8 +301,8 @@ class PublicationService extends ServiceBase{
 	 */
 	public function setPublicationData(publicationName:String, publicationData:PublicationData) {
 		try{
-			File.saveContent(PUBLICATION_FOLDER + publicationName + "/" + PublicationConfig.PUBLICATION_HTML_FILE, publicationData.html);
-			File.saveContent(PUBLICATION_FOLDER + publicationName + "/" + PublicationConfig.PUBLICATION_CSS_FILE, publicationData.css);
+			File.saveContent(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/" + PublicationConstants.PUBLICATION_HTML_FILE, publicationData.html);
+			File.saveContent(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/" + PublicationConstants.PUBLICATION_CSS_FILE, publicationData.css);
 		}
 		catch(e:Dynamic){
 			throw(e);
@@ -310,7 +314,7 @@ class PublicationService extends ServiceBase{
 	 */
 	public function getPublicationConfig(publicationName:String):PublicationConfigData {
 		try{
-			var config = new PublicationConfig(PUBLICATION_FOLDER + publicationName + "/" + PublicationConfig.PUBLICATION_CONFIG_FOLDER + PublicationConfig.PUBLICATION_CONFIG_FILE);
+			var config = new PublicationConfig(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/" + PublicationConstants.PUBLICATION_CONFIG_FOLDER + PublicationConstants.PUBLICATION_CONFIG_FILE);
 			return config.configData;
 		}
 		catch(e:Dynamic){
@@ -331,7 +335,7 @@ class PublicationService extends ServiceBase{
 				lastChange : configData.lastChange,
 				debugModeAction : configData.debugModeAction,
 			}
-			config.saveData(PUBLICATION_FOLDER + publicationName + "/" + PublicationConfig.PUBLICATION_CONFIG_FOLDER + "/" + PublicationConfig.PUBLICATION_CONFIG_FILE);
+			config.saveData(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/" + PublicationConstants.PUBLICATION_CONFIG_FOLDER + "/" + PublicationConstants.PUBLICATION_CONFIG_FILE);
 		}
 		catch(e:Dynamic){
 			throw(e);

@@ -20,7 +20,7 @@ import silex.component.ComponentModel;
  * use attribute like rthis: data-dropzones-class-name="Layer" data-dropzones-class-name="silex-view"
  * use with Draggable on the same node
  */
-class InsertDropHandler extends StageDropHandler{
+class InsertDropHandler extends DropHandlerBase{
 	/**
 	 * type of item to be added in a layer
 	 * this type can be added as a class name of the items of the list of elements of the insert toolbox

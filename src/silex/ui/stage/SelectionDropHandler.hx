@@ -3,7 +3,6 @@ package silex.ui.stage;
 import js.Lib;
 import js.Dom;
 
-import brix.component.ui.DisplayObject;
 import brix.util.DomTools;
 import brix.component.navigation.Layer;
 import brix.component.interaction.Draggable;
@@ -19,7 +18,7 @@ import silex.component.ComponentModel;
  * use with Draggable on the same node
  */
 @tagNameFilter("DIV")
-class SelectionMarker extends StageDropHandler{
+class SelectionDropHandler extends DropHandlerBase{
 	/**
 	 * selected component
 	 * store a component while dragging
@@ -63,13 +62,6 @@ class SelectionMarker extends StageDropHandler{
 			// change the style of the phantom to erflect the element style
 			//draggableEvent.draggable.initPhantomStyle(draggedLayer.rootElement);
 		}
-	}
-	private static function indexOfChild(childNode:HtmlDom):Int{
-		var i = 0;
-		var child = childNode;
-		while( (child = child.previousSibling) != null ) 
-			i++;
-		return i;
 	}
 	/**
 	 * virtual method to be implemented in derived classes
