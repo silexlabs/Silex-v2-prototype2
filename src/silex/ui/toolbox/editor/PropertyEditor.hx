@@ -52,10 +52,18 @@ class PropertyEditor extends EditorBase
 			if (DomTools.hasClass(selectedItem, "Layer")){
 				var layer = LayerModel.getInstance().selectedItem;
 				var page = PageModel.getInstance().selectedItem;
-				LayerModel.getInstance().removeLayer(layer, page);
+				var name:String = layer.rootElement.getAttribute("title");
+				if (name == null) name = "";
+				var confirm = Lib.window.confirm("I am about to delete the container "+name+". Are you sure?");
+				if (confirm == true)
+					LayerModel.getInstance().removeLayer(layer, page);
 			}
 			else{
-				ComponentModel.getInstance().removeComponent(selectedItem);
+				var name:String = selectedItem.getAttribute("title");
+				if (name == null) name = "";
+				var confirm = Lib.window.confirm("I am about to delete the component "+name+". Are you sure?");
+				if (confirm == true)
+					ComponentModel.getInstance().removeComponent(selectedItem);
 			}
 		}
 	}

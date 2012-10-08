@@ -323,12 +323,6 @@
 					<A class="Page" name="style-border-tab">Border</A>
 
 					<DIV class="Accordion">
-						<DIV class="accordion-header">
-							<DIV class="title">
-								<H2>Toolboxes</H2>
-							</DIV>
-						</DIV>
-						
 						
 						<A href="#properties-tab" class="LinkToPage accordion-header">
 							Properties
@@ -1188,14 +1182,18 @@
 					</DIV>
 					<DIV data-dropzones-class-name="Layer" class="selection-marker Draggable SelectionDropHandler" data-phantom-class-name="selection-phantom">
                     	<DIV class="selection-marker-delete"></DIV>
-                        <DIV class="selection-marker-name">Nom du marker : [ body  > structure > contener > selectedElement ]</DIV>
+                        <DIV class="selection-marker-name">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</DIV>
+                        <DIV class="draggable-dragzone"></DIV>
 					</DIV>
-					<DIV class="hover-marker"></DIV>
+					<DIV class="hover-marker">
+					</DIV>
 					<DIV data-dropzones-class-name="silex-view" class="selection-layer-marker Draggable SelectionDropHandler" data-phantom-class-name="selection-phantom">
-                    	<DIV class="selection-layer-marker-delete"></DIV>
-                        <DIV class="selection-layer-marker-name">Nom du layer : [ body  > structure > contener > selectedElement ]</DIV>
+                    	<DIV class="selection-marker-delete"></DIV>
+                        <DIV class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</DIV>
+                        <DIV class="draggable-dragzone"></DIV>
 					</DIV>
-					<DIV class="hover-layer-marker"></DIV>
+					<DIV class="hover-layer-marker">
+					</DIV>
 				</DIV>
 				
 				

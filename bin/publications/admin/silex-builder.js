@@ -1489,6 +1489,7 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 		return null;
 	}
 	,move: function(e) {
+		haxe.Log.trace("move",{ fileName : "Draggable.hx", lineNumber : 384, className : "brix.component.interaction.Draggable", methodName : "move"});
 		if(this.state == brix.component.interaction.DraggableState.dragging) {
 			var mouseX = e.clientX + this.initialX;
 			var mouseY = e.clientY + this.initialY;
@@ -1522,6 +1523,7 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 		}
 	}
 	,startDrag: function(e) {
+		haxe.Log.trace("startDrag " + Std.string(this.state),{ fileName : "Draggable.hx", lineNumber : 299, className : "brix.component.interaction.Draggable", methodName : "startDrag"});
 		if(this.state == brix.component.interaction.DraggableState.none) {
 			var boundingBox = brix.util.DomTools.getElementBoundingBox(this.rootElement);
 			this.state = brix.component.interaction.DraggableState.dragging;
@@ -7569,7 +7571,6 @@ silex.layer.LayerModel.prototype = $extend(silex.ModelBase.prototype,{
 		this.dispatchEvent(this.createEvent("onLayerListChange",layer),"LayerModel class");
 	}
 	,setSelectedItem: function(item) {
-		haxe.Log.trace("setSelectedItem " + Std.string(item),{ fileName : "LayerModel.hx", lineNumber : 82, className : "silex.layer.LayerModel", methodName : "setSelectedItem"});
 		var model = silex.component.ComponentModel.getInstance();
 		model.setSelectedItem(null);
 		model.setHoveredItem(null);
@@ -8585,6 +8586,9 @@ silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.Display
 			var markerMarginV = (marker.offsetHeight - marker.clientHeight) / 2.0;
 			this.doSetMarkerPosition(marker,Math.floor(boundingBox.x - markerMarginH / 2),Math.floor(boundingBox.y - markerMarginV / 2),Math.floor(boundingBox.w - markerMarginH),Math.floor(boundingBox.h - markerMarginV));
 		}
+		var event = js.Lib.document.createEvent("CustomEvent");
+		event.initCustomEvent("redraw",false,false,{ target : target});
+		marker.dispatchEvent(event);
 	}
 	,onHoverChanged: function(event) {
 		this.setMarkerPosition(this.hoverMarker,this.componentModel.hoveredItem);
@@ -8614,7 +8618,7 @@ silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.Display
 			if(this.checkIsOver(layers[idx],e.clientX,e.clientY)) {
 				var application = silex.publication.PublicationModel.getInstance().application;
 				var layerList = application.getAssociatedComponents(layers[idx],brix.component.navigation.Layer);
-				if(layerList.length != 1) haxe.Log.trace("Warning: there should be 1 and only 1 Layer instance associated with this node, not " + layerList.length,{ fileName : "SelectionController.hx", lineNumber : 242, className : "silex.ui.stage.SelectionController", methodName : "onMouseMove"});
+				if(layerList.length != 1) haxe.Log.trace("Warning: there should be 1 and only 1 Layer instance associated with this node, not " + layerList.length,{ fileName : "SelectionController.hx", lineNumber : 247, className : "silex.ui.stage.SelectionController", methodName : "onMouseMove"});
 				this.layerModel.setHoveredItem(layerList.first());
 				found = true;
 				break;
@@ -8658,10 +8662,10 @@ silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.Display
 		this.componentModel.setSelectedItem(this.componentModel.hoveredItem);
 	}
 	,redraw: function(e) {
-		if(this.layerModel.selectedItem == null) this.setMarkerPosition(this.selectionLayerMarker,null); else this.setMarkerPosition(this.selectionLayerMarker,this.layerModel.selectedItem.rootElement);
-		if(this.layerModel.hoveredItem == null) this.setMarkerPosition(this.hoverLayerMarker,null); else this.setMarkerPosition(this.hoverLayerMarker,this.layerModel.hoveredItem.rootElement);
 		this.setMarkerPosition(this.selectionMarker,this.componentModel.selectedItem);
 		this.setMarkerPosition(this.hoverMarker,this.componentModel.hoveredItem);
+		if(this.componentModel.selectedItem != null || this.layerModel.selectedItem == null) this.setMarkerPosition(this.selectionLayerMarker,null); else this.setMarkerPosition(this.selectionLayerMarker,this.layerModel.selectedItem.rootElement);
+		if(this.componentModel.hoveredItem != null || this.layerModel.hoveredItem == null) this.setMarkerPosition(this.hoverLayerMarker,null); else this.setMarkerPosition(this.hoverLayerMarker,this.layerModel.hoveredItem.rootElement);
 	}
 	,layerModel: null
 	,componentModel: null
@@ -8673,6 +8677,11 @@ silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.Display
 });
 silex.ui.stage.SelectionDropHandler = function(rootElement,BrixId) {
 	silex.ui.stage.DropHandlerBase.call(this,rootElement,BrixId);
+	this.delBtn = brix.util.DomTools.getSingleElement(rootElement,"selection-marker-delete",true);
+	this.delBtn.addEventListener("click",$bind(this,this.onClick),false);
+	rootElement.addEventListener("redraw",$bind(this,this.redraw),false);
+	this.displayZone = brix.util.DomTools.getSingleElement(rootElement,"selection-marker-name",false);
+	if(this.displayZone != null) this.displayZoneTemplate = this.displayZone.innerHTML;
 };
 $hxClasses["silex.ui.stage.SelectionDropHandler"] = silex.ui.stage.SelectionDropHandler;
 silex.ui.stage.SelectionDropHandler.__name__ = ["silex","ui","stage","SelectionDropHandler"];
@@ -8681,27 +8690,72 @@ silex.ui.stage.SelectionDropHandler.draggedLayer = null;
 silex.ui.stage.SelectionDropHandler.__super__ = silex.ui.stage.DropHandlerBase;
 silex.ui.stage.SelectionDropHandler.prototype = $extend(silex.ui.stage.DropHandlerBase.prototype,{
 	onDrop: function(e) {
-		haxe.Log.trace("onDrop " + Std.string(e),{ fileName : "SelectionDropHandler.hx", lineNumber : 88, className : "silex.ui.stage.SelectionDropHandler", methodName : "onDrop"});
+		haxe.Log.trace("onDrop " + Std.string(e),{ fileName : "SelectionDropHandler.hx", lineNumber : 204, className : "silex.ui.stage.SelectionDropHandler", methodName : "onDrop"});
 		silex.ui.stage.DropHandlerBase.prototype.onDrop.call(this,e);
 		if(silex.ui.stage.SelectionDropHandler.draggedComponent != null) silex.component.ComponentModel.getInstance().refresh(); else if(silex.ui.stage.SelectionDropHandler.draggedLayer != null) silex.layer.LayerModel.getInstance().refresh();
 		silex.ui.stage.SelectionDropHandler.draggedComponent = null;
 		silex.ui.stage.SelectionDropHandler.draggedLayer = null;
 	}
 	,getDraggedElement: function(draggableEvent) {
-		haxe.Log.trace("getDraggedElement " + Std.string(draggableEvent),{ fileName : "SelectionDropHandler.hx", lineNumber : 70, className : "silex.ui.stage.SelectionDropHandler", methodName : "getDraggedElement"});
+		haxe.Log.trace("getDraggedElement " + Std.string(draggableEvent),{ fileName : "SelectionDropHandler.hx", lineNumber : 186, className : "silex.ui.stage.SelectionDropHandler", methodName : "getDraggedElement"});
 		if(silex.ui.stage.SelectionDropHandler.draggedComponent != null) return silex.ui.stage.SelectionDropHandler.draggedComponent; else if(silex.ui.stage.SelectionDropHandler.draggedLayer != null) return silex.ui.stage.SelectionDropHandler.draggedLayer.rootElement; else throw "No component nor layer being dragged";
 	}
 	,setDraggedElement: function(draggableEvent) {
-		haxe.Log.trace("setDraggedElement " + Std.string(draggableEvent),{ fileName : "SelectionDropHandler.hx", lineNumber : 43, className : "silex.ui.stage.SelectionDropHandler", methodName : "setDraggedElement"});
+		haxe.Log.trace("setDraggedElement " + Std.string(draggableEvent),{ fileName : "SelectionDropHandler.hx", lineNumber : 159, className : "silex.ui.stage.SelectionDropHandler", methodName : "setDraggedElement"});
 		if(silex.ui.stage.SelectionDropHandler.draggedComponent != null || silex.ui.stage.SelectionDropHandler.draggedLayer != null) throw "Error: could not start dragging this component or layer, another layer is still being dragged";
 		if(silex.component.ComponentModel.getInstance().selectedItem != null) {
-			haxe.Log.trace("setDraggedElement COMPONENT ",{ fileName : "SelectionDropHandler.hx", lineNumber : 51, className : "silex.ui.stage.SelectionDropHandler", methodName : "setDraggedElement"});
+			haxe.Log.trace("setDraggedElement COMPONENT ",{ fileName : "SelectionDropHandler.hx", lineNumber : 167, className : "silex.ui.stage.SelectionDropHandler", methodName : "setDraggedElement"});
 			silex.ui.stage.SelectionDropHandler.draggedComponent = silex.component.ComponentModel.getInstance().selectedItem;
 		} else if(silex.layer.LayerModel.getInstance().selectedItem != null) {
-			haxe.Log.trace("setDraggedElement LAYER ",{ fileName : "SelectionDropHandler.hx", lineNumber : 59, className : "silex.ui.stage.SelectionDropHandler", methodName : "setDraggedElement"});
+			haxe.Log.trace("setDraggedElement LAYER ",{ fileName : "SelectionDropHandler.hx", lineNumber : 175, className : "silex.ui.stage.SelectionDropHandler", methodName : "setDraggedElement"});
 			silex.ui.stage.SelectionDropHandler.draggedLayer = silex.layer.LayerModel.getInstance().selectedItem;
 		}
 	}
+	,deleteSelection: function() {
+		var component = silex.component.ComponentModel.getInstance().selectedItem;
+		if(component == null) {
+			var layer = silex.layer.LayerModel.getInstance().selectedItem;
+			var page = silex.page.PageModel.getInstance().selectedItem;
+			var name = layer.rootElement.getAttribute("title");
+			if(name == null) name = "";
+			var confirm = js.Lib.window.confirm("I am about to delete the container " + name + ". Are you sure?");
+			if(confirm == true) silex.layer.LayerModel.getInstance().removeLayer(layer,page);
+		} else {
+			var name = component.getAttribute("title");
+			if(name == null) name = "";
+			var confirm = js.Lib.window.confirm("I am about to delete the component " + name + ". Are you sure?");
+			if(confirm == true) silex.component.ComponentModel.getInstance().removeComponent(component);
+		}
+	}
+	,onClick: function(e) {
+		if(brix.util.DomTools.hasClass(e.target,"selection-marker-delete")) {
+			e.preventDefault();
+			this.deleteSelection();
+		}
+	}
+	,redraw: function(e) {
+		if(this.displayZoneTemplate != null && this.displayZone != null) {
+			haxe.Log.trace("redraw " + this.displayZone.clientWidth,{ fileName : "SelectionDropHandler.hx", lineNumber : 87, className : "silex.ui.stage.SelectionDropHandler", methodName : "redraw"});
+			if(this.rootElement.clientWidth > 50 && this.rootElement.clientHeight > 25) try {
+				this.displayZone.style.display = "block";
+				this.delBtn.style.display = "block";
+				var t = new haxe.Template(this.displayZoneTemplate);
+				var context = { layerName : null, componentName : null};
+				if(silex.layer.LayerModel.getInstance().selectedItem != null) context.layerName = silex.layer.LayerModel.getInstance().selectedItem.rootElement.getAttribute("title"); else if(silex.component.ComponentModel.getInstance().selectedItem != null) context.layerName = silex.component.ComponentModel.getInstance().selectedItem.parentNode.getAttribute("title");
+				if(silex.component.ComponentModel.getInstance().selectedItem != null) context.componentName = silex.component.ComponentModel.getInstance().selectedItem.getAttribute("title");
+				var output = t.execute(context);
+				this.displayZone.innerHTML = output;
+			} catch( e1 ) {
+				throw "Error while executing the template of the marker. The error: " + Std.string(e1);
+			} else {
+				this.displayZone.style.display = "none";
+				this.delBtn.style.display = "none";
+			}
+		}
+	}
+	,delBtn: null
+	,displayZone: null
+	,displayZoneTemplate: null
 	,__class__: silex.ui.stage.SelectionDropHandler
 });
 silex.ui.toolbox = {}
@@ -9568,7 +9622,7 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 		if(value6 == true) propertyModel.setAttribute(this.selectedItem,"data-master","true"); else propertyModel.setAttribute(this.selectedItem,"data-master",null);
 	}
 	,load: function(element) {
-		haxe.Log.trace("load " + Std.string(element),{ fileName : "PropertyEditor.hx", lineNumber : 96, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "load"});
+		haxe.Log.trace("load " + Std.string(element),{ fileName : "PropertyEditor.hx", lineNumber : 104, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "load"});
 		var contextArray = [];
 		if(brix.util.DomTools.hasClass(element,"Layer")) contextArray.push("context-layer"); else switch(element.nodeName.toLowerCase()) {
 		case "audio":
@@ -9647,8 +9701,16 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 			if(brix.util.DomTools.hasClass(this.selectedItem,"Layer")) {
 				var layer = silex.layer.LayerModel.getInstance().selectedItem;
 				var page = silex.page.PageModel.getInstance().selectedItem;
-				silex.layer.LayerModel.getInstance().removeLayer(layer,page);
-			} else silex.component.ComponentModel.getInstance().removeComponent(this.selectedItem);
+				var name = layer.rootElement.getAttribute("title");
+				if(name == null) name = "";
+				var confirm = js.Lib.window.confirm("I am about to delete the container " + name + ". Are you sure?");
+				if(confirm == true) silex.layer.LayerModel.getInstance().removeLayer(layer,page);
+			} else {
+				var name = this.selectedItem.getAttribute("title");
+				if(name == null) name = "";
+				var confirm = js.Lib.window.confirm("I am about to delete the component " + name + ". Are you sure?");
+				if(confirm == true) silex.component.ComponentModel.getInstance().removeComponent(this.selectedItem);
+			}
 		}
 	}
 	,__class__: silex.ui.toolbox.editor.PropertyEditor
@@ -10003,11 +10065,16 @@ silex.ui.stage.PublicationViewer.DEBUG_INFO = "PublicationViewer class";
 silex.ui.stage.PublicationViewer.BUILDER_MODE_PAGE_NAME = "builder-mode";
 silex.ui.stage.SelectionController.__meta__ = { obj : { tagNameFilter : ["DIV"]}};
 silex.ui.stage.SelectionController.DEBUG_INFO = "SelectionController class";
+silex.ui.stage.SelectionController.REDRAW_MARKER_EVENT = "redraw";
 silex.ui.stage.SelectionController.SELECTION_MARKER_STYLE_NAME = "selection-marker";
 silex.ui.stage.SelectionController.SELECTION_LAYER_MARKER_STYLE_NAME = "selection-layer-marker";
 silex.ui.stage.SelectionController.HOVER_MARKER_STYLE_NAME = "hover-marker";
 silex.ui.stage.SelectionController.HOVER_LAYER_MARKER_STYLE_NAME = "hover-layer-marker";
 silex.ui.stage.SelectionDropHandler.__meta__ = { obj : { tagNameFilter : ["DIV"]}};
+silex.ui.stage.SelectionDropHandler.DELETE_BUTTON_CLASS_NAME = "selection-marker-delete";
+silex.ui.stage.SelectionDropHandler.DISPLAY_ZONE_CLASS_NAME = "selection-marker-name";
+silex.ui.stage.SelectionDropHandler.MIN_WIDTH_FOR_DISPLAY_ZONE = 50;
+silex.ui.stage.SelectionDropHandler.MIN_HEIGHT_FOR_DISPLAY_ZONE = 25;
 silex.ui.toolbox.MenuController.__meta__ = { obj : { tagNameFilter : ["DIV"]}};
 silex.ui.toolbox.editor.EditorBase.DEBUG_INFO = "silex.ui.toolbox.editor.EditorBase class";
 silex.ui.toolbox.editor.EditorBase.OPEN_FILE_BROWSER_CLASS_NAME = "select-file-button";

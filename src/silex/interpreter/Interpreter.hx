@@ -39,7 +39,7 @@ class Interpreter{
 	/**
 	 * execute a set of actions
 	 */
-	public static function exec(script:String, context:Hash<Dynamic>=null) {
+	public static function exec(script:String, context:Hash<Dynamic>=null):Dynamic {
 		var parser = new hscript.Parser();
 		var program = parser.parseString(script);
 		var interp = new hscript.Interp();

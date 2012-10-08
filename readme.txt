@@ -49,6 +49,8 @@ cleanup code
 - DomTools::getElementBoundingBox
   => use jquery ??
 - refactoring: mvc + API publique à overrider + éventuellement une api de plugins pour débutants?
+- supprimer les getAttribute("title") => faire un ComponentModel.getName et LayerModel.getName
+- faire une classe Lang, avec tous les messages
 
 drag drop avec "proxy"
 > le style doit etre celui du layer / comp

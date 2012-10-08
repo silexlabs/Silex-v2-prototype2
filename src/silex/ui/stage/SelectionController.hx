@@ -33,6 +33,10 @@ class SelectionController extends DisplayObject
 	 */ 
 	public static inline var DEBUG_INFO = "SelectionController class";
 	/**
+	 * name  of the event dispatched on a marker when it is placed over a new component
+	 */
+	public static inline var REDRAW_MARKER_EVENT = "redraw";
+	/**
 	 * The selection marker placed over the selected item. 
 	 * This constant defines the css style applyed to the marker, so that one can style it.
 	 */
@@ -146,12 +150,13 @@ class SelectionController extends DisplayObject
 	 */
 	public function redraw(e:Event=null) {
 		// trace("redraw selection");
-		if (layerModel.selectedItem == null) setMarkerPosition(selectionLayerMarker, null);
-		else setMarkerPosition(selectionLayerMarker, layerModel.selectedItem.rootElement);
-		if (layerModel.hoveredItem == null) setMarkerPosition(hoverLayerMarker, null);
-		else  setMarkerPosition(hoverLayerMarker, layerModel.hoveredItem.rootElement);
 		setMarkerPosition(selectionMarker, componentModel.selectedItem);
 		setMarkerPosition(hoverMarker, componentModel.hoveredItem);
+
+		if (componentModel.selectedItem!=null || layerModel.selectedItem == null) setMarkerPosition(selectionLayerMarker, null);
+		else setMarkerPosition(selectionLayerMarker, layerModel.selectedItem.rootElement);
+		if (componentModel.hoveredItem!=null || layerModel.hoveredItem == null) setMarkerPosition(hoverLayerMarker, null);
+		else  setMarkerPosition(hoverLayerMarker, layerModel.hoveredItem.rootElement);
 	}
 	//////////////////////////////////////////////////////
 	// Selection clicks
@@ -359,6 +364,12 @@ class SelectionController extends DisplayObject
 				Math.floor(boundingBox.h - markerMarginV)
 			);
 		}
+		// dispatch a redraw event
+		var event : CustomEvent = cast Lib.document.createEvent("CustomEvent");
+		event.initCustomEvent(REDRAW_MARKER_EVENT, false, false, {
+			target: target,
+		});
+		marker.dispatchEvent(event);
 	}
 	/**
 	 * position the given marker at the given position

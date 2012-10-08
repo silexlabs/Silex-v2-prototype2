@@ -79,7 +79,7 @@ class LayerModel extends ModelBase<Layer>{
 	 * Reset the selection
 	 */
 	override public function setSelectedItem(item:Layer):Layer {
-		trace("setSelectedItem "+item);
+		// trace("setSelectedItem "+item);
 		// reset model selection
 		var model = ComponentModel.getInstance();
 		model.selectedItem = null;
