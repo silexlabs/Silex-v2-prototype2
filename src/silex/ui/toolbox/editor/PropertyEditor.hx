@@ -35,15 +35,14 @@ class PropertyEditor extends EditorBase
 	 */
 	public function new(rootElement:HtmlDom, BrixId:String){
 		super(rootElement, BrixId);
-		// listen to the click event
-		rootElement.addEventListener("click", onClick, true);
 	}
 	/**
 	 * callback for toolbox events
 	 * handle the click on delete button, remove the selection from model and view
 	 */
-	public function onClick(e:Event) {
+	override private function onClick(e:Event) {
 		trace("click "+e.target);
+		super.onClick(e);
 		// retrieve the node who triggered the event
 		var target:HtmlDom = e.target;
 		// remove the selection from model and view
