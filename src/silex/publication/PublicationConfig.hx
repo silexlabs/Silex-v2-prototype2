@@ -11,22 +11,6 @@ import silex.util.FileSystemTools;
  */
 class PublicationConfig extends ConfigBase{
 	/**
-	 * constant, path and file names
-	 */
-	public static inline var PUBLICATION_HTML_FILE:String = "index.html";
-	/**
-	 * constant, path and file names
-	 */
-	public static inline var PUBLICATION_CSS_FILE:String = "app.css";
-	/**
-	 * constant, path and file names
-	 */
-	public static inline var PUBLICATION_CONFIG_FOLDER:String = "conf/";
-	/**
-	 * constant, path and file names
-	 */
-	public static inline var PUBLICATION_CONFIG_FILE:String = "config.xml.php";
-	/**
 	 * The the publication data
 	 * This is the public information for the publications
 	 */

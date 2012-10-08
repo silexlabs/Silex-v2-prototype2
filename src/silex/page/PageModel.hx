@@ -183,4 +183,43 @@ class PageModel extends ModelBase<Page>{
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE), DEBUG_INFO);
 	}
+	/**
+	 * rename a page from the view and model of the publication
+	 * change the page name from all layers css class name
+	 * dispatch the change event
+	 */
+	public function renamePage(page:Page, newName:String){
+		// get the publication model
+		var publicationModel = PublicationModel.getInstance();
+		
+		// get the view and model DOM
+		var viewHtmlDom = publicationModel.viewHtmlDom;
+		var modelHtmlDom = publicationModel.modelHtmlDom;
+
+		// update all layers which has the class name as css rule
+		var viewNodes = Layer.getLayerNodes(page.name, publicationModel.application.id, viewHtmlDom);
+		var modelNodes = Layer.getLayerNodes(page.name, publicationModel.application.id, modelHtmlDom);
+
+		// browse the layers and replace page name in the view
+		for (idxLayerNode in 0...viewNodes.length){
+			var layerNode = viewNodes[0];
+			DomTools.removeClass(layerNode, page.name);
+			DomTools.addClass(layerNode, newName);
+		}
+		// browse the layers and replace page name in the model
+		for (idxLayerNode in 0...modelNodes.length){
+			var layerNode = modelNodes[0];
+			DomTools.removeClass(layerNode, page.name);
+			DomTools.addClass(layerNode, newName);
+		}
+		// change the page name
+		var viewPageNode = DomTools.getElementsByAttribute(viewHtmlDom, "name", page.name)[0];
+		var modelPageNode = DomTools.getElementsByAttribute(modelHtmlDom, "name", page.name)[0];
+		viewPageNode.setAttribute("name", newName);
+		modelPageNode.setAttribute("name", newName);
+		page.setPageName(newName);
+
+		// refresh selection 
+		refresh();
+	}
 }

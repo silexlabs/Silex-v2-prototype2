@@ -19,7 +19,7 @@ import silex.component.ComponentModel;
  * use attribute like rthis: data-dropzones-class-name="Layer" data-dropzones-class-name="silex-view"
  * use with Draggable on the same node
  */
-class MasterDropHandler extends StageDropHandler{
+class MasterDropHandler extends DropHandlerBase{
 	/**
 	 * constructor
 	 * listen to the Draggable class events

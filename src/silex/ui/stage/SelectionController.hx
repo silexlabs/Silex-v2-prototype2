@@ -162,18 +162,9 @@ class SelectionController extends DisplayObject
 	public function onClickHover(e:Event) {
 		// trace("onClickHover ");
 		// prenvent default (selection of text, call of this.onClickAnywhere)
-//		e.preventDefault();
+		//		e.preventDefault();
 		// set the item on the model (this will dispatch an event and we will catch it to update the marker)
 		componentModel.selectedItem = componentModel.hoveredItem;
-
-/* attempt to start drag on mouse down
-		// start drag on mouse down
-		var e:Event = Lib.document.createEvent('HTMLEvents');
-		e.initEvent('mousedown', true, false);
-		selectionMarker.dispatchEvent(cast(e));
-
-//		DomTools.doLater(callback(selectionMarker.dispatchEvent, cast(e)), 100);
-*/
 	}
 	/**
 	 * Handle mouse events
@@ -205,6 +196,7 @@ class SelectionController extends DisplayObject
 	}
 	/**
 	 * Handle mouse events
+	 * Reset selection when click on the body
 	 */
 /*	public function onClickAnywhere(e:Event) {
 		trace("onClickAnywhere ");
@@ -240,7 +232,7 @@ class SelectionController extends DisplayObject
 		var found = false;
 		var layers = DomTools.getElementsByAttribute(rootElement, "data-silex-layer-id", "*");
 		for (idx in 0...layers.length){
-			if (checkIsOver(layers[idx], e.pageX, e.pageY)){
+			if (checkIsOver(layers[idx], e.clientX, e.clientY)){
 				// the mouse is over a layer
 				// get the Brix application from the loaded publication
 				var application = PublicationModel.getInstance().application;
@@ -266,7 +258,7 @@ class SelectionController extends DisplayObject
 			// browse all components to check if it should be set as hovered
 			var comps = DomTools.getElementsByAttribute(layerModel.hoveredItem.rootElement, "data-silex-component-id", "*");
 			for (idx in 0...comps.length){
-				if (checkIsOver(comps[idx], e.pageX, e.pageY)){
+				if (checkIsOver(comps[idx], e.clientX, e.clientY)){
 					// the mouse is over a layer
 					componentModel.hoveredItem = comps[idx];
 					found = true;
@@ -278,97 +270,22 @@ class SelectionController extends DisplayObject
 			componentModel.hoveredItem = null;
 		}else{
 		}
-/*
-		// retrieve the node which is a component
-		var target:HtmlDom = getComponent(e.target);
-		// check if this is a Layer or a Component
-		if (target != null){
-			// trace("COMPONENT!");
-			// set the item on the model (this will dispatch an event and we will catch it to update the marker)
-			componentModel.hoveredItem = target;
-		}else{
-			var target:HtmlDom = getLayer(e.target);
-			// check if this is a Layer component
-			if (target != null){
-				// trace("LAYER!");
-				// get the Brix application from the loaded publication
-				var application = PublicationModel.getInstance().application;
-				// get the Layer instance associated with the target
-				var layerList = application.getAssociatedComponents(target, Layer); // there should be 1 and only 1 element here
-				if (layerList.length != 1){
-					trace("Warning: there should be 1 and only 1 Layer instance associated with this node, not "+layerList.length);
-				}
-				layerModel.hoveredItem = layerList.first();
-			}else{
-				trace("Warning: the hovered element is not a Layer nor a Component");
-			}
-		}
-/*
-		var target:HtmlDom = e.target;
-		// check if this is a Layer component
-		if (DomTools.hasClass(target, "Layer")){
-			trace("LAYER!");
-			// get the Brix application from the loaded publication
-			var application = PublicationModel.getInstance().application;
-			// get the Layer instance associated with the target
-			var layerList = application.getAssociatedComponents(target, Layer); // there should be 1 and only 1 element here
-			if (layerList.length != 1){
-				trace("Warning: there should be 1 and only 1 Layer instance associated with this node, not "+layerList.length);
-			}
-			layerModel.hoveredItem = layerList.first();
-		}else{
-			// trace("COMPONENT!");
-			// retrieve the node which is a component, i.e. the one whise parent node has the Layer class
-			var component:HtmlDom = getComponent(e.target);
-			// set the item on the model (this will dispatch an event and we will catch it to update the marker)
-			componentModel.hoveredItem = component;
-		}
-/**/	
 	}
 	/**
 	 * Check if the mouse is over a given node
 	 */
 	private function checkIsOver(target:HtmlDom, mouseX:Int, mouseY:Int):Bool{
+		// get the boundig box for the element
 		var boundingBox = DomTools.getElementBoundingBox(target);
-/**/
+		// return true if the mouse is in the bounding box
 		var res = mouseX > boundingBox.x 
 			&& mouseX < boundingBox.x+boundingBox.w
 			&& mouseY > boundingBox.y
 			&& mouseY < boundingBox.y+boundingBox.h;
-/*
-		var res = mouseX > target.offsetLeft 
-			&& mouseX < target.offsetLeft+target.offsetWidth
-			&& mouseY > target.offsetTop
-			&& mouseY < target.offsetTop+target.offsetHeight;
-*/		//trace("checkIsOver(" + target + ", " + mouseX + ", "+ mouseY + ") returns "+res);
+
 		return res;
 	}
-	/**
-	 * retrieve the node which is a component, i.e. the one whith data-silex-component-id
-	 */
-/*	private function getComponent(target:HtmlDom):Null<HtmlDom>{
-		// browse in the parent
-		while (target != null && target.nodeName.toLowerCase() != "body"){
-			if (target.getAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME) != null){
-				return target;
-			}
-			target = target.parentNode;
-		}
-		return null;
-	}
-	/**
-	 * retrieve the node which is a layer, i.e. the one whith data-silex-layer-id
-	 */
-/*	private function getLayer(target:HtmlDom):Null<HtmlDom>{
-		// browse in the parent
-		while (target != null){
-			if (target.getAttribute(LayerModel.LAYER_ID_ATTRIBUTE_NAME) != null){
-				return target;
-			}
-			target = target.parentNode;
-		}
-		return null;
-	}
+
 	//////////////////////////////////////////////////////
 	// Model events handling
 	//////////////////////////////////////////////////////

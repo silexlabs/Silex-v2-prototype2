@@ -4,11 +4,13 @@ import js.Lib;
 import js.Dom;
 
 import brix.component.ui.DisplayObject;
+import brix.component.navigation.Page;
 import brix.util.DomTools;
 import silex.property.PropertyModel;
 import silex.component.ComponentModel;
 import silex.layer.LayerModel;
 import silex.publication.PublicationModel;
+import silex.ui.dialog.FileBrowserDialog;
 
 /**
  * This component is the base class for all editors in Silex. 
@@ -16,6 +18,9 @@ import silex.publication.PublicationModel;
  * in order to let the user enter values and edit css style values or tag attributes.
  * The name of the style or attribute is specifiyed as data-attribute-name or data-style-name
  * And the values are given as key/value pairs
+ * This class handles the link with the FileBrowserDialog:
+ * - opens the page file-browser-dialog when a button with class name select-file-button is clicked
+ * - and calls this.selectFile to attach an event to retrieve the selected file
  */
 class EditorBase extends DisplayObject 
 {
@@ -23,6 +28,11 @@ class EditorBase extends DisplayObject
 	 * Information for debugging, e.g. the class name
 	 */ 
 	public static inline var DEBUG_INFO:String = "silex.ui.toolbox.editor.EditorBase class";
+	/**
+	 * class name for the "open media lib" buttons
+	 * when clicked, it will automatically open the FB and link the returned URL to a text field
+	 */ 
+	public static inline var OPEN_FILE_BROWSER_CLASS_NAME:String = "select-file-button";
 	/**
 	 * selected element
 	 */ 
@@ -40,6 +50,8 @@ class EditorBase extends DisplayObject
 		// listen to the change event of HTML inputs
 		rootElement.addEventListener("input", onInput, true);
 		rootElement.addEventListener("change", onInput, true);
+		// link with file browser
+		rootElement.addEventListener("click", onClick, true);
 
 		// listen to the property change event
 		PropertyModel.getInstance().addEventListener(PropertyModel.ON_PROPERTY_CHANGE, onPropertyChange, DEBUG_INFO);
@@ -152,7 +164,7 @@ class EditorBase extends DisplayObject
 	// Callbacks for the view
 	////////////////////////////////////////////
 	/**
-	 * callback for the click event, validate the data
+	 * callback for the input event, validate the data
 	 */
 	private function onInput(e:Event) {
 		// trace("onInput");
@@ -160,6 +172,39 @@ class EditorBase extends DisplayObject
 		beforeApply();
 		apply();
 		afterApply();
+	}
+	/**
+	 * callback for the click event, check if a dialog must be opened
+	 */
+	private function onClick(e:Event) {
+		// trace("onClick");
+		if (DomTools.hasClass(e.target, OPEN_FILE_BROWSER_CLASS_NAME)){
+			e.preventDefault();
+			var inputControlClassName = e.target.getAttribute("data-fb-target");
+			selectFile("Double click to select a file!", callback(onFileChosen, "test", inputControlClassName));
+		}
+	}
+	private function onFileChosen(propertyName:String, inputControlClassName:String, fileUrl:String){
+		trace("onFileChosen("+propertyName+", "+inputControlClassName+", "+fileUrl+")");
+		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
+		cast(inputElement).value = fileUrl;
+		beforeApply();
+		apply();
+		afterApply();
+		DomTools.doLater(refreshSelection);
+	}
+	private function refreshSelection(){
+		LayerModel.getInstance().refresh();
+		ComponentModel.getInstance().refresh();
+	}
+	/**
+	 * open file browser
+	 * called when the user clicks on a button with "select-file-button" class
+	 */
+	private function selectFile(userMessage:String, validateCallback:String->Void){
+		FileBrowserDialog.onValidate = validateCallback;
+		FileBrowserDialog.message = userMessage;
+		Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, brixInstanceId);
 	}
 	////////////////////////////////////////////
 	// Callbacks for the model
