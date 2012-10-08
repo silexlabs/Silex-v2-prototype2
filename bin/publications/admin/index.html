@@ -314,7 +314,7 @@
 									<LEGEND>Name</LEGEND>
 									<INPUT class="name-property" type="text" max-lenght="20" value="21"/>
 									
-									<BUTTON class="property-editor-delete-selected">Delete</BUTTON>
+									<BUTTON class="property-editor-delete-selected"></BUTTON>
 									
 								<FIELDSET class="context-video context-audio">
 									<LEGEND>Sources (1 by line)</LEGEND>
@@ -340,7 +340,7 @@
 								</FIELDSET>
 								<FIELDSET class="context-layer">
 									<LEGEND>Set as master</LEGEND>
-									 <DIV class="check"><INPUT class="master-property" type="checkbox"/> <P>On/Off</P></DIV>
+									 <DIV class="check"><INPUT class="master-property" type="checkbox"/> On/Off</DIV>
 								</FIELDSET>
 							</FIELDSET>
 							<FIELDSET class="RawHtmlEditor">
@@ -1157,9 +1157,15 @@
 				<DIV class="Group SelectionController panel-builder-body">
 					<DIV class="PublicationViewer">
 					</DIV>
-					<DIV data-dropzones-class-name="Layer" class="selection-marker Draggable SelectionMarker" data-phantom-class-name="selection-phantom"></DIV>
+					<DIV data-dropzones-class-name="Layer" class="selection-marker Draggable SelectionMarker" data-phantom-class-name="selection-phantom">
+                    	<div class="selection-marker-delete"></div>
+                        <div class="selection-marker-name">Nom du marker : [ body  > structure > contener > selectedElement ]</div>
+                    </DIV>
 					<DIV class="hover-marker"></DIV>
-					<DIV data-dropzones-class-name="silex-view" class="selection-layer-marker Draggable SelectionMarker" data-phantom-class-name="selection-phantom"></DIV>
+					<DIV data-dropzones-class-name="silex-view" class="selection-layer-marker Draggable SelectionMarker" data-phantom-class-name="selection-phantom">
+                    	<div class="selection-layer-marker-delete"></div>
+                        <div class="selection-layer-marker-name">Nom du layer : [ body  > structure > contener > selectedElement ]</div>
+                    </DIV>
 					<DIV class="hover-layer-marker"></DIV>
 				</DIV>
 
