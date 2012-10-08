@@ -70,13 +70,15 @@ body{
 /* **************** */
 /* 	Dialogs 		*/
 /* **************** */
-.dialogs .header{
-margin-left:auto;
-margin-right:auto;
-max-width:300px;
-
+.dialogs header{
+	padding: 5px;
+	background-color: #F93;
+	border-radius: 5px 5px 0 0;
 }
-
+.dialogs header p{
+	font-size: 12px;
+	margin: 0;
+}
 .dialogs .container{
 
 	max-width:360px;
@@ -223,12 +225,6 @@ outline-color:DimGray;
 }
 
 .dialogs footer{
-	color:LightGray;
-	padding-left:4px;
-	display:block;
-	width:100%;
-	margin-top:23px;
-
 }
 
 .dialogs footer p a{
@@ -273,16 +269,6 @@ opacity:1;
     position: absolute;
     width: 50%;
     z-index: 1100;
-}
-
-.dialogs .header-2{
-
-width:100%;
-
-}
-.dialogs .header-2 img{
-	margin-left:67px;
-
 }
 .dialogs .back-header{
 	
@@ -388,30 +374,26 @@ width:100%;
 }
 
 
-.dialogs .solid-3{
-	height:1px;
-	width:97%;
-	background:White;
-	margin-left:auto;
-	margin-right:auto;
-	
+.dialogs hr{
+	width: 97%;
+	margin: 0 auto;
 }
-.dialogs .solid-4{
-	height:1px;
-	width:97%;
-	background:DimGray;
-	margin-left:auto;
-	margin-right:auto;
-
-}
-
-
 
 .dialogs .column{
 	float:right;
 	padding-right:3px;
 	font-size:12px;
 	color:DimGray;
+}
+
+.FileBrowserDialog .file-browser-div{
+
+}
+.FileBrowserDialog .file-browser-message{
+	color: green;
+	font-size: 12px;
+	float: right;
+	padding: 14px;
 }
 /* **************** */
 /* 	/Dialogs 		*/
@@ -443,7 +425,7 @@ width:100%;
 	position:absolute;
 	margin:1px;
 	padding:0px;
-	/*border: 1px groove #CCC;*/
+	display: none;
 }
 .hover-marker{
 	z-index: 300;
@@ -479,7 +461,7 @@ width:100%;
 	border: 1px solid green;*/
 }
 
-.PublicationViewer .draggable-phantom{
+.selection-phantom{
     /*opacity: .5 !important;
 	background-color: red !important;
 	border: 1px solid green !important;*/
@@ -624,9 +606,6 @@ width:100%;
 	left: 0;
 	position: fixed;
 	z-index: -1000;
-}
-.toolbox-phantom{
-	display: none;
 }
 .silex-toolbox {
 	width: 296px;
@@ -863,20 +842,24 @@ width:100%;
 }
 
 .silex-toolbox .context-layer {
-margin-left:20%;
-margin-top:7%;
-margin-bottom:1%;
-height:33%;
-min-width:51%;
+	margin-left:20%;
+	margin-top:7%;
+	margin-bottom:1%;
+	height:33%;
+	min-width:51%;
 }
-
-
-
 .silex-toolbox fieldset.context-layer .master-property{
-
-min-width:105px;
+	min-width:105px;
 }
-
+.silex-toolbox fieldset.context-img{
+	min-width:105px;	
+	width: 90%;
+}
+.silex-toolbox fieldset.context-img input{
+	height: 20px;
+	display: block;
+	width: 100%;
+}
 
 .silex-toolbox fieldset.RawHtmlEditor{
 	margin-left:auto;
@@ -993,9 +976,6 @@ min-width:105px;
 	margin-left:36px;
 	float:none;
 }
-/* **************** */
-/* /Properties Toolbox */
-/* **************** */
 fieldset {
 }
 
@@ -1017,3 +997,6 @@ fieldset select {
 	height:20px;
 	float:right;
 }
+/* **************** */
+/* /Properties Toolbox */
+/* **************** */

@@ -13,6 +13,7 @@ import brix.util.DomTools;
 
 import brix.component.navigation.Page;
 
+import silex.publication.PublicationData;
 import silex.publication.PublicationService;
 import silex.interpreter.Interpreter;
 
@@ -129,7 +130,7 @@ class Silex {
 			// var value = StringTools.htmlUnescape(DomTools.getMeta(CONFIG_PUBLICATION_BODY));
 			Lib.document.body.innerHTML = value;
 			// set base tag so the ./ is the publicaiton folder
-			//DomTools.setBaseTag(PublicationService.PUBLICATION_FOLDER+publicationName+"/");
+			//DomTools.setBaseTag(PublicationConstants.PUBLICATION_FOLDER+publicationName+"/");
 		}
 		
 		// init Brix components
@@ -183,7 +184,7 @@ class Silex {
 		//php.Lib.print("this is a haxe remoting gateway");
 
 		// redirect to the builder
-		Web.setHeader("Location", PublicationService.PUBLICATION_FOLDER + PublicationService.BUILDER_PUBLICATION_NAME);
+		Web.setHeader("Location", PublicationConstants.PUBLICATION_FOLDER + PublicationConstants.BUILDER_PUBLICATION_NAME);
 /*
 		// Retrieve the publication name from the URL
 		var urlParamsString:String = Web.getParamsString();
@@ -219,7 +220,7 @@ class Silex {
 		try{
 			Lib.document.innerHTML = publicationData.html;
 		}catch(e:Dynamic){
-			var filePath = PublicationService.PUBLICATION_FOLDER + publicationName + "/" + PublicationConfig.PUBLICATION_HTML_FILE;
+			var filePath = PublicationConstants.PUBLICATION_FOLDER + publicationName + "/" + PublicationConfig.PUBLICATION_HTML_FILE;
 			throw("<br /><br />There is an error in the HTML file <a href='"+filePath+"'>"+filePath+"</a>.<br /><br />The error is: <quote>\""+StringTools.htmlEscape(e)+"\"</quote>");
 		}
 
@@ -238,7 +239,7 @@ class Silex {
 		DomTools.setMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION, scripts);
 
 		// set base tag so the ./ is the publicaiton folder
-		DomTools.setBaseTag(PublicationService.PUBLICATION_FOLDER+publicationName+"/");
+		DomTools.setBaseTag(PublicationConstants.PUBLICATION_FOLDER+publicationName+"/");
 		
 		// set initial page 
 		if (initialPageName != "" && DomTools.getMeta(CONFIG_USE_DEEPLINK)!="false")

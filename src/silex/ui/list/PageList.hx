@@ -48,7 +48,7 @@ class PageList extends List<Page>
 	 */
 	override public function reloadData(){
 		var publicationModel = PublicationModel.getInstance();
-		trace("reloadData "+publicationModel+" - "+publicationModel.viewHtmlDom);
+		// trace("reloadData "+publicationModel+" - "+publicationModel.viewHtmlDom);
 		// if a publication is loaded only
 		if(publicationModel.application != null){
 			dataProvider = PageModel.getInstance().getClasses(publicationModel.viewHtmlDom, publicationModel.application.id, Page);

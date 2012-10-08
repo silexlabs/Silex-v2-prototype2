@@ -214,10 +214,10 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	public function load(name:String, configData:PublicationConfigData = null){
 		// set base tag so the ./ is the publication folder
 		var currentBasTag = DomTools.getBaseTag();
-		if (currentBasTag == PublicationService.PUBLICATION_FOLDER + currentName + "/"
-			|| currentBasTag == PublicationService.PUBLICATION_FOLDER + PublicationService.BUILDER_PUBLICATION_NAME + "/"
+		if (currentBasTag == PublicationConstants.PUBLICATION_FOLDER + currentName + "/"
+			|| currentBasTag == PublicationConstants.PUBLICATION_FOLDER + PublicationConstants.BUILDER_PUBLICATION_NAME + "/"
 			){
-			DomTools.setBaseTag(PublicationService.PUBLICATION_FOLDER + name+"/");
+			DomTools.setBaseTag(PublicationConstants.PUBLICATION_FOLDER + name+"/");
 		}
 		else{
 			// case of a publication displayed directly from the publicaiton folder, i.e. publications/default/index.html
