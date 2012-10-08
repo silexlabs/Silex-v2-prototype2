@@ -51,7 +51,7 @@ class SelectionDropHandler extends DropHandlerBase{
 			trace("setDraggedElement COMPONENT ");
 			// store the component and its parent and index
 			draggedComponent = ComponentModel.getInstance().selectedItem;
-			// change the style of the phantom to erflect the element style
+			// change the style of the phantom to reflect the element style
 			//draggableEvent.draggable.initPhantomStyle(draggedComponent);
 		}
 		else if(LayerModel.getInstance().selectedItem != null){
@@ -59,7 +59,7 @@ class SelectionDropHandler extends DropHandlerBase{
 			trace("setDraggedElement LAYER ");
 			// store the component 
 			draggedLayer = LayerModel.getInstance().selectedItem;
-			// change the style of the phantom to erflect the element style
+			// change the style of the phantom to reflect the element style
 			//draggableEvent.draggable.initPhantomStyle(draggedLayer.rootElement);
 		}
 	}

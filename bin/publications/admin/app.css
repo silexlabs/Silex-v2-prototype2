@@ -467,11 +467,10 @@ opacity:1;
 	border: 1px solid green !important;*/
 	min-width: 10px !important;
 	min-height: 10px !important;
+	border-color: red !important;
 }
 
 .selection-layer-marker-delete, .selection-marker-delete {
-	width:27px;
-	height:27px;
 	margin:0;
 	padding:0;
 	float:right;
@@ -483,7 +482,6 @@ opacity:1;
 }
 
 .selection-layer-marker-name, .selection-marker-name  {
-	width:98%;
 	min-height:20px;
 	background-color:#666666;
 	font-size:10px;

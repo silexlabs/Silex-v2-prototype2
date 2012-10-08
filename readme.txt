@@ -36,6 +36,8 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 En cours
 -------------------
 
+poubelle a disparu
+selection dans le ribbon
 file browser : manque multiple urls
 
 **refactoring**
@@ -67,12 +69,14 @@ permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html 
 
 ** bugs **
 
+  * insert image in the background with file manager
   * memory leak in the Layer, Page and transition classes
   * in the List class, listen to the click on the container instead of each cell, to prevent memory leak
   * chrome and color picker : read ok, load bug
   * delete a container when it is a master or not, and uncheck master when the container is not on any page
   * ecouter window.resize, et dispatcher window.resize dans Page::open
-  * display block
+  * display block?
+  * ergo : disable les pixel+unit quand on a select un shorthand (exple background h pos)
 
 ** To do **
 

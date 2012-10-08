@@ -85,7 +85,8 @@ class DropHandlerBase extends DisplayObject{
 			// change the phantom style
 			event.detail.draggable.initPhantomStyle(draggedElement);
 			// remove the element from stage
-			draggedElement.parentNode.removeChild(draggedElement);
+			//draggedElement.parentNode.removeChild(draggedElement);
+			rootElement.appendChild(draggedElement);
 		}
 	}
 	/**
