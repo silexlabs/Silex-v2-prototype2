@@ -37,10 +37,21 @@ class FileBrowserDialog extends DialogBase
 	public static inline var FB_PAGE_NAME = "file-browser-dialog";
 	/**
 	 * static callback method
+	 * Called after a click on the submit button
 	 */
 	public static var onValidate:String->Void;
 	/**
-	 * static meddage property to be set before openning this dialog
+	 * static callback method 
+	 * Called after a click on the submit button
+	 */
+	public static var onValidateMultiple:Array<String>->Void;
+	/**
+	 * static property to be set before openning this dialog
+	 * set this to true in if you expect multiple file, default is false
+	 */
+	public static var expectMultipleFiles:Bool = false;
+	/**
+	 * static property to be set before openning this dialog
 	 * it will be placed in the element with class name "file-browser-message"
 	 */
 	public static var message:String;
@@ -69,19 +80,35 @@ class FileBrowserDialog extends DialogBase
 				element.innerHTML = message;
 			}
 		}
-
-        Reflect.setField(Lib.window, "KCFinder", {
-		    callBack: validateSelection
-        });
+		if (expectMultipleFiles){
+	        Reflect.setField(Lib.window, "KCFinder", {
+			    callBackMultiple: validateMultipleSelection
+	        });
+		}
+		else{
+	        Reflect.setField(Lib.window, "KCFinder", {
+			    callBack: validateSelection
+	        });
+	    }
 	}
 	/**
 	 * Called after a click on the submit button
-	 * Open the selected publication
 	 */
 	public function validateSelection(url:String) {
 		if (url != null){
 			if (onValidate != null){
 				onValidate(url);
+			}
+			close();
+		}
+	}
+	/**
+	 * Called after a click on the submit button
+	 */
+	public function validateMultipleSelection(files:Array<String>) {
+    	if (files != null){
+			if (onValidateMultiple != null){
+				onValidateMultiple(files);
 			}
 			close();
 		}
@@ -101,6 +128,8 @@ class FileBrowserDialog extends DialogBase
 		var element = DomTools.getSingleElement(rootElement, FB_CLASS_NAME, true);
 		element.innerHTML = "";
         Reflect.setField(Lib.window, "KCFinder", null);
+        // reset to default
+		expectMultipleFiles = false;
 		// now do the default behavior
 		super.close();
 	}

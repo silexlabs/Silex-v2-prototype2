@@ -34,6 +34,11 @@ class EditorBase extends DisplayObject
 	 */ 
 	public static inline var OPEN_FILE_BROWSER_CLASS_NAME:String = "select-file-button";
 	/**
+	 * class name for the "open media lib" buttons
+	 * when clicked, it will automatically open the FB and link the returned URL to a text field
+	 */ 
+	public static inline var ADD_MULTIPLE_FILE_BROWSER_CLASS_NAME:String = "add-multiple-files-button";
+	/**
 	 * selected element
 	 */ 
 	public var selectedItem(default, setSelectedItem):HtmlDom;
@@ -181,11 +186,19 @@ class EditorBase extends DisplayObject
 		if (DomTools.hasClass(e.target, OPEN_FILE_BROWSER_CLASS_NAME)){
 			e.preventDefault();
 			var inputControlClassName = e.target.getAttribute("data-fb-target");
-			selectFile("Double click to select a file!", callback(onFileChosen, "test", inputControlClassName));
+			selectFile("Double click to select a file!", callback(onFileChosen, inputControlClassName));
+		}
+		if (DomTools.hasClass(e.target, ADD_MULTIPLE_FILE_BROWSER_CLASS_NAME)){
+			e.preventDefault();
+			var inputControlClassName = e.target.getAttribute("data-fb-target");
+			selectMultipleFiles("Double click to select one or more file(s)!", callback(onMultipleFilesChosen, inputControlClassName));
 		}
 	}
-	private function onFileChosen(propertyName:String, inputControlClassName:String, fileUrl:String){
-		trace("onFileChosen("+propertyName+", "+inputControlClassName+", "+fileUrl+")");
+	/**
+	 * callback for the FileBrowserDialog
+	 */
+	private function onFileChosen(inputControlClassName:String, fileUrl:String){
+		trace("onFileChosen("+inputControlClassName+", "+fileUrl+")");
 		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
 		cast(inputElement).value = abs2rel(fileUrl);
 		beforeApply();
@@ -193,9 +206,14 @@ class EditorBase extends DisplayObject
 		afterApply();
 		DomTools.doLater(refreshSelection);
 	}
+	/**
+	 * refresh the model
+	 */
 	private function refreshSelection(){
-		LayerModel.getInstance().refresh();
-		ComponentModel.getInstance().refresh();
+		if (ComponentModel.getInstance().selectedItem != null)
+			ComponentModel.getInstance().refresh();
+		else
+			LayerModel.getInstance().refresh();
 	}
 	/**
 	 * open file browser
@@ -204,6 +222,30 @@ class EditorBase extends DisplayObject
 	private function selectFile(userMessage:String, validateCallback:String->Void){
 		FileBrowserDialog.onValidate = validateCallback;
 		FileBrowserDialog.message = userMessage;
+		FileBrowserDialog.expectMultipleFiles = false;
+		Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, brixInstanceId);
+	}
+	/**
+	 * callback for the FileBrowserDialog
+	 */
+	private function onMultipleFilesChosen(inputControlClassName:String, files:Array<String>){
+		trace("onFileChosen("+inputControlClassName+", "+files+")");
+		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
+		if (cast(inputElement).value != "") cast(inputElement).value += "\n";
+		cast(inputElement).value += abs2rel(files.join("\n"));
+		beforeApply();
+		apply();
+		afterApply();
+		DomTools.doLater(refreshSelection);
+	}
+	/**
+	 * open file browser
+	 * called when the user clicks on a button with "select-file-button" class
+	 */
+	private function selectMultipleFiles(userMessage:String, validateCallback:Array<String>->Void){
+		FileBrowserDialog.onValidateMultiple = validateCallback;
+		FileBrowserDialog.message = userMessage;
+		FileBrowserDialog.expectMultipleFiles = true;
 		Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, brixInstanceId);
 	}
 	////////////////////////////////////////////

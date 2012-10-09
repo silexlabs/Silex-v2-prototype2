@@ -37,7 +37,6 @@ En cours
 -------------------
 
 file browser : 
-- bug online
 - manque multiple urls
 
 **refactoring**
