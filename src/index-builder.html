@@ -22,6 +22,8 @@
 		<script data-brix-use="silex.ui.dialog.AuthDialog"></script>
 		<script data-brix-use="silex.ui.dialog.OpenDialog"></script>
 		<script data-brix-use="silex.ui.dialog.FileBrowserDialog"></script>
+		<script data-brix-use="silex.ui.dialog.TextEditorDialog"></script>
+
 		<script data-brix-use="silex.ui.list.PublicationList"></script>
 		<script data-brix-use="silex.ui.list.PageList"></script>
 		<script data-brix-use="silex.ui.list.LayersList"></script>
@@ -37,7 +39,7 @@
 		<script data-brix-use="silex.ui.toolbox.MenuController"></script>
 
 		<script data-brix-use="silex.ui.toolbox.editor.PropertyEditor"></script>
-		<script data-brix-use="silex.ui.toolbox.editor.RawHtmlEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.HtmlEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.TextStyleEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.BackgroundStyleEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.BlockStyleEditor"></script>
@@ -340,8 +342,28 @@
 						
 					</DIV>
 				</form>
+				<!-- TextEditor Dialog -->
+				<A class="Page" name="text-editor-dialog" ></A>
+				<form class="Layer text-editor-dialog dialog-foreground TextEditorDialog" 
+					data-dialog-name="text-editor-dialog">
+					<DIV class="container-2">
+						<header>
+							<p>Silex Text Editor</p>
+						</header>
+						<DIV class="text-editor-div">
+						</DIV>
+						<footer class="foot">
+							<hr />
+<!--								<input type="submit" value="Ok" class="validate-button"></input>
+-->
+							<button class="cancel-button">Close</button>
+							<label class="message-div"></label>
+						</footer>
+						
+					</DIV>
+				</form>
 				<!-- dialog background -->
-				<DIV class="Layer dialog-background login-dialog open-dialog file-browser-dialog"></DIV>
+				<DIV class="Layer dialog-background login-dialog open-dialog file-browser-dialog text-editor-dialog"></DIV>
 			</DIV>
 			<!-- ----------	 -->
 			<!-- /Dialogs -->
@@ -418,8 +440,9 @@
 									 <DIV class="check"><INPUT class="master-property" type="checkbox"/> On/Off</DIV>
 								</FIELDSET>
 							</FIELDSET>
-							<FIELDSET class="RawHtmlEditor">
+							<FIELDSET class="HtmlEditor">
 								<LEGEND>HTML content</LEGEND>
+								<BUTTON class="property-editor-edit-text">Edit Text</BUTTON>
 								<TEXTAREA class="text-input"></TEXTAREA>
 							</FIELDSET>
 						</FORM>

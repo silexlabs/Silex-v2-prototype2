@@ -71,9 +71,9 @@ permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html 
 ** To do **
 
 Silex menu missing items
-- transition in, out and show, hide
 - edit text - xhtml ckeditor/_samples/output_xhtml.html
 - edit CSS
+- transition in, out and show, hide => list + edit button?
 - edit hscript
 - save as css style, css style for a component/container/page/publication
 - manage publications

@@ -17,21 +17,13 @@ import brix.util.DomTools;
  * The name of the style or attribute is specifiyed as data-attribute-name or data-style-name
  * And the values are given as key/value pairs
  */
-class RawHtmlEditor extends EditorBase 
+class HtmlEditor extends EditorBase 
 {
 	/**
 	 * The css class name of the text area or text input used to input data
 	 */
 	public static inline var TEXT_INPUT_CLASS_NAME = "text-input";
 
-	/**
-	 * Constructor
-	 * Start listening the input events
-	 */
-	public function new(rootElement:HtmlDom, BrixId:String)
-	{
-		super(rootElement, BrixId);
-	}
 	/**
 	 * apply the property value
 	 */

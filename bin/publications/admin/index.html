@@ -23,6 +23,8 @@
 		
 		
 		
+
+		
 		
 		
 
@@ -304,7 +306,25 @@
 					</DIV>
 				</FORM>
 				
-				<DIV class="Layer dialog-background login-dialog open-dialog file-browser-dialog"></DIV>
+				<A class="Page" name="text-editor-dialog"></A>
+				<FORM class="Layer text-editor-dialog dialog-foreground TextEditorDialog" data-dialog-name="text-editor-dialog">
+					<DIV class="container-2">
+						<HEADER>
+							<P>Silex Text Editor</P>
+						</HEADER>
+						<DIV class="text-editor-div">
+						</DIV>
+						<FOOTER class="foot">
+							<HR></HR>
+
+							<BUTTON class="cancel-button">Close</BUTTON>
+							<LABEL class="message-div"></LABEL>
+						</FOOTER>
+						
+					</DIV>
+				</FORM>
+				
+				<DIV class="Layer dialog-background login-dialog open-dialog file-browser-dialog text-editor-dialog"></DIV>
 			</DIV>
 			
 			
@@ -370,8 +390,9 @@
 									 <DIV class="check"><INPUT class="master-property" type="checkbox"/> On/Off</DIV>
 								</FIELDSET>
 							</FIELDSET>
-							<FIELDSET class="RawHtmlEditor">
+							<FIELDSET class="HtmlEditor">
 								<LEGEND>HTML content</LEGEND>
+								<BUTTON class="property-editor-edit-text">Edit Text</BUTTON>
 								<TEXTAREA class="text-input"></TEXTAREA>
 							</FIELDSET>
 						</FORM>

@@ -5,20 +5,14 @@ import js.Dom;
 
 import brix.component.ui.DisplayObject;
 import brix.component.navigation.transition.TransitionData;
-import brix.component.navigation.link.LinkToPage;
 import brix.component.navigation.Page;
 import brix.util.DomTools;
 
-import silex.publication.PublicationData;
 import silex.publication.PublicationModel;
-import silex.publication.PublicationService;
-import silex.ui.dialog.DialogBase;
-import silex.ui.list.PublicationList;
-import silex.ui.stage.PublicationViewer;
+import silex.publication.PublicationData;
 
 /**
- * This component displays a file browser and let's one choose a file or manage them
- * It opens in the publication's folder
+ * This component displays a file browser and lets one choose a file or manage them
  * It is mainly used in silex.ui.toolbox.editor.EditorBase class
  */
 class FileBrowserDialog extends DialogBase
