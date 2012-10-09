@@ -9,6 +9,7 @@ import brix.util.DomTools;
 
 import silex.publication.PublicationModel;
 import silex.page.PageModel;
+import silex.ui.dialog.FileBrowserDialog;
 
 /**
  * This component listen to the menu events and start the desired actions. 
@@ -88,6 +89,13 @@ class MenuController extends DisplayObject
 				var newName = Lib.window.prompt("What name do your want to give to the page "+PageModel.getInstance().selectedItem.name+"?");
 				if (newName != null)
 					PageModel.getInstance().renamePage(PageModel.getInstance().selectedItem, newName);
+
+			/////////////
+			// files
+			/////////////
+			case "open-file-browser":
+				FileBrowserDialog.message = "Manage your files and click \"close\"";
+				Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, brixInstanceId);
 		}
 
 	}

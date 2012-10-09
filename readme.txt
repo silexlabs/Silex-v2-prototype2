@@ -70,10 +70,7 @@ permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html 
 
 ** To do **
 
-borders dans properties tool box
-
 Silex menu missing items
-- manage assets/files
 - transition in, out and show, hide
 - edit text - xhtml ckeditor/_samples/output_xhtml.html
 - edit CSS
