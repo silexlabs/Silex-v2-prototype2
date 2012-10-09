@@ -46,6 +46,11 @@
 		
 		
 		
+		
+		
+		
+		
+		
 
 
 		
@@ -816,7 +821,245 @@
                         
 						<A href="#style-border-tab" class="LinkToPage accordion-header" data-group-id="Group2">Border</A>
                         <FORM class="Layer all-tab accordion-item style-border-tab">
-                        	...
+							<FIELDSET class="BorderStyleEditor">
+								<LEGEND>Style</LEGEND>	
+									<LABEL>Top</LABEL>
+									<BUTTON class="apply_to_all">Apply to All</BUTTON>
+									<SELECT class="border_top">
+										<OPTION value=""></OPTION>
+										<OPTION value="none">none</OPTION>
+										<OPTION value="solid">solid</OPTION>
+										<OPTION value="dashed">dashed</OPTION>
+										<OPTION value="dotted">dotted</OPTION>
+										<OPTION value="double">double</OPTION>
+										<OPTION value="groove">groove</OPTION>
+										<OPTION value="ridge">ridge</OPTION>
+										<OPTION value="inset">inset</OPTION>
+										<OPTION value="outset">outset</OPTION>
+									</SELECT>
+									
+									<HR></HR>
+
+									<LABEL>Left</LABEL>
+
+									<SELECT class="border_left">
+										<OPTION value=""></OPTION>
+										<OPTION value="none">none</OPTION>
+										<OPTION value="solid">solid</OPTION>
+										<OPTION value="dashed">dashed</OPTION>
+										<OPTION value="dotted">dotted</OPTION>
+										<OPTION value="double">double</OPTION>
+										<OPTION value="groove">groove</OPTION>
+										<OPTION value="ridge">ridge</OPTION>
+										<OPTION value="inset">inset</OPTION>
+										<OPTION value="outset">outset</OPTION>
+									</SELECT>
+									
+									<HR></HR>
+
+									<LABEL>Bottom</LABEL>
+
+									<SELECT class="border_bottom">
+										<OPTION value=""></OPTION>
+										<OPTION value="none">none</OPTION>
+										<OPTION value="solid">solid</OPTION>
+										<OPTION value="dashed">dashed</OPTION>
+										<OPTION value="dotted">dotted</OPTION>
+										<OPTION value="double">double</OPTION>
+										<OPTION value="groove">groove</OPTION>
+										<OPTION value="ridge">ridge</OPTION>
+										<OPTION value="inset">inset</OPTION>
+										<OPTION value="outset">outset</OPTION>
+									</SELECT>
+									
+									<HR></HR>
+
+									<LABEL>Right</LABEL>
+
+									<SELECT class="border_right">
+										<OPTION value=""></OPTION>
+										<OPTION value="none">none</OPTION>
+										<OPTION value="solid">solid</OPTION>
+										<OPTION value="dashed">dashed</OPTION>
+										<OPTION value="dotted">dotted</OPTION>
+										<OPTION value="double">double</OPTION>
+										<OPTION value="groove">groove</OPTION>
+										<OPTION value="ridge">ridge</OPTION>
+										<OPTION value="inset">inset</OPTION>
+										<OPTION value="outset">outset</OPTION>
+									</SELECT>
+							</FIELDSET>
+							<FIELDSET class="BorderRadiusEditor">
+								<LEGEND>Radius</LEGEND>	
+									<LABEL>Top Left</LABEL>
+									<BUTTON class="apply_to_all">Apply to All</BUTTON>
+	                                <INPUT class="border_top" type="number" max="5000" min="0"/>
+									<SELECT class="border_top_unit">
+										<OPTION value=""></OPTION>
+										<OPTION value="px">pixels</OPTION>
+										<OPTION value="pt">points</OPTION>
+										<OPTION value="in">inches</OPTION>
+										<OPTION value="cm">centimetres</OPTION>
+										<OPTION value="mm">millimetres</OPTION>
+										<OPTION value="pc">picas</OPTION>
+										<OPTION value="em">ems</OPTION>
+										<OPTION value="ex">exs</OPTION>
+										<OPTION value="%">%</OPTION>
+									</SELECT>
+									<BR></BR>
+	                                <HR></HR>
+
+									<LABEL>Top Right</LABEL>
+	                                <INPUT class="border_left" type="number" max="5000" min="0"/>
+									<SELECT class="border_left_unit">
+										<OPTION value=""></OPTION>
+										<OPTION value="px">pixels</OPTION>
+										<OPTION value="pt">points</OPTION>
+										<OPTION value="in">inches</OPTION>
+										<OPTION value="cm">centimetres</OPTION>
+										<OPTION value="mm">millimetres</OPTION>
+										<OPTION value="pc">picas</OPTION>
+										<OPTION value="em">ems</OPTION>
+										<OPTION value="ex">exs</OPTION>
+										<OPTION value="%">%</OPTION>
+									</SELECT>
+									<BR></BR>
+	                                <HR></HR>
+
+									<LABEL>Bottom Right</LABEL>
+	                                <INPUT class="border_bottom" type="number" max="5000" min="0"/>
+									<SELECT class="border_bottom_unit">
+										<OPTION value=""></OPTION>
+										<OPTION value="px">pixels</OPTION>
+										<OPTION value="pt">points</OPTION>
+										<OPTION value="in">inches</OPTION>
+										<OPTION value="cm">centimetres</OPTION>
+										<OPTION value="mm">millimetres</OPTION>
+										<OPTION value="pc">picas</OPTION>
+										<OPTION value="em">ems</OPTION>
+										<OPTION value="ex">exs</OPTION>
+										<OPTION value="%">%</OPTION>
+									</SELECT>
+									<BR></BR>
+	                                <HR></HR>
+
+									<LABEL>Bottom Left</LABEL>
+	                                <INPUT class="border_right" type="number" max="5000" min="0"/>
+									<SELECT class="border_right_unit">
+										<OPTION value=""></OPTION>
+										<OPTION value="px">pixels</OPTION>
+										<OPTION value="pt">points</OPTION>
+										<OPTION value="in">inches</OPTION>
+										<OPTION value="cm">centimetres</OPTION>
+										<OPTION value="mm">millimetres</OPTION>
+										<OPTION value="pc">picas</OPTION>
+										<OPTION value="em">ems</OPTION>
+										<OPTION value="ex">exs</OPTION>
+										<OPTION value="%">%</OPTION>
+									</SELECT>
+									<BR></BR>
+	                                <HR></HR>
+
+							</FIELDSET>
+							<FIELDSET class="BorderColorEditor">
+								<LEGEND>Color</LEGEND>	
+									<LABEL>Top</LABEL>
+									<BUTTON class="apply_to_all">Apply to All</BUTTON>
+									<INPUT class="border_top" type="color"/>
+	                                <HR></HR>
+
+									<LABEL>Left</LABEL>
+									<INPUT class="border_left" type="color"/>
+	                                <HR></HR>
+
+									<LABEL>Bottom</LABEL>
+									<INPUT class="border_bottom" type="color"/>
+	                                <HR></HR>
+
+									<LABEL>Right</LABEL>
+									<INPUT class="border_right" type="color"/>
+	                                <HR></HR>
+
+							</FIELDSET>
+							<FIELDSET class="BorderWidthEditor">
+								<LEGEND>Width</LEGEND>	
+								<LABEL>Top</LABEL>
+								<BUTTON class="apply_to_all">Apply to All</BUTTON>
+
+                                <INPUT class="border_top" type="number" max="5000" min="-5000"/>
+								<SELECT class="border_top_unit">
+									<OPTION value=""></OPTION>
+									<OPTION value="px">pixels</OPTION>
+									<OPTION value="pt">points</OPTION>
+									<OPTION value="in">inches</OPTION>
+									<OPTION value="cm">centimetres</OPTION>
+									<OPTION value="mm">millimetres</OPTION>
+									<OPTION value="pc">picas</OPTION>
+									<OPTION value="em">ems</OPTION>
+									<OPTION value="ex">exs</OPTION>
+									<OPTION value="%">%</OPTION>
+								</SELECT>
+                                <BR></BR>
+								<HR></HR>
+
+								<LABEL>Left</LABEL>
+
+                                <INPUT class="border_left" type="number" max="5000" min="-5000"/>
+								<SELECT class="border_left_unit">
+									<OPTION value=""></OPTION>
+									<OPTION value="px">pixels</OPTION>
+									<OPTION value="pt">points</OPTION>
+									<OPTION value="in">inches</OPTION>
+									<OPTION value="cm">centimetres</OPTION>
+									<OPTION value="mm">millimetres</OPTION>
+									<OPTION value="pc">picas</OPTION>
+									<OPTION value="em">ems</OPTION>
+									<OPTION value="ex">exs</OPTION>
+									<OPTION value="%">%</OPTION>
+								</SELECT>
+                                <BR></BR>
+								<HR></HR>
+
+								<LABEL>Bottom</LABEL>
+
+                                <INPUT class="border_bottom" type="number" max="5000" min="-5000"/>
+								<SELECT class="border_bottom_unit">
+									<OPTION value=""></OPTION>
+									<OPTION value="px">pixels</OPTION>
+									<OPTION value="pt">points</OPTION>
+									<OPTION value="in">inches</OPTION>
+									<OPTION value="cm">centimetres</OPTION>
+									<OPTION value="mm">millimetres</OPTION>
+									<OPTION value="pc">picas</OPTION>
+									<OPTION value="em">ems</OPTION>
+									<OPTION value="ex">exs</OPTION>
+									<OPTION value="%">%</OPTION>
+								</SELECT>
+                                <BR></BR>
+								<HR></HR>
+
+								<LABEL>Right</LABEL>
+
+                                <INPUT class="border_right" type="number" max="5000" min="-5000"/>
+								<SELECT class="border_right_unit">
+									<OPTION value=""></OPTION>
+									<OPTION value="px">pixels</OPTION>
+									<OPTION value="pt">points</OPTION>
+									<OPTION value="in">inches</OPTION>
+									<OPTION value="cm">centimetres</OPTION>
+									<OPTION value="mm">millimetres</OPTION>
+									<OPTION value="pc">picas</OPTION>
+									<OPTION value="em">ems</OPTION>
+									<OPTION value="ex">exs</OPTION>
+									<OPTION value="%">%</OPTION>
+								</SELECT>
+                                <BR></BR>
+								<HR></HR>
+
+							</FIELDSET>
+
+
+
                         </FORM>						
 						
                         <A href="#style-background-tab" class="LinkToPage accordion-header" data-group-id="Group2">Background</A>

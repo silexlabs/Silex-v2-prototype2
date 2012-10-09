@@ -51,6 +51,11 @@
 		<script data-brix-use="silex.ui.toolbox.editor.PositionStyleEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.PlacementStyleEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.ClipStyleEditor"></script>
+		
+		<script data-brix-use="silex.ui.toolbox.editor.BorderStyleEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.BorderRadiusEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.BorderColorEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.BorderWidthEditor"></script>
 <!--
 -->
 
@@ -868,7 +873,270 @@
                         
 						<A href="#style-border-tab" class="LinkToPage accordion-header">Border</A>
                         <FORM class="Layer all-tab accordion-item style-border-tab">
-                        	...
+							<fieldset class="BorderStyleEditor">
+								<legend>Style</legend>	
+									<label>Top</label>
+									<button class="apply_to_all">Apply to All</button>
+									<select class="border_top">
+										<option value=""></option>
+										<option value="none">none</option>
+										<option value="solid">solid</option>
+										<option value="dashed">dashed</option>
+										<option value="dotted">dotted</option>
+										<option value="double">double</option>
+										<option value="groove">groove</option>
+										<option value="ridge">ridge</option>
+										<option value="inset">inset</option>
+										<option value="outset">outset</option>
+									</select>
+									
+									<hr />
+
+									<label>Left</label>
+
+									<select class="border_left">
+										<option value=""></option>
+										<option value="none">none</option>
+										<option value="solid">solid</option>
+										<option value="dashed">dashed</option>
+										<option value="dotted">dotted</option>
+										<option value="double">double</option>
+										<option value="groove">groove</option>
+										<option value="ridge">ridge</option>
+										<option value="inset">inset</option>
+										<option value="outset">outset</option>
+									</select>
+									
+									<hr />
+
+									<label>Bottom</label>
+
+									<select class="border_bottom">
+										<option value=""></option>
+										<option value="none">none</option>
+										<option value="solid">solid</option>
+										<option value="dashed">dashed</option>
+										<option value="dotted">dotted</option>
+										<option value="double">double</option>
+										<option value="groove">groove</option>
+										<option value="ridge">ridge</option>
+										<option value="inset">inset</option>
+										<option value="outset">outset</option>
+									</select>
+									
+									<hr />
+
+									<label>Right</label>
+
+									<select class="border_right">
+										<option value=""></option>
+										<option value="none">none</option>
+										<option value="solid">solid</option>
+										<option value="dashed">dashed</option>
+										<option value="dotted">dotted</option>
+										<option value="double">double</option>
+										<option value="groove">groove</option>
+										<option value="ridge">ridge</option>
+										<option value="inset">inset</option>
+										<option value="outset">outset</option>
+									</select>
+							</fieldset>
+							<fieldset class="BorderRadiusEditor">
+								<legend>Radius</legend>	
+									<label>Top Left</label>
+									<button class="apply_to_all">Apply to All</button>
+	                                <INPUT class="border_top" type="number" max="5000" min="0"/>
+									<SELECT class="border_top_unit">
+										<OPTION value=""></OPTION>
+										<OPTION value="px">pixels</OPTION>
+										<OPTION value="pt">points</OPTION>
+										<OPTION value="in">inches</OPTION>
+										<OPTION value="cm">centimetres</OPTION>
+										<OPTION value="mm">millimetres</OPTION>
+										<OPTION value="pc">picas</OPTION>
+										<OPTION value="em">ems</OPTION>
+										<OPTION value="ex">exs</OPTION>
+										<OPTION value="%">%</OPTION>
+									</SELECT>
+									<br />
+	                                <hr />
+
+									<label>Top Right</label>
+	                                <INPUT class="border_left" type="number" max="5000" min="0"/>
+									<SELECT class="border_left_unit">
+										<OPTION value=""></OPTION>
+										<OPTION value="px">pixels</OPTION>
+										<OPTION value="pt">points</OPTION>
+										<OPTION value="in">inches</OPTION>
+										<OPTION value="cm">centimetres</OPTION>
+										<OPTION value="mm">millimetres</OPTION>
+										<OPTION value="pc">picas</OPTION>
+										<OPTION value="em">ems</OPTION>
+										<OPTION value="ex">exs</OPTION>
+										<OPTION value="%">%</OPTION>
+									</SELECT>
+									<br />
+	                                <hr />
+
+									<label>Bottom Right</label>
+	                                <INPUT class="border_bottom" type="number" max="5000" min="0"/>
+									<SELECT class="border_bottom_unit">
+										<OPTION value=""></OPTION>
+										<OPTION value="px">pixels</OPTION>
+										<OPTION value="pt">points</OPTION>
+										<OPTION value="in">inches</OPTION>
+										<OPTION value="cm">centimetres</OPTION>
+										<OPTION value="mm">millimetres</OPTION>
+										<OPTION value="pc">picas</OPTION>
+										<OPTION value="em">ems</OPTION>
+										<OPTION value="ex">exs</OPTION>
+										<OPTION value="%">%</OPTION>
+									</SELECT>
+									<br />
+	                                <hr />
+
+									<label>Bottom Left</label>
+	                                <INPUT class="border_right" type="number" max="5000" min="0"/>
+									<SELECT class="border_right_unit">
+										<OPTION value=""></OPTION>
+										<OPTION value="px">pixels</OPTION>
+										<OPTION value="pt">points</OPTION>
+										<OPTION value="in">inches</OPTION>
+										<OPTION value="cm">centimetres</OPTION>
+										<OPTION value="mm">millimetres</OPTION>
+										<OPTION value="pc">picas</OPTION>
+										<OPTION value="em">ems</OPTION>
+										<OPTION value="ex">exs</OPTION>
+										<OPTION value="%">%</OPTION>
+									</SELECT>
+									<br />
+	                                <hr />
+
+							</fieldset>
+							<fieldset class="BorderColorEditor">
+								<legend>Color</legend>	
+									<label>Top</label>
+									<button class="apply_to_all">Apply to All</button>
+									<INPUT class="border_top" type="color"/>
+	                                <hr />
+
+									<label>Left</label>
+									<INPUT class="border_left" type="color"/>
+	                                <hr />
+
+									<label>Bottom</label>
+									<INPUT class="border_bottom" type="color"/>
+	                                <hr />
+
+									<label>Right</label>
+									<INPUT class="border_right" type="color"/>
+	                                <hr />
+
+							</fieldset>
+							<fieldset class="BorderWidthEditor">
+								<legend>Width</legend>	
+								<label>Top</label>
+								<button class="apply_to_all">Apply to All</button>
+<!--								<select class="border_top">
+									<option value=""></option>
+									<option value="thin">thin</option>
+									<option value="medium">medium</option>
+									<option value="thick">thick</option>
+								</select>
+                                <br />
+-->
+                                <INPUT class="border_top" type="number" max="5000" min="-5000"/>
+								<SELECT class="border_top_unit">
+									<OPTION value=""></OPTION>
+									<OPTION value="px">pixels</OPTION>
+									<OPTION value="pt">points</OPTION>
+									<OPTION value="in">inches</OPTION>
+									<OPTION value="cm">centimetres</OPTION>
+									<OPTION value="mm">millimetres</OPTION>
+									<OPTION value="pc">picas</OPTION>
+									<OPTION value="em">ems</OPTION>
+									<OPTION value="ex">exs</OPTION>
+									<OPTION value="%">%</OPTION>
+								</SELECT>
+                                <br />
+								<hr />
+
+								<label>Left</label>
+<!--								<select class="border_left">
+									<option value=""></option>
+									<option value="thin">thin</option>
+									<option value="medium">medium</option>
+									<option value="thick">thick</option>
+								</select>
+                                <br />
+-->
+                                <INPUT class="border_left" type="number" max="5000" min="-5000"/>
+								<SELECT class="border_left_unit">
+									<OPTION value=""></OPTION>
+									<OPTION value="px">pixels</OPTION>
+									<OPTION value="pt">points</OPTION>
+									<OPTION value="in">inches</OPTION>
+									<OPTION value="cm">centimetres</OPTION>
+									<OPTION value="mm">millimetres</OPTION>
+									<OPTION value="pc">picas</OPTION>
+									<OPTION value="em">ems</OPTION>
+									<OPTION value="ex">exs</OPTION>
+									<OPTION value="%">%</OPTION>
+								</SELECT>
+                                <br />
+								<hr />
+
+								<label>Bottom</label>
+<!--								<select class="border_bottom">
+									<option value=""></option>
+									<option value="thin">thin</option>
+									<option value="medium">medium</option>
+									<option value="thick">thick</option>
+								</select>
+                                <br />
+-->
+                                <INPUT class="border_bottom" type="number" max="5000" min="-5000"/>
+								<SELECT class="border_bottom_unit">
+									<OPTION value=""></OPTION>
+									<OPTION value="px">pixels</OPTION>
+									<OPTION value="pt">points</OPTION>
+									<OPTION value="in">inches</OPTION>
+									<OPTION value="cm">centimetres</OPTION>
+									<OPTION value="mm">millimetres</OPTION>
+									<OPTION value="pc">picas</OPTION>
+									<OPTION value="em">ems</OPTION>
+									<OPTION value="ex">exs</OPTION>
+									<OPTION value="%">%</OPTION>
+								</SELECT>
+                                <br />
+								<hr />
+
+								<label>Right</label>
+<!--								<select class="border_right">
+									<option value=""></option>
+									<option value="thin">thin</option>
+									<option value="medium">medium</option>
+									<option value="thick">thick</option>
+								</select>
+                                <br />
+-->
+                                <INPUT class="border_right" type="number" max="5000" min="-5000"/>
+								<SELECT class="border_right_unit">
+									<OPTION value=""></OPTION>
+									<OPTION value="px">pixels</OPTION>
+									<OPTION value="pt">points</OPTION>
+									<OPTION value="in">inches</OPTION>
+									<OPTION value="cm">centimetres</OPTION>
+									<OPTION value="mm">millimetres</OPTION>
+									<OPTION value="pc">picas</OPTION>
+									<OPTION value="em">ems</OPTION>
+									<OPTION value="ex">exs</OPTION>
+									<OPTION value="%">%</OPTION>
+								</SELECT>
+                                <br />
+								<hr />
+
+							</fieldset>
                         </FORM>						
 						
                         <A href="#style-background-tab" class="LinkToPage accordion-header">Background</A>

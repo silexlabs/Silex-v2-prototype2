@@ -36,9 +36,6 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 En cours
 -------------------
 
-file browser : 
-- manque multiple urls
-
 **refactoring**
 
 cleanup code
@@ -46,16 +43,10 @@ cleanup code
 - Draggable::getBestDropZone
 - SelectionMarker::onDrag
 - DomTools::getElementBoundingBox
-  => use jquery ??
 - refactoring: mvc + API publique à overrider + éventuellement une api de plugins pour débutants?
 - supprimer les getAttribute("title") => faire un ComponentModel.getName et LayerModel.getName
 - faire une classe Lang, avec tous les messages
-
-drag drop avec "proxy"
-> le style doit etre celui du layer / comp
-
-StageDropHandler => DropHandlerBase
-SelectionMarker => SelectionDropHandler
+- memory leak in the Layer, Page and transition classes
 
 addAssociatedComponent etc dans les models
 dans index.html Group class au lieu des classes "résolues"
@@ -70,8 +61,6 @@ permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html 
 
 ** bugs **
 
-  * insert image in the background with file manager
-  * memory leak in the Layer, Page and transition classes
   * in the List class, listen to the click on the container instead of each cell, to prevent memory leak
   * chrome and color picker : read ok, load bug
   * delete a container when it is a master or not, and uncheck master when the container is not on any page

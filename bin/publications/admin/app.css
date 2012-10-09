@@ -503,6 +503,22 @@ opacity:1;
 	display:inline;
 	margin-left: 5px;
 }	
+.silex-toolbox .style-block-tab{
+	margin-left:auto;
+	margin-right:auto;
+	width:97%;
+}
+.silex-toolbox .style-block-tab fieldset{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+}
+.silex-toolbox .style-positioning-tab fieldset{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+	width:75%;
+}
 
 .group-ribbon, .ribbon-tabs a{
 	text-decoration:none;
@@ -578,6 +594,7 @@ opacity:1;
 .ribbon-button{
 	cursor: pointer;
 }
+
 /* **************** */
 /* /Ribbon Toolbox */
 /* **************** */
@@ -668,9 +685,6 @@ opacity:1;
 	float:right;
 	margin-left:5px;
 }
->>>>>>> d2f411a081d91f0845ed6c16322e821c7d84ec0c
-
-
 
 .silex-toolbox textarea,input {
 	width: 21%;
@@ -715,23 +729,10 @@ opacity:1;
 }
 
 
-.silex-toolbox fieldset.Backgroundstyleeditor{
+.silex-toolbox fieldset{
 	margin-left:auto;
 	margin-right:auto;
-	width:83%;
-
-}
-.silex-toolbox .style-block-tab{
-	margin-left:auto;
-	margin-right:auto;
-	width:97%;
-}
-
-.silex-toolbox .style-box-tab{
-	margin-left:auto;
-	margin-right:auto;
-	width:100%;
-
+	font-size:12px;
 }
 
 .silex-toolbox .group-property-toolbox{	
@@ -739,80 +740,10 @@ opacity:1;
 	min-width:16%;
 
 }
-.silex-toolbox fieldset.PropertyEditor{
-
-	margin-left:auto;
-	margin-right:auto;
-	font-size:12px;
-}
-.silex-toolbox fieldset.PropertyEditor legend{
+.silex-toolbox fieldset legend{
 	margin-left:auto;
 	margin-right:auto;
 	font-weight:bold;
-
-
-}
-.silex-toolbox fieldset.TextStyleEditor{
-	margin-left:auto;
-	margin-right:auto;
-	font-size:12px;
-	width:79%;
-}
-.silex-toolbox fieldset.TextStyleEditor legend{
-	margin-left:auto;
-	margin-right:auto;
-	font-weight:bold;
-
-}
-.silex-toolbox fieldset.Backgroundstyleeditor{
-	margin-left:auto;
-	margin-right:auto;
-	font-size:12px;
-	width:75%;
-}
-.silex-toolbox fieldset.Backgroundstyleeditor legend{
-	margin-left:auto;
-	margin-right:auto;
-	font-weight:bold;
-
-}
-.silex-toolbox .style-block-tab fieldset{
-	margin-left:auto;
-	margin-right:auto;
-	font-size:12px;
-	min-width:91%;
-
-}
-.silex-toolbox .style-block-tab fieldset legend{
-	margin-left:auto;
-	margin-right:auto;
-	font-weight:bold;
-
-
-}
-.style-box-tab fieldset{
-	margin-left:auto;
-	margin-right:auto;
-	font-size:12px;
-	width:80%;
-}
-.silex-toolbox .style-box-tab fieldset legend{
-	margin-left:auto;
-	margin-right:auto;
-	font-weight:bold;
-
-}
-.silex-toolbox .style-positioning-tab fieldset{
-	margin-left:auto;
-	margin-right:auto;
-	font-size:12px;
-	width:75%;
-}
-.silex-toolbox .style-positioning-tab fieldset legend{
-	margin-left:auto;
-	margin-right:auto;
-	font-weight:bold;
-
 }
 
 .silex-toolbox .context-layer {
@@ -829,25 +760,6 @@ opacity:1;
 	min-width:105px;	
 	width: 90%;
 }
-.silex-toolbox fieldset.context-img input{
-	height: 20px;
-	display: block;
-	width: 100%;
-}
-
-.silex-toolbox fieldset.RawHtmlEditor{
-	margin-left:auto;
-	margin-right:auto;
-	width:75%;
-	margin-top:8px;
-	
-}
-.silex-toolbox fieldset.RawHtmlEditor legend{
-	font-size:12px;	
-	margin-left:auto;
-	margin-right:auto;
-}
-
 .silex-toolbox .panel-editor-container{
 	padding:0;
 	margin:0;
