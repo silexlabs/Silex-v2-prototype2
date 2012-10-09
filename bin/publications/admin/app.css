@@ -525,7 +525,8 @@ opacity:1;
 .ribbon-tabs a:active{
 	color:#7F7F7F;
 }
-.ribbon-tabs a:hover{
+.ribbon-tabs a:hover,
+.ribbon-tabs .page-opened{
 	background-color:white;
 }
 .ribbon-list{

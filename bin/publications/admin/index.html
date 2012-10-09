@@ -72,20 +72,20 @@
 			<DIV class="panel-publication-header">
 				
 				
-				<DIV class="group-ribbon Group MenuController" data-initial-page-name="file-menu">
+				<DIV class="Group1 group-ribbon MenuController" data-initial-page-name="file-menu">
 					
 					<DIV class="ribbon-tabs">
-						<A href="#file-menu" class="LinkToPage">File</A>
-						<A href="#edit-menu" class="LinkToPage disabled">Edit</A>
-						<A href="#page-list" class="LinkToPage">Pages</A>
-						<A href="#layer-list" class="LinkToPage">Masters</A>
-						<A href="#insert-list" class="LinkToPage">Insert</A>
-						<A href="#user-menu" class="LinkToPage disabled">User</A>
-						<A href="#tool-menu" class="LinkToPage disabled">Tool</A>
-						<A href="#help-menu" class="LinkToPage disabled">Help</A>
+						<A href="#file-menu" class="LinkToPage" data-group-id="Group1">File</A>
+						<A href="#edit-menu" class="LinkToPage disabled" data-group-id="Group1">Edit</A>
+						<A href="#page-list" class="LinkToPage" data-group-id="Group1">Pages</A>
+						<A href="#layer-list" class="LinkToPage" data-group-id="Group1">Masters</A>
+						<A href="#insert-list" class="LinkToPage" data-group-id="Group1">Insert</A>
+						<A href="#user-menu" class="LinkToPage disabled" data-group-id="Group1">User</A>
+						<A href="#tool-menu" class="LinkToPage disabled" data-group-id="Group1">Tool</A>
+						<A href="#help-menu" class="LinkToPage disabled" data-group-id="Group1">Help</A>
 					</DIV>
 					
-					<A class="Page" name="file-menu">File</A>
+					<A class="Page" name="file-menu" data-group-id="Group1">File</A>
 
 					<DIV class="Layer file-menu ribbon-list selectable">
 						<UL class="">
@@ -144,12 +144,12 @@
 						</UL>
 					</DIV>
 					
-					<A class="Page" name="edit-menu">Edit</A>
+					<A class="Page" name="edit-menu" data-group-id="Group1">Edit</A>
 					<DIV class="Layer edit-menu ribbon-list selectable">
 					</DIV>
 
 					
-					<A class="Page" name="page-list">Pages</A>
+					<A class="Page" name="page-list" data-group-id="Group1">Pages</A>
 
 					<DIV class="Layer page-list ribbon-list selectable">
 						<DIV class="assets-page">
@@ -166,11 +166,11 @@
 					</DIV>
 
 					
-					<A class="Page" name="layer-list">Masters</A>
+					<A class="Page" name="layer-list" data-group-id="Group1">Masters</A>
 
 					<DIV class="MasterToolbox Layer layer-list ribbon-list">
 						<UL class="LayersList">
-							<LI data-dropzones-class-name="silex-view" class="Draggable MasterDropHandler" data-phantom-class-name="selection-phantom">
+							<LI data-dropzones-class-name="silex-view" class="Draggable MasterDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
 								<DIV class="solid"></DIV>
 								<P>::rootElement.title::</P>
 							</LI>
@@ -179,27 +179,27 @@
 					</DIV>
 
 					
-					<A class="Page" name="insert-list">Insert</A>
+					<A class="Page" name="insert-list" data-group-id="Group1">Insert</A>
 
 					<DIV class="InsertToolbox Layer insert-list ribbon-list">
 						<UL>
-							<LI data-dropzones-class-name="Layer" class="image Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
+							<LI data-dropzones-class-name="Layer" class="image Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
 								<DIV class="solid"></DIV>
 								<P>Image</P>
 							</LI>
-							<LI data-dropzones-class-name="Layer" class="text Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
+							<LI data-dropzones-class-name="Layer" class="text Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
 								<DIV class="solid"></DIV>
 								<P>Text</P>
 							</LI>
-							<LI data-dropzones-class-name="Layer" class="audio Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
+							<LI data-dropzones-class-name="Layer" class="audio Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
 								<DIV class="solid"></DIV>
 								<P>Audio</P>
 							</LI>
-							<LI data-dropzones-class-name="Layer" class="video Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
+							<LI data-dropzones-class-name="Layer" class="video Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
 								<DIV class="solid"></DIV>
 								<P>Video</P>
 							</LI>
-							<LI data-dropzones-class-name="silex-view" class="layer Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
+							<LI data-dropzones-class-name="silex-view" class="layer Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
 								<DIV class="solid"></DIV>
 								<P>Layer</P>
 							</LI>
@@ -207,15 +207,15 @@
 
 					</DIV>
 					
-					<A class="Page" name="user-menu">User</A>
+					<A class="Page" name="user-menu" data-group-id="Group1">User</A>
 					<DIV class="Layer user-menu ribbon-list selectable">
 					</DIV>
 					
-					<A class="Page" name="tool-menu">Tool</A>
+					<A class="Page" name="tool-menu" data-group-id="Group1">Tool</A>
 					<DIV class="Layer tool-menu ribbon-list selectable">
 					</DIV>
 					
-					<A class="Page" name="help-menu">Help</A>
+					<A class="Page" name="help-menu" data-group-id="Group1">Help</A>
 					<DIV class="Layer help-menu ribbon-list selectable">
 					</DIV>
 				</DIV>
@@ -310,21 +310,21 @@
 
 				
 				
-				<DIV class="group-property-toolbox Group panel-builder-footer PropertiesToolbox silex-toolbox" data-toolbox-name="PropertiesToolbox" data-toolbox-dropzones-class-name="toolbox-drop-zone" data-initial-page-name="properties-tab">
+				<DIV class="Group2 group-property-toolbox panel-builder-footer PropertiesToolbox silex-toolbox" data-toolbox-name="PropertiesToolbox" data-toolbox-dropzones-class-name="toolbox-drop-zone" data-initial-page-name="properties-tab">
 
 					
 					
-					<A class="Page" name="properties-tab">Properties</A>
-					<A class="Page" name="style-text-tab">Text</A>
-					<A class="Page" name="style-background-tab">Background</A>
-					<A class="Page" name="style-block-tab">Block</A>
-					<A class="Page" name="style-box-tab">Box</A>
-					<A class="Page" name="style-positioning-tab">Positioning</A>
-					<A class="Page" name="style-border-tab">Border</A>
+					<A class="Page" name="properties-tab" data-group-id="Group2">Properties</A>
+					<A class="Page" name="style-text-tab" data-group-id="Group2">Text</A>
+					<A class="Page" name="style-background-tab" data-group-id="Group2">Background</A>
+					<A class="Page" name="style-block-tab" data-group-id="Group2">Block</A>
+					<A class="Page" name="style-box-tab" data-group-id="Group2">Box</A>
+					<A class="Page" name="style-positioning-tab" data-group-id="Group2">Positioning</A>
+					<A class="Page" name="style-border-tab" data-group-id="Group2">Border</A>
 
 					<DIV class="Accordion">
 						
-						<A href="#properties-tab" class="LinkToPage accordion-header">
+						<A href="#properties-tab" class="LinkToPage accordion-header" data-group-id="Group2">
 							Properties
 						</A>
 						<FORM class="Layer all-tab accordion-item properties-tab">
@@ -368,7 +368,7 @@
 						</FORM>
 				   
                         
-                        <A href="#style-box-tab" class="LinkToPage accordion-header">Box</A>
+                        <A href="#style-box-tab" class="LinkToPage accordion-header" data-group-id="Group2">Box</A>
                         <FORM class="Layer all-tab accordion-item style-box-tab">
 							<FIELDSET class="BoxStyleEditor">
 								<LEGEND>Size</LEGEND>
@@ -601,7 +601,7 @@
 							</FIELDSET>
 						</FORM>
                         
-                        <A href="#style-positioning-tab" class="LinkToPage accordion-header">Positioning</A>
+                        <A href="#style-positioning-tab" class="LinkToPage accordion-header" data-group-id="Group2">Positioning</A>
                         <FORM class="Layer all-tab accordion-item style-positioning-tab">
 							<FIELDSET class="PositionStyleEditor">
 								<LEGEND>Position</LEGEND>
@@ -814,12 +814,12 @@
 							</FIELDSET>
 						</FORM>
                         
-						<A href="#style-border-tab" class="LinkToPage accordion-header">Border</A>
+						<A href="#style-border-tab" class="LinkToPage accordion-header" data-group-id="Group2">Border</A>
                         <FORM class="Layer all-tab accordion-item style-border-tab">
                         	...
                         </FORM>						
 						
-                        <A href="#style-background-tab" class="LinkToPage accordion-header">Background</A>
+                        <A href="#style-background-tab" class="LinkToPage accordion-header" data-group-id="Group2">Background</A>
 						<FORM class="Layer all-tab accordion-item style-background-tab">
 							<FIELDSET class="BackgroundStyleEditor">
                             
@@ -907,7 +907,7 @@
 							</FIELDSET>
 						</FORM>
 						
-						<A href="#style-text-tab" class="LinkToPage accordion-header">Text</A>
+						<A href="#style-text-tab" class="LinkToPage accordion-header" data-group-id="Group2">Text</A>
                         <FORM class="Layer all-tab accordion-item style-text-tab">
 							<FIELDSET class="TextStyleEditor">
 								<LEGEND>Text</LEGEND>
@@ -1036,7 +1036,7 @@
 							</FIELDSET>
 						</FORM>
 						
-						<A href="#style-block-tab" class="LinkToPage accordion-header">Block</A>
+						<A href="#style-block-tab" class="LinkToPage accordion-header" data-group-id="Group2">Block</A>
 						<FORM class="Layer all-tab accordion-item style-block-tab">
 							<FIELDSET class="BlockStyleEditor">
                             
@@ -1177,17 +1177,17 @@
 
 				
 				
-				<DIV class="Group SelectionController panel-builder-body">
+				<DIV class="Group3 SelectionController panel-builder-body">
 					<DIV class="PublicationViewer">
 					</DIV>
-					<DIV data-dropzones-class-name="Layer" class="selection-marker Draggable SelectionDropHandler" data-phantom-class-name="selection-phantom">
+					<DIV data-dropzones-class-name="Layer" class="selection-marker Draggable SelectionDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group3">
                     	<DIV class="selection-marker-delete"></DIV>
                         <DIV class="selection-marker-name">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</DIV>
                         <DIV class="draggable-dragzone"></DIV>
 					</DIV>
 					<DIV class="hover-marker">
 					</DIV>
-					<DIV data-dropzones-class-name="silex-view" class="selection-layer-marker Draggable SelectionDropHandler" data-phantom-class-name="selection-phantom">
+					<DIV data-dropzones-class-name="silex-view" class="selection-layer-marker Draggable SelectionDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group3">
                     	<DIV class="selection-marker-delete"></DIV>
                         <DIV class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</DIV>
                         <DIV class="draggable-dragzone"></DIV>

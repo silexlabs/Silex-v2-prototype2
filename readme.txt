@@ -36,9 +36,9 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 En cours
 -------------------
 
-poubelle a disparu
-selection dans le ribbon
-file browser : manque multiple urls
+file browser : 
+- bug online
+- manque multiple urls
 
 **refactoring**
 

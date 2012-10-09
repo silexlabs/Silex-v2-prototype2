@@ -187,7 +187,7 @@ class EditorBase extends DisplayObject
 	private function onFileChosen(propertyName:String, inputControlClassName:String, fileUrl:String){
 		trace("onFileChosen("+propertyName+", "+inputControlClassName+", "+fileUrl+")");
 		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
-		cast(inputElement).value = fileUrl;
+		cast(inputElement).value = abs2rel(fileUrl);
 		beforeApply();
 		apply();
 		afterApply();

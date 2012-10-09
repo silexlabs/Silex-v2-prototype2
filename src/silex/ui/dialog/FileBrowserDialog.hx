@@ -81,10 +81,6 @@ class FileBrowserDialog extends DialogBase
 	public function validateSelection(url:String) {
 		if (url != null){
 			if (onValidate != null){
-				url = StringTools.replace(url, PublicationConstants.PUBLICATION_FOLDER+PublicationModel.getInstance().currentName, "");
-				while (StringTools.startsWith(url,"/"))
-					url = url.substring(1);
-
 				onValidate(url);
 			}
 			close();
