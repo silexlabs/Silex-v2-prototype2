@@ -70,63 +70,57 @@ permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html 
 
 ** To do **
 
-Silex menu missing items
-- edit text - xhtml ckeditor/_samples/output_xhtml.html
-- edit CSS
-- transition in, out and show, hide => list + edit button?
-- edit hscript
-- save as css style, css style for a component/container/page/publication
-- manage publications
-- library (import/manage media)
-- cf functionnalities, put disabled buttons
-- restore from trash, empty trash
-- delete comp and layer in the roll over marker
-- idem for name (layer) and media url (comp)
-- suppr display lock et options inutiles
 
-missing functionality
-- draggable list de page => réordonner dans le dom et view
-- deselect all
-- select empty layer or layr with onliy 1 child
-- filter publication/page/layer names (",", " ", "%", start with ".", ...)
-- notifications (save, loading...)
-- liste de pages réordonnable
-- multiple selection and multiple urls in FB
-- page properties in the properties toolbox
-- page opens => page title changes
-- publication settings
-  . css style?
-  . size, align...
-  . seo, title, description...
-  . use deeplining, initial page...
 
-fonctionnalité
+
+cf functionnalities, put disabled buttons
+
+
+** v2.0alpha0 **
+
+Silex menu & toolboxes missing items, missing functionality
+
+** v2.0alpha1 **
+
+Silex menu & toolboxes missing items, missing functionality
+- creer une page a partir d'une autre page (DUPLICATE)
 - create publication
   . choose a theme (css)
   . automatic add header, footer, aside, nav tags, content
   . all layers in content
   . nav tag = list of all pages
   . creation de page => ajoute un lien dans nav
-- creer une page a partir d'une autre page (DUPLICATE)
-- detecter quand il y a des modifs non sauvée et demander confirmation de close, open...
-- text editor and file manager
-  http://ckeditor.com/demo ("Kama" skin) and http://sourceforge.net/projects/pdwfilebrowser/
-- code editor
-  http://ace.ajax.org/
-- loading page (juste définir dans les css le style .loading et .loaded, et les définir pendant le loading a visible et invisible puis inverser)
-- page settings (keywords, title, ...)
+- manage publications, restore from trash, empty trash
+- page properties (keywords, title, ...)
 - publication settings (align h/v, size, ...)
+  . css style?
+  . size, align...
+  . seo, title, description...
+  . use deeplining, initial page...
+- transition in, out and show, hide => list + edit button?
+- draggable list de page => réordonner dans le dom et view
+- deselect all
+- filter publication/page/layer names (",", " ", "%", start with ".", ...)
+- page opens => page title changes
+- fermeture de page ne tient pas compte des groupes enfants
+
+
+
+- detecter quand il y a des modifs non sauvée et demander confirmation de close, open...
+- edit CSS
+- save as css style, css style for a component/container/page/publication
+- edit hscript, code editor
+  - http://ace.ajax.org/
+  - écrire à ace@c9.io pour apparaitre ici "projects using ace" http://ace.ajax.org/#nav=about
+- supprimer options inutiles ou incompatibles (display block?), reordonner les boites a outil
+- keyboard shortcuts
+- notifications (save, loading...)
+- loading page (juste définir dans les css le style .loading et .loaded, et les définir pendant le loading a visible et invisible puis inverser)
+- page 
+- publication settings 
 - selection move when absolute
 - selection resize
 - drag/drop page
-- ergo de remove page, layer, comp, 
-- admin dans ./admin/index.html, export de la publication dans ./ 
-  =>  ./admin/index.html est compilée a partir de src/index-builder.html
-
-- kcfinder dans les credits
-- GPL dans les source et .txt
-
-- ------
 - selection resize
 - selection rotate
 - toolbox media
@@ -137,9 +131,12 @@ fonctionnalité
   . UrlInput, BackgroundInput, ...
   . Border
 - contexts: generalize the toolbox contexts
-- publier une publication
-- fermeture de page ne tient pas compte des groupes enfants
 
+** v2.0alpha2 **
+
+
+- export de la publication dans ./ 
+- nouvelles boites "helper / shorthand" pour designers non css
 
 design
 - dans text, "Line Height" a son text input dans "Case"
@@ -148,16 +145,10 @@ design
 - anims de transition show/hide sur selection, position des layers, des composants...
 
 improvements
-* ajout d'un éditeur de css et de hscript
-  - utilise http://ace.ajax.org/ ou http://neutronide.com/
-  - écrire à ace@c9.io pour apparaitre ici "projects using ace" http://ace.ajax.org/#nav=about
 * add the manager, not found etc. to distrib ?
 * transitions with params on the Layer as well as on the link
 * "loading" transitions for the layers with connectors
 * contexts with multiple class names ==== merge the concepts of Context and Page (=> State, State.setState(contextName, stateName))
-* rename
-  - Page into State
-  - Layer into Container
 * dans PublicationData, charger tous les .css? ou tout ce qui est dans style/?
 * mettre toute la conf dans les headers? Vu que seules les personnes autorisées vont voir la page...
 * components
@@ -170,6 +161,28 @@ improvements
 * opa-like lib
 * in Silex.hx, add the style sheet in a style tag directly in the html page
 * builder classes should not be in silex.js
+
+
+** v2.0beta **
+
+packaging / release
+- kcfinder dans les credits
+- GPL dans les source et readme
+
+Refactoring
+- optim layouts redraw
+- Classes par composition
+  . invalidation manager (pour redraw ts les layouts des que l un d eux change de taille)
+  . selection manager pour les modeles qui auront selection et hover
+- rename
+  . Page into State
+  . Layer into Container
+
+Docs
+- install
+- pages, containers, masters, components, links
+- créer un mini site 
+- 
 
 
 
