@@ -78,7 +78,6 @@ class DropHandlerBase extends DisplayObject{
 	 * Handle Draggable events
 	 */
 	public function onDrag(e:Event) {
-		trace("onDrag "+e);
 		// check that we have finished dragging any other element
 		var event:CustomEvent = cast(e);
 		event.detail.draggable.groupElement = PublicationModel.getInstance().viewHtmlDom.parentNode;
@@ -100,7 +99,6 @@ class DropHandlerBase extends DisplayObject{
 	 * Handle Draggable events
 	 */
 	public function onDrop(e:Event) {
-		trace("onDrop "+e);
 
 		var event:CustomEvent = cast(e);
 
@@ -156,37 +154,35 @@ class DropHandlerBase extends DisplayObject{
 					// at a given position
 					parent.insertBefore(element, parent.childNodes[position]);
 				}
-		try{
-				// and also move in the model if needed
-				// link view to model
-				var modelElement = PublicationModel.getInstance().getModelFromView(element);
-				var modelBeforeElement = PublicationModel.getInstance().getModelFromView(beforeElement);
-				var modelParent = PublicationModel.getInstance().getModelFromView(parent);
+				try{
+					// and also move in the model if needed
+					// link view to model
+					var modelElement = PublicationModel.getInstance().getModelFromView(element);
+					var modelBeforeElement = PublicationModel.getInstance().getModelFromView(beforeElement);
+					var modelParent = PublicationModel.getInstance().getModelFromView(parent);
 
-				// remove the element from the model
-				if (modelElement == null) 
-					throw("Error while moving the element: could not retrieve the element in the model.");
-				if (modelElement.parentNode == null) 
-					throw("Error while moving the element: the element in the model has no parent.");
+					// remove the element from the model
+					if (modelElement == null) 
+						throw("Error while moving the element: could not retrieve the element in the model.");
+					if (modelElement.parentNode == null) 
+						throw("Error while moving the element: the element in the model has no parent.");
 
-				//causes an exception when modelElement==modelBeforeElement
-				//modelElement.parentNode.removeChild(modelElement);
+					//causes an exception when modelElement==modelBeforeElement
+					//modelElement.parentNode.removeChild(modelElement);
 
-				// put back the element at a new position
-				if (modelBeforeElement == null){
-					// at the end
-					modelParent.appendChild(modelElement);
+					// put back the element at a new position
+					if (modelBeforeElement == null){
+						// at the end
+						modelParent.appendChild(modelElement);
+					}
+					else{
+						// at a given position
+						modelParent.insertBefore(modelElement, modelBeforeElement);
+					}
 				}
-				else{
-					// at a given position
-					modelParent.insertBefore(modelElement, modelBeforeElement);
+				catch(e:Dynamic){
+						trace("ON DROP ERROR: "+e+ "("+element+" , "+beforeElement+", "+parent+")");
 				}
-/**/
-		}
-		catch(e:Dynamic){
-				trace("ON DROP ERROR: "+e+ "("+element+" , "+beforeElement+", "+parent+")");
-		}
-/**/
 			}
 			else{
 				// a drop zone was NOT found , put the element back to the previous parent and position
@@ -232,6 +228,5 @@ class DropHandlerBase extends DisplayObject{
 			// case of a layer
 			LayerModel.getInstance().refresh();
 		}
-		trace("ON DROP COMPLETE");
 	}
 }

@@ -92,11 +92,9 @@ class LayersList extends List<Layer>
 		//haxe.Timer.delay(doRedraw, 2000);
 	}
 	public function onListChange(e:CustomEvent){
-		trace("onListChange("+e+")");
 		reloadData();
 	}
 	public function addLayer(){
-		trace("addLayer "+selectedItem);
 		var page = PageModel.getInstance().selectedItem;
 		LayerModel.getInstance().addMaster(selectedItem, page);
 	}
@@ -104,7 +102,6 @@ class LayersList extends List<Layer>
 	 * selection changed, open the selected page
 	 */
 	override function setSelectedIndex(idx:Int):Int {
-		trace("setSelectedIndex "+idx);
 		idx = super.setSelectedIndex(idx);
 		if (propertyChangePending == true) return idx;
 

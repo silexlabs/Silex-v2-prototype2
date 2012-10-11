@@ -59,47 +59,9 @@ class PropertyModel extends ModelBase<PropertyData>{
 	/**
 	 * Apply a value to the view and the model simultanneously
 	 * This dispatches a onPropertyChange event with event.detail set to the PropertyData object 
-	 */
-/*	public function setAttribute(name:String, value:String){
-		trace("setAttribute("+name+", "+value+")");
-		// retrieve the owner component 
-		var owner:HtmlDom = getSelectedElement(false);
-		// apply the change 
-		owner.setAttribute(name, value);
-		// retrieve the owner component 
-		var owner:HtmlDom = getSelectedElement(true);
-		// apply the change 
-		owner.setAttribute(name, value);
-		// create the property data object
-		var propertyData:PropertyData = {
-			name: name,
-			value: value,
-			owner: owner
-		};
-		// dispatch the event 
-		dispatchEvent(createEvent(ON_PROPERTY_CHANGE, propertyData), debugInfo);
-	}
-	/**
-	 * Retrieve a value in the model
-	 */
-/*	public function getAttribute(name:String):PropertyData{
-		// retrieve the owner component 
-		var owner:HtmlDom = getSelectedElement(true);
-		trace("getAttribute("+name+") => "+owner.getAttribute(name));
-		// create the property data object
-		return {
-			name: name,
-			value: owner.getAttribute(name),
-			owner: owner
-		};
-	}
-	/**
-	 * Apply a value to the view and the model simultanneously
-	 * This dispatches a onPropertyChange event with event.detail set to the PropertyData object 
 	 * @param 	value 	a value to be set on the view and html dom elements, can be null to remove the attribute, and of different types, e.g. Bool for the autostart param of an audio element 
 	 */
 	public function setAttribute(viewHtmlDom:HtmlDom, name:String, value:Null<Dynamic>){
-		// trace("setAttribute("+viewHtmlDom+", "+name+", "+Type.typeof(value)+")");
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
@@ -150,7 +112,6 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * @param 	value 	a value to be set on the view and html dom elements, can be null to remove the attribute, and of different types, e.g. Bool for the autostart param of an audio element 
 	 */
 	public function setProperty(viewHtmlDom:HtmlDom, name:String, value:Null<Dynamic>){
-		// trace("setProperty("+viewHtmlDom+", "+name+", "+Type.typeof(value)+")");
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
@@ -194,7 +155,6 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * This dispatches a onStyleChange event with event.detail set to the PropertyData object 
 	 */
 	public function setStyle(viewHtmlDom:HtmlDom, name:String, value:String){
-		// trace("setStyle("+viewHtmlDom+", "+name+", "+value+")");
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
@@ -220,8 +180,6 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * Retrieve a value in the model
 	 */
 	public function getStyle(viewHtmlDom:HtmlDom, name:String):String{
-		// trace("getStyle("+viewHtmlDom+", "+name+")");
-
 		var value:String;
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);

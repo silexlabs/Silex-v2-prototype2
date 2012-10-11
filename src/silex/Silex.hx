@@ -120,7 +120,6 @@ class Silex {
 		// set the body of the publication if it is provided in the meta
 		var publicationBody = DomTools.getMeta(CONFIG_PUBLICATION_BODY);
 		if (publicationBody != null){
-			trace("A body was found!");
 			/*
 			var node = Lib.document.createElement("DIV");
 			node.innerHTML = StringTools.htmlUnescape(DomTools.getMeta(CONFIG_PUBLICATION_BODY));
@@ -134,7 +133,6 @@ class Silex {
 		}
 		
 		// init Brix components
-		trace(" application.init "+Lib.document.body);
 		application.initComponents();
 
 		#if silexDebug

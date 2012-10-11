@@ -41,8 +41,6 @@ class MenuController extends DisplayObject
 		if (itemName == null)
 			itemName = target.parentNode.getAttribute("data-menu-item");
 
-		trace("Menu event "+itemName+" - "+target.className);
-
 		// take an action depending on the menu name
 		switch (itemName) {
 			/////////////

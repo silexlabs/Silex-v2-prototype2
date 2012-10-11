@@ -12,6 +12,7 @@ import silex.page.PageModel;
 import silex.layer.LayerModel;
 import silex.publication.PublicationModel;
 import silex.component.ComponentModel;
+import silex.property.PropertyModel;
 
 /**
  * Selection markers are selection rectangles put over the selection, 
@@ -35,7 +36,7 @@ class InsertDropHandler extends DropHandlerBase{
 	 * type of item to be added in a layer
 	 * this type can be added as a class name of the items of the list of elements of the insert toolbox
 	 */
-	public static inline var LAYER_TYPE:String = "layer";
+	public static inline var LAYER_TYPE:String = "container";
 	/**
 	 * type of item to be added in a layer
 	 * this type can be added as a class name of the items of the list of elements of the insert toolbox
@@ -57,7 +58,6 @@ class InsertDropHandler extends DropHandlerBase{
 	 * virtual method to be implemented in derived classes
 	 */
 	override private function setDraggedElement(draggableEvent:DraggableEvent) {
-		trace("setDraggedElement "+draggableEvent);
 	}
 	/**
 	 * virtual method to be implemented in derived classes
@@ -69,7 +69,6 @@ class InsertDropHandler extends DropHandlerBase{
 	 * Handle Draggable events
 	 */
 	override public function onDrag(e:Event) {
-		trace("onDrag "+e);
 		super.onDrag(e);
 		var event:CustomEvent = cast(e);
 		event.detail.draggable.groupElement = PublicationModel.getInstance().viewHtmlDom.parentNode;
@@ -78,7 +77,6 @@ class InsertDropHandler extends DropHandlerBase{
 	 * Handle Draggable events
 	 */
 	override public function onDrop(e:Event) {
-		trace("onDrop "+e);
 		super.onDrop(e);
 
 		// retrieve a reference to the component or layer
@@ -89,29 +87,25 @@ class InsertDropHandler extends DropHandlerBase{
 		if (dropZone != null){
 			if (DomTools.hasClass(rootElement, IMAGE_TYPE)){
 				var element = addComponent(dropZone, "img");
-				element.setAttribute("src", "enter image url here");
-				element.setAttribute("title", "New image component");
+				PropertyModel.getInstance().setAttribute(element, "src", "enter image url here");
+				PropertyModel.getInstance().setAttribute(element, "title", "New image component");
 			}
 			else if (DomTools.hasClass(rootElement, TEXT_TYPE)){
 				var element = addComponent(dropZone, "div");
-				element.innerHTML = "<p>Insert text here.</p>";
-				element.setAttribute("title", "New text field");
+				PropertyModel.getInstance().setAttribute(element, "title", "New text field");
+				PropertyModel.getInstance().setProperty(element, "innerHTML", "<p>Insert text here.</p>");
 			}
 			else if (DomTools.hasClass(rootElement, AUDIO_TYPE)){
 				var element = addComponent(dropZone, "audio");
-				element.innerHTML = "<source>enter sound url here</source>";
-				element.setAttribute("controls", "controls");
-				element.setAttribute("title", "New audio component");
+				DomTools.doLater(callback(initMediaComp, element));
 			}
 			else if (DomTools.hasClass(rootElement, VIDEO_TYPE)){
 				var element = addComponent(dropZone, "video");
-				element.innerHTML = "<source>enter video URLs here</source>";
-				element.setAttribute("controls", "controls");
-				element.setAttribute("title", "New video component");
+				DomTools.doLater(callback(initMediaComp, element));
 			}
 			else if (DomTools.hasClass(rootElement, LAYER_TYPE)){
 				var element = addLayer(dropZone, PageModel.getInstance().selectedItem).rootElement;
-				element.setAttribute("title", "New container");
+				PropertyModel.getInstance().setAttribute(element, "title", "New container");
 			}
 		}
 		else{
@@ -119,10 +113,18 @@ class InsertDropHandler extends DropHandlerBase{
 		}
 	}
 	/**
+	 * init an audio or video tag
+	 */
+	public function initMediaComp(element:HtmlDom){
+		PropertyModel.getInstance().setAttribute(element, "controls", "controls");
+		PropertyModel.getInstance().setAttribute(element, "title", "New media component");
+		PropertyModel.getInstance().setStyle(element, "width", "New media component");
+		element.innerHTML = "<source>enter-urls-here</source>";
+	}
+	/**
 	 * add an element in the layer
 	 */
 	public function addComponent(dropZone:DropZone, nodeName:String):HtmlDom {
-		// trace("addComponent "+dropZone+", "+nodeName);
 		var layers = PublicationModel.getInstance().application.getAssociatedComponents(dropZone.parent, Layer);
 		if (layers.length != 1){
 			throw("Error: search for the layer gave "+layers.length+" results");
@@ -133,10 +135,9 @@ class InsertDropHandler extends DropHandlerBase{
 	 * add a layer to the current page
 	 */
 	public function addLayer(dropZone:DropZone, page:Page):Layer {
-		// trace("addLayer "+page.name);
 		if (page == null)
 			throw("Error: No selected page. Could not add a layer to the page "+page.name+".");
 
-		return LayerModel.getInstance().addLayer(page, Lib.window.prompt("I need a name for your new container please."), dropZone.position);
+		return LayerModel.getInstance().addLayer(page, "", dropZone.position);
 	}
 }

@@ -207,7 +207,7 @@
 					<!-- Insert -->
 					<a name="insert-list" class="Page" >Insert</a>
 
-					<DIV class="InsertToolbox Layer insert-list ribbon-list">
+					<DIV class="Layer insert-list ribbon-list">
 						<ul>
 							<li class="image Draggable InsertDropHandler" 
 								data-phantom-class-name="selection-phantom"
@@ -237,12 +237,12 @@
 								<DIV class="solid"></DIV>
 								<p>Video</p>
 							</li>
-							<li class="layer Draggable InsertDropHandler" 
+							<li class="container Draggable InsertDropHandler" 
 								data-phantom-class-name="selection-phantom"
 								data-dropzones-class-name="silex-view"
 							>
 								<DIV class="solid"></DIV>
-								<p>Layer</p>
+								<p>Container</p>
 							</li>
 						</ul>
 <!--
@@ -403,11 +403,17 @@
 						</A>
 						<FORM class="Layer all-tab accordion-item properties-tab">
 							<FIELDSET class="PropertyEditor">
-									<LEGEND>Name</LEGEND>
-									<INPUT class="name-property" type="text" max-lenght="20" value="21"/>
+								<LEGEND>Name</LEGEND>
+								<INPUT class="name-property" type="text" max-lenght="20" value="21"/>
+								
+								<BUTTON class="property-editor-delete-selected"></BUTTON>
 									
-									<BUTTON class="property-editor-delete-selected"></BUTTON>
-									
+								<FIELDSET class="context-video context-audio context-video context-audio context-img context-div">
+									<LEGEND>Html Content</LEGEND>
+									<BUTTON class="property-editor-edit-text text-input">
+										Open Text Editor
+									</BUTTON>
+								</FIELDSET>
 								<FIELDSET class="context-video context-audio">
 									<LEGEND>Sources (1 by line)</LEGEND>
 									<TEXTAREA class="multiple-src-property"></TEXTAREA>
@@ -438,13 +444,10 @@
 								</FIELDSET>
 							</FIELDSET>
 							<FIELDSET class="HtmlEditor">
-								<LEGEND>HTML content</LEGEND>
-								<BUTTON class="property-editor-edit-text">Edit Text</BUTTON>
+								<LEGEND>HTML content - debug only</LEGEND>
 								<TEXTAREA class="text-input"></TEXTAREA>
 							</FIELDSET>
 						</FORM>
-				   
-                        
                         <A href="#style-box-tab" class="LinkToPage accordion-header">Box</A>
                         <FORM class="Layer all-tab accordion-item style-box-tab">
 							<FIELDSET class="BoxStyleEditor">

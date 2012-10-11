@@ -41,11 +41,15 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
   * ergo : disable les pixel+unit quand on a select un shorthand (exple background h pos)
 
 
+
 Bugs
 * publication with scroll bug
-* creation de page => sauve les "page-opened" et "data-brix-id"
-* pas d edit de text sur les layers
 * pas d apply quand on tape du texte
+
+* pas possible d effacer les conteneurs de base
+* cration de publication = prend le contenu "empty-template" et le css de "bin/themes/default.css"
+* dans PublicationCategory, remplacer theme par template
+
 
 == edition of properties ==
 

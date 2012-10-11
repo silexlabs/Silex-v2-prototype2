@@ -82,7 +82,7 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	 * @return 	the created component, i.e. a dom element added to the view
 	 */
 	public function addComponent(nodeName:String, layer:Layer, position:Int = 0):HtmlDom{
-		trace("addComponent "+nodeName+", "+layer+", "+position);
+		// trace("addComponent "+nodeName+", "+layer+", "+position);
 		// get the publication model
 		var publicationModel = PublicationModel.getInstance();
 		// get the view and model DOM

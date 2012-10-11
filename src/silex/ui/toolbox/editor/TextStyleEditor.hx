@@ -28,7 +28,7 @@ class TextStyleEditor extends EditorBase
 	 * reset the values
 	 */
 	override private function reset() {
-		// trace("reset ");
+		// 
 		// font family
 		setInputValue("text_font", "");
 		// font size
@@ -56,7 +56,7 @@ class TextStyleEditor extends EditorBase
 	 * display the property value
 	 */
 	override private function load(element:HtmlDom) {
-		// trace("load "+element);
+		// 
 
 		// font family
 		var value = element.style.fontFamily;
@@ -125,7 +125,7 @@ class TextStyleEditor extends EditorBase
 			}
 			// convert to hex
 			setInputValue("text_color", "#" + StringTools.hex(decValue, 6));
-			trace("load "+values+" -> "+decValue+" -> "+StringTools.hex(decValue));
+			
 		}else{
 			setInputValue("text_color", value);
 		}
@@ -137,7 +137,7 @@ class TextStyleEditor extends EditorBase
 	 * apply the property value
 	 */
 	override private function apply() {
-		// trace("TextStyleEditor apply "+selectedItem);
+		// 
 		var propertyModel = PropertyModel.getInstance();
 
 		// font family

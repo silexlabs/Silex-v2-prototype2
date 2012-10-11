@@ -119,7 +119,6 @@ class EditorBase extends DisplayObject
 	 * Dispatch the change event with the item reference as the detail property of the custom event
 	 */
 	public function setSelectedItem(item:HtmlDom):HtmlDom {
-		// trace("setSelectedItem("+item+")");
 		selectedItem = item;
 		refresh();
 		return selectedItem;
@@ -128,7 +127,6 @@ class EditorBase extends DisplayObject
 	 * refresh display
 	 */
 	private function refresh() {
-		// trace("refresh");
 		if (selectedItem != null)
 			load(selectedItem);
 		else
@@ -161,7 +159,6 @@ class EditorBase extends DisplayObject
 	 * set the value of the input control with name in its class name
 	 */
 	private function setInputValue(name:String, value:Dynamic, inputProperty:String = "value"){
-		// trace("setInputValue "+name+", "+value);
 		var element = DomTools.getSingleElement(rootElement, name, true);
 		Reflect.setField(element, inputProperty, value);
 	}
@@ -170,7 +167,6 @@ class EditorBase extends DisplayObject
 	 */
 	private function getInputValue(name:String, inputProperty:String = "value"):Dynamic{
 		var element = DomTools.getSingleElement(rootElement, name, true);
-		// trace("getInputValue "+name+" - "+Reflect.field(element, inputProperty));
 		return Reflect.field(element, inputProperty);
 	}
 	////////////////////////////////////////////
@@ -180,7 +176,6 @@ class EditorBase extends DisplayObject
 	 * callback for the input event, validate the data
 	 */
 	private function onInput(e:Event) {
-		// trace("onInput");
 		e.preventDefault();
 		beforeApply();
 		apply();
@@ -190,7 +185,6 @@ class EditorBase extends DisplayObject
 	 * callback for the click event, check if a dialog must be opened
 	 */
 	private function onClick(e:Event) {
-		// trace("onClick");
 		if (DomTools.hasClass(e.target, OPEN_FILE_BROWSER_CLASS_NAME)){
 			e.preventDefault();
 			var inputControlClassName = e.target.getAttribute("data-fb-target");
@@ -226,7 +220,6 @@ class EditorBase extends DisplayObject
 	 * callback for the TextEditorDialog
 	 */
 	private function onTextEditorChange(htmlText:String){
-		trace("onTextEditorClose("+htmlText+")");
 		selectedItem.innerHTML = htmlText;
 		refreshSelection();
 	}
@@ -237,7 +230,7 @@ class EditorBase extends DisplayObject
 	 * callback for the FileBrowserDialog
 	 */
 	private function onFileChosen(inputControlClassName:String, fileUrl:String){
-		trace("onFileChosen("+inputControlClassName+", "+fileUrl+")");
+		
 		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
 		cast(inputElement).value = abs2rel(fileUrl);
 		beforeApply();
@@ -262,7 +255,7 @@ class EditorBase extends DisplayObject
 	 * callback for the FileBrowserDialog
 	 */
 	private function onMultipleFilesChosen(inputControlClassName:String, files:Array<String>){
-		trace("onFileChosen("+inputControlClassName+", "+files+")");
+		
 		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
 		if (cast(inputElement).value != "") cast(inputElement).value += "\n";
 		cast(inputElement).value += abs2rel(files.join("\n"));
@@ -312,7 +305,7 @@ class EditorBase extends DisplayObject
 	 * display the component style
 	 */
 	private function onSelectComponent(e:CustomEvent) {
-		// trace("onSelectComponent");
+		// 
 		selectedItem = e.detail;
 	}
 	/**
@@ -320,7 +313,7 @@ class EditorBase extends DisplayObject
 	 * display the layer style
 	 */
 	private function onSelectLayer(e:CustomEvent) {
-		// trace("onSelectLayer");
+		// 
 		if (e.detail == null){
 			selectedItem = null;
 		}
@@ -351,7 +344,7 @@ class EditorBase extends DisplayObject
 				pubUrl = pubUrl.substr(idxSlash);
 			// remove all the common parts
 			url = url.substr(idxPubFolder + pubUrl.length);
-			trace(" url "+ url );
+			
 		}
 		return url;
 	}

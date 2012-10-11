@@ -91,7 +91,7 @@ class LayerModel extends ModelBase<Layer>{
 	 * dispatch the change event
 	 */
 	public function addMaster(layer:Layer, page:Page){
-		trace("addMaster("+layer+", "+page+")");
+		// trace("addMaster("+layer+", "+page+")");
 		// simply add the name of the page to the css class of the layer node
 		DomTools.addClass(layer.rootElement, page.name);
 		// do the same in the model
@@ -106,7 +106,7 @@ class LayerModel extends ModelBase<Layer>{
 	 * dispatch the change event
 	 */
 	public function addLayer(page:Page, layerName:String, position:Int = 0):Layer{
-		trace("addLayer "+page+", "+layerName+", "+position);
+		// trace("addLayer "+page+", "+layerName+", "+position);
 		// get the publication model
 		var publicationModel = PublicationModel.getInstance();
 		// get the view and model DOM

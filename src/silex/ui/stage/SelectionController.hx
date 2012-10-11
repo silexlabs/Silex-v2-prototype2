@@ -149,7 +149,6 @@ class SelectionController extends DisplayObject
 	 * refresh display
 	 */
 	public function redraw(e:Event=null) {
-		// trace("redraw selection");
 		setMarkerPosition(selectionMarker, componentModel.selectedItem);
 		setMarkerPosition(hoverMarker, componentModel.hoveredItem);
 
@@ -165,7 +164,6 @@ class SelectionController extends DisplayObject
 	 * Handle mouse events
 	 */
 	public function onClickHover(e:Event) {
-		// trace("onClickHover ");
 		// prenvent default (selection of text, call of this.onClickAnywhere)
 		//		e.preventDefault();
 		// set the item on the model (this will dispatch an event and we will catch it to update the marker)
@@ -175,7 +173,6 @@ class SelectionController extends DisplayObject
 	 * Handle mouse events
 	 */
 	public function onClickLayerHover(e:Event) {
-		// trace("onClickLayerHover ");
 		// prenvent default (selection of text, call of this.onClickAnywhere)
 		e.preventDefault();
 		// set the item on the model (this will dispatch an event and we will catch it to update the marker)
@@ -186,7 +183,6 @@ class SelectionController extends DisplayObject
 	 * Todo: move, resize...
 	 */
 	public function onClickSelection(e:Event) {
-		// trace("onClickSelection ");
 		// prenvent default (selection of text, call of this.onClickAnywhere)
 		e.preventDefault();
 	}
@@ -195,7 +191,6 @@ class SelectionController extends DisplayObject
 	 * Todo: move, resize...
 	 */
 	public function onClickLayerSelection(e:Event) {
-		// trace("onClickLayerSelection ");
 		// prenvent default (selection of text, call of this.onClickAnywhere)
 		e.preventDefault();
 	}
@@ -232,7 +227,6 @@ class SelectionController extends DisplayObject
 	 * Handle mouse events
 	 */
 	public function onMouseMove(e:Event) {
-		//trace("onMouseMove "+e.target.className);
 		// browse all layers to check if it should be set as hovered
 		var found = false;
 		var layers = DomTools.getElementsByAttribute(rootElement, "data-silex-layer-id", "*");
@@ -346,7 +340,6 @@ class SelectionController extends DisplayObject
 	 * todo: with transformations + rotation
 	 */
 	private function setMarkerPosition(marker:HtmlDom, target:HtmlDom){
-		// trace("setMarkerPosition ("+marker+", "+target+")");
 		if (target == null || target.style.display == "none"){
 			marker.style.display = "none";
 			marker.style.visibility = "hidden";

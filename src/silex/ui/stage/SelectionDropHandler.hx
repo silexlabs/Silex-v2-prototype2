@@ -84,7 +84,6 @@ class SelectionDropHandler extends DropHandlerBase{
 	private function redraw(e:CustomEvent) {
 		// update the name of the component
 		if (displayZoneTemplate != null && displayZone != null){
-		trace("redraw "+displayZone.clientWidth);
 			if (rootElement.clientWidth > MIN_WIDTH_FOR_DISPLAY_ZONE && rootElement.clientHeight > MIN_HEIGHT_FOR_DISPLAY_ZONE ){
 				try{
 					// the component is big enough to display the display zone
@@ -156,7 +155,6 @@ class SelectionDropHandler extends DropHandlerBase{
 	 * virtual method to be implemented in derived classes
 	 */
 	override private function setDraggedElement(draggableEvent:DraggableEvent) {
-		trace("setDraggedElement "+draggableEvent);
 		// check that we have finished dragging any other element
 		if (draggedComponent != null || draggedLayer != null){
 			throw ("Error: could not start dragging this component or layer, another layer is still being dragged");
@@ -164,7 +162,6 @@ class SelectionDropHandler extends DropHandlerBase{
 		// remove the element from the DOM
 		if(ComponentModel.getInstance().selectedItem != null){
 			// case of a component
-			trace("setDraggedElement COMPONENT ");
 			// store the component and its parent and index
 			draggedComponent = ComponentModel.getInstance().selectedItem;
 			// change the style of the phantom to reflect the element style
@@ -172,7 +169,6 @@ class SelectionDropHandler extends DropHandlerBase{
 		}
 		else if(LayerModel.getInstance().selectedItem != null){
 			// case of a layer
-			trace("setDraggedElement LAYER ");
 			// store the component 
 			draggedLayer = LayerModel.getInstance().selectedItem;
 			// change the style of the phantom to reflect the element style
@@ -183,7 +179,6 @@ class SelectionDropHandler extends DropHandlerBase{
 	 * virtual method to be implemented in derived classes
 	 */
 	override private function getDraggedElement(draggableEvent:DraggableEvent):HtmlDom {
-		trace("getDraggedElement "+draggableEvent);
 		// get what's to drop
 		if (draggedComponent != null){
 			// case of a component
@@ -201,7 +196,6 @@ class SelectionDropHandler extends DropHandlerBase{
 	 * Handle Draggable events
 	 */
 	override public function onDrop(e:Event) {
-		trace("onDrop "+e);
 		super.onDrop(e);
 
 		// refresh the builder display

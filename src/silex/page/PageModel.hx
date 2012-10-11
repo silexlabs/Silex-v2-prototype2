@@ -56,7 +56,7 @@ class PageModel extends ModelBase<Page>{
 	/**
 	 * name of the layer automatically created with a new page
 	 */
-	public static inline var NEW_LAYER_NAME = "body";
+	public static inline var NEW_LAYER_NAME = "container1";
 	/**
 	 * Models are singletons
 	 * Constructor is private

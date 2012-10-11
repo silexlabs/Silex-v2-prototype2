@@ -190,7 +190,7 @@
 					
 					<A class="Page" name="insert-list" data-group-id="Group1">Insert</A>
 
-					<DIV class="InsertToolbox Layer insert-list ribbon-list">
+					<DIV class="Layer insert-list ribbon-list">
 						<UL>
 							<LI data-dropzones-class-name="Layer" class="image Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
 								<DIV class="solid"></DIV>
@@ -208,9 +208,9 @@
 								<DIV class="solid"></DIV>
 								<P>Video</P>
 							</LI>
-							<LI data-dropzones-class-name="silex-view" class="layer Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
+							<LI data-dropzones-class-name="silex-view" class="container Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
 								<DIV class="solid"></DIV>
-								<P>Layer</P>
+								<P>Container</P>
 							</LI>
 						</UL>
 
@@ -356,11 +356,17 @@
 						</A>
 						<FORM class="Layer all-tab accordion-item properties-tab">
 							<FIELDSET class="PropertyEditor">
-									<LEGEND>Name</LEGEND>
-									<INPUT class="name-property" type="text" max-lenght="20" value="21"/>
+								<LEGEND>Name</LEGEND>
+								<INPUT class="name-property" type="text" max-lenght="20" value="21"/>
+								
+								<BUTTON class="property-editor-delete-selected"></BUTTON>
 									
-									<BUTTON class="property-editor-delete-selected"></BUTTON>
-									
+								<FIELDSET class="context-video context-audio context-video context-audio context-img context-div">
+									<LEGEND>Html Content</LEGEND>
+									<BUTTON class="property-editor-edit-text text-input">
+										Open Text Editor
+									</BUTTON>
+								</FIELDSET>
 								<FIELDSET class="context-video context-audio">
 									<LEGEND>Sources (1 by line)</LEGEND>
 									<TEXTAREA class="multiple-src-property"></TEXTAREA>
@@ -389,13 +395,10 @@
 								</FIELDSET>
 							</FIELDSET>
 							<FIELDSET class="HtmlEditor">
-								<LEGEND>HTML content</LEGEND>
-								<BUTTON class="property-editor-edit-text">Edit Text</BUTTON>
+								<LEGEND>HTML content - debug only</LEGEND>
 								<TEXTAREA class="text-input"></TEXTAREA>
 							</FIELDSET>
 						</FORM>
-				   
-                        
                         <A href="#style-box-tab" class="LinkToPage accordion-header" data-group-id="Group2">Box</A>
                         <FORM class="Layer all-tab accordion-item style-box-tab">
 							<FIELDSET class="BoxStyleEditor">
