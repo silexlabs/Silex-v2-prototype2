@@ -44,11 +44,14 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 Bugs
 * publication with scroll bug
-* pas d apply quand on tape du texte
+* images débordent sur la boite a outils
 
-* pas possible d effacer les conteneurs de base
-* cration de publication = prend le contenu "empty-template" et le css de "bin/themes/default.css"
-* dans PublicationCategory, remplacer theme par template
+en cours
+- liens internes
+- structure de base d une publicaiton
+  * pas possible d effacer les conteneurs de base
+  * cration de publication = prend le contenu "empty-template" et le css de "bin/themes/default.css"
+  * dans PublicationCategory, remplacer theme par template
 
 
 == edition of properties ==

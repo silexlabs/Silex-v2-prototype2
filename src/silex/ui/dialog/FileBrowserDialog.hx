@@ -24,7 +24,7 @@ class FileBrowserDialog extends DialogBase
 	/**
 	 * The css class name of the element used to display a message for the user
 	 */
-	public static inline var FB_MESSAGE_CLASS_NAME = "file-browser-message";
+	public static inline var FB_MESSAGE_CLASS_NAME = "message-zone";
 	/**
 	 * The page name of this dialog
 	 */
@@ -46,7 +46,7 @@ class FileBrowserDialog extends DialogBase
 	public static var expectMultipleFiles:Bool = false;
 	/**
 	 * static property to be set before openning this dialog
-	 * it will be placed in the element with class name "file-browser-message"
+	 * it will be placed in the element with class name "message-zone"
 	 */
 	public static var message:String;
 	/**

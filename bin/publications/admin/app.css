@@ -391,7 +391,8 @@ opacity:1;
 .FileBrowserDialog .file-browser-div{
 
 }
-.FileBrowserDialog .file-browser-message{
+.FileBrowserDialog .message-zone,
+.TextEditorDialog .message-zone{
 	color: green;
 	font-size: 12px;
 	float: right;

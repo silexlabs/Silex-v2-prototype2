@@ -7280,11 +7280,9 @@ silex.Silex.init = function(unused) {
 	}
 	var publicationBody = brix.util.DomTools.getMeta("publicationBody");
 	if(publicationBody != null) {
-		haxe.Log.trace("A body was found!",{ fileName : "Silex.hx", lineNumber : 123, className : "silex.Silex", methodName : "init"});
 		var value = brix.util.DomTools.getMeta("publicationBody");
 		js.Lib.document.body.innerHTML = value;
 	}
-	haxe.Log.trace(" application.init " + Std.string(js.Lib.document.body),{ fileName : "Silex.hx", lineNumber : 137, className : "silex.Silex", methodName : "init"});
 	application.initComponents();
 	haxe.Timer.delay((function(f,a1) {
 		return function() {
@@ -7334,7 +7332,6 @@ silex.component.ComponentModel.prototype = $extend(silex.ModelBase.prototype,{
 	}
 	,addComponent: function(nodeName,layer,position) {
 		if(position == null) position = 0;
-		haxe.Log.trace("addComponent " + nodeName + ", " + Std.string(layer) + ", " + position,{ fileName : "ComponentModel.hx", lineNumber : 85, className : "silex.component.ComponentModel", methodName : "addComponent"});
 		var publicationModel = silex.publication.PublicationModel.getInstance();
 		var viewHtmlDom = layer.rootElement;
 		var modelHtmlDom = publicationModel.getModelFromView(layer.rootElement);
@@ -7414,7 +7411,6 @@ silex.layer.LayerModel.prototype = $extend(silex.ModelBase.prototype,{
 	}
 	,addLayer: function(page,layerName,position) {
 		if(position == null) position = 0;
-		haxe.Log.trace("addLayer " + Std.string(page) + ", " + layerName + ", " + position,{ fileName : "LayerModel.hx", lineNumber : 109, className : "silex.layer.LayerModel", methodName : "addLayer"});
 		var publicationModel = silex.publication.PublicationModel.getInstance();
 		var viewHtmlDom = publicationModel.viewHtmlDom;
 		var modelHtmlDom = publicationModel.modelHtmlDom;
@@ -7431,7 +7427,6 @@ silex.layer.LayerModel.prototype = $extend(silex.ModelBase.prototype,{
 		return newLayer;
 	}
 	,addMaster: function(layer,page) {
-		haxe.Log.trace("addMaster(" + Std.string(layer) + ", " + Std.string(page) + ")",{ fileName : "LayerModel.hx", lineNumber : 94, className : "silex.layer.LayerModel", methodName : "addMaster"});
 		brix.util.DomTools.addClass(layer.rootElement,page.name);
 		brix.util.DomTools.addClass(silex.publication.PublicationModel.getInstance().getModelFromView(layer.rootElement),page.name);
 		layer.show();
@@ -7662,7 +7657,7 @@ silex.publication.PublicationModel.__super__ = silex.ModelBase;
 silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onPublicationSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 635, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 624, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
 	}
 	,onSaveError: function(msg) {
 		this.dispatchEvent(this.createEvent("onPublicationSaveError"),this.debugInfo);
@@ -7724,14 +7719,14 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		})($bind(this,this.doSaveACopy),newName));
 	}
 	,onDeleteSuccess: function() {
-		haxe.Log.trace("PUBLICATION DELETED ",{ fileName : "PublicationModel.hx", lineNumber : 500, className : "silex.publication.PublicationModel", methodName : "onDeleteSuccess"});
+		haxe.Log.trace("PUBLICATION DELETED ",{ fileName : "PublicationModel.hx", lineNumber : 489, className : "silex.publication.PublicationModel", methodName : "onDeleteSuccess"});
 		this.unload();
 	}
 	,trash: function(name) {
 		this.publicationService.trash(name,$bind(this,this.onDeleteSuccess),$bind(this,this.onSaveError));
 	}
 	,onCreateSuccess: function(name) {
-		haxe.Log.trace("PUBLICATION CREATED " + name,{ fileName : "PublicationModel.hx", lineNumber : 485, className : "silex.publication.PublicationModel", methodName : "onCreateSuccess"});
+		haxe.Log.trace("PUBLICATION CREATED " + name,{ fileName : "PublicationModel.hx", lineNumber : 474, className : "silex.publication.PublicationModel", methodName : "onCreateSuccess"});
 		this.load(name);
 	}
 	,create: function(newName) {
@@ -7766,8 +7761,8 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,this.headHtmlDom);
 		if(initialPageName != null) {
 			var page = brix.component.navigation.Page.getPageByName(initialPageName,this.application.id,this.viewHtmlDom);
-			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "PublicationModel.hx", lineNumber : 411, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
-		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "PublicationModel.hx", lineNumber : 415, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
+			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "PublicationModel.hx", lineNumber : 400, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
+		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "PublicationModel.hx", lineNumber : 404, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
 		if(this.currentConfig.debugModeAction != null) {
 			var context = new Hash();
 			context.set("BrixId",this.application.id);
@@ -7850,7 +7845,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		pageModel.setSelectedItem(null);
 		this.dispatchEvent(this.createEvent("onPublicationChange"),this.debugInfo);
 		if(name == "") {
-			haxe.Log.trace("unload",{ fileName : "PublicationModel.hx", lineNumber : 242, className : "silex.publication.PublicationModel", methodName : "load"});
+			haxe.Log.trace("unload",{ fileName : "PublicationModel.hx", lineNumber : 234, className : "silex.publication.PublicationModel", methodName : "load"});
 			this.currentConfig = null;
 			this.currentData = null;
 			this.viewHtmlDom = null;
@@ -7873,7 +7868,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 			if(results == null || results.length != 1) throw "Error: 1 and only 1 component or layer is expected to have ID \"" + id + "\" (" + Std.string(results) + ").";
 			return results[0];
 		} catch( e ) {
-			haxe.Log.trace("Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").",{ fileName : "PublicationModel.hx", lineNumber : 201, className : "silex.publication.PublicationModel", methodName : "getModelFromView"});
+			haxe.Log.trace("Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").",{ fileName : "PublicationModel.hx", lineNumber : 193, className : "silex.publication.PublicationModel", methodName : "getModelFromView"});
 			throw "Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").";
 		}
 		return null;

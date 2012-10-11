@@ -220,8 +220,7 @@ class EditorBase extends DisplayObject
 	 * callback for the TextEditorDialog
 	 */
 	private function onTextEditorChange(htmlText:String){
-		selectedItem.innerHTML = htmlText;
-		refreshSelection();
+		PropertyModel.getInstance().setProperty(selectedItem, "innerHTML", htmlText);
 	}
 	////////////////////////////////////////////
 	// File Browser 
