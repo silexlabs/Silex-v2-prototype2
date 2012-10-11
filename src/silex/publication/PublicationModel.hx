@@ -278,25 +278,27 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		modelHtmlDom = Lib.document.createElement("div");
 		headHtmlDom = Lib.document.createElement("div");
 
+		// use lower case to find head and body tags
+		var lowerCaseHtml = currentData.html.toLowerCase();
 		// split head and body tags 
-		var headOpenIdx = currentData.html.indexOf("<head");
-		if (headOpenIdx == -1) headOpenIdx = currentData.html.indexOf("<HEAD");
-		var headCloseIdx = currentData.html.indexOf("</head>");
-		if (headCloseIdx == -1) headCloseIdx = currentData.html.indexOf("</HEAD>");
-		var bodyOpenIdx = currentData.html.indexOf("<body");
-		if (bodyOpenIdx == -1) bodyOpenIdx = currentData.html.indexOf("<BODY");
-		var bodyCloseIdx = currentData.html.indexOf("</body>");
-		if (bodyCloseIdx == -1) bodyCloseIdx = currentData.html.indexOf("</BODY>");
+		var headOpenIdx = lowerCaseHtml.indexOf("<head>");
+		if (headOpenIdx == -1) headOpenIdx = lowerCaseHtml.indexOf("<head ");
+		var headCloseIdx = lowerCaseHtml.indexOf("</head>");
+		if (headCloseIdx == -1) headCloseIdx = lowerCaseHtml.indexOf("</HEAD>");
+		var bodyOpenIdx = lowerCaseHtml.indexOf("<body>");
+		if (bodyOpenIdx == -1) bodyOpenIdx = lowerCaseHtml.indexOf("<body ");
+		var bodyCloseIdx = lowerCaseHtml.indexOf("</body>");
+		if (bodyCloseIdx == -1) bodyCloseIdx = lowerCaseHtml.indexOf("</BODY>");
 
 		if (headOpenIdx > -1 && headCloseIdx > -1){
 			// look for the first ">" after "<head"
-			var closingTagIdx = currentData.html.indexOf(">", headOpenIdx);
+			var closingTagIdx = lowerCaseHtml.indexOf(">", headOpenIdx);
 			// extract the head section
 			headHtmlDom.innerHTML = currentData.html.substring(closingTagIdx + 1, headCloseIdx);
 		}
 		if (bodyOpenIdx > -1 && bodyCloseIdx > -1){
 			// look for the first ">" after "<body"
-			var closingTagIdx = currentData.html.indexOf(">", bodyOpenIdx);
+			var closingTagIdx = lowerCaseHtml.indexOf(">", bodyOpenIdx);
 			// extract the body section
 			modelHtmlDom.innerHTML = currentData.html.substring(closingTagIdx + 1, bodyCloseIdx);
 		}
@@ -331,7 +333,9 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		viewHtmlDom.className = BUILDER_ROOT_NODE_CLASS;
 
 		// Add the CSS in the body tag rather than head tag, because the later is not really added to the browser dom
-		DomTools.addCssRules(currentData.css, viewHtmlDom);
+		var styleElement = DomTools.addCssRules(currentData.css, viewHtmlDom);
+		// specify that the style is to be applyed at the publication only, not the builder
+		// not supported by any browsers YET : styleElement.setAttribute("scoped", "scoped"); 
 	}
 	/**
 	 * Fixes the DOM root when needed

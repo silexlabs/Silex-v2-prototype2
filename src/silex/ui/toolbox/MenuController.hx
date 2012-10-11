@@ -31,7 +31,7 @@ class MenuController extends DisplayObject
 	 */
 	public function onClick(e:Event) {
 		// prevent default links behavior
-		// e.preventDefault();
+		e.preventDefault();
 
 		// retrieve the node who triggered the event
 		var target:HtmlDom = e.target;

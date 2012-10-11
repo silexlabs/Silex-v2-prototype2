@@ -8,6 +8,7 @@ import brix.component.list.List;
 import brix.util.DomTools;
 
 import silex.layer.LayerModel;
+import silex.page.PageModel;
 import silex.publication.PublicationModel;
 import silex.property.PropertyModel;
 
@@ -77,8 +78,14 @@ class LayersList extends List<Layer>
 
 			dataProvider = layers;
 
-			propertyChangePending =true;
-			selectedItem = LayerModel.getInstance().selectedItem;
+			propertyChangePending = true;
+			//selectedItem = LayerModel.getInstance().selectedItem;
+
+			// add the layer and reset selection
+			if (selectedItem!=null)
+				addLayer();
+			selectedItem = null;
+
 		}
 		super.reloadData();
 		propertyChangePending = false;
@@ -87,6 +94,11 @@ class LayersList extends List<Layer>
 	public function onListChange(e:CustomEvent){
 		trace("onListChange("+e+")");
 		reloadData();
+	}
+	public function addLayer(){
+		trace("addLayer "+selectedItem);
+		var page = PageModel.getInstance().selectedItem;
+		LayerModel.getInstance().addMaster(selectedItem, page);
 	}
 	/**
 	 * selection changed, open the selected page

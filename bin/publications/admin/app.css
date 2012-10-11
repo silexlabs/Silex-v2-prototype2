@@ -12,9 +12,7 @@ body
 	font-family:Arial, Helvetica, sans-serif;
 }
 .Layer{
-/*
-	min-height: 200px;
-*/
+	visibility: hidden;
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
@@ -45,11 +43,13 @@ p{
 /* 		test 		*/
 /* **************** */
 
+/*
 .PublicationViewer .Layer{
-/*	border: 2px dashed grey; */
+	border: 2px dashed grey; 
 	min-width: 25px;
 	min-height: 25px;
 }
+*/
 /* **************** */
 /* 	builder 		*/
 /* **************** */
@@ -417,7 +417,7 @@ opacity:1;
 	padding:4px;
 }
 
-.PublicationViewer div {
+.PublicationViewer .Layer {
 	border: 1px dotted #CCC;
 }
 
@@ -452,10 +452,17 @@ opacity:1;
 .selection-layer-marker:hover{
 }
 
+.master-phantom{
+	min-width: 10px !important;
+	min-height: 10px !important;
+	border: 2px solid red !important;
+	display: block !important;
+	visibility: visible !important;
+}
 .selection-phantom{
 	min-width: 10px !important;
 	min-height: 10px !important;
-	border-color: red !important;
+	border: 2px solid red !important;
 }
 .selection-marker .draggable-dragzone,
 .selection-layer-marker .draggable-dragzone{
@@ -538,6 +545,9 @@ opacity:1;
 	pointer-events: none;
 	color: grey ! important;
 	background-color:Gainsboro;
+}
+.layer-list ul li{
+	cursor: pointer;
 }
 .ribbon-list .listSelectedItem{
 	color:#7F7F7F;

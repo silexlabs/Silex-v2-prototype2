@@ -46,6 +46,12 @@ class DropHandlerBase extends DisplayObject{
 		rootElement.addEventListener(Draggable.EVENT_DRAG, onDrag, false);
 	}
 	/**
+	 * init the component
+	 */
+	override public function init() : Void {
+		super.init();
+	}
+	/**
 	 * retrieve the postion of a node in its parent's children
 	 */
 	private static function indexOfChild(childNode:HtmlDom):Int{
@@ -75,6 +81,7 @@ class DropHandlerBase extends DisplayObject{
 		trace("onDrag "+e);
 		// check that we have finished dragging any other element
 		var event:CustomEvent = cast(e);
+		event.detail.draggable.groupElement = PublicationModel.getInstance().viewHtmlDom.parentNode;
 		setDraggedElement(event.detail);
 		var draggedElement = getDraggedElement(event.detail);
 

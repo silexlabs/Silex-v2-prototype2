@@ -105,7 +105,7 @@ class LayerModel extends ModelBase<Layer>{
 	 * add a layer to the page (view and model)
 	 * dispatch the change event
 	 */
-	public function addLayer(page:Page, layerName:String, position:Int = 0){
+	public function addLayer(page:Page, layerName:String, position:Int = 0):Layer{
 		trace("addLayer "+page+", "+layerName+", "+position);
 		// get the publication model
 		var publicationModel = PublicationModel.getInstance();
@@ -146,6 +146,7 @@ class LayerModel extends ModelBase<Layer>{
 /**/
 		var newLayer:Layer = new Layer(newNode, publicationModel.application.id);
 		newLayer.init();
+		newLayer.show();
 /*
 		publicationModel.application.initDom(newNode);
 		publicationModel.application.initComponents();
@@ -153,6 +154,7 @@ class LayerModel extends ModelBase<Layer>{
 /**/
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE, newLayer), DEBUG_INFO);
+		return newLayer;
 	}
 	/**
 	 * remove a page from the view and model of the publication

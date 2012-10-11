@@ -4,35 +4,30 @@ body
 {
 	margin:0px;
 	padding:0px;
-	font-family:Arial, Helvetica, sans-serif;
+	font-family:arial, helvetica, sans-serif;
 }
 .Page{
 	display: none;
 }
-button a{
-	color: black;
+.Layer{
+	visibility: hidden;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.side-bar{
+	float: left;
+}
+nav ul li{
+	border-left: thin solid;
+	border-right: thin solid;
+	padding: 10px;
+	display:inline-block;
+	list-style-type: none;
+}
+nav ul li a{
 	text-decoration: none;
-}
-img{
-	
-}
-p{
-
-}
-.list ul{
-
-}
-.list li{
-
 }
 
 /* 		Publication styles 			 */
 /* 		You can edit these styles 	 */
 
-.button-test1{
-   border-color: yellow;
-    border-width: 10px;
-    float: left;
-    margin-left: 200px;
-    margin-top: 10px;
-}

@@ -11,6 +11,7 @@ With Silex:
   * developers can add endless functionalities with the plugins API
 
 Links
+  * roadmap https://github.com/silexlabs/Silex-v2.x/wiki/roadmap
   * Wikipedia http://en.wikipedia.org/wiki/Silex_Flash_CMS
   * Website: http://projects.silexlabs.org/?/silex/
   * Community: http://www.silexlabs.org/groups/silex/hierarchy/
@@ -31,35 +32,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
-
--------------------
-En cours
--------------------
-
-**refactoring**
-
-cleanup code
-- PublicationModel
-- Draggable::getBestDropZone
-- SelectionMarker::onDrag
-- DomTools::getElementBoundingBox
-- refactoring: mvc + API publique à overrider + éventuellement une api de plugins pour débutants?
-- supprimer les getAttribute("title") => faire un ComponentModel.getName et LayerModel.getName
-- faire une classe Lang, avec tous les messages
-- memory leak in the Layer, Page and transition classes
-
-addAssociatedComponent etc dans les models
-dans index.html Group class au lieu des classes "résolues"
-
-
-le builder qui ouvre une publication devrait se servir des fonctions de Silex.hx?
-pareil pour le côté server (remoting)?
-
-reunir template et interpreter dans un package ?
-
-permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html aux liens?)
-
-** bugs **
+** known bugs **
 
   * in the List class, listen to the click on the container instead of each cell, to prevent memory leak
   * chrome and color picker : read ok, load bug
@@ -68,129 +41,7 @@ permettre d'omettre le # dans les LinkToPage => navigation sans js (ajout .html 
   * display block?
   * ergo : disable les pixel+unit quand on a select un shorthand (exple background h pos)
 
-** To do **
 
-
-
-
-cf functionnalities, put disabled buttons
-
-
-** v2.0alpha0 **
-
-Silex menu & toolboxes missing items, missing functionality
-
-** v2.0alpha1 **
-
-Silex menu & toolboxes missing items, missing functionality
-- creer une page a partir d'une autre page (DUPLICATE)
-- create publication
-  . choose a theme (css)
-  . automatic add header, footer, aside, nav tags, content
-  . all layers in content
-  . nav tag = list of all pages
-  . creation de page => ajoute un lien dans nav
-- manage publications, restore from trash, empty trash
-- page properties (keywords, title, ...)
-- publication settings (align h/v, size, ...)
-  . css style?
-  . size, align...
-  . seo, title, description...
-  . use deeplining, initial page...
-- transition in, out and show, hide => list + edit button?
-- draggable list de page => réordonner dans le dom et view
-- deselect all
-- filter publication/page/layer names (",", " ", "%", start with ".", ...)
-- page opens => page title changes
-- fermeture de page ne tient pas compte des groupes enfants
-
-
-
-- detecter quand il y a des modifs non sauvée et demander confirmation de close, open...
-- edit CSS
-- save as css style, css style for a component/container/page/publication
-- edit hscript, code editor
-  - http://ace.ajax.org/
-  - écrire à ace@c9.io pour apparaitre ici "projects using ace" http://ace.ajax.org/#nav=about
-- supprimer options inutiles ou incompatibles (display block?), reordonner les boites a outil
-- keyboard shortcuts
-- notifications (save, loading...)
-- loading page (juste définir dans les css le style .loading et .loaded, et les définir pendant le loading a visible et invisible puis inverser)
-- page 
-- publication settings 
-- selection move when absolute
-- selection resize
-- drag/drop page
-- selection resize
-- selection rotate
-- toolbox media
-- editeur texte
-- boites a outil
-  . ajout preload etc pour les medias : http://www.w3schools.com/html5/tag_audio.asp
-  . ajouter des sliders http://www.w3schools.com/html5/tryit.asp?filename=tryhtml5_input_type_range
-  . UrlInput, BackgroundInput, ...
-  . Border
-- contexts: generalize the toolbox contexts
-
-** v2.0alpha2 **
-
-
-- export de la publication dans ./ 
-- nouvelles boites "helper / shorthand" pour designers non css
-
-design
-- dans text, "Line Height" a son text input dans "Case"
-- style menu / ribbon
-- style des boites a outils
-- anims de transition show/hide sur selection, position des layers, des composants...
-
-improvements
-* add the manager, not found etc. to distrib ?
-* transitions with params on the Layer as well as on the link
-* "loading" transitions for the layers with connectors
-* contexts with multiple class names ==== merge the concepts of Context and Page (=> State, State.setState(contextName, stateName))
-* dans PublicationData, charger tous les .css? ou tout ce qui est dans style/?
-* mettre toute la conf dans les headers? Vu que seules les personnes autorisées vont voir la page...
-* components
-  * transition alpha
-* ?no conditional compilation in class Silex (client version)
-* 404 error publication
-* SLExtend 
-  * Init plugins in Silex::new
-  * split Silex::new into smaller methods
-* opa-like lib
-* in Silex.hx, add the style sheet in a style tag directly in the html page
-* builder classes should not be in silex.js
-
-
-** v2.0beta **
-
-packaging / release
-- kcfinder dans les credits
-- GPL dans les source et readme
-
-Refactoring
-- optim layouts redraw
-- Classes par composition
-  . invalidation manager (pour redraw ts les layouts des que l un d eux change de taille)
-  . selection manager pour les modeles qui auront selection et hover
-- rename
-  . Page into State
-  . Layer into Container
-
-Docs
-- install
-- pages, containers, masters, components, links
-- créer un mini site 
-- 
-
-
-
-== tool tips for beginners ==
-
-Put them in the app by default
-
-* to create a new master, insert a container in a page, select it on the stage and check the property "Set as master"
 
 == edition of properties ==
 

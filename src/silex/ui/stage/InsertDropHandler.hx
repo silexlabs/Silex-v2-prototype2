@@ -87,22 +87,31 @@ class InsertDropHandler extends DropHandlerBase{
 
 		// add the desired element
 		if (dropZone != null){
-			if (DomTools.hasClass(rootElement, IMAGE_TYPE))
-				addComponent(dropZone, "img").setAttribute("src", "enter image url here");
-			else if (DomTools.hasClass(rootElement, TEXT_TYPE))
-				addComponent(dropZone, "p").innerHTML = "Insert text here.";
+			if (DomTools.hasClass(rootElement, IMAGE_TYPE)){
+				var element = addComponent(dropZone, "img");
+				element.setAttribute("src", "enter image url here");
+				element.setAttribute("title", "New image component");
+			}
+			else if (DomTools.hasClass(rootElement, TEXT_TYPE)){
+				var element = addComponent(dropZone, "div");
+				element.innerHTML = "<p>Insert text here.</p>";
+				element.setAttribute("title", "New text field");
+			}
 			else if (DomTools.hasClass(rootElement, AUDIO_TYPE)){
 				var element = addComponent(dropZone, "audio");
-				element.innerHTML = "<source>enter media url here</source>";
+				element.innerHTML = "<source>enter sound url here</source>";
 				element.setAttribute("controls", "controls");
+				element.setAttribute("title", "New audio component");
 			}
 			else if (DomTools.hasClass(rootElement, VIDEO_TYPE)){
 				var element = addComponent(dropZone, "video");
-				element.innerHTML = "<source>enter media url here</source>";
+				element.innerHTML = "<source>enter video URLs here</source>";
 				element.setAttribute("controls", "controls");
+				element.setAttribute("title", "New video component");
 			}
 			else if (DomTools.hasClass(rootElement, LAYER_TYPE)){
-				addLayer(dropZone, PageModel.getInstance().selectedItem);
+				var element = addLayer(dropZone, PageModel.getInstance().selectedItem).rootElement;
+				element.setAttribute("title", "New container");
 			}
 		}
 		else{
@@ -123,11 +132,11 @@ class InsertDropHandler extends DropHandlerBase{
 	/**
 	 * add a layer to the current page
 	 */
-	public function addLayer(dropZone:DropZone, page:Page) {
+	public function addLayer(dropZone:DropZone, page:Page):Layer {
 		// trace("addLayer "+page.name);
 		if (page == null)
 			throw("Error: No selected page. Could not add a layer to the page "+page.name+".");
 
-		LayerModel.getInstance().addLayer(page, Lib.window.prompt("I need a name for your new container please."), dropZone.position);
+		return LayerModel.getInstance().addLayer(page, Lib.window.prompt("I need a name for your new container please."), dropZone.position);
 	}
 }
