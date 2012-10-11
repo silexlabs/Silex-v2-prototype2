@@ -34,14 +34,18 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** known bugs **
 
-  * in the List class, listen to the click on the container instead of each cell, to prevent memory leak
   * chrome and color picker : read ok, load bug
   * delete a container when it is a master or not, and uncheck master when the container is not on any page
   * ecouter window.resize, et dispatcher window.resize dans Page::open
-  * display block?
+  * autoriser display block?
   * ergo : disable les pixel+unit quand on a select un shorthand (exple background h pos)
 
 
+Bugs
+* publication with scroll bug
+* creation de page => sauve les "page-opened" et "data-brix-id"
+* pas d edit de text sur les layers
+* pas d apply quand on tape du texte
 
 == edition of properties ==
 

@@ -13,19 +13,16 @@ body
 	visibility: hidden;
 	padding-top: 10px;
 	padding-bottom: 10px;
+/*	border-color: rgba(255,0,0,0.75);
+	border-style: dotted; */
 }
 .side-bar{
 	float: left;
 }
-nav ul li{
+.nav-link{
 	border-left: thin solid;
 	border-right: thin solid;
 	padding: 10px;
-	display:inline-block;
-	list-style-type: none;
-}
-nav ul li a{
-	text-decoration: none;
 }
 
 /* 		Publication styles 			 */
