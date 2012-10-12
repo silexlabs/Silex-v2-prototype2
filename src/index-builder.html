@@ -22,26 +22,24 @@
 		<script data-brix-use="silex.ui.dialog.AuthDialog"></script>
 		<script data-brix-use="silex.ui.dialog.OpenDialog"></script>
 		<script data-brix-use="silex.ui.dialog.FileBrowserDialog"></script>
+		<script data-brix-use="silex.ui.dialog.TextEditorDialog"></script>
+
 		<script data-brix-use="silex.ui.list.PublicationList"></script>
 		<script data-brix-use="silex.ui.list.PageList"></script>
 		<script data-brix-use="silex.ui.list.LayersList"></script>
-<!--
--->
 		<script data-brix-use="silex.ui.stage.PublicationViewer"></script>
 		<script data-brix-use="silex.ui.stage.SelectionController"></script>
-		
+
 		<script data-brix-use="silex.ui.stage.SelectionDropHandler"></script>
-		<script data-brix-use="silex.ui.stage.MasterDropHandler"></script>
 		<script data-brix-use="silex.ui.stage.InsertDropHandler"></script>
+<!--
+		<script data-brix-use="silex.ui.stage.MasterDropHandler"></script>
+-->
 
 		<script data-brix-use="silex.ui.toolbox.MenuController"></script>
-<!--
-		<script data-brix-use="silex.ui.toolbox.PageToolbox"></script>
-		<script data-brix-use="silex.ui.toolbox.MasterToolbox"></script>
-		<script data-brix-use="silex.ui.toolbox.InsertToolbox"></script>
--->		
+
 		<script data-brix-use="silex.ui.toolbox.editor.PropertyEditor"></script>
-		<script data-brix-use="silex.ui.toolbox.editor.RawHtmlEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.HtmlEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.TextStyleEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.BackgroundStyleEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.BlockStyleEditor"></script>
@@ -51,6 +49,11 @@
 		<script data-brix-use="silex.ui.toolbox.editor.PositionStyleEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.PlacementStyleEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.ClipStyleEditor"></script>
+		
+		<script data-brix-use="silex.ui.toolbox.editor.BorderStyleEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.BorderRadiusEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.BorderColorEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.BorderWidthEditor"></script>
 <!--
 -->
 
@@ -84,13 +87,13 @@
 					<!-- Menu header -->
 					<DIV class="ribbon-tabs">
 						<a href="#file-menu" class="LinkToPage" >File</a>
-						<a href="#edit-menu" class="LinkToPage disabled" >Edit</a>
+						<a href="#edit-menu" class="LinkToPage disabled-element" >Edit</a>
 						<a href="#page-list" class="LinkToPage" >Pages</a>
 						<a href="#layer-list" class="LinkToPage" >Masters</a>
 						<a href="#insert-list" class="LinkToPage" >Insert</a>
-						<a href="#user-menu" class="LinkToPage disabled" >User</a>
-						<a href="#tool-menu" class="LinkToPage disabled" >Tool</a>
-						<a href="#help-menu" class="LinkToPage disabled" >Help</a>
+						<a href="#user-menu" class="LinkToPage disabled-element" >User</a>
+						<a href="#tool-menu" class="LinkToPage disabled-element" >Tool</a>
+						<a href="#help-menu" class="LinkToPage disabled-element" >Help</a>
 					</DIV>
 					<!-- File -->
 					<a name="file-menu" class="Page" >File</a>
@@ -101,7 +104,7 @@
 								<DIV class="temp-icon"></DIV>
 								<p>create</p>
 							</li>
-							<li data-menu-item="create-from-template" class="disabled">
+							<li data-menu-item="create-from-template" class="disabled-element">
 								<DIV class="temp-icon"></DIV>
 								<p>from template</p>
 							</li>
@@ -133,21 +136,25 @@
 								<DIV class="temp-icon"></DIV>
 								<p>delete</p>
 							</li>
-							<li data-menu-item="settings" class="disabled">
+							<li data-menu-item="settings" class="disabled-element">
 								<DIV class="temp-icon"></DIV>
 								<p>settings</p>
 							</li>
-							<li data-menu-item="backup-all" class="disabled">
+							<li data-menu-item="backup-all" class="disabled-element">
 								<DIV class="temp-icon"></DIV>
 								<p>backup all</p>
 							</li>
-							<li data-menu-item="export" class="disabled">
+							<li data-menu-item="export" class="disabled-element">
 								<DIV class="temp-icon"></DIV>
 								<p>export</p>
 							</li>
-							<li data-menu-item="publish" class="disabled">
+							<li data-menu-item="publish" class="disabled-element">
 								<DIV class="temp-icon"></DIV>
 								<p>publish</p>
+							</li>
+							<li data-menu-item="open-file-browser">
+								<DIV class="temp-icon"></DIV>
+								<p>media</p>
 							</li>
 						</ul>
 					</DIV>
@@ -187,23 +194,20 @@
 
 					<DIV class="MasterToolbox Layer layer-list ribbon-list">
 						<ul class="LayersList">
-							<li class="Draggable MasterDropHandler"
+							<li class=""
 								data-dropzones-class-name="silex-view"
-								data-phantom-class-name="selection-phantom"
+								data-phantom-class-name="master-phantom"
 								>
 								<DIV class="solid"></DIV>
 								<p>::rootElement.title::</p>
 							</li>
 						</ul>
-<!--
-						<button class="add-button">Add</button>
--->
 					</DIV>
 
 					<!-- Insert -->
 					<a name="insert-list" class="Page" >Insert</a>
 
-					<DIV class="InsertToolbox Layer insert-list ribbon-list">
+					<DIV class="Layer insert-list ribbon-list">
 						<ul>
 							<li class="image Draggable InsertDropHandler" 
 								data-phantom-class-name="selection-phantom"
@@ -233,12 +237,12 @@
 								<DIV class="solid"></DIV>
 								<p>Video</p>
 							</li>
-							<li class="layer Draggable InsertDropHandler" 
+							<li class="container Draggable InsertDropHandler" 
 								data-phantom-class-name="selection-phantom"
 								data-dropzones-class-name="silex-view"
 							>
 								<DIV class="solid"></DIV>
-								<p>Layer</p>
+								<p>Container</p>
 							</li>
 						</ul>
 <!--
@@ -274,7 +278,7 @@
 							<img src="../admin/assets/logo.png"></img>
 						</DIV>
 						<fieldset> 
-							<DIV class="form">
+							<DIV class="login-pass-container">
 							
 								<p class="login">Login</p><p><input type="text" class="input-field-login" size="21" max-lenght="50" > </input></p>
 								<p class="password">Password</p><p><input type="text" class="input-field-pass"size="21" max-lenght="50"></input></p>
@@ -328,15 +332,35 @@
 							<hr />
 <!--								<input type="submit" value="Ok" class="validate-button"></input>
 -->
-							<button class="cancel-button">Cancel</button>
-							<label class="file-browser-message"></label>
+							<button class="cancel-button">Close</button>
+							<label class="message-zone"></label>
 						
 						</footer>
 						
 					</DIV>
 				</form>
+				<!-- TextEditor Dialog -->
+				<A class="Page" name="text-editor-dialog" ></A>
+				<form class="Layer text-editor-dialog dialog-foreground TextEditorDialog" 
+					data-dialog-name="text-editor-dialog">
+					<DIV class="container-2 container-text-editor">
+						<header>
+							<p>Silex Text Editor</p>
+						</header>
+						<DIV class="text-editor-div">
+						</DIV>
+						<footer class="foot">
+							<hr />
+<!--								<input type="submit" value="Ok" class="validate-button"></input>
+-->
+							<button class="cancel-button">Close</button>
+							<label class="message-zone"></label>
+						</footer>
+						
+					</DIV>
+				</form>
 				<!-- dialog background -->
-				<DIV class="Layer dialog-background login-dialog open-dialog file-browser-dialog"></DIV>
+				<DIV class="Layer dialog-background login-dialog open-dialog file-browser-dialog text-editor-dialog"></DIV>
 			</DIV>
 			<!-- ----------	 -->
 			<!-- /Dialogs -->
@@ -373,45 +397,58 @@
 					<A class="Page"  name="style-border-tab">Border</A>
 
 					<DIV class="Accordion">
-						<DIV class="accordion-header">
-							<DIV class="title">
-								<h2>Toolboxes</h2>
-							</DIV>
-						</DIV>
-						<!-- Navigation
-						<ul class="tabs ">
-							<li><a href="#all-tab" class="LinkToPage" >All</a></li>
-							<li><a href="#properties-tab" class="LinkToPage" >Properties</a></li>
-							<li><a href="#style-text-tab" class="LinkToPage" >Text</a></li>
-							<li><a href="#style-background-tab" class="LinkToPage" >Background</a></li>
-							<li><a href="#style-block-tab" class="LinkToPage" >Block</a></li>
-							<li><a href="#style-box-tab" class="LinkToPage" >Box</a></li>
-							<li><a href="#style-positioning-tab" class="LinkToPage" >Positioning</a></li>
-							<li><a href="#style-border-tab" class="LinkToPage" >Border</a></li>
-						</ul>
-						<!-- /Navigation -->
 						<!-- Properties editor -->
 						<A href="#properties-tab" class="LinkToPage accordion-header">
 							Properties
 						</A>
 						<FORM class="Layer all-tab accordion-item properties-tab">
 							<FIELDSET class="PropertyEditor">
-									<LEGEND>Name</LEGEND>
-									<INPUT class="name-property" type="text" max-lenght="20" value="21"/>
+								<LEGEND>Name</LEGEND>
+								<INPUT class="name-property" type="text" max-lenght="20" value="21"/>
+								
+								<BUTTON class="property-editor-delete-selected"></BUTTON>
 									
-									<BUTTON class="property-editor-delete-selected"></BUTTON>
-									
+								<FIELDSET class="context-video context-audio context-video context-audio context-img context-div">
+									<LEGEND>Html Content</LEGEND>
+									<BUTTON class="property-editor-edit-text text-input">
+										Open Text Editor
+									</BUTTON>
+								</FIELDSET>
+								<FIELDSET class="properties-link">
+									<LEGEND>Link</LEGEND>
+										<div>
+											<input type="radio" name="link-radio-group" class="radio-button radio-button-url" value="url" />
+											<label>To a website</label>
+				                            <INPUT class="link-url" type="src"/>
+										</div>
+										<div>
+											<input type="radio" name="link-radio-group" class="radio-button radio-button-page" value="page" />
+											<label>To a page</label>
+											<SELECT class="PageList">
+												<OPTION value="::name::">::name::</OPTION>
+											</SELECT>
+										</div>
+										<div class="disabled-element">
+											<input type="radio" name="link-radio-group" class="radio-button radio-button-code" value="code" disabled="true" />
+											<label>Execute an action</label>
+											<BUTTON class="property-editor-edit-code">
+												Open Code Editor
+											</BUTTON>
+										</div>
+
+
+								</FIELDSET>
 								<FIELDSET class="context-video context-audio">
 									<LEGEND>Sources (1 by line)</LEGEND>
 									<TEXTAREA class="multiple-src-property"></TEXTAREA>
-									<BUTTON class="select-file-button" title="Browse media gallery"
-										data-fb-target="multiple-src-property">Browse media gallery</BUTTON>
+									<BUTTON class="add-multiple-files-button" title="Browse library"
+										data-fb-target="multiple-src-property">Add from library</BUTTON>
 								</FIELDSET>
 								<FIELDSET class="context-img">
 									<LEGEND>Source</LEGEND>
 									<INPUT class="src-property" name="URL" type="src"/>
-									<BUTTON class="select-file-button" title="Browse media gallery"
-										data-fb-target="src-property">Browse media gallery</BUTTON>
+									<BUTTON class="select-file-button" title="Browse library"
+										data-fb-target="src-property">Browse library</BUTTON>
 								</FIELDSET>
 								<FIELDSET class="context-video context-audio">
 									<LEGEND>Autoplay</LEGEND>
@@ -430,13 +467,11 @@
 									 <DIV class="check"><INPUT class="master-property" type="checkbox"/> On/Off</DIV>
 								</FIELDSET>
 							</FIELDSET>
-							<FIELDSET class="RawHtmlEditor">
-								<LEGEND>HTML content</LEGEND>
+							<FIELDSET class="HtmlEditor">
+								<LEGEND>HTML content - debug only</LEGEND>
 								<TEXTAREA class="text-input"></TEXTAREA>
 							</FIELDSET>
 						</FORM>
-				   
-                        
                         <A href="#style-box-tab" class="LinkToPage accordion-header">Box</A>
                         <FORM class="Layer all-tab accordion-item style-box-tab">
 							<FIELDSET class="BoxStyleEditor">
@@ -681,41 +716,6 @@
 									<OPTION value="relative">relative</OPTION>
 									<OPTION value="static">static</OPTION>
 								</SELECT>
-                                <hr />							
-								
-								
-								<LABEL for="positioning_width">Width</LABEL>
-                                
-								<SELECT class="positioning_width_unit">
-									<OPTION value=""></OPTION>
-									<OPTION value="px">pixels</OPTION>
-									<OPTION value="pt">points</OPTION>
-									<OPTION value="in">inches</OPTION>
-									<OPTION value="cm">centimetres</OPTION>
-									<OPTION value="mm">millimetres</OPTION>
-									<OPTION value="pc">picas</OPTION>
-									<OPTION value="em">ems</OPTION>
-									<OPTION value="ex">exs</OPTION>
-									<OPTION value="%">%</OPTION>
-								</SELECT>
-                                <INPUT class="positioning_width" type="text"/>
-                                <hr />
-
-								<LABEL for="positioning_height">Height</LABEL>
-                                
-								<SELECT class="positioning_height_unit">
-									<OPTION value=""></OPTION>
-									<OPTION value="px">pixels</OPTION>
-									<OPTION value="pt">points</OPTION>
-									<OPTION value="in">inches</OPTION>
-									<OPTION value="cm">centimetres</OPTION>
-									<OPTION value="mm">millimetres</OPTION>
-									<OPTION value="pc">picas</OPTION>
-									<OPTION value="em">ems</OPTION>
-									<OPTION value="ex">exs</OPTION>
-									<OPTION value="%">%</OPTION>
-								</SELECT>
-                                <INPUT class="positioning_height" type="text"/>
                                 <hr />
                                 
                                 <LABEL for="positioning_visibility">Visibility</LABEL>
@@ -885,7 +885,270 @@
                         
 						<A href="#style-border-tab" class="LinkToPage accordion-header">Border</A>
                         <FORM class="Layer all-tab accordion-item style-border-tab">
-                        	...
+							<fieldset class="BorderStyleEditor">
+								<legend>Style</legend>	
+									<label>Top</label>
+									<button class="apply_to_all">Apply to All</button>
+									<select class="border_top">
+										<option value=""></option>
+										<option value="none">none</option>
+										<option value="solid">solid</option>
+										<option value="dashed">dashed</option>
+										<option value="dotted">dotted</option>
+										<option value="double">double</option>
+										<option value="groove">groove</option>
+										<option value="ridge">ridge</option>
+										<option value="inset">inset</option>
+										<option value="outset">outset</option>
+									</select>
+									
+									<hr />
+
+									<label>Left</label>
+
+									<select class="border_left">
+										<option value=""></option>
+										<option value="none">none</option>
+										<option value="solid">solid</option>
+										<option value="dashed">dashed</option>
+										<option value="dotted">dotted</option>
+										<option value="double">double</option>
+										<option value="groove">groove</option>
+										<option value="ridge">ridge</option>
+										<option value="inset">inset</option>
+										<option value="outset">outset</option>
+									</select>
+									
+									<hr />
+
+									<label>Bottom</label>
+
+									<select class="border_bottom">
+										<option value=""></option>
+										<option value="none">none</option>
+										<option value="solid">solid</option>
+										<option value="dashed">dashed</option>
+										<option value="dotted">dotted</option>
+										<option value="double">double</option>
+										<option value="groove">groove</option>
+										<option value="ridge">ridge</option>
+										<option value="inset">inset</option>
+										<option value="outset">outset</option>
+									</select>
+									
+									<hr />
+
+									<label>Right</label>
+
+									<select class="border_right">
+										<option value=""></option>
+										<option value="none">none</option>
+										<option value="solid">solid</option>
+										<option value="dashed">dashed</option>
+										<option value="dotted">dotted</option>
+										<option value="double">double</option>
+										<option value="groove">groove</option>
+										<option value="ridge">ridge</option>
+										<option value="inset">inset</option>
+										<option value="outset">outset</option>
+									</select>
+							</fieldset>
+							<fieldset class="BorderRadiusEditor">
+								<legend>Radius</legend>	
+									<label>Top Left</label>
+									<button class="apply_to_all">Apply to All</button>
+	                                <INPUT class="border_top" type="number" max="5000" min="0"/>
+									<SELECT class="border_top_unit">
+										<OPTION value=""></OPTION>
+										<OPTION value="px">pixels</OPTION>
+										<OPTION value="pt">points</OPTION>
+										<OPTION value="in">inches</OPTION>
+										<OPTION value="cm">centimetres</OPTION>
+										<OPTION value="mm">millimetres</OPTION>
+										<OPTION value="pc">picas</OPTION>
+										<OPTION value="em">ems</OPTION>
+										<OPTION value="ex">exs</OPTION>
+										<OPTION value="%">%</OPTION>
+									</SELECT>
+									<br />
+	                                <hr />
+
+									<label>Top Right</label>
+	                                <INPUT class="border_left" type="number" max="5000" min="0"/>
+									<SELECT class="border_left_unit">
+										<OPTION value=""></OPTION>
+										<OPTION value="px">pixels</OPTION>
+										<OPTION value="pt">points</OPTION>
+										<OPTION value="in">inches</OPTION>
+										<OPTION value="cm">centimetres</OPTION>
+										<OPTION value="mm">millimetres</OPTION>
+										<OPTION value="pc">picas</OPTION>
+										<OPTION value="em">ems</OPTION>
+										<OPTION value="ex">exs</OPTION>
+										<OPTION value="%">%</OPTION>
+									</SELECT>
+									<br />
+	                                <hr />
+
+									<label>Bottom Right</label>
+	                                <INPUT class="border_bottom" type="number" max="5000" min="0"/>
+									<SELECT class="border_bottom_unit">
+										<OPTION value=""></OPTION>
+										<OPTION value="px">pixels</OPTION>
+										<OPTION value="pt">points</OPTION>
+										<OPTION value="in">inches</OPTION>
+										<OPTION value="cm">centimetres</OPTION>
+										<OPTION value="mm">millimetres</OPTION>
+										<OPTION value="pc">picas</OPTION>
+										<OPTION value="em">ems</OPTION>
+										<OPTION value="ex">exs</OPTION>
+										<OPTION value="%">%</OPTION>
+									</SELECT>
+									<br />
+	                                <hr />
+
+									<label>Bottom Left</label>
+	                                <INPUT class="border_right" type="number" max="5000" min="0"/>
+									<SELECT class="border_right_unit">
+										<OPTION value=""></OPTION>
+										<OPTION value="px">pixels</OPTION>
+										<OPTION value="pt">points</OPTION>
+										<OPTION value="in">inches</OPTION>
+										<OPTION value="cm">centimetres</OPTION>
+										<OPTION value="mm">millimetres</OPTION>
+										<OPTION value="pc">picas</OPTION>
+										<OPTION value="em">ems</OPTION>
+										<OPTION value="ex">exs</OPTION>
+										<OPTION value="%">%</OPTION>
+									</SELECT>
+									<br />
+	                                <hr />
+
+							</fieldset>
+							<fieldset class="BorderColorEditor">
+								<legend>Color</legend>	
+									<label>Top</label>
+									<button class="apply_to_all">Apply to All</button>
+									<INPUT class="border_top" type="color"/>
+	                                <hr />
+
+									<label>Left</label>
+									<INPUT class="border_left" type="color"/>
+	                                <hr />
+
+									<label>Bottom</label>
+									<INPUT class="border_bottom" type="color"/>
+	                                <hr />
+
+									<label>Right</label>
+									<INPUT class="border_right" type="color"/>
+	                                <hr />
+
+							</fieldset>
+							<fieldset class="BorderWidthEditor">
+								<legend>Width</legend>	
+								<label>Top</label>
+								<button class="apply_to_all">Apply to All</button>
+<!--								<select class="border_top">
+									<option value=""></option>
+									<option value="thin">thin</option>
+									<option value="medium">medium</option>
+									<option value="thick">thick</option>
+								</select>
+                                <br />
+-->
+                                <INPUT class="border_top" type="number" max="5000" min="-5000"/>
+								<SELECT class="border_top_unit">
+									<OPTION value=""></OPTION>
+									<OPTION value="px">pixels</OPTION>
+									<OPTION value="pt">points</OPTION>
+									<OPTION value="in">inches</OPTION>
+									<OPTION value="cm">centimetres</OPTION>
+									<OPTION value="mm">millimetres</OPTION>
+									<OPTION value="pc">picas</OPTION>
+									<OPTION value="em">ems</OPTION>
+									<OPTION value="ex">exs</OPTION>
+									<OPTION value="%">%</OPTION>
+								</SELECT>
+                                <br />
+								<hr />
+
+								<label>Left</label>
+<!--								<select class="border_left">
+									<option value=""></option>
+									<option value="thin">thin</option>
+									<option value="medium">medium</option>
+									<option value="thick">thick</option>
+								</select>
+                                <br />
+-->
+                                <INPUT class="border_left" type="number" max="5000" min="-5000"/>
+								<SELECT class="border_left_unit">
+									<OPTION value=""></OPTION>
+									<OPTION value="px">pixels</OPTION>
+									<OPTION value="pt">points</OPTION>
+									<OPTION value="in">inches</OPTION>
+									<OPTION value="cm">centimetres</OPTION>
+									<OPTION value="mm">millimetres</OPTION>
+									<OPTION value="pc">picas</OPTION>
+									<OPTION value="em">ems</OPTION>
+									<OPTION value="ex">exs</OPTION>
+									<OPTION value="%">%</OPTION>
+								</SELECT>
+                                <br />
+								<hr />
+
+								<label>Bottom</label>
+<!--								<select class="border_bottom">
+									<option value=""></option>
+									<option value="thin">thin</option>
+									<option value="medium">medium</option>
+									<option value="thick">thick</option>
+								</select>
+                                <br />
+-->
+                                <INPUT class="border_bottom" type="number" max="5000" min="-5000"/>
+								<SELECT class="border_bottom_unit">
+									<OPTION value=""></OPTION>
+									<OPTION value="px">pixels</OPTION>
+									<OPTION value="pt">points</OPTION>
+									<OPTION value="in">inches</OPTION>
+									<OPTION value="cm">centimetres</OPTION>
+									<OPTION value="mm">millimetres</OPTION>
+									<OPTION value="pc">picas</OPTION>
+									<OPTION value="em">ems</OPTION>
+									<OPTION value="ex">exs</OPTION>
+									<OPTION value="%">%</OPTION>
+								</SELECT>
+                                <br />
+								<hr />
+
+								<label>Right</label>
+<!--								<select class="border_right">
+									<option value=""></option>
+									<option value="thin">thin</option>
+									<option value="medium">medium</option>
+									<option value="thick">thick</option>
+								</select>
+                                <br />
+-->
+                                <INPUT class="border_right" type="number" max="5000" min="-5000"/>
+								<SELECT class="border_right_unit">
+									<OPTION value=""></OPTION>
+									<OPTION value="px">pixels</OPTION>
+									<OPTION value="pt">points</OPTION>
+									<OPTION value="in">inches</OPTION>
+									<OPTION value="cm">centimetres</OPTION>
+									<OPTION value="mm">millimetres</OPTION>
+									<OPTION value="pc">picas</OPTION>
+									<OPTION value="em">ems</OPTION>
+									<OPTION value="ex">exs</OPTION>
+									<OPTION value="%">%</OPTION>
+								</SELECT>
+                                <br />
+								<hr />
+
+							</fieldset>
                         </FORM>						
 						
                         <A href="#style-background-tab" class="LinkToPage accordion-header">Background</A>
@@ -900,8 +1163,8 @@
 							
 								<LABEL>Sources (1 by line)</LABEL><BR></BR>
 								<TEXTAREA class="multiple-src-property"></TEXTAREA>
-								<BUTTON class="select-file-button" title="Browse media gallery"
-									data-fb-target="multiple-src-property">Browse media gallery</BUTTON>
+								<BUTTON class="add-multiple-files-button" title="Browse library"
+									data-fb-target="multiple-src-property">Add from library</BUTTON>
                                 <hr />
 
 								<LABEL for="background_repeat">Repeat</LABEL>
@@ -1255,17 +1518,21 @@
 						data-phantom-class-name="selection-phantom"
 					>
                     	<div class="selection-marker-delete"></div>
-                        <div class="selection-marker-name">Nom du marker : [ body  > structure > contener > selectedElement ]</div>
+                        <div class="selection-marker-name">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</div>
+                        <DIV class="draggable-dragzone"></DIV>
 					</DIV>
-					<DIV class="hover-marker"></DIV>
+					<DIV class="hover-marker">
+					</DIV>
 					<DIV class="selection-layer-marker Draggable SelectionDropHandler"
 						data-dropzones-class-name="silex-view"
 						data-phantom-class-name="selection-phantom"
 					>
-                    	<div class="selection-layer-marker-delete"></div>
-                        <div class="selection-layer-marker-name">Nom du layer : [ body  > structure > contener > selectedElement ]</div>
+                    	<div class="selection-marker-delete"></div>
+                        <div class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</div>
+                        <DIV class="draggable-dragzone"></DIV>
 					</DIV>
-					<DIV class="hover-layer-marker"></DIV>
+					<DIV class="hover-layer-marker">
+					</DIV>
 				</DIV>
 				<!-- 		/Selection and stage 			-->
 				<!-- 	**************************	-->

@@ -163,11 +163,6 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			return null;
 		}
 		try{
-			//trace("getModelFromView("+viewHtmlDom.className+") ");
-
-			//if (ComponentModel.getInstance().selectedItem == null && LayerModel.getInstance().selectedItem == null)
-			//	throw ("Error: no component nor layer is selected.");
-
 			// case of the builder root node
 			if (DomTools.hasClass(viewHtmlDom, BUILDER_ROOT_NODE_CLASS))
 				return modelHtmlDom;
@@ -176,7 +171,6 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			var id = viewHtmlDom.getAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME);
 			if (id != null)
 			{
-				 // trace("case of component "+id);
 				// case of a component
 				results = DomTools.getElementsByAttribute(PublicationModel.getInstance().modelHtmlDom, ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, id);
 			}
@@ -185,7 +179,6 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 				if (id!=null){
 					// case of a layer
 					results = DomTools.getElementsByAttribute(PublicationModel.getInstance().modelHtmlDom, LayerModel.LAYER_ID_ATTRIBUTE_NAME, id);
-					 // trace("case of layer "+id+" - "+results);
 				}
 				else{
 					throw("Error: the selected layer has not a Silex ID. It should have the ID in the "+LayerModel.LAYER_ID_ATTRIBUTE_NAME+" or "+ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME+" attributes");
@@ -195,7 +188,6 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			if (results == null || results.length != 1){
 				throw ("Error: 1 and only 1 component or layer is expected to have ID \"" + id + "\" ("+results+").");
 			}
-			// trace("returns "+results[0]);
 			return results[0];
 		}catch(e:Dynamic){
 			trace("Error, could not retrieve the model for element "+viewHtmlDom+" ("+e+").");
@@ -278,25 +270,27 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		modelHtmlDom = Lib.document.createElement("div");
 		headHtmlDom = Lib.document.createElement("div");
 
+		// use lower case to find head and body tags
+		var lowerCaseHtml = currentData.html.toLowerCase();
 		// split head and body tags 
-		var headOpenIdx = currentData.html.indexOf("<head");
-		if (headOpenIdx == -1) headOpenIdx = currentData.html.indexOf("<HEAD");
-		var headCloseIdx = currentData.html.indexOf("</head>");
-		if (headCloseIdx == -1) headCloseIdx = currentData.html.indexOf("</HEAD>");
-		var bodyOpenIdx = currentData.html.indexOf("<body");
-		if (bodyOpenIdx == -1) bodyOpenIdx = currentData.html.indexOf("<BODY");
-		var bodyCloseIdx = currentData.html.indexOf("</body>");
-		if (bodyCloseIdx == -1) bodyCloseIdx = currentData.html.indexOf("</BODY>");
+		var headOpenIdx = lowerCaseHtml.indexOf("<head>");
+		if (headOpenIdx == -1) headOpenIdx = lowerCaseHtml.indexOf("<head ");
+		var headCloseIdx = lowerCaseHtml.indexOf("</head>");
+		if (headCloseIdx == -1) headCloseIdx = lowerCaseHtml.indexOf("</HEAD>");
+		var bodyOpenIdx = lowerCaseHtml.indexOf("<body>");
+		if (bodyOpenIdx == -1) bodyOpenIdx = lowerCaseHtml.indexOf("<body ");
+		var bodyCloseIdx = lowerCaseHtml.indexOf("</body>");
+		if (bodyCloseIdx == -1) bodyCloseIdx = lowerCaseHtml.indexOf("</BODY>");
 
 		if (headOpenIdx > -1 && headCloseIdx > -1){
 			// look for the first ">" after "<head"
-			var closingTagIdx = currentData.html.indexOf(">", headOpenIdx);
+			var closingTagIdx = lowerCaseHtml.indexOf(">", headOpenIdx);
 			// extract the head section
 			headHtmlDom.innerHTML = currentData.html.substring(closingTagIdx + 1, headCloseIdx);
 		}
 		if (bodyOpenIdx > -1 && bodyCloseIdx > -1){
 			// look for the first ">" after "<body"
-			var closingTagIdx = currentData.html.indexOf(">", bodyOpenIdx);
+			var closingTagIdx = lowerCaseHtml.indexOf(">", bodyOpenIdx);
 			// extract the body section
 			modelHtmlDom.innerHTML = currentData.html.substring(closingTagIdx + 1, bodyCloseIdx);
 		}
@@ -325,41 +319,29 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * Initialize the Brix for the view
 	 */
 	private function initViewHtmlDom():Void{
-		// trace("initViewHtmlDom");
 		// Duplicate DOM
 		viewHtmlDom = modelHtmlDom.cloneNode(true);
 		viewHtmlDom.className = BUILDER_ROOT_NODE_CLASS;
 
 		// Add the CSS in the body tag rather than head tag, because the later is not really added to the browser dom
-		DomTools.addCssRules(currentData.css, viewHtmlDom);
+		var styleElement = DomTools.addCssRules(currentData.css, viewHtmlDom);
+		// specify that the style is to be applyed at the publication only, not the builder
+		// not supported by any browsers YET : styleElement.setAttribute("scoped", "scoped"); 
 	}
 	/**
 	 * Fixes the DOM root when needed
 	 * - add the PublicationGroup to the root of the DOM
 	 */
 	private function fixDomRoot(modelDom:HtmlDom){
-		// trace("fixDomRoot( "+modelDom+") - "+modelDom.parentNode);
 		// add the PublicationGroup to the root of the DOM
 		DomTools.addClass(modelDom, "PublicationGroup");
-	}
-	/**
-	 * Fixes the components, layers and pages when needed
-	 * - add the attribute data-group-id to components
-	 */
-	private function fixDom(modelDom:HtmlDom){
-		// add the attribute data-group-id to components
-		if (modelDom.getAttribute("data-group-id") == null){
-			modelDom.setAttribute("data-group-id", "PublicationGroup");
-		}
 	}
 	/**
 	 * Recursively browse all html nodes and does this:
 	 * - add the attribute data-silex-component-id to node which are editable components
 	 * - add the attribute data-silex-layer-id to nodes which are editable layers
-	 * - call fixDom method for each component
 	 */
 	public function prepareForEdit(modelDom:HtmlDom) {
-		// trace("prepareForEdit ("+modelDom+") - "+modelDom.parentNode);
 		// Take only HtmlDom elements, not TextNode
 		if (modelDom.nodeType != 1){
 			return;
@@ -374,18 +356,14 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		else if (DomTools.hasClass(modelDom.parentNode, "Layer")){
 			// add the attribute data-silex-component-id to nodes which parent is a layer
 			modelDom.setAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, generateNewId());
-			fixDom(modelDom);
 		}
 		// Layers
 		else if (DomTools.hasClass(modelDom, "Layer")){
 			// add the attribute data-silex-layer-id to nodes which are layers
 			modelDom.setAttribute(LayerModel.LAYER_ID_ATTRIBUTE_NAME, generateNewId());
-			fixDom(modelDom);
 		}
 		// Pages
 		else if (DomTools.hasClass(modelDom, "Page")){
-			// check Dom for robustness
-			fixDom(modelDom);
 		}
 		// browse the children
 		for(idx in 0...modelDom.childNodes.length){
@@ -591,7 +569,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		<HEAD>
 			"+tempModelHead.innerHTML+"
 		</HEAD>
-		<BODY>
+		<BODY class=\"silex-view\">
 			"+tempModelBody.innerHTML+"
 		</BODY>
 	</HTML>

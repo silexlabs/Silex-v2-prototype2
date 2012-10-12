@@ -29,7 +29,6 @@ class BackgroundStyleEditor extends EditorBase
 	 * reset the values
 	 */
 	override private function reset() {
-		trace("reset ");
 		// color
 		setInputValue("background_color", "");
 
@@ -53,7 +52,6 @@ class BackgroundStyleEditor extends EditorBase
 	 * display the property value
 	 */
 	override private function load(element:HtmlDom) {
-		trace("load "+element);
 
 		// color
 		var value:String = element.style.backgroundColor;
@@ -71,7 +69,6 @@ class BackgroundStyleEditor extends EditorBase
 			}
 			// convert to hex
 			setInputValue("background_color", "#" + StringTools.hex(decValue, 6));
-			trace("load "+values+" -> "+decValue+" -> "+StringTools.hex(decValue));
 		}else{
 			setInputValue("background_color", value);
 		}
@@ -168,7 +165,6 @@ class BackgroundStyleEditor extends EditorBase
 	 * apply the property value
 	 */
 	override private function apply() {
-		trace("apply "+selectedItem);
 		var propertyModel = PropertyModel.getInstance();
 
 		// color
@@ -189,7 +185,6 @@ class BackgroundStyleEditor extends EditorBase
 				value += "url('" + abs2rel(entry) + "')";
 			}
 		}
-		trace("apply "+value);
 		propertyModel.setStyle(selectedItem, "backgroundImage", "");
 		propertyModel.setStyle(selectedItem, "backgroundImage", value);
 

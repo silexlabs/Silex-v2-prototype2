@@ -16,7 +16,6 @@ import silex.property.PropertyModel;
  * listen to the model events to update the list 
  * @example 	<ul class="PageList"><li>::name::</li></ul> displays the name of the items
  */
-@tagNameFilter("ul")
 class PageList extends List<Page>
 {
 	/**
