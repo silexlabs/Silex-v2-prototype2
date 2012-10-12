@@ -29,7 +29,7 @@
 		
 		
 		
-		
+
 		
 		
 
@@ -82,13 +82,13 @@
 					
 					<DIV class="ribbon-tabs">
 						<A href="#file-menu" class="LinkToPage" data-group-id="Group1">File</A>
-						<A href="#edit-menu" class="LinkToPage disabled" data-group-id="Group1">Edit</A>
+						<A href="#edit-menu" class="LinkToPage disabled-element" data-group-id="Group1">Edit</A>
 						<A href="#page-list" class="LinkToPage" data-group-id="Group1">Pages</A>
 						<A href="#layer-list" class="LinkToPage" data-group-id="Group1">Masters</A>
 						<A href="#insert-list" class="LinkToPage" data-group-id="Group1">Insert</A>
-						<A href="#user-menu" class="LinkToPage disabled" data-group-id="Group1">User</A>
-						<A href="#tool-menu" class="LinkToPage disabled" data-group-id="Group1">Tool</A>
-						<A href="#help-menu" class="LinkToPage disabled" data-group-id="Group1">Help</A>
+						<A href="#user-menu" class="LinkToPage disabled-element" data-group-id="Group1">User</A>
+						<A href="#tool-menu" class="LinkToPage disabled-element" data-group-id="Group1">Tool</A>
+						<A href="#help-menu" class="LinkToPage disabled-element" data-group-id="Group1">Help</A>
 					</DIV>
 					
 					<A class="Page" name="file-menu" data-group-id="Group1">File</A>
@@ -99,7 +99,7 @@
 								<DIV class="temp-icon"></DIV>
 								<P>create</P>
 							</LI>
-							<LI class="disabled" data-menu-item="create-from-template">
+							<LI class="disabled-element" data-menu-item="create-from-template">
 								<DIV class="temp-icon"></DIV>
 								<P>from template</P>
 							</LI>
@@ -131,19 +131,19 @@
 								<DIV class="temp-icon"></DIV>
 								<P>delete</P>
 							</LI>
-							<LI class="disabled" data-menu-item="settings">
+							<LI class="disabled-element" data-menu-item="settings">
 								<DIV class="temp-icon"></DIV>
 								<P>settings</P>
 							</LI>
-							<LI class="disabled" data-menu-item="backup-all">
+							<LI class="disabled-element" data-menu-item="backup-all">
 								<DIV class="temp-icon"></DIV>
 								<P>backup all</P>
 							</LI>
-							<LI class="disabled" data-menu-item="export">
+							<LI class="disabled-element" data-menu-item="export">
 								<DIV class="temp-icon"></DIV>
 								<P>export</P>
 							</LI>
-							<LI class="disabled" data-menu-item="publish">
+							<LI class="disabled-element" data-menu-item="publish">
 								<DIV class="temp-icon"></DIV>
 								<P>publish</P>
 							</LI>
@@ -366,6 +366,30 @@
 									<BUTTON class="property-editor-edit-text text-input">
 										Open Text Editor
 									</BUTTON>
+								</FIELDSET>
+								<FIELDSET class="properties-link">
+									<LEGEND>Link</LEGEND>
+										<DIV>
+											<INPUT class="radio-button radio-button-url" name="link-radio-group" type="radio" value="url"/>
+											<LABEL>To a website</LABEL>
+				                            <INPUT class="link-url" type="src"/>
+										</DIV>
+										<DIV>
+											<INPUT class="radio-button radio-button-page" name="link-radio-group" type="radio" value="page"/>
+											<LABEL>To a page</LABEL>
+											<SELECT class="PageList">
+												<OPTION value="::name::">::name::</OPTION>
+											</SELECT>
+										</DIV>
+										<DIV class="disabled-element">
+											<INPUT class="radio-button radio-button-code" name="link-radio-group" type="radio" disabled="true" value="code"/>
+											<LABEL>Execute an action</LABEL>
+											<BUTTON class="property-editor-edit-code">
+												Open Code Editor
+											</BUTTON>
+										</DIV>
+
+
 								</FIELDSET>
 								<FIELDSET class="context-video context-audio">
 									<LEGEND>Sources (1 by line)</LEGEND>

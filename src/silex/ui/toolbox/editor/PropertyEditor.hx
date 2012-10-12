@@ -81,6 +81,13 @@ class PropertyEditor extends EditorBase
 		setInputValue("loop-property", null, "checked");
 		setInputValue("master-property", null, "checked");
 		updateContext([]);
+
+		// link
+		setInputValue("radio-button-url", null, "checked");
+		setInputValue("radio-button-page", null, "checked");
+//		disableElement(DomTools.getSingleElement("radio-button-url"));
+//		disableElement(DomTools.getSingleElement("radio-button-page"));
+
 	}
 	public function updateContext(contextArray:Array<String>){
 		// handle the context

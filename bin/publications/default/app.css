@@ -19,7 +19,10 @@ body
 .side-bar{
 	float: left;
 }
-.nav-link{
+nav div{
+	display: inline-block;
+}
+nav div a{
 	border-left: thin solid;
 	border-right: thin solid;
 	padding: 10px;

@@ -29,7 +29,7 @@
 		<script data-brix-use="silex.ui.list.LayersList"></script>
 		<script data-brix-use="silex.ui.stage.PublicationViewer"></script>
 		<script data-brix-use="silex.ui.stage.SelectionController"></script>
-		
+
 		<script data-brix-use="silex.ui.stage.SelectionDropHandler"></script>
 		<script data-brix-use="silex.ui.stage.InsertDropHandler"></script>
 <!--
@@ -87,13 +87,13 @@
 					<!-- Menu header -->
 					<DIV class="ribbon-tabs">
 						<a href="#file-menu" class="LinkToPage" >File</a>
-						<a href="#edit-menu" class="LinkToPage disabled" >Edit</a>
+						<a href="#edit-menu" class="LinkToPage disabled-element" >Edit</a>
 						<a href="#page-list" class="LinkToPage" >Pages</a>
 						<a href="#layer-list" class="LinkToPage" >Masters</a>
 						<a href="#insert-list" class="LinkToPage" >Insert</a>
-						<a href="#user-menu" class="LinkToPage disabled" >User</a>
-						<a href="#tool-menu" class="LinkToPage disabled" >Tool</a>
-						<a href="#help-menu" class="LinkToPage disabled" >Help</a>
+						<a href="#user-menu" class="LinkToPage disabled-element" >User</a>
+						<a href="#tool-menu" class="LinkToPage disabled-element" >Tool</a>
+						<a href="#help-menu" class="LinkToPage disabled-element" >Help</a>
 					</DIV>
 					<!-- File -->
 					<a name="file-menu" class="Page" >File</a>
@@ -104,7 +104,7 @@
 								<DIV class="temp-icon"></DIV>
 								<p>create</p>
 							</li>
-							<li data-menu-item="create-from-template" class="disabled">
+							<li data-menu-item="create-from-template" class="disabled-element">
 								<DIV class="temp-icon"></DIV>
 								<p>from template</p>
 							</li>
@@ -136,19 +136,19 @@
 								<DIV class="temp-icon"></DIV>
 								<p>delete</p>
 							</li>
-							<li data-menu-item="settings" class="disabled">
+							<li data-menu-item="settings" class="disabled-element">
 								<DIV class="temp-icon"></DIV>
 								<p>settings</p>
 							</li>
-							<li data-menu-item="backup-all" class="disabled">
+							<li data-menu-item="backup-all" class="disabled-element">
 								<DIV class="temp-icon"></DIV>
 								<p>backup all</p>
 							</li>
-							<li data-menu-item="export" class="disabled">
+							<li data-menu-item="export" class="disabled-element">
 								<DIV class="temp-icon"></DIV>
 								<p>export</p>
 							</li>
-							<li data-menu-item="publish" class="disabled">
+							<li data-menu-item="publish" class="disabled-element">
 								<DIV class="temp-icon"></DIV>
 								<p>publish</p>
 							</li>
@@ -413,6 +413,30 @@
 									<BUTTON class="property-editor-edit-text text-input">
 										Open Text Editor
 									</BUTTON>
+								</FIELDSET>
+								<FIELDSET class="properties-link">
+									<LEGEND>Link</LEGEND>
+										<div>
+											<input type="radio" name="link-radio-group" class="radio-button radio-button-url" value="url" />
+											<label>To a website</label>
+				                            <INPUT class="link-url" type="src"/>
+										</div>
+										<div>
+											<input type="radio" name="link-radio-group" class="radio-button radio-button-page" value="page" />
+											<label>To a page</label>
+											<SELECT class="PageList">
+												<OPTION value="::name::">::name::</OPTION>
+											</SELECT>
+										</div>
+										<div class="disabled-element">
+											<input type="radio" name="link-radio-group" class="radio-button radio-button-code" value="code" disabled="true" />
+											<label>Execute an action</label>
+											<BUTTON class="property-editor-edit-code">
+												Open Code Editor
+											</BUTTON>
+										</div>
+
+
 								</FIELDSET>
 								<FIELDSET class="context-video context-audio">
 									<LEGEND>Sources (1 by line)</LEGEND>

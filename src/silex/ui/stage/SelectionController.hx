@@ -119,7 +119,7 @@ class SelectionController extends DisplayObject
 		//selectionContainer.appendChild(selectionMarker);
 
 		// listen to the view events
-		Lib.document.body.addEventListener("mousemove", onMouseMove, false);
+		rootElement.addEventListener("mousemove", onMouseMove, false);
 		//rootElement.addEventListener("mouseover", onMouseOver, false);
 		//Lib.document.body.addEventListener("click", onClickAnywhere, false);
 
@@ -348,13 +348,13 @@ class SelectionController extends DisplayObject
 			marker.style.display = "inline";
 			marker.style.visibility = "visible";
 			var boundingBox = DomTools.getElementBoundingBox(target);
-			var markerMarginH = (marker.offsetWidth - marker.clientWidth)/2.0;
-			var markerMarginV = (marker.offsetHeight - marker.clientHeight)/2.0;
+//			var markerMarginH = (marker.offsetWidth - marker.clientWidth)/2.0;
+//			var markerMarginV = (marker.offsetHeight - marker.clientHeight)/2.0;
 			doSetMarkerPosition(marker,
-				Math.floor(boundingBox.x - markerMarginH/2),
-				Math.floor(boundingBox.y - markerMarginV/2),
-				Math.floor(boundingBox.w - markerMarginH),
-				Math.floor(boundingBox.h - markerMarginV)
+				Math.floor(boundingBox.x),
+				Math.floor(boundingBox.y),
+				Math.floor(boundingBox.w),
+				Math.floor(boundingBox.h)
 			);
 		}
 		// dispatch a redraw event
@@ -368,8 +368,8 @@ class SelectionController extends DisplayObject
 	 * position the given marker at the given position
 	 */
 	private function doSetMarkerPosition(marker:HtmlDom, left:Int, top:Int, width:Int, height:Int) {
-		marker.style.left = left + "px";
-		marker.style.top = top + "px";
+		// use moveTo in order to handle the absolut position or relative position of rootElement
+		DomTools.moveTo(marker, left, top);
 		marker.style.width = width + "px";
 		marker.style.height = height + "px";
 	}

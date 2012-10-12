@@ -1633,9 +1633,13 @@ brix.component.layout.Panel.prototype = $extend(brix.component.layout.LayoutBase
 			var margin = this.rootElement.offsetWidth - this.rootElement.clientWidth;
 			var bodyMargin = this.body.offsetWidth - this.body.clientWidth;
 			bodySize = boundingBox.w;
-			bodySize += bodyMargin;
+			if(this.header != null) {
+				var bbHeader = brix.util.DomTools.getElementBoundingBox(this.header);
+				brix.util.DomTools.moveTo(this.body,bbHeader.w,null);
+				bodySize -= bbHeader.w;
+			} else brix.util.DomTools.moveTo(this.body,0,null);
+			bodySize -= bodyMargin;
 			bodySize -= margin;
-			bodySize -= this.body.offsetLeft;
 			if(this.footer != null) {
 				var footerMargin = this.footer.offsetWidth - this.footer.clientWidth;
 				var boundingBox1 = brix.util.DomTools.getElementBoundingBox(this.footer);
@@ -1647,12 +1651,14 @@ brix.component.layout.Panel.prototype = $extend(brix.component.layout.LayoutBase
 		} else {
 			var margin = this.rootElement.offsetHeight - this.rootElement.clientHeight;
 			var bodyMargin = this.body.offsetHeight - this.body.clientHeight;
-			if(this.header != null) this.body.style.top = this.header.offsetHeight + "px";
 			bodySize = boundingBox.h;
-			bodySize += bodyMargin;
+			if(this.header != null) {
+				var bbHeader = brix.util.DomTools.getElementBoundingBox(this.header);
+				brix.util.DomTools.moveTo(this.body,null,bbHeader.h);
+				bodySize -= bbHeader.h;
+			} else brix.util.DomTools.moveTo(this.body,null,0);
+			bodySize -= bodyMargin;
 			bodySize -= margin;
-			bodySize -= this.body.offsetTop;
-			bodySize += boundingBox.y;
 			if(this.footer != null) {
 				var footerMargin = this.footer.offsetHeight - this.footer.clientHeight;
 				var boundingBox1 = brix.util.DomTools.getElementBoundingBox(this.footer);
@@ -2792,8 +2798,12 @@ brix.util.DomTools.getElementBoundingBox = function(htmlDom) {
 	var offsetHeight = 0.0;
 	var element = htmlDom;
 	while(element != null) {
-		var halfBorderH = (element.offsetWidth - element.clientWidth) / 2.0;
-		var halfBorderV = (element.offsetHeight - element.clientHeight) / 2.0;
+		var borderH = element.offsetWidth - element.clientWidth;
+		var borderV = element.offsetHeight - element.clientHeight;
+		offsetWidth -= borderH;
+		offsetHeight -= borderV;
+		offsetTop -= Math.round(borderV / 2.0);
+		offsetLeft -= Math.round(borderH / 2.0);
 		offsetTop -= element.scrollTop;
 		offsetLeft -= element.scrollLeft;
 		offsetTop += element.offsetTop;
@@ -2802,15 +2812,26 @@ brix.util.DomTools.getElementBoundingBox = function(htmlDom) {
 	}
 	return { x : Math.round(offsetLeft), y : Math.round(offsetTop), w : Math.round(htmlDom.offsetWidth + offsetWidth), h : Math.round(htmlDom.offsetHeight + offsetHeight)};
 }
+brix.util.DomTools.moveTo = function(htmlDom,x,y) {
+	var elementBox = brix.util.DomTools.getElementBoundingBox(htmlDom);
+	if(x != null) {
+		var newPosX = htmlDom.offsetLeft + (x - elementBox.x);
+		htmlDom.style.left = Math.round(newPosX) + "px";
+	}
+	if(y != null) {
+		var newPosY = htmlDom.offsetTop + (y - elementBox.y);
+		htmlDom.style.top = Math.round(newPosY) + "px";
+	}
+}
 brix.util.DomTools.inspectTrace = function(obj,callingClass) {
-	haxe.Log.trace("-- " + callingClass + " inspecting element --",{ fileName : "DomTools.hx", lineNumber : 140, className : "brix.util.DomTools", methodName : "inspectTrace"});
+	haxe.Log.trace("-- " + callingClass + " inspecting element --",{ fileName : "DomTools.hx", lineNumber : 165, className : "brix.util.DomTools", methodName : "inspectTrace"});
 	var _g = 0, _g1 = Reflect.fields(obj);
 	while(_g < _g1.length) {
 		var prop = _g1[_g];
 		++_g;
-		haxe.Log.trace("- " + prop + " = " + Std.string(Reflect.field(obj,prop)),{ fileName : "DomTools.hx", lineNumber : 143, className : "brix.util.DomTools", methodName : "inspectTrace"});
+		haxe.Log.trace("- " + prop + " = " + Std.string(Reflect.field(obj,prop)),{ fileName : "DomTools.hx", lineNumber : 168, className : "brix.util.DomTools", methodName : "inspectTrace"});
 	}
-	haxe.Log.trace("-- --",{ fileName : "DomTools.hx", lineNumber : 145, className : "brix.util.DomTools", methodName : "inspectTrace"});
+	haxe.Log.trace("-- --",{ fileName : "DomTools.hx", lineNumber : 170, className : "brix.util.DomTools", methodName : "inspectTrace"});
 }
 brix.util.DomTools.toggleClass = function(element,className) {
 	if(brix.util.DomTools.hasClass(element,className)) brix.util.DomTools.removeClass(element,className); else brix.util.DomTools.addClass(element,className);
@@ -2937,7 +2958,7 @@ brix.util.DomTools.setBaseTag = function(href) {
 	var head = js.Lib.document.getElementsByTagName("head")[0];
 	var baseNodes = js.Lib.document.getElementsByTagName("base");
 	if(baseNodes.length > 0) {
-		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 366, className : "brix.util.DomTools", methodName : "setBaseTag"});
+		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 391, className : "brix.util.DomTools", methodName : "setBaseTag"});
 		baseNodes[0].setAttribute("href",href);
 	} else {
 		var node = js.Lib.document.createElement("base");

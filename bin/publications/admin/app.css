@@ -58,7 +58,14 @@ body{
 }
 .panel-publication-body{
 	width: 100%;
+	position: absolute;
 }
+.disabled-element {
+	pointer-events: none;
+	color: grey ! important;
+	background-color:Gainsboro;
+}
+
 /* **************** */
 /* 		stage 		*/
 /* **************** */
@@ -416,6 +423,7 @@ opacity:1;
 	height: 100%;
 	overflow: auto;
 	margin:4px;
+	position: absolute;
 }
 
 .PublicationViewer .Layer {
@@ -541,11 +549,6 @@ opacity:1;
 	color:#3C3C3C;
 	font-family:Tahoma;
 	font-size:13px;
-}
-.group-ribbon .disabled {
-	pointer-events: none;
-	color: grey ! important;
-	background-color:Gainsboro;
 }
 .layer-list ul li{
 	cursor: pointer;
@@ -746,7 +749,7 @@ opacity:1;
 	float:right;
 	cursor:pointer;
 }
-.property-editor-edit-text{
+.property-editor-edit-text, .property-editor-edit-code{
 	border:none;
 	margin:0;
 	padding:2px;
@@ -766,6 +769,18 @@ opacity:1;
 	
 	min-width:16%;
 
+}
+.silex-toolbox .properties-link div{
+    float: left;
+    min-height: 40px;
+    width: 100%;
+}
+.silex-toolbox .properties-link .radio-button{
+	float: left;
+    margin: 0;
+}
+.silex-toolbox .link-url{
+	width: 80%;
 }
 .silex-toolbox fieldset legend{
 	margin-left:auto;
