@@ -1402,8 +1402,12 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 		}
 		this.bestDropZone = zone;
 	}
-	,computeDistance: function(bb,mouseX,mouseY) {
-		return Math.sqrt(Math.pow(bb.x - mouseX,2) + Math.pow(bb.y - mouseY,2));
+	,computeDistance: function(bbElement,bbTarget) {
+		var centerElementX = bbElement.x + bbElement.w / 2.0;
+		var centerElementY = bbElement.y + bbElement.h / 2.0;
+		var centerTargetX = bbTarget.x + bbTarget.w / 2.0;
+		var centerTargetY = bbTarget.y + bbTarget.h / 2.0;
+		return Math.sqrt(Math.pow(centerElementX - centerTargetX,2) + Math.pow(centerElementY - centerTargetY,2));
 	}
 	,getBestDropZone: function(mouseX,mouseY) {
 		var dropZones = new List();
@@ -1417,7 +1421,9 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 		var $it0 = dropZones.iterator();
 		while( $it0.hasNext() ) {
 			var zone = $it0.next();
-			if(mouseX > zone.offsetLeft && mouseX < zone.offsetLeft + zone.offsetWidth && mouseY > zone.offsetTop && mouseY < zone.offsetTop + zone.offsetHeight) {
+			var bbZone = brix.util.DomTools.getElementBoundingBox(zone);
+			if(mouseX > bbZone.x && mouseX < bbZone.x + bbZone.w && mouseY > bbZone.y && mouseY < bbZone.y + bbZone.h) {
+				var bbElement = brix.util.DomTools.getElementBoundingBox(this.rootElement);
 				var lastChildIdx = 0;
 				var nearestDistance = 999999999999;
 				var _g1 = 0, _g = zone.childNodes.length;
@@ -1425,16 +1431,16 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 					var childIdx = _g1++;
 					var child = zone.childNodes[childIdx];
 					zone.insertBefore(this.miniPhantom,child);
-					var bb = brix.util.DomTools.getElementBoundingBox(this.miniPhantom);
-					var dist = this.computeDistance(bb,mouseX,mouseY);
+					var bbPhantom = brix.util.DomTools.getElementBoundingBox(this.miniPhantom);
+					var dist = this.computeDistance(bbPhantom,bbElement);
 					if(dist < nearestDistance) {
 						nearestDistance = dist;
 						lastChildIdx = childIdx;
 					}
 				}
 				zone.appendChild(this.miniPhantom);
-				var bb = brix.util.DomTools.getElementBoundingBox(this.miniPhantom);
-				var dist = this.computeDistance(bb,mouseX,mouseY);
+				var bbPhantom = brix.util.DomTools.getElementBoundingBox(this.miniPhantom);
+				var dist = this.computeDistance(bbPhantom,bbElement);
 				if(dist < nearestDistance) {
 					nearestDistance = dist;
 					lastChildIdx = zone.childNodes.length + 1;
@@ -1453,8 +1459,7 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 			var elementX = mouseX - this.initialMouseX;
 			var elementY = mouseY - this.initialMouseY;
 			this.setAsBestDropZone(this.getBestDropZone(elementX,elementY));
-			this.rootElement.style.left = elementX + "px";
-			this.rootElement.style.top = elementY + "px";
+			brix.util.DomTools.moveTo(this.rootElement,elementX,elementY);
 			var event = js.Lib.document.createEvent("CustomEvent");
 			event.initCustomEvent("dragEventMove",false,false,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
 			this.rootElement.dispatchEvent(event);
@@ -2798,8 +2803,8 @@ brix.util.DomTools.getElementBoundingBox = function(htmlDom) {
 	var offsetHeight = 0.0;
 	var element = htmlDom;
 	while(element != null) {
-		var borderH = element.offsetWidth - element.clientWidth;
-		var borderV = element.offsetHeight - element.clientHeight;
+		var borderH = (element.offsetWidth - element.clientWidth) / 2;
+		var borderV = (element.offsetHeight - element.clientHeight) / 2;
 		offsetWidth -= borderH;
 		offsetHeight -= borderV;
 		offsetTop -= Math.round(borderV / 2.0);

@@ -47,6 +47,7 @@ Bugs
 * images débordent sur la boite a outils
 
 en cours
+- drag / drop sur la scene ne tient pas compte du decalage du au ribbon
 - liens internes
 - structure de base d une publicaiton
   * pas possible d effacer les conteneurs de base
