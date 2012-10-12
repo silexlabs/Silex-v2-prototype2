@@ -1,22 +1,17 @@
 /* 		Silex base styles 			 */
 /* 		Do not edit these styles 	 */
-html, body {
-	width:100%;
-	height:100%;
-}
-
 body
 {
-	margin:0px;
-	padding:0px;
-	font-family:Arial, Helvetica, sans-serif;
+	margin:0px !important;
+	padding:0px !important;
+	font-family:Arial, Helvetica, sans-serif !important;
+	width:100% !important;
+	height:100% !important;
+	max-width: none !important;
+	max-height: none !important;
 }
 .Layer{
-/*
-	min-height: 200px;
-*/
-	padding-top: 10px;
-	padding-bottom: 10px;
+	visibility: hidden;
 }
 .Page{
 	display: none;
@@ -45,11 +40,13 @@ p{
 /* 		test 		*/
 /* **************** */
 
+/*
 .PublicationViewer .Layer{
-/*	border: 2px dashed grey; */
+	border: 2px dashed grey; 
 	min-width: 25px;
 	min-height: 25px;
 }
+*/
 /* **************** */
 /* 	builder 		*/
 /* **************** */
@@ -58,7 +55,14 @@ body{
 }
 .panel-publication-body{
 	width: 100%;
+	position: absolute;
 }
+.disabled-element {
+	pointer-events: none;
+	color: grey ! important;
+	background-color:Gainsboro;
+}
+
 /* **************** */
 /* 		stage 		*/
 /* **************** */
@@ -70,6 +74,20 @@ body{
 /* **************** */
 /* 	Dialogs 		*/
 /* **************** */
+.dialogs{
+
+}
+.dialogs .dialog-background{
+	top:0;
+	width:100%;
+	height:100%;
+	left:0;
+	z-index: 2500;
+	position:absolute;
+	background-color:black;
+	opacity:0.5;
+}
+
 .dialogs header{
 	padding: 5px;
 	background-color: #F93;
@@ -79,6 +97,12 @@ body{
 	font-size: 12px;
 	margin: 0;
 }
+.dialogs form{
+	height: 100%;
+	position: absolute;
+	width: 100%;
+	z-index: 2600;
+}
 .dialogs .container{
 
 	max-width:360px;
@@ -87,7 +111,7 @@ body{
 	position:relative;
 }
 
-.dialogs .form{
+.dialogs .login-pass-container{
 	max-width:100%;
 	background:Lightgray;
 	padding-top:17px;
@@ -98,30 +122,22 @@ body{
 }
 
 .login-dialog fieldset{
-
-max-width:300px;
-border:none;
-margin-left:auto;
-margin-right:auto;
-
-
+	max-width:300px;
+	border:none;
+	margin-left:auto;
+	margin-right:auto;
 }
 
 
 .login-dialog fieldset .login{
-
-	
 	display:block;
 	position:absolute;
 	padding-left:11px;
 	color:DimGray;
 	font-size:15px;
-
 }
 
 .login-dialog fieldset .password{
-	
-
 	display:block;
 	position:absolute;
 	padding-left:11px;
@@ -246,21 +262,8 @@ opacity:1;
 	color:LightGray;
 	opacity:0.7;
 }
-.dialogs .dialog-background{
-	top:0;
-	width:100%;
-	height:100%;
-	left:0;
-	z-index: 1000;
-	position:absolute;
-	background-color:Black;
-	opacity:0.5;
-}
-
 
 .dialogs .container-2{
-    border: 1px solid DimGray;
-    border-radius: 3px 3px 3px 3px;
     margin-left: 25%;
     margin-right: 25%;
     min-height: 200px;
@@ -276,6 +279,9 @@ opacity:1;
 	border-top:1px black solid;
 	height:17px;
 
+}
+.dialogs .container-text-editor{
+	min-height: 330px;
 }
 
 /*   PUBLICATION LIST  */
@@ -332,7 +338,7 @@ opacity:1;
 	width:100%;
 	height:37px;
 	background:Gainsboro;
-
+	border-radius: 0px 0px 5px 5px;
 }
 .dialogs .foot .validate-button{
 	cursor:pointer;
@@ -358,7 +364,7 @@ opacity:1;
 	cursor:pointer;
     float:right;
     position:relative;
-    margin-top:10px;
+    margin:8px;
 }
 
 .dialogs .foot .cancel-button:hover{
@@ -389,11 +395,18 @@ opacity:1;
 .FileBrowserDialog .file-browser-div{
 
 }
-.FileBrowserDialog .file-browser-message{
+.FileBrowserDialog .message-zone,
+.TextEditorDialog .message-zone{
 	color: green;
 	font-size: 12px;
 	float: right;
 	padding: 14px;
+}
+.text-editor-dialog{
+
+}
+.text-editor-div{
+	
 }
 /* **************** */
 /* 	/Dialogs 		*/
@@ -406,18 +419,11 @@ opacity:1;
 	width: 80%;
 	height: 100%;
 	overflow: auto;
-	padding:4px;
-/*	border: 2px red solid;
-
-	top: 0;
-	left: 0;
-/*
+	margin: 0px 4px;
 	position: absolute;
-	z-index: 2;
-/**/
 }
 
-.PublicationViewer div {
+.PublicationViewer .Layer {
 	border: 1px dotted #CCC;
 }
 
@@ -429,26 +435,20 @@ opacity:1;
 }
 .hover-marker{
 	z-index: 300;
-	opacity:0.3;
-	background-color:#FFFF00;
 	cursor: pointer;
+	background-color: rgba(255, 255, 0, 0.3);
 }
 .selection-marker{
 	z-index: 400;
 	border: 2px dotted #FFFF00;
 	cursor: move;
-	min-height:27px;
 }
 .selection-marker:hover{
-	/*opacity:0.3;
-	background-color:#FF0000;
-	border: 1px solid grey;*/
 }
 .hover-layer-marker{
 	z-index: 100;
-	opacity:0.2;
-	background-color:green;
 	cursor: pointer;
+	background-color: rgba(0, 255, 0, 0.3);
 }
 .selection-layer-marker{
 	z-index: 200;
@@ -456,42 +456,48 @@ opacity:1;
 	cursor: move;
 }
 .selection-layer-marker:hover{
-	/*opacity:0.25;
-	background-color: green;
-	border: 1px solid green;*/
 }
 
-.selection-phantom{
-    /*opacity: .5 !important;
-	background-color: red !important;
-	border: 1px solid green !important;*/
+.master-phantom{
 	min-width: 10px !important;
 	min-height: 10px !important;
+	border: 2px solid red !important;
+	display: block !important;
+	visibility: visible !important;
 }
-
-.selection-layer-marker-delete, .selection-marker-delete {
+.selection-phantom{
+	min-width: 10px !important;
+	min-height: 10px !important;
+	border: 2px solid red !important;
+}
+.selection-marker .draggable-dragzone,
+.selection-layer-marker .draggable-dragzone{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+}
+.selection-marker-delete {
 	width:27px;
 	height:27px;
 	margin:0;
 	padding:0;
-	float:right;
-	vertical-align:top;
+	position:absolute;
+	right: 0;
 	z-index:1000;
 	cursor:pointer;
 	background-image:url(./assets/sv2-ico-delete.png);
-	background-color:#666;
+	background-color: rgba(66, 66, 66, 0.7);
 }
 
-.selection-layer-marker-name, .selection-marker-name  {
-	width:98%;
+.selection-marker-name  {
 	min-height:20px;
-	background-color:#666666;
+	background-color: rgba(66, 66, 66, 0.7);
 	font-size:10px;
 	color:#FFF;
 	z-index:500;
 	position:absolute;
 	bottom:-22px;
-	padding:3px;
+	padding:0 3px;
 	margin-left:1%;
 }
 
@@ -518,6 +524,22 @@ opacity:1;
 	display:inline;
 	margin-left: 5px;
 }	
+.silex-toolbox .style-block-tab{
+	margin-left:auto;
+	margin-right:auto;
+	width:97%;
+}
+.silex-toolbox .style-block-tab fieldset{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+}
+.silex-toolbox .style-positioning-tab fieldset{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+	width:75%;
+}
 
 .group-ribbon, .ribbon-tabs a{
 	text-decoration:none;
@@ -525,10 +547,8 @@ opacity:1;
 	font-family:Tahoma;
 	font-size:13px;
 }
-.group-ribbon .disabled {
-	pointer-events: none;
-	color: grey ! important;
-	background-color:Gainsboro;
+.layer-list ul li{
+	cursor: pointer;
 }
 .ribbon-list .listSelectedItem{
 	color:#7F7F7F;
@@ -540,7 +560,8 @@ opacity:1;
 .ribbon-tabs a:active{
 	color:#7F7F7F;
 }
-.ribbon-tabs a:hover{
+.ribbon-tabs a:hover,
+.ribbon-tabs .page-opened{
 	background-color:white;
 }
 .ribbon-list{
@@ -592,6 +613,7 @@ opacity:1;
 .ribbon-button{
 	cursor: pointer;
 }
+
 /* **************** */
 /* /Ribbon Toolbox */
 /* **************** */
@@ -613,8 +635,8 @@ opacity:1;
 	background-color: #F0F0F0;
 	padding: 0;
 	margin: 0;
-	border: 2px black solid;
 	/*border-radius: 5px;*/
+	border: 1px black solid;
 	overflow: hidden;
 	z-index: 2000;
 	float: right;
@@ -635,18 +657,6 @@ opacity:1;
 	margin: 0;
 	padding: 0;
 	overflow: auto;
-}
-.accordion-header{
-	margin: 0;
-	padding: 0;
-}
-.silex-toolbox .title h2{
-	font-size: 15px;
-	color:#3C3C3C;
-	margin-left:37%;
-	margin-top:4px;
-	position:absolute;
-
 }
 .silex-toolbox .LinkToPage{
 	margin:0;
@@ -750,13 +760,22 @@ opacity:1;
 	margin-left:auto;
 	margin-right:auto;
 	width:97%;
+=======
+.property-editor-edit-text, .property-editor-edit-code{
+	border:none;
+	margin:0;
+	padding:2px;
+	background-color:#666;
+	color: white;
+	cursor:pointer;
+>>>>>>> c6080b812bb489abe660d4a26704aadfcefe8c26
 }
 
-.silex-toolbox .style-box-tab{
+
+.silex-toolbox fieldset{
 	margin-left:auto;
 	margin-right:auto;
-	width:100%;
-
+	font-size:12px;
 }
 
 .silex-toolbox .group-property-toolbox{	
@@ -764,6 +783,7 @@ opacity:1;
 	min-width:16%;
 
 }
+
 .silex-toolbox fieldset.PropertyEditor{
 
 	margin-left:auto;
@@ -837,8 +857,24 @@ opacity:1;
 .silex-toolbox .style-positioning-tab fieldset legend{
 	/*margin-left:auto;
 	margin-right:auto;*/
+=======
+.silex-toolbox .properties-link div{
+    float: left;
+    min-height: 40px;
+    width: 100%;
+}
+.silex-toolbox .properties-link .radio-button{
+	float: left;
+    margin: 0;
+}
+.silex-toolbox .link-url{
+	width: 80%;
+}
+.silex-toolbox fieldset legend{
+	margin-left:auto;
+	margin-right:auto;
+>>>>>>> c6080b812bb489abe660d4a26704aadfcefe8c26
 	font-weight:bold;
-
 }
 
 .silex-toolbox .context-layer {
@@ -855,25 +891,6 @@ opacity:1;
 	min-width:105px;	
 	width: 90%;
 }
-.silex-toolbox fieldset.context-img input{
-	height: 20px;
-	display: block;
-	width: 100%;
-}
-
-.silex-toolbox fieldset.RawHtmlEditor{
-	margin-left:auto;
-	margin-right:auto;
-	width:75%;
-	margin-top:8px;
-	
-}
-.silex-toolbox fieldset.RawHtmlEditor legend{
-	font-size:12px;	
-	margin-left:auto;
-	margin-right:auto;
-}
-
 .silex-toolbox .panel-editor-container{
 	padding:0;
 	margin:0;

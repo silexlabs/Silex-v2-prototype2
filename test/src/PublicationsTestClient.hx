@@ -49,7 +49,6 @@ class PublicationsTestClient {
 		application.initDom();
 
 		// init Brix components
-		trace(" application.init ");
 		application.initComponents();
 
 		haxe.Timer.delay(doAfterInit, 1000);

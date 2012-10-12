@@ -5,20 +5,14 @@ import js.Dom;
 
 import brix.component.ui.DisplayObject;
 import brix.component.navigation.transition.TransitionData;
-import brix.component.navigation.link.LinkToPage;
 import brix.component.navigation.Page;
 import brix.util.DomTools;
 
-import silex.publication.PublicationData;
 import silex.publication.PublicationModel;
-import silex.publication.PublicationService;
-import silex.ui.dialog.DialogBase;
-import silex.ui.list.PublicationList;
-import silex.ui.stage.PublicationViewer;
+import silex.publication.PublicationData;
 
 /**
- * This component displays a file browser and let's one choose a file or manage them
- * It opens in the publication's folder
+ * This component displays a file browser and lets one choose a file or manage them
  * It is mainly used in silex.ui.toolbox.editor.EditorBase class
  */
 class FileBrowserDialog extends DialogBase
@@ -30,18 +24,29 @@ class FileBrowserDialog extends DialogBase
 	/**
 	 * The css class name of the element used to display a message for the user
 	 */
-	public static inline var FB_MESSAGE_CLASS_NAME = "file-browser-message";
+	public static inline var FB_MESSAGE_CLASS_NAME = "message-zone";
 	/**
 	 * The page name of this dialog
 	 */
 	public static inline var FB_PAGE_NAME = "file-browser-dialog";
 	/**
 	 * static callback method
+	 * Called after a click on the submit button
 	 */
 	public static var onValidate:String->Void;
 	/**
-	 * static meddage property to be set before openning this dialog
-	 * it will be placed in the element with class name "file-browser-message"
+	 * static callback method 
+	 * Called after a click on the submit button
+	 */
+	public static var onValidateMultiple:Array<String>->Void;
+	/**
+	 * static property to be set before openning this dialog
+	 * set this to true in if you expect multiple file, default is false
+	 */
+	public static var expectMultipleFiles:Bool = false;
+	/**
+	 * static property to be set before openning this dialog
+	 * it will be placed in the element with class name "message-zone"
 	 */
 	public static var message:String;
 	/**
@@ -69,23 +74,35 @@ class FileBrowserDialog extends DialogBase
 				element.innerHTML = message;
 			}
 		}
-
-        Reflect.setField(Lib.window, "KCFinder", {
-		    callBack: validateSelection
-        });
+		if (expectMultipleFiles){
+	        Reflect.setField(Lib.window, "KCFinder", {
+			    callBackMultiple: validateMultipleSelection
+	        });
+		}
+		else{
+	        Reflect.setField(Lib.window, "KCFinder", {
+			    callBack: validateSelection
+	        });
+	    }
 	}
 	/**
 	 * Called after a click on the submit button
-	 * Open the selected publication
 	 */
 	public function validateSelection(url:String) {
 		if (url != null){
 			if (onValidate != null){
-				url = StringTools.replace(url, PublicationConstants.PUBLICATION_FOLDER+PublicationModel.getInstance().currentName, "");
-				while (StringTools.startsWith(url,"/"))
-					url = url.substring(1);
-
 				onValidate(url);
+			}
+			close();
+		}
+	}
+	/**
+	 * Called after a click on the submit button
+	 */
+	public function validateMultipleSelection(files:Array<String>) {
+    	if (files != null){
+			if (onValidateMultiple != null){
+				onValidateMultiple(files);
 			}
 			close();
 		}
@@ -105,6 +122,8 @@ class FileBrowserDialog extends DialogBase
 		var element = DomTools.getSingleElement(rootElement, FB_CLASS_NAME, true);
 		element.innerHTML = "";
         Reflect.setField(Lib.window, "KCFinder", null);
+        // reset to default
+		expectMultipleFiles = false;
 		// now do the default behavior
 		super.close();
 	}

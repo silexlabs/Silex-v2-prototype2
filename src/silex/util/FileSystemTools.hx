@@ -28,7 +28,7 @@ class FileSystemTools
 
 		var thisFile = Web.getCwd();
 		var ret = thisFile.substr(0,thisFile.indexOf(pathOfPhpLib));
-		trace ("getRootFolder ("+pathOfPhpLib+") called in "+thisFile+" returns "+ret);
+		
 		return ret;
 	}
 	/**
