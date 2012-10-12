@@ -1,10 +1,12 @@
 /* 		Silex base styles 			 */
 /* 		Do not edit these styles 	 */
-body
+.silex-view
 {
-	margin:0px;
 	padding:0px;
 	font-family:arial, helvetica, sans-serif;
+	margin: auto;
+	max-width: 800px;
+	padding: 0;
 }
 .Page{
 	display: none;

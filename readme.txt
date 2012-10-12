@@ -45,9 +45,9 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 Bugs
 * publication with scroll bug
 * images débordent sur la boite a outils
+* les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
 
 en cours
-- drag / drop sur la scene ne tient pas compte du decalage du au ribbon
 - liens internes
 - structure de base d une publicaiton
   * pas possible d effacer les conteneurs de base

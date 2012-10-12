@@ -569,7 +569,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		<HEAD>
 			"+tempModelHead.innerHTML+"
 		</HEAD>
-		<BODY>
+		<BODY class=\"silex-view\">
 			"+tempModelBody.innerHTML+"
 		</BODY>
 	</HTML>

@@ -348,13 +348,13 @@ class SelectionController extends DisplayObject
 			marker.style.display = "inline";
 			marker.style.visibility = "visible";
 			var boundingBox = DomTools.getElementBoundingBox(target);
-			var markerMarginH = (marker.offsetWidth - marker.clientWidth)/2.0;
-			var markerMarginV = (marker.offsetHeight - marker.clientHeight)/2.0;
+			var markerMarginH = 0;//(marker.offsetWidth - marker.clientWidth)/2.0;
+			var markerMarginV = 0;//(marker.offsetHeight - marker.clientHeight)/2.0;
 			doSetMarkerPosition(marker,
 				Math.floor(boundingBox.x-markerMarginH/2),
 				Math.floor(boundingBox.y-markerMarginV/2),
-				Math.floor(boundingBox.w-markerMarginH),
-				Math.floor(boundingBox.h-markerMarginV)
+				Math.floor(boundingBox.w+markerMarginH),
+				Math.floor(boundingBox.h+markerMarginV)
 			);
 		}
 		// dispatch a redraw event
