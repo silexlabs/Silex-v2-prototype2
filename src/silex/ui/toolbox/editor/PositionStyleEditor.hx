@@ -31,12 +31,6 @@ class PositionStyleEditor extends EditorBase
 		setInputValue("positioning_zindex", "");
 		// overflow
 		setInputValue("positioning_overflow", "");
-		// width
-		setInputValue("positioning_width", "");
-		setInputValue("positioning_width_unit", "");
-		// height
-		setInputValue("positioning_height", "");
-		setInputValue("positioning_height_unit", "");
 	}
 	/**
 	 * display the property value
@@ -74,40 +68,6 @@ class PositionStyleEditor extends EditorBase
 		else{
 			setInputValue("positioning_overflow", value);
 		}
-		// width
-		var value = element.style.width;
-		if (value == null || value == ""){
-			setInputValue("positioning_width", "");
-			setInputValue("positioning_width_unit", "");
-		}
-		else{
-			var options = getOptions("positioning_width_unit");
-			for (idx in 0...options.length){
-				// if the value ends with one of the units
-				if (StringTools.endsWith(value, cast(options[idx]).value)){
-					// case of a number + unit
-					setInputValue("positioning_width", Std.string(Std.parseInt(value)));
-					setInputValue("positioning_width_unit", cast(options[idx]).value);
-				}
-			}
-		}
-		// width
-		var value = element.style.height;
-		if (value == null || value == ""){
-			setInputValue("positioning_height", "");
-			setInputValue("positioning_height_unit", "");
-		}
-		else{
-			var options = getOptions("positioning_height_unit");
-			for (idx in 0...options.length){
-				// if the value ends with one of the units
-				if (StringTools.endsWith(value, cast(options[idx]).value)){
-					// case of a number + unit
-					setInputValue("positioning_height", Std.string(Std.parseInt(value)));
-					setInputValue("positioning_height_unit", cast(options[idx]).value);
-				}
-			}
-		}
 	}
 	/**
 	 * apply the property value
@@ -131,13 +91,5 @@ class PositionStyleEditor extends EditorBase
 		var value = getInputValue("positioning_overflow");
 		if (value == "") value = null;
 		propertyModel.setStyle(selectedItem, "overflow", value);
-		// width
-		var value:String = getInputValue("positioning_width");
-		var unit:String = getInputValue("positioning_width_unit");
-		propertyModel.setStyle(selectedItem, "width", value+unit);
-		// height
-		var value:String = getInputValue("positioning_height");
-		var unit:String = getInputValue("positioning_height_unit");
-		propertyModel.setStyle(selectedItem, "height", value+unit);
 	}
 }

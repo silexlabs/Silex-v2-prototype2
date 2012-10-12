@@ -143,7 +143,6 @@ class BoxTypeEditorBase extends EditorBase
 	 */
 	override private function apply() {
 		var propertyModel = PropertyModel.getInstance();
-trace("apply "+stylePrefix + topStyleSufix);
 		// top
 		var value:String = getInputValue(prefix + "_top");
 		var unit:String = getInputValue(prefix + "_top_unit");

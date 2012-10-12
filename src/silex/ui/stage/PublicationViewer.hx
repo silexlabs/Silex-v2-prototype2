@@ -11,6 +11,7 @@ import brix.component.navigation.Page;
 import brix.component.navigation.transition.TransitionData;
 
 import brix.component.ui.DisplayObject;
+import brix.component.layout.LayoutBase;
 
 /**
  * This class is in charge of attaching the publication to the DOM.
@@ -58,6 +59,7 @@ class PublicationViewer extends DisplayObject{
 	 */
 	public function onPublicationChange(event:CustomEvent){
 		rootElement.innerHTML = "";
+		LayoutBase.redrawLayouts();
 	}
 	/**
 	 * Callback for the event, dispatched when a new publication is loaded
@@ -67,6 +69,7 @@ class PublicationViewer extends DisplayObject{
 		// display the publication for editing
 		rootElement.innerHTML = "";
 		rootElement.appendChild(publicationModel.viewHtmlDom);
+		LayoutBase.redrawLayouts();
 	}
 	/**
 	 * Callback for the event dispatched when the page selection changes.

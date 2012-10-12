@@ -33,6 +33,10 @@ class SelectionController extends DisplayObject
 	 */ 
 	public static inline var DEBUG_INFO = "SelectionController class";
 	/**
+	 * name  of the event dispatched on a marker when it is placed over a new component
+	 */
+	public static inline var REDRAW_MARKER_EVENT = "redraw";
+	/**
 	 * The selection marker placed over the selected item. 
 	 * This constant defines the css style applyed to the marker, so that one can style it.
 	 */
@@ -115,7 +119,7 @@ class SelectionController extends DisplayObject
 		//selectionContainer.appendChild(selectionMarker);
 
 		// listen to the view events
-		Lib.document.body.addEventListener("mousemove", onMouseMove, false);
+		rootElement.addEventListener("mousemove", onMouseMove, false);
 		//rootElement.addEventListener("mouseover", onMouseOver, false);
 		//Lib.document.body.addEventListener("click", onClickAnywhere, false);
 
@@ -145,13 +149,13 @@ class SelectionController extends DisplayObject
 	 * refresh display
 	 */
 	public function redraw(e:Event=null) {
-		// trace("redraw selection");
-		if (layerModel.selectedItem == null) setMarkerPosition(selectionLayerMarker, null);
-		else setMarkerPosition(selectionLayerMarker, layerModel.selectedItem.rootElement);
-		if (layerModel.hoveredItem == null) setMarkerPosition(hoverLayerMarker, null);
-		else  setMarkerPosition(hoverLayerMarker, layerModel.hoveredItem.rootElement);
 		setMarkerPosition(selectionMarker, componentModel.selectedItem);
 		setMarkerPosition(hoverMarker, componentModel.hoveredItem);
+
+		if (componentModel.selectedItem!=null || layerModel.selectedItem == null) setMarkerPosition(selectionLayerMarker, null);
+		else setMarkerPosition(selectionLayerMarker, layerModel.selectedItem.rootElement);
+		if (componentModel.hoveredItem!=null || layerModel.hoveredItem == null) setMarkerPosition(hoverLayerMarker, null);
+		else  setMarkerPosition(hoverLayerMarker, layerModel.hoveredItem.rootElement);
 	}
 	//////////////////////////////////////////////////////
 	// Selection clicks
@@ -160,7 +164,6 @@ class SelectionController extends DisplayObject
 	 * Handle mouse events
 	 */
 	public function onClickHover(e:Event) {
-		// trace("onClickHover ");
 		// prenvent default (selection of text, call of this.onClickAnywhere)
 		//		e.preventDefault();
 		// set the item on the model (this will dispatch an event and we will catch it to update the marker)
@@ -170,7 +173,6 @@ class SelectionController extends DisplayObject
 	 * Handle mouse events
 	 */
 	public function onClickLayerHover(e:Event) {
-		// trace("onClickLayerHover ");
 		// prenvent default (selection of text, call of this.onClickAnywhere)
 		e.preventDefault();
 		// set the item on the model (this will dispatch an event and we will catch it to update the marker)
@@ -181,7 +183,6 @@ class SelectionController extends DisplayObject
 	 * Todo: move, resize...
 	 */
 	public function onClickSelection(e:Event) {
-		// trace("onClickSelection ");
 		// prenvent default (selection of text, call of this.onClickAnywhere)
 		e.preventDefault();
 	}
@@ -190,7 +191,6 @@ class SelectionController extends DisplayObject
 	 * Todo: move, resize...
 	 */
 	public function onClickLayerSelection(e:Event) {
-		// trace("onClickLayerSelection ");
 		// prenvent default (selection of text, call of this.onClickAnywhere)
 		e.preventDefault();
 	}
@@ -227,7 +227,6 @@ class SelectionController extends DisplayObject
 	 * Handle mouse events
 	 */
 	public function onMouseMove(e:Event) {
-		//trace("onMouseMove "+e.target.className);
 		// browse all layers to check if it should be set as hovered
 		var found = false;
 		var layers = DomTools.getElementsByAttribute(rootElement, "data-silex-layer-id", "*");
@@ -341,7 +340,6 @@ class SelectionController extends DisplayObject
 	 * todo: with transformations + rotation
 	 */
 	private function setMarkerPosition(marker:HtmlDom, target:HtmlDom){
-		// trace("setMarkerPosition ("+marker+", "+target+")");
 		if (target == null || target.style.display == "none"){
 			marker.style.display = "none";
 			marker.style.visibility = "hidden";
@@ -350,22 +348,28 @@ class SelectionController extends DisplayObject
 			marker.style.display = "inline";
 			marker.style.visibility = "visible";
 			var boundingBox = DomTools.getElementBoundingBox(target);
-			var markerMarginH = (marker.offsetWidth - marker.clientWidth)/2.0;
-			var markerMarginV = (marker.offsetHeight - marker.clientHeight)/2.0;
+			var markerMarginH = 0;//(marker.offsetWidth - marker.clientWidth)/2.0;
+			var markerMarginV = 0;//(marker.offsetHeight - marker.clientHeight)/2.0;
 			doSetMarkerPosition(marker,
-				Math.floor(boundingBox.x - markerMarginH/2),
-				Math.floor(boundingBox.y - markerMarginV/2),
-				Math.floor(boundingBox.w - markerMarginH),
-				Math.floor(boundingBox.h - markerMarginV)
+				Math.floor(boundingBox.x-markerMarginH/2),
+				Math.floor(boundingBox.y-markerMarginV/2),
+				Math.floor(boundingBox.w+markerMarginH),
+				Math.floor(boundingBox.h+markerMarginV)
 			);
 		}
+		// dispatch a redraw event
+		var event : CustomEvent = cast Lib.document.createEvent("CustomEvent");
+		event.initCustomEvent(REDRAW_MARKER_EVENT, false, false, {
+			target: target,
+		});
+		marker.dispatchEvent(event);
 	}
 	/**
 	 * position the given marker at the given position
 	 */
 	private function doSetMarkerPosition(marker:HtmlDom, left:Int, top:Int, width:Int, height:Int) {
-		marker.style.left = left + "px";
-		marker.style.top = top + "px";
+		// use moveTo in order to handle the absolut position or relative position of rootElement
+		DomTools.moveTo(marker, left, top);
 		marker.style.width = width + "px";
 		marker.style.height = height + "px";
 	}

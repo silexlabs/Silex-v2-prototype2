@@ -11,6 +11,7 @@ import silex.component.ComponentModel;
 import silex.layer.LayerModel;
 import silex.publication.PublicationModel;
 import silex.ui.dialog.FileBrowserDialog;
+import silex.ui.dialog.TextEditorDialog;
 
 /**
  * This component is the base class for all editors in Silex. 
@@ -21,6 +22,9 @@ import silex.ui.dialog.FileBrowserDialog;
  * This class handles the link with the FileBrowserDialog:
  * - opens the page file-browser-dialog when a button with class name select-file-button is clicked
  * - and calls this.selectFile to attach an event to retrieve the selected file
+ * This class handles the link with the TextEditorDialog:
+ * - opens the page text-editor with the TextEditor component
+ * - retrieve the result and put it in selectedItem.innerHTML
  */
 class EditorBase extends DisplayObject 
 {
@@ -33,6 +37,15 @@ class EditorBase extends DisplayObject
 	 * when clicked, it will automatically open the FB and link the returned URL to a text field
 	 */ 
 	public static inline var OPEN_FILE_BROWSER_CLASS_NAME:String = "select-file-button";
+	/**
+	 * class name for the "open media lib" buttons
+	 * when clicked, it will automatically open the FB and link the returned URL to a text field
+	 */ 
+	public static inline var ADD_MULTIPLE_FILE_BROWSER_CLASS_NAME:String = "add-multiple-files-button";
+	/**
+	 * The css class name of the "edit text" button
+	 */
+	public static inline var OPEN_TEXT_EDITOR_CLASS_NAME = "property-editor-edit-text";
 	/**
 	 * selected element
 	 */ 
@@ -106,7 +119,6 @@ class EditorBase extends DisplayObject
 	 * Dispatch the change event with the item reference as the detail property of the custom event
 	 */
 	public function setSelectedItem(item:HtmlDom):HtmlDom {
-		// trace("setSelectedItem("+item+")");
 		selectedItem = item;
 		refresh();
 		return selectedItem;
@@ -115,7 +127,6 @@ class EditorBase extends DisplayObject
 	 * refresh display
 	 */
 	private function refresh() {
-		// trace("refresh");
 		if (selectedItem != null)
 			load(selectedItem);
 		else
@@ -148,7 +159,6 @@ class EditorBase extends DisplayObject
 	 * set the value of the input control with name in its class name
 	 */
 	private function setInputValue(name:String, value:Dynamic, inputProperty:String = "value"){
-		// trace("setInputValue "+name+", "+value);
 		var element = DomTools.getSingleElement(rootElement, name, true);
 		Reflect.setField(element, inputProperty, value);
 	}
@@ -157,7 +167,6 @@ class EditorBase extends DisplayObject
 	 */
 	private function getInputValue(name:String, inputProperty:String = "value"):Dynamic{
 		var element = DomTools.getSingleElement(rootElement, name, true);
-		// trace("getInputValue "+name+" - "+Reflect.field(element, inputProperty));
 		return Reflect.field(element, inputProperty);
 	}
 	////////////////////////////////////////////
@@ -167,7 +176,6 @@ class EditorBase extends DisplayObject
 	 * callback for the input event, validate the data
 	 */
 	private function onInput(e:Event) {
-		// trace("onInput");
 		e.preventDefault();
 		beforeApply();
 		apply();
@@ -177,38 +185,109 @@ class EditorBase extends DisplayObject
 	 * callback for the click event, check if a dialog must be opened
 	 */
 	private function onClick(e:Event) {
-		// trace("onClick");
 		if (DomTools.hasClass(e.target, OPEN_FILE_BROWSER_CLASS_NAME)){
 			e.preventDefault();
 			var inputControlClassName = e.target.getAttribute("data-fb-target");
-			selectFile("Double click to select a file!", callback(onFileChosen, "test", inputControlClassName));
+			selectFile(inputControlClassName);
 		}
+		else if (DomTools.hasClass(e.target, ADD_MULTIPLE_FILE_BROWSER_CLASS_NAME)){
+			e.preventDefault();
+			var inputControlClassName = e.target.getAttribute("data-fb-target");
+			selectMultipleFiles(inputControlClassName);
+		}
+		else if (DomTools.hasClass(e.target, OPEN_TEXT_EDITOR_CLASS_NAME)){
+			// prevent default button behaviour
+			e.preventDefault();
+			// open the text editor page
+			openTextEditor();
+		}
+
 	}
-	private function onFileChosen(propertyName:String, inputControlClassName:String, fileUrl:String){
-		trace("onFileChosen("+propertyName+", "+inputControlClassName+", "+fileUrl+")");
+	////////////////////////////////////////////
+	// Text Editor 
+	////////////////////////////////////////////
+	/**
+	 * open text editor
+	 * called when the user clicks on a button with "property-editor-edit-text" class
+	 */
+	private function openTextEditor(){
+		TextEditorDialog.onValidate = onTextEditorChange;
+		TextEditorDialog.textContent = selectedItem.innerHTML;
+		TextEditorDialog.message = "Edit text and click \"close\"";
+		Page.openPage(TextEditorDialog.TEXT_EDITOR_PAGE_NAME, true, null, null, brixInstanceId);
+	}
+	/**
+	 * callback for the TextEditorDialog
+	 */
+	private function onTextEditorChange(htmlText:String){
+		PropertyModel.getInstance().setProperty(selectedItem, "innerHTML", htmlText);
+	}
+	////////////////////////////////////////////
+	// File Browser 
+	////////////////////////////////////////////
+	/**
+	 * callback for the FileBrowserDialog
+	 */
+	private function onFileChosen(inputControlClassName:String, fileUrl:String){
+		
 		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
-		cast(inputElement).value = fileUrl;
+		cast(inputElement).value = abs2rel(fileUrl);
 		beforeApply();
 		apply();
 		afterApply();
 		DomTools.doLater(refreshSelection);
 	}
-	private function refreshSelection(){
-		LayerModel.getInstance().refresh();
-		ComponentModel.getInstance().refresh();
+	/**
+	 * open file browser
+	 * called when the user clicks on a button with "select-file-button" class
+	 */
+	private function selectFile(inputControlClassName:String){
+		var userMessage = "Double click to select a file!";
+		var validateCallback = callback(onFileChosen, inputControlClassName);
+
+		FileBrowserDialog.onValidate = validateCallback;
+		FileBrowserDialog.message = userMessage;
+		FileBrowserDialog.expectMultipleFiles = false;
+		Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, brixInstanceId);
+	}
+	/**
+	 * callback for the FileBrowserDialog
+	 */
+	private function onMultipleFilesChosen(inputControlClassName:String, files:Array<String>){
+		
+		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
+		if (cast(inputElement).value != "") cast(inputElement).value += "\n";
+		cast(inputElement).value += abs2rel(files.join("\n"));
+		beforeApply();
+		apply();
+		afterApply();
+		DomTools.doLater(refreshSelection);
 	}
 	/**
 	 * open file browser
 	 * called when the user clicks on a button with "select-file-button" class
 	 */
-	private function selectFile(userMessage:String, validateCallback:String->Void){
-		FileBrowserDialog.onValidate = validateCallback;
+	private function selectMultipleFiles(inputControlClassName:String){
+		var userMessage = "Double click to select one or more file(s)!";
+		var validateCallback = callback(onMultipleFilesChosen, inputControlClassName);
+
+		FileBrowserDialog.onValidateMultiple = validateCallback;
 		FileBrowserDialog.message = userMessage;
+		FileBrowserDialog.expectMultipleFiles = true;
 		Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, brixInstanceId);
 	}
 	////////////////////////////////////////////
 	// Callbacks for the model
 	////////////////////////////////////////////
+	/**
+	 * refresh the model
+	 */
+	private function refreshSelection(){
+		if (ComponentModel.getInstance().selectedItem != null)
+			ComponentModel.getInstance().refresh();
+		else
+			LayerModel.getInstance().refresh();
+	}
 	/**
 	 * Callback for the PropertyModel singleton
 	 * A property value has changed,
@@ -225,7 +304,7 @@ class EditorBase extends DisplayObject
 	 * display the component style
 	 */
 	private function onSelectComponent(e:CustomEvent) {
-		// trace("onSelectComponent");
+		// 
 		selectedItem = e.detail;
 	}
 	/**
@@ -233,7 +312,7 @@ class EditorBase extends DisplayObject
 	 * display the layer style
 	 */
 	private function onSelectLayer(e:CustomEvent) {
-		// trace("onSelectLayer");
+		// 
 		if (e.detail == null){
 			selectedItem = null;
 		}
@@ -264,7 +343,7 @@ class EditorBase extends DisplayObject
 				pubUrl = pubUrl.substr(idxSlash);
 			// remove all the common parts
 			url = url.substr(idxPubFolder + pubUrl.length);
-			trace(" url "+ url );
+			
 		}
 		return url;
 	}

@@ -20,7 +20,7 @@ import brix.util.DomTools;
  */
 class PropertyEditor extends EditorBase 
 {
-	public static inline var ALL_CONTEXTS = ["context-video", "context-audio", "context-img", "context-txt", "context-layer", "context-div"];
+	public static inline var ALL_CONTEXTS = ["context-video", "context-audio", "context-img", "context-layer", "context-div"];
 	/**
 	 * class name expected for the add page button
 	 */
@@ -41,21 +41,29 @@ class PropertyEditor extends EditorBase
 	 * handle the click on delete button, remove the selection from model and view
 	 */
 	override private function onClick(e:Event) {
-		trace("click "+e.target);
+
 		super.onClick(e);
 		// retrieve the node who triggered the event
 		var target:HtmlDom = e.target;
 		// remove the selection from model and view
 		if (DomTools.hasClass(target, DELETE_BUTTON_CLASS_NAME)){
-			trace("click delete");
+			
 			e.preventDefault();
 			if (DomTools.hasClass(selectedItem, "Layer")){
 				var layer = LayerModel.getInstance().selectedItem;
 				var page = PageModel.getInstance().selectedItem;
-				LayerModel.getInstance().removeLayer(layer, page);
+				var name:String = layer.rootElement.getAttribute("title");
+				if (name == null) name = "";
+				var confirm = Lib.window.confirm("I am about to delete the container "+name+". Are you sure?");
+				if (confirm == true)
+					LayerModel.getInstance().removeLayer(layer, page);
 			}
 			else{
-				ComponentModel.getInstance().removeComponent(selectedItem);
+				var name:String = selectedItem.getAttribute("title");
+				if (name == null) name = "";
+				var confirm = Lib.window.confirm("I am about to delete the component "+name+". Are you sure?");
+				if (confirm == true)
+					ComponentModel.getInstance().removeComponent(selectedItem);
 			}
 		}
 	}
@@ -63,7 +71,7 @@ class PropertyEditor extends EditorBase
 	 * reset the values
 	 */
 	override private function reset() {
-		// trace("reset ");
+		// 
 		// font family
 		setInputValue("name-property", "");
 		setInputValue("multiple-src-property", "");
@@ -73,6 +81,13 @@ class PropertyEditor extends EditorBase
 		setInputValue("loop-property", null, "checked");
 		setInputValue("master-property", null, "checked");
 		updateContext([]);
+
+		// link
+		setInputValue("radio-button-url", null, "checked");
+		setInputValue("radio-button-page", null, "checked");
+//		disableElement(DomTools.getSingleElement("radio-button-url"));
+//		disableElement(DomTools.getSingleElement("radio-button-page"));
+
 	}
 	public function updateContext(contextArray:Array<String>){
 		// handle the context
@@ -86,14 +101,14 @@ class PropertyEditor extends EditorBase
 		for (context in contextArray){
 			cssText += "."+context+" { display : inline; visibility : visible; } ";
 		}
-		// trace("cssText="+cssText);
+		// 
 		styleSheet = DomTools.addCssRules(cssText);
 	}
 	/**
 	 * display the property value
 	 */
 	override private function load(element:HtmlDom) {
-		trace("load "+element);
+		
 
 		// handle the context
 		var contextArray = [];
@@ -106,8 +121,6 @@ class PropertyEditor extends EditorBase
 					contextArray.push("context-audio");
 				case "video":
 					contextArray.push("context-video");
-				case "p":
-					contextArray.push("context-txt");
 				case "img":
 					contextArray.push("context-img");
 				case "div":
@@ -160,7 +173,7 @@ class PropertyEditor extends EditorBase
 	 * apply the property value
 	 */
 	override private function apply() {
-		// trace("TextStyleEditor apply "+selectedItem);
+		// 
 		var propertyModel = PropertyModel.getInstance();
 
 		var value = getInputValue("name-property");
