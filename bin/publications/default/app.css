@@ -27,6 +27,12 @@ nav div{
 nav div a{
 	padding: 10px;
 }
+.LinkToPage{
+	cursor: pointer;
+}
+.page-opened{
+	font-weight: bold;
+}
 
 /* 		Publication styles 			 */
 /* 		You can edit these styles 	 */

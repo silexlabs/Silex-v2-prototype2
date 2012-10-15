@@ -48,7 +48,9 @@ Bugs
 * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
 
 en cours
-- liens internes
+- contextes des css
+- font dans la boite a outil
+- ouverture page initiale apres suppression et creation de pages
 - structure de base d une publicaiton
   * pas possible d effacer les conteneurs de base
   * cration de publication = prend le contenu "empty-template" et le css de "bin/themes/default.css"

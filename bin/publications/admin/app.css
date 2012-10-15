@@ -69,8 +69,8 @@ body{
 	background-color:Gainsboro;
 }
 .Layer{
-	min-height: 5px;
-	min-width: 5px;
+	min-height: 20px;
+	min-width: 20px;
 }
 
 /* **************** */
@@ -575,6 +575,7 @@ opacity:1;
 .ribbon-tabs a:hover,
 .ribbon-tabs .page-opened{
 	background-color:white;
+	font-weight: normal;
 }
 .ribbon-list{
 	background-color:white;

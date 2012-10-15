@@ -68,6 +68,30 @@ class LayerModel extends ModelBase<Layer>{
 	 */
 	public static inline var MASTER_PROPERTY_NAME = "data-master";
 	/**
+	 * name of the layer automatically created with a new page
+	 */
+	public static inline var NEW_LAYER_NAME = "container1";
+	/**
+	 * name of the required container
+	 */
+	public static inline var HEADER_LAYER_NAME = "header";
+	/**
+	 * name of the required container
+	 */
+	public static inline var FOOTER_LAYER_NAME = "footer";
+	/**
+	 * name of the required container
+	 */
+	public static inline var NAV_LAYER_NAME = "nav";
+	/**
+	 * name of the required container
+	 */
+	public static inline var SIDE_BAR_LAYER_NAME = "side-bar";
+	/**
+	 * required containers
+	 */
+	public static inline var REQUIRED_CONTAINERS = [HEADER_LAYER_NAME, FOOTER_LAYER_NAME, NAV_LAYER_NAME, SIDE_BAR_LAYER_NAME];
+	/**
 	 * Models are singletons
 	 * Constructor is private
 	 */
@@ -90,12 +114,12 @@ class LayerModel extends ModelBase<Layer>{
 	 * add a master to the page (view and model)
 	 * dispatch the change event
 	 */
-	public function addMaster(layer:Layer, page:Page){
+	public function addMaster(layer:Layer, pageName:String){
 		// trace("addMaster("+layer+", "+page+")");
 		// simply add the name of the page to the css class of the layer node
-		DomTools.addClass(layer.rootElement, page.name);
+		DomTools.addClass(layer.rootElement, pageName);
 		// do the same in the model
-		DomTools.addClass(PublicationModel.getInstance().getModelFromView(layer.rootElement), page.name);
+		DomTools.addClass(PublicationModel.getInstance().getModelFromView(layer.rootElement), pageName);
 		//show the layer
 		layer.show();
 		// dispatch the change event
@@ -105,7 +129,7 @@ class LayerModel extends ModelBase<Layer>{
 	 * add a layer to the page (view and model)
 	 * dispatch the change event
 	 */
-	public function addLayer(page:Page, layerName:String, position:Int = 0):Layer{
+	public function addLayer(pageName:String, layerName:String, position:Int = 0):Layer{
 		// trace("addLayer "+page+", "+layerName+", "+position);
 		// get the publication model
 		var publicationModel = PublicationModel.getInstance();
@@ -115,8 +139,9 @@ class LayerModel extends ModelBase<Layer>{
 
 		// create a node for an empty new layer
 		var newNode = Lib.document.createElement("div");
-		newNode.className = "Layer " + page.name;
+		newNode.className = "Layer " + pageName;
 		newNode.setAttribute("title", layerName);
+
 
 		// add to the view DOM
 		if (position > viewHtmlDom.childNodes.length - 1){
@@ -152,6 +177,11 @@ class LayerModel extends ModelBase<Layer>{
 		publicationModel.application.initComponents();
 		var newLayer = publicationModel.application.getAssociatedComponents(newNode, Layer).first();
 /**/
+		// add a text field
+		var textElement = ComponentModel.getInstance().addComponent("div", newLayer);
+		PropertyModel.getInstance().setAttribute(textElement, "title", "New text field");
+		PropertyModel.getInstance().setProperty(textElement, "innerHTML", "<p>Insert text here.</p>");
+
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE, newLayer), DEBUG_INFO);
 		return newLayer;
@@ -161,7 +191,7 @@ class LayerModel extends ModelBase<Layer>{
 	 * remove the page from all layers css class name
 	 * dispatch the change event
 	 */
-	public function removeLayer(layer:Layer, page:Page){
+	public function removeLayer(layer:Layer, pageName:String){
 		// get the publication model
 		var publicationModel = PublicationModel.getInstance();
 		// get the view and model DOM
@@ -169,8 +199,8 @@ class LayerModel extends ModelBase<Layer>{
 		var modelHtmlDom = publicationModel.getModelFromView(layer.rootElement);
 
 		// remove the page from layer css class name
-		DomTools.removeClass(viewHtmlDom, page.name);
-		DomTools.removeClass(modelHtmlDom, page.name);
+		DomTools.removeClass(viewHtmlDom, pageName);
+		DomTools.removeClass(modelHtmlDom, pageName);
 
 		var allPageNodes = Page.getPageNodes(publicationModel.application.id, publicationModel.viewHtmlDom);
 		var found = false;
@@ -200,5 +230,31 @@ class LayerModel extends ModelBase<Layer>{
 
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE), DEBUG_INFO);
+	}
+	/**
+	 * add the required masters
+	 */
+	public function addRequiredMasters(pageName:String, addEmptyContainer:Bool = true){
+		// get the publication model
+		var publicationModel = PublicationModel.getInstance();
+
+		// get the side bar position
+		var sideBarNode = DomTools.getSingleElement(publicationModel.viewHtmlDom, SIDE_BAR_LAYER_NAME, true);
+		var nextPosition:Int;
+		if (sideBarNode.nextSibling != null)
+			nextPosition = DomTools.getElementIndex(sideBarNode.nextSibling);
+		else
+			nextPosition = DomTools.getElementIndex(sideBarNode)+1;
+
+		// add a first empty container after the side bar
+		addLayer(pageName, NEW_LAYER_NAME, nextPosition);
+
+		// browe all required masters
+		for (idx in 0...REQUIRED_CONTAINERS.length){
+			var masterName = REQUIRED_CONTAINERS[idx];
+			var masterNode = DomTools.getSingleElement(publicationModel.viewHtmlDom, masterName, true);
+			var masterInstance = publicationModel.application.getAssociatedComponents(masterNode, Layer).first();
+			addMaster(masterInstance, pageName);
+		}
 	}
 }

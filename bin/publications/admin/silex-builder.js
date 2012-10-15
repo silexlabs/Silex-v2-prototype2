@@ -2448,7 +2448,7 @@ brix.component.navigation.link.LinkBase = function(rootElement,brixId) {
 	if(rootElement.getAttribute("href") != null) {
 		this.linkName = StringTools.trim(rootElement.getAttribute("href"));
 		this.linkName = HxOverrides.substr(this.linkName,this.linkName.indexOf("#") + 1,null);
-	} else haxe.Log.trace("Warning: the link has no href atribute (" + Std.string(rootElement) + ")",{ fileName : "LinkBase.hx", lineNumber : 88, className : "brix.component.navigation.link.LinkBase", methodName : "new"});
+	} else if(rootElement.getAttribute("data-href") != null) this.linkName = StringTools.trim(rootElement.getAttribute("data-href")); else haxe.Log.trace("Warning: the link has no href atribute (" + Std.string(rootElement) + ")",{ fileName : "LinkBase.hx", lineNumber : 99, className : "brix.component.navigation.link.LinkBase", methodName : "new"});
 	if(rootElement.getAttribute("target") != null && StringTools.trim(rootElement.getAttribute("target")) != "") this.targetAttr = StringTools.trim(rootElement.getAttribute("target"));
 };
 $hxClasses["brix.component.navigation.link.LinkBase"] = brix.component.navigation.link.LinkBase;
@@ -2993,6 +2993,12 @@ brix.util.DomTools.getElementBoundingBox = function(htmlDom) {
 	}
 	return { x : Math.round(offsetLeft), y : Math.round(offsetTop), w : Math.round(htmlDom.offsetWidth + offsetWidth), h : Math.round(htmlDom.offsetHeight + offsetHeight)};
 }
+brix.util.DomTools.getElementIndex = function(childNode) {
+	var i = 0;
+	var child = childNode;
+	while((child = child.previousSibling) != null) i++;
+	return i;
+}
 brix.util.DomTools.moveTo = function(htmlDom,x,y) {
 	var elementBox = brix.util.DomTools.getElementBoundingBox(htmlDom);
 	if(x != null) {
@@ -3005,14 +3011,14 @@ brix.util.DomTools.moveTo = function(htmlDom,x,y) {
 	}
 }
 brix.util.DomTools.inspectTrace = function(obj,callingClass) {
-	haxe.Log.trace("-- " + callingClass + " inspecting element --",{ fileName : "DomTools.hx", lineNumber : 171, className : "brix.util.DomTools", methodName : "inspectTrace"});
+	haxe.Log.trace("-- " + callingClass + " inspecting element --",{ fileName : "DomTools.hx", lineNumber : 182, className : "brix.util.DomTools", methodName : "inspectTrace"});
 	var _g = 0, _g1 = Reflect.fields(obj);
 	while(_g < _g1.length) {
 		var prop = _g1[_g];
 		++_g;
-		haxe.Log.trace("- " + prop + " = " + Std.string(Reflect.field(obj,prop)),{ fileName : "DomTools.hx", lineNumber : 174, className : "brix.util.DomTools", methodName : "inspectTrace"});
+		haxe.Log.trace("- " + prop + " = " + Std.string(Reflect.field(obj,prop)),{ fileName : "DomTools.hx", lineNumber : 185, className : "brix.util.DomTools", methodName : "inspectTrace"});
 	}
-	haxe.Log.trace("-- --",{ fileName : "DomTools.hx", lineNumber : 176, className : "brix.util.DomTools", methodName : "inspectTrace"});
+	haxe.Log.trace("-- --",{ fileName : "DomTools.hx", lineNumber : 187, className : "brix.util.DomTools", methodName : "inspectTrace"});
 }
 brix.util.DomTools.toggleClass = function(element,className) {
 	if(brix.util.DomTools.hasClass(element,className)) brix.util.DomTools.removeClass(element,className); else brix.util.DomTools.addClass(element,className);
@@ -3139,7 +3145,7 @@ brix.util.DomTools.setBaseTag = function(href) {
 	var head = js.Lib.document.getElementsByTagName("head")[0];
 	var baseNodes = js.Lib.document.getElementsByTagName("base");
 	if(baseNodes.length > 0) {
-		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 397, className : "brix.util.DomTools", methodName : "setBaseTag"});
+		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 408, className : "brix.util.DomTools", methodName : "setBaseTag"});
 		baseNodes[0].setAttribute("href",href);
 	} else {
 		var node = js.Lib.document.createElement("base");
@@ -7523,7 +7529,22 @@ silex.component.ComponentModel.getInstance = function() {
 }
 silex.component.ComponentModel.__super__ = silex.ModelBase;
 silex.component.ComponentModel.prototype = $extend(silex.ModelBase.prototype,{
-	removeComponent: function(element) {
+	resetLinkToPage: function(htmlDom) {
+		var publicationModel = silex.publication.PublicationModel.getInstance();
+		var propertyModel = silex.property.PropertyModel.getInstance();
+		propertyModel.removeAttribute(htmlDom,"data-href");
+		propertyModel.removeClass(htmlDom,"LinkToPage");
+	}
+	,makeLinkToPage: function(htmlDom,pageName) {
+		var publicationModel = silex.publication.PublicationModel.getInstance();
+		var propertyModel = silex.property.PropertyModel.getInstance();
+		propertyModel.setAttribute(htmlDom,"data-href",pageName);
+		propertyModel.addClass(htmlDom,"LinkToPage");
+		var linkToPage = new brix.component.navigation.link.LinkToPage(htmlDom,publicationModel.application.id);
+		linkToPage.init();
+		return linkToPage;
+	}
+	,removeComponent: function(element) {
 		var publicationModel = silex.publication.PublicationModel.getInstance();
 		var viewHtmlDom = element;
 		var modelHtmlDom = publicationModel.getModelFromView(element);
@@ -7588,12 +7609,28 @@ silex.layer.LayerModel.getInstance = function() {
 }
 silex.layer.LayerModel.__super__ = silex.ModelBase;
 silex.layer.LayerModel.prototype = $extend(silex.ModelBase.prototype,{
-	removeLayer: function(layer,page) {
+	addRequiredMasters: function(pageName,addEmptyContainer) {
+		if(addEmptyContainer == null) addEmptyContainer = true;
+		var publicationModel = silex.publication.PublicationModel.getInstance();
+		var sideBarNode = brix.util.DomTools.getSingleElement(publicationModel.viewHtmlDom,"side-bar",true);
+		var nextPosition;
+		if(sideBarNode.nextSibling != null) nextPosition = brix.util.DomTools.getElementIndex(sideBarNode.nextSibling); else nextPosition = brix.util.DomTools.getElementIndex(sideBarNode) + 1;
+		this.addLayer(pageName,"container1",nextPosition);
+		var _g1 = 0, _g = ["header","footer","nav","side-bar"].length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			var masterName = ["header","footer","nav","side-bar"][idx];
+			var masterNode = brix.util.DomTools.getSingleElement(publicationModel.viewHtmlDom,masterName,true);
+			var masterInstance = publicationModel.application.getAssociatedComponents(masterNode,brix.component.navigation.Layer).first();
+			this.addMaster(masterInstance,pageName);
+		}
+	}
+	,removeLayer: function(layer,pageName) {
 		var publicationModel = silex.publication.PublicationModel.getInstance();
 		var viewHtmlDom = layer.rootElement;
 		var modelHtmlDom = publicationModel.getModelFromView(layer.rootElement);
-		brix.util.DomTools.removeClass(viewHtmlDom,page.name);
-		brix.util.DomTools.removeClass(modelHtmlDom,page.name);
+		brix.util.DomTools.removeClass(viewHtmlDom,pageName);
+		brix.util.DomTools.removeClass(modelHtmlDom,pageName);
 		var allPageNodes = brix.component.navigation.Page.getPageNodes(publicationModel.application.id,publicationModel.viewHtmlDom);
 		var found = false;
 		var _g1 = 0, _g = allPageNodes.length;
@@ -7612,13 +7649,13 @@ silex.layer.LayerModel.prototype = $extend(silex.ModelBase.prototype,{
 		if(this.selectedItem == layer) this.setSelectedItem(null);
 		this.dispatchEvent(this.createEvent("onLayerListChange"),"LayerModel class");
 	}
-	,addLayer: function(page,layerName,position) {
+	,addLayer: function(pageName,layerName,position) {
 		if(position == null) position = 0;
 		var publicationModel = silex.publication.PublicationModel.getInstance();
 		var viewHtmlDom = publicationModel.viewHtmlDom;
 		var modelHtmlDom = publicationModel.modelHtmlDom;
 		var newNode = js.Lib.document.createElement("div");
-		newNode.className = "Layer " + page.name;
+		newNode.className = "Layer " + pageName;
 		newNode.setAttribute("title",layerName);
 		if(position > viewHtmlDom.childNodes.length - 1) viewHtmlDom.appendChild(newNode); else viewHtmlDom.insertBefore(newNode,viewHtmlDom.childNodes[position]);
 		publicationModel.prepareForEdit(newNode);
@@ -7626,12 +7663,15 @@ silex.layer.LayerModel.prototype = $extend(silex.ModelBase.prototype,{
 		var newLayer = new brix.component.navigation.Layer(newNode,publicationModel.application.id);
 		newLayer.init();
 		newLayer.show();
+		var textElement = silex.component.ComponentModel.getInstance().addComponent("div",newLayer);
+		silex.property.PropertyModel.getInstance().setAttribute(textElement,"title","New text field");
+		silex.property.PropertyModel.getInstance().setProperty(textElement,"innerHTML","<p>Insert text here.</p>");
 		this.dispatchEvent(this.createEvent("onLayerListChange",newLayer),"LayerModel class");
 		return newLayer;
 	}
-	,addMaster: function(layer,page) {
-		brix.util.DomTools.addClass(layer.rootElement,page.name);
-		brix.util.DomTools.addClass(silex.publication.PublicationModel.getInstance().getModelFromView(layer.rootElement),page.name);
+	,addMaster: function(layer,pageName) {
+		brix.util.DomTools.addClass(layer.rootElement,pageName);
+		brix.util.DomTools.addClass(silex.publication.PublicationModel.getInstance().getModelFromView(layer.rootElement),pageName);
 		layer.show();
 		this.dispatchEvent(this.createEvent("onLayerListChange",layer),"LayerModel class");
 	}
@@ -7687,6 +7727,14 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		var publicationModel = silex.publication.PublicationModel.getInstance();
 		var viewHtmlDom = publicationModel.viewHtmlDom;
 		var modelHtmlDom = publicationModel.modelHtmlDom;
+		var navBarNode = brix.util.DomTools.getSingleElement(publicationModel.viewHtmlDom,"nav",true);
+		var linkNodes = navBarNode.getElementsByClassName("LinkToPage");
+		var _g1 = 0, _g = linkNodes.length;
+		while(_g1 < _g) {
+			var nodeIdx = _g1++;
+			var node = linkNodes[nodeIdx];
+			if(node != null && (node.getAttribute("data-href") == page.name || node.getAttribute("href") == page.name)) silex.component.ComponentModel.getInstance().removeComponent(node);
+		}
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,publicationModel.headHtmlDom);
 		brix.component.navigation.Page.getPageByName(initialPageName,publicationModel.application.id,viewHtmlDom).open(null,null,true,true);
 		var nodes = brix.component.navigation.Layer.getLayerNodes(page.name,publicationModel.application.id,viewHtmlDom);
@@ -7695,7 +7743,7 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 			var idxLayerNode = _g1++;
 			var layerNode = nodes[0];
 			var layerInstance = publicationModel.application.getAssociatedComponents(layerNode,brix.component.navigation.Layer).first();
-			silex.layer.LayerModel.getInstance().removeLayer(layerInstance,page);
+			silex.layer.LayerModel.getInstance().removeLayer(layerInstance,page.name);
 		}
 		var pages = brix.component.navigation.Page.getPageNodes(publicationModel.application.id,modelHtmlDom);
 		var _g1 = 0, _g = pages.length;
@@ -7730,8 +7778,14 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		publicationModel.prepareForEdit(newNode);
 		var newPage = new brix.component.navigation.Page(newNode,publicationModel.application.id);
 		newPage.init();
-		silex.layer.LayerModel.getInstance().addLayer(newPage,"container1");
-		brix.component.navigation.Page.getPageByName(className,publicationModel.application.id,viewHtmlDom).open(null,null,true,true);
+		silex.layer.LayerModel.getInstance().addRequiredMasters(className,true);
+		var navBarNode = brix.util.DomTools.getSingleElement(publicationModel.viewHtmlDom,"nav",true);
+		var layerInstance = publicationModel.application.getAssociatedComponents(navBarNode,brix.component.navigation.Layer).first();
+		var textElement = silex.component.ComponentModel.getInstance().addComponent("div",layerInstance);
+		silex.property.PropertyModel.getInstance().setAttribute(textElement,"title","Link to " + name);
+		silex.property.PropertyModel.getInstance().setProperty(textElement,"innerHTML","<p>" + name + "</p>");
+		silex.component.ComponentModel.getInstance().makeLinkToPage(textElement,className);
+		newPage.open(null,null,true,true);
 		this.dispatchEvent(this.createEvent("onPageListChange",newPage),"PageModel class");
 	}
 	,setSelectedItem: function(item) {
@@ -7755,7 +7809,29 @@ silex.property.PropertyModel.getInstance = function() {
 }
 silex.property.PropertyModel.__super__ = silex.ModelBase;
 silex.property.PropertyModel.prototype = $extend(silex.ModelBase.prototype,{
-	getStyle: function(viewHtmlDom,name) {
+	removeClass: function(viewHtmlDom,className) {
+		var modelHtmlDom = silex.publication.PublicationModel.getInstance().getModelFromView(viewHtmlDom);
+		try {
+			brix.util.DomTools.removeClass(viewHtmlDom,className);
+			brix.util.DomTools.removeClass(modelHtmlDom,className);
+		} catch( e ) {
+			throw "Error: could not remove css class " + className + " or there was an error (" + Std.string(e) + ")";
+		}
+		var propertyData = { name : "className", value : className, viewHtmlDom : viewHtmlDom, modelHtmlDom : modelHtmlDom};
+		this.dispatchEvent(this.createEvent("onStyleChange",propertyData),this.debugInfo);
+	}
+	,addClass: function(viewHtmlDom,className) {
+		var modelHtmlDom = silex.publication.PublicationModel.getInstance().getModelFromView(viewHtmlDom);
+		try {
+			brix.util.DomTools.addClass(viewHtmlDom,className);
+			brix.util.DomTools.addClass(modelHtmlDom,className);
+		} catch( e ) {
+			throw "Error: could not add css class " + className + " or there was an error (" + Std.string(e) + ")";
+		}
+		var propertyData = { name : "className", value : className, viewHtmlDom : viewHtmlDom, modelHtmlDom : modelHtmlDom};
+		this.dispatchEvent(this.createEvent("onStyleChange",propertyData),this.debugInfo);
+	}
+	,getStyle: function(viewHtmlDom,name) {
 		var value;
 		var modelHtmlDom = silex.publication.PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		try {
@@ -7807,16 +7883,26 @@ silex.property.PropertyModel.prototype = $extend(silex.ModelBase.prototype,{
 		}
 		return value;
 	}
-	,setAttribute: function(viewHtmlDom,name,value) {
+	,removeAttribute: function(viewHtmlDom,name) {
 		var modelHtmlDom = silex.publication.PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		try {
-			if(value == null) {
-				viewHtmlDom.removeAttribute(name);
-				modelHtmlDom.removeAttribute(name);
-			} else {
-				viewHtmlDom.setAttribute(name,value);
-				modelHtmlDom.setAttribute(name,value);
-			}
+			viewHtmlDom.removeAttribute(name);
+			modelHtmlDom.removeAttribute(name);
+		} catch( e ) {
+			throw "Error: the selected element has no field " + name + " or there was an error (" + Std.string(e) + ")";
+		}
+		var propertyData = { name : name, value : null, viewHtmlDom : viewHtmlDom, modelHtmlDom : modelHtmlDom};
+		this.dispatchEvent(this.createEvent("onPropertyChange",propertyData),this.debugInfo);
+	}
+	,setAttribute: function(viewHtmlDom,name,value) {
+		if(value == null) {
+			this.removeAttribute(viewHtmlDom,name);
+			return;
+		}
+		var modelHtmlDom = silex.publication.PublicationModel.getInstance().getModelFromView(viewHtmlDom);
+		try {
+			viewHtmlDom.setAttribute(name,value);
+			modelHtmlDom.setAttribute(name,value);
 		} catch( e ) {
 			throw "Error: the selected element has no field " + name + " or there was an error (" + Std.string(e) + ")";
 		}
@@ -8374,7 +8460,7 @@ silex.ui.list.LayersList.prototype = $extend(brix.component.list.List.prototype,
 	}
 	,addLayer: function() {
 		var page = silex.page.PageModel.getInstance().selectedItem;
-		silex.layer.LayerModel.getInstance().addMaster(this.getSelectedItem(),page);
+		silex.layer.LayerModel.getInstance().addMaster(this.getSelectedItem(),page.name);
 	}
 	,onListChange: function(e) {
 		this.reloadData();
@@ -8454,18 +8540,12 @@ silex.ui.stage = {}
 silex.ui.stage.DropHandlerBase = function(rootElement,BrixId) {
 	brix.component.ui.DisplayObject.call(this,rootElement,BrixId);
 	this.initialMarkerParent = rootElement.parentNode;
-	this.initialMarkerPopsition = silex.ui.stage.DropHandlerBase.indexOfChild(rootElement);
+	this.initialMarkerPopsition = brix.util.DomTools.getElementIndex(rootElement);
 	rootElement.addEventListener("dragEventDropped",$bind(this,this.onDrop),false);
 	rootElement.addEventListener("dragEventDrag",$bind(this,this.onDrag),false);
 };
 $hxClasses["silex.ui.stage.DropHandlerBase"] = silex.ui.stage.DropHandlerBase;
 silex.ui.stage.DropHandlerBase.__name__ = ["silex","ui","stage","DropHandlerBase"];
-silex.ui.stage.DropHandlerBase.indexOfChild = function(childNode) {
-	var i = 0;
-	var child = childNode;
-	while((child = child.previousSibling) != null) i++;
-	return i;
-}
 silex.ui.stage.DropHandlerBase.__super__ = brix.component.ui.DisplayObject;
 silex.ui.stage.DropHandlerBase.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
 	resetDraggedMarker: function() {
@@ -8500,13 +8580,13 @@ silex.ui.stage.DropHandlerBase.prototype = $extend(brix.component.ui.DisplayObje
 					if(modelElement.parentNode == null) throw "Error while moving the element: the element in the model has no parent.";
 					if(modelBeforeElement == null) modelParent.appendChild(modelElement); else modelParent.insertBefore(modelElement,modelBeforeElement);
 				} catch( e1 ) {
-					haxe.Log.trace("ON DROP ERROR: " + Std.string(e1) + "(" + Std.string(element) + " , " + Std.string(beforeElement) + ", " + Std.string(parent) + ")",{ fileName : "DropHandlerBase.hx", lineNumber : 184, className : "silex.ui.stage.DropHandlerBase", methodName : "onDrop"});
+					haxe.Log.trace("ON DROP ERROR: " + Std.string(e1) + "(" + Std.string(element) + " , " + Std.string(beforeElement) + ", " + Std.string(parent) + ")",{ fileName : "DropHandlerBase.hx", lineNumber : 174, className : "silex.ui.stage.DropHandlerBase", methodName : "onDrop"});
 				}
 			} else {
-				haxe.Log.trace("a drop zone was NOT found",{ fileName : "DropHandlerBase.hx", lineNumber : 191, className : "silex.ui.stage.DropHandlerBase", methodName : "onDrop"});
+				haxe.Log.trace("a drop zone was NOT found",{ fileName : "DropHandlerBase.hx", lineNumber : 181, className : "silex.ui.stage.DropHandlerBase", methodName : "onDrop"});
 				if(this.draggedElementParent.childNodes.length > this.draggedElementPosition) this.draggedElementParent.insertBefore(element,this.draggedElementParent.childNodes[this.draggedElementPosition]); else this.draggedElementParent.appendChild(element);
 			}
-		} else haxe.Log.trace("Nothing being dragged",{ fileName : "DropHandlerBase.hx", lineNumber : 204, className : "silex.ui.stage.DropHandlerBase", methodName : "onDrop"});
+		} else haxe.Log.trace("Nothing being dragged",{ fileName : "DropHandlerBase.hx", lineNumber : 194, className : "silex.ui.stage.DropHandlerBase", methodName : "onDrop"});
 		this.resetDraggedMarker();
 	}
 	,onDrag: function(e) {
@@ -8516,7 +8596,7 @@ silex.ui.stage.DropHandlerBase.prototype = $extend(brix.component.ui.DisplayObje
 		var draggedElement = this.getDraggedElement(event.detail);
 		if(draggedElement != null) {
 			this.draggedElementParent = draggedElement.parentNode;
-			this.draggedElementPosition = silex.ui.stage.DropHandlerBase.indexOfChild(draggedElement);
+			this.draggedElementPosition = brix.util.DomTools.getElementIndex(draggedElement);
 			event.detail.draggable.initPhantomStyle(draggedElement);
 			this.rootElement.appendChild(draggedElement);
 		}
@@ -8546,7 +8626,7 @@ silex.ui.stage.InsertDropHandler.__super__ = silex.ui.stage.DropHandlerBase;
 silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerBase.prototype,{
 	addLayer: function(dropZone,page) {
 		if(page == null) throw "Error: No selected page. Could not add a layer to the page " + page.name + ".";
-		return silex.layer.LayerModel.getInstance().addLayer(page,"",dropZone.position);
+		return silex.layer.LayerModel.getInstance().addLayer(page.name,"",dropZone.position);
 	}
 	,addComponent: function(dropZone,nodeName) {
 		var layers = silex.publication.PublicationModel.getInstance().application.getAssociatedComponents(dropZone.parent,brix.component.navigation.Layer);
@@ -8806,7 +8886,7 @@ silex.ui.stage.SelectionDropHandler.prototype = $extend(silex.ui.stage.DropHandl
 			var name = layer.rootElement.getAttribute("title");
 			if(name == null) name = "";
 			var confirm = js.Lib.window.confirm("I am about to delete the container " + name + ". Are you sure?");
-			if(confirm == true) silex.layer.LayerModel.getInstance().removeLayer(layer,page);
+			if(confirm == true) silex.layer.LayerModel.getInstance().removeLayer(layer,page.name);
 		} else {
 			var name = component.getAttribute("title");
 			if(name == null) name = "";
@@ -9982,7 +10062,7 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 				var name = layer.rootElement.getAttribute("title");
 				if(name == null) name = "";
 				var confirm = js.Lib.window.confirm("I am about to delete the container " + name + ". Are you sure?");
-				if(confirm == true) silex.layer.LayerModel.getInstance().removeLayer(layer,page);
+				if(confirm == true) silex.layer.LayerModel.getInstance().removeLayer(layer,page.name);
 			} else {
 				var name = this.selectedItem.getAttribute("title");
 				if(name == null) name = "";
@@ -10202,8 +10282,9 @@ brix.component.navigation.Page.CONFIG_NAME_ATTR = "name";
 brix.component.navigation.Page.CONFIG_INITIAL_PAGE_NAME = "initialPageName";
 brix.component.navigation.Page.ATTRIBUTE_INITIAL_PAGE_NAME = "data-initial-page-name";
 brix.component.navigation.Page.OPENED_PAGE_CSS_CLASS = "page-opened";
-brix.component.navigation.link.LinkBase.__meta__ = { obj : { tagNameFilter : ["a"]}};
+brix.component.navigation.link.LinkBase.__meta__ = { obj : { tagNameFilter : ["a","div"]}};
 brix.component.navigation.link.LinkBase.CONFIG_PAGE_NAME_ATTR = "href";
+brix.component.navigation.link.LinkBase.CONFIG_PAGE_NAME_DATA_ATTR = "data-href";
 brix.component.navigation.link.LinkBase.CONFIG_TARGET_ATTR = "target";
 brix.component.navigation.link.LinkBase.CONFIG_TARGET_IS_POPUP = "_top";
 brix.component.navigation.link.LinkClosePage.__meta__ = { obj : { tagNameFilter : ["a"]}};
@@ -10259,11 +10340,16 @@ silex.layer.LayerModel.ON_SELECTION_CHANGE = "onLayerSelectionChange";
 silex.layer.LayerModel.ON_HOVER_CHANGE = "onLayerHoverChange";
 silex.layer.LayerModel.ON_LIST_CHANGE = "onLayerListChange";
 silex.layer.LayerModel.MASTER_PROPERTY_NAME = "data-master";
+silex.layer.LayerModel.NEW_LAYER_NAME = "container1";
+silex.layer.LayerModel.HEADER_LAYER_NAME = "header";
+silex.layer.LayerModel.FOOTER_LAYER_NAME = "footer";
+silex.layer.LayerModel.NAV_LAYER_NAME = "nav";
+silex.layer.LayerModel.SIDE_BAR_LAYER_NAME = "side-bar";
+silex.layer.LayerModel.REQUIRED_CONTAINERS = ["header","footer","nav","side-bar"];
 silex.page.PageModel.DEBUG_INFO = "PageModel class";
 silex.page.PageModel.ON_SELECTION_CHANGE = "onPageSelectionChange";
 silex.page.PageModel.ON_HOVER_CHANGE = "onPageHoverChange";
 silex.page.PageModel.ON_LIST_CHANGE = "onPageListChange";
-silex.page.PageModel.NEW_LAYER_NAME = "container1";
 silex.property.PropertyModel.DEBUG_INFO = "PropertyModel class";
 silex.property.PropertyModel.ON_STYLE_CHANGE = "onStyleChange";
 silex.property.PropertyModel.ON_PROPERTY_CHANGE = "onPropertyChange";

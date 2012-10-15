@@ -138,6 +138,6 @@ class InsertDropHandler extends DropHandlerBase{
 		if (page == null)
 			throw("Error: No selected page. Could not add a layer to the page "+page.name+".");
 
-		return LayerModel.getInstance().addLayer(page, "", dropZone.position);
+		return LayerModel.getInstance().addLayer(page.name, "", dropZone.position);
 	}
 }
