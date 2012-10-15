@@ -10,8 +10,11 @@ body
 	max-width: none !important;
 	max-height: none !important;
 }
-.Layer{
+.silex-view{
 	visibility: hidden;
+}
+.loading-page{
+	visibility: visible;
 }
 .Page{
 	display: none;
