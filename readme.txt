@@ -48,14 +48,6 @@ Bugs
 * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
 
 en cours
-- visibility de layers suite au changement de zabo
-  => dans le .css j ai mis 
-      .silex-view{
-        visibility: hidden;
-      }
-      .loading-page{
-        visibility: visible;
-      }
 - liens internes
 - structure de base d une publicaiton
   * pas possible d effacer les conteneurs de base

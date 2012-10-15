@@ -135,6 +135,9 @@ class Silex {
 		// init Brix components
 		application.initComponents();
 
+		// make the publication visible
+		Lib.document.body.style.visibility = "visible";
+
 		#if silexDebug
 		haxe.Timer.delay(callback(doAfterInit, application), 1000);
 	}
