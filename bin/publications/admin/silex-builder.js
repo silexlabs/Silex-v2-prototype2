@@ -7735,8 +7735,6 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 			var node = linkNodes[nodeIdx];
 			if(node != null && (node.getAttribute("data-href") == page.name || node.getAttribute("href") == page.name)) silex.component.ComponentModel.getInstance().removeComponent(node);
 		}
-		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,publicationModel.headHtmlDom);
-		brix.component.navigation.Page.getPageByName(initialPageName,publicationModel.application.id,viewHtmlDom).open(null,null,true,true);
 		var nodes = brix.component.navigation.Layer.getLayerNodes(page.name,publicationModel.application.id,viewHtmlDom);
 		var _g1 = 0, _g = nodes.length;
 		while(_g1 < _g) {
@@ -7757,6 +7755,9 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		publicationModel.application.removeAllAssociatedComponent(page.rootElement);
 		page.rootElement.parentNode.removeChild(page.rootElement);
 		if(this.selectedItem == page) this.setSelectedItem(null);
+		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,publicationModel.headHtmlDom);
+		haxe.Log.trace("XXXX " + initialPageName,{ fileName : "PageModel.hx", lineNumber : 203, className : "silex.page.PageModel", methodName : "removePage"});
+		brix.component.navigation.Page.getPageByName(initialPageName,publicationModel.application.id,viewHtmlDom).open(null,null,true,true);
 		this.dispatchEvent(this.createEvent("onPageListChange"),"PageModel class");
 	}
 	,getNewName: function() {

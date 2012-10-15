@@ -163,11 +163,6 @@ class PageModel extends ModelBase<Page>{
 			}
 		}
 
-		// open the default page
-		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, publicationModel.headHtmlDom);
-		Page.getPageByName(initialPageName, publicationModel.application.id, viewHtmlDom).open(null, null, true, true);
-		// todo: handle the case where we are removing the default page
-
 		// remove the page from all layers which has the class name as css rule
 		var nodes = Layer.getLayerNodes(page.name, publicationModel.application.id, viewHtmlDom);
 
@@ -202,6 +197,11 @@ class PageModel extends ModelBase<Page>{
 		// change selection 
 		if(selectedItem == page)
 			selectedItem = null;
+
+		// open the default page
+		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, publicationModel.headHtmlDom);
+		Page.getPageByName(initialPageName, publicationModel.application.id, viewHtmlDom).open(null, null, true, true);
+		// todo: handle the case where we are removing the default page
 
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE), DEBUG_INFO);
