@@ -322,6 +322,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		// Duplicate DOM
 		viewHtmlDom = modelHtmlDom.cloneNode(true);
 		viewHtmlDom.className = BUILDER_ROOT_NODE_CLASS;
+		viewHtmlDom.style.visibility = "visible";
 
 		// Add the CSS in the body tag rather than head tag, because the later is not really added to the browser dom
 		var styleElement = DomTools.addCssRules(currentData.css, viewHtmlDom);

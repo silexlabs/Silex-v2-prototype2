@@ -62,18 +62,16 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 * @param 	value 	a value to be set on the view and html dom elements, can be null to remove the attribute, and of different types, e.g. Bool for the autostart param of an audio element 
 	 */
 	public function setAttribute(viewHtmlDom:HtmlDom, name:String, value:Null<Dynamic>){
+		if (value == null){
+			removeAttribute(viewHtmlDom, name);
+			return;
+		}
 		// retrieve the model of the component 
 		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
 		try{
-			if (value == null){
-				viewHtmlDom.removeAttribute(name);
-				modelHtmlDom.removeAttribute(name);
-			}
-			else{			
-				viewHtmlDom.setAttribute(name, value);
-				modelHtmlDom.setAttribute(name, value);
-			}
+			viewHtmlDom.setAttribute(name, value);
+			modelHtmlDom.setAttribute(name, value);
 		}
 		catch(e:Dynamic){
 			throw("Error: the selected element has no field "+name+" or there was an error ("+e+")");
@@ -83,6 +81,32 @@ class PropertyModel extends ModelBase<PropertyData>{
 		var propertyData:PropertyData = {
 			name: name,
 			value: value,
+			viewHtmlDom: viewHtmlDom,
+			modelHtmlDom: modelHtmlDom,
+		};
+		// dispatch the event 
+		dispatchEvent(createEvent(ON_PROPERTY_CHANGE, propertyData), debugInfo);
+	}
+	/**
+	 * remove an attribute in the view and the model simultanneously
+	 * This dispatches a onPropertyChange event with event.detail set to the PropertyData object 
+	 */
+	public function removeAttribute(viewHtmlDom:HtmlDom, name:String){
+		// retrieve the model of the component 
+		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
+		// apply the change 
+		try{
+			viewHtmlDom.removeAttribute(name);
+			modelHtmlDom.removeAttribute(name);
+		}
+		catch(e:Dynamic){
+			throw("Error: the selected element has no field "+name+" or there was an error ("+e+")");
+		}
+
+		// create the property data object
+		var propertyData:PropertyData = {
+			name: name,
+			value: null,
 			viewHtmlDom: viewHtmlDom,
 			modelHtmlDom: modelHtmlDom,
 		};
@@ -192,5 +216,58 @@ class PropertyModel extends ModelBase<PropertyData>{
 		}
 		// create the property data object
 		return value;
+	}
+
+	/**
+	 * add a css class to the view and the model simultanneously
+	 * This dispatches a onStyleChange event with event.detail set to the PropertyData object 
+	 */
+	public function addClass(viewHtmlDom:HtmlDom, className:String){
+		// retrieve the model of the component 
+		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
+		// apply the change 
+		try{
+			DomTools.addClass(viewHtmlDom, className);
+			DomTools.addClass(modelHtmlDom, className);
+		}
+		catch(e:Dynamic){
+			throw("Error: could not add css class "+className+" or there was an error ("+e+")");
+		}
+
+		// create the property data object
+		var propertyData:PropertyData = {
+			name: "className",
+			value: className,
+			viewHtmlDom: viewHtmlDom,
+			modelHtmlDom: modelHtmlDom,
+		};
+		// dispatch the event 
+		dispatchEvent(createEvent(ON_STYLE_CHANGE, propertyData), debugInfo);
+	}
+	/**
+	 * remove a css class to the view and the model simultanneously
+	 * This dispatches a onStyleChange event with event.detail set to the PropertyData object 
+	 */
+	public function removeClass(viewHtmlDom:HtmlDom, className:String){
+		// retrieve the model of the component 
+		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
+		// apply the change 
+		try{
+			DomTools.removeClass(viewHtmlDom, className);
+			DomTools.removeClass(modelHtmlDom, className);
+		}
+		catch(e:Dynamic){
+			throw("Error: could not remove css class "+className+" or there was an error ("+e+")");
+		}
+
+		// create the property data object
+		var propertyData:PropertyData = {
+			name: "className",
+			value: className,
+			viewHtmlDom: viewHtmlDom,
+			modelHtmlDom: modelHtmlDom,
+		};
+		// dispatch the event 
+		dispatchEvent(createEvent(ON_STYLE_CHANGE, propertyData), debugInfo);
 	}
 }

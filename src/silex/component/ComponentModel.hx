@@ -5,7 +5,10 @@ import js.Dom;
 
 import silex.ModelBase;
 import silex.publication.PublicationModel;
+import silex.property.PropertyModel;
 import brix.component.navigation.Layer;
+import brix.component.navigation.link.LinkToPage;
+import brix.component.navigation.link.LinkBase;
 
 
 /**
@@ -154,5 +157,41 @@ class ComponentModel extends ModelBase<HtmlDom>{
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE), DEBUG_INFO);
 	}
+	/**
+	 * make the given component a link to the given page
+	 */
+	public function makeLinkToPage(htmlDom:HtmlDom, pageName:String):LinkToPage{
+		// get the publication model
+		var publicationModel = PublicationModel.getInstance();
+		var propertyModel = PropertyModel.getInstance();
 
+		// add the link attribute in view and model
+		propertyModel.setAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_DATA_ATTR, pageName);
+
+		// add  class in view and model
+		propertyModel.addClass(htmlDom, "LinkToPage");
+
+		// create the component instance
+		var linkToPage = new LinkToPage(htmlDom, publicationModel.application.id);
+		linkToPage.init();
+
+		return linkToPage;
+	}
+	/**
+	 * make the given component a link to the given page
+	 */
+	public function resetLinkToPage(htmlDom:HtmlDom){
+		// get the publication model
+		var publicationModel = PublicationModel.getInstance();
+		var propertyModel = PropertyModel.getInstance();
+
+		// remove the link attribute in view and model
+		propertyModel.removeAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_DATA_ATTR);
+
+		// remove class in view and model
+		propertyModel.removeClass(htmlDom, "LinkToPage");
+
+		// delete the component instance
+		// TODO: remove from Brix
+	}
 }

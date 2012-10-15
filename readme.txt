@@ -43,12 +43,13 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 
 Bugs
-* publication with scroll bug
+* create publication
 * images débordent sur la boite a outils
 * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
 
 en cours
-- liens internes
+- check contextes des css
+- ouverture page initiale apres suppression et creation de pages
 - structure de base d une publicaiton
   * pas possible d effacer les conteneurs de base
   * cration de publication = prend le contenu "empty-template" et le css de "bin/themes/default.css"

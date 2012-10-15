@@ -6,7 +6,10 @@ import js.Dom;
 import silex.ModelBase;
 import silex.publication.PublicationModel;
 import silex.layer.LayerModel;
+import silex.component.ComponentModel;
+import silex.property.PropertyModel;
 
+import brix.component.navigation.link.LinkBase;
 import brix.component.navigation.Page;
 import brix.component.navigation.Layer;
 import brix.util.DomTools;
@@ -53,10 +56,6 @@ class PageModel extends ModelBase<Page>{
 	 * event dispatched when the list of pages changes
 	 */
 	public static inline var ON_LIST_CHANGE = "onPageListChange";
-	/**
-	 * name of the layer automatically created with a new page
-	 */
-	public static inline var NEW_LAYER_NAME = "container1";
 	/**
 	 * Models are singletons
 	 * Constructor is private
@@ -114,10 +113,18 @@ class PageModel extends ModelBase<Page>{
 		var newPage:Page = publicationModel.application.getAssociatedComponents(newNode, Page).first();
 /**/
 		// create an empty new layer
-		LayerModel.getInstance().addLayer(newPage, NEW_LAYER_NAME);
+		LayerModel.getInstance().addRequiredMasters(className, true);
+
+		// add a link in the nav bar
+		var navBarNode = DomTools.getSingleElement(publicationModel.viewHtmlDom, LayerModel.NAV_LAYER_NAME, true);
+		var layerInstance = publicationModel.application.getAssociatedComponents(navBarNode, Layer).first();
+		var textElement = ComponentModel.getInstance().addComponent("div", layerInstance);
+		PropertyModel.getInstance().setAttribute(textElement, "title", "Link to "+name);
+		PropertyModel.getInstance().setProperty(textElement, "innerHTML", "<p>"+name+"</p>");
+		ComponentModel.getInstance().makeLinkToPage(textElement, className);
 
 		// open the new page
-		Page.getPageByName(className, publicationModel.application.id, viewHtmlDom).open(null, null, true, true);
+		newPage.open(null, null, true, true);
 
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE, newPage), DEBUG_INFO);
@@ -141,9 +148,20 @@ class PageModel extends ModelBase<Page>{
 		var viewHtmlDom = publicationModel.viewHtmlDom;
 		var modelHtmlDom = publicationModel.modelHtmlDom;
 
-		// open the default page
-		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, publicationModel.headHtmlDom);
-		Page.getPageByName(initialPageName, publicationModel.application.id, viewHtmlDom).open(null, null, true, true);
+		// remove the link from the nav bar
+		var navBarNode = DomTools.getSingleElement(publicationModel.viewHtmlDom, LayerModel.NAV_LAYER_NAME, true);
+		var linkNodes = navBarNode.getElementsByClassName("LinkToPage");
+		// browse link nodes and remove the one which links to the page
+		for (nodeIdx in 0...linkNodes.length){
+			var node = linkNodes[nodeIdx];
+			if (node != null
+				&& (node.getAttribute(LinkBase.CONFIG_PAGE_NAME_DATA_ATTR) == page.name 
+				|| node.getAttribute(LinkBase.CONFIG_PAGE_NAME_ATTR) == page.name)
+			){
+				// remove from the view and the model
+				ComponentModel.getInstance().removeComponent(node);
+			}
+		}
 
 		// remove the page from all layers which has the class name as css rule
 		var nodes = Layer.getLayerNodes(page.name, publicationModel.application.id, viewHtmlDom);
@@ -153,7 +171,7 @@ class PageModel extends ModelBase<Page>{
 			// always take the 1st element since the HtmlList is updated, and the nodes are removed automatically
 			var layerNode = nodes[0];
 			var layerInstance:Layer = publicationModel.application.getAssociatedComponents(layerNode, Layer).first();
-			LayerModel.getInstance().removeLayer(layerInstance, page);
+			LayerModel.getInstance().removeLayer(layerInstance, page.name);
 		}
 
 		// retrieve the node in the model, which is associated to the page instance
@@ -179,6 +197,11 @@ class PageModel extends ModelBase<Page>{
 		// change selection 
 		if(selectedItem == page)
 			selectedItem = null;
+
+		// open the default page
+		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, publicationModel.headHtmlDom);
+		Page.getPageByName(initialPageName, publicationModel.application.id, viewHtmlDom).open(null, null, true, true);
+		// todo: handle the case where we are removing the default page
 
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE), DEBUG_INFO);

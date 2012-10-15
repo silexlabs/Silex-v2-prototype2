@@ -1,7 +1,6 @@
 /* 		Silex base styles 			 */
 /* 		Do not edit these styles 	 */
-body
-{
+body{
 	margin:0px !important;
 	padding:0px !important;
 	font-family:Arial, Helvetica, sans-serif !important;
@@ -9,9 +8,16 @@ body
 	height:100% !important;
 	max-width: none !important;
 	max-height: none !important;
-}
-.Layer{
+
+/* for loading */
 	visibility: hidden;
+}
+
+.silex-view{
+	visibility: hidden;
+}
+.loading{
+	visibility: visible;
 }
 .Page{
 	display: none;
@@ -61,6 +67,10 @@ body{
 	pointer-events: none;
 	color: grey ! important;
 	background-color:Gainsboro;
+}
+.Layer{
+	min-height: 20px;
+	min-width: 20px;
 }
 
 /* **************** */
@@ -440,8 +450,13 @@ opacity:1;
 }
 .selection-marker{
 	z-index: 400;
-	border: 2px dotted #FFFF00;
+/*	border: 2px dotted #FFFF00; */
+-moz-box-shadow: inset 0px 0px 2px 2px #888;
+-webkit-box-shadow: inset 0px 0px 2px 2px #888;
+box-shadow: inset 0px 0px 2px 2px #888;
+
 	cursor: move;
+	opacity: 0.75 !important;
 }
 .selection-marker:hover{
 }
@@ -452,8 +467,13 @@ opacity:1;
 }
 .selection-layer-marker{
 	z-index: 200;
-	border: 2px dotted green;
+/*	border: 2px dotted green; */
 	cursor: move;
+	opacity: 0.75 !important;
+-moz-box-shadow: inset 0px 0px 2px 2px #888;
+-webkit-box-shadow: inset 0px 0px 2px 2px #888;
+box-shadow: inset 0px 0px 2px 2px #888;
+
 }
 .selection-layer-marker:hover{
 }
@@ -461,14 +481,15 @@ opacity:1;
 .master-phantom{
 	min-width: 10px !important;
 	min-height: 10px !important;
-	border: 2px solid red !important;
-	display: block !important;
+/*	border: 2px solid red !important; */
+/* 	display: block !important; */
 	visibility: visible !important;
 }
 .selection-phantom{
 	min-width: 10px !important;
 	min-height: 10px !important;
-	border: 2px solid red !important;
+/*	border: 2px solid red !important; */
+
 }
 .selection-marker .draggable-dragzone,
 .selection-layer-marker .draggable-dragzone{
@@ -563,6 +584,7 @@ opacity:1;
 .ribbon-tabs a:hover,
 .ribbon-tabs .page-opened{
 	background-color:white;
+	font-weight: normal;
 }
 .ribbon-list{
 	background-color:white;
@@ -682,7 +704,7 @@ opacity:1;
 }
 .silex-toolbox .page-opened{
 	background-color:#F93;
-	font-weight:bold;
+	font-weight: normal;
 }
 
 .silex-toolbox .LinkToPage{
@@ -738,39 +760,6 @@ opacity:1;
 	float:right;
 	cursor:pointer;
 }
-
-.silex-toolbox fieldset {
-	border:none;
-	margin-top:8px;
-	margin-bottom:7px;
-	padding:0;
-}
-
-.silex-toolbox fieldset legend {
-	padding-bottom:10px;
-}
-
-.silex-toolbox fieldset.Backgroundstyleeditor{
-	margin-left:auto;
-	margin-right:auto;
-	width:83%;
-
-}
-.silex-toolbox .style-block-tab{
-	margin-left:auto;
-	margin-right:auto;
-	width:97%;
-=======
-.property-editor-edit-text, .property-editor-edit-code{
-	border:none;
-	margin:0;
-	padding:2px;
-	background-color:#666;
-	color: white;
-	cursor:pointer;
->>>>>>> c6080b812bb489abe660d4a26704aadfcefe8c26
-}
-
 
 .silex-toolbox fieldset{
 	margin-left:auto;

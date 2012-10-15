@@ -141,7 +141,7 @@ class SelectionDropHandler extends DropHandlerBase{
 			if (name == null) name = "";
 			var confirm = Lib.window.confirm("I am about to delete the container "+name+". Are you sure?");
 			if (confirm == true)
-				LayerModel.getInstance().removeLayer(layer, page);
+				LayerModel.getInstance().removeLayer(layer, page.name);
 		}
 		else{
 			var name:String = component.getAttribute("title");
@@ -201,11 +201,11 @@ class SelectionDropHandler extends DropHandlerBase{
 		// refresh the builder display
 		if (draggedComponent != null){
 			// case of a component
-			ComponentModel.getInstance().refresh();
+			DomTools.doLater(ComponentModel.getInstance().refresh);
 		}
 		else if (draggedLayer != null){
 			// case of a layer
-			LayerModel.getInstance().refresh();
+			DomTools.doLater(LayerModel.getInstance().refresh);
 		}
 		// **
 		// reset state

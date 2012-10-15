@@ -56,7 +56,7 @@ class PropertyEditor extends EditorBase
 				if (name == null) name = "";
 				var confirm = Lib.window.confirm("I am about to delete the container "+name+". Are you sure?");
 				if (confirm == true)
-					LayerModel.getInstance().removeLayer(layer, page);
+					LayerModel.getInstance().removeLayer(layer, page.name);
 			}
 			else{
 				var name:String = selectedItem.getAttribute("title");
