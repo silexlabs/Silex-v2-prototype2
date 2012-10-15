@@ -96,7 +96,7 @@ class LayersList extends List<Layer>
 	}
 	public function addLayer(){
 		var page = PageModel.getInstance().selectedItem;
-		LayerModel.getInstance().addMaster(selectedItem, page);
+		LayerModel.getInstance().addMaster(selectedItem, page.name);
 	}
 	/**
 	 * selection changed, open the selected page

@@ -8,6 +8,13 @@
 	max-width: 800px;
 	padding: 0;
 }
+.silex-view{
+	visibility: hidden;
+}
+.loading-page{
+	visibility: visible;
+}
+
 .Page{
 	display: none;
 }
@@ -19,6 +26,12 @@ nav div{
 }
 nav div a{
 	padding: 10px;
+}
+.LinkToPage{
+	cursor: pointer;
+}
+.page-opened{
+	font-weight: bold;
 }
 
 /* 		Publication styles 			 */

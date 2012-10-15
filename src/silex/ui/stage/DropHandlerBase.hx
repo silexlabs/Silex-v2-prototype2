@@ -41,7 +41,7 @@ class DropHandlerBase extends DisplayObject{
 	public function new(rootElement:HtmlDom, BrixId:String){
 		super(rootElement, BrixId);
 		initialMarkerParent = rootElement.parentNode;
-		initialMarkerPopsition = indexOfChild(rootElement);
+		initialMarkerPopsition = DomTools.getElementIndex(rootElement);
 		rootElement.addEventListener(Draggable.EVENT_DROPPED, onDrop, false);
 		rootElement.addEventListener(Draggable.EVENT_DRAG, onDrag, false);
 	}
@@ -50,16 +50,6 @@ class DropHandlerBase extends DisplayObject{
 	 */
 	override public function init() : Void {
 		super.init();
-	}
-	/**
-	 * retrieve the postion of a node in its parent's children
-	 */
-	private static function indexOfChild(childNode:HtmlDom):Int{
-		var i = 0;
-		var child = childNode;
-		while( (child = child.previousSibling) != null ) 
-			i++;
-		return i;
 	}
 	/**
 	 * virtual method to be implemented in derived classes
@@ -87,7 +77,7 @@ class DropHandlerBase extends DisplayObject{
 		if (draggedElement!= null){
 			// store the initial info in case it is droped outside a drop zone
 			draggedElementParent = draggedElement.parentNode;
-			draggedElementPosition = indexOfChild(draggedElement);
+			draggedElementPosition = DomTools.getElementIndex(draggedElement);
 			// change the phantom style
 			event.detail.draggable.initPhantomStyle(draggedElement);
 			// remove the element from stage
