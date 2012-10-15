@@ -2348,10 +2348,7 @@ brix.component.navigation.Page.prototype = $extend(brix.component.ui.DisplayObje
 			while(_g2 < preventCloseByClassName.length) {
 				var className = preventCloseByClassName[_g2];
 				++_g2;
-				if(brix.util.DomTools.hasClass(layerNode,className)) {
-					hasForbiddenClass = true;
-					break;
-				}
+				if(brix.util.DomTools.hasClass(layerNode,className)) hasForbiddenClass = true;
 			}
 			if(!hasForbiddenClass) {
 				var layerInstances = this.getBrixApplication().getAssociatedComponents(layerNode,brix.component.navigation.Layer);
@@ -7756,7 +7753,6 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		page.rootElement.parentNode.removeChild(page.rootElement);
 		if(this.selectedItem == page) this.setSelectedItem(null);
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,publicationModel.headHtmlDom);
-		haxe.Log.trace("XXXX " + initialPageName,{ fileName : "PageModel.hx", lineNumber : 203, className : "silex.page.PageModel", methodName : "removePage"});
 		brix.component.navigation.Page.getPageByName(initialPageName,publicationModel.application.id,viewHtmlDom).open(null,null,true,true);
 		this.dispatchEvent(this.createEvent("onPageListChange"),"PageModel class");
 	}

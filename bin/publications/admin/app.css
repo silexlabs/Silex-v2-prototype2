@@ -481,14 +481,14 @@ box-shadow: inset 0px 0px 2px 2px #888;
 .master-phantom{
 	min-width: 10px !important;
 	min-height: 10px !important;
-/*	border: 2px solid red !important; */
+	border: 2px solid red !important; 
 /* 	display: block !important; */
 	visibility: visible !important;
 }
 .selection-phantom{
 	min-width: 10px !important;
 	min-height: 10px !important;
-/*	border: 2px solid red !important; */
+	border: 2px solid red !important; 
 
 }
 .selection-marker .draggable-dragzone,
@@ -506,7 +506,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	right: 0;
 	z-index:1000;
 	cursor:pointer;
-	background-image:url(./assets/sv2-ico-delete.png);
+	background-image:url(../admin/assets/sv2-ico-delete.png);
 	background-color: rgba(66, 66, 66, 0.7);
 }
 
@@ -622,7 +622,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	margin-top:7px;
 }
 .temp-icon {
-    background-image: url("../admin/assets/temporary-icon.png");
+    background-image: url(../admin/assets/temporary-icon.png);
     background-size: 50px auto;
     height: 50px;
     width: 50px;
@@ -755,7 +755,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	height:27px;
 	margin:0;
 	padding:2px;
-	background-image:url(./assets/sv2-ico-delete.png);
+	background-image:url(../admin/assets/sv2-ico-delete.png);
 	background-color:#666;
 	float:right;
 	cursor:pointer;
@@ -846,7 +846,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 .silex-toolbox .style-positioning-tab fieldset legend{
 	/*margin-left:auto;
 	margin-right:auto;*/
-=======
+
 .silex-toolbox .properties-link div{
     float: left;
     min-height: 40px;
@@ -862,7 +862,6 @@ box-shadow: inset 0px 0px 2px 2px #888;
 .silex-toolbox fieldset legend{
 	margin-left:auto;
 	margin-right:auto;
->>>>>>> c6080b812bb489abe660d4a26704aadfcefe8c26
 	font-weight:bold;
 }
 
