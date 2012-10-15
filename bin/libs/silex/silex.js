@@ -1380,6 +1380,7 @@ brix.component.ui.DisplayObject.prototype = {
 	,__class__: brix.component.ui.DisplayObject
 }
 brix.component.interaction.Draggable = function(rootElement,brixId) {
+	this.isDirty = false;
 	brix.component.ui.DisplayObject.call(this,rootElement,brixId);
 	brix.component.group.Groupable.startGroupable(this);
 	if(this.groupElement == null) this.groupElement = js.Lib.document.body;
@@ -1402,12 +1403,12 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 		}
 		this.bestDropZone = zone;
 	}
-	,computeDistance: function(bbElement,bbTarget) {
-		var centerElementX = bbElement.x + bbElement.w / 2.0;
-		var centerElementY = bbElement.y + bbElement.h / 2.0;
-		var centerTargetX = bbTarget.x + bbTarget.w / 2.0;
-		var centerTargetY = bbTarget.y + bbTarget.h / 2.0;
-		return Math.sqrt(Math.pow(centerElementX - centerTargetX,2) + Math.pow(centerElementY - centerTargetY,2));
+	,computeDistance: function(boundingBox1,boundingBox2) {
+		var centerBox1X = boundingBox1.x + boundingBox1.w / 2.0;
+		var centerBox1Y = boundingBox1.y + boundingBox1.h / 2.0;
+		var centerBox2X = boundingBox2.x + boundingBox2.w / 2.0;
+		var centerBox2Y = boundingBox2.y + boundingBox2.h / 2.0;
+		return Math.sqrt(Math.pow(centerBox1X - centerBox2X,2) + Math.pow(centerBox1Y - centerBox2Y,2));
 	}
 	,getBestDropZone: function(mouseX,mouseY) {
 		var dropZones = new List();
@@ -1418,14 +1419,15 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 			dropZones.add(taggedDropZones[dzi]);
 		}
 		if(dropZones.isEmpty()) dropZones.add(this.rootElement.parentNode);
+		var nearestDistance = 999999999999;
+		var nearestZone = null;
+		var lastChildIdx = 0;
+		var bbElement = brix.util.DomTools.getElementBoundingBox(this.rootElement);
 		var $it0 = dropZones.iterator();
 		while( $it0.hasNext() ) {
 			var zone = $it0.next();
 			var bbZone = brix.util.DomTools.getElementBoundingBox(zone);
-			if(mouseX > bbZone.x && mouseX < bbZone.x + bbZone.w && mouseY > bbZone.y && mouseY < bbZone.y + bbZone.h) {
-				var bbElement = brix.util.DomTools.getElementBoundingBox(this.rootElement);
-				var lastChildIdx = 0;
-				var nearestDistance = 999999999999;
+			if(zone.style.display != "none") {
 				var _g1 = 0, _g = zone.childNodes.length;
 				while(_g1 < _g) {
 					var childIdx = _g1++;
@@ -1435,6 +1437,7 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 					var dist = this.computeDistance(bbPhantom,bbElement);
 					if(dist < nearestDistance) {
 						nearestDistance = dist;
+						nearestZone = zone;
 						lastChildIdx = childIdx;
 					}
 				}
@@ -1443,27 +1446,38 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 				var dist = this.computeDistance(bbPhantom,bbElement);
 				if(dist < nearestDistance) {
 					nearestDistance = dist;
+					nearestZone = zone;
 					lastChildIdx = zone.childNodes.length + 1;
 				}
 				zone.removeChild(this.miniPhantom);
-				return { parent : zone, position : lastChildIdx};
 			}
 		}
-		return null;
+		if(nearestZone != null) return { parent : nearestZone, position : lastChildIdx}; else return null;
 	}
-	,move: function(e) {
-		haxe.Log.trace("move " + Std.string(this.state) + " - " + Std.string(this.bestDropZone) + " - " + this.dropZonesClassName + " - " + this.groupElement.className + " - " + this.groupElement.getElementsByClassName(this.dropZonesClassName).length + " - " + js.Lib.document.body.getElementsByClassName(this.dropZonesClassName).length,{ fileName : "Draggable.hx", lineNumber : 384, className : "brix.component.interaction.Draggable", methodName : "move"});
+	,updateBestDropZone: function() {
+		this.isDirty = false;
 		if(this.state == brix.component.interaction.DraggableState.dragging) {
-			var mouseX = e.clientX + this.initialX;
-			var mouseY = e.clientY + this.initialY;
-			var elementX = mouseX - this.initialMouseX;
-			var elementY = mouseY - this.initialMouseY;
-			this.setAsBestDropZone(this.getBestDropZone(elementX,elementY));
-			brix.util.DomTools.moveTo(this.rootElement,elementX,elementY);
+			this.setAsBestDropZone(null);
+			this.setAsBestDropZone(this.getBestDropZone(this.currentMouseX,this.currentMouseY));
 			var event = js.Lib.document.createEvent("CustomEvent");
 			event.initCustomEvent("dragEventMove",false,false,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
 			this.rootElement.dispatchEvent(event);
 		}
+	}
+	,invalidateBestDropZone: function() {
+		if(this.isDirty == false) {
+			this.isDirty = true;
+			haxe.Timer.delay($bind(this,this.updateBestDropZone),50);
+		}
+	}
+	,isDirty: null
+	,currentMouseY: null
+	,currentMouseX: null
+	,move: function(e) {
+		this.currentMouseX = e.clientX;
+		this.currentMouseY = e.clientY;
+		brix.util.DomTools.moveTo(this.rootElement,this.currentMouseX - this.initialMouseX,this.currentMouseY - this.initialMouseY);
+		this.invalidateBestDropZone();
 	}
 	,stopDrag: function(e) {
 		if(this.state == brix.component.interaction.DraggableState.dragging) {
@@ -1485,14 +1499,12 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 		}
 	}
 	,startDrag: function(e) {
-		haxe.Log.trace("startDrag " + Std.string(this.state),{ fileName : "Draggable.hx", lineNumber : 299, className : "brix.component.interaction.Draggable", methodName : "startDrag"});
+		haxe.Log.trace("startDrag " + Std.string(this.state),{ fileName : "Draggable.hx", lineNumber : 294, className : "brix.component.interaction.Draggable", methodName : "startDrag"});
 		if(this.state == brix.component.interaction.DraggableState.none) {
 			var boundingBox = brix.util.DomTools.getElementBoundingBox(this.rootElement);
 			this.state = brix.component.interaction.DraggableState.dragging;
-			this.initialX = boundingBox.x;
-			this.initialY = boundingBox.y;
-			this.initialMouseX = e.clientX;
-			this.initialMouseY = e.clientY;
+			this.initialMouseX = e.clientX - boundingBox.x;
+			this.initialMouseY = e.clientY - boundingBox.y;
 			this.initRootElementStyle();
 			this.initPhantomStyle();
 			this.moveCallback = (function(f) {
@@ -1535,7 +1547,9 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 		}
 		this.phantom.className = this.phantomClassName;
 		this.miniPhantom.className = this.phantomClassName;
-		haxe.Log.trace("initPhantomStyle " + this.phantom.className + " - " + Std.string(this.phantom.style.display) + " - " + this.dropZonesClassName,{ fileName : "Draggable.hx", lineNumber : 270, className : "brix.component.interaction.Draggable", methodName : "initPhantomStyle"});
+		this.phantom.className += " " + refHtmlDom.className;
+		this.miniPhantom.className += " " + refHtmlDom.className;
+		haxe.Log.trace("initPhantomStyle " + this.phantom.className + " - " + Std.string(this.phantom.style.display) + " - " + this.dropZonesClassName,{ fileName : "Draggable.hx", lineNumber : 264, className : "brix.component.interaction.Draggable", methodName : "initPhantomStyle"});
 		this.phantom.style.width = refHtmlDom.clientWidth + "px";
 		this.phantom.style.height = refHtmlDom.clientHeight + "px";
 		this.miniPhantom.style.width = refHtmlDom.clientWidth + "px";
@@ -1577,8 +1591,6 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 		js.Lib.document.body.addEventListener("mouseup",this.mouseUpCallback,false);
 		this.dragZone.style.cursor = "move";
 	}
-	,initialY: null
-	,initialX: null
 	,initialMouseY: null
 	,initialMouseX: null
 	,initialStyle: null

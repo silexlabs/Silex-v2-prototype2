@@ -452,6 +452,7 @@ opacity:1;
 	z-index: 400;
 	border: 2px dotted #FFFF00;
 	cursor: move;
+	opacity: 0.75 !important;
 }
 .selection-marker:hover{
 }
@@ -464,6 +465,7 @@ opacity:1;
 	z-index: 200;
 	border: 2px dotted green;
 	cursor: move;
+	opacity: 0.75 !important;
 }
 .selection-layer-marker:hover{
 }

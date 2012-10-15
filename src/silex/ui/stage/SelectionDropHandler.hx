@@ -201,11 +201,11 @@ class SelectionDropHandler extends DropHandlerBase{
 		// refresh the builder display
 		if (draggedComponent != null){
 			// case of a component
-			ComponentModel.getInstance().refresh();
+			DomTools.doLater(ComponentModel.getInstance().refresh);
 		}
 		else if (draggedLayer != null){
 			// case of a layer
-			LayerModel.getInstance().refresh();
+			DomTools.doLater(LayerModel.getInstance().refresh);
 		}
 		// **
 		// reset state
