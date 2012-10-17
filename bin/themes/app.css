@@ -1,0 +1,55 @@
+/* 		Silex base styles 			 */
+/* 		Do not edit these styles 	 */
+.silex-view
+{
+	padding:0px;
+	font-family:arial, helvetica, sans-serif;
+	margin: auto;
+	max-width: 800px;
+	padding: 0;
+}
+.silex-view{
+	visibility: hidden;
+}
+.loading-page{
+	visibility: visible;
+}
+
+.Page{
+	display: none;
+}
+.side-bar{
+	float: left;
+}
+nav div{
+	display: inline-block;
+}
+nav div a{
+	padding: 10px;
+}
+.LinkToPage{
+	cursor: pointer;
+}
+.page-opened{
+	font-weight: bold;
+}
+
+/* 		Publication styles 			 */
+/* 		You can edit these styles 	 */
+
+/*
+.anim0{
+	opacity: 0;
+	transition: opacity 2s;
+	-moz-transition: opacity 2s; 
+	-webkit-transition: opacity 2s;
+	-o-transition: opacity 2s; 
+}
+.anim100{
+	opacity: 1;
+	transition: opacity 2s 2s;
+	-moz-transition: opacity 2s 2s; 
+	-webkit-transition: opacity 2s 2s; 
+	-o-transition: opacity 2s 2s; 
+}
+*/

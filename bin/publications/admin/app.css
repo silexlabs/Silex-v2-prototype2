@@ -484,12 +484,15 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	border: 2px solid red !important; 
 /* 	display: block !important; */
 	visibility: visible !important;
+	max-width: 500px !important; 
+	max-height: 150px !important; 
 }
 .selection-phantom{
 	min-width: 10px !important;
 	min-height: 10px !important;
 	border: 2px solid red !important; 
-
+	max-width: 500px !important; 
+	max-height: 150px !important; 
 }
 .selection-marker .draggable-dragzone,
 .selection-layer-marker .draggable-dragzone{

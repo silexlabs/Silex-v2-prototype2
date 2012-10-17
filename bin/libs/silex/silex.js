@@ -7774,7 +7774,7 @@ silex.publication.PublicationModel.__super__ = silex.ModelBase;
 silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onPublicationSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 625, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 641, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
 	}
 	,onSaveError: function(msg) {
 		this.dispatchEvent(this.createEvent("onPublicationSaveError"),this.debugInfo);
@@ -7793,16 +7793,18 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 			this.prepareForSave(modelChild);
 		}
 	}
-	,doSavePublicationData: function(successCallback) {
+	,doSavePublicationData: function(successCallback,publicationName) {
 		if(successCallback == null) successCallback = $bind(this,this.onSaveSuccess);
+		if(publicationName == null) publicationName = this.currentName;
 		var tempModelHead = this.headHtmlDom.cloneNode(true);
 		var tempModelBody = this.modelHtmlDom.cloneNode(true);
 		this.prepareForSave(tempModelBody);
 		this.currentData.html = "<HTML>\n\t\t<HEAD>\n\t\t\t" + tempModelHead.innerHTML + "\n\t\t</HEAD>\n\t\t<BODY class=\"silex-view\">\n\t\t\t" + tempModelBody.innerHTML + "\n\t\t</BODY>\n\t</HTML>\n\t\t";
-		this.publicationService.setPublicationData(this.currentName,this.currentData,successCallback,$bind(this,this.onSaveError));
+		this.publicationService.setPublicationData(publicationName,this.currentData,successCallback,$bind(this,this.onSaveError));
 	}
-	,save: function(successCallback) {
+	,save: function(newName,successCallback) {
 		if(this.currentData == null) throw "Error: can not save the publication because no publication is loaded.";
+		if(newName != null) this.currentName = newName;
 		var pageModel = silex.page.PageModel.getInstance();
 		pageModel.setHoveredItem(null);
 		pageModel.setSelectedItem(null);
@@ -7815,45 +7817,42 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 	}
 	,saveAs: function(newName) {
 		if(this.currentData == null) throw "Error: can not save the publication because no publication is loaded.";
-		var oldName = this.currentName;
-		this.currentName = newName;
-		this.publicationService.duplicate(oldName,newName,$bind(this,this.onSaveSuccess),$bind(this,this.onSaveError));
-	}
-	,doSaveACopy: function(newName) {
-		if(this.currentData == null) throw "Error: can not save the publication because no publication is loaded.";
-		this.publicationService.duplicate(this.currentName,newName,(function(f) {
-			return function() {
-				return f();
-			};
-		})($bind(this,this.save)),$bind(this,this.onSaveError));
-	}
-	,saveACopy: function(newName) {
-		if(this.currentData == null) throw "Error: can not save the publication because no publication is loaded.";
-		this.save((function(f,a1) {
+		this.publicationService.duplicate(this.currentName,newName,(function(f,a1) {
 			return function() {
 				return f(a1);
 			};
-		})($bind(this,this.doSaveACopy),newName));
+		})($bind(this,this.save),newName),$bind(this,this.onSaveError));
+	}
+	,onCopyCreated: function(newName) {
+		this.publicationService.setPublicationConfig(newName,this.currentConfig,(function(f,a1,a2) {
+			return function() {
+				return f(a1,a2);
+			};
+		})($bind(this,this.doSavePublicationData),null,newName),$bind(this,this.onSaveError));
+	}
+	,saveACopy: function(newName) {
+		if(this.currentData == null) throw "Error: can not save the publication because no publication is loaded.";
+		var pageModel = silex.page.PageModel.getInstance();
+		pageModel.setHoveredItem(null);
+		pageModel.setSelectedItem(null);
+		this.dispatchEvent(this.createEvent("onPublicationSaveStart"),this.debugInfo);
+		if(this.currentData == null) throw "Error: can not save the publication because no publication is loaded.";
+		this.publicationService.duplicate(this.currentName,newName,(function(f,a1) {
+			return function() {
+				return f(a1);
+			};
+		})($bind(this,this.onCopyCreated),newName),$bind(this,this.onSaveError));
 	}
 	,onDeleteSuccess: function() {
-		haxe.Log.trace("PUBLICATION DELETED ",{ fileName : "PublicationModel.hx", lineNumber : 490, className : "silex.publication.PublicationModel", methodName : "onDeleteSuccess"});
+		haxe.Log.trace("PUBLICATION DELETED ",{ fileName : "PublicationModel.hx", lineNumber : 497, className : "silex.publication.PublicationModel", methodName : "onDeleteSuccess"});
 		this.unload();
 	}
 	,trash: function(name) {
 		this.publicationService.trash(name,$bind(this,this.onDeleteSuccess),$bind(this,this.onSaveError));
 	}
 	,onCreateSuccess: function(name) {
-		haxe.Log.trace("PUBLICATION CREATED " + name,{ fileName : "PublicationModel.hx", lineNumber : 475, className : "silex.publication.PublicationModel", methodName : "onCreateSuccess"});
+		haxe.Log.trace("PUBLICATION CREATED " + name,{ fileName : "PublicationModel.hx", lineNumber : 482, className : "silex.publication.PublicationModel", methodName : "onCreateSuccess"});
 		this.load(name);
-	}
-	,create: function(newName) {
-		this.unload();
-		var publicationData = { html : "", css : ""};
-		this.publicationService.create(newName,publicationData,(function(f,a1) {
-			return function() {
-				return f(a1);
-			};
-		})($bind(this,this.onCreateSuccess),newName),$bind(this,this.onSaveError));
 	}
 	,onListResult: function(publications) {
 		var data = new Array();
@@ -8028,9 +8027,6 @@ silex.publication.PublicationService.prototype = $extend(silex.ServiceBase.proto
 	}
 	,trash: function(publicationName,onResult,onError) {
 		this.callServerMethod("trash",[publicationName],onResult,onError);
-	}
-	,create: function(publicationName,publicationData,onResult,onError) {
-		this.callServerMethod("create",[publicationName,publicationData],onResult,onError);
 	}
 	,setPublicationData: function(publicationName,publicationData,onResult,onError) {
 		this.callServerMethod("setPublicationData",[publicationName,publicationData],onResult,onError);
@@ -8222,6 +8218,7 @@ silex.publication.PublicationConstants.PUBLICATION_CONFIG_FOLDER = "conf/";
 silex.publication.PublicationConstants.PUBLICATION_CONFIG_FILE = "config.xml.php";
 silex.publication.PublicationConstants.PUBLICATION_FOLDER = "publications/";
 silex.publication.PublicationConstants.BUILDER_PUBLICATION_NAME = "admin";
+silex.publication.PublicationConstants.CREATION_TEMPLATE_PUBLICATION_NAME = "creation-template";
 silex.publication.PublicationModel.DEBUG_INFO = "PublicationModel class";
 silex.publication.PublicationModel.BUILDER_ROOT_NODE_CLASS = "silex-view";
 silex.publication.PublicationModel.ON_CHANGE = "onPublicationChange";

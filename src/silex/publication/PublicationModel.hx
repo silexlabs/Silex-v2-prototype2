@@ -454,19 +454,26 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	// Save
 	////////////////////////////////////////////////
 	/**
-	 * Create a publication
-	 * TODO: handle errors specific to creation
+	 * Obsolete: open "creation-template" and then use saveAs
+	 * Create a publication with current data
+	 * This has to be called after create, in order to give the new publication a name and actually save the data on disk
+	 * Get empty publication template
+	 * Use this before actually creating a new publication with doCreate
+	 * Load the data of the publication named "creation-template".
 	 */
-	public function create(newName:String){
-		unload();
-
-		var publicationData:PublicationData = {
-			html: "",
-			css: ""
-		}
-
-		// start the save process
-		publicationService.create(newName, publicationData, callback(onCreateSuccess, newName), onSaveError);
+/*	public function create(){
+		// Load the data of the publication named "creation-template".
+		load(PublicationConstants.CREATION_TEMPLATE_PUBLICATION_NAME);
+	}
+	/**
+	 * Obsolete: open "creation-template" and then use saveAs
+	 * Create a publication with current data
+	 * This has to be called after create, in order to give the new publication a name and actually save the data on disk
+	 */
+/*	public function doCreate(newName:String){
+		currentName = newName;
+		// start the creation process
+		publicationService.create(newName, callback(onCreateSuccess, newName), onSaveError);
 	}
 	/**
 	 * Creation success
@@ -492,7 +499,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	}
 	/**
 	 * Save a copy of the current publication with a new name
-	 * Save the current publication and then duplicate it
+	 * It will NOT save the current publication
 	 * It will NOT change currentName
 	 */
 	public function saveACopy(newName:String){
@@ -500,20 +507,23 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		if (currentData == null)
 			throw("Error: can not save the publication because no publication is loaded.");
 
-		// start the save process
-		save(callback(doSaveACopy, newName));
-	}
-	/**
-	 * Save a copy of the current publication with a new name
-	 * It will NOT save the current publication
-	 * It will NOT change currentName
-	 */
-	private function doSaveACopy(newName:String){
+		// reset model selection
+		var pageModel = PageModel.getInstance();
+		pageModel.hoveredItem = null;
+		pageModel.selectedItem = null;
+
+		// dispatch the event 
+		dispatchEvent(createEvent(ON_SAVE_START), debugInfo);
+
 		// check that a publication is loaded
 		if (currentData == null)
 			throw("Error: can not save the publication because no publication is loaded.");
 
-		publicationService.duplicate(currentName, newName, callback(save), onSaveError);
+		publicationService.duplicate(currentName, newName, callback(onCopyCreated, newName), onSaveError);
+	}
+	private function onCopyCreated(newName:String){
+		// Start the saving process
+		publicationService.setPublicationConfig(newName, currentConfig, callback(doSavePublicationData, null, newName), onSaveError);
 	}
 	/**
 	 * Save a publication with a new name
@@ -525,19 +535,21 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		if (currentData == null)
 			throw("Error: can not save the publication because no publication is loaded.");
 
-		var oldName = currentName;
-		currentName = newName;
-		publicationService.duplicate(oldName, newName, onSaveSuccess, onSaveError);
+		publicationService.duplicate(currentName, newName, callback(save, newName), onSaveError);
 	}
 	/**
 	 * Save a publication
 	 * Save the config data and then call doSavePublicationData to save publication data
 	 * Reset model selection
 	 */
-	public function save(successCallback:Void->Void=null){
+	public function save(newName:Null<String> = null, successCallback:Void->Void=null){
 		// check that a publication is loaded
 		if (currentData == null)
 			throw("Error: can not save the publication because no publication is loaded.");
+
+		// check the publication was renamed
+		if (newName != null)
+			currentName = newName;
 
 		// reset model selection
 		var pageModel = PageModel.getInstance();
@@ -553,10 +565,14 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	/**
 	 * Save the publication data
 	 */
-	private function doSavePublicationData(successCallback:Void->Void=null){
+	private function doSavePublicationData(successCallback:Void->Void=null, publicationName:Null<String>=null){
 		// default value for success
 		if (successCallback == null)
 			successCallback = onSaveSuccess;
+
+		// default value for publication name
+		if (publicationName == null)
+			publicationName = currentName;
 
 		// duplicate the model temporarily
 		var tempModelHead = headHtmlDom.cloneNode(true);
@@ -577,7 +593,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		";
 
 		// Start the saving process
-		publicationService.setPublicationData(currentName, currentData, successCallback, onSaveError);
+		publicationService.setPublicationData(publicationName, currentData, successCallback, onSaveError);
 	}
 	
 	/**
