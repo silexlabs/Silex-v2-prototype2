@@ -2348,10 +2348,7 @@ brix.component.navigation.Page.prototype = $extend(brix.component.ui.DisplayObje
 			while(_g2 < preventCloseByClassName.length) {
 				var className = preventCloseByClassName[_g2];
 				++_g2;
-				if(brix.util.DomTools.hasClass(layerNode,className)) {
-					hasForbiddenClass = true;
-					break;
-				}
+				if(brix.util.DomTools.hasClass(layerNode,className)) hasForbiddenClass = true;
 			}
 			if(!hasForbiddenClass) {
 				var layerInstances = this.getBrixApplication().getAssociatedComponents(layerNode,brix.component.navigation.Layer);
@@ -2445,10 +2442,11 @@ brix.component.navigation.link.LinkBase = function(rootElement,brixId) {
 	brix.component.ui.DisplayObject.call(this,rootElement,brixId);
 	brix.component.group.Groupable.startGroupable(this);
 	rootElement.addEventListener("click",$bind(this,this.onClick),false);
+	rootElement.style.cursor = "pointer";
 	if(rootElement.getAttribute("href") != null) {
 		this.linkName = StringTools.trim(rootElement.getAttribute("href"));
 		this.linkName = HxOverrides.substr(this.linkName,this.linkName.indexOf("#") + 1,null);
-	} else if(rootElement.getAttribute("data-href") != null) this.linkName = StringTools.trim(rootElement.getAttribute("data-href")); else haxe.Log.trace("Warning: the link has no href atribute (" + Std.string(rootElement) + ")",{ fileName : "LinkBase.hx", lineNumber : 99, className : "brix.component.navigation.link.LinkBase", methodName : "new"});
+	} else if(rootElement.getAttribute("data-href") != null) this.linkName = StringTools.trim(rootElement.getAttribute("data-href")); else haxe.Log.trace("Warning: the link has no href atribute (" + Std.string(rootElement) + ")",{ fileName : "LinkBase.hx", lineNumber : 101, className : "brix.component.navigation.link.LinkBase", methodName : "new"});
 	if(rootElement.getAttribute("target") != null && StringTools.trim(rootElement.getAttribute("target")) != "") this.targetAttr = StringTools.trim(rootElement.getAttribute("target"));
 };
 $hxClasses["brix.component.navigation.link.LinkBase"] = brix.component.navigation.link.LinkBase;
@@ -7756,7 +7754,6 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		page.rootElement.parentNode.removeChild(page.rootElement);
 		if(this.selectedItem == page) this.setSelectedItem(null);
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,publicationModel.headHtmlDom);
-		haxe.Log.trace("XXXX " + initialPageName,{ fileName : "PageModel.hx", lineNumber : 203, className : "silex.page.PageModel", methodName : "removePage"});
 		brix.component.navigation.Page.getPageByName(initialPageName,publicationModel.application.id,viewHtmlDom).open(null,null,true,true);
 		this.dispatchEvent(this.createEvent("onPageListChange"),"PageModel class");
 	}
@@ -7782,7 +7779,7 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		silex.layer.LayerModel.getInstance().addRequiredMasters(className,true);
 		var navBarNode = brix.util.DomTools.getSingleElement(publicationModel.viewHtmlDom,"nav",true);
 		var layerInstance = publicationModel.application.getAssociatedComponents(navBarNode,brix.component.navigation.Layer).first();
-		var textElement = silex.component.ComponentModel.getInstance().addComponent("div",layerInstance);
+		var textElement = silex.component.ComponentModel.getInstance().addComponent("div",layerInstance,navBarNode.childNodes.length);
 		silex.property.PropertyModel.getInstance().setAttribute(textElement,"title","Link to " + name);
 		silex.property.PropertyModel.getInstance().setProperty(textElement,"innerHTML","<p>" + name + "</p>");
 		silex.component.ComponentModel.getInstance().makeLinkToPage(textElement,className);
@@ -7947,7 +7944,7 @@ silex.publication.PublicationModel.__super__ = silex.ModelBase;
 silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onPublicationSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 625, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 634, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
 	}
 	,onSaveError: function(msg) {
 		this.dispatchEvent(this.createEvent("onPublicationSaveError"),this.debugInfo);
@@ -7966,16 +7963,18 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 			this.prepareForSave(modelChild);
 		}
 	}
-	,doSavePublicationData: function(successCallback) {
+	,doSavePublicationData: function(successCallback,publicationName) {
 		if(successCallback == null) successCallback = $bind(this,this.onSaveSuccess);
+		if(publicationName == null) publicationName = this.currentName;
 		var tempModelHead = this.headHtmlDom.cloneNode(true);
 		var tempModelBody = this.modelHtmlDom.cloneNode(true);
 		this.prepareForSave(tempModelBody);
 		this.currentData.html = "<HTML>\n\t\t<HEAD>\n\t\t\t" + tempModelHead.innerHTML + "\n\t\t</HEAD>\n\t\t<BODY class=\"silex-view\">\n\t\t\t" + tempModelBody.innerHTML + "\n\t\t</BODY>\n\t</HTML>\n\t\t";
-		this.publicationService.setPublicationData(this.currentName,this.currentData,successCallback,$bind(this,this.onSaveError));
+		this.publicationService.setPublicationData(publicationName,this.currentData,successCallback,$bind(this,this.onSaveError));
 	}
-	,save: function(successCallback) {
+	,save: function(newName,successCallback) {
 		if(this.currentData == null) throw "Error: can not save the publication because no publication is loaded.";
+		if(newName != null) this.currentName = newName;
 		var pageModel = silex.page.PageModel.getInstance();
 		pageModel.setHoveredItem(null);
 		pageModel.setSelectedItem(null);
@@ -7988,25 +7987,31 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 	}
 	,saveAs: function(newName) {
 		if(this.currentData == null) throw "Error: can not save the publication because no publication is loaded.";
-		var oldName = this.currentName;
-		this.currentName = newName;
-		this.publicationService.duplicate(oldName,newName,$bind(this,this.onSaveSuccess),$bind(this,this.onSaveError));
-	}
-	,doSaveACopy: function(newName) {
-		if(this.currentData == null) throw "Error: can not save the publication because no publication is loaded.";
-		this.publicationService.duplicate(this.currentName,newName,(function(f) {
-			return function() {
-				return f();
-			};
-		})($bind(this,this.save)),$bind(this,this.onSaveError));
-	}
-	,saveACopy: function(newName) {
-		if(this.currentData == null) throw "Error: can not save the publication because no publication is loaded.";
-		this.save((function(f,a1) {
+		this.publicationService.duplicate(this.currentName,newName,(function(f,a1) {
 			return function() {
 				return f(a1);
 			};
-		})($bind(this,this.doSaveACopy),newName));
+		})($bind(this,this.save),newName),$bind(this,this.onSaveError));
+	}
+	,onCopyCreated: function(newName) {
+		this.publicationService.setPublicationConfig(newName,this.currentConfig,(function(f,a1,a2) {
+			return function() {
+				return f(a1,a2);
+			};
+		})($bind(this,this.doSavePublicationData),null,newName),$bind(this,this.onSaveError));
+	}
+	,saveACopy: function(newName) {
+		if(this.currentData == null) throw "Error: can not save the publication because no publication is loaded.";
+		var pageModel = silex.page.PageModel.getInstance();
+		pageModel.setHoveredItem(null);
+		pageModel.setSelectedItem(null);
+		this.dispatchEvent(this.createEvent("onPublicationSaveStart"),this.debugInfo);
+		if(this.currentData == null) throw "Error: can not save the publication because no publication is loaded.";
+		this.publicationService.duplicate(this.currentName,newName,(function(f,a1) {
+			return function() {
+				return f(a1);
+			};
+		})($bind(this,this.onCopyCreated),newName),$bind(this,this.onSaveError));
 	}
 	,onDeleteSuccess: function() {
 		haxe.Log.trace("PUBLICATION DELETED ",{ fileName : "PublicationModel.hx", lineNumber : 490, className : "silex.publication.PublicationModel", methodName : "onDeleteSuccess"});
@@ -8015,18 +8020,17 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 	,trash: function(name) {
 		this.publicationService.trash(name,$bind(this,this.onDeleteSuccess),$bind(this,this.onSaveError));
 	}
-	,onCreateSuccess: function(name) {
-		haxe.Log.trace("PUBLICATION CREATED " + name,{ fileName : "PublicationModel.hx", lineNumber : 475, className : "silex.publication.PublicationModel", methodName : "onCreateSuccess"});
-		this.load(name);
-	}
-	,create: function(newName) {
-		this.unload();
-		var publicationData = { html : "", css : ""};
-		this.publicationService.create(newName,publicationData,(function(f,a1) {
+	,doCreate: function(newName) {
+		this.currentConfig.state = silex.publication.PublicationState.Private;
+		this.currentConfig.category = silex.publication.PublicationCategory.Publication;
+		this.publicationService.create(newName,(function(f,a1) {
 			return function() {
 				return f(a1);
 			};
-		})($bind(this,this.onCreateSuccess),newName),$bind(this,this.onSaveError));
+		})($bind(this,this.save),newName),$bind(this,this.onSaveError));
+	}
+	,create: function() {
+		this.load(silex.publication.PublicationConstants.CREATION_TEMPLATE_PUBLICATION_NAME);
 	}
 	,onListResult: function(publications) {
 		var data = new Array();
@@ -8202,8 +8206,8 @@ silex.publication.PublicationService.prototype = $extend(silex.ServiceBase.proto
 	,trash: function(publicationName,onResult,onError) {
 		this.callServerMethod("trash",[publicationName],onResult,onError);
 	}
-	,create: function(publicationName,publicationData,onResult,onError) {
-		this.callServerMethod("create",[publicationName,publicationData],onResult,onError);
+	,create: function(publicationName,onResult,onError) {
+		this.callServerMethod("create",[publicationName],onResult,onError);
 	}
 	,setPublicationData: function(publicationName,publicationData,onResult,onError) {
 		this.callServerMethod("setPublicationData",[publicationName,publicationData],onResult,onError);
@@ -8934,55 +8938,93 @@ $hxClasses["silex.ui.toolbox.MenuController"] = silex.ui.toolbox.MenuController;
 silex.ui.toolbox.MenuController.__name__ = ["silex","ui","toolbox","MenuController"];
 silex.ui.toolbox.MenuController.__super__ = brix.component.ui.DisplayObject;
 silex.ui.toolbox.MenuController.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
-	onClick: function(e) {
+	openFileBrowser: function() {
+		silex.ui.dialog.FileBrowserDialog.message = "Manage your files and click \"close\"";
+		brix.component.navigation.Page.openPage("file-browser-dialog",true,null,null,this.brixInstanceId);
+	}
+	,renamePage: function() {
+		var newName = js.Lib.window.prompt("What name do your want to give to the page " + silex.page.PageModel.getInstance().selectedItem.name + "?");
+		if(newName != null) silex.page.PageModel.getInstance().renamePage(silex.page.PageModel.getInstance().selectedItem,newName);
+	}
+	,delPage: function() {
+		var confirm = js.Lib.window.confirm("I am about to delete the page " + silex.page.PageModel.getInstance().selectedItem.name + ". Are you sure?");
+		if(confirm == true) silex.page.PageModel.getInstance().removePage(silex.page.PageModel.getInstance().selectedItem);
+	}
+	,addPage: function() {
+		var newName = js.Lib.window.prompt("What name for your new page?");
+		if(newName != null) silex.page.PageModel.getInstance().addPage(newName);
+	}
+	,savePublicationCopy: function() {
+		var newName = js.Lib.window.prompt("What name for your copy?",silex.publication.PublicationModel.getInstance().currentName);
+		if(newName != null) silex.publication.PublicationModel.getInstance().saveACopy(newName);
+	}
+	,savePublicationAs: function() {
+		var newName = js.Lib.window.prompt("New name for your publication?",silex.publication.PublicationModel.getInstance().currentName);
+		if(newName != null) silex.publication.PublicationModel.getInstance().saveAs(newName);
+	}
+	,savePublication: function() {
+		if(silex.publication.PublicationModel.getInstance().currentName == silex.publication.PublicationConstants.CREATION_TEMPLATE_PUBLICATION_NAME) {
+			var newName = js.Lib.window.prompt("New name for your publication?","");
+			if(newName != null && newName != "") silex.publication.PublicationModel.getInstance().doCreate(newName);
+		} else silex.publication.PublicationModel.getInstance().save();
+	}
+	,viewPublication: function() {
+		js.Lib.window.open("../" + silex.publication.PublicationModel.getInstance().currentName,"_blank");
+	}
+	,closePublication: function() {
+		silex.publication.PublicationModel.getInstance().unload();
+	}
+	,openPublication: function() {
+		brix.component.navigation.Page.openPage("open-dialog",true,null,null,this.brixInstanceId);
+	}
+	,trashPublication: function() {
+		var confirm = js.Lib.window.confirm("I am about to trash the publication " + silex.publication.PublicationModel.getInstance().currentName + ". Are you sure?");
+		if(confirm == true) silex.publication.PublicationModel.getInstance().trash(silex.publication.PublicationModel.getInstance().currentName);
+	}
+	,createPublication: function() {
+		silex.publication.PublicationModel.getInstance().create();
+	}
+	,onClick: function(e) {
 		e.preventDefault();
 		var target = e.target;
 		var itemName = target.getAttribute("data-menu-item");
 		if(itemName == null) itemName = target.parentNode.getAttribute("data-menu-item");
 		switch(itemName) {
 		case "create-publication":
-			var newName = js.Lib.window.prompt("I need a name for your publication.",silex.publication.PublicationModel.getInstance().currentName);
-			if(newName != null) silex.publication.PublicationModel.getInstance().create(newName);
+			this.createPublication();
 			break;
 		case "trash-publication":
-			var confirm = js.Lib.window.confirm("I am about to trash the publication " + silex.publication.PublicationModel.getInstance().currentName + ". Are you sure?");
-			if(confirm == true) silex.publication.PublicationModel.getInstance().trash(silex.publication.PublicationModel.getInstance().currentName);
+			this.trashPublication();
 			break;
 		case "open-publication":
-			brix.component.navigation.Page.openPage("open-dialog",true,null,null,this.brixInstanceId);
+			this.openPublication();
 			break;
 		case "close-publication":
-			silex.publication.PublicationModel.getInstance().unload();
+			this.closePublication();
 			break;
 		case "view-publication":
-			js.Lib.window.open("../" + silex.publication.PublicationModel.getInstance().currentName,"_blank");
+			this.viewPublication();
 			break;
 		case "save-publication":
-			silex.publication.PublicationModel.getInstance().save();
+			this.savePublication();
 			break;
 		case "save-publication-as":
-			var newName = js.Lib.window.prompt("New name for your publication?",silex.publication.PublicationModel.getInstance().currentName);
-			if(newName != null) silex.publication.PublicationModel.getInstance().saveAs(newName);
+			this.savePublicationAs();
 			break;
 		case "save-publication-copy":
-			var newName = js.Lib.window.prompt("What name for your copy?",silex.publication.PublicationModel.getInstance().currentName);
-			if(newName != null) silex.publication.PublicationModel.getInstance().saveACopy(newName);
+			this.savePublicationCopy();
 			break;
 		case "add-page":
-			var newName = js.Lib.window.prompt("What name for your new page?");
-			if(newName != null) silex.page.PageModel.getInstance().addPage(newName);
+			this.addPage();
 			break;
 		case "del-page":
-			var confirm = js.Lib.window.confirm("I am about to delete the page " + silex.page.PageModel.getInstance().selectedItem.name + ". Are you sure?");
-			if(confirm == true) silex.page.PageModel.getInstance().removePage(silex.page.PageModel.getInstance().selectedItem);
+			this.delPage();
 			break;
 		case "rename-page":
-			var newName = js.Lib.window.prompt("What name do your want to give to the page " + silex.page.PageModel.getInstance().selectedItem.name + "?");
-			if(newName != null) silex.page.PageModel.getInstance().renamePage(silex.page.PageModel.getInstance().selectedItem,newName);
+			this.renamePage();
 			break;
 		case "open-file-browser":
-			silex.ui.dialog.FileBrowserDialog.message = "Manage your files and click \"close\"";
-			brix.component.navigation.Page.openPage("file-browser-dialog",true,null,null,this.brixInstanceId);
+			this.openFileBrowser();
 			break;
 		}
 	}
@@ -10361,6 +10403,7 @@ silex.publication.PublicationConstants.PUBLICATION_CONFIG_FOLDER = "conf/";
 silex.publication.PublicationConstants.PUBLICATION_CONFIG_FILE = "config.xml.php";
 silex.publication.PublicationConstants.PUBLICATION_FOLDER = "publications/";
 silex.publication.PublicationConstants.BUILDER_PUBLICATION_NAME = "admin";
+silex.publication.PublicationConstants.CREATION_TEMPLATE_PUBLICATION_NAME = "creation-template";
 silex.publication.PublicationModel.DEBUG_INFO = "PublicationModel class";
 silex.publication.PublicationModel.BUILDER_ROOT_NODE_CLASS = "silex-view";
 silex.publication.PublicationModel.ON_CHANGE = "onPublicationChange";
@@ -10442,5 +10485,3 @@ function $hxExpose(src, path) {
 	o[parts[parts.length-1]] = src;
 }
 })();
-
-//@ sourceMappingURL=silex-builder.js.map

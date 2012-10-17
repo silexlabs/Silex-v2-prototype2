@@ -32,6 +32,10 @@ class PublicationConstants
 	 * name of the publication which contains Silex builder
 	 */
 	public static var BUILDER_PUBLICATION_NAME = "admin";
+	/** 
+	 * name of the publication which is used to create a new template
+	 */
+	public static var CREATION_TEMPLATE_PUBLICATION_NAME = "creation-template";
 }
 /**
  * Structure used to store the items of the publication list

@@ -55,15 +55,17 @@ class PublicationService extends ServiceBase{
 	}
 	/**
 	 * Set the publication data
+	 * todo: check that the publication is not utils or theme/template
 	 */
 	public function setPublicationData(publicationName:String, publicationData:PublicationData, onResult:Void->Void, onError:String->Void=null) {
 		callServerMethod("setPublicationData", [publicationName, publicationData], onResult, onError);
 	}
 	/**
-	 * Create a publication given a publication data structure
+	 * Create a publication given an initial publication data structure
+	 * Use the publication named "creation-template".
 	 */
-	public function create(publicationName:String, publicationData:PublicationData, onResult:Void->Void, onError:String->Void=null) {
-		callServerMethod("create", [publicationName, publicationData], onResult, onError);
+	public function create(publicationName:String, onResult:Void->Void, onError:String->Void=null) {
+		callServerMethod("create", [publicationName], onResult, onError);
 	}
 	/**
 	 * Move a publication to trash
@@ -111,6 +113,46 @@ class PublicationService extends ServiceBase{
 		super(SERVICE_NAME);
 	}
 	/**
+	 * build the publication folder path
+	 */
+	private function getPublicationFolder(publicationName:String):String{
+		return PublicationConstants.PUBLICATION_FOLDER + publicationName + "/";
+	}
+	/**
+	 * Duplicate a publication
+	 * this private method is used in create, duplicate, rename...
+	 * if newConfigData is provided, each field which is not null is pushed in the new publication config
+	 * todo: handle empty names, same names, creation errors
+	 */
+	private function doDuplicate(srcPublicationName:String, publicationName:String, newConfigData:PublicationConfigData=null) {
+		try{
+			// retrieve the publication config data
+			var configData = getPublicationConfig(srcPublicationName);
+
+			// create the new publication
+			FileSystemTools.recursiveCopy(getPublicationFolder(srcPublicationName), getPublicationFolder(publicationName));
+
+			// update with actual date and author
+			configData.lastChange.author = "silexlabs";
+			configData.lastChange.date = Date.now();
+
+			// update with the provided data
+			if (newConfigData != null){
+				for (fieldName in Reflect.fields(newConfigData)){
+					var value = Reflect.field(newConfigData, fieldName);
+					if(value!=null){
+						Reflect.setField(configData, fieldName, value);
+					}
+				}
+			}
+			// set config data
+			setPublicationConfig(publicationName, configData);
+		}
+		catch(e:Dynamic){
+			throw("doDuplicate("+srcPublicationName+", "+publicationName+", "+newConfigData+") error: "+e);
+		}
+	}
+	/**
 	 * List available publication matching a state
 	 * For the states enum use like Published(null) to have all Published publications
 	 * @return 	Hash with the publications names as key and the publications config as value
@@ -126,7 +168,7 @@ class PublicationService extends ServiceBase{
 			if (!StringTools.startsWith(name, ".") 
 				&& name.indexOf("..")<0){				
 				// check that the publication folder is not a file
-				var path = PublicationConstants.PUBLICATION_FOLDER + name + "/";
+				var path = getPublicationFolder(name);
 				if (FileSystem.isDirectory(path)){
 					var configData = getPublicationConfig(name);
 					// variable used to know if we should return this publication or not
@@ -184,39 +226,32 @@ class PublicationService extends ServiceBase{
 		var publications:Hash<PublicationConfigData> = getPublications([Trashed(null)]);
 		// browse all publications
 		for (publicationName in publications.keys()){
-			FileSystemTools.recursiveDelete(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/");
+			FileSystemTools.recursiveDelete(getPublicationFolder(publicationName));
 		}
 	}
 	/**
-	 * Create a publication given a publication data structure
+	 * Obsolete: open "creation-template" and then use saveAs
+	 * Create a publication out of the publication named "creation-template".
+	 * @param 	publicationName 	the template from which to create the new publication
 	 */
-	public function create(publicationName:String, publicationData:PublicationData) {
+	public function create(publicationName:String) {
 		try{
 			// update with actual date and author
 			var configData:PublicationConfigData = {
-				state : Private,
-				category : Publication,
+				state : null, // this is changed in the client side (PublicationModel::doCreate)
+				category : null, // this is changed in the client side (PublicationModel::doCreate)
 				creation : {
 					author : "silexlabs", 
 					date : Date.now()
 				}, 
-				lastChange : {
-					author : "silexlabs", 
-					date : Date.now()
-				},
+				lastChange : null,
 				debugModeAction: null
 			};
-			// create the empty directory for the publication
-			FileSystem.createDirectory(PublicationConstants.PUBLICATION_FOLDER + publicationName);
-			// create other empty directories
-			FileSystem.createDirectory(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/" + PublicationConstants.PUBLICATION_CONFIG_FOLDER);
-			// set the publication config
-			setPublicationConfig(publicationName, configData);
-			// set the publication data
-			setPublicationData(publicationName, publicationData);
+			// duplicate with a new creation author and date
+			doDuplicate(PublicationConstants.CREATION_TEMPLATE_PUBLICATION_NAME, publicationName, configData);
 		}
 		catch(e:Dynamic){
-			throw(e);
+			throw("create error: "+e);
 		}
 	}
 	/**
@@ -224,33 +259,26 @@ class PublicationService extends ServiceBase{
 	 */
 	public function duplicate(srcPublicationName:String, publicationName:String) {
 		try{
-			// retrieve the application data
-			var publicationData:PublicationData = getPublicationData(srcPublicationName);
-
-			// create the new publication
-			create(publicationName, publicationData);
+			// duplicate without changing creation author and date
+			doDuplicate(srcPublicationName, publicationName);
 		}
 		catch(e:Dynamic){
-			throw(e);
+			throw("duplicate("+srcPublicationName+", "+publicationName+") error: "+e);
 		}
 	}
 	/**
 	 * Rename an existing publication
-	 * todo: handle empty names, security, same names, creation errors
 	 */
 	public function rename(srcPublicationName:String, publicationName:String) {
 		try{
-			// retrieve the application data
-			var publicationData:PublicationData = getPublicationData(srcPublicationName);
-
-			// create the new publication
-			create(publicationName, publicationData);
+			// duplicate without changing creation author and date
+			doDuplicate(srcPublicationName, publicationName);
 
 			// permanently delete this publication
-			FileSystemTools.recursiveDelete(PublicationConstants.PUBLICATION_FOLDER+srcPublicationName);
+			FileSystemTools.recursiveDelete(getPublicationFolder(srcPublicationName));
 		}
 		catch(e:Dynamic){
-			throw(e);
+			throw("rename("+srcPublicationName+", "+publicationName+") error: "+e);
 		}
 	}
 	/**
@@ -264,12 +292,12 @@ class PublicationService extends ServiceBase{
 
 			// trash state
 			configData.state = Trashed({
-				author: "todo: authors and security",
+				author: "silexlabs",
 				date: Date.now()
 			});
 
 			// update with actual date and author
-			configData.lastChange.author = "to do this author";
+			configData.lastChange.author = "silexlabs";
 			configData.lastChange.date = Date.now();
 			
 			// set config data
@@ -277,7 +305,7 @@ class PublicationService extends ServiceBase{
 
 		}
 		catch(e:Dynamic){
-			throw(e);
+			throw("trash("+publicationName+") error: "+e);
 		}
 	}
 	/**
@@ -285,15 +313,15 @@ class PublicationService extends ServiceBase{
 	 */
 	public function getPublicationData(publicationName:String):Null<PublicationData> {
 		try{
-			var html = File.getContent(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/" + PublicationConstants.PUBLICATION_HTML_FILE);
-			var css = File.getContent(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/" + PublicationConstants.PUBLICATION_CSS_FILE);
+			var html = File.getContent(getPublicationFolder(publicationName) + PublicationConstants.PUBLICATION_HTML_FILE);
+			var css = File.getContent(getPublicationFolder(publicationName) + PublicationConstants.PUBLICATION_CSS_FILE);
 			return {
 				html : html,
 				css: css,
 			};
 		}
 		catch(e:Dynamic){
-			throw(e);
+			throw("getPublicationData("+publicationName+") error: "+e);
 		}
 	}
 	/**
@@ -301,11 +329,11 @@ class PublicationService extends ServiceBase{
 	 */
 	public function setPublicationData(publicationName:String, publicationData:PublicationData) {
 		try{
-			File.saveContent(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/" + PublicationConstants.PUBLICATION_HTML_FILE, publicationData.html);
-			File.saveContent(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/" + PublicationConstants.PUBLICATION_CSS_FILE, publicationData.css);
+			File.saveContent(getPublicationFolder(publicationName) + PublicationConstants.PUBLICATION_HTML_FILE, publicationData.html);
+			File.saveContent(getPublicationFolder(publicationName) + PublicationConstants.PUBLICATION_CSS_FILE, publicationData.css);
 		}
 		catch(e:Dynamic){
-			throw(e);
+			throw("setPublicationData("+publicationName+", "+publicationData+") error: "+e);
 		}
 	}
 	/**
@@ -314,11 +342,11 @@ class PublicationService extends ServiceBase{
 	 */
 	public function getPublicationConfig(publicationName:String):PublicationConfigData {
 		try{
-			var config = new PublicationConfig(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/" + PublicationConstants.PUBLICATION_CONFIG_FOLDER + PublicationConstants.PUBLICATION_CONFIG_FILE);
+			var config = new PublicationConfig(getPublicationFolder(publicationName) + PublicationConstants.PUBLICATION_CONFIG_FOLDER + PublicationConstants.PUBLICATION_CONFIG_FILE);
 			return config.configData;
 		}
 		catch(e:Dynamic){
-			throw(e);
+			throw("getPublicationConfig("+publicationName+") error: "+e);
 		}
 	}
 	/**
@@ -335,10 +363,10 @@ class PublicationService extends ServiceBase{
 				lastChange : configData.lastChange,
 				debugModeAction : configData.debugModeAction,
 			}
-			config.saveData(PublicationConstants.PUBLICATION_FOLDER + publicationName + "/" + PublicationConstants.PUBLICATION_CONFIG_FOLDER + "/" + PublicationConstants.PUBLICATION_CONFIG_FILE);
+			config.saveData(getPublicationFolder(publicationName) + PublicationConstants.PUBLICATION_CONFIG_FOLDER + PublicationConstants.PUBLICATION_CONFIG_FILE);
 		}
 		catch(e:Dynamic){
-			throw(e);
+			throw("setPublicationConfig("+publicationName+", "+configData+") error: "+e);
 		}
 	}
 #end

@@ -7,6 +7,7 @@ import brix.component.navigation.Page;
 import brix.component.ui.DisplayObject;
 import brix.util.DomTools;
 
+import silex.publication.PublicationData;
 import silex.publication.PublicationModel;
 import silex.page.PageModel;
 import silex.ui.dialog.FileBrowserDialog;
@@ -47,54 +48,94 @@ class MenuController extends DisplayObject
 			// file
 			/////////////
 			case "create-publication":
-				var newName = Lib.window.prompt("I need a name for your publication.", PublicationModel.getInstance().currentName);
-				if (newName != null)
-					PublicationModel.getInstance().create(newName);
+				createPublication();
 			case "trash-publication":
-				var confirm = Lib.window.confirm("I am about to trash the publication "+PublicationModel.getInstance().currentName+". Are you sure?");
-				if (confirm == true)
-					PublicationModel.getInstance().trash(PublicationModel.getInstance().currentName);
+				trashPublication();
 			case "open-publication":
-				Page.openPage("open-dialog", true, null, null, brixInstanceId);
+				openPublication();
 			case "close-publication":
-				PublicationModel.getInstance().unload();
+				closePublication();
 			case "view-publication":
-				Lib.window.open("../"+PublicationModel.getInstance().currentName, '_blank');
+				viewPublication();
 			case "save-publication":
-				PublicationModel.getInstance().save();
+				savePublication();
 			case "save-publication-as":
-				var newName = Lib.window.prompt("New name for your publication?", PublicationModel.getInstance().currentName);
-				if (newName != null)
-					PublicationModel.getInstance().saveAs(newName);
+				savePublicationAs();
 			case "save-publication-copy":
-				var newName = Lib.window.prompt("What name for your copy?", PublicationModel.getInstance().currentName);
-				if (newName != null)
-					PublicationModel.getInstance().saveACopy(newName);
+				savePublicationCopy();
 
 			/////////////
 			// page
 			/////////////
 			case "add-page":
-				var newName = Lib.window.prompt("What name for your new page?");
-				if (newName != null)
-					PageModel.getInstance().addPage(newName);
+				addPage();
 			case "del-page":
-				// remove the page
-				var confirm = Lib.window.confirm("I am about to delete the page "+PageModel.getInstance().selectedItem.name+". Are you sure?");
-				if (confirm == true)
-					PageModel.getInstance().removePage(PageModel.getInstance().selectedItem);
+				delPage();
 			case "rename-page":
-				var newName = Lib.window.prompt("What name do your want to give to the page "+PageModel.getInstance().selectedItem.name+"?");
-				if (newName != null)
-					PageModel.getInstance().renamePage(PageModel.getInstance().selectedItem, newName);
-
+				renamePage();
 			/////////////
 			// files
 			/////////////
 			case "open-file-browser":
-				FileBrowserDialog.message = "Manage your files and click \"close\"";
-				Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, brixInstanceId);
+				openFileBrowser();
 		}
-
+	}
+	public function createPublication(){
+		PublicationModel.getInstance().create();
+	}
+	public function trashPublication(){
+		var confirm = Lib.window.confirm("I am about to trash the publication "+PublicationModel.getInstance().currentName+". Are you sure?");
+		if (confirm == true)
+			PublicationModel.getInstance().trash(PublicationModel.getInstance().currentName);
+	}
+	public function openPublication(){
+		Page.openPage("open-dialog", true, null, null, brixInstanceId);
+	}
+	public function closePublication(){
+		PublicationModel.getInstance().unload();
+	}
+	public function viewPublication(){
+		Lib.window.open("../"+PublicationModel.getInstance().currentName, '_blank');
+	}
+	public function savePublication(){
+		// check the case where a new publication is about to be created
+		if (PublicationModel.getInstance().currentName == PublicationConstants.CREATION_TEMPLATE_PUBLICATION_NAME){
+			var newName = Lib.window.prompt("New name for your publication?", "");
+			if (newName != null && newName!="")
+				PublicationModel.getInstance().doCreate(newName);
+		}
+		else{
+			PublicationModel.getInstance().save();
+		}
+	}
+	public function savePublicationAs(){
+		var newName = Lib.window.prompt("New name for your publication?", PublicationModel.getInstance().currentName);
+		if (newName != null)
+			PublicationModel.getInstance().saveAs(newName);
+	}
+	public function savePublicationCopy(){
+		var newName = Lib.window.prompt("What name for your copy?", PublicationModel.getInstance().currentName);
+		if (newName != null)
+			PublicationModel.getInstance().saveACopy(newName);
+	}
+	public function addPage(){
+		var newName = Lib.window.prompt("What name for your new page?");
+		if (newName != null)
+			PageModel.getInstance().addPage(newName);
+	}
+	public function delPage(){
+		// remove the page
+		var confirm = Lib.window.confirm("I am about to delete the page "+PageModel.getInstance().selectedItem.name+". Are you sure?");
+		if (confirm == true)
+			PageModel.getInstance().removePage(PageModel.getInstance().selectedItem);
+	}
+	public function renamePage(){
+		var newName = Lib.window.prompt("What name do your want to give to the page "+PageModel.getInstance().selectedItem.name+"?");
+		if (newName != null)
+			PageModel.getInstance().renamePage(PageModel.getInstance().selectedItem, newName);
+	}
+	public function openFileBrowser(){
+		FileBrowserDialog.message = "Manage your files and click \"close\"";
+		Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, brixInstanceId);
 	}
 }
