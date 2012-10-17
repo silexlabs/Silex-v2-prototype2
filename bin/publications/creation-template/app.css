@@ -8,6 +8,14 @@
 	max-width: 800px;
 	padding: 0;
 }
+/* loading */
+.silex-view{
+	visibility: hidden;
+}
+.loading{
+	visibility: visible;
+}
+/* /loading */
 .silex-view .Page{
 	display: none;
 }

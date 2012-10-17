@@ -8,35 +8,17 @@ body{
 	height:100% !important;
 	max-width: none !important;
 	max-height: none !important;
-
-/* for loading */
-	visibility: hidden;
 }
-
+/* loading */
 .silex-view{
 	visibility: hidden;
 }
 .loading{
 	visibility: visible;
 }
+/* /loading */
 .Page{
 	display: none;
-}
-button a{
-	color: black;
-	text-decoration: none;
-}
-img{
-	
-}
-p{
-
-}
-.list ul{
-
-}
-.list li{
-
 }
 
 /* 		Publication styles 			 */

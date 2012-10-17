@@ -10485,5 +10485,3 @@ function $hxExpose(src, path) {
 	o[parts[parts.length-1]] = src;
 }
 })();
-
-//@ sourceMappingURL=silex-builder.js.map
