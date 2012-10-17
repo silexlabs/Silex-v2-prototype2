@@ -43,18 +43,21 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 
 Bugs
-* create publication
-* images débordent sur la boite a outils
+* bug visuel text editor   
+* dupliquer save as => manque media
+* drop zone doit etre par rapport a la  souris, pas par rapport au centre du marker (ou bien mettre un style "dragging" sur le marker pendant le drag pour mettre un max-width)
+* select un container puis un comp d un autre container => marque pas le bon nom dans le bidule contextuel
 * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
 
 en cours
+- themes css
 - check contextes des css
 - ouverture page initiale apres suppression et creation de pages
 - structure de base d une publicaiton
   * pas possible d effacer les conteneurs de base
   * cration de publication = prend le contenu "empty-template" et le css de "bin/themes/default.css"
   * dans PublicationCategory, remplacer theme par template
-
+- mettre a jour les tests unitaires cote serveur
 
 == edition of properties ==
 

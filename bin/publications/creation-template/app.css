@@ -8,22 +8,28 @@
 	max-width: 800px;
 	padding: 0;
 }
-.Page{
+/* loading */
+.silex-view{
+	visibility: hidden;
+}
+.loading{
+	visibility: visible;
+}
+/* /loading */
+.silex-view .Page{
 	display: none;
 }
-.Layer{
+.silex-view .Layer{
 	padding-top: 10px;
 	padding-bottom: 10px;
 /*	border-color: rgba(255,0,0,0.75);
 	border-style: dotted; */
 }
-.side-bar{
+.silex-view .side-bar{
 	float: left;
 }
-.nav-link{
-	border-left: thin solid;
-	border-right: thin solid;
-	padding: 10px;
+.silex-view .nav>*{
+	display: inline-block;
 }
 
 /* 		Publication styles 			 */
