@@ -2333,10 +2333,11 @@ brix.component.navigation.link.LinkBase = function(rootElement,brixId) {
 	brix.component.ui.DisplayObject.call(this,rootElement,brixId);
 	brix.component.group.Groupable.startGroupable(this);
 	rootElement.addEventListener("click",$bind(this,this.onClick),false);
+	rootElement.style.cursor = "pointer";
 	if(rootElement.getAttribute("href") != null) {
 		this.linkName = StringTools.trim(rootElement.getAttribute("href"));
 		this.linkName = HxOverrides.substr(this.linkName,this.linkName.indexOf("#") + 1,null);
-	} else if(rootElement.getAttribute("data-href") != null) this.linkName = StringTools.trim(rootElement.getAttribute("data-href")); else haxe.Log.trace("Warning: the link has no href atribute (" + Std.string(rootElement) + ")",{ fileName : "LinkBase.hx", lineNumber : 99, className : "brix.component.navigation.link.LinkBase", methodName : "new"});
+	} else if(rootElement.getAttribute("data-href") != null) this.linkName = StringTools.trim(rootElement.getAttribute("data-href")); else haxe.Log.trace("Warning: the link has no href atribute (" + Std.string(rootElement) + ")",{ fileName : "LinkBase.hx", lineNumber : 101, className : "brix.component.navigation.link.LinkBase", methodName : "new"});
 	if(rootElement.getAttribute("target") != null && StringTools.trim(rootElement.getAttribute("target")) != "") this.targetAttr = StringTools.trim(rootElement.getAttribute("target"));
 };
 $hxClasses["brix.component.navigation.link.LinkBase"] = brix.component.navigation.link.LinkBase;
@@ -7609,7 +7610,7 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		silex.layer.LayerModel.getInstance().addRequiredMasters(className,true);
 		var navBarNode = brix.util.DomTools.getSingleElement(publicationModel.viewHtmlDom,"nav",true);
 		var layerInstance = publicationModel.application.getAssociatedComponents(navBarNode,brix.component.navigation.Layer).first();
-		var textElement = silex.component.ComponentModel.getInstance().addComponent("div",layerInstance);
+		var textElement = silex.component.ComponentModel.getInstance().addComponent("div",layerInstance,navBarNode.childNodes.length);
 		silex.property.PropertyModel.getInstance().setAttribute(textElement,"title","Link to " + name);
 		silex.property.PropertyModel.getInstance().setProperty(textElement,"innerHTML","<p>" + name + "</p>");
 		silex.component.ComponentModel.getInstance().makeLinkToPage(textElement,className);
@@ -7774,7 +7775,7 @@ silex.publication.PublicationModel.__super__ = silex.ModelBase;
 silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onPublicationSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 641, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 634, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
 	}
 	,onSaveError: function(msg) {
 		this.dispatchEvent(this.createEvent("onPublicationSaveError"),this.debugInfo);
@@ -7844,15 +7845,23 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		})($bind(this,this.onCopyCreated),newName),$bind(this,this.onSaveError));
 	}
 	,onDeleteSuccess: function() {
-		haxe.Log.trace("PUBLICATION DELETED ",{ fileName : "PublicationModel.hx", lineNumber : 497, className : "silex.publication.PublicationModel", methodName : "onDeleteSuccess"});
+		haxe.Log.trace("PUBLICATION DELETED ",{ fileName : "PublicationModel.hx", lineNumber : 490, className : "silex.publication.PublicationModel", methodName : "onDeleteSuccess"});
 		this.unload();
 	}
 	,trash: function(name) {
 		this.publicationService.trash(name,$bind(this,this.onDeleteSuccess),$bind(this,this.onSaveError));
 	}
-	,onCreateSuccess: function(name) {
-		haxe.Log.trace("PUBLICATION CREATED " + name,{ fileName : "PublicationModel.hx", lineNumber : 482, className : "silex.publication.PublicationModel", methodName : "onCreateSuccess"});
-		this.load(name);
+	,doCreate: function(newName) {
+		this.currentConfig.state = silex.publication.PublicationState.Private;
+		this.currentConfig.category = silex.publication.PublicationCategory.Publication;
+		this.publicationService.create(newName,(function(f,a1) {
+			return function() {
+				return f(a1);
+			};
+		})($bind(this,this.save),newName),$bind(this,this.onSaveError));
+	}
+	,create: function() {
+		this.load(silex.publication.PublicationConstants.CREATION_TEMPLATE_PUBLICATION_NAME);
 	}
 	,onListResult: function(publications) {
 		var data = new Array();
@@ -8027,6 +8036,9 @@ silex.publication.PublicationService.prototype = $extend(silex.ServiceBase.proto
 	}
 	,trash: function(publicationName,onResult,onError) {
 		this.callServerMethod("trash",[publicationName],onResult,onError);
+	}
+	,create: function(publicationName,onResult,onError) {
+		this.callServerMethod("create",[publicationName],onResult,onError);
 	}
 	,setPublicationData: function(publicationName,publicationData,onResult,onError) {
 		this.callServerMethod("setPublicationData",[publicationName,publicationData],onResult,onError);

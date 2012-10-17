@@ -43,8 +43,6 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 
 Bugs
-* create publication 
-  - remettre le create juste pour faire saveas avec un reset de la creation date
 * bug visuel text editor   
 * dupliquer save as => manque media
 * drop zone doit etre par rapport a la  souris, pas par rapport au centre du marker (ou bien mettre un style "dragging" sur le marker pendant le drag pour mettre un max-width)

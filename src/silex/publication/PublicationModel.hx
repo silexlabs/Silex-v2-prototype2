@@ -454,33 +454,26 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	// Save
 	////////////////////////////////////////////////
 	/**
-	 * Obsolete: open "creation-template" and then use saveAs
 	 * Create a publication with current data
 	 * This has to be called after create, in order to give the new publication a name and actually save the data on disk
 	 * Get empty publication template
 	 * Use this before actually creating a new publication with doCreate
 	 * Load the data of the publication named "creation-template".
 	 */
-/*	public function create(){
+	public function create(){
 		// Load the data of the publication named "creation-template".
 		load(PublicationConstants.CREATION_TEMPLATE_PUBLICATION_NAME);
 	}
 	/**
-	 * Obsolete: open "creation-template" and then use saveAs
 	 * Create a publication with current data
 	 * This has to be called after create, in order to give the new publication a name and actually save the data on disk
 	 */
-/*	public function doCreate(newName:String){
-		currentName = newName;
+	public function doCreate(newName:String){
+		// updatethe publication type
+		currentConfig.state = Private;
+		currentConfig.category = Publication;
 		// start the creation process
-		publicationService.create(newName, callback(onCreateSuccess, newName), onSaveError);
-	}
-	/**
-	 * Creation success
-	 */
-	private function onCreateSuccess(name:String):Void{
-		trace("PUBLICATION CREATED "+name);
-		load(name);
+		publicationService.create(newName, callback(save, newName), onSaveError);
 	}
 	/**
 	 * Delete a publication

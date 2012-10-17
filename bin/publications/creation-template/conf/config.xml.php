@@ -7,7 +7,7 @@
 		?>
 	-->
 <state>Private</state>
-<category>Theme</category>
+<category>Utility</category>
 <creation>
 	<author>silexlabs</author>
 	<date>2021-12-02 00:00:00</date>

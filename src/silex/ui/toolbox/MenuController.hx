@@ -81,7 +81,7 @@ class MenuController extends DisplayObject
 		}
 	}
 	public function createPublication(){
-		PublicationModel.getInstance().load(PublicationConstants.CREATION_TEMPLATE_PUBLICATION_NAME);
+		PublicationModel.getInstance().create();
 	}
 	public function trashPublication(){
 		var confirm = Lib.window.confirm("I am about to trash the publication "+PublicationModel.getInstance().currentName+". Are you sure?");
@@ -100,7 +100,9 @@ class MenuController extends DisplayObject
 	public function savePublication(){
 		// check the case where a new publication is about to be created
 		if (PublicationModel.getInstance().currentName == PublicationConstants.CREATION_TEMPLATE_PUBLICATION_NAME){
-			savePublicationAs();
+			var newName = Lib.window.prompt("New name for your publication?", "");
+			if (newName != null && newName!="")
+				PublicationModel.getInstance().doCreate(newName);
 		}
 		else{
 			PublicationModel.getInstance().save();

@@ -20,9 +20,8 @@
 .silex-view .side-bar{
 	float: left;
 }
-.silex-view .nav-link{
-	border-left: thin solid;
-	border-right: thin solid;
+.silex-view .nav>*{
+	display: inline-block;
 }
 
 /* 		Publication styles 			 */

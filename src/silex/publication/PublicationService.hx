@@ -61,12 +61,11 @@ class PublicationService extends ServiceBase{
 		callServerMethod("setPublicationData", [publicationName, publicationData], onResult, onError);
 	}
 	/**
-	 * Obsolete: open "creation-template" and then use saveAs
 	 * Create a publication given an initial publication data structure
 	 * Use the publication named "creation-template".
 	 */
-/*	public function create(publicationName:String, publicationData:PublicationData, onResult:Void->Void, onError:String->Void=null) {
-		callServerMethod("create", [publicationName, publicationData], onResult, onError);
+	public function create(publicationName:String, onResult:Void->Void, onError:String->Void=null) {
+		callServerMethod("create", [publicationName], onResult, onError);
 	}
 	/**
 	 * Move a publication to trash
@@ -122,9 +121,10 @@ class PublicationService extends ServiceBase{
 	/**
 	 * Duplicate a publication
 	 * this private method is used in create, duplicate, rename...
+	 * if newConfigData is provided, each field which is not null is pushed in the new publication config
 	 * todo: handle empty names, same names, creation errors
 	 */
-	private function doDuplicate(srcPublicationName:String, publicationName:String, resetCreator:Bool) {
+	private function doDuplicate(srcPublicationName:String, publicationName:String, newConfigData:PublicationConfigData=null) {
 		try{
 			// retrieve the publication config data
 			var configData = getPublicationConfig(srcPublicationName);
@@ -133,21 +133,23 @@ class PublicationService extends ServiceBase{
 			FileSystemTools.recursiveCopy(getPublicationFolder(srcPublicationName), getPublicationFolder(publicationName));
 
 			// update with actual date and author
-			configData.state = Private;
-			configData.category = Publication;
-			if (resetCreator){
-				configData.creation.author = "silexlabs";
-				configData.creation.date = Date.now();
-			}
 			configData.lastChange.author = "silexlabs";
 			configData.lastChange.date = Date.now();
-			configData.debugModeAction = null;
-			
+
+			// update with the provided data
+			if (newConfigData != null){
+				for (fieldName in Reflect.fields(newConfigData)){
+					var value = Reflect.field(newConfigData, fieldName);
+					if(value!=null){
+						Reflect.setField(configData, fieldName, value);
+					}
+				}
+			}
 			// set config data
 			setPublicationConfig(publicationName, configData);
 		}
 		catch(e:Dynamic){
-			throw("doDuplicate("+srcPublicationName+", "+publicationName+", "+resetCreator+") error: "+e);
+			throw("doDuplicate("+srcPublicationName+", "+publicationName+", "+newConfigData+") error: "+e);
 		}
 	}
 	/**
@@ -229,32 +231,24 @@ class PublicationService extends ServiceBase{
 	}
 	/**
 	 * Obsolete: open "creation-template" and then use saveAs
-	 * Create a publication given an initial publication data structure
-	 * Use the publication named "creation-template".
+	 * Create a publication out of the publication named "creation-template".
 	 * @param 	publicationName 	the template from which to create the new publication
 	 */
-/*	public function create(publicationName:String, publicationData:PublicationData) {
+	public function create(publicationName:String) {
 		try{
-			// duplicate with a new creation author and date
-			doDuplicate(PublicationData.CREATION_TEMPLATE_PUBLICATION_NAME, publicationName, true);
 			// update with actual date and author
 			var configData:PublicationConfigData = {
-				state : Private,
-				category : Publication,
+				state : null, // this is changed in the client side (PublicationModel::doCreate)
+				category : null, // this is changed in the client side (PublicationModel::doCreate)
 				creation : {
 					author : "silexlabs", 
 					date : Date.now()
 				}, 
-				lastChange : {
-					author : "silexlabs", 
-					date : Date.now()
-				},
+				lastChange : null,
 				debugModeAction: null
 			};
-			// set the publication config
-			setPublicationConfig(publicationName, configData);
-			// set the publication data
-			setPublicationData(publicationName, publicationData);
+			// duplicate with a new creation author and date
+			doDuplicate(PublicationConstants.CREATION_TEMPLATE_PUBLICATION_NAME, publicationName, configData);
 		}
 		catch(e:Dynamic){
 			throw("create error: "+e);
@@ -266,7 +260,7 @@ class PublicationService extends ServiceBase{
 	public function duplicate(srcPublicationName:String, publicationName:String) {
 		try{
 			// duplicate without changing creation author and date
-			doDuplicate(srcPublicationName, publicationName, false);
+			doDuplicate(srcPublicationName, publicationName);
 		}
 		catch(e:Dynamic){
 			throw("duplicate("+srcPublicationName+", "+publicationName+") error: "+e);
@@ -278,7 +272,7 @@ class PublicationService extends ServiceBase{
 	public function rename(srcPublicationName:String, publicationName:String) {
 		try{
 			// duplicate without changing creation author and date
-			doDuplicate(srcPublicationName, publicationName, false);
+			doDuplicate(srcPublicationName, publicationName);
 
 			// permanently delete this publication
 			FileSystemTools.recursiveDelete(getPublicationFolder(srcPublicationName));
@@ -369,7 +363,7 @@ class PublicationService extends ServiceBase{
 				lastChange : configData.lastChange,
 				debugModeAction : configData.debugModeAction,
 			}
-			config.saveData(getPublicationFolder(publicationName) + PublicationConstants.PUBLICATION_CONFIG_FOLDER + "/" + PublicationConstants.PUBLICATION_CONFIG_FILE);
+			config.saveData(getPublicationFolder(publicationName) + PublicationConstants.PUBLICATION_CONFIG_FOLDER + PublicationConstants.PUBLICATION_CONFIG_FILE);
 		}
 		catch(e:Dynamic){
 			throw("setPublicationConfig("+publicationName+", "+configData+") error: "+e);

@@ -118,7 +118,7 @@ class PageModel extends ModelBase<Page>{
 		// add a link in the nav bar
 		var navBarNode = DomTools.getSingleElement(publicationModel.viewHtmlDom, LayerModel.NAV_LAYER_NAME, true);
 		var layerInstance = publicationModel.application.getAssociatedComponents(navBarNode, Layer).first();
-		var textElement = ComponentModel.getInstance().addComponent("div", layerInstance);
+		var textElement = ComponentModel.getInstance().addComponent("div", layerInstance, navBarNode.childNodes.length);
 		PropertyModel.getInstance().setAttribute(textElement, "title", "Link to "+name);
 		PropertyModel.getInstance().setProperty(textElement, "innerHTML", "<p>"+name+"</p>");
 		ComponentModel.getInstance().makeLinkToPage(textElement, className);
