@@ -40,8 +40,6 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
   * autoriser display block?
   * ergo : disable les pixel+unit quand on a select un shorthand (exple background h pos)
 
-
-
 Bugs
 * bug visuel text editor   
 * dupliquer save as => manque media
