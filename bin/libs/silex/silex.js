@@ -1403,12 +1403,10 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 		}
 		this.bestDropZone = zone;
 	}
-	,computeDistance: function(boundingBox1,boundingBox2) {
+	,computeDistance: function(boundingBox1,mouseX,mouseY) {
 		var centerBox1X = boundingBox1.x + boundingBox1.w / 2.0;
 		var centerBox1Y = boundingBox1.y + boundingBox1.h / 2.0;
-		var centerBox2X = boundingBox2.x + boundingBox2.w / 2.0;
-		var centerBox2Y = boundingBox2.y + boundingBox2.h / 2.0;
-		return Math.sqrt(Math.pow(centerBox1X - centerBox2X,2) + Math.pow(centerBox1Y - centerBox2Y,2));
+		return Math.sqrt(Math.pow(centerBox1X - mouseX,2) + Math.pow(centerBox1Y - mouseY,2));
 	}
 	,getBestDropZone: function(mouseX,mouseY) {
 		var dropZones = new List();
@@ -1422,7 +1420,6 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 		var nearestDistance = 999999999999;
 		var nearestZone = null;
 		var lastChildIdx = 0;
-		var bbElement = brix.util.DomTools.getElementBoundingBox(this.rootElement);
 		var $it0 = dropZones.iterator();
 		while( $it0.hasNext() ) {
 			var zone = $it0.next();
@@ -1434,7 +1431,7 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 					var child = zone.childNodes[childIdx];
 					zone.insertBefore(this.miniPhantom,child);
 					var bbPhantom = brix.util.DomTools.getElementBoundingBox(this.miniPhantom);
-					var dist = this.computeDistance(bbPhantom,bbElement);
+					var dist = this.computeDistance(bbPhantom,mouseX,mouseY);
 					if(dist < nearestDistance) {
 						nearestDistance = dist;
 						nearestZone = zone;
@@ -1443,7 +1440,7 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 				}
 				zone.appendChild(this.miniPhantom);
 				var bbPhantom = brix.util.DomTools.getElementBoundingBox(this.miniPhantom);
-				var dist = this.computeDistance(bbPhantom,bbElement);
+				var dist = this.computeDistance(bbPhantom,mouseX,mouseY);
 				if(dist < nearestDistance) {
 					nearestDistance = dist;
 					nearestZone = zone;
@@ -7397,6 +7394,10 @@ silex.component.ComponentModel.prototype = $extend(silex.ModelBase.prototype,{
 		return newNode;
 	}
 	,setSelectedItem: function(item) {
+		if(item != null) {
+			var layer = silex.publication.PublicationModel.getInstance().application.getAssociatedComponents(item.parentNode,brix.component.navigation.Layer).first();
+			silex.layer.LayerModel.getInstance().setSelectedItem(layer);
+		}
 		return silex.ModelBase.prototype.setSelectedItem.call(this,item);
 	}
 	,__class__: silex.component.ComponentModel
