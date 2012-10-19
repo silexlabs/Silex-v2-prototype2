@@ -594,18 +594,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	padding:0;
 	height:80px;
 }
-.ribbon-list ul{
-	margin:0;
-	padding:5px;
-}
-.ribbon-list ul li{
-	display:inline-block;
-	padding:2px;
-}
-.ribbon-list ul li p{
-	margin: 0;
-	text-align: center;
-}
+
 .ribbon-list.selectable ul li{
 	cursor: pointer;
 }
@@ -637,8 +626,78 @@ box-shadow: inset 0px 0px 2px 2px #888;
 }
 
 /* **************** */
-/* /Ribbon Toolbox */
+/* Ribbon Items lists */
 /* **************** */
+
+.ribbon-list ul{
+	display:block;
+	float:left;
+	height:70px;
+	margin:0;
+	padding:0;
+}
+
+.ribbon-list ul.small{
+	width:200px;
+}
+
+.ribbon-list ul li{
+	display:block;
+	float:left;
+	margin-left:3px;
+	margin-top:3px;
+	border:1px solid black;
+	width:69px;
+	height:69px;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.ribbon-list ul.small li{
+	width:33px;
+	height:33px;
+}
+
+.ribbon-list ul li p{
+	margin-top: 50px;
+	text-align: center;
+}
+
+.ribbon-list ul li.new{
+	background-image: url("assets/file-new.png");
+}
+
+.ribbon-list ul li.template{
+	background-image: url("assets/file-new-from-template.png");
+}
+
+.ribbon-list ul li.open{
+	background-image: url("assets/file-open-big.png");
+}
+
+.ribbon-list ul li.save-publication{
+	background-image: url("assets/file-save-big.png");
+}
+
+.ribbon-list ul li.save-publication-as{
+	background-image: url("assets/save-as_normal-state.png");
+}
+
+.ribbon-list ul li.save-publication-as-copy{
+	background-image: url("assets/save-as-copy_normal-state.png");
+}
+
+.ribbon-list ul li.close-publication{
+	background-image: url("assets/close_normal-state.png");
+}
+
+.ribbon-list ul li.delete{
+	background-image: url("assets/page-delete.png");
+}
+
+.ribbon-list ul li.settings{
+	background-image: url("assets/file-settings.png");
+}
 
 /* **************** */
 /* Properties Toolbox */
