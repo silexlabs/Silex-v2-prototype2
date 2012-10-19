@@ -52,7 +52,6 @@ body{
 .disabled-element {
 	pointer-events: none;
 	color: grey ! important;
-	background-color:Gainsboro;
 }
 .Layer{
 	min-height: 20px;
@@ -533,18 +532,11 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	width: 100%;
 	position: relative;
 	z-index: 2000;
-	left:0;
-	background:Gainsboro;
 	margin:0;
-	right: 0;
-	border-color:black;
-	border-style:solid;
-	border-width:1px medium;
+	
+	border-bottom:black 1px solid;
 }
-.ribbon-tabs{
-	display:inline;
-	margin-left: 5px;
-}	
+
 .silex-toolbox .style-block-tab{
 	margin-left:auto;
 	margin-right:auto;
@@ -571,12 +563,28 @@ box-shadow: inset 0px 0px 2px 2px #888;
 .layer-list ul li{
 	cursor: pointer;
 }
+
 .ribbon-list .listSelectedItem{
 	color:#7F7F7F;
 }
+
+/* **************** */
+/* Ribbon Tabs */
+/* **************** */
+
+.ribbon-tabs{
+	height:30px;
+	background:Gainsboro;
+	box-shadow: 0px 1px 0px #000, 0px 1px 0px #FFF inset ;
+	border-top:black 1px solid;
+}	
 .ribbon-tabs a{
-	padding-left: 10px;
-	padding-right: 10px;
+	text-align:center;
+	float:left;
+	width:70px;
+	height:24px;
+	padding-top:6px;
+	
 }
 .ribbon-tabs a:active{
 	color:#7F7F7F;
@@ -586,13 +594,16 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	background-color:white;
 	font-weight: normal;
 }
+
+.ribbon-tabs .page-opened{
+	border-bottom:white 1px solid;
+	box-shadow: 1px 0px 0px -0px #000 inset, -1px 0px 0px -0px #000 inset;
+}
+
 .ribbon-list{
-	background-color:white;
-	margin-left:5px;
-	margin-right:5px;
-	margin-bottom:5px;
 	padding:0;
 	height:80px;
+	clear:left;
 }
 
 .ribbon-list.selectable ul li{
