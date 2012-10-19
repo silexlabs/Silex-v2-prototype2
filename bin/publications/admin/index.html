@@ -101,62 +101,40 @@
 					<A class="Page" name="file-menu" data-group-id="Group1">File</A>
 
 					<DIV class="Layer file-menu ribbon-list selectable">
-						<UL class="">
-							<LI data-menu-item="create-publication">
-								<DIV class="temp-icon"></DIV>
-								<P>create</P>
+						<UL>
+							<LI data-menu-item="create-publication" class="new">
+								<P>new</P>
 							</LI>
-							<LI class="disabled-element" data-menu-item="create-from-template">
-								<DIV class="temp-icon"></DIV>
-								<P>from template</P>
+							<LI class="disabled-element template" data-menu-item="create-from-template">
+								<P>template</P>
 							</LI>
-							<LI data-menu-item="open-publication">
-								<DIV class="temp-icon"></DIV>
+							<LI data-menu-item="open-publication" class="open">
 								<P>open</P>
 							</LI>
-							<LI data-menu-item="save-publication">
-								<DIV class="temp-icon"></DIV>
+							<LI data-menu-item="save-publication" class="save-publication">
 								<P>save</P>
 							</LI>
-							<LI data-menu-item="save-publication-as">
-								<DIV class="temp-icon"></DIV>
-								<P>save as</P>
+						</UL>
+						<UL class="small">
+							<LI data-menu-item="save-publication-as" class="save-publication-as" title="save as">
 							</LI>
-							<LI data-menu-item="save-publication-copy">
-								<DIV class="temp-icon"></DIV>
-								<P>save a copy</P>
+							<LI data-menu-item="close-publication" class="close-publication" title="close">
 							</LI>
-							<LI data-menu-item="close-publication">
-								<DIV class="temp-icon"></DIV>
-								<P>close</P>
+							<LI data-menu-item="save-publication-as-copy" class="save-publication-as-copy" title="save as copy">
 							</LI>
-							<LI data-menu-item="view-publication">
-								<DIV class="temp-icon"></DIV>
-								<P>view</P>
+							<LI data-menu-item="settings" class="disabled-element settings" title="settings">
 							</LI>
-							<LI data-menu-item="trash-publication">
-								<DIV class="temp-icon"></DIV>
-								<P>delete</P>
+							<LI class="disabled-element" data-menu-item="backup-all" title="backup all">
 							</LI>
-							<LI class="disabled-element" data-menu-item="settings">
-								<DIV class="temp-icon"></DIV>
-								<P>settings</P>
+							<LI class="disabled-element" data-menu-item="export" title="export">
 							</LI>
-							<LI class="disabled-element" data-menu-item="backup-all">
-								<DIV class="temp-icon"></DIV>
-								<P>backup all</P>
+							<LI data-menu-item="trash-publication" class="delete" title="delete">
 							</LI>
-							<LI class="disabled-element" data-menu-item="export">
-								<DIV class="temp-icon"></DIV>
-								<P>export</P>
+							<LI class="disabled-element" data-menu-item="publish" title="publish">
 							</LI>
-							<LI class="disabled-element" data-menu-item="publish">
-								<DIV class="temp-icon"></DIV>
-								<P>publish</P>
+							<LI data-menu-item="open-file-browser" title="media">
 							</LI>
-							<LI data-menu-item="open-file-browser">
-								<DIV class="temp-icon"></DIV>
-								<P>media</P>
+							<LI data-menu-item="view-publication" title="view">
 							</LI>
 						</UL>
 					</DIV>
@@ -204,23 +182,18 @@
 					<DIV class="Layer insert-list ribbon-list">
 						<UL>
 							<LI data-dropzones-class-name="Layer" class="image Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
-								<DIV class="solid"></DIV>
 								<P>Image</P>
 							</LI>
 							<LI data-dropzones-class-name="Layer" class="text Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
-								<DIV class="solid"></DIV>
 								<P>Text</P>
 							</LI>
 							<LI data-dropzones-class-name="Layer" class="audio Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
-								<DIV class="solid"></DIV>
 								<P>Audio</P>
 							</LI>
 							<LI data-dropzones-class-name="Layer" class="video Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
-								<DIV class="solid"></DIV>
 								<P>Video</P>
 							</LI>
 							<LI data-dropzones-class-name="silex-view" class="container Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
-								<DIV class="solid"></DIV>
 								<P>Container</P>
 							</LI>
 						</UL>
@@ -438,7 +411,7 @@
 							<FIELDSET class="BoxStyleEditor">
 								<LEGEND>Size</LEGEND>
 								<LABEL for="box_width">Width</LABEL>
-								<LABEL class="box_width_measurement_label" for="box_width_measurement" style="display: none; ">Box Width Measurement Unit</LABEL>
+								<LABEL class="box_width_measurement_label" for="box_width_measurement" style="display:none;">Box Width Measurement Unit</LABEL>
 								<SELECT class="box_width_unit">
 									<OPTION value=""></OPTION>
 									<OPTION value="px">pixels</OPTION>
@@ -456,7 +429,7 @@
 								<HR></HR>
 
 								<LABEL for="box_height">Height</LABEL>			
-								<LABEL class="box_height_measurement_label" for="box_height_measurement" style="display: none; ">Box Height Measurement Unit</LABEL>
+								<LABEL class="box_height_measurement_label" for="box_height_measurement" style="display:none;">Box Height Measurement Unit</LABEL>
 								<SELECT class="box_height_unit">
 									<OPTION value=""></OPTION>
 									<OPTION value="px">pixels</OPTION>
@@ -500,7 +473,7 @@
 							<FIELDSET class="PaddingStyleEditor">
 								<LEGEND>Padding</LEGEND>
 								<LABEL for="box_padding_top">Top</LABEL>			
-								<LABEL class="box_padding_top_measurement_label" for="box_padding_top_measurement" style="display: none; ">Padding Top Measurement Unit</LABEL>
+								<LABEL class="box_padding_top_measurement_label" for="box_padding_top_measurement" style="display:none;">Padding Top Measurement Unit</LABEL>
                                 
 								<SELECT class="box_padding_top_unit">
 									<OPTION value=""></OPTION>
@@ -519,7 +492,7 @@
                                 <HR></HR>
 													
 								<LABEL for="box_padding_right">Right</LABEL>					
-								<LABEL class="box_padding_right_measurement_label" for="box_padding_right_measurement" style="display: none; ">Padding Right Measurement Unit</LABEL>  
+								<LABEL class="box_padding_right_measurement_label" for="box_padding_right_measurement" style="display:none;">Padding Right Measurement Unit</LABEL>  
 								<SELECT class="box_padding_right_unit">
 									<OPTION value=""></OPTION>
 									<OPTION value="px">pixels</OPTION>
@@ -539,7 +512,7 @@
 								<LABEL for="box_padding_bottom">Bottom</LABEL>
 								
 													
-								<LABEL class="box_padding_bottom_measurement_label" for="box_padding_bottom_measurement" style="display: none; ">Padding Bottom Measurement Unit</LABEL>
+								<LABEL class="box_padding_bottom_measurement_label" for="box_padding_bottom_measurement" style="display:none;">Padding Bottom Measurement Unit</LABEL>
                                 
 								<SELECT class="box_padding_bottom_unit">
 									<OPTION value=""></OPTION>
@@ -559,7 +532,7 @@
 								<LABEL for="box_padding_left">Left</LABEL>
 								
 													
-								<LABEL class="box_padding_left_measurement_label" for="box_padding_left_measurement" style="display: none; ">Padding Left Measurement Unit</LABEL>
+								<LABEL class="box_padding_left_measurement_label" for="box_padding_left_measurement" style="display:none;">Padding Left Measurement Unit</LABEL>
                                 
 								<SELECT class="box_padding_left_unit">
 									<OPTION value=""></OPTION>
@@ -587,7 +560,7 @@
 								<LABEL for="box_margin_top">Top</LABEL>
 								
 													
-								<LABEL class="box_margin_top_measurement_label" for="box_margin_top_measurement" style="display: none; ">Margin Top Measurement Unit</LABEL>
+								<LABEL class="box_margin_top_measurement_label" for="box_margin_top_measurement" style="display:none;">Margin Top Measurement Unit</LABEL>
                                 
 								<SELECT class="box_margin_top_unit">
 									<OPTION value=""></OPTION>
@@ -607,7 +580,7 @@
 								<LABEL for="box_margin_right">Right</LABEL>
 								
 													
-								<LABEL class="box_margin_right_measurement_label" for="box_margin_right_measurement" style="display: none; ">Margin Right Measurement Unit</LABEL>
+								<LABEL class="box_margin_right_measurement_label" for="box_margin_right_measurement" style="display:none;">Margin Right Measurement Unit</LABEL>
                                 
 								<SELECT class="box_margin_right_unit">
 									<OPTION value=""></OPTION>
@@ -628,7 +601,7 @@
 								<LABEL for="box_margin_bottom">Bottom</LABEL>
 								
 
-								<LABEL class="box_margin_bottom_measurement_label" for="box_margin_bottom_measurement" style="display: none; ">Margin Bottom Measurement Unit</LABEL>
+								<LABEL class="box_margin_bottom_measurement_label" for="box_margin_bottom_measurement" style="display:none;">Margin Bottom Measurement Unit</LABEL>
                                 
 								<SELECT class="box_margin_bottom_unit">
 									<OPTION value=""></OPTION>
@@ -648,7 +621,7 @@
 								<LABEL for="box_margin_left">Left</LABEL>
 								
 													
-								<LABEL class="box_margin_left_measurement_label" for="box_margin_left_measurement" style="display: none; ">Margin Left Measurement Unit</LABEL>
+								<LABEL class="box_margin_left_measurement_label" for="box_margin_left_measurement" style="display:none;">Margin Left Measurement Unit</LABEL>
                                 
 								<SELECT class="box_margin_left_unit">
 									<OPTION value=""></OPTION>
@@ -1127,7 +1100,7 @@
 								</SELECT>
                                 
                                 <BR></BR>
-								<LABEL for="background_hpos_measurement" style="display: none; ">Horizontal position measurement unit</LABEL>
+								<LABEL for="background_hpos_measurement" style="display:none;">Horizontal position measurement unit</LABEL>
                                 <BR></BR><BR></BR>
 								<SELECT class="background_hpos_unit">
 									<OPTION value=""></OPTION>
@@ -1154,7 +1127,7 @@
 								</SELECT>
                                 <BR></BR>
                                 
-								<LABEL for="background_vpos_measurement" style="display: none; ">Vertical position measurement unit</LABEL>
+								<LABEL for="background_vpos_measurement" style="display:none;">Vertical position measurement unit</LABEL>
                                 <BR></BR><BR></BR>
 								<SELECT class="background_vpos_unit">
 									<OPTION value=""></OPTION>
@@ -1234,7 +1207,7 @@
 
 								<LABEL for="text_lineheight">Line Height</LABEL>
 								
-								<LABEL style="display: none; ">Line Height Measurement Unit</LABEL>
+								<LABEL style="display:none;">Line Height Measurement Unit</LABEL>
                                 
 								<SELECT class="text_lineheight_unit">
                                 	<OPTION value=""></OPTION>
@@ -1283,7 +1256,7 @@
                                 
                                 <BR></BR><BR></BR>
                                 								
-								<LABEL class="text_size_measurement_label" for="text_size_measurement" style="display: none; ">Text Size Measurement Unit</LABEL>
+								<LABEL class="text_size_measurement_label" for="text_size_measurement" style="display:none;">Text Size Measurement Unit</LABEL>
                                 
 								<SELECT class="text_size_unit">
                                 	<OPTION value=""></OPTION>
@@ -1313,7 +1286,7 @@
 									<OPTION value="normal">normal</OPTION>
 								</SELECT>									
 								<BR></BR>
-								<LABEL class="block_wordspacing_measurement_label" for="block_wordspacing_measurement" style="display: none; ">Word spacing measurement unit</LABEL>
+								<LABEL class="block_wordspacing_measurement_label" for="block_wordspacing_measurement" style="display:none;">Word spacing measurement unit</LABEL>
                                 
 								<SELECT class="block_wordspacing_unit">
 									<OPTION value=""></OPTION>
@@ -1337,7 +1310,7 @@
 									<OPTION value=""></OPTION>
 									<OPTION value="normal">normal</OPTION>
 								</SELECT>
-								<LABEL class="block_letterspacing_measurement_label" for="block_letterspacing_measurement" style="display: none; ">Letter spacing measurement unit</LABEL>
+								<LABEL class="block_letterspacing_measurement_label" for="block_letterspacing_measurement" style="display:none;">Letter spacing measurement unit</LABEL>
                                 <BR></BR>
 								<SELECT class="block_letterspacing_unit">
 									<OPTION value=""></OPTION>
@@ -1355,7 +1328,7 @@
                                 <BR></BR>
                                 <HR></HR>
 								<LABEL for="block_text_indent">Text Indent</LABEL>
-                                <LABEL class="block_text_indent_measurement_label" for="block_text_indent_measurement" style="display: none; ">Text Indent Measurement Unit</LABEL>
+                                <LABEL class="block_text_indent_measurement_label" for="block_text_indent_measurement" style="display:none;">Text Indent Measurement Unit</LABEL>
 								<SELECT class="block_text_indent_unit">
 									<OPTION value=""></OPTION>
 									<OPTION value="px">pixels</OPTION>
