@@ -52,7 +52,6 @@ body{
 .disabled-element {
 	pointer-events: none;
 	color: grey ! important;
-	background-color:Gainsboro;
 }
 .Layer{
 	min-height: 20px;
@@ -533,18 +532,11 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	width: 100%;
 	position: relative;
 	z-index: 2000;
-	left:0;
-	background:Gainsboro;
 	margin:0;
-	right: 0;
-	border-color:black;
-	border-style:solid;
-	border-width:1px medium;
+	
+	border-bottom:black 1px solid;
 }
-.ribbon-tabs{
-	display:inline;
-	margin-left: 5px;
-}	
+
 .silex-toolbox .style-block-tab{
 	margin-left:auto;
 	margin-right:auto;
@@ -571,12 +563,29 @@ box-shadow: inset 0px 0px 2px 2px #888;
 .layer-list ul li{
 	cursor: pointer;
 }
+
 .ribbon-list .listSelectedItem{
 	color:#7F7F7F;
 }
+
+/* **************** */
+/* Ribbon Tabs */
+/* **************** */
+
+.ribbon-tabs{
+	height:30px;
+	background:Gainsboro;
+	box-shadow: 0px 1px 0px #000, 0px 1px 0px #FFF inset ;
+	border-top:black 1px solid;
+}	
 .ribbon-tabs a{
-	padding-left: 10px;
-	padding-right: 10px;
+	text-align:center;
+	float:left;
+	width:70px;
+	height:24px;
+	padding-top:6px;
+	text-shadow:1px 1px 0px rgba(255, 255, 255, 0.3);
+	
 }
 .ribbon-tabs a:active{
 	color:#7F7F7F;
@@ -586,26 +595,18 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	background-color:white;
 	font-weight: normal;
 }
+
+.ribbon-tabs .page-opened{
+	border-bottom:white 1px solid;
+	box-shadow: 1px 0px 0px -0px #000 inset, -1px 0px 0px -0px #000 inset;
+}
+
 .ribbon-list{
-	background-color:white;
-	margin-left:5px;
-	margin-right:5px;
-	margin-bottom:5px;
 	padding:0;
-	height:80px;
+	height:79px;
+	clear:left;
 }
-.ribbon-list ul{
-	margin:0;
-	padding:5px;
-}
-.ribbon-list ul li{
-	display:inline-block;
-	padding:2px;
-}
-.ribbon-list ul li p{
-	margin: 0;
-	text-align: center;
-}
+
 .ribbon-list.selectable ul li{
 	cursor: pointer;
 }
@@ -637,8 +638,101 @@ box-shadow: inset 0px 0px 2px 2px #888;
 }
 
 /* **************** */
-/* /Ribbon Toolbox */
+/* Ribbon Items lists */
 /* **************** */
+
+.ribbon-list ul{
+	display:block;
+	float:left;
+	height:70px;
+	margin:0;
+	padding:0;
+}
+
+.ribbon-list ul.small{
+	width:200px;
+}
+
+.ribbon-list ul li{
+	display:block;
+	float:left;
+	margin-left:3px;
+	margin-top:3px;
+	border:1px solid black;
+	width:69px;
+	height:71px;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.ribbon-list ul.small li{
+	width:33px;
+	height:33px;
+}
+
+.ribbon-list ul li p{
+	margin-top: 50px;
+	text-align: center;
+}
+
+/**
+	FILE
+*/
+.ribbon-list ul li.new{
+	background-image: url("assets/file-new.png");
+}
+
+.ribbon-list ul li.template{
+	background-image: url("assets/file-new-from-template.png");
+}
+
+.ribbon-list ul li.open{
+	background-image: url("assets/file-open-big.png");
+}
+
+.ribbon-list ul li.save-publication{
+	background-image: url("assets/file-save-big.png");
+}
+
+.ribbon-list ul li.save-publication-as{
+	background-image: url("assets/save-as_normal-state.png");
+}
+
+.ribbon-list ul li.save-publication-as-copy{
+	background-image: url("assets/save-as-copy_normal-state.png");
+}
+
+.ribbon-list ul li.close-publication{
+	background-image: url("assets/close_normal-state.png");
+}
+
+.ribbon-list ul li.delete{
+	background-image: url("assets/page-delete.png");
+}
+
+.ribbon-list ul li.settings{
+	background-image: url("assets/file-settings.png");
+}
+
+/**
+	INSERT
+*/
+
+.ribbon-list ul li.image{
+	background-image: url("assets/insert-image.png");
+}
+
+.ribbon-list ul li.text{
+	background-image: url("assets/insert-text.png");
+}
+
+.ribbon-list ul li.audio{
+	background-image: url("assets/insert-son.png");
+}
+
+.ribbon-list ul li.video{
+	background-image: url("assets/insert_video.png");
+}
 
 /* **************** */
 /* Properties Toolbox */
