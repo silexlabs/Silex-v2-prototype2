@@ -5,6 +5,7 @@ import js.Dom;
 
 import silex.ModelBase;
 import silex.publication.PublicationModel;
+import silex.layer.LayerModel;
 import silex.property.PropertyModel;
 import brix.component.navigation.Layer;
 import brix.component.navigation.link.LinkToPage;
@@ -71,12 +72,12 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	 * Reset the selection
 	 */
 	override public function setSelectedItem(item:HtmlDom):HtmlDom {
-		// reset model selection
-		// Todo: onSlectionChange event could be dispatched when the property editor has the focus
-		/* var model = PropertyModel.getInstance();
-		   model.selectedItem = null;
-		   model.hoveredItem = null;
-		*/
+		if (item!=null){
+			// change the layer selection
+			var layer = PublicationModel.getInstance().application.getAssociatedComponents(item.parentNode, Layer).first();
+			LayerModel.getInstance().selectedItem = layer;
+		}
+
 		return super.setSelectedItem(item);
 	}
 	/**
