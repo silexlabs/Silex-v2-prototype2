@@ -32,7 +32,6 @@
 		
 		
 
-
 		
 
 		
@@ -75,8 +74,7 @@
 			
 			
 			<A class="Page" name="loading">loading</A>
-			<DIV class="Layer loading" style="width: 100%; height: 100%;" title="container1">
-				<IMG src="assets/loading.gif" style="position: absolute; width: 5%; top: 50%; left: 50%;" title="New image component"/>
+			<DIV class="Layer loading loading-container">
 			</DIV>
 			
 			
@@ -94,6 +92,7 @@
 						<A href="#page-list" class="LinkToPage" data-group-id="Group1">Pages</A>
 						<A href="#layer-list" class="LinkToPage" data-group-id="Group1">Masters</A>
 						<A href="#insert-list" class="LinkToPage" data-group-id="Group1">Insert</A>
+						<A href="#theme-list" class="LinkToPage disabled-element" data-group-id="Group1">Themes</A>
 						<A href="#user-menu" class="LinkToPage disabled-element" data-group-id="Group1">User</A>
 						<A href="#tool-menu" class="LinkToPage disabled-element" data-group-id="Group1">Tool</A>
 						<A href="#help-menu" class="LinkToPage disabled-element" data-group-id="Group1">Help</A>
@@ -186,13 +185,17 @@
 					
 					<A class="Page" name="layer-list" data-group-id="Group1">Masters</A>
 
-					<DIV class="MasterToolbox Layer layer-list ribbon-list">
+					<DIV class="Layer layer-list ribbon-list">
 						<UL class="LayersList">
 							<LI data-dropzones-class-name="silex-view" class="" data-phantom-class-name="master-phantom">
 								<DIV class="solid"></DIV>
 								<P>::rootElement.title::</P>
 							</LI>
 						</UL>
+					</DIV>
+					
+					<A class="Page" name="theme-list" data-group-id="Group1">Themes</A>
+					<DIV class="Layer theme-list ribbon-list">
 					</DIV>
 
 					
@@ -221,7 +224,6 @@
 								<P>Container</P>
 							</LI>
 						</UL>
-
 					</DIV>
 					
 					<A class="Page" name="user-menu" data-group-id="Group1">User</A>

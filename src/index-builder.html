@@ -32,9 +32,6 @@
 
 		<script data-brix-use="silex.ui.stage.SelectionDropHandler"></script>
 		<script data-brix-use="silex.ui.stage.InsertDropHandler"></script>
-<!--
-		<script data-brix-use="silex.ui.stage.MasterDropHandler"></script>
--->
 
 		<script data-brix-use="silex.ui.toolbox.MenuController"></script>
 
@@ -81,8 +78,7 @@
 			<!-- 	**************************	-->
 			<!-- 			Loading page 		-->
 			<a name="loading" class="Page">loading</a>
-			<div style="width: 100%; height: 100%;" title="container1" class="Layer loading">
-				<img style="position: absolute; width: 5%; top: 50%; left: 50%;" title="New image component" src="assets/loading.gif" />
+			<div class="Layer loading loading-container">
 			</div>
 			<!-- 			/Loading page 		-->
 			<!-- 	**************************	-->
@@ -100,6 +96,7 @@
 						<a href="#page-list" class="LinkToPage" >Pages</a>
 						<a href="#layer-list" class="LinkToPage" >Masters</a>
 						<a href="#insert-list" class="LinkToPage" >Insert</a>
+						<a href="#theme-list" class="LinkToPage disabled-element" >Themes</a>
 						<a href="#user-menu" class="LinkToPage disabled-element" >User</a>
 						<a href="#tool-menu" class="LinkToPage disabled-element" >Tool</a>
 						<a href="#help-menu" class="LinkToPage disabled-element" >Help</a>
@@ -201,7 +198,7 @@
 					<!-- Masters -->
 					<a name="layer-list" class="Page" >Masters</a>
 
-					<DIV class="MasterToolbox Layer layer-list ribbon-list">
+					<DIV class="Layer layer-list ribbon-list">
 						<ul class="LayersList">
 							<li class=""
 								data-dropzones-class-name="silex-view"
@@ -211,6 +208,10 @@
 								<p>::rootElement.title::</p>
 							</li>
 						</ul>
+					</DIV>
+					<!-- Themes -->
+					<a name="theme-list" class="Page" >Themes</a>
+					<DIV class="Layer theme-list ribbon-list">
 					</DIV>
 
 					<!-- Insert -->
@@ -254,9 +255,6 @@
 								<p>Container</p>
 							</li>
 						</ul>
-<!--
-						<button class="add-button">Add</button>
--->
 					</DIV>
 					<!-- User -->
 					<a name="user-menu" class="Page"  >User</a>
