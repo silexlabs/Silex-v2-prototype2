@@ -584,6 +584,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	width:70px;
 	height:24px;
 	padding-top:6px;
+	text-shadow:1px 1px 0px rgba(255, 255, 255, 0.3);
 	
 }
 .ribbon-tabs a:active{
@@ -602,7 +603,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 
 .ribbon-list{
 	padding:0;
-	height:80px;
+	height:79px;
 	clear:left;
 }
 
@@ -659,7 +660,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	margin-top:3px;
 	border:1px solid black;
 	width:69px;
-	height:69px;
+	height:71px;
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -674,6 +675,9 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	text-align: center;
 }
 
+/**
+	FILE
+*/
 .ribbon-list ul li.new{
 	background-image: url("assets/file-new.png");
 }
@@ -708,6 +712,26 @@ box-shadow: inset 0px 0px 2px 2px #888;
 
 .ribbon-list ul li.settings{
 	background-image: url("assets/file-settings.png");
+}
+
+/**
+	INSERT
+*/
+
+.ribbon-list ul li.image{
+	background-image: url("assets/insert-image.png");
+}
+
+.ribbon-list ul li.text{
+	background-image: url("assets/insert-text.png");
+}
+
+.ribbon-list ul li.audio{
+	background-image: url("assets/insert-son.png");
+}
+
+.ribbon-list ul li.video{
+	background-image: url("assets/insert_video.png");
 }
 
 /* **************** */
