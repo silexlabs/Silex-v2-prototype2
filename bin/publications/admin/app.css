@@ -269,8 +269,14 @@ opacity:1;
 	color:LightGray;
 	opacity:0.7;
 }
+.dialogs .back-header{
+	
+	width:100%;
+	border-top:1px black solid;
+	height:17px;
 
-.dialogs .container-2{
+}
+.dialogs .container-login{
     margin-left: 25%;
     margin-right: 25%;
     min-height: 200px;
@@ -280,19 +286,15 @@ opacity:1;
     width: 50%;
     z-index: 1100;
 }
-.dialogs .back-header{
-	
-	width:100%;
-	border-top:1px black solid;
-	height:17px;
-
-}
-.dialogs .container-text-editor{
+.dialogs .container-text-editor,
+.dialogs .container-file-browser{
     height: 500px;
     margin: auto;
     width: 80%;
 }
-.dialogs .container-text-editor .text-editor-div{
+.dialogs .text-editor-div,
+.dialogs .file-browser-div{
+	background-color:LightGray;
 }
 .dialogs .container-text-editor .text-editor-div iframe{
 	height: 98%;
@@ -407,21 +409,12 @@ opacity:1;
 	color:DimGray;
 }
 
-.FileBrowserDialog .file-browser-div{
-
-}
 .FileBrowserDialog .message-zone,
 .TextEditorDialog .message-zone{
 	color: green;
 	font-size: 12px;
 	float: right;
 	padding: 14px;
-}
-.text-editor-dialog{
-
-}
-.text-editor-div{
-	
 }
 /* **************** */
 /* 	/Dialogs 		*/
