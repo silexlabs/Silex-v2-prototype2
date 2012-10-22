@@ -276,22 +276,14 @@ opacity:1;
 	height:17px;
 
 }
-.dialogs .container-login{
-    margin-left: 25%;
-    margin-right: 25%;
-    min-height: 200px;
-    height: 40%;
-    max-width: 633px;
-    position: absolute;
-    width: 50%;
-    z-index: 1100;
-}
+.dialogs .container-open-publication,
 .dialogs .container-text-editor,
 .dialogs .container-file-browser{
     height: 500px;
     margin: auto;
     width: 80%;
 }
+.dialogs .publications,
 .dialogs .text-editor-div,
 .dialogs .file-browser-div{
 	background-color:LightGray;
@@ -327,10 +319,11 @@ opacity:1;
 .dialogs .publications .listSelectedItem{
 	color: green;
 }
+.dialogs .container-open-publication{
+	max-height: 300px;
+	max-width: 700px;
+}
 .dialogs .publications{
-	max-width:100%;
-	background:Gainsboro;
-	border-radius:3px;
 	margin:0;
 	font-size: 12px;
 	height: 100%;
