@@ -288,8 +288,14 @@ opacity:1;
 
 }
 .dialogs .container-text-editor{
+    height: 500px;
+    margin: auto;
+    width: 80%;
 }
-.dialogs .container-text-editor iframe{
+.dialogs .container-text-editor .text-editor-div{
+}
+.dialogs .container-text-editor .text-editor-div iframe{
+	height: 98%;
 }
 
 

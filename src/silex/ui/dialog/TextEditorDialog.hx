@@ -62,7 +62,7 @@ class TextEditorDialog extends DialogBase
 	public function requestRedraw(transitionData:TransitionData) {
 //		contentLoaded(haxe.Http.requestUrl(TEXT_EDITOR_HTML_PAGE));
 		contentLoaded('<iframe name="kcfinder_iframe" src="'+TEXT_EDITOR_HTML_PAGE+'"'
-			+' frameborder="0" width="100%" height="100%" marginwidth="0" marginheight="0" scrolling="no" />'
+			+' frameborder="0" width="100%" marginwidth="0" marginheight="0" scrolling="no" />'
 		);
 	}
 	private function contentLoaded(htmlString:String) 
