@@ -67,7 +67,7 @@
 		<link href="app.css" rel="stylesheet"></link>
 		<meta name="debugModeAction" content="
 		//Lib.alert('test!');
-		//PublicationModel.getInstance().load('default');
+		PublicationModel.getInstance().load('default');
 	"></meta>
 	</head>
 	<body class="">
@@ -88,184 +88,130 @@
 			<DIV class="panel-publication-header">
 				<!-- 	**************************	-->
 				<!-- 		Ribbon Toolbox 		-->
-				<DIV class="group-ribbon Group MenuController" data-initial-page-name="file-menu">
-					<!-- Menu header -->
+				<DIV class="Group group-ribbon MenuController" data-initial-page-name="file-menu">
+					
 					<DIV class="ribbon-tabs">
-						<a href="#file-menu" class="LinkToPage" >File</a>
-						<a href="#edit-menu" class="LinkToPage disabled-element" >Edit</a>
-						<a href="#page-list" class="LinkToPage" >Pages</a>
-						<a href="#layer-list" class="LinkToPage" >Masters</a>
-						<a href="#insert-list" class="LinkToPage" >Insert</a>
-						<a href="#theme-list" class="LinkToPage disabled-element" >Themes</a>
-						<a href="#user-menu" class="LinkToPage disabled-element" >User</a>
-						<a href="#tool-menu" class="LinkToPage disabled-element" >Tool</a>
-						<a href="#help-menu" class="LinkToPage disabled-element" >Help</a>
+						<A href="#file-menu" class="LinkToPage">File</A>
+						<A href="#edit-menu" class="LinkToPage disabled-element">Edit</A>
+						<A href="#page-list" class="LinkToPage">Pages</A>
+						<A href="#layer-list" class="LinkToPage">Masters</A>
+						<A href="#insert-list" class="LinkToPage">Insert</A>
+						<A href="#theme-list" class="LinkToPage disabled-element">Themes</A>
+						<A href="#user-menu" class="LinkToPage disabled-element">User</A>
+						<A href="#tool-menu" class="LinkToPage disabled-element">Tool</A>
+						<A href="#help-menu" class="LinkToPage disabled-element">Help</A>
 					</DIV>
-					<!-- File -->
-					<a name="file-menu" class="Page" >File</a>
+					
+					<A class="Page" name="file-menu">File</A>
 
 					<DIV class="Layer file-menu ribbon-list selectable">
-						<ul class="">
-							<li data-menu-item="create-publication" >
-								<DIV class="temp-icon"></DIV>
-								<p>create</p>
-							</li>
-							<li data-menu-item="create-from-template" class="disabled-element">
-								<DIV class="temp-icon"></DIV>
-								<p>from template</p>
-							</li>
-							<li data-menu-item="open-publication">
-								<DIV class="temp-icon"></DIV>
-								<p>open</p>
-							</li>
-							<li data-menu-item="save-publication">
-								<DIV class="temp-icon"></DIV>
-								<p>save</p>
-							</li>
-							<li data-menu-item="save-publication-as">
-								<DIV class="temp-icon"></DIV>
-								<p>save as</p>
-							</li>
-							<li data-menu-item="save-publication-copy">
-								<DIV class="temp-icon"></DIV>
-								<p>save a copy</p>
-							</li>
-							<li data-menu-item="close-publication">
-								<DIV class="temp-icon"></DIV>
-								<p>close</p>
-							</li>
-							<li data-menu-item="view-publication">
-								<DIV class="temp-icon"></DIV>
-								<p>view</p>
-							</li>
-							<li data-menu-item="trash-publication">
-								<DIV class="temp-icon"></DIV>
-								<p>delete</p>
-							</li>
-							<li data-menu-item="settings" class="disabled-element">
-								<DIV class="temp-icon"></DIV>
-								<p>settings</p>
-							</li>
-							<li data-menu-item="backup-all" class="disabled-element">
-								<DIV class="temp-icon"></DIV>
-								<p>backup all</p>
-							</li>
-							<li data-menu-item="export" class="disabled-element">
-								<DIV class="temp-icon"></DIV>
-								<p>export</p>
-							</li>
-							<li data-menu-item="publish" class="disabled-element">
-								<DIV class="temp-icon"></DIV>
-								<p>publish</p>
-							</li>
-							<li data-menu-item="open-file-browser">
-								<DIV class="temp-icon"></DIV>
-								<p>media</p>
-							</li>
-						</ul>
+						<UL>
+							<LI data-menu-item="create-publication" class="new">
+								<P>new</P>
+							</LI>
+							<LI class="disabled-element template" data-menu-item="create-from-template">
+								<P>template</P>
+							</LI>
+							<LI data-menu-item="open-publication" class="open">
+								<P>open</P>
+							</LI>
+							<LI data-menu-item="save-publication" class="save-publication">
+								<P>save</P>
+							</LI>
+						</UL>
+						<UL class="small">
+							<LI data-menu-item="save-publication-as" class="save-publication-as" title="save as">
+							</LI>
+							<LI data-menu-item="close-publication" class="close-publication" title="close">
+							</LI>
+							<LI data-menu-item="save-publication-as-copy" class="save-publication-as-copy" title="save as copy">
+							</LI>
+							<LI data-menu-item="settings" class="disabled-element settings" title="settings">
+							</LI>
+							<LI class="disabled-element" data-menu-item="backup-all" title="backup all">
+							</LI>
+							<LI class="disabled-element" data-menu-item="export" title="export">
+							</LI>
+							<LI data-menu-item="trash-publication" class="delete" title="delete">
+							</LI>
+							<LI class="disabled-element" data-menu-item="publish" title="publish">
+							</LI>
+							<LI data-menu-item="open-file-browser" title="media">
+							</LI>
+							<LI data-menu-item="view-publication" title="view">
+							</LI>
+						</UL>
 					</DIV>
-					<!-- Edit -->
-					<a name="edit-menu" class="Page"  >Edit</a>
+					
+					<A class="Page" name="edit-menu">Edit</A>
 					<DIV class="Layer edit-menu ribbon-list selectable">
 					</DIV>
 
-					<!-- Page -->
-					<a name="page-list" class="Page" >Pages</a>
+					
+					<A class="Page" name="page-list">Pages</A>
 
 					<DIV class="Layer page-list ribbon-list selectable">
 						<DIV class="assets-page">
-							<img title="Add a page" 
-								class="ribbon-button" 
-								data-menu-item="add-page" 
-								src="../admin/assets/sv2-ico-add.png"></img>
-							<img title="Delete selected page" 
-								class="ribbon-button" 
-								data-menu-item="del-page" 
-								src="../admin/assets/sv2-ico-delete.png"></img>
-							<img title="Rename selected page" 
-								class="ribbon-button" 
-								data-menu-item="rename-page" 
-								src="../admin/assets/sv2-ico-rename.png"></img>
+							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-add.png" title="Add a page" data-menu-item="add-page"/>
+							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-delete.png" title="Delete selected page" data-menu-item="del-page"/>
+							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-rename.png" title="Rename selected page" data-menu-item="rename-page"/>
 						</DIV>
-						<ul class="PageList">
-							<li class="">
+						<UL class="PageList">
+							<LI class="">
 								<DIV class="solid"></DIV>
-								<p>::name::</p>
-							</li>
-						</ul>
+								<P>::name::</P>
+							</LI>
+						</UL>
 					</DIV>
 
-					<!-- Masters -->
-					<a name="layer-list" class="Page" >Masters</a>
+					
+					<A class="Page" name="layer-list">Masters</A>
 
 					<DIV class="Layer layer-list ribbon-list">
-						<ul class="LayersList">
-							<li class=""
-								data-dropzones-class-name="silex-view"
-								data-phantom-class-name="master-phantom"
-								>
+						<UL class="LayersList">
+							<LI data-dropzones-class-name="silex-view" class="" data-phantom-class-name="master-phantom">
 								<DIV class="solid"></DIV>
-								<p>::rootElement.title::</p>
-							</li>
-						</ul>
+								<P>::rootElement.title::</P>
+							</LI>
+						</UL>
 					</DIV>
-					<!-- Themes -->
-					<a name="theme-list" class="Page" >Themes</a>
+					
+					<A class="Page" name="theme-list">Themes</A>
 					<DIV class="Layer theme-list ribbon-list">
 					</DIV>
 
-					<!-- Insert -->
-					<a name="insert-list" class="Page" >Insert</a>
+					
+					<A class="Page" name="insert-list">Insert</A>
 
 					<DIV class="Layer insert-list ribbon-list">
-						<ul>
-							<li class="image Draggable InsertDropHandler" 
-								data-phantom-class-name="selection-phantom"
-								data-dropzones-class-name="Layer"
-							>
-								<DIV class="solid"></DIV>
-								<p>Image</p>
-							</li>
-							<li class="text Draggable InsertDropHandler" 
-								data-phantom-class-name="selection-phantom"
-								data-dropzones-class-name="Layer"
-							>
-								<DIV class="solid"></DIV>
-								<p>Text</p>
-							</li>
-							<li class="audio Draggable InsertDropHandler" 
-								data-phantom-class-name="selection-phantom"
-								data-dropzones-class-name="Layer"
-							>
-								<DIV class="solid"></DIV>
-								<p>Audio</p>
-							</li>
-							<li class="video Draggable InsertDropHandler" 
-								data-phantom-class-name="selection-phantom"
-								data-dropzones-class-name="Layer"
-							>
-								<DIV class="solid"></DIV>
-								<p>Video</p>
-							</li>
-							<li class="container Draggable InsertDropHandler" 
-								data-phantom-class-name="selection-phantom"
-								data-dropzones-class-name="silex-view"
-							>
-								<DIV class="solid"></DIV>
-								<p>Container</p>
-							</li>
-						</ul>
+						<UL>
+							<LI data-dropzones-class-name="Layer" class="image Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
+								<P>Image</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="text Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
+								<P>Text</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="audio Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
+								<P>Audio</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="video Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
+								<P>Video</P>
+							</LI>
+							<LI data-dropzones-class-name="silex-view" class="container Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
+								<P>Container</P>
+							</LI>
+						</UL>
 					</DIV>
-					<!-- User -->
-					<a name="user-menu" class="Page"  >User</a>
+					
+					<A class="Page" name="user-menu">User</A>
 					<DIV class="Layer user-menu ribbon-list selectable">
 					</DIV>
-					<!-- Tool -->
-					<a name="tool-menu" class="Page"  >Tool</a>
+					
+					<A class="Page" name="tool-menu">Tool</A>
 					<DIV class="Layer tool-menu ribbon-list selectable">
 					</DIV>
-					<!-- Help -->
-					<a name="help-menu" class="Page"  >Help</a>
+					
+					<A class="Page" name="help-menu">Help</A>
 					<DIV class="Layer help-menu ribbon-list selectable">
 					</DIV>
 				</DIV>

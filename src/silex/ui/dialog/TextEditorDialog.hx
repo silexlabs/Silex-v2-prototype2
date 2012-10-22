@@ -30,6 +30,10 @@ class TextEditorDialog extends DialogBase
 	 */
 	public static inline var TEXT_EDITOR_PAGE_NAME = "text-editor-dialog";
 	/**
+	 * The CKEditor main html page
+	 */
+	public static inline var TEXT_EDITOR_HTML_PAGE = "../../third-party-tools/ckeditor/ckeditor.html";
+	/**
 	 * static callback method
 	 * Called after a click on the submit button
 	 */
@@ -56,10 +60,16 @@ class TextEditorDialog extends DialogBase
 	 * Update the publications list when the page is opened
 	 */
 	public function requestRedraw(transitionData:TransitionData) {
+//		contentLoaded(haxe.Http.requestUrl(TEXT_EDITOR_HTML_PAGE));
+		contentLoaded('<iframe name="kcfinder_iframe" src="'+TEXT_EDITOR_HTML_PAGE+'"'
+			+' frameborder="0" width="100%" height="100%" marginwidth="0" marginheight="0" scrolling="no" />'
+		);
+	}
+	private function contentLoaded(htmlString:String) 
+	{
 		// redraw the list, which will reload data and then refresh the list when onListData is dispatched by the model
 		var element = DomTools.getSingleElement(rootElement, TEXT_EDITOR_CONTAINER_CLASS_NAME, true);
-		element.innerHTML = '<iframe name="kcfinder_iframe" src="../../third-party-tools/ckeditor/ckeditor.html"'
-			+' frameborder="0" width="100%" height="100%" marginwidth="0" marginheight="0" scrolling="no" />';
+		element.innerHTML = htmlString;
 
 		// display the message in the element
 		if (message!=null){

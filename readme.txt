@@ -40,13 +40,14 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
   * autoriser display block?
   * ergo : disable les pixel+unit quand on a select un shorthand (exple background h pos)
 
-Bugs
 * bug visuel text editor   
 * drop zone doit etre par rapport a la  souris, pas par rapport au centre du marker (ou bien mettre un style "dragging" sur le marker pendant le drag pour mettre un max-width)
 * select un container puis un comp d un autre container => marque pas le bon nom dans le bidule contextuel
 - check contextes des css
 - mettre a jour les tests unitaires cote serveur
 - slelection drop zone : priorité aux petites zones * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
+- tous les styles dans la boite a outil styles
+
 
 == edition of properties ==
 

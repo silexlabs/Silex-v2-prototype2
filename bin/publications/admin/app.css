@@ -83,6 +83,7 @@ body{
 .dialogs{
 
 }
+
 .dialogs .dialog-background{
 	top:0;
 	width:100%;
@@ -287,8 +288,10 @@ opacity:1;
 
 }
 .dialogs .container-text-editor{
-	min-height: 330px;
 }
+.dialogs .container-text-editor iframe{
+}
+
 
 /*   PUBLICATION LIST  */
 
