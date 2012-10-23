@@ -34,105 +34,14 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** known bugs **
 
-  * chrome and color picker : read ok, load bug
-  * delete a container when it is a master or not, and uncheck master when the container is not on any page
-  * ecouter window.resize, et dispatcher window.resize dans Page::open
-  * autoriser display block?
-  * ergo : disable les pixel+unit quand on a select un shorthand (exple background h pos)
-
-Bugs
-* bug visuel text editor   
-* drop zone doit etre par rapport a la  souris, pas par rapport au centre du marker (ou bien mettre un style "dragging" sur le marker pendant le drag pour mettre un max-width)
-* select un container puis un comp d un autre container => marque pas le bon nom dans le bidule contextuel
-- check contextes des css
 - mettre a jour les tests unitaires cote serveur
 - slelection drop zone : priorité aux petites zones * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
-
-== edition of properties ==
-
-the toolboxes / dialogs
-
-* go to the menu "file" and then "properties" to open the publication properties
-* select a page to edit its properties in the properties tool box
-* select a layer to edit its properties in the properties tool box
-* select a component to edit its properties in the properties tool box
-
-properties of the a publication
-
-* vertical and horizontal align, optional size
-* meta tags: description, content-type, distribution (target platform), keywords, refresh (redirect), robots, author, revised
-* html head elements: title, base, link (rss etc.), script (text/ecmascript cf http://www.w3schools.com/tags/att_script_type.asp )
-
-properties of the pages 
-
-* title, name/deeplink
-* initialPage (true/false)
-* order (index in the page list) - 2D order for wire-like publications??
-
-properties of the layers 
-
-* name
-* type (container or master)
-* styles (all css styles)
-* contexts
-
-properties of the components
-
-* name/title?, description?
-* actions
-  * next/prev page
-  * internal link (linkToPage, linkToPopup, closePopup)
-  * external link
-* properties function of the component type
-  * URL
-  * preload and auto start
-  * loop
-* styles (all css styles)
-* contexts
-
-== edition of styles ==
-
-for component
-
-* select a conponent by clicking on it
-* change its style in the properties toolbox
-
-for layers
-
-* select a layer by double clicking on it
-* change its style in the properties toolbox
-
-edit the flow in the flow toolbox
-* change the flow of the components and layers
-* move components accross layers
-
-styles for a layer
-* display, position, float, borders, background, margin...
-
-styles for a component
-* display, position, float, borders, background, margin...
+* delete a container when it is a master or not, and uncheck master when the container is not on any page
+* tous les styles dans la boite a outil styles
+* ecouter window.resize, et dispatcher window.resize dans Page::open
+* ergo : disable les pixel+unit quand on a select un shorthand (exple background h pos)
+* chrome and color picker : read ok, load bug
+* autoriser display block?
 
 
-================================================================================
-discuté avec thomas le 04/10/2012
-- listes, templates et données en xml
-  > mettre en attente et thomas le fait
-  > doit pouvoir etre fait a la compil, probleme de la RFE
-- drag / drop et reverse des templates
-  > marche, à tester par lex
-  > add/suppr elements ne fonctionne pas
-- drag drop avec "proxy"
-  > pas tout de suite, a discuter plus tard ensemble
-- brix et flex jusqu ou?
-  > on devrait faire les comp flex
-  > data binding? a faire bientot
-- mvc? 
-  > thomas est pour les packages mvc
 
-SEO and brix
-- php with deeplink in get
-- php open html page, interprete with brix (and cocktail)
-- echo of interpreted dom (innerHTML)
-- js is loaded
-- replace the body with the raw html of the page (get it from a web service or php can put it in a meta tag in <head>)
-- opens the page corresonding to the deeplink

@@ -10,18 +10,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	<script src="ckeditor.js"></script>
 	<style type="text/css">
 		body{
-			position: absolute;
-			height: 100% !important;
+
 		}
 		.cke_chrome{
 			margin: 0 !important;
 			padding: 0 !important;
 			border-radius: 0 !important;
 			border-width: 0 !important;
-			height: 100% !important;
 		}
 		.cke_inner{
-			height: 100% !important;
 			border-radius: 0 !important;
 		}
 	</style>
@@ -37,7 +34,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			 * Style sheet for the contents
 			 */
 			contentsCss: 'outputxhtml.css',
-
+	        height: 400,
+	        width: "100%",
 			/*
 			 * Core styles.
 			 */
@@ -178,13 +176,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		//editorInstance.on("afterCommandExec", function(){
 		//document.onkeyup = function(){
 		editorInstance.on("instanceReady", function(){
-
+			
+			//editorInstance.resize( '100%', '100%', true );
+			//editorInstance.resize( '100%', '100%');
 			editorInstance.document.on("keyup", function(){
 				window.parent.CKEDITOR.textContent = editorInstance.getData();
 				window.parent.CKEDITOR.callBack(window.parent.CKEDITOR.textContent);
 			});
 		});
-
 	</script>
 </body>
 </html>
