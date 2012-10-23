@@ -72,6 +72,10 @@ class LayerModel extends ModelBase<Layer>{
 	 */
 	public static inline var NEW_LAYER_NAME = "container1";
 	/**
+	 * css class of the layer automatically created with a new page
+	 */
+	public static inline var NEW_LAYER_CSS_CLASS = "container";
+	/**
 	 * name of the required container
 	 */
 	public static inline var HEADER_LAYER_NAME = "header";
@@ -139,7 +143,7 @@ class LayerModel extends ModelBase<Layer>{
 
 		// create a node for an empty new layer
 		var newNode = Lib.document.createElement("div");
-		newNode.className = "Layer " + pageName;
+		newNode.className = "Layer " + pageName + " " + NEW_LAYER_CSS_CLASS;
 		newNode.setAttribute("title", layerName);
 
 

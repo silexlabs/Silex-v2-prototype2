@@ -8,6 +8,7 @@ import silex.ModelBase;
 import silex.publication.PublicationData;
 import silex.interpreter.Interpreter;
 
+import silex.ui.toolbox.MenuController;
 import silex.property.PropertyModel;
 import silex.component.ComponentModel;
 import silex.layer.LayerModel;
@@ -98,7 +99,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	/**
 	 * currently loaded publication name
 	 */
-	public var currentName:String;
+	public var currentName(default, setPublicationName):String;
 	/**
 	 * Currently loaded publication
 	 */
@@ -195,6 +196,16 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		}
 		return null;
 	}
+	/**
+	 * set a new publication name
+	 * update the base tag for the html page so that ./ is the publication folder
+	 */
+	public function setPublicationName(newName:String):String
+	{
+		currentName = newName;
+		DomTools.setBaseTag("../" + newName + "/");
+		return newName;
+	}
 	////////////////////////////////////////////////
 	// load
 	////////////////////////////////////////////////
@@ -204,8 +215,8 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * Reset model selection
 	 */
 	public function load(name:String, configData:PublicationConfigData = null){
-		// set base tag so the ./ is the publication folder
-		var currentBasTag = DomTools.getBaseTag();
+		// set base tag so that ./ is the publication folder
+/*		var currentBasTag = DomTools.getBaseTag();
 		if (currentBasTag == PublicationConstants.PUBLICATION_FOLDER + currentName + "/"
 			|| currentBasTag == PublicationConstants.PUBLICATION_FOLDER + PublicationConstants.BUILDER_PUBLICATION_NAME + "/"
 			){
@@ -215,7 +226,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			// case of a publication displayed directly from the publicaiton folder, i.e. publications/default/index.html
 			DomTools.setBaseTag("../" + name + "/");
 		}
-
+*/
 
 		// store the new publication name
 		currentName = name;
@@ -410,13 +421,14 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		// execute an action when needed for debug (publication and server config)
 		if (currentConfig.debugModeAction != null){
 			var context:Hash<Dynamic> = new Hash();
-			context.set("BrixId", application.id);
+/*			context.set("BrixId", application.id);
 			context.set("PublicationModel", PublicationModel);
 			context.set("PageModel", PageModel);
 			context.set("LayerModel", LayerModel);
 			context.set("ComponentModel", ComponentModel);
 			context.set("PropertyModel", PropertyModel);
-			try{
+			context.set("MenuController", MenuController);
+*/			try{
 				Interpreter.exec(StringTools.htmlUnescape(currentConfig.debugModeAction), context);
 			}catch(e:Dynamic){
 				throw("Error while executing the script in the config file of the publication (debugModeAction variable). The error: "+e);

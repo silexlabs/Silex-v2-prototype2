@@ -18,6 +18,7 @@ import silex.publication.PublicationService;
 import silex.interpreter.Interpreter;
 
 #if silexClientSide
+import silex.ui.toolbox.MenuController;
 import silex.property.PropertyModel;
 import silex.component.ComponentModel;
 import silex.layer.LayerModel;
@@ -152,6 +153,7 @@ class Silex {
 			context.set("LayerModel", LayerModel);
 			context.set("ComponentModel", ComponentModel);
 			context.set("PropertyModel", PropertyModel);
+			context.set("MenuController", MenuController);
 			try{
 				Interpreter.exec(StringTools.htmlUnescape(debugModeAction), context);
 			}catch(e:Dynamic){
