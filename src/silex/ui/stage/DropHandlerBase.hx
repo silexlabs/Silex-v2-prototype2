@@ -196,6 +196,9 @@ class DropHandlerBase extends DisplayObject{
 		}
 		resetDraggedMarker();
 	}
+	/**
+	 * reset dragged element
+	 */
 	private function resetDraggedMarker(){
 		// reset the marker position in the DOM
 		if (rootElement.parentNode != initialMarkerParent){

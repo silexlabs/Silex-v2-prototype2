@@ -48,6 +48,10 @@ class InsertDropHandler extends DropHandlerBase{
 	 */
 	public static inline var VIDEO_TYPE:String = "video";
 	/**
+	 * clone of the dragged element, stays in the list while the element is dragged
+	 */
+	private var listElementClone:HtmlDom;
+	/**
 	 * constructor
 	 * listen to the Draggable class events
 	 */
@@ -58,6 +62,13 @@ class InsertDropHandler extends DropHandlerBase{
 	 * virtual method to be implemented in derived classes
 	 */
 	override private function setDraggedElement(draggableEvent:DraggableEvent) {
+		// clone of the dragged element 
+		listElementClone = draggableEvent.target.cloneNode(true);
+		listElementClone.className = draggableEvent.target.className;
+		listElementClone.style.position = null;
+		
+		// leave the clone in the list
+		draggableEvent.target.parentNode.insertBefore(listElementClone, draggableEvent.target);
 	}
 	/**
 	 * virtual method to be implemented in derived classes
@@ -72,6 +83,17 @@ class InsertDropHandler extends DropHandlerBase{
 		super.onDrag(e);
 		var event:CustomEvent = cast(e);
 		event.detail.draggable.groupElement = PublicationModel.getInstance().viewHtmlDom.parentNode;
+	}
+	/**
+	 * reset dragged element
+	 */
+	override private function resetDraggedMarker(){
+		// delete the clone of the dragged element in the list
+		listElementClone.parentNode.removeChild(listElementClone);
+		listElementClone = null;
+
+		// default behavior
+		super.resetDraggedMarker();
 	}
 	/**
 	 * Handle Draggable events
