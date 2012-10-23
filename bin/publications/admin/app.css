@@ -789,16 +789,18 @@ box-shadow: inset 0px 0px 2px 2px #888;
 }
 
 .silex-toolbox .LinkToPage:hover{
-	background-color:#F93;
+	background-color:white;
+	color: #3C3C3C;
 }
-.silex-toolbox .page-opened{
-	background-color:#F93;
+.silex-toolbox .LinkToPage.page-opened{
+	background-color:white;
 	font-weight: normal;
+	color: #3C3C3C;
 }
 
 .silex-toolbox .LinkToPage{
 	text-decoration: none;
-	color:#3C3C3C;
+	color:grey;
 	font-size:14px;
 }
 
