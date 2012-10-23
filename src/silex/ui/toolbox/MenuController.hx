@@ -7,6 +7,7 @@ import brix.component.navigation.Page;
 import brix.component.ui.DisplayObject;
 import brix.util.DomTools;
 
+import silex.interpreter.Interpreter;
 import silex.publication.PublicationData;
 import silex.publication.PublicationModel;
 import silex.page.PageModel;
@@ -124,6 +125,8 @@ class MenuController extends DisplayObject
 		super(rootElement, BrixId);
 		rootElement.addEventListener("click", onClick, false);
 		menuBrixId = BrixId;
+		// expose the class to the scripts interpreter
+		Interpreter.getInstance().expose("MenuController", MenuController);
 	}
 
 	/**

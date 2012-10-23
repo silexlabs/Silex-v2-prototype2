@@ -29,17 +29,6 @@ body{
 /* 		You can edit these styles 	 */
 
 /* **************** */
-/* 		test 		*/
-/* **************** */
-
-/*
-.PublicationViewer .Layer{
-	border: 2px dashed grey; 
-	min-width: 25px;
-	min-height: 25px;
-}
-*/
-/* **************** */
 /* 	builder 		*/
 /* **************** */
 body{
@@ -53,7 +42,7 @@ body{
 	pointer-events: none;
 	color: grey ! important;
 }
-.Layer{
+.silex-view .Layer{
 	min-height: 20px;
 	min-width: 20px;
 }
@@ -469,21 +458,23 @@ box-shadow: inset 0px 0px 2px 2px #888;
 .selection-layer-marker:hover{
 }
 
-.master-phantom{
-	min-width: 10px !important;
-	min-height: 10px !important;
-	border: 2px solid red !important; 
-/* 	display: block !important; */
+.master-phantom,
+.selection-phantom{
+	margin: 0 !important; 
+	padding: 0 !important; 
 	visibility: visible !important;
 	max-width: 500px !important; 
 	max-height: 150px !important; 
 }
+.master-phantom{
+-moz-box-shadow: inset 0px 0px 2px 2px green;
+-webkit-box-shadow: inset 0px 0px 2px 2px green;
+box-shadow: inset 0px 0px 2px 2px green;
+}
 .selection-phantom{
-	min-width: 10px !important;
-	min-height: 10px !important;
-	border: 2px solid red !important; 
-	max-width: 500px !important; 
-	max-height: 150px !important; 
+-moz-box-shadow: inset 0px 0px 2px 2px yellow;
+-webkit-box-shadow: inset 0px 0px 2px 2px yellow;
+box-shadow: inset 0px 0px 2px 2px yellow;
 }
 .selection-marker .draggable-dragzone,
 .selection-layer-marker .draggable-dragzone{

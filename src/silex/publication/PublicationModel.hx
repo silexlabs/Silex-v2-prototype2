@@ -134,6 +134,8 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		super(null, null, DEBUG_INFO);
 		// store the service provider
 		publicationService = new PublicationService();
+		// expose the class to the scripts interpreter
+		Interpreter.getInstance().expose("PublicationModel", PublicationModel);
 	}
 	////////////////////////////////////////////////
 	// list
@@ -418,22 +420,8 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 
 		// execute debug actions
 		#if silexDebug
-		// execute an action when needed for debug (publication and server config)
-		if (currentConfig.debugModeAction != null){
-			var context:Hash<Dynamic> = new Hash();
-/*			context.set("BrixId", application.id);
-			context.set("PublicationModel", PublicationModel);
-			context.set("PageModel", PageModel);
-			context.set("LayerModel", LayerModel);
-			context.set("ComponentModel", ComponentModel);
-			context.set("PropertyModel", PropertyModel);
-			context.set("MenuController", MenuController);
-*/			try{
-				Interpreter.exec(StringTools.htmlUnescape(currentConfig.debugModeAction), context);
-			}catch(e:Dynamic){
-				throw("Error while executing the script in the config file of the publication (debugModeAction variable). The error: "+e);
-			}
-		}
+			trace("PublicationModel exec "+rootElement+" - "+rootElement.className);
+			Interpreter.getInstance().execScriptTags(rootElement);
 		#end
 	}
 	/**

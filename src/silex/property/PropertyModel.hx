@@ -1,5 +1,6 @@
 package silex.property;
 
+import silex.interpreter.Interpreter;
 import silex.ModelBase;
 import silex.property.PropertyData;
 import silex.component.ComponentModel;
@@ -55,6 +56,8 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 */
 	private function new(){
 		super(null, null, DEBUG_INFO);
+		// expose the class to the scripts interpreter
+		Interpreter.getInstance().expose("PropertyModel", PropertyModel);
 	}
 	/**
 	 * Apply a value to the view and the model simultanneously

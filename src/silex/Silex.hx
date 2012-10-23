@@ -15,16 +15,6 @@ import brix.component.navigation.Page;
 
 import silex.publication.PublicationData;
 import silex.publication.PublicationService;
-import silex.interpreter.Interpreter;
-
-#if silexClientSide
-import silex.ui.toolbox.MenuController;
-import silex.property.PropertyModel;
-import silex.component.ComponentModel;
-import silex.layer.LayerModel;
-import silex.page.PageModel;
-import silex.publication.PublicationModel;
-#end
 
 #if silexServerSide
 import php.Web;
@@ -138,29 +128,6 @@ class Silex {
 
 		// make the publication visible
 		Lib.document.body.style.visibility = "visible";
-
-		#if silexDebug
-		haxe.Timer.delay(callback(doAfterInit, application), 1000);
-	}
-	private static function doAfterInit(application) {
-		// execute an action when needed for debug (publication and server config)
-		var debugModeAction = DomTools.getMeta(Interpreter.CONFIG_TAG_DEBUG_MODE_ACTION);
-		if (debugModeAction != null){
-			var context:Hash<Dynamic> = new Hash();
-			context.set("BrixId", application.id);
-			context.set("PublicationModel", PublicationModel);
-			context.set("PageModel", PageModel);
-			context.set("LayerModel", LayerModel);
-			context.set("ComponentModel", ComponentModel);
-			context.set("PropertyModel", PropertyModel);
-			context.set("MenuController", MenuController);
-			try{
-				Interpreter.exec(StringTools.htmlUnescape(debugModeAction), context);
-			}catch(e:Dynamic){
-				throw("Error while executing the script in the config file of the publication (debugModeAction variable). The error: "+e);
-			}
-		}
-		#end
 	}
 #end
 #if silexServerSide

@@ -32,9 +32,10 @@
 
 		<script data-brix-use="silex.ui.stage.SelectionDropHandler"></script>
 		<script data-brix-use="silex.ui.stage.InsertDropHandler"></script>
+		
+		<script data-brix-use="silex.ui.script.HScriptTag"></script>
 
 		<script data-brix-use="silex.ui.toolbox.MenuController"></script>
-
 		<script data-brix-use="silex.ui.toolbox.editor.PropertyEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.HtmlEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.TextStyleEditor"></script>
@@ -65,11 +66,11 @@
 		<meta name="initialPageName" content="start-page"></meta>
 		<meta name="useDeeplink" content="false" />
 		<link href="app.css" rel="stylesheet"></link>
-		<meta name="debugModeAction" content="
-		//Lib.alert('test!');
-		//PublicationModel.getInstance().load('default');
-		MenuController.createPublication();
-	"></meta>
+		<script type="text/hscript">
+			//Lib.alert('test!');
+			//PublicationModel.getInstance().load('default');
+			MenuController.createPublication();
+		</script>
 	</head>
 	<body class="">
 		<DIV class="group-main Panel" 
@@ -198,7 +199,7 @@
 							<LI data-dropzones-class-name="Layer" class="video Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
 								<P>Video</P>
 							</LI>
-							<LI data-dropzones-class-name="silex-view" class="container Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
+							<LI data-dropzones-class-name="silex-view" class="container Draggable InsertDropHandler" data-phantom-class-name="master-phantom">
 								<P>Container</P>
 							</LI>
 						</UL>
@@ -1483,7 +1484,7 @@
 					</DIV>
 					<DIV class="selection-layer-marker Draggable SelectionDropHandler"
 						data-dropzones-class-name="silex-view"
-						data-phantom-class-name="selection-phantom"
+						data-phantom-class-name="master-phantom"
 					>
                     	<div class="selection-marker-delete"></div>
                         <div class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</div>

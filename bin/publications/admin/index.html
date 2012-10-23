@@ -31,9 +31,10 @@
 
 		
 		
-
+		
 		
 
+		
 		
 		
 		
@@ -63,11 +64,11 @@
 		<META name="initialPageName" content="start-page"></META>
 		<META name="useDeeplink" content="false"></META>
 		<LINK href="app.css" rel="stylesheet"></LINK>
-		<META name="debugModeAction" content="
-		//Lib.alert('test!');
-		//PublicationModel.getInstance().load('default');
-		MenuController.createPublication();
-	"></META>
+		<SCRIPT type="text/hscript">
+			//Lib.alert('test!');
+			//PublicationModel.getInstance().load('default');
+			MenuController.createPublication();
+		</SCRIPT>
 	<SCRIPT src="silex-builder.js"></SCRIPT></HEAD>
 	
 <BODY class="">
@@ -194,7 +195,7 @@
 							<LI data-dropzones-class-name="Layer" class="video Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
 								<P>Video</P>
 							</LI>
-							<LI data-dropzones-class-name="silex-view" class="container Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
+							<LI data-dropzones-class-name="silex-view" class="container Draggable InsertDropHandler" data-phantom-class-name="master-phantom" data-group-id="Group1">
 								<P>Container</P>
 							</LI>
 						</UL>
@@ -1426,7 +1427,7 @@
 					</DIV>
 					<DIV class="hover-marker">
 					</DIV>
-					<DIV data-dropzones-class-name="silex-view" class="selection-layer-marker Draggable SelectionDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group3">
+					<DIV data-dropzones-class-name="silex-view" class="selection-layer-marker Draggable SelectionDropHandler" data-phantom-class-name="master-phantom" data-group-id="Group3">
                     	<DIV class="selection-marker-delete"></DIV>
                         <DIV class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</DIV>
                         <DIV class="draggable-dragzone"></DIV>
