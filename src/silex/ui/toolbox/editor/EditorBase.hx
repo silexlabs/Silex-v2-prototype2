@@ -333,17 +333,23 @@ class EditorBase extends DisplayObject
 		if (url == "")
 			return "";
 
-		var pubUrl = "publications/" + PublicationModel.getInstance().currentName + "/";
+		// remove path to the publication folder
+		var pubUrl = "publications/";
 		var idxPubFolder = url.indexOf(pubUrl);
 		if (idxPubFolder >= 0){
-			// remove file name if there is one
-			var idxSlash = pubUrl.lastIndexOf("/");
-			var idxDot = pubUrl.lastIndexOf(".");
-			if (idxSlash < idxDot)
-				pubUrl = pubUrl.substr(idxSlash);
 			// remove all the common parts
 			url = url.substr(idxPubFolder + pubUrl.length);
-			
+			// remove publication name if it is the current publication or add the relative path "../"
+			var pubUrl = PublicationModel.getInstance().currentName + "/";
+			var idxPubFolder = url.indexOf(pubUrl);
+			if (idxPubFolder >= 0){
+				// remove all the common parts
+				url = url.substr(idxPubFolder + pubUrl.length);
+			}
+			else{
+				// add the relative path to publication folder
+				url = "../"+url;
+			}
 		}
 		return url;
 	}
