@@ -534,23 +534,6 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 	border-bottom:black 1px solid;
 }
 
-.silex-toolbox .style-block-tab{
-	margin-left:auto;
-	margin-right:auto;
-	width:97%;
-}
-.silex-toolbox .style-block-tab fieldset{
-	margin-left:auto;
-	margin-right:auto;
-	font-size:12px;
-}
-.silex-toolbox .style-positioning-tab fieldset{
-	margin-left:auto;
-	margin-right:auto;
-	font-size:12px;
-	width:75%;
-}
-
 .group-ribbon, .ribbon-tabs a{
 	text-decoration:none;
 	color:#3C3C3C;
@@ -754,6 +737,27 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 	z-index: 2000;
 	float: right;
 }
+.silex-toolbox .style-block-tab{
+	margin-left:auto;
+	margin-right:auto;
+	width:97%;
+}
+.silex-toolbox .type-container{
+	clear: both;
+	min-height: 25px;
+}
+.silex-toolbox .style-block-tab fieldset{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+}
+.silex-toolbox .style-positioning-tab fieldset{
+	margin-left:auto;
+	margin-right:auto;
+	font-size:12px;
+	width:75%;
+}
+
 .silex-toolbox .draggable-dragzone{
 	background-color: Gainsboro;
 	width:100%;
@@ -804,15 +808,14 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 }
 
 .silex-toolbox select{
-	width:31%;
+	width:60px;
 	float:right;
-	margin-left:5px;
+	margin: 3px;
 }
 
 .silex-toolbox textarea,input {
-	width: 21%;
-	float:right;
-
+	float:left;
+	margin-left: 20;
 }
 .silex-toolbox input.text_font{
 	width: 32%;

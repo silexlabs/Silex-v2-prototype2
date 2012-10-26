@@ -46,4 +46,27 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 * styles/themes
 * new from template
 
+classification of css styles :
 
+box model
+
+text
+
+box design?
+  background
+  border
+
+layout
+  position
+  float
+  display
+  clear
+
+visual effect / rendering
+  overflow
+  opacity
+  shadows
+  visibility
+
+list
+  
