@@ -135,14 +135,19 @@
 					<A class="Page" name="page-list" data-group-id="Group1">Pages</A>
 
 					<DIV class="Layer page-list ribbon-list selectable">
-						<DIV class="assets-page">
-							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-add.png" title="Add a page" data-menu-item="add-page"/>
-							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-delete.png" title="Delete selected page" data-menu-item="del-page"/>
-							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-rename.png" title="Rename selected page" data-menu-item="rename-page"/>
-						</DIV>
+						<UL>
+							<LI class="add-page" title="Add a page" data-menu-item="add-page">
+								<P>add page</P>
+							</LI>
+							<LI class="delete-page" title="Delete selected page" data-menu-item="del-page">
+								<P>delete page</P>
+							</LI>
+							<LI class="rename-page" title="Rename selected page" data-menu-item="rename-page">
+								<P>rename page</P>
+							</LI>
+						</UL>
 						<UL class="PageList">
-							<LI class="">
-								<DIV class="solid"></DIV>
+							<LI class="page">
 								<P>::name::</P>
 							</LI>
 						</UL>
@@ -153,8 +158,7 @@
 
 					<DIV class="Layer layer-list ribbon-list">
 						<UL class="LayersList">
-							<LI data-dropzones-class-name="silex-view" class="" data-phantom-class-name="master-phantom">
-								<DIV class="solid"></DIV>
+							<LI data-dropzones-class-name="silex-view" class="master" data-phantom-class-name="master-phantom">
 								<P>::rootElement.title::</P>
 							</LI>
 						</UL>
