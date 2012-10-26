@@ -41,7 +41,7 @@
 -D stopOnError
 
 -D silexClientSide
--D silexDebug
+# only in js : -D silexDebug
 
 #--no-traces
 

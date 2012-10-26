@@ -34,14 +34,39 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** known bugs **
 
-- mettre a jour les tests unitaires cote serveur
-- slelection drop zone : priorité aux petites zones * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
+* mettre a jour les tests unitaires cote serveur
+* url par defaut image, video, son
+* slelection drop zone : priorité aux petites zones * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
 * delete a container when it is a master or not, and uncheck master when the container is not on any page
 * tous les styles dans la boite a outil styles
 * ecouter window.resize, et dispatcher window.resize dans Page::open
 * ergo : disable les pixel+unit quand on a select un shorthand (exple background h pos)
 * chrome and color picker : read ok, load bug
 * autoriser display block?
+* styles/themes
+* new from template
 
+classification of css styles :
 
+box model
 
+text
+
+box design?
+  background
+  border
+
+layout
+  position
+  float
+  display
+  clear
+
+visual effect / rendering
+  overflow
+  opacity
+  shadows
+  visibility
+
+list
+  

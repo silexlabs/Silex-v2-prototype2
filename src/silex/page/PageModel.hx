@@ -3,6 +3,7 @@ package silex.page;
 import js.Lib;
 import js.Dom;
 
+import silex.interpreter.Interpreter;
 import silex.ModelBase;
 import silex.publication.PublicationModel;
 import silex.layer.LayerModel;
@@ -62,6 +63,8 @@ class PageModel extends ModelBase<Page>{
 	 */
 	private function new(){
 		super(ON_HOVER_CHANGE, ON_SELECTION_CHANGE, DEBUG_INFO);
+		// expose the class to the scripts interpreter
+		Interpreter.getInstance().expose("PageModel", PageModel);
 	}
 	/**
 	 * Setter for the selected item
