@@ -3,6 +3,7 @@ package silex.component;
 import js.Lib;
 import js.Dom;
 
+import silex.interpreter.Interpreter;
 import silex.ModelBase;
 import silex.publication.PublicationModel;
 import silex.layer.LayerModel;
@@ -66,6 +67,8 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	 */
 	private function new(){
 		super(ON_HOVER_CHANGE, ON_SELECTION_CHANGE, DEBUG_INFO);
+		// expose the class to the scripts interpreter
+		Interpreter.getInstance().expose("ComponentModel", ComponentModel);
 	}
 	/**
 	 * Setter for the selected item

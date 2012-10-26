@@ -22,4 +22,4 @@
 -D stopOnError
 
 -D silexServerSide
-#-D silexDebug
+# only in js : -D silexDebug

@@ -3,6 +3,7 @@ package silex.layer;
 import js.Lib;
 import js.Dom;
 
+import silex.interpreter.Interpreter;
 import silex.ModelBase;
 import silex.component.ComponentModel;
 import silex.publication.PublicationModel;
@@ -72,6 +73,10 @@ class LayerModel extends ModelBase<Layer>{
 	 */
 	public static inline var NEW_LAYER_NAME = "container1";
 	/**
+	 * css class of the layer automatically created with a new page
+	 */
+	public static inline var NEW_LAYER_CSS_CLASS = "container";
+	/**
 	 * name of the required container
 	 */
 	public static inline var HEADER_LAYER_NAME = "header";
@@ -97,6 +102,8 @@ class LayerModel extends ModelBase<Layer>{
 	 */
 	private function new(){
 		super(ON_HOVER_CHANGE, ON_SELECTION_CHANGE, DEBUG_INFO);
+		// expose the class to the scripts interpreter
+		Interpreter.getInstance().expose("LayerModel", LayerModel);
 	}
 	/**
 	 * Setter for the selected item
@@ -139,7 +146,7 @@ class LayerModel extends ModelBase<Layer>{
 
 		// create a node for an empty new layer
 		var newNode = Lib.document.createElement("div");
-		newNode.className = "Layer " + pageName;
+		newNode.className = "Layer " + pageName + " " + NEW_LAYER_CSS_CLASS;
 		newNode.setAttribute("title", layerName);
 
 
