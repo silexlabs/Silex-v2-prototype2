@@ -11,6 +11,7 @@ import haxe.xml.Fast;
 import brix.component.ui.DisplayObject;
 import brix.util.DomTools;
 import brix.component.template.TemplateMacros;
+import brix.component.navigation.Page;
 
 import silex.interpreter.Interpreter;
 import silex.publication.PublicationData;
@@ -19,6 +20,26 @@ import silex.page.PageModel;
 import silex.ui.dialog.FileBrowserDialog;
 
 import haxe.remoting.HttpAsyncConnection;
+
+
+typedef ToolboxData = {
+	categories: Array<{
+		name: String,
+		groups: Array<{
+			name: String,
+			properties: Array<{
+				name: String,
+				types: Array<{
+					name: String,
+					options: Array<{
+						name: String,
+						help: String // optional, in the attribute of the node
+					}>
+				}>
+			}>
+		}>
+	}>
+}
 
 /**
  * This component displays editors for all css properties in a Brix accordion UI. 
@@ -38,7 +59,7 @@ class ToolBoxController extends DisplayObject
 	 * this is an object in which I store the data from the XML file
 	 * used to execute the template
 	 */
-	public var dataProvider:Dynamic;
+	public var dataProvider:ToolboxData;
 	/**
 	 * Constructor
 	 * Start listening the node
@@ -95,11 +116,14 @@ class ToolBoxController extends DisplayObject
 
 		// refresh display
 		redraw();
+
+		// open default accordion category
+		Page.openPage(dataProvider.categories[0].name, false, null, null, brixInstanceId, rootElement);
 	}
 	/**
 	 * convert the xml to an object for the template
 	 */
-	private function xmlToObj(xml:Fast):Dynamic{
+	private function xmlToObj(xml:Fast):ToolboxData{
 		var res = {
 			categories: []
 		};
@@ -129,7 +153,12 @@ class ToolBoxController extends DisplayObject
 						}
 						// browse <option> nodes
 						for (optionXml in typeXml.nodes.option){
-							var option = optionXml.innerData;
+							var option = {
+								name: optionXml.innerData,
+								help: ""
+							}
+							if (optionXml.has.help)
+								option.help = optionXml.att.help;
 							type.options.push(option);
 						}
 						prop.types.push(type);

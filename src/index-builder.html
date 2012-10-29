@@ -349,7 +349,9 @@
 												<SELECT class="dropdown">
 													<OPTION value=""></OPTION>
 												::foreach options::
-													<OPTION value="::__current__::">::__current__::</OPTION>
+													<OPTION value="::name::" title="::help::">
+														::name::
+													</OPTION>
 												::end:: 
 												</SELECT>
 											::elseif (name=="length")::
@@ -372,7 +374,16 @@
 												</SELECT>
 												<INPUT class="number" type="number" max="5000" min="-5000"/>
 											::elseif (name=="percentage")::
-												<INPUT class="number" type="number" max="5000" min="-5000"/><p style="float:right;">%</p>
+												<INPUT class="number" type="number" max="5000" min="-5000"/><p>  %</p>
+											::elseif (name=="color")::
+												<INPUT class="color" type="color"/>
+											::elseif (name=="uri")::
+												<INPUT class="uri" type="src"/>
+												<BUTTON class="select-file-button" title="Browse library" data-fb-target="src-property">Browse library</BUTTON>
+											::elseif (name=="integer")::
+												<INPUT class="integer" type="number" max="5000" min="-5000"/><p>  %</p>
+											::elseif (name=="number")::
+												<INPUT class="integer" type="number" max="5000" min="-5000"/><p>  %</p>
 					                        ::end::
 				                       		</DIV>
 					                    ::end:: <!-- types -->

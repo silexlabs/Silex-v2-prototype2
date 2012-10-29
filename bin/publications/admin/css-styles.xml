@@ -1,10 +1,51 @@
 <xml>
+<!--
+example:
+			<property>
+				<name>min-height</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>auto</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+			</property>
+still missing:
+	transform
+	box shadow
+	text shadow
+
+
+	content
+	counter-increment
+	counter-reset
+	orphans
+	widows
+	page-break-after
+	page-break-before
+	page-break-inside
+	quotes
+
+	border-collapse
+	border-spacing
+
+-->
 	<category>
 		<name>Box Model</name>
 		<group>
 			<name>Dimensions</name>
 			<property>
 				<name>width</name>
+				<type>
+					<name>inherit</name>
+				</type>
 				<type>
 					<name>keyword</name>
 					<option>auto</option>
@@ -19,6 +60,9 @@
 			<property>
 				<name>height</name>
 				<type>
+					<name>inherit</name>
+				</type>
+				<type>
 					<name>keyword</name>
 					<option>auto</option>
 				</type>
@@ -30,10 +74,29 @@
 				</type>
 			</property>
 			<property>
-				<name>min-width</name>
+				<name>max-height</name>
+				<type>
+					<name>inherit</name>
+				</type>
 				<type>
 					<name>keyword</name>
-					<option>auto</option>
+					<option>none</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+			</property>
+			<property>
+				<name>max-width</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>none</option>
 				</type>
 				<type>
 					<name>length</name>
@@ -45,8 +108,27 @@
 			<property>
 				<name>min-height</name>
 				<type>
+					<name>inherit</name>
+				</type>
+				<type>
 					<name>keyword</name>
-					<option>auto</option>
+					<option>none</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+			</property>
+			<property>
+				<name>min-width</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>none</option>
 				</type>
 				<type>
 					<name>length</name>
@@ -57,24 +139,390 @@
 			</property>
 		</group>
 		<group>
-			<name>Border</name>
-		</group>
-		<group>
-			<name>Outline</name>
-		</group>
-		<group>
-			<name>Margin</name>
-		</group>
-		<group>
-			<name>Padding</name>
+			<name>Margins And Paddings</name>
+			<property>
+				<name>margin-right</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>auto</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+			</property>
+			<property>
+				<name>margin-left</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>auto</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+			</property>
+			<property>
+				<name>margin-top</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>auto</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+			</property>
+			<property>
+				<name>margin-bottom</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>auto</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+			</property>
+			<property>
+				<name>padding-top</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+			</property>
+			<property>
+				<name>padding-right</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+			</property>
+			<property>
+				<name>padding-bottom</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+			</property>
+			<property>
+				<name>padding-left</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+			</property>
 		</group>
 	</category>
 	<category>
-		<name>Positioning</name>
+		<name>Box Design</name>
 		<group>
-			<name>Positions</name>
+			<name>Background</name>
+			<property>
+				<name>background-attachment</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>scroll</option>
+					<option>fixed</option>
+				</type>
+			</property>
+			<property>
+				<name>background-color</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>color</name>
+				</type>
+			</property>
+			<property>
+				<name>background-image</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>none</option>
+				</type>
+				<type>
+					<name>uri</name>
+				</type>
+			</property>
+			<property>
+				<name>background-position-x</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>left</option>
+					<option>center</option>
+					<option>right</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+			</property>
+			<property>
+				<name>background-position-y</name>
+				<type>
+					<name>keyword</name>
+					<option>top</option>
+					<option>center</option>
+					<option>bottom</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+			</property>
+			<property>
+				<name>background-repeat</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>repeat</option>
+					<option>repeat-x</option>
+					<option>repeat-y</option>
+					<option>no-repeat</option>
+				</type>
+			</property>
+		</group>
+		<group>
+			<name>Border</name>
+			<property>
+				<name>border-top-color</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>color</name>
+				</type>
+			</property>
+			<property>
+				<name>border-left-color</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>color</name>
+				</type>
+			</property>
+			<property>
+				<name>border-bottom-color</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>color</name>
+				</type>
+			</property>
+			<property>
+				<name>border-right-color</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>color</name>
+				</type>
+			</property>
+			<property>
+				<name>border-top-style</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option help="No border; the computed border width is zero.">none</option>
+					<option help="Same as 'none', except in terms of border conflict resolution for table elements.">hidden</option>
+					<option help="The border is a series of dots.">dotted</option>
+					<option help="The border is a series of short line segments.">dashed</option>
+					<option help="The border is a single line segment.">solid</option>
+					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double.</option>
+					<option help="The border looks as though it were carved into the canvas.">groove</option>
+					<option help="The opposite of 'groove': the border looks as though it were coming out of the canvas.">ridge</option>
+					<option help="The border makes the box look as though it were embedded in the canvas.">inset</option>
+					<option help="The opposite of 'inset': the border makes the box look as though it were coming out of the canvas.">outset</option>
+				</type>
+			</property>
+			<property>
+				<name>border-left-style</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option help="No border; the computed border width is zero.">none</option>
+					<option help="Same as 'none', except in terms of border conflict resolution for table elements.">hidden</option>
+					<option help="The border is a series of dots.">dotted</option>
+					<option help="The border is a series of short line segments.">dashed</option>
+					<option help="The border is a single line segment.">solid</option>
+					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double.</option>
+					<option help="The border looks as though it were carved into the canvas.">groove</option>
+					<option help="The opposite of 'groove': the border looks as though it were coming out of the canvas.">ridge</option>
+					<option help="The border makes the box look as though it were embedded in the canvas.">inset</option>
+					<option help="The opposite of 'inset': the border makes the box look as though it were coming out of the canvas.">outset</option>
+				</type>
+			</property>
+			<property>
+				<name>border-bottom-style</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option help="No border; the computed border width is zero.">none</option>
+					<option help="Same as 'none', except in terms of border conflict resolution for table elements.">hidden</option>
+					<option help="The border is a series of dots.">dotted</option>
+					<option help="The border is a series of short line segments.">dashed</option>
+					<option help="The border is a single line segment.">solid</option>
+					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double.</option>
+					<option help="The border looks as though it were carved into the canvas.">groove</option>
+					<option help="The opposite of 'groove': the border looks as though it were coming out of the canvas.">ridge</option>
+					<option help="The border makes the box look as though it were embedded in the canvas.">inset</option>
+					<option help="The opposite of 'inset': the border makes the box look as though it were coming out of the canvas.">outset</option>
+				</type>
+			</property>
+			<property>
+				<name>border-right-style</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option help="No border; the computed border width is zero.">none</option>
+					<option help="Same as 'none', except in terms of border conflict resolution for table elements.">hidden</option>
+					<option help="The border is a series of dots.">dotted</option>
+					<option help="The border is a series of short line segments.">dashed</option>
+					<option help="The border is a single line segment.">solid</option>
+					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double.</option>
+					<option help="The border looks as though it were carved into the canvas.">groove</option>
+					<option help="The opposite of 'groove': the border looks as though it were coming out of the canvas.">ridge</option>
+					<option help="The border makes the box look as though it were embedded in the canvas.">inset</option>
+					<option help="The opposite of 'inset': the border makes the box look as though it were coming out of the canvas.">outset</option>
+				</type>
+			</property>
+			<property>
+				<name>border-top-width</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option help="A thin border.">thin</option>
+					<option help="A medium border.">medium</option>
+					<option help="A thick border.">thick</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+			</property>
+			<property>
+				<name>border-left-width</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option help="A thin border.">thin</option>
+					<option help="A medium border.">medium</option>
+					<option help="A thick border.">thick</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+			</property>
+			<property>
+				<name>border-bottom-width</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option help="A thin border.">thin</option>
+					<option help="A medium border.">medium</option>
+					<option help="A thick border.">thick</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+			</property>
+			<property>
+				<name>border-right-width</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option help="A thin border.">thin</option>
+					<option help="A medium border.">medium</option>
+					<option help="A thick border.">thick</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+			</property>
+		</group>
+	</category>
+	<category>
+		<name>Layout</name>
+		<group>
+			<name>Positionning</name>
 			<property>
 				<name>top</name>
+				<type>
+					<name>inherit</name>
+				</type>
 				<type>
 					<name>keyword</name>
 					<option>auto</option>
@@ -89,18 +537,8 @@
 			<property>
 				<name>left</name>
 				<type>
-					<name>keyword</name>
-					<option>auto</option>
+					<name>inherit</name>
 				</type>
-				<type>
-					<name>length</name>
-				</type>
-				<type>
-					<name>percentage</name>
-				</type>
-			</property>
-			<property>
-				<name>bottom</name>
 				<type>
 					<name>keyword</name>
 					<option>auto</option>
@@ -115,6 +553,9 @@
 			<property>
 				<name>right</name>
 				<type>
+					<name>inherit</name>
+				</type>
+				<type>
 					<name>keyword</name>
 					<option>auto</option>
 				</type>
@@ -123,6 +564,385 @@
 				</type>
 				<type>
 					<name>percentage</name>
+				</type>
+			</property>
+			<property>
+				<name>bottom</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>auto</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+			</property>
+			<property>
+				<name>position</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>static</option>
+					<option>relative</option>
+					<option>absolute</option>
+					<option>fixed</option>
+				</type>
+			</property>
+			<property>
+				<name>float</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>left</option>
+					<option>right</option>
+					<option>none</option>
+				</type>
+			</property>
+			<property>
+				<name>display</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option help="This value causes an element to generate one or more inline boxes.">inline</option>
+					<option help="This value causes an element to generate a block box.">block</option>
+					<option help="This value causes an element (e.g., LI in HTML) to generate a principal block box and a marker box. For information about lists and examples of list formatting, please consult the section on lists.">list-item</option>
+					<option help="This value causes an element to generate an inline-level block container. The inside of an inline-block is formatted as a block box, and the element itself is formatted as an atomic inline-level box.">inline-block</option>
+					<option help="This values cause an element to behave like a table element.">table</option>
+					<option help="This values cause an element to behave like a table element">inline-table</option>
+					<option help="This values cause an element to behave like a table element">table-row-group</option>
+					<option help="This values cause an element to behave like a table element">table-header-group</option>
+					<option help="This values cause an element to behave like a table element">table-footer-group</option>
+					<option help="This values cause an element to behave like a table element">table-row</option>
+					<option help="This values cause an element to behave like a table element">table-column-group</option>
+					<option help="This values cause an element to behave like a table element">table-column</option>
+					<option help="This values cause an element to behave like a table element">table-cell</option>
+					<option help="This values cause an element to behave like a table element">table-caption</option>
+					<option help="This value causes an element to not appear in the formatting structure (i.e., in visual media the element generates no boxes and has no effect on layout). Descendant elements do not generate any boxes either; the element and its content are removed from the formatting structure entirely. This behavior cannot be overridden by setting the 'display' property on the descendants.">none</option>
+				</type>
+			</property>
+			<property>
+				<name>clear</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>none</option>
+					<option>left</option>
+					<option>right</option>
+					<option>both</option>
+				</type>
+			</property>
+			<property>
+				<name>z-index</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>auto</option>
+				</type>
+				<type>
+					<name>integer</name>
+				</type>
+			</property>
+		</group>
+		<group>
+			<name>Tables</name>
+			<property>
+				<name>empty-cells</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>show</option>
+					<option>hide</option>
+				</type>
+			</property>
+			<property>
+				<name>table-layout</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>auto</option>
+					<option>fixed</option>
+				</type>
+			</property>
+		</group>
+	</category>
+	<category>
+		<name>Text</name>
+		<group>
+			<name>Basic</name>
+			<property>
+				<name>color</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>color</name>
+				</type>
+			</property>
+			<property>
+				<name>letter-spacing</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>normal</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+			</property>
+			<property>
+				<name>line-height</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>normal</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+				<type>
+					<name>number</name>
+				</type>
+			</property>
+			<property>
+				<name>text-align</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>text-decoration</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>none</option>
+					<option>underline</option>
+					<option>overline</option>
+					<option>line-through</option>
+					<option>blink</option>
+				</type>
+			</property>
+--------------------
+			<property>
+				<name>text-indent</name>
+				<type>
+					<name>inherit</name>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+			</property>
+			<property>
+				<name>text-transform</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>vertical-align</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>white-space</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>word-spacing</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+		</group>
+		<group>
+			<name>Font</name>
+			<property>
+				<name>font-family</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>font-size</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>font-style</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>font-variant</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>font-weight</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>font-family</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+		</group>
+		<group>
+			<name>Advanced </name>
+			<property>
+				<name>direction</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>unicode-bidi</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+		</group>
+		<group>
+			<name>List</name>
+			<property>
+				<name>caption-side</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>list-style-image</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>list-style-position</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>list-style-type</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>list-style</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>list-style-image</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+		</group>
+	</category>
+	<category>
+		<name>Visual Effects</name>
+		<group>
+			<name>Basic</name>
+			<property>
+				<name>clip</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>overflow</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>opacity</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>visibility</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+		</group>
+		<group>
+			<name>Shadows And Outlines</name>
+			<property>
+				<name>outline-color</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>outline-style</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>outline-width</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+			<property>
+				<name>outline-width</name>
+				<type>
+					<name>inherit</name>
+				</type>
+			</property>
+		</group>
+		<group>
+			<name>User Interface</name>
+			<property>
+				<name>cursor</name>
+				<type>
+					<name>inherit</name>
 				</type>
 			</property>
 		</group>
