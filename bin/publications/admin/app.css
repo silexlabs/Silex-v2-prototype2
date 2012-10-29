@@ -678,12 +678,36 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 	background-image: url("assets/save-as_normal-state.png");
 }
 
+.ribbon-list ul li.save-publication-as:hover {
+	background-image: url("assets/save-as_roll-over-state.png");
+}
+
+.ribbon-list ul li.save-publication-as:active {
+	background-image: url("assets/save-as_clic-state.png");
+}
+
 .ribbon-list ul li.save-publication-as-copy{
 	background-image: url("assets/save-as-copy_normal-state.png");
 }
 
+.ribbon-list ul li.save-publication-as-copy:hover{
+	background-image: url("assets/save-as-copy_roll-over-state.png");
+}
+
+.ribbon-list ul li.save-publication-as-copy:active{
+	background-image: url("assets/save-as-copy_clic-state.png");
+}
+
 .ribbon-list ul li.close-publication{
 	background-image: url("assets/close_normal-state.png");
+}
+
+.ribbon-list ul li.close-publication:hover{
+	background-image: url("assets/close_roll-over-state.png");
+}
+
+.ribbon-list ul li.close-publication:active{
+	background-image: url("assets/close_clic-state.png");
 }
 
 .ribbon-list ul li.delete{
@@ -693,6 +717,7 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 .ribbon-list ul li.settings{
 	background-image: url("assets/file-settings.png");
 }
+
 
 /**
 	INSERT
@@ -712,6 +737,34 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 
 .ribbon-list ul li.video{
 	background-image: url("assets/insert_video.png");
+}
+
+/**
+	MASTER
+*/
+
+.ribbon-list ul li.master{
+	background-image: url("assets/master.png");
+}
+
+/**
+	PAGES
+*/
+
+.ribbon-list ul li.page{
+	background-image: url("assets/page.png");
+}
+
+.ribbon-list ul li.add-page{
+	background-image: url("assets/page-add.png");
+}
+
+.ribbon-list ul li.delete-page{
+	background-image: url("assets/page-delete.png");
+}
+
+.ribbon-list ul li.rename-page{
+	background-image: url("assets/page-rename.png");
 }
 
 /* **************** */
