@@ -770,14 +770,6 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 /* **************** */
 /* Properties Toolbox */
 /* **************** */
-.toolbox-drop-zone{
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	position: fixed;
-	z-index: -1000;
-}
 .silex-toolbox {
 	width: 296px;
 	height:100%;
@@ -796,8 +788,29 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 	width:97%;
 }
 .silex-toolbox .type-container{
+	min-height: 30px;
+	float: left;
+	width: 40%;
+	border-left: solid 1px #CCCCCC;
+	padding: 0 10px;
+}
+.silex-toolbox .inherit-style{
+	display: none;
+}
+.silex-toolbox .percentage-style input{
+	margin-top: 5px;
+}
+.silex-toolbox .bool-style input{
+	margin-top: 5px;
+}
+.silex-toolbox .bool-style p{
+	margin-top: 5px;
+}
+.silex-toolbox .font-family-name-style{
 	clear: both;
-	min-height: 25px;
+}
+.silex-toolbox label{
+	clear: both;
 }
 .silex-toolbox .style-block-tab fieldset{
 	margin-left:auto;
@@ -844,10 +857,9 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 
 .silex-toolbox hr {
 	margin-top:10px;
-	color:#FBFDFF;
-	background-color:#FBFDFF;
 	height:1px;
 	border:none;
+	clear: both;
 }
 
 .silex-toolbox .LinkToPage:hover{
@@ -860,15 +872,30 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 	color: #3C3C3C;
 }
 
-.silex-toolbox select{
-	width:60px;
+.silex-toolbox .dropdown-full{
+	width:80%;
+	margin: auto;
+	margin-top: 5px;
+}
+.silex-toolbox .dropdown-half{
+	width:45%;
 	float:right;
+	margin-top: 5px;
+}
+.silex-toolbox .input-half{
+	width:40%;
 	margin: 3px;
 }
+.silex-toolbox .input-full{
+	width:90%;
+	margin: 3px;
+}
+.silex-toolbox .input-one-full-line{
+	width:200%;
+}
 
-.silex-toolbox textarea,input {
+.silex-toolbox textarea, .silex-toolbox input {
 	float:left;
-	margin-left: 20;
 }
 .silex-toolbox input.text_font{
 	width: 32%;
@@ -882,10 +909,7 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 	width:31%;
 }
 .silex-toolbox textarea {
-	height: auto;
-	min-height: 100px;
-	min-width:100%;
-
+	width: 100%;
 }
 .silex-toolbox fieldset input.name-property {
 	width:230px;

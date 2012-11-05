@@ -39,6 +39,8 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 * slelection drop zone : priorité aux petites zones * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
 * delete a container when it is a master or not, and uncheck master when the container is not on any page
 * tous les styles dans la boite a outil styles
+  + descriptions / aide
+  + groups and "apply to group" (e.g. for border-left border-rigth border-top and border- bottom)
 * ecouter window.resize, et dispatcher window.resize dans Page::open
 * ergo : disable les pixel+unit quand on a select un shorthand (exple background h pos)
 * chrome and color picker : read ok, load bug

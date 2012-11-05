@@ -1,22 +1,5 @@
 <xml>
 <!--
-example:
-			<property>
-				<name>min-height</name>
-				<type>
-					<name>inherit</name>
-				</type>
-				<type>
-					<name>keyword</name>
-					<option>auto</option>
-				</type>
-				<type>
-					<name>length</name>
-				</type>
-				<type>
-					<name>percentage</name>
-				</type>
-			</property>
 still missing:
 	transform
 	box shadow
@@ -47,7 +30,7 @@ still missing:
 					<name>inherit</name>
 				</type>
 				<type>
-					<name>keyword</name>
+					<name>bool</name>
 					<option>auto</option>
 				</type>
 				<type>
@@ -63,7 +46,7 @@ still missing:
 					<name>inherit</name>
 				</type>
 				<type>
-					<name>keyword</name>
+					<name>bool</name>
 					<option>auto</option>
 				</type>
 				<type>
@@ -111,10 +94,6 @@ still missing:
 					<name>inherit</name>
 				</type>
 				<type>
-					<name>keyword</name>
-					<option>none</option>
-				</type>
-				<type>
 					<name>length</name>
 				</type>
 				<type>
@@ -125,10 +104,6 @@ still missing:
 				<name>min-width</name>
 				<type>
 					<name>inherit</name>
-				</type>
-				<type>
-					<name>keyword</name>
-					<option>none</option>
 				</type>
 				<type>
 					<name>length</name>
@@ -146,7 +121,7 @@ still missing:
 					<name>inherit</name>
 				</type>
 				<type>
-					<name>keyword</name>
+					<name>bool</name>
 					<option>auto</option>
 				</type>
 				<type>
@@ -162,7 +137,7 @@ still missing:
 					<name>inherit</name>
 				</type>
 				<type>
-					<name>keyword</name>
+					<name>bool</name>
 					<option>auto</option>
 				</type>
 				<type>
@@ -178,7 +153,7 @@ still missing:
 					<name>inherit</name>
 				</type>
 				<type>
-					<name>keyword</name>
+					<name>bool</name>
 					<option>auto</option>
 				</type>
 				<type>
@@ -194,7 +169,7 @@ still missing:
 					<name>inherit</name>
 				</type>
 				<type>
-					<name>keyword</name>
+					<name>bool</name>
 					<option>auto</option>
 				</type>
 				<type>
@@ -524,7 +499,7 @@ still missing:
 					<name>inherit</name>
 				</type>
 				<type>
-					<name>keyword</name>
+					<name>bool</name>
 					<option>auto</option>
 				</type>
 				<type>
@@ -540,7 +515,7 @@ still missing:
 					<name>inherit</name>
 				</type>
 				<type>
-					<name>keyword</name>
+					<name>bool</name>
 					<option>auto</option>
 				</type>
 				<type>
@@ -556,7 +531,7 @@ still missing:
 					<name>inherit</name>
 				</type>
 				<type>
-					<name>keyword</name>
+					<name>bool</name>
 					<option>auto</option>
 				</type>
 				<type>
@@ -572,7 +547,7 @@ still missing:
 					<name>inherit</name>
 				</type>
 				<type>
-					<name>keyword</name>
+					<name>bool</name>
 					<option>auto</option>
 				</type>
 				<type>
@@ -650,7 +625,7 @@ still missing:
 					<name>inherit</name>
 				</type>
 				<type>
-					<name>keyword</name>
+					<name>bool</name>
 					<option>auto</option>
 				</type>
 				<type>
@@ -734,6 +709,13 @@ still missing:
 				<type>
 					<name>inherit</name>
 				</type>
+				<type>
+					<name>keyword</name>
+					<option>left</option>
+					<option>right</option>
+					<option>center</option>
+					<option>justify</option>
+				</type>
 			</property>
 			<property>
 				<name>text-decoration</name>
@@ -749,7 +731,6 @@ still missing:
 					<option>blink</option>
 				</type>
 			</property>
---------------------
 			<property>
 				<name>text-indent</name>
 				<type>
@@ -767,11 +748,35 @@ still missing:
 				<type>
 					<name>inherit</name>
 				</type>
+				<type>
+					<name>keyword</name>
+					<option>none</option>
+					<option>capitalize</option>
+					<option>uppercase</option>
+					<option>lowercase</option>
+				</type>
 			</property>
 			<property>
 				<name>vertical-align</name>
 				<type>
 					<name>inherit</name>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>baseline</option>
+					<option>sub</option>
+					<option>super</option>
+					<option>top</option>
+					<option>text-top</option>
+					<option>middle</option>
+					<option>bottom</option>
+					<option>text-bottom</option>
 				</type>
 			</property>
 			<property>
@@ -779,11 +784,29 @@ still missing:
 				<type>
 					<name>inherit</name>
 				</type>
+				<type>
+					<name>keyword</name>
+					<option>normal</option>
+					<option>pre</option>
+					<option>nowrap</option>
+					<option>pre-wrap</option>
+					<option>pre-line</option>
+				</type>
 			</property>
 			<property>
 				<name>word-spacing</name>
 				<type>
 					<name>inherit</name>
+				</type>
+				<type>
+					<name>bool</name>
+					<option>auto</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
 				</type>
 			</property>
 		</group>
@@ -794,11 +817,29 @@ still missing:
 				<type>
 					<name>inherit</name>
 				</type>
+				<type>
+					<name>font-generic-family</name>
+				</type>
+				<type>
+					<name>font-family-name</name>
+				</type>
 			</property>
 			<property>
 				<name>font-size</name>
 				<type>
+					<name>font-absolute-size</name>
+				</type>
+				<type>
+					<name>font-relative-size</name>
+				</type>
+				<type>
 					<name>inherit</name>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>percentage</name>
 				</type>
 			</property>
 			<property>
@@ -806,11 +847,22 @@ still missing:
 				<type>
 					<name>inherit</name>
 				</type>
+				<type>
+					<name>keyword</name>
+					<option>normal</option>
+					<option>italic</option>
+					<option>oblique</option>
+				</type>
 			</property>
 			<property>
 				<name>font-variant</name>
 				<type>
 					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>normal</option>
+					<option>small-caps</option>
 				</type>
 			</property>
 			<property>
@@ -818,11 +870,21 @@ still missing:
 				<type>
 					<name>inherit</name>
 				</type>
-			</property>
-			<property>
-				<name>font-family</name>
 				<type>
-					<name>inherit</name>
+					<name>keyword</name>
+					<option>normal</option>
+					<option>bold</option>
+					<option>bolder</option>
+					<option>lighter</option>
+					<option>100</option>
+					<option>200</option>
+					<option>300</option>
+					<option>400</option>
+					<option>500</option>
+					<option>600</option>
+					<option>700</option>
+					<option>800</option>
+					<option>900</option>
 				</type>
 			</property>
 		</group>
@@ -833,11 +895,22 @@ still missing:
 				<type>
 					<name>inherit</name>
 				</type>
+				<type>
+					<name>keyword</name>
+					<option>ltr</option>
+					<option>rtl</option>
+				</type>
 			</property>
 			<property>
 				<name>unicode-bidi</name>
 				<type>
 					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>normal</option>
+					<option>embed</option>
+					<option>bidi-override</option>
 				</type>
 			</property>
 		</group>
@@ -848,11 +921,23 @@ still missing:
 				<type>
 					<name>inherit</name>
 				</type>
+				<type>
+					<name>keyword</name>
+					<option>top</option>
+					<option>bottom</option>
+				</type>
 			</property>
 			<property>
 				<name>list-style-image</name>
 				<type>
 					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>none</option>
+				</type>
+				<type>
+					<name>uri</name>
 				</type>
 			</property>
 			<property>
@@ -860,23 +945,34 @@ still missing:
 				<type>
 					<name>inherit</name>
 				</type>
+				<type>
+					<name>keyword</name>
+					<option>inside</option>
+					<option>outside</option>
+				</type>
 			</property>
 			<property>
 				<name>list-style-type</name>
 				<type>
 					<name>inherit</name>
 				</type>
-			</property>
-			<property>
-				<name>list-style</name>
 				<type>
-					<name>inherit</name>
-				</type>
-			</property>
-			<property>
-				<name>list-style-image</name>
-				<type>
-					<name>inherit</name>
+					<name>keyword</name>
+					<option>disc</option>
+					<option>circle</option>
+					<option>square</option>
+					<option>decimal</option>
+					<option>decimal-leading-zero</option>
+					<option>lower-roman</option>
+					<option>upper-roman</option>
+					<option>lower-greek</option>
+					<option>lower-latin</option>
+					<option>upper-latin</option>
+					<option>armenian</option>
+					<option>georgian</option>
+					<option>lower-alpha</option>
+					<option>upper-alpha</option>
+					<option>none</option>
 				</type>
 			</property>
 		</group>
@@ -890,11 +986,53 @@ still missing:
 				<type>
 					<name>inherit</name>
 				</type>
+				<type>
+					<name>empty-space</name>
+				</type>
+				<type>
+					<name>bool</name>
+					<option>auto</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>bool</name>
+					<option>auto</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>bool</name>
+					<option>auto</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>bool</name>
+					<option>auto</option>
+				</type>
+				<type>
+					<name>length</name>
+				</type>
+				<type>
+					<name>bool</name>
+					<option>auto</option>
+				</type>
 			</property>
 			<property>
 				<name>overflow</name>
 				<type>
 					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>visible</option>
+					<option>hidden</option>
+					<option>scroll</option>
+					<option>auto</option>
 				</type>
 			</property>
 			<property>
@@ -902,11 +1040,20 @@ still missing:
 				<type>
 					<name>inherit</name>
 				</type>
+				<type>
+					<name>number</name>
+				</type>
 			</property>
 			<property>
 				<name>visibility</name>
 				<type>
 					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>visible</option>
+					<option>hidden</option>
+					<option>collapse</option>
 				</type>
 			</property>
 		</group>
@@ -917,23 +1064,43 @@ still missing:
 				<type>
 					<name>inherit</name>
 				</type>
+				<type>
+					<name>color</name>
+				</type>
+				<type>
+					<name>bool</name>
+					<option>invert</option>
+				</type>
 			</property>
 			<property>
 				<name>outline-style</name>
 				<type>
 					<name>inherit</name>
 				</type>
-			</property>
-			<property>
-				<name>outline-width</name>
 				<type>
-					<name>inherit</name>
+					<name>keyword</name>
+					<option help="No border; the computed border width is zero.">none</option>
+					<option help="Same as 'none', except in terms of border conflict resolution for table elements.">hidden</option>
+					<option help="The border is a series of dots.">dotted</option>
+					<option help="The border is a series of short line segments.">dashed</option>
+					<option help="The border is a single line segment.">solid</option>
+					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double.</option>
+					<option help="The border looks as though it were carved into the canvas.">groove</option>
+					<option help="The opposite of 'groove': the border looks as though it were coming out of the canvas.">ridge</option>
+					<option help="The border makes the box look as though it were embedded in the canvas.">inset</option>
+					<option help="The opposite of 'inset': the border makes the box look as though it were coming out of the canvas.">outset</option>
 				</type>
 			</property>
 			<property>
 				<name>outline-width</name>
 				<type>
 					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option help="A thin border.">thin</option>
+					<option help="A medium border.">medium</option>
+					<option help="A thick border.">thick</option>
 				</type>
 			</property>
 		</group>
@@ -943,6 +1110,29 @@ still missing:
 				<name>cursor</name>
 				<type>
 					<name>inherit</name>
+				</type>
+				<type>
+					<name>keyword</name>
+					<option>auto</option>
+					<option>crosshair</option>
+					<option>default</option>
+					<option>pointer</option>
+					<option>move</option>
+					<option>e-resize</option>
+					<option>ne-resize</option>
+					<option>nw-resize</option>
+					<option>n-resize</option>
+					<option>se-resize</option>
+					<option>sw-resize</option>
+					<option>s-resize</option>
+					<option>w-resize</option>
+					<option>text</option>
+					<option>wait</option>
+					<option>help</option>
+					<option>progress</option>
+				</type>
+				<type>
+					<name>uri</name>
 				</type>
 			</property>
 		</group>

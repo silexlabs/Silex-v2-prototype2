@@ -135,19 +135,14 @@
 					<A class="Page" name="page-list" data-group-id="Group1">Pages</A>
 
 					<DIV class="Layer page-list ribbon-list selectable">
-						<UL>
-							<LI class="add-page" title="Add a page" data-menu-item="add-page">
-								<P>add page</P>
-							</LI>
-							<LI class="delete-page" title="Delete selected page" data-menu-item="del-page">
-								<P>delete page</P>
-							</LI>
-							<LI class="rename-page" title="Rename selected page" data-menu-item="rename-page">
-								<P>rename page</P>
-							</LI>
-						</UL>
+						<DIV class="assets-page">
+							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-add.png" title="Add a page" data-menu-item="add-page"/>
+							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-delete.png" title="Delete selected page" data-menu-item="del-page"/>
+							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-rename.png" title="Rename selected page" data-menu-item="rename-page"/>
+						</DIV>
 						<UL class="PageList">
-							<LI class="page">
+							<LI class="">
+								<DIV class="solid"></DIV>
 								<P>::name::</P>
 							</LI>
 						</UL>
@@ -158,7 +153,8 @@
 
 					<DIV class="Layer layer-list ribbon-list">
 						<UL class="LayersList">
-							<LI data-dropzones-class-name="silex-view" class="master" data-phantom-class-name="master-phantom">
+							<LI data-dropzones-class-name="silex-view" class="" data-phantom-class-name="master-phantom">
+								<DIV class="solid"></DIV>
 								<P>::rootElement.title::</P>
 							</LI>
 						</UL>
@@ -327,10 +323,12 @@
 									<LEGEND>::name::</LEGEND>
 			                       	::foreach properties::
 										<LABEL>::name::</LABEL>
+										<BR></BR>
 										::foreach types::
-					                       	<DIV class="type-container">
-											::if (name=="keyword")::
-												<SELECT class="dropdown">
+					                       	<DIV class="type-container ::name::-style">
+											::if (name=="empty-space")::
+											::elseif (name=="keyword")::
+												<SELECT class="dropdown-full fixed-height">
 													<OPTION value=""></OPTION>
 												::foreach options::
 													<OPTION title="::help::" value="::name::">
@@ -339,7 +337,7 @@
 												::end:: 
 												</SELECT>
 											::elseif (name=="length")::
-												<SELECT class="dropdown">
+												<SELECT class="dropdown-half fixed-height">
 													<OPTION value=""></OPTION>
 													<OPTION value="cm">cm</OPTION>
 													<OPTION value="mm">mm</OPTION>
@@ -356,18 +354,50 @@
 													<OPTION value="vmin">vmin</OPTION>
 													<OPTION value="vmax">vmax</OPTION>
 												</SELECT>
-												<INPUT class="number" type="number" max="5000" min="-5000"/>
+												<INPUT class="number input-half  fixed-height" type="number" max="5000" min="-5000"/>
+											::elseif (name=="font-absolute-size")::
+												<SELECT class="dropdown-full  fixed-height">
+													<OPTION value=""></OPTION>
+													<OPTION value="xx-small">xx-small</OPTION>
+													<OPTION value="x-small">x-small</OPTION>
+													<OPTION value="small">small</OPTION>
+													<OPTION value="medium">medium</OPTION>
+													<OPTION value="large">large</OPTION>
+													<OPTION value="x-large">x-large</OPTION>
+													<OPTION value="xx-large">xx-large</OPTION>
+												</SELECT>
+											::elseif (name=="font-relative-size")::
+												<SELECT class="dropdown-full  fixed-height">
+													<OPTION value=""></OPTION>
+													<OPTION value="larger">larger</OPTION>
+													<OPTION value="smaller">smaller</OPTION>
+												</SELECT>
 											::elseif (name=="percentage")::
-												<INPUT class="number" type="number" max="5000" min="-5000"/><P>  %</P>
+												<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><P>  %</P>
 											::elseif (name=="color")::
-												<INPUT class="color" type="color"/>
+												<INPUT class="input-full fixed-height" type="color"/>
 											::elseif (name=="uri")::
-												<INPUT class="uri" type="src"/>
-												<BUTTON class="select-file-button" title="Browse library" data-fb-target="src-property">Browse library</BUTTON>
+												<INPUT class="input-full fixed-height" type="src"/>
+												<BUTTON class="file-button fixed-height" title="Browse library" data-fb-target="src-property">Browse library</BUTTON>
 											::elseif (name=="integer")::
-												<INPUT class="integer" type="number" max="5000" min="-5000"/><P>  %</P>
+												<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><P>  %</P>
 											::elseif (name=="number")::
-												<INPUT class="integer" type="number" max="5000" min="-5000"/><P>  %</P>
+												<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><P>  %</P>
+											::elseif (name=="bool")::
+												<INPUT class="input-half fixed-height" type="checkbox"/><P> ::options.0.name::</P>
+											::elseif (name=="font-family-name")::
+												<TEXTAREA class="input-one-full-line fixed-height"></TEXTAREA>
+												<BUTTON class="add-multiple-files-button fixed-height" title="Browse library">Add from library</BUTTON>
+											::elseif (name=="font-generic-family")::
+												<SELECT class="dropdown-full fixed-height">
+													<OPTION value=""></OPTION>
+													<OPTION value="inherit">inherit</OPTION>
+													<OPTION value="serif">serif</OPTION>
+													<OPTION value="sans-serif">sans-serif</OPTION>
+													<OPTION value="monospace">monospace</OPTION>
+													<OPTION value="fantasy">fantasy</OPTION>
+													<OPTION value="cursive">cursive</OPTION>
+												</SELECT>
 					                        ::end::
 				                       		</DIV>
 					                    ::end:: 
