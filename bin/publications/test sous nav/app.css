@@ -1,0 +1,29 @@
+/* 		Silex base styles 			 */
+/* 		Do not edit these styles 	 */
+.silex-view
+{
+	padding:0px;
+	font-family:arial, helvetica, sans-serif;
+	margin: auto;
+	max-width: 800px;
+	padding: 0;
+}
+.silex-view .Page{
+	display: none;
+}
+.silex-view .Layer{
+	padding-top: 10px;
+	padding-bottom: 10px;
+/*	border-color: rgba(255,0,0,0.75);
+	border-style: dotted; */
+}
+.silex-view .side-bar{
+	float: left;
+}
+.silex-view .nav>*{
+	display: inline-block;
+}
+
+/* 		Publication styles 			 */
+/* 		You can edit these styles 	 */
+

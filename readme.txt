@@ -34,6 +34,9 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** known bugs **
 
+* toolbox still missing :
+  . component attributes (name, URL, seo, ...)
+  . delete component
 * mettre a jour les tests unitaires cote serveur
 * url par defaut image, video, son
 * slelection drop zone : priorité aux petites zones * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
@@ -47,28 +50,3 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 * autoriser display block?
 * styles/themes
 * new from template
-
-classification of css styles :
-
-box model
-
-text
-
-box design?
-  background
-  border
-
-layout
-  position
-  float
-  display
-  clear
-
-visual effect / rendering
-  overflow
-  opacity
-  shadows
-  visibility
-
-list
-  

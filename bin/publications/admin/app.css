@@ -794,6 +794,10 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 	border-left: solid 1px #CCCCCC;
 	padding: 0 10px;
 }
+.silex-toolbox .property-container{
+	padding: 0;
+	margin: 0;
+}
 .silex-toolbox .inherit-style{
 	display: none;
 }
