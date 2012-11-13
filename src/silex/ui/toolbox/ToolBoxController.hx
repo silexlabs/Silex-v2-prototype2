@@ -11,6 +11,7 @@ import haxe.xml.Fast;
 import brix.component.ui.DisplayObject;
 import brix.util.DomTools;
 import brix.component.template.TemplateMacros;
+import brix.component.navigation.Page;
 
 import silex.interpreter.Interpreter;
 import silex.publication.PublicationData;
@@ -19,6 +20,26 @@ import silex.page.PageModel;
 import silex.ui.dialog.FileBrowserDialog;
 
 import haxe.remoting.HttpAsyncConnection;
+
+
+typedef ToolboxData = {
+	categories: Array<{
+		name: String,
+		groups: Array<{
+			name: String,
+			properties: Array<{
+				name: String,
+				types: Array<{
+					name: String,
+					options: Array<{
+						name: String,
+						help: String // optional, in the attribute of the node
+					}>
+				}>
+			}>
+		}>
+	}>
+}
 
 /**
  * This component displays editors for all css properties in a Brix accordion UI. 
@@ -30,6 +51,13 @@ class ToolBoxController extends DisplayObject
 	 */
 	public static var CSS_DESCRIPTOR_FILE_URL:String = "../admin/css-styles.xml";
 	/**
+	 * Property change event
+	 * the event will have 
+	 * - target set to the group element of the property editor, with the attribute data-property-name set
+	 * - details set to the new value of the property
+	 */
+//	public static var PROPERTY_VALUE_CHANGE_EVENT:String = "propertyValueChange";
+	/**
 	 * template
 	 */
 	public var template:String;
@@ -38,20 +66,19 @@ class ToolBoxController extends DisplayObject
 	 * this is an object in which I store the data from the XML file
 	 * used to execute the template
 	 */
-	public var dataProvider:Dynamic;
+	public var dataProvider:ToolboxData;
 	/**
 	 * Constructor
 	 * Start listening the node
 	 */
 	public function new(rootElement:HtmlDom, BrixId:String){
 		super(rootElement, BrixId);
-		rootElement.addEventListener("click", onClick, false);
+//		rootElement.addEventListener(PROPERTY_VALUE_CHANGE_EVENT, onPropertyValueChange, false);
 		// expose the class to the scripts interpreter
 		Interpreter.getInstance().expose("ToolBoxController", ToolBoxController);
 		// get the template from the node
 		template = rootElement.innerHTML;
 		rootElement.innerHTML = "";
-		trace("ToolBoxController template "+template);
 		// load css properties XML file
 		var req = new XMLHttpRequest();
 		req.onreadystatechange = callback(onLoadEvent, req);
@@ -90,16 +117,19 @@ class ToolBoxController extends DisplayObject
 		var fast = new Fast(xmlData.firstElement());
 
 		dataProvider = xmlToObj(fast);
-		trace("onLoadSuccess dataProvider=");
-		DomTools.inspectTrace(dataProvider.categories, "ToolBoxController");
+		//trace("onLoadSuccess dataProvider=");
+		//DomTools.inspectTrace(dataProvider.categories, "ToolBoxController");
 
 		// refresh display
 		redraw();
+
+		// open default accordion category
+		Page.openPage(dataProvider.categories[0].name, false, null, null, brixInstanceId, rootElement);
 	}
 	/**
 	 * convert the xml to an object for the template
 	 */
-	private function xmlToObj(xml:Fast):Dynamic{
+	private function xmlToObj(xml:Fast):ToolboxData{
 		var res = {
 			categories: []
 		};
@@ -129,7 +159,12 @@ class ToolBoxController extends DisplayObject
 						}
 						// browse <option> nodes
 						for (optionXml in typeXml.nodes.option){
-							var option = optionXml.innerData;
+							var option = {
+								name: optionXml.innerData,
+								help: ""
+							}
+							if (optionXml.has.help)
+								option.help = optionXml.att.help;
 							type.options.push(option);
 						}
 						prop.types.push(type);
@@ -156,7 +191,7 @@ class ToolBoxController extends DisplayObject
 		try	{
 			t = new Template(template);
 			innerHtml += t.execute(dataProvider, TemplateMacros);
-			trace("redraw "+innerHtml);
+			//trace("redraw "+innerHtml);
 		}
 		catch(e:Dynamic){
 			throw("Error: an error occured while interpreting the template - "+template+" - with the data "+dataProvider+" - error message: "+e);
@@ -177,20 +212,21 @@ class ToolBoxController extends DisplayObject
 	/**
 	 * Handle menu events
 	 */
-	public function onClick(e:Event) {
+/*	public function onPropertyValueChange(e:Event) {
+		trace("onPropertyValueChange "+e);
 		// prevent default links behavior
 		e.preventDefault();
 
 		// retrieve the node who triggered the event
 		var target:HtmlDom = e.target;
+		var value = e.details;
 
 		// retrieve the item name from the href attribute, without the "#"
-		var itemName = target.getAttribute("data-menu-item");
-		if (itemName == null)
-			itemName = target.parentNode.getAttribute("data-menu-item");
+		var propName = target.getAttribute("data-property-name");
 
 		// take an action depending on the menu name
-		switch (itemName) {
+		switch (propName) {
 		}
 	}
+*/
 }

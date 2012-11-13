@@ -3,31 +3,41 @@ package silex.ui.toolbox.editor;
 import js.Lib;
 import js.Dom;
 
-import brix.component.ui.DisplayObject;
-import brix.component.navigation.Page;
-import brix.util.DomTools;
-import silex.property.PropertyModel;
-import silex.component.ComponentModel;
-import silex.layer.LayerModel;
 import silex.publication.PublicationModel;
+import silex.layer.LayerModel;
+import silex.component.ComponentModel;
+import silex.property.PropertyModel;
+
 import silex.ui.dialog.FileBrowserDialog;
 import silex.ui.dialog.TextEditorDialog;
 
+import brix.component.ui.DisplayObject;
+import brix.component.navigation.Page;
+import brix.util.DomTools;
+
+import brix.component.group.IGroupable;
+using brix.component.group.IGroupable.Groupable;
+
 /**
  * This component is the base class for all editors in Silex. 
- * Editors are Brix components, in charge of handling HTML input elements, 
- * in order to let the user enter values and edit css style values or tag attributes.
- * The name of the style or attribute is specifiyed as data-attribute-name or data-style-name
- * And the values are given as key/value pairs
+ * Editors are Brix components, in charge of editing the CSS types, 
  * This class handles the link with the FileBrowserDialog:
+ * Editors are "groupable", the use the html node  referenced by groupElement to communicate together,
+ * for editors of the same properties, e.g. the keyword and length editors of the width CSS style
+ * in order to let the user enter values and edit css style values or tag attributes.
  * - opens the page file-browser-dialog when a button with class name select-file-button is clicked
  * - and calls this.selectFile to attach an event to retrieve the selected file
  * This class handles the link with the TextEditorDialog:
  * - opens the page text-editor with the TextEditor component
  * - retrieve the result and put it in selectedItem.innerHTML
  */
-class EditorBase extends DisplayObject 
+class EditorBase extends DisplayObject, implements IGroupable
 {
+	/**
+	 * the group element set by the Group class
+	 * implementation of IGroupable
+	 */
+	public var groupElement:HtmlDom;
 	/**
 	 * Information for debugging, e.g. the class name
 	 */ 
@@ -55,6 +65,10 @@ class EditorBase extends DisplayObject
 	 */
 	private var propertyChangePending:Bool = false;
 	/**
+	 * store the property name, taken in the attribute "data-property-name" of the group node 
+	 */
+	private var propertyName:String;
+	/**
 	 * Constructor
 	 * Start listening the input events
 	 */
@@ -73,8 +87,38 @@ class EditorBase extends DisplayObject
 		// listen to the component change event
 		LayerModel.getInstance().addEventListener(LayerModel.ON_SELECTION_CHANGE, onSelectLayer, DEBUG_INFO);
 
+	}
+	override public function init() : Void {
+		// implementation of IGroupable
+		startGroupable(rootElement);
+		// group element is body element by default
+		if (groupElement == null){
+			throw("Editor found outside a group.");
+		}
+		propertyName = groupElement.getAttribute("data-property-name");
+		if (propertyName == null || propertyName == ""){
+			// case of the template, will be defined later
+			trace("Could not find the property name for the editor. It was not set in the attribute \"data-property-name\" of the group node ("+groupElement.className+").");
+		}
 		reset();
 	}
+	/**
+	 * clean the component
+	 * FIXME: here, there is memory leak due to callbacks
+	 * which should be references to functions created with the keyword "callback" to avoid being encapsulted with each call 
+	 */
+	override public function clean() {
+		super.clean();
+
+		rootElement.removeEventListener("input", onInput, true);
+		rootElement.removeEventListener("change", onInput, true);
+		rootElement.removeEventListener("click", onClick, true);
+
+		PropertyModel.getInstance().removeEventListener(PropertyModel.ON_PROPERTY_CHANGE, onPropertyChange);
+		ComponentModel.getInstance().removeEventListener(ComponentModel.ON_SELECTION_CHANGE, onSelectComponent);
+		LayerModel.getInstance().removeEventListener(LayerModel.ON_SELECTION_CHANGE, onSelectLayer);
+	}
+
 	////////////////////////////////////////////
 	// Load, apply and reset: display or apply the properties of the selected HTML dom element
 	////////////////////////////////////////////
@@ -136,7 +180,7 @@ class EditorBase extends DisplayObject
 	// Manipulation of the HTML input
 	////////////////////////////////////////////
 	/**
-	 * @returns 	true if the option exists in the given select tag
+	 * @return 	true if the option exists in the given select tag
 	 */
 	private function hasOptionValue(name:String, value:String):Bool{
 		var element = DomTools.getSingleElement(rootElement, name, true);
@@ -296,8 +340,14 @@ class EditorBase extends DisplayObject
 	private function onPropertyChange(e:CustomEvent) {
 		if (propertyChangePending)
 			return;
-
-		refresh();
+		if (e.detail.name == propertyName){
+			// reset myself, another editor is taking care of the property
+			reset();
+		}
+		else{
+			// do nothing, I am not concerned
+			// refresh();
+		}
 	}
 	/**
 	 * Callback for the component model event

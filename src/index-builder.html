@@ -38,7 +38,20 @@
 		<script data-brix-use="silex.ui.toolbox.MenuController"></script>
 		<script data-brix-use="silex.ui.toolbox.ToolBoxController"></script>
 
+		<script data-brix-use="silex.ui.toolbox.editor.BoolEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.NumberEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.ColorEditor"></script>
 <!--
+		<script data-brix-use="silex.ui.toolbox.editor.PercentageEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.IntegerEditor"></script>
+
+		<script data-brix-use="silex.ui.toolbox.editor.LengthEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.KeywordEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.UriEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.FontGenericFamilyEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.FontFamilyNameEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.FontAbsoluteSizeEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.FontRelativeSizeEditor"></script>
 -->
 
 		<!-- info -->
@@ -342,41 +355,125 @@
 								<FIELDSET>
 									<LEGEND>::name::</LEGEND>
 			                       	::foreach properties::
-										<LABEL>::name::</LABEL>
-										::foreach types::
-					                       	<DIV class="type-container">
-											::if (name=="keyword")::
-												<SELECT class="dropdown">
-													<OPTION value=""></OPTION>
-												::foreach options::
-													<OPTION value="::__current__::">::__current__::</OPTION>
-												::end:: 
-												</SELECT>
-											::elseif (name=="length")::
-												<SELECT class="dropdown">
-													<OPTION value=""></OPTION>
-													<OPTION value="cm">cm</OPTION>
-													<OPTION value="mm">mm</OPTION>
-													<OPTION value="in">in</OPTION>
-													<OPTION value="pt">pt</OPTION>
-													<OPTION value="pc">pc</OPTION>
-													<OPTION value="px">px</OPTION>
-													<OPTION value="em">em</OPTION>
-													<OPTION value="ex">ex</OPTION>
-													<OPTION value="ch">ch</OPTION>
-													<OPTION value="rem">rem</OPTION>
-													<OPTION value="vw">vw</OPTION>
-													<OPTION value="vh">vh</OPTION>
-													<OPTION value="vmin">vmin</OPTION>
-													<OPTION value="vmax">vmax</OPTION>
-												</SELECT>
-												<INPUT class="number" type="number" max="5000" min="-5000"/>
-											::elseif (name=="percentage")::
-												<INPUT class="number" type="number" max="5000" min="-5000"/><p style="float:right;">%</p>
-					                        ::end::
-				                       		</DIV>
-					                    ::end:: <!-- types -->
-									<hr />
+										<!-- each property has a container, 
+											for which a Group instance is created so that the editors can communicate,
+											with propertyChange events 
+										 -->
+			                       		<DIV class="property-container Group"
+			                       			data-property-name="::name::"
+			                       			>
+											<LABEL>::name::</LABEL>
+											<br />
+											::foreach types::
+												<!-- each type has a corresponding class, 
+													which is instanciated, called silex.core.ui.toolbox.editor.*Editor
+													and then is attached to this div (type-container), 
+												 -->
+												::if (name=="empty-space")::
+						                       	<DIV class="type-container empty-space-style">
+						                       	</DIV>
+												::elseif (name=="keyword")::
+						                       	<DIV class="type-container keyword-style ">
+													<SELECT class="dropdown-full fixed-height">
+														<OPTION value=""></OPTION>
+													::foreach options::
+														<OPTION value="::name::" title="::help::">
+															::name::
+														</OPTION>
+													::end:: 
+													</SELECT>
+												</DIV>
+												::elseif (name=="length")::
+						                       	<DIV class="type-container length-style ">
+													<SELECT class="dropdown-half fixed-height">
+														<OPTION value=""></OPTION>
+														<OPTION value="cm">cm</OPTION>
+														<OPTION value="mm">mm</OPTION>
+														<OPTION value="in">in</OPTION>
+														<OPTION value="pt">pt</OPTION>
+														<OPTION value="pc">pc</OPTION>
+														<OPTION value="px">px</OPTION>
+														<OPTION value="em">em</OPTION>
+														<OPTION value="ex">ex</OPTION>
+														<OPTION value="ch">ch</OPTION>
+														<OPTION value="rem">rem</OPTION>
+														<OPTION value="vw">vw</OPTION>
+														<OPTION value="vh">vh</OPTION>
+														<OPTION value="vmin">vmin</OPTION>
+														<OPTION value="vmax">vmax</OPTION>
+													</SELECT>
+													<INPUT class="number input-half  fixed-height" type="number" max="5000" min="-5000"/>
+												</DIV>
+												::elseif (name=="font-absolute-size")::
+						                       	<DIV class="type-container font-absolute-size-style ">
+													<SELECT class="dropdown-full  fixed-height">
+														<OPTION value=""></OPTION>
+														<OPTION value="xx-small">xx-small</OPTION>
+														<OPTION value="x-small">x-small</OPTION>
+														<OPTION value="small">small</OPTION>
+														<OPTION value="medium">medium</OPTION>
+														<OPTION value="large">large</OPTION>
+														<OPTION value="x-large">x-large</OPTION>
+														<OPTION value="xx-large">xx-large</OPTION>
+													</SELECT>
+												</DIV>
+												::elseif (name=="font-relative-size")::
+						                       	<DIV class="type-container font-relative-size-style ">
+													<SELECT class="dropdown-full  fixed-height">
+														<OPTION value=""></OPTION>
+														<OPTION value="larger">larger</OPTION>
+														<OPTION value="smaller">smaller</OPTION>
+													</SELECT>
+												</DIV>
+												::elseif (name=="percentage")::
+						                       	<DIV class="type-container percentage-style NumberEditor">
+													<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>
+												</DIV>
+												::elseif (name=="color")::
+						                       	<DIV class="type-container color-style ColorEditor">
+													<INPUT class="input-full fixed-height" type="color"/>
+													<INPUT class="input-full fixed-height" type="checkbox"/> <p> Transparent</p>
+												</DIV>
+												::elseif (name=="uri")::
+						                       	<DIV class="type-container uri-style ">
+													<INPUT class="input-full fixed-height" type="src"/>
+													<BUTTON class="file-button fixed-height" title="Browse library" data-fb-target="src-property">Browse library</BUTTON>
+												</DIV>
+												::elseif (name=="integer")::
+						                       	<DIV class="type-container integer-style NumberEditor">
+													<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>
+												</DIV>
+												::elseif (name=="number")::
+						                       	<DIV class="type-container number-style NumberEditor">
+													<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>
+												</DIV>
+												::elseif (name=="bool")::
+						                       	<DIV class="type-container bool-style BoolEditor"
+						                       		data-value="::options.0.name::" 
+						                       	>
+													<INPUT class="input-half fixed-height" type="checkbox"/> <p> ::options.0.name::</p>
+												</DIV>
+												::elseif (name=="font-family-name")::
+						                       	<DIV class="type-container font-family-name-style ">
+													<TEXTAREA class="input-one-full-line fixed-height"></TEXTAREA>
+													<BUTTON class="add-multiple-files-button fixed-height" title="Browse library">Add from library</BUTTON>
+												</DIV>
+												::elseif (name=="font-generic-family")::
+						                       	<DIV class="type-container font-generic-family-style ">
+													<SELECT class="dropdown-full fixed-height">
+														<OPTION value=""></OPTION>
+														<OPTION value="inherit">inherit</OPTION>
+														<OPTION value="serif">serif</OPTION>
+														<OPTION value="sans-serif">sans-serif</OPTION>
+														<OPTION value="monospace">monospace</OPTION>
+														<OPTION value="fantasy">fantasy</OPTION>
+														<OPTION value="cursive">cursive</OPTION>
+													</SELECT>
+					                       		</DIV>
+						                        ::end::
+						                    ::end:: <!-- types -->
+										<hr />
+									</DIV> <!-- property container -->
 									::end:: <!-- properties -->
 								</FIELDSET>
 							::end:: <!-- groups -->
