@@ -39,19 +39,21 @@
 		<script data-brix-use="silex.ui.toolbox.ToolBoxController"></script>
 
 		<script data-brix-use="silex.ui.toolbox.editor.BoolEditor"></script>
-		<script data-brix-use="silex.ui.toolbox.editor.NumberEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.ColorEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.StringEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.InlineDropdownEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.LengthEditor"></script>
 <!--
+		<script data-brix-use="silex.ui.toolbox.editor.KeywordEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.FontRelativeSizeEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.FontAbsoluteSizeEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.NumberEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.PercentageEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.IntegerEditor"></script>
 
-		<script data-brix-use="silex.ui.toolbox.editor.LengthEditor"></script>
-		<script data-brix-use="silex.ui.toolbox.editor.KeywordEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.UriEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.FontGenericFamilyEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.FontFamilyNameEditor"></script>
-		<script data-brix-use="silex.ui.toolbox.editor.FontAbsoluteSizeEditor"></script>
-		<script data-brix-use="silex.ui.toolbox.editor.FontRelativeSizeEditor"></script>
 -->
 
 		<!-- info -->
@@ -373,7 +375,7 @@
 						                       	<DIV class="type-container empty-space-style">
 						                       	</DIV>
 												::elseif (name=="keyword")::
-						                       	<DIV class="type-container keyword-style ">
+						                       	<DIV class="type-container keyword-style InlineDropdownEditor">
 													<SELECT class="dropdown-full fixed-height">
 														<OPTION value=""></OPTION>
 													::foreach options::
@@ -384,7 +386,7 @@
 													</SELECT>
 												</DIV>
 												::elseif (name=="length")::
-						                       	<DIV class="type-container length-style ">
+						                       	<DIV class="type-container length-style LengthEditor">
 													<SELECT class="dropdown-half fixed-height">
 														<OPTION value=""></OPTION>
 														<OPTION value="cm">cm</OPTION>
@@ -405,7 +407,7 @@
 													<INPUT class="number input-half  fixed-height" type="number" max="5000" min="-5000"/>
 												</DIV>
 												::elseif (name=="font-absolute-size")::
-						                       	<DIV class="type-container font-absolute-size-style ">
+						                       	<DIV class="type-container font-absolute-size-style InlineDropdownEditor">
 													<SELECT class="dropdown-full  fixed-height">
 														<OPTION value=""></OPTION>
 														<OPTION value="xx-small">xx-small</OPTION>
@@ -418,7 +420,7 @@
 													</SELECT>
 												</DIV>
 												::elseif (name=="font-relative-size")::
-						                       	<DIV class="type-container font-relative-size-style ">
+						                       	<DIV class="type-container font-relative-size-style InlineDropdownEditor">
 													<SELECT class="dropdown-full  fixed-height">
 														<OPTION value=""></OPTION>
 														<OPTION value="larger">larger</OPTION>
@@ -426,7 +428,7 @@
 													</SELECT>
 												</DIV>
 												::elseif (name=="percentage")::
-						                       	<DIV class="type-container percentage-style NumberEditor">
+						                       	<DIV class="type-container percentage-style StringEditor">
 													<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>
 												</DIV>
 												::elseif (name=="color")::
@@ -435,31 +437,34 @@
 													<INPUT class="input-full fixed-height" type="checkbox"/> <p> Transparent</p>
 												</DIV>
 												::elseif (name=="uri")::
-						                       	<DIV class="type-container uri-style ">
-													<INPUT class="input-full fixed-height" type="src"/>
-													<BUTTON class="file-button fixed-height" title="Browse library" data-fb-target="src-property">Browse library</BUTTON>
+						                       	<DIV class="type-container uri-style StringEditor">
+													<INPUT class="input-one-full-line input-full fixed-height" type="src"/>
+													<BUTTON class="input-one-full-line file-button fixed-height" title="Browse library" data-fb-target="src-property">Browse library</BUTTON>
+												</DIV>
+												::elseif (name=="uri-multiple")::
+						                       	<DIV class="type-container uri-multiple-style StringEditor">
+													<TEXTAREA class="input-one-full-line fixed-height"></TEXTAREA>
+													<BUTTON class="input-one-full-line add-multiple-files-button fixed-height" title="Browse library">Add from library</BUTTON>
 												</DIV>
 												::elseif (name=="integer")::
-						                       	<DIV class="type-container integer-style NumberEditor">
+						                       	<DIV class="type-container integer-style StringEditor">
 													<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>
 												</DIV>
 												::elseif (name=="number")::
-						                       	<DIV class="type-container number-style NumberEditor">
+						                       	<DIV class="type-container number-style StringEditor">
 													<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>
 												</DIV>
 												::elseif (name=="bool")::
 						                       	<DIV class="type-container bool-style BoolEditor"
-						                       		data-value="::options.0.name::" 
-						                       	>
+						                       		data-value="::options.0.name::">
 													<INPUT class="input-half fixed-height" type="checkbox"/> <p> ::options.0.name::</p>
 												</DIV>
 												::elseif (name=="font-family-name")::
-						                       	<DIV class="type-container font-family-name-style ">
+						                       	<DIV class="type-container font-family-name-style StringEditor">
 													<TEXTAREA class="input-one-full-line fixed-height"></TEXTAREA>
-													<BUTTON class="add-multiple-files-button fixed-height" title="Browse library">Add from library</BUTTON>
 												</DIV>
 												::elseif (name=="font-generic-family")::
-						                       	<DIV class="type-container font-generic-family-style ">
+						                       	<DIV class="type-container font-generic-family-style InlineDropdownEditor">
 													<SELECT class="dropdown-full fixed-height">
 														<OPTION value=""></OPTION>
 														<OPTION value="inherit">inherit</OPTION>

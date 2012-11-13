@@ -801,6 +801,12 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 .silex-toolbox .inherit-style{
 	display: none;
 }
+.silex-toolbox .uri-multiple-style{
+	clear: both;
+}
+.silex-toolbox .uri-style{
+	clear: both;
+}
 .silex-toolbox .percentage-style input{
 	margin-top: 5px;
 }

@@ -10,7 +10,7 @@ import silex.property.PropertyModel;
  * This component ihandles boolean CSS properties. 
  * @see 	silex.ui.toolbox.editor.EditorBase
  */
-class NumberEditor extends EditorBase
+class StringEditor extends EditorBase
 {
 	/**
 	 * input element
@@ -23,6 +23,8 @@ class NumberEditor extends EditorBase
 	public function new(rootElement:HtmlDom, BrixId:String){
 		super(rootElement, BrixId);
 		var elements = rootElement.getElementsByTagName("input");
+		if (elements.length == 0)
+			elements = rootElement.getElementsByTagName("textarea");
 		inputElement = elements[0];
 	}
 	/**

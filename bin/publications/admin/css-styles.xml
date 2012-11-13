@@ -263,7 +263,7 @@ still missing:
 					<option>none</option>
 				</type>
 				<type>
-					<name>uri</name>
+					<name>uri-multiple</name>
 				</type>
 			</property>
 			<property>
