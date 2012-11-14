@@ -93,12 +93,14 @@ class EditorBase extends DisplayObject, implements IGroupable
 		startGroupable(rootElement);
 		// group element is body element by default
 		if (groupElement == null){
-			throw("Editor found outside a group.");
+			trace("Warning: Editor found outside a property group.");
 		}
-		propertyName = groupElement.getAttribute("data-property-name");
-		if (propertyName == null || propertyName == ""){
-			// case of the template, will be defined later
-			trace("Could not find the property name for the editor. It was not set in the attribute \"data-property-name\" of the group node ("+groupElement.className+").");
+		else{
+			propertyName = groupElement.getAttribute("data-property-name");
+			if (propertyName == null || propertyName == ""){
+				// case of the template, will be defined later
+				trace("Could not find the property name for the editor. It was not set in the attribute \"data-property-name\" of the group node ("+groupElement.className+").");
+			}
 		}
 		reset();
 	}

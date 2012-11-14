@@ -3,7 +3,7 @@
 body{
 	margin:0px !important;
 	padding:0px !important;
-	font-family:Arial, Helvetica, sans-serif !important;
+	font-family : Tahoma, Arial, Helvetica, sans-serif !important;
 	width:100% !important;
 	height:100% !important;
 	max-width: none !important;
@@ -537,7 +537,7 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 .group-ribbon, .ribbon-tabs a{
 	text-decoration:none;
 	color:#3C3C3C;
-	font-family:Tahoma;
+	font-family : Tahoma, Arial, Helvetica, sans-serif;
 	font-size:13px;
 }
 .layer-list ul li{
@@ -794,9 +794,15 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 	border-left: solid 1px #CCCCCC;
 	padding: 0 10px;
 }
-.silex-toolbox .property-container{
-	padding: 0;
-	margin: 0;
+.silex-toolbox .PropertyEditor .property-container label,
+.silex-toolbox .properties-link .property-container label,
+.silex-toolbox .properties-html-editor .property-container label{
+	clear: both;
+	display: block;
+	margin: 10px 0 10px 0;
+}
+.silex-toolbox .PropertyEditor .type-container{
+	width: 95%;
 }
 .silex-toolbox .inherit-style{
 	display: none;
@@ -878,7 +884,6 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 }
 .silex-toolbox .LinkToPage.page-opened{
 	background-color:white;
-	font-weight: normal;
 	color: #3C3C3C;
 }
 
@@ -944,6 +949,8 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 .silex-toolbox fieldset{
 	margin-left:auto;
 	margin-right:auto;
+	margin-bottom: 5px;
+	margin-top: 5px;
 	font-size:12px;
 }
 
@@ -953,20 +960,6 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 
 }
 
-.silex-toolbox fieldset.PropertyEditor{
-
-	margin-left:auto;
-	margin-right:auto;
-	font-size:12px;
-	width:90%;
-}
-.silex-toolbox fieldset.PropertyEditor legend{
-	/*margin-left:auto;
-	margin-right:auto;*/
-	font-weight:bold;
-
-
-}
 .silex-toolbox fieldset.TextStyleEditor{
 	margin-left:auto;
 	margin-right:auto;

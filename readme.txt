@@ -32,12 +32,21 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
-** known bugs **
+** to integrate in roadmap **
 
 * use css patterns ?? http://www.google.fr/search?hl=en&redir_esc=&client=ms-android-samsung&source=android-browser-type&v=133247963&qsubts=1352845988673&action=devloc&q=css+patterns&v=133247963
+* make a native desktop app http://appjs.org/ 
+
+** to do **
+
+link: 
+- _blank et _self
+- page : ajout "" a la liste
+
 * toolbox still missing :
-  . component attributes (name, URL, seo, ...)
-  . delete component
+  . code editor
+  . link
+* styles
 * mettre a jour les tests unitaires cote serveur
 * url par defaut image, video, son
 * slelection drop zone : priorité aux petites zones * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?

@@ -51,16 +51,18 @@ class ToolBoxController extends DisplayObject
 	 */
 	public static var CSS_DESCRIPTOR_FILE_URL:String = "../admin/css-styles.xml";
 	/**
-	 * Property change event
-	 * the event will have 
-	 * - target set to the group element of the property editor, with the attribute data-property-name set
-	 * - details set to the new value of the property
+	 * class name expected for the container of the template
 	 */
-//	public static var PROPERTY_VALUE_CHANGE_EVENT:String = "propertyValueChange";
+	public static var TOOL_BOX_CONTROLLER_TEMPLATE:String = "tool-box-controller-template";
 	/**
 	 * template
 	 */
 	public var template:String;
+	/**
+	 * template container
+	 * this container is expected to hold the HTML with the editors
+	 */
+	public var templateContainer:HtmlDom;
 	/**
 	 * data provider
 	 * this is an object in which I store the data from the XML file
@@ -73,12 +75,13 @@ class ToolBoxController extends DisplayObject
 	 */
 	public function new(rootElement:HtmlDom, BrixId:String){
 		super(rootElement, BrixId);
-//		rootElement.addEventListener(PROPERTY_VALUE_CHANGE_EVENT, onPropertyValueChange, false);
 		// expose the class to the scripts interpreter
 		Interpreter.getInstance().expose("ToolBoxController", ToolBoxController);
+		// get the template container
+		templateContainer = DomTools.getSingleElement(rootElement, TOOL_BOX_CONTROLLER_TEMPLATE, true);
 		// get the template from the node
-		template = rootElement.innerHTML;
-		rootElement.innerHTML = "";
+		template = templateContainer.innerHTML;
+		templateContainer.innerHTML = "";
 		// load css properties XML file
 		var req = new XMLHttpRequest();
 		req.onreadystatechange = callback(onLoadEvent, req);
@@ -124,7 +127,12 @@ class ToolBoxController extends DisplayObject
 		redraw();
 
 		// open default accordion category
-		Page.openPage(dataProvider.categories[0].name, false, null, null, brixInstanceId, rootElement);
+		//var initialPage = dataProvider.categories[0].name;
+		var initialPage = rootElement.getAttribute("data-initial-page-name");
+		if (initialPage == null){
+			trace("Warning: the initialPage attribute is not set on the ToolBoxController node");
+		}
+		Page.openPage(initialPage, false, null, null, brixInstanceId, rootElement);
 	}
 	/**
 	 * convert the xml to an object for the template
@@ -197,36 +205,16 @@ class ToolBoxController extends DisplayObject
 			throw("Error: an error occured while interpreting the template - "+template+" - with the data "+dataProvider+" - error message: "+e);
 		}
 		// remove brix components of the current content
-		for (i in 0...rootElement.childNodes.length)
+		for (i in 0...templateContainer.childNodes.length)
 		{
-			getBrixApplication().cleanNode(rootElement.childNodes[i]);
+			getBrixApplication().cleanNode(templateContainer.childNodes[i]);
 		}
 		// refresh content
-		rootElement.innerHTML = innerHtml;
+		templateContainer.innerHTML = innerHtml;
 		// init brix components
-		for (i in 0...rootElement.childNodes.length)
+		for (i in 0...templateContainer.childNodes.length)
 		{
-			getBrixApplication().initNode(rootElement.childNodes[i]);
+			getBrixApplication().initNode(templateContainer.childNodes[i]);
 		}
 	}
-	/**
-	 * Handle menu events
-	 */
-/*	public function onPropertyValueChange(e:Event) {
-		trace("onPropertyValueChange "+e);
-		// prevent default links behavior
-		e.preventDefault();
-
-		// retrieve the node who triggered the event
-		var target:HtmlDom = e.target;
-		var value = e.details;
-
-		// retrieve the item name from the href attribute, without the "#"
-		var propName = target.getAttribute("data-property-name");
-
-		// take an action depending on the menu name
-		switch (propName) {
-		}
-	}
-*/
 }

@@ -43,6 +43,9 @@
 		
 		
 		
+		
+		
+		
 
 
 		
@@ -316,136 +319,221 @@
 
 				
 				
-				<DIV class="Group2 group-property-toolbox panel-builder-footer PropertiesToolbox silex-toolbox" data-toolbox-name="PropertiesToolbox" data-toolbox-dropzones-class-name="toolbox-drop-zone" data-initial-page-name="Styling">
+				<DIV class="Group2 group-property-toolbox panel-builder-footer PropertiesToolbox silex-toolbox" data-toolbox-name="PropertiesToolbox" data-toolbox-dropzones-class-name="toolbox-drop-zone">
 
 					
-					<DIV class="Accordion ToolBoxController">
-                   	::foreach categories::
-						<A class="Page" name="::name::" data-group-id="Group2">::name::</A>
-                        <A href="#::name::" class="LinkToPage accordion-header" data-group-id="Group2">::name::</A>
-                        <FORM class="Layer accordion-item ::name::">
-	                       	::foreach groups::
-								<FIELDSET>
-									<LEGEND>::name::</LEGEND>
-			                       	::foreach properties::
-										
-			                       		<DIV class="Group3 property-container" data-property-name="::name::">
-											<LABEL>::name::</LABEL>
-											<BR></BR>
-											::foreach types::
-												
-												::if (name=="empty-space")::
-						                       	<DIV class="type-container empty-space-style">
-						                       	</DIV>
-												::elseif (name=="keyword")::
-						                       	<DIV class="type-container keyword-style InlineDropdownEditor" data-group-id="Group3">
-													<SELECT class="dropdown-full fixed-height">
-														<OPTION value=""></OPTION>
-													::foreach options::
-														<OPTION title="::help::" value="::name::">
-															::name::
-														</OPTION>
-													::end:: 
-													</SELECT>
-												</DIV>
-												::elseif (name=="length")::
-						                       	<DIV class="type-container length-style LengthEditor" data-group-id="Group3">
-													<SELECT class="dropdown-half fixed-height">
-														<OPTION value=""></OPTION>
-														<OPTION value="cm">cm</OPTION>
-														<OPTION value="mm">mm</OPTION>
-														<OPTION value="in">in</OPTION>
-														<OPTION value="pt">pt</OPTION>
-														<OPTION value="pc">pc</OPTION>
-														<OPTION value="px">px</OPTION>
-														<OPTION value="em">em</OPTION>
-														<OPTION value="ex">ex</OPTION>
-														<OPTION value="ch">ch</OPTION>
-														<OPTION value="rem">rem</OPTION>
-														<OPTION value="vw">vw</OPTION>
-														<OPTION value="vh">vh</OPTION>
-														<OPTION value="vmin">vmin</OPTION>
-														<OPTION value="vmax">vmax</OPTION>
-													</SELECT>
-													<INPUT class="number input-half  fixed-height" type="number" max="5000" min="-5000"/>
-												</DIV>
-												::elseif (name=="font-absolute-size")::
-						                       	<DIV class="type-container font-absolute-size-style InlineDropdownEditor" data-group-id="Group3">
-													<SELECT class="dropdown-full  fixed-height">
-														<OPTION value=""></OPTION>
-														<OPTION value="xx-small">xx-small</OPTION>
-														<OPTION value="x-small">x-small</OPTION>
-														<OPTION value="small">small</OPTION>
-														<OPTION value="medium">medium</OPTION>
-														<OPTION value="large">large</OPTION>
-														<OPTION value="x-large">x-large</OPTION>
-														<OPTION value="xx-large">xx-large</OPTION>
-													</SELECT>
-												</DIV>
-												::elseif (name=="font-relative-size")::
-						                       	<DIV class="type-container font-relative-size-style InlineDropdownEditor" data-group-id="Group3">
-													<SELECT class="dropdown-full  fixed-height">
-														<OPTION value=""></OPTION>
-														<OPTION value="larger">larger</OPTION>
-														<OPTION value="smaller">smaller</OPTION>
-													</SELECT>
-												</DIV>
-												::elseif (name=="percentage")::
-						                       	<DIV class="type-container percentage-style PercentageEditor" data-group-id="Group3">
-													<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><P>  %</P>
-												</DIV>
-												::elseif (name=="color")::
-						                       	<DIV class="type-container color-style ColorEditor" data-group-id="Group3">
-													<INPUT class="input-full fixed-height" type="color"/>
-													<INPUT class="input-full fixed-height" type="checkbox"/> <P> Transparent</P>
-												</DIV>
-												::elseif (name=="uri")::
-						                       	<DIV class="type-container uri-style StringEditor" data-group-id="Group3">
-													<INPUT class="input-one-full-line input-full fixed-height" type="src"/>
-													<BUTTON class="input-one-full-line file-button fixed-height" title="Browse library" data-fb-target="src-property">Browse library</BUTTON>
-												</DIV>
-												::elseif (name=="uri-multiple")::
-						                       	<DIV class="type-container uri-multiple-style StringEditor" data-group-id="Group3">
-													<TEXTAREA class="input-one-full-line fixed-height"></TEXTAREA>
-													<BUTTON class="input-one-full-line add-multiple-files-button fixed-height" title="Browse library">Add from library</BUTTON>
-												</DIV>
-												::elseif (name=="integer")::
-						                       	<DIV class="type-container integer-style StringEditor" data-group-id="Group3">
-													<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><P>  %</P>
-												</DIV>
-												::elseif (name=="number")::
-						                       	<DIV class="type-container number-style StringEditor" data-group-id="Group3">
-													<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><P>  %</P>
-												</DIV>
-												::elseif (name=="bool")::
-						                       	<DIV class="type-container bool-style BoolEditor" data-value="::options.0.name::" data-group-id="Group3">
-													<INPUT class="input-half fixed-height" type="checkbox"/> <P> ::options.0.name::</P>
-												</DIV>
-												::elseif (name=="font-family-name")::
-						                       	<DIV class="type-container font-family-name-style StringEditor" data-group-id="Group3">
-													<TEXTAREA class="input-one-full-line fixed-height"></TEXTAREA>
-												</DIV>
-												::elseif (name=="font-generic-family")::
-						                       	<DIV class="type-container font-generic-family-style InlineDropdownEditor" data-group-id="Group3">
-													<SELECT class="dropdown-full fixed-height">
-														<OPTION value=""></OPTION>
-														<OPTION value="inherit">inherit</OPTION>
-														<OPTION value="serif">serif</OPTION>
-														<OPTION value="sans-serif">sans-serif</OPTION>
-														<OPTION value="monospace">monospace</OPTION>
-														<OPTION value="fantasy">fantasy</OPTION>
-														<OPTION value="cursive">cursive</OPTION>
-													</SELECT>
-					                       		</DIV>
-						                        ::end::
-						                    ::end:: 
-										<HR></HR>
-									</DIV> 
-									::end:: 
-								</FIELDSET>
-							::end:: 
+					<DIV class="Accordion ToolBoxController" data-initial-page-name="properties-tab">
+						
+						<A class="Page" name="properties-tab" data-group-id="Group2">Properties</A>
+						<A href="#properties-tab" class="LinkToPage accordion-header" data-group-id="Group2">Properties</A>
+						<FORM class="Layer accordion-item properties-tab">
+							<FIELDSET class="PropertyEditor" data-group-id="Group2">
+								<LEGEND>Attributes</LEGEND>
+								<DIV class="property-container">
+									<LABEL>Name</LABEL>
+									<DIV class="type-container">
+										<INPUT class="name-property fixed-height" type="text" max-lenght="20" value="21"/>
+										<BUTTON class="property-editor-delete-selected"></BUTTON>
+									</DIV>
+								</DIV>
+								<DIV class="property-container context-video context-audio context-video context-audio context-img context-div">
+									<LABEL>Html Content</LABEL>
+									<DIV class="type-container">
+										<BUTTON class="property-editor-edit-text text-input">Open Text Editor</BUTTON>
+									</DIV>
+								</DIV>
+								<DIV class="property-container context-video context-audio">
+									<LABEL>Sources (1 by line)</LABEL>
+									<DIV class="type-container">
+										<TEXTAREA class="multiple-src-property"></TEXTAREA>
+										<BUTTON class="add-multiple-files-button" title="Browse library" data-fb-target="multiple-src-property">Add from library</BUTTON>
+									</DIV>
+								</DIV>
+								<DIV class="property-container context-img">
+									<LABEL>Source</LABEL>
+									<DIV class="type-container">
+										<INPUT class="src-property" name="URL" type="src"/>
+										<BUTTON class="select-file-button" title="Browse library" data-fb-target="src-property">Browse library</BUTTON>
+									</DIV>
+								</DIV>
+								<DIV class="property-container context-video context-audio">
+									<LABEL>Autoplay</LABEL>
+									<DIV class="type-container">
+										<INPUT class="auto-start-property" type="checkbox"/> On/Off
+									</DIV>
+								</DIV>
+								<DIV class="property-container context-video context-audio">
+									<LABEL>Controls</LABEL>
+									<DIV class="type-container">
+										<INPUT class="controls-property" type="checkbox"/> On/Off
+									</DIV>
+								</DIV>
+								<DIV class="property-container context-video context-audio">
+									<LABEL>Loop or stop at the end</LABEL>
+									<DIV class="type-container">
+										<INPUT class="loop-property" type="checkbox"/> On/Off
+									</DIV>
+								</DIV>
+								<DIV class="property-container context-layer">
+									<LABEL>Set as master</LABEL>
+									<DIV class="type-container">
+										 <DIV class="check"><INPUT class="master-property" type="checkbox"/> On/Off</DIV>
+									</DIV>
+								</DIV>
+							</FIELDSET>
+							<FIELDSET class="properties-link">
+								<LEGEND>Link</LEGEND>
+								<DIV class="property-container LinkEditorUrl" data-group-id="Group2">
+									<LABEL>External link URL</LABEL>
+									<DIV class="type-container">
+			                            <INPUT class="link-url" type="src"/>
+									</DIV>
+									<LABEL>To a page</LABEL>
+									<DIV class="type-container">
+										<SELECT class="PageList">
+											<OPTION value="::name::">::name::</OPTION>
+										</SELECT>
+									</DIV>
+									<LABEL class="disabled-element">Execute an action</LABEL>
+									<DIV class="type-container">
+										<BUTTON class="property-editor-edit-code disabled-element">Open Code Editor</BUTTON>
+									</DIV>
+								</DIV>
+							</FIELDSET>
+							<FIELDSET class="properties-html-editor HtmlEditor" data-group-id="Group2">
+								<LEGEND>HTML content - debug only</LEGEND>
+								<TEXTAREA class="text-input"></TEXTAREA>
+								<BUTTON class="property-editor-edit-code disabled-element">Open Code Editor</BUTTON>
+							</FIELDSET>
 						</FORM>
-					::end:: 
+						<DIV class="tool-box-controller-template">
+	                   	::foreach categories::
+							<A class="Page" name="::name::" data-group-id="Group2">::name::</A>
+	                        <A href="#::name::" class="LinkToPage accordion-header" data-group-id="Group2">::name::</A>
+	                        <FORM class="Layer accordion-item ::name::">
+		                       	::foreach groups::
+									<FIELDSET>
+										<LEGEND>::name::</LEGEND>
+				                       	::foreach properties::
+											
+				                       		<DIV class="Group3 property-container" data-property-name="::name::">
+												<LABEL>::name::</LABEL>
+												<BR></BR>
+												::foreach types::
+													
+													::if (name=="empty-space")::
+							                       	<DIV class="type-container empty-space-style">
+							                       	</DIV>
+													::elseif (name=="keyword")::
+							                       	<DIV class="type-container keyword-style InlineDropdownEditor" data-group-id="Group3">
+														<SELECT class="dropdown-full fixed-height">
+															<OPTION value=""></OPTION>
+														::foreach options::
+															<OPTION title="::help::" value="::name::">
+																::name::
+															</OPTION>
+														::end:: 
+														</SELECT>
+													</DIV>
+													::elseif (name=="length")::
+							                       	<DIV class="type-container length-style LengthEditor" data-group-id="Group3">
+														<SELECT class="dropdown-half fixed-height">
+															<OPTION value=""></OPTION>
+															<OPTION value="cm">cm</OPTION>
+															<OPTION value="mm">mm</OPTION>
+															<OPTION value="in">in</OPTION>
+															<OPTION value="pt">pt</OPTION>
+															<OPTION value="pc">pc</OPTION>
+															<OPTION value="px">px</OPTION>
+															<OPTION value="em">em</OPTION>
+															<OPTION value="ex">ex</OPTION>
+															<OPTION value="ch">ch</OPTION>
+															<OPTION value="rem">rem</OPTION>
+															<OPTION value="vw">vw</OPTION>
+															<OPTION value="vh">vh</OPTION>
+															<OPTION value="vmin">vmin</OPTION>
+															<OPTION value="vmax">vmax</OPTION>
+														</SELECT>
+														<INPUT class="number input-half  fixed-height" type="number" max="5000" min="-5000"/>
+													</DIV>
+													::elseif (name=="font-absolute-size")::
+							                       	<DIV class="type-container font-absolute-size-style InlineDropdownEditor" data-group-id="Group3">
+														<SELECT class="dropdown-full  fixed-height">
+															<OPTION value=""></OPTION>
+															<OPTION value="xx-small">xx-small</OPTION>
+															<OPTION value="x-small">x-small</OPTION>
+															<OPTION value="small">small</OPTION>
+															<OPTION value="medium">medium</OPTION>
+															<OPTION value="large">large</OPTION>
+															<OPTION value="x-large">x-large</OPTION>
+															<OPTION value="xx-large">xx-large</OPTION>
+														</SELECT>
+													</DIV>
+													::elseif (name=="font-relative-size")::
+							                       	<DIV class="type-container font-relative-size-style InlineDropdownEditor" data-group-id="Group3">
+														<SELECT class="dropdown-full  fixed-height">
+															<OPTION value=""></OPTION>
+															<OPTION value="larger">larger</OPTION>
+															<OPTION value="smaller">smaller</OPTION>
+														</SELECT>
+													</DIV>
+													::elseif (name=="percentage")::
+							                       	<DIV class="type-container percentage-style PercentageEditor" data-group-id="Group3">
+														<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><P>  %</P>
+													</DIV>
+													::elseif (name=="color")::
+							                       	<DIV class="type-container color-style ColorEditor" data-group-id="Group3">
+														<INPUT class="input-full fixed-height" type="color"/>
+														<INPUT class="input-full fixed-height" type="checkbox"/> <P> Transparent</P>
+													</DIV>
+													::elseif (name=="uri")::
+							                       	<DIV class="type-container uri-style StringEditor" data-group-id="Group3">
+														<INPUT class="input-one-full-line input-full fixed-height" type="src"/>
+														<BUTTON class="input-one-full-line file-button fixed-height" title="Browse library" data-fb-target="src-property">Browse library</BUTTON>
+													</DIV>
+													::elseif (name=="uri-multiple")::
+							                       	<DIV class="type-container uri-multiple-style StringEditor" data-group-id="Group3">
+														<TEXTAREA class="input-one-full-line fixed-height"></TEXTAREA>
+														<BUTTON class="input-one-full-line add-multiple-files-button fixed-height" title="Browse library">Add from library</BUTTON>
+													</DIV>
+													::elseif (name=="integer")::
+							                       	<DIV class="type-container integer-style StringEditor" data-group-id="Group3">
+														<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><P>  %</P>
+													</DIV>
+													::elseif (name=="number")::
+							                       	<DIV class="type-container number-style StringEditor" data-group-id="Group3">
+														<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><P>  %</P>
+													</DIV>
+													::elseif (name=="bool")::
+							                       	<DIV class="type-container bool-style BoolEditor" data-value="::options.0.name::" data-group-id="Group3">
+														<INPUT class="input-half fixed-height" type="checkbox"/> <P> ::options.0.name::</P>
+													</DIV>
+													::elseif (name=="font-family-name")::
+							                       	<DIV class="type-container font-family-name-style StringEditor" data-group-id="Group3">
+														<TEXTAREA class="input-one-full-line fixed-height"></TEXTAREA>
+													</DIV>
+													::elseif (name=="font-generic-family")::
+							                       	<DIV class="type-container font-generic-family-style InlineDropdownEditor" data-group-id="Group3">
+														<SELECT class="dropdown-full fixed-height">
+															<OPTION value=""></OPTION>
+															<OPTION value="inherit">inherit</OPTION>
+															<OPTION value="serif">serif</OPTION>
+															<OPTION value="sans-serif">sans-serif</OPTION>
+															<OPTION value="monospace">monospace</OPTION>
+															<OPTION value="fantasy">fantasy</OPTION>
+															<OPTION value="cursive">cursive</OPTION>
+														</SELECT>
+						                       		</DIV>
+							                        ::end::
+							                    ::end:: 
+											<HR></HR>
+										</DIV> 
+										::end:: 
+									</FIELDSET>
+								::end:: 
+							</FORM>
+						::end:: 
+					</DIV>
 					</DIV>
 				</DIV>
 				

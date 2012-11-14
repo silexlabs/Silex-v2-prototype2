@@ -41,7 +41,6 @@ class PercentageEditor extends EditorBase
 	override private function load(element:HtmlDom) {
 		var value:String = PropertyModel.getInstance().getStyle(element, propertyName);
 		value = StringTools.trim(value);
-		trace("PERCENT "+value+" - "+value.substr(0,-1));
 		if (StringTools.endsWith(value, "%")){
 			cast(inputElement).value = value.substr(0,-1);
 		}

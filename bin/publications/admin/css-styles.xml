@@ -21,7 +21,7 @@ still missing:
 
 -->
 	<category>
-		<name>Box Model</name>
+		<name>Box-Model</name>
 		<group>
 			<name>Dimensions</name>
 			<property>
@@ -230,7 +230,7 @@ still missing:
 		</group>
 	</category>
 	<category>
-		<name>Box Design</name>
+		<name>Box-Design</name>
 		<group>
 			<name>Background</name>
 			<property>
@@ -978,7 +978,7 @@ still missing:
 		</group>
 	</category>
 	<category>
-		<name>Visual Effects</name>
+		<name>Visual-Effects</name>
 		<group>
 			<name>Basic</name>
 			<property>

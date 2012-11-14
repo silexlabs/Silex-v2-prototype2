@@ -44,16 +44,10 @@
 		<script data-brix-use="silex.ui.toolbox.editor.InlineDropdownEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.LengthEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.PercentageEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.PropertyEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.HtmlEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.LinkEditorUrl"></script>
 <!--
-		<script data-brix-use="silex.ui.toolbox.editor.KeywordEditor"></script>
-		<script data-brix-use="silex.ui.toolbox.editor.FontRelativeSizeEditor"></script>
-		<script data-brix-use="silex.ui.toolbox.editor.FontAbsoluteSizeEditor"></script>
-		<script data-brix-use="silex.ui.toolbox.editor.NumberEditor"></script>
-		<script data-brix-use="silex.ui.toolbox.editor.IntegerEditor"></script>
-
-		<script data-brix-use="silex.ui.toolbox.editor.UriEditor"></script>
-		<script data-brix-use="silex.ui.toolbox.editor.FontGenericFamilyEditor"></script>
-		<script data-brix-use="silex.ui.toolbox.editor.FontFamilyNameEditor"></script>
 -->
 
 		<!-- info -->
@@ -342,148 +336,236 @@
 				<!-- 	**************************	-->
 				<!-- 		Property Toolbox 		-->
 				<DIV class="group-property-toolbox Group panel-builder-footer PropertiesToolbox silex-toolbox" 
-					data-initial-page-name="Styling"
 					data-toolbox-name="PropertiesToolbox"
 					data-toolbox-dropzones-class-name="toolbox-drop-zone"
 					>
 
 					<!-- tabs -->
-					<DIV class="Accordion ToolBoxController">
-                   	::foreach categories::
-						<A class="Page"  name="::name::">::name::</A>
-                        <A href="#::name::" class="LinkToPage accordion-header">::name::</A>
-                        <FORM class="Layer accordion-item ::name::">
-	                       	::foreach groups::
-								<FIELDSET>
-									<LEGEND>::name::</LEGEND>
-			                       	::foreach properties::
-										<!-- each property has a container, 
-											for which a Group instance is created so that the editors can communicate,
-											with propertyChange events 
-										 -->
-			                       		<DIV class="property-container Group"
-			                       			data-property-name="::name::"
-			                       			>
-											<LABEL>::name::</LABEL>
-											<br />
-											::foreach types::
-												<!-- each type has a corresponding class, 
-													which is instanciated, called silex.core.ui.toolbox.editor.*Editor
-													and then is attached to this div (type-container), 
-												 -->
-												::if (name=="empty-space")::
-						                       	<DIV class="type-container empty-space-style">
-						                       	</DIV>
-												::elseif (name=="keyword")::
-						                       	<DIV class="type-container keyword-style InlineDropdownEditor">
-													<SELECT class="dropdown-full fixed-height">
-														<OPTION value=""></OPTION>
-													::foreach options::
-														<OPTION value="::name::" title="::help::">
-															::name::
-														</OPTION>
-													::end:: 
-													</SELECT>
-												</DIV>
-												::elseif (name=="length")::
-						                       	<DIV class="type-container length-style LengthEditor">
-													<SELECT class="dropdown-half fixed-height">
-														<OPTION value=""></OPTION>
-														<OPTION value="cm">cm</OPTION>
-														<OPTION value="mm">mm</OPTION>
-														<OPTION value="in">in</OPTION>
-														<OPTION value="pt">pt</OPTION>
-														<OPTION value="pc">pc</OPTION>
-														<OPTION value="px">px</OPTION>
-														<OPTION value="em">em</OPTION>
-														<OPTION value="ex">ex</OPTION>
-														<OPTION value="ch">ch</OPTION>
-														<OPTION value="rem">rem</OPTION>
-														<OPTION value="vw">vw</OPTION>
-														<OPTION value="vh">vh</OPTION>
-														<OPTION value="vmin">vmin</OPTION>
-														<OPTION value="vmax">vmax</OPTION>
-													</SELECT>
-													<INPUT class="number input-half  fixed-height" type="number" max="5000" min="-5000"/>
-												</DIV>
-												::elseif (name=="font-absolute-size")::
-						                       	<DIV class="type-container font-absolute-size-style InlineDropdownEditor">
-													<SELECT class="dropdown-full  fixed-height">
-														<OPTION value=""></OPTION>
-														<OPTION value="xx-small">xx-small</OPTION>
-														<OPTION value="x-small">x-small</OPTION>
-														<OPTION value="small">small</OPTION>
-														<OPTION value="medium">medium</OPTION>
-														<OPTION value="large">large</OPTION>
-														<OPTION value="x-large">x-large</OPTION>
-														<OPTION value="xx-large">xx-large</OPTION>
-													</SELECT>
-												</DIV>
-												::elseif (name=="font-relative-size")::
-						                       	<DIV class="type-container font-relative-size-style InlineDropdownEditor">
-													<SELECT class="dropdown-full  fixed-height">
-														<OPTION value=""></OPTION>
-														<OPTION value="larger">larger</OPTION>
-														<OPTION value="smaller">smaller</OPTION>
-													</SELECT>
-												</DIV>
-												::elseif (name=="percentage")::
-						                       	<DIV class="type-container percentage-style PercentageEditor">
-													<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>
-												</DIV>
-												::elseif (name=="color")::
-						                       	<DIV class="type-container color-style ColorEditor">
-													<INPUT class="input-full fixed-height" type="color"/>
-													<INPUT class="input-full fixed-height" type="checkbox"/> <p> Transparent</p>
-												</DIV>
-												::elseif (name=="uri")::
-						                       	<DIV class="type-container uri-style StringEditor">
-													<INPUT class="input-one-full-line input-full fixed-height" type="src"/>
-													<BUTTON class="input-one-full-line file-button fixed-height" title="Browse library" data-fb-target="src-property">Browse library</BUTTON>
-												</DIV>
-												::elseif (name=="uri-multiple")::
-						                       	<DIV class="type-container uri-multiple-style StringEditor">
-													<TEXTAREA class="input-one-full-line fixed-height"></TEXTAREA>
-													<BUTTON class="input-one-full-line add-multiple-files-button fixed-height" title="Browse library">Add from library</BUTTON>
-												</DIV>
-												::elseif (name=="integer")::
-						                       	<DIV class="type-container integer-style StringEditor">
-													<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>
-												</DIV>
-												::elseif (name=="number")::
-						                       	<DIV class="type-container number-style StringEditor">
-													<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>
-												</DIV>
-												::elseif (name=="bool")::
-						                       	<DIV class="type-container bool-style BoolEditor"
-						                       		data-value="::options.0.name::">
-													<INPUT class="input-half fixed-height" type="checkbox"/> <p> ::options.0.name::</p>
-												</DIV>
-												::elseif (name=="font-family-name")::
-						                       	<DIV class="type-container font-family-name-style StringEditor">
-													<TEXTAREA class="input-one-full-line fixed-height"></TEXTAREA>
-												</DIV>
-												::elseif (name=="font-generic-family")::
-						                       	<DIV class="type-container font-generic-family-style InlineDropdownEditor">
-													<SELECT class="dropdown-full fixed-height">
-														<OPTION value=""></OPTION>
-														<OPTION value="inherit">inherit</OPTION>
-														<OPTION value="serif">serif</OPTION>
-														<OPTION value="sans-serif">sans-serif</OPTION>
-														<OPTION value="monospace">monospace</OPTION>
-														<OPTION value="fantasy">fantasy</OPTION>
-														<OPTION value="cursive">cursive</OPTION>
-													</SELECT>
-					                       		</DIV>
-						                        ::end::
-						                    ::end:: <!-- types -->
-										<hr />
-									</DIV> <!-- property container -->
-									::end:: <!-- properties -->
-								</FIELDSET>
-							::end:: <!-- groups -->
+					<DIV class="Accordion ToolBoxController"
+						data-initial-page-name="properties-tab"
+					>
+						<!-- Properties editor -->
+						<A class="Page" name="properties-tab">Properties</A>
+						<A href="#properties-tab" class="LinkToPage accordion-header">Properties</A>
+						<FORM class="Layer accordion-item properties-tab">
+							<FIELDSET class="PropertyEditor">
+								<LEGEND>Attributes</LEGEND>
+								<div class="property-container">
+									<label>Name</label>
+									<div class="type-container">
+										<INPUT class="name-property fixed-height" type="text" max-lenght="20" value="21"/>
+										<BUTTON class="property-editor-delete-selected"></BUTTON>
+									</div>
+								</div>
+								<div class="property-container context-video context-audio context-video context-audio context-img context-div">
+									<label>Html Content</label>
+									<div class="type-container">
+										<BUTTON class="property-editor-edit-text text-input">Open Text Editor</BUTTON>
+									</div>
+								</div>
+								<div class="property-container context-video context-audio">
+									<label>Sources (1 by line)</label>
+									<div class="type-container">
+										<TEXTAREA class="multiple-src-property"></TEXTAREA>
+										<BUTTON class="add-multiple-files-button" title="Browse library"
+											data-fb-target="multiple-src-property">Add from library</BUTTON>
+									</div>
+								</div>
+								<div class="property-container context-img">
+									<label>Source</label>
+									<div class="type-container">
+										<INPUT class="src-property" name="URL" type="src"/>
+										<BUTTON class="select-file-button" title="Browse library"
+											data-fb-target="src-property">Browse library</BUTTON>
+									</div>
+								</div>
+								<div class="property-container context-video context-audio">
+									<label>Autoplay</label>
+									<div class="type-container">
+										<INPUT class="auto-start-property" type="checkbox"/> On/Off
+									</div>
+								</div>
+								<div class="property-container context-video context-audio">
+									<label>Controls</label>
+									<div class="type-container">
+										<INPUT class="controls-property" type="checkbox"/> On/Off
+									</div>
+								</div>
+								<div class="property-container context-video context-audio">
+									<label>Loop or stop at the end</label>
+									<div class="type-container">
+										<INPUT class="loop-property" type="checkbox"/> On/Off
+									</div>
+								</div>
+								<div class="property-container context-layer">
+									<label>Set as master</label>
+									<div class="type-container">
+										 <DIV class="check"><INPUT class="master-property" type="checkbox"/> On/Off</DIV>
+									</div>
+								</div>
+							</FIELDSET>
+							<FIELDSET class="properties-link">
+								<LEGEND>Link</LEGEND>
+								<div class="property-container LinkEditorUrl">
+									<label>External link URL</label>
+									<div class="type-container">
+			                            <INPUT class="link-url" type="src"/>
+									</div>
+									<label>To a page</label>
+									<div class="type-container">
+										<SELECT class="PageList">
+											<OPTION value="::name::">::name::</OPTION>
+										</SELECT>
+									</div>
+									<label class="disabled-element">Execute an action</label>
+									<div class="type-container">
+										<BUTTON class="property-editor-edit-code disabled-element">Open Code Editor</BUTTON>
+									</div>
+								</div>
+							</FIELDSET>
+							<FIELDSET class="properties-html-editor HtmlEditor">
+								<LEGEND>HTML content - debug only</LEGEND>
+								<TEXTAREA class="text-input"></TEXTAREA>
+								<BUTTON class="property-editor-edit-code disabled-element">Open Code Editor</BUTTON>
+							</FIELDSET>
 						</FORM>
-					::end:: <!-- categories -->
+						<div class="tool-box-controller-template">
+	                   	::foreach categories::
+							<A class="Page"  name="::name::">::name::</A>
+	                        <A href="#::name::" class="LinkToPage accordion-header">::name::</A>
+	                        <FORM class="Layer accordion-item ::name::">
+		                       	::foreach groups::
+									<FIELDSET>
+										<LEGEND>::name::</LEGEND>
+				                       	::foreach properties::
+											<!-- each property has a container, 
+												for which a Group instance is created so that the editors can communicate,
+												with propertyChange events 
+											 -->
+				                       		<DIV class="property-container Group"
+				                       			data-property-name="::name::"
+				                       			>
+												<LABEL>::name::</LABEL>
+												<br />
+												::foreach types::
+													<!-- each type has a corresponding class, 
+														which is instanciated, called silex.core.ui.toolbox.editor.*Editor
+														and then is attached to this div (type-container), 
+													 -->
+													::if (name=="empty-space")::
+							                       	<DIV class="type-container empty-space-style">
+							                       	</DIV>
+													::elseif (name=="keyword")::
+							                       	<DIV class="type-container keyword-style InlineDropdownEditor">
+														<SELECT class="dropdown-full fixed-height">
+															<OPTION value=""></OPTION>
+														::foreach options::
+															<OPTION value="::name::" title="::help::">
+																::name::
+															</OPTION>
+														::end:: 
+														</SELECT>
+													</DIV>
+													::elseif (name=="length")::
+							                       	<DIV class="type-container length-style LengthEditor">
+														<SELECT class="dropdown-half fixed-height">
+															<OPTION value=""></OPTION>
+															<OPTION value="cm">cm</OPTION>
+															<OPTION value="mm">mm</OPTION>
+															<OPTION value="in">in</OPTION>
+															<OPTION value="pt">pt</OPTION>
+															<OPTION value="pc">pc</OPTION>
+															<OPTION value="px">px</OPTION>
+															<OPTION value="em">em</OPTION>
+															<OPTION value="ex">ex</OPTION>
+															<OPTION value="ch">ch</OPTION>
+															<OPTION value="rem">rem</OPTION>
+															<OPTION value="vw">vw</OPTION>
+															<OPTION value="vh">vh</OPTION>
+															<OPTION value="vmin">vmin</OPTION>
+															<OPTION value="vmax">vmax</OPTION>
+														</SELECT>
+														<INPUT class="number input-half  fixed-height" type="number" max="5000" min="-5000"/>
+													</DIV>
+													::elseif (name=="font-absolute-size")::
+							                       	<DIV class="type-container font-absolute-size-style InlineDropdownEditor">
+														<SELECT class="dropdown-full  fixed-height">
+															<OPTION value=""></OPTION>
+															<OPTION value="xx-small">xx-small</OPTION>
+															<OPTION value="x-small">x-small</OPTION>
+															<OPTION value="small">small</OPTION>
+															<OPTION value="medium">medium</OPTION>
+															<OPTION value="large">large</OPTION>
+															<OPTION value="x-large">x-large</OPTION>
+															<OPTION value="xx-large">xx-large</OPTION>
+														</SELECT>
+													</DIV>
+													::elseif (name=="font-relative-size")::
+							                       	<DIV class="type-container font-relative-size-style InlineDropdownEditor">
+														<SELECT class="dropdown-full  fixed-height">
+															<OPTION value=""></OPTION>
+															<OPTION value="larger">larger</OPTION>
+															<OPTION value="smaller">smaller</OPTION>
+														</SELECT>
+													</DIV>
+													::elseif (name=="percentage")::
+							                       	<DIV class="type-container percentage-style PercentageEditor">
+														<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>
+													</DIV>
+													::elseif (name=="color")::
+							                       	<DIV class="type-container color-style ColorEditor">
+														<INPUT class="input-full fixed-height" type="color"/>
+														<INPUT class="input-full fixed-height" type="checkbox"/> <p> Transparent</p>
+													</DIV>
+													::elseif (name=="uri")::
+							                       	<DIV class="type-container uri-style StringEditor">
+														<INPUT class="input-one-full-line input-full fixed-height" type="src"/>
+														<BUTTON class="input-one-full-line file-button fixed-height" title="Browse library" data-fb-target="src-property">Browse library</BUTTON>
+													</DIV>
+													::elseif (name=="uri-multiple")::
+							                       	<DIV class="type-container uri-multiple-style StringEditor">
+														<TEXTAREA class="input-one-full-line fixed-height"></TEXTAREA>
+														<BUTTON class="input-one-full-line add-multiple-files-button fixed-height" title="Browse library">Add from library</BUTTON>
+													</DIV>
+													::elseif (name=="integer")::
+							                       	<DIV class="type-container integer-style StringEditor">
+														<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>
+													</DIV>
+													::elseif (name=="number")::
+							                       	<DIV class="type-container number-style StringEditor">
+														<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>
+													</DIV>
+													::elseif (name=="bool")::
+							                       	<DIV class="type-container bool-style BoolEditor"
+							                       		data-value="::options.0.name::">
+														<INPUT class="input-half fixed-height" type="checkbox"/> <p> ::options.0.name::</p>
+													</DIV>
+													::elseif (name=="font-family-name")::
+							                       	<DIV class="type-container font-family-name-style StringEditor">
+														<TEXTAREA class="input-one-full-line fixed-height"></TEXTAREA>
+													</DIV>
+													::elseif (name=="font-generic-family")::
+							                       	<DIV class="type-container font-generic-family-style InlineDropdownEditor">
+														<SELECT class="dropdown-full fixed-height">
+															<OPTION value=""></OPTION>
+															<OPTION value="inherit">inherit</OPTION>
+															<OPTION value="serif">serif</OPTION>
+															<OPTION value="sans-serif">sans-serif</OPTION>
+															<OPTION value="monospace">monospace</OPTION>
+															<OPTION value="fantasy">fantasy</OPTION>
+															<OPTION value="cursive">cursive</OPTION>
+														</SELECT>
+						                       		</DIV>
+							                        ::end::
+							                    ::end:: <!-- types -->
+											<hr />
+										</DIV> <!-- property container -->
+										::end:: <!-- properties -->
+									</FIELDSET>
+								::end:: <!-- groups -->
+							</FORM>
+						::end:: <!-- categories -->
+					</div>
 					</DIV>
 				</DIV>
 				<!-- 		/Property Toolbox 		-->
