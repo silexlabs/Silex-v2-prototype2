@@ -43,12 +43,12 @@
 		<script data-brix-use="silex.ui.toolbox.editor.StringEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.InlineDropdownEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.LengthEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.PercentageEditor"></script>
 <!--
 		<script data-brix-use="silex.ui.toolbox.editor.KeywordEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.FontRelativeSizeEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.FontAbsoluteSizeEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.NumberEditor"></script>
-		<script data-brix-use="silex.ui.toolbox.editor.PercentageEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.IntegerEditor"></script>
 
 		<script data-brix-use="silex.ui.toolbox.editor.UriEditor"></script>
@@ -428,7 +428,7 @@
 													</SELECT>
 												</DIV>
 												::elseif (name=="percentage")::
-						                       	<DIV class="type-container percentage-style StringEditor">
+						                       	<DIV class="type-container percentage-style PercentageEditor">
 													<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>
 												</DIV>
 												::elseif (name=="color")::

@@ -34,6 +34,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** known bugs **
 
+* use css patterns ?? http://www.google.fr/search?hl=en&redir_esc=&client=ms-android-samsung&source=android-browser-type&v=133247963&qsubts=1352845988673&action=devloc&q=css+patterns&v=133247963
 * toolbox still missing :
   . component attributes (name, URL, seo, ...)
   . delete component
