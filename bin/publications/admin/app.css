@@ -801,6 +801,9 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 	display: block;
 	margin: 10px 0 10px 0;
 }
+.silex-toolbox .internal-link-editor{
+	width: 95%;
+}
 .silex-toolbox .PropertyEditor .type-container{
 	width: 95%;
 }

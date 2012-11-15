@@ -65,7 +65,7 @@ class EditorBase extends DisplayObject, implements IGroupable
 	 */
 	private var propertyChangePending:Bool = false;
 	/**
-	 * store the property name, taken in the attribute "data-property-name" of the group node 
+	 * store the property name, taken in the attribute "data-property-js-name" of the group node 
 	 */
 	private var propertyName:String;
 	/**
@@ -82,6 +82,7 @@ class EditorBase extends DisplayObject, implements IGroupable
 
 		// listen to the property change event
 		PropertyModel.getInstance().addEventListener(PropertyModel.ON_PROPERTY_CHANGE, onPropertyChange, DEBUG_INFO);
+		PropertyModel.getInstance().addEventListener(PropertyModel.ON_STYLE_CHANGE, onPropertyChange, DEBUG_INFO);
 		// listen to the component change event
 		ComponentModel.getInstance().addEventListener(ComponentModel.ON_SELECTION_CHANGE, onSelectComponent, DEBUG_INFO);
 		// listen to the component change event
@@ -102,7 +103,12 @@ class EditorBase extends DisplayObject, implements IGroupable
 				trace("Could not find the property name for the editor. It was not set in the attribute \"data-property-name\" of the group node ("+groupElement.className+").");
 			}
 		}
-		reset();
+		try{
+			reset();
+		}
+		catch(e:Dynamic){
+			throw("Error in the implementation of the method reset: "+e);
+		}
 	}
 	/**
 	 * clean the component
@@ -117,6 +123,7 @@ class EditorBase extends DisplayObject, implements IGroupable
 		rootElement.removeEventListener("click", onClick, true);
 
 		PropertyModel.getInstance().removeEventListener(PropertyModel.ON_PROPERTY_CHANGE, onPropertyChange);
+		PropertyModel.getInstance().removeEventListener(PropertyModel.ON_STYLE_CHANGE, onPropertyChange);
 		ComponentModel.getInstance().removeEventListener(ComponentModel.ON_SELECTION_CHANGE, onSelectComponent);
 		LayerModel.getInstance().removeEventListener(LayerModel.ON_SELECTION_CHANGE, onSelectLayer);
 	}
@@ -174,9 +181,20 @@ class EditorBase extends DisplayObject, implements IGroupable
 	 */
 	private function refresh() {
 		if (selectedItem != null)
-			load(selectedItem);
-		else
-			reset();
+			try{
+				load(selectedItem);
+			}
+			catch(e:Dynamic){
+				throw("Error in the implementation of the method load: "+e);
+			}
+		else{
+			try{
+				reset();
+			}
+			catch(e:Dynamic){
+				throw("Error in the implementation of the method reset: "+e);
+			}
+		}
 	}
 	////////////////////////////////////////////
 	// Manipulation of the HTML input
@@ -224,7 +242,12 @@ class EditorBase extends DisplayObject, implements IGroupable
 	private function onInput(e:Event) {
 		e.preventDefault();
 		beforeApply();
-		apply();
+		try{
+			apply();
+		}
+		catch(e:Dynamic){
+			throw("Error in the implementation of the method apply: "+e);
+		}
 		afterApply();
 	}
 	/**
@@ -279,7 +302,12 @@ class EditorBase extends DisplayObject, implements IGroupable
 		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
 		cast(inputElement).value = abs2rel(fileUrl);
 		beforeApply();
-		apply();
+		try{
+			apply();
+		}
+		catch(e:Dynamic){
+			throw("Error in the implementation of the method apply: "+e);
+		}
 		afterApply();
 		DomTools.doLater(refreshSelection);
 	}
@@ -305,7 +333,12 @@ class EditorBase extends DisplayObject, implements IGroupable
 		if (cast(inputElement).value != "") cast(inputElement).value += "\n";
 		cast(inputElement).value += abs2rel(files.join("\n"));
 		beforeApply();
-		apply();
+		try{
+			apply();
+		}
+		catch(e:Dynamic){
+			throw("Error in the implementation of the method apply: "+e);
+		}
 		afterApply();
 		DomTools.doLater(refreshSelection);
 	}
@@ -344,7 +377,12 @@ class EditorBase extends DisplayObject, implements IGroupable
 			return;
 		if (e.detail.name == propertyName){
 			// reset myself, another editor is taking care of the property
-			reset();
+			try{
+				reset();
+			}
+			catch(e:Dynamic){
+				throw("Error in the implementation of the method reset: "+e);
+			}
 		}
 		else{
 			// do nothing, I am not concerned

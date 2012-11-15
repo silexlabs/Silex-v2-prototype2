@@ -46,7 +46,7 @@
 		<script data-brix-use="silex.ui.toolbox.editor.PercentageEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.PropertyEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.HtmlEditor"></script>
-		<script data-brix-use="silex.ui.toolbox.editor.LinkEditorUrl"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.LinkEditor"></script>
 <!--
 -->
 
@@ -64,7 +64,8 @@
 		<script type="text/hscript">
 			//Lib.alert('test!');
 			//PublicationModel.getInstance().load('default');
-			MenuController.createPublication();
+			//MenuController.createPublication();
+			PublicationModel.getInstance().load('test.com');
 		</script>
 	</head>
 	<body class="">
@@ -406,16 +407,24 @@
 							</FIELDSET>
 							<FIELDSET class="properties-link">
 								<LEGEND>Link</LEGEND>
-								<div class="property-container LinkEditorUrl">
+								<div class="property-container LinkEditor">
 									<label>External link URL</label>
 									<div class="type-container">
 			                            <INPUT class="link-url" type="src"/>
+										<SELECT class="dropdown-full fixed-height">
+											<OPTION value=""></OPTION>
+											<OPTION value="_blank">_blank</OPTION>
+											<OPTION value="_self">_self</OPTION>
+											<OPTION value="_parent">_parent</OPTION>
+											<OPTION value="_top">_top</OPTION>
+										</SELECT>
 									</div>
 									<label>To a page</label>
-									<div class="type-container">
+									<div class="type-container internal-link-editor">
 										<SELECT class="PageList">
 											<OPTION value="::name::">::name::</OPTION>
 										</SELECT>
+										<BUTTON class="">None</BUTTON>
 									</div>
 									<label class="disabled-element">Execute an action</label>
 									<div class="type-container">
@@ -445,7 +454,7 @@
 				                       		<DIV class="property-container Group"
 				                       			data-property-name="::name::"
 				                       			>
-												<LABEL>::name::</LABEL>
+												<LABEL>::cssName::</LABEL>
 												<br />
 												::foreach types::
 													<!-- each type has a corresponding class, 

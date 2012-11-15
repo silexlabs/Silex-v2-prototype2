@@ -62,7 +62,8 @@
 		<SCRIPT type="text/hscript">
 			//Lib.alert('test!');
 			//PublicationModel.getInstance().load('default');
-			MenuController.createPublication();
+			//MenuController.createPublication();
+			PublicationModel.getInstance().load('test.com');
 		</SCRIPT>
 	<SCRIPT src="silex-builder.js"></SCRIPT></HEAD>
 	
@@ -383,16 +384,24 @@
 							</FIELDSET>
 							<FIELDSET class="properties-link">
 								<LEGEND>Link</LEGEND>
-								<DIV class="property-container LinkEditorUrl" data-group-id="Group2">
+								<DIV class="property-container LinkEditor" data-group-id="Group2">
 									<LABEL>External link URL</LABEL>
 									<DIV class="type-container">
 			                            <INPUT class="link-url" type="src"/>
+										<SELECT class="dropdown-full fixed-height">
+											<OPTION value=""></OPTION>
+											<OPTION value="_blank">_blank</OPTION>
+											<OPTION value="_self">_self</OPTION>
+											<OPTION value="_parent">_parent</OPTION>
+											<OPTION value="_top">_top</OPTION>
+										</SELECT>
 									</DIV>
 									<LABEL>To a page</LABEL>
-									<DIV class="type-container">
+									<DIV class="type-container internal-link-editor">
 										<SELECT class="PageList">
 											<OPTION value="::name::">::name::</OPTION>
 										</SELECT>
+										<BUTTON class="">None</BUTTON>
 									</DIV>
 									<LABEL class="disabled-element">Execute an action</LABEL>
 									<DIV class="type-container">
@@ -417,7 +426,7 @@
 				                       	::foreach properties::
 											
 				                       		<DIV class="Group3 property-container" data-property-name="::name::">
-												<LABEL>::name::</LABEL>
+												<LABEL>::cssName::</LABEL>
 												<BR></BR>
 												::foreach types::
 													

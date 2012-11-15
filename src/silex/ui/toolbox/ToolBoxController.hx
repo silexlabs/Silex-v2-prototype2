@@ -29,6 +29,7 @@ typedef ToolboxData = {
 			name: String,
 			properties: Array<{
 				name: String,
+				cssName: String,
 				types: Array<{
 					name: String,
 					options: Array<{
@@ -157,6 +158,7 @@ class ToolBoxController extends DisplayObject
 				for (propXml in groupXml.nodes.property){
 					var prop = {
 						name: propXml.node.name.innerData,
+						cssName: propXml.node.cssName.innerData,
 						types: []
 					}
 					// browse <type> nodes

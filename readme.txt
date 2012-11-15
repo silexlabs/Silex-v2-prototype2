@@ -42,6 +42,9 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 link: 
 - _blank et _self
 - page : ajout "" a la liste
+- modeif insertion nav
+- styles hover et active => data-style-* - http://www.w3schools.com/css/css_pseudo_classes.asp
+- save as style => .xxxx{} .xxxx:hover{} .xxxx:active{} 
 
 * toolbox still missing :
   . code editor
@@ -60,3 +63,4 @@ link:
 * autoriser display block?
 * styles/themes
 * new from template
+* bug backgroundPosition: should concat the X and Y values instead of selecting one of the 2

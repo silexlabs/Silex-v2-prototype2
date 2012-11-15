@@ -127,6 +127,13 @@ class MenuController extends DisplayObject
 		menuBrixId = BrixId;
 		// expose the class to the scripts interpreter
 		Interpreter.getInstance().expose("MenuController", MenuController);
+		#if js
+			// todo: put the "prevent user leaving Silex builder accidentally" elsewhere and/or use a "dirty" flag to determine wether it is a problem to leave the page?
+			// prevent user leaving Silex builder accidentally
+			untyped Lib.window.onbeforeunload = function(){
+				return "You're about to leave this page.";
+			};
+		#end
 	}
 
 	/**
