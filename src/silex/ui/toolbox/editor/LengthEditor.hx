@@ -37,7 +37,7 @@ class LengthEditor extends EditorBase
 	 */
 	override private function reset() {
 		cast(inputElement).value = "";
-		cast(unitElement).value = "";
+		cast(unitElement).value = "px";
 	}
 	/**
 	 * display the property value
@@ -46,8 +46,7 @@ class LengthEditor extends EditorBase
 	override private function load(element:HtmlDom) {
 		var value:String = PropertyModel.getInstance().getStyle(element, propertyName);
 		if (value == null || value == ""){
-			cast(inputElement).value = value;
-			cast(unitElement).value = value;
+			reset();
 		}
 		else{
 			var options = unitElement.getElementsByTagName("option");
