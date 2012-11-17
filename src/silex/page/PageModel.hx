@@ -123,7 +123,7 @@ class PageModel extends ModelBase<Page>{
 		var layerInstance = publicationModel.application.getAssociatedComponents(navBarNode, Layer).first();
 		var textElement = ComponentModel.getInstance().addComponent("div", layerInstance, navBarNode.childNodes.length);
 		PropertyModel.getInstance().setAttribute(textElement, "title", "Link to "+name);
-		PropertyModel.getInstance().setProperty(textElement, "innerHTML", "<p>"+name+"</p>");
+		PropertyModel.getInstance().setProperty(textElement, "innerHTML", name);
 		ComponentModel.getInstance().makeLinkToPage(textElement, className);
 
 		// open the new page

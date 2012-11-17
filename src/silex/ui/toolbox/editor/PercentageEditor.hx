@@ -39,8 +39,6 @@ class PercentageEditor extends EditorBase
 	 * this method should be implemented in the derived class
 	 */
 	override private function load(element:HtmlDom) {
-		trace("load "+element+" - "+element.style+" - "+propertyName+" - "+PropertyModel.getInstance().getStyle(element, propertyName));
-		trace("load "+element+" - "+element.style.backgroundPosition+" - "+PropertyModel.getInstance().getStyle(element, "backgroundPosition"));
 		var value:String = PropertyModel.getInstance().getStyle(element, propertyName);
 		value = StringTools.trim(value);
 		if (StringTools.endsWith(value, "%")){

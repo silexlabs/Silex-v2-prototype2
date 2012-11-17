@@ -627,6 +627,8 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 	height:70px;
 	margin:0;
 	padding:0;
+	margin-left:3px;
+	margin-top:3px;
 }
 
 .ribbon-list ul.small{
@@ -634,10 +636,7 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 }
 
 .ribbon-list ul li{
-	display:block;
-	float:left;
-	margin-left:3px;
-	margin-top:3px;
+	display:inline-block;
 	border:1px solid black;
 	width:69px;
 	height:71px;

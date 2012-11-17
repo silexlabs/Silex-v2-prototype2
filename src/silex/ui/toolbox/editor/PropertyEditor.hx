@@ -3,6 +3,7 @@ package silex.ui.toolbox.editor;
 import silex.property.PropertyModel;
 import silex.component.ComponentModel;
 import silex.publication.PublicationModel;
+import silex.publication.PublicationData;
 import silex.layer.LayerModel;
 import silex.page.PageModel;
 
@@ -102,7 +103,8 @@ class PropertyEditor extends EditorBase
 	 * display the property value
 	 */
 	override private function load(element:HtmlDom) {
-		
+		// root url for the relative path
+		var pubUrl = PublicationConstants.PUBLICATION_FOLDER + PublicationModel.getInstance().currentName + "/";
 
 		// handle the context
 		var contextArray = [];
@@ -129,13 +131,13 @@ class PropertyEditor extends EditorBase
 		if (value != null) setInputValue("name-property", value);
 
 		var value = propertyModel.getProperty(element, "src");
-		if (value != null) setInputValue("src-property", abs2rel(value));
+		if (value != null) setInputValue("src-property", DomTools.abs2rel(value, pubUrl));
 		else setInputValue("src-property", "");
 
 		var sources = PublicationModel.getInstance().getModelFromView(element).getElementsByTagName("source");
 		var value = "";
 		for (idx in 0...sources.length){
-			value += abs2rel(cast(sources[idx]).src) + "\n";
+			value += DomTools.abs2rel(cast(sources[idx]).src, pubUrl) + "\n";
 		}
 		setInputValue("multiple-src-property", value);
 
@@ -167,6 +169,8 @@ class PropertyEditor extends EditorBase
 	 * apply the property value
 	 */
 	override private function apply() {
+		// root url for the relative path
+		var pubUrl = PublicationConstants.PUBLICATION_FOLDER + PublicationModel.getInstance().currentName + "/";
 		// 
 		var propertyModel = PropertyModel.getInstance();
 
@@ -177,7 +181,7 @@ class PropertyEditor extends EditorBase
 			propertyModel.setProperty(selectedItem, "title", null);
 
 		var value = getInputValue("src-property");
-		if (value != null && value != "") propertyModel.setProperty(selectedItem, "src", abs2rel(value));
+		if (value != null && value != "") propertyModel.setProperty(selectedItem, "src", DomTools.abs2rel(value, pubUrl));
 		else if (Reflect.hasField(selectedItem, "src")){
 			// only if the attrivute is defined 
 			// otherwise it my be on a node of type audio or video, which has no src attribute
@@ -201,10 +205,10 @@ class PropertyEditor extends EditorBase
 			for (sourceUrl in urls){
 				if (sourceUrl != ""){
 					var sourceElement = Lib.document.createElement("source");
-					cast(sourceElement).src = abs2rel(sourceUrl);
+					cast(sourceElement).src = DomTools.abs2rel(sourceUrl, pubUrl);
 					modelHtmlDom.appendChild(sourceElement);
 					var sourceElement = Lib.document.createElement("source");
-					cast(sourceElement).src = abs2rel(sourceUrl);
+					cast(sourceElement).src = DomTools.abs2rel(sourceUrl, pubUrl);
 					selectedItem.appendChild(sourceElement);
 				}
 			}

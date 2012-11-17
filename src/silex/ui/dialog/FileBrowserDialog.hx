@@ -17,6 +17,44 @@ import silex.publication.PublicationData;
  */
 class FileBrowserDialog extends DialogBase
 {
+	////////////////////////////////////////////////////////////////////////
+	// static helper methods
+	////////////////////////////////////////////////////////////////////////
+	/**
+	 * open file browser
+	 * called when the user clicks on a button with "select-file-button" class
+	 */
+	public static function selectMultipleFiles(userCallback:Array<String>->Void, brixInstanceId:String, msg:String = null){
+		// default message
+		if (msg==null) msg = "Double click to select one or more files!";
+		// callback
+		onValidateMultiple = userCallback;
+		// message
+		message = msg;
+		// config
+		expectMultipleFiles = true;
+		// open the dialog
+		Page.openPage(FB_PAGE_NAME, true, null, null, brixInstanceId);
+	}
+	/**
+	 * open file browser
+	 * called when the user clicks on a button with "select-file-button" class
+	 */
+	public static function selectFile(userCallback:String->Void, brixInstanceId:String, msg:String = null){
+		// default message
+		if (msg==null) msg = "Double click to select a file!";
+		// callback
+		onValidate = userCallback;
+		// message
+		message = msg;
+		// config
+		expectMultipleFiles = false;
+		// open the dialog
+		Page.openPage(FB_PAGE_NAME, true, null, null, brixInstanceId);
+	}
+	////////////////////////////////////////////////////////////////////////
+	// component methods and attributes
+	////////////////////////////////////////////////////////////////////////
 	/**
 	 * The css class name of the div used to display the file browser
 	 */

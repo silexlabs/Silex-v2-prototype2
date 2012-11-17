@@ -40,16 +40,26 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 ** to do **
 
 link: 
-- _blank et _self
-- page : ajout "" a la liste
-- modeif insertion nav
 - styles hover et active => data-style-* - http://www.w3schools.com/css/css_pseudo_classes.asp
-- save as style => .xxxx{} .xxxx:hover{} .xxxx:active{} 
+  . selector in each accordion tab => set style to data-*
+  . save in data-* instead of style only
+  . init all at start
+  . listen over and out on body => set style to data-*
+  . check for active when open / close page
+  . save as style => .xxxx{} .xxxx:hover{} .xxxx:active{} 
 
-* toolbox still missing :
-  . code editor
-  . link
-* styles
+remarques pol
+- insert image => open library
+- keyboard shortcuts
+- length editor : default pixel
+
+bugs !
+- Insert tab, "container" position after drop
+- absolute => out of container, no more clickable
+- save a copy bug
+
+toolbox still missing :
+* code editor
 * mettre a jour les tests unitaires cote serveur
 * url par defaut image, video, son
 * slelection drop zone : priorité aux petites zones * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?

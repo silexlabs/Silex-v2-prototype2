@@ -55,6 +55,9 @@ class LinkEditor extends EditorBase
 		// events
 		resetPageNameButton.addEventListener("click", resetPageNameSelector, true);
 	}
+	/** 
+	 * reset the selection of a page, i.e. unselect a page in the drop downlink
+	 */
 	function resetPageNameSelector(e:Event){
 		e.preventDefault();
 		cast(pageSelectElement).selectedIndex = -1;
@@ -105,36 +108,23 @@ class LinkEditor extends EditorBase
 		var value = cast(inputElement).value;
 		if (value != "" && value != null){
 			// there is a link to set
-			addSilexLinkClass();
-			// url
-			PropertyModel.getInstance().setAttribute(selectedItem, LinkBase.CONFIG_PAGE_NAME_DATA_ATTR, value);
+			ComponentModel.getInstance().makeLinkToPage(selectedItem, value);
 			// target
 			var value = cast(targetElement).value;
 			PropertyModel.getInstance().setAttribute(selectedItem, LinkBase.CONFIG_TARGET_ATTR, value);
 		}
 		else if((value = cast(pageSelectElement).value) != ""){
 			// internal page
-			addSilexLinkClass();
-			// page name
-			PropertyModel.getInstance().setAttribute(selectedItem, LinkBase.CONFIG_PAGE_NAME_DATA_ATTR, value);
+			ComponentModel.getInstance().makeLinkToPage(selectedItem, value);
 		}
 		else{
 			// no link
+			ComponentModel.getInstance().resetLinkToPage(selectedItem);
+
 			PropertyModel.getInstance().setAttribute(selectedItem, LinkBase.CONFIG_PAGE_NAME_DATA_ATTR, null);
-			if(DomTools.hasClass(selectedItem, "SilexLink")){
-				// todo: remove class
-				DomTools.removeClass(selectedItem, "SilexLink");
-				PropertyModel.getInstance().removeClass(selectedItem, "SilexLink");
-			}
+
 			// target
-			PropertyModel.getInstance().setAttribute(selectedItem, LinkBase.CONFIG_TARGET_ATTR, null);
-		}
-	}
-	function addSilexLinkClass(){
-		if(!DomTools.hasClass(selectedItem, "SilexLink")){
-			// todo: init class
-			DomTools.addClass(selectedItem, "SilexLink");
-			PropertyModel.getInstance().addClass(selectedItem, "SilexLink");
+			PropertyModel.getInstance().removeAttribute(selectedItem, LinkBase.CONFIG_TARGET_ATTR);
 		}
 	}
 }

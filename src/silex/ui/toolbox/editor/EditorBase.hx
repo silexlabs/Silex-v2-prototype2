@@ -4,6 +4,7 @@ import js.Lib;
 import js.Dom;
 
 import silex.publication.PublicationModel;
+import silex.publication.PublicationData;
 import silex.layer.LayerModel;
 import silex.component.ComponentModel;
 import silex.property.PropertyModel;
@@ -257,12 +258,14 @@ class EditorBase extends DisplayObject, implements IGroupable
 		if (DomTools.hasClass(e.target, OPEN_FILE_BROWSER_CLASS_NAME)){
 			e.preventDefault();
 			var inputControlClassName = e.target.getAttribute("data-fb-target");
-			selectFile(inputControlClassName);
+			var cbk = callback(onFileChosen, inputControlClassName);
+			FileBrowserDialog.selectFile(cbk, brixInstanceId);
 		}
 		else if (DomTools.hasClass(e.target, ADD_MULTIPLE_FILE_BROWSER_CLASS_NAME)){
 			e.preventDefault();
 			var inputControlClassName = e.target.getAttribute("data-fb-target");
-			selectMultipleFiles(inputControlClassName);
+			var cbk = callback(onMultipleFilesChosen, inputControlClassName);
+			FileBrowserDialog.selectMultipleFiles(cbk, brixInstanceId);
 		}
 		else if (DomTools.hasClass(e.target, OPEN_TEXT_EDITOR_CLASS_NAME)){
 			// prevent default button behaviour
@@ -298,9 +301,9 @@ class EditorBase extends DisplayObject, implements IGroupable
 	 * callback for the FileBrowserDialog
 	 */
 	private function onFileChosen(inputControlClassName:String, fileUrl:String){
-		
 		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
-		cast(inputElement).value = abs2rel(fileUrl);
+		cast(inputElement).value = DomTools.abs2rel(fileUrl);
+
 		beforeApply();
 		try{
 			apply();
@@ -310,19 +313,6 @@ class EditorBase extends DisplayObject, implements IGroupable
 		}
 		afterApply();
 		DomTools.doLater(refreshSelection);
-	}
-	/**
-	 * open file browser
-	 * called when the user clicks on a button with "select-file-button" class
-	 */
-	private function selectFile(inputControlClassName:String){
-		var userMessage = "Double click to select a file!";
-		var validateCallback = callback(onFileChosen, inputControlClassName);
-
-		FileBrowserDialog.onValidate = validateCallback;
-		FileBrowserDialog.message = userMessage;
-		FileBrowserDialog.expectMultipleFiles = false;
-		Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, brixInstanceId);
 	}
 	/**
 	 * callback for the FileBrowserDialog
@@ -331,7 +321,13 @@ class EditorBase extends DisplayObject, implements IGroupable
 		
 		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
 		if (cast(inputElement).value != "") cast(inputElement).value += "\n";
-		cast(inputElement).value += abs2rel(files.join("\n"));
+
+		// convert urls to relative
+		var pubUrl = PublicationConstants.PUBLICATION_FOLDER + PublicationModel.getInstance().currentName + "/";
+		for (sourceUrl in files){
+			cast(inputElement).value += DomTools.abs2rel(sourceUrl, pubUrl) + "\n";
+		}
+		// apply to the element
 		beforeApply();
 		try{
 			apply();
@@ -342,19 +338,6 @@ class EditorBase extends DisplayObject, implements IGroupable
 		afterApply();
 		DomTools.doLater(refreshSelection);
 	}
-	/**
-	 * open file browser
-	 * called when the user clicks on a button with "select-file-button" class
-	 */
-	private function selectMultipleFiles(inputControlClassName:String){
-		var userMessage = "Double click to select one or more file(s)!";
-		var validateCallback = callback(onMultipleFilesChosen, inputControlClassName);
-
-		FileBrowserDialog.onValidateMultiple = validateCallback;
-		FileBrowserDialog.message = userMessage;
-		FileBrowserDialog.expectMultipleFiles = true;
-		Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, brixInstanceId);
-	}
 	////////////////////////////////////////////
 	// Callbacks for the model
 	////////////////////////////////////////////
@@ -362,10 +345,12 @@ class EditorBase extends DisplayObject, implements IGroupable
 	 * refresh the model
 	 */
 	private function refreshSelection(){
-		if (ComponentModel.getInstance().selectedItem != null)
+		if (ComponentModel.getInstance().selectedItem != null){
 			ComponentModel.getInstance().refresh();
-		else
+		}
+		else if (LayerModel.getInstance().selectedItem != null){
 			LayerModel.getInstance().refresh();
+		}
 	}
 	/**
 	 * Callback for the PropertyModel singleton
@@ -409,38 +394,5 @@ class EditorBase extends DisplayObject, implements IGroupable
 		else{
 			selectedItem = e.detail.rootElement;
 		}
-	}
-	////////////////////////////////////////////
-	// Helpers
-	////////////////////////////////////////////
-	/**
-	 * convert into relative url
-	 */
-	private function abs2rel(url:Null<String>):Null<String>{
-		if (url == null)
-			return null;
-			
-		if (url == "")
-			return "";
-
-		// remove path to the publication folder
-		var pubUrl = "publications/";
-		var idxPubFolder = url.indexOf(pubUrl);
-		if (idxPubFolder >= 0){
-			// remove all the common parts
-			url = url.substr(idxPubFolder + pubUrl.length);
-			// remove publication name if it is the current publication or add the relative path "../"
-			var pubUrl = PublicationModel.getInstance().currentName + "/";
-			var idxPubFolder = url.indexOf(pubUrl);
-			if (idxPubFolder >= 0){
-				// remove all the common parts
-				url = url.substr(idxPubFolder + pubUrl.length);
-			}
-			else{
-				// add the relative path to publication folder
-				url = "../"+url;
-			}
-		}
-		return url;
 	}
 }
