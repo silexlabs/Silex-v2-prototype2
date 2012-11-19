@@ -46,6 +46,7 @@
 		
 		
 		
+		
 
 
 		
@@ -447,13 +448,12 @@
 													::elseif (name=="length")::
 							                       	<DIV class="type-container length-style LengthEditor" data-group-id="Group3">
 														<SELECT class="dropdown-half fixed-height">
-															<OPTION value=""></OPTION>
+															<OPTION value="px">px</OPTION>
 															<OPTION value="cm">cm</OPTION>
 															<OPTION value="mm">mm</OPTION>
 															<OPTION value="in">in</OPTION>
 															<OPTION value="pt">pt</OPTION>
 															<OPTION value="pc">pc</OPTION>
-															<OPTION value="px">px</OPTION>
 															<OPTION value="em">em</OPTION>
 															<OPTION value="ex">ex</OPTION>
 															<OPTION value="ch">ch</OPTION>
@@ -497,13 +497,13 @@
 													</DIV>
 													::elseif (name=="uri")::
 							                       	<DIV class="type-container uri-style StringEditor" data-group-id="Group3">
-														<INPUT class="input-one-full-line input-full fixed-height" type="src"/>
-														<BUTTON class="input-one-full-line file-button fixed-height" title="Browse library" data-fb-target="src-property">Browse library</BUTTON>
+														<INPUT class="input-one-full-line input-full fixed-height src-target" type="src"/>
+														<BUTTON class="input-one-full-line file-button fixed-height" title="Browse library" data-fb-target="src-target">Browse library</BUTTON>
 													</DIV>
 													::elseif (name=="uri-multiple")::
-							                       	<DIV class="type-container uri-multiple-style StringEditor" data-group-id="Group3">
-														<TEXTAREA class="input-one-full-line fixed-height"></TEXTAREA>
-														<BUTTON class="input-one-full-line add-multiple-files-button fixed-height" title="Browse library">Add from library</BUTTON>
+							                       	<DIV class="type-container uri-multiple-style MultipleUrlEditor" data-group-id="Group3">
+														<TEXTAREA class="input-one-full-line fixed-height src-target"></TEXTAREA>
+														<BUTTON class="input-one-full-line add-multiple-files-button fixed-height" title="Browse library" data-fb-target="src-target">Add from library</BUTTON>
 													</DIV>
 													::elseif (name=="integer")::
 							                       	<DIV class="type-container integer-style StringEditor" data-group-id="Group3">

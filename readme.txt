@@ -39,6 +39,9 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** to do **
 
+en cours : 
+* pass the text editor and/or the single URL logic from EditorBase to StringEditor or PropertyEditor
+
 link: 
 - styles hover et active => data-style-* - http://www.w3schools.com/css/css_pseudo_classes.asp
   . selector in each accordion tab => set style to data-*
@@ -49,19 +52,19 @@ link:
   . save as style => .xxxx{} .xxxx:hover{} .xxxx:active{} 
 
 remarques pol
-- insert image => open library
 - keyboard shortcuts
-- length editor : default pixel
 
 bugs !
+- background image browse lib
 - Insert tab, "container" position after drop
 - absolute => out of container, no more clickable
 - save a copy bug
+* bug backgroundPosition: should concat the X and Y values instead of selecting one of the 2
+* multiple urls in background and image src are all absolute => change before save (because when changed in the dom, the browser forces absolute URLs)
 
 toolbox still missing :
 * code editor
 * mettre a jour les tests unitaires cote serveur
-* url par defaut image, video, son
 * slelection drop zone : priorité aux petites zones * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
 * delete a container when it is a master or not, and uncheck master when the container is not on any page
 * tous les styles dans la boite a outil styles
@@ -73,4 +76,4 @@ toolbox still missing :
 * autoriser display block?
 * styles/themes
 * new from template
-* bug backgroundPosition: should concat the X and Y values instead of selecting one of the 2
+* length editor : default pixel

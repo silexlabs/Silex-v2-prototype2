@@ -49,11 +49,6 @@ class EditorBase extends DisplayObject, implements IGroupable
 	 */ 
 	public static inline var OPEN_FILE_BROWSER_CLASS_NAME:String = "select-file-button";
 	/**
-	 * class name for the "open media lib" buttons
-	 * when clicked, it will automatically open the FB and link the returned URL to a text field
-	 */ 
-	public static inline var ADD_MULTIPLE_FILE_BROWSER_CLASS_NAME:String = "add-multiple-files-button";
-	/**
 	 * The css class name of the "edit text" button
 	 */
 	public static inline var OPEN_TEXT_EDITOR_CLASS_NAME = "property-editor-edit-text";
@@ -261,19 +256,12 @@ class EditorBase extends DisplayObject, implements IGroupable
 			var cbk = callback(onFileChosen, inputControlClassName);
 			FileBrowserDialog.selectFile(cbk, brixInstanceId);
 		}
-		else if (DomTools.hasClass(e.target, ADD_MULTIPLE_FILE_BROWSER_CLASS_NAME)){
-			e.preventDefault();
-			var inputControlClassName = e.target.getAttribute("data-fb-target");
-			var cbk = callback(onMultipleFilesChosen, inputControlClassName);
-			FileBrowserDialog.selectMultipleFiles(cbk, brixInstanceId);
-		}
 		else if (DomTools.hasClass(e.target, OPEN_TEXT_EDITOR_CLASS_NAME)){
 			// prevent default button behaviour
 			e.preventDefault();
 			// open the text editor page
 			openTextEditor();
 		}
-
 	}
 	////////////////////////////////////////////
 	// Text Editor 
@@ -304,30 +292,6 @@ class EditorBase extends DisplayObject, implements IGroupable
 		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
 		cast(inputElement).value = DomTools.abs2rel(fileUrl);
 
-		beforeApply();
-		try{
-			apply();
-		}
-		catch(e:Dynamic){
-			throw("Error in the implementation of the method apply: "+e);
-		}
-		afterApply();
-		DomTools.doLater(refreshSelection);
-	}
-	/**
-	 * callback for the FileBrowserDialog
-	 */
-	private function onMultipleFilesChosen(inputControlClassName:String, files:Array<String>){
-		
-		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
-		if (cast(inputElement).value != "") cast(inputElement).value += "\n";
-
-		// convert urls to relative
-		var pubUrl = PublicationConstants.PUBLICATION_FOLDER + PublicationModel.getInstance().currentName + "/";
-		for (sourceUrl in files){
-			cast(inputElement).value += DomTools.abs2rel(sourceUrl, pubUrl) + "\n";
-		}
-		// apply to the element
 		beforeApply();
 		try{
 			apply();

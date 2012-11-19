@@ -138,6 +138,7 @@ class FileBrowserDialog extends DialogBase
 	 * Called after a click on the submit button
 	 */
 	public function validateMultipleSelection(files:Array<String>) {
+		trace("validateMultipleSelection "+files);
     	if (files != null){
 			if (onValidateMultiple != null){
 				onValidateMultiple(files);
