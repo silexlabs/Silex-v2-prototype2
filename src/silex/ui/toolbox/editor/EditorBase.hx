@@ -9,11 +9,7 @@ import silex.layer.LayerModel;
 import silex.component.ComponentModel;
 import silex.property.PropertyModel;
 
-import silex.ui.dialog.FileBrowserDialog;
-import silex.ui.dialog.TextEditorDialog;
-
 import brix.component.ui.DisplayObject;
-import brix.component.navigation.Page;
 import brix.util.DomTools;
 
 import brix.component.group.IGroupable;
@@ -22,15 +18,9 @@ using brix.component.group.IGroupable.Groupable;
 /**
  * This component is the base class for all editors in Silex. 
  * Editors are Brix components, in charge of editing the CSS types, 
- * This class handles the link with the FileBrowserDialog:
  * Editors are "groupable", the use the html node  referenced by groupElement to communicate together,
  * for editors of the same properties, e.g. the keyword and length editors of the width CSS style
  * in order to let the user enter values and edit css style values or tag attributes.
- * - opens the page file-browser-dialog when a button with class name select-file-button is clicked
- * - and calls this.selectFile to attach an event to retrieve the selected file
- * This class handles the link with the TextEditorDialog:
- * - opens the page text-editor with the TextEditor component
- * - retrieve the result and put it in selectedItem.innerHTML
  */
 class EditorBase extends DisplayObject, implements IGroupable
 {
@@ -43,15 +33,6 @@ class EditorBase extends DisplayObject, implements IGroupable
 	 * Information for debugging, e.g. the class name
 	 */ 
 	public static inline var DEBUG_INFO:String = "silex.ui.toolbox.editor.EditorBase class";
-	/**
-	 * class name for the "open media lib" buttons
-	 * when clicked, it will automatically open the FB and link the returned URL to a text field
-	 */ 
-	public static inline var OPEN_FILE_BROWSER_CLASS_NAME:String = "select-file-button";
-	/**
-	 * The css class name of the "edit text" button
-	 */
-	public static inline var OPEN_TEXT_EDITOR_CLASS_NAME = "property-editor-edit-text";
 	/**
 	 * selected element
 	 */ 
@@ -250,57 +231,6 @@ class EditorBase extends DisplayObject, implements IGroupable
 	 * callback for the click event, check if a dialog must be opened
 	 */
 	private function onClick(e:Event) {
-		if (DomTools.hasClass(e.target, OPEN_FILE_BROWSER_CLASS_NAME)){
-			e.preventDefault();
-			var inputControlClassName = e.target.getAttribute("data-fb-target");
-			var cbk = callback(onFileChosen, inputControlClassName);
-			FileBrowserDialog.selectFile(cbk, brixInstanceId);
-		}
-		else if (DomTools.hasClass(e.target, OPEN_TEXT_EDITOR_CLASS_NAME)){
-			// prevent default button behaviour
-			e.preventDefault();
-			// open the text editor page
-			openTextEditor();
-		}
-	}
-	////////////////////////////////////////////
-	// Text Editor 
-	////////////////////////////////////////////
-	/**
-	 * open text editor
-	 * called when the user clicks on a button with "property-editor-edit-text" class
-	 */
-	private function openTextEditor(){
-		TextEditorDialog.onValidate = onTextEditorChange;
-		TextEditorDialog.textContent = selectedItem.innerHTML;
-		TextEditorDialog.message = "Edit text and click \"close\"";
-		Page.openPage(TextEditorDialog.TEXT_EDITOR_PAGE_NAME, true, null, null, brixInstanceId);
-	}
-	/**
-	 * callback for the TextEditorDialog
-	 */
-	private function onTextEditorChange(htmlText:String){
-		PropertyModel.getInstance().setProperty(selectedItem, "innerHTML", htmlText);
-	}
-	////////////////////////////////////////////
-	// File Browser 
-	////////////////////////////////////////////
-	/**
-	 * callback for the FileBrowserDialog
-	 */
-	private function onFileChosen(inputControlClassName:String, fileUrl:String){
-		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
-		cast(inputElement).value = DomTools.abs2rel(fileUrl);
-
-		beforeApply();
-		try{
-			apply();
-		}
-		catch(e:Dynamic){
-			throw("Error in the implementation of the method apply: "+e);
-		}
-		afterApply();
-		DomTools.doLater(refreshSelection);
 	}
 	////////////////////////////////////////////
 	// Callbacks for the model

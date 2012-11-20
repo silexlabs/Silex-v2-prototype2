@@ -158,19 +158,18 @@ class InsertDropHandler extends DropHandlerBase{
 	 * callback for the FileBrowserDialog
 	 */
 	private function onMultipleFilesChosen(element:HtmlDom, files:Array<String>){
+		trace("onMultipleFilesChosen "+files);
 
 		PropertyModel.getInstance().setAttribute(element, "controls", "controls");
 		
 		var modelHtmlDom = PublicationModel.getInstance().getModelFromView(element);
 
-		var pubUrl = PublicationConstants.PUBLICATION_FOLDER + PublicationModel.getInstance().currentName + "/";
-
 		for (sourceUrl in files){
 			var sourceElement = Lib.document.createElement("source");
-			cast(sourceElement).src = DomTools.abs2rel(sourceUrl, pubUrl);
+			cast(sourceElement).src = FileBrowserDialog.getRelativeURLFromFileBrowser(sourceUrl);
 			modelHtmlDom.appendChild(sourceElement);
 			var sourceElement = Lib.document.createElement("source");
-			cast(sourceElement).src = DomTools.abs2rel(sourceUrl, pubUrl);
+			cast(sourceElement).src = FileBrowserDialog.getRelativeURLFromFileBrowser(sourceUrl);
 			element.appendChild(sourceElement);
 		}
 	}
@@ -189,8 +188,8 @@ class InsertDropHandler extends DropHandlerBase{
 	 * callback for the FileBrowserDialog
 	 */
 	private function onFileChosen(element:HtmlDom, fileUrl:String){
-		var pubUrl = PublicationConstants.PUBLICATION_FOLDER + PublicationModel.getInstance().currentName + "/";
-		PropertyModel.getInstance().setAttribute(element, "src", DomTools.abs2rel(fileUrl, pubUrl));
+		trace("onFileChosen "+fileUrl);
+		PropertyModel.getInstance().setAttribute(element, "src", FileBrowserDialog.getRelativeURLFromFileBrowser(fileUrl));
 	}
 	/**
 	 * add an element in the layer

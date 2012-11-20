@@ -390,7 +390,7 @@ still missing:
 					<option help="The border is a series of dots.">dotted</option>
 					<option help="The border is a series of short line segments.">dashed</option>
 					<option help="The border is a single line segment.">solid</option>
-					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double.</option>
+					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double</option>
 					<option help="The border looks as though it were carved into the canvas.">groove</option>
 					<option help="The opposite of 'groove': the border looks as though it were coming out of the canvas.">ridge</option>
 					<option help="The border makes the box look as though it were embedded in the canvas.">inset</option>
@@ -410,7 +410,7 @@ still missing:
 					<option help="The border is a series of dots.">dotted</option>
 					<option help="The border is a series of short line segments.">dashed</option>
 					<option help="The border is a single line segment.">solid</option>
-					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double.</option>
+					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double</option>
 					<option help="The border looks as though it were carved into the canvas.">groove</option>
 					<option help="The opposite of 'groove': the border looks as though it were coming out of the canvas.">ridge</option>
 					<option help="The border makes the box look as though it were embedded in the canvas.">inset</option>
@@ -430,7 +430,7 @@ still missing:
 					<option help="The border is a series of dots.">dotted</option>
 					<option help="The border is a series of short line segments.">dashed</option>
 					<option help="The border is a single line segment.">solid</option>
-					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double.</option>
+					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double</option>
 					<option help="The border looks as though it were carved into the canvas.">groove</option>
 					<option help="The opposite of 'groove': the border looks as though it were coming out of the canvas.">ridge</option>
 					<option help="The border makes the box look as though it were embedded in the canvas.">inset</option>
@@ -450,7 +450,7 @@ still missing:
 					<option help="The border is a series of dots.">dotted</option>
 					<option help="The border is a series of short line segments.">dashed</option>
 					<option help="The border is a single line segment.">solid</option>
-					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double.</option>
+					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double</option>
 					<option help="The border looks as though it were carved into the canvas.">groove</option>
 					<option help="The opposite of 'groove': the border looks as though it were coming out of the canvas.">ridge</option>
 					<option help="The border makes the box look as though it were embedded in the canvas.">inset</option>
@@ -1156,7 +1156,7 @@ still missing:
 					<option help="The border is a series of dots.">dotted</option>
 					<option help="The border is a series of short line segments.">dashed</option>
 					<option help="The border is a single line segment.">solid</option>
-					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double.</option>
+					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double</option>
 					<option help="The border looks as though it were carved into the canvas.">groove</option>
 					<option help="The opposite of 'groove': the border looks as though it were coming out of the canvas.">ridge</option>
 					<option help="The border makes the box look as though it were embedded in the canvas.">inset</option>

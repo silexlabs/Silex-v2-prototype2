@@ -41,7 +41,7 @@
 		<script data-brix-use="silex.ui.toolbox.editor.BoolEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.ColorEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.StringEditor"></script>
-		<script data-brix-use="silex.ui.toolbox.editor.MultipleUrlEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.UrlEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.InlineDropdownEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.LengthEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.PercentageEditor"></script>
@@ -527,12 +527,12 @@
 														<INPUT class="input-full fixed-height" type="checkbox"/> <p> Transparent</p>
 													</DIV>
 													::elseif (name=="uri")::
-							                       	<DIV class="type-container uri-style StringEditor">
+							                       	<DIV class="type-container uri-style UrlEditor">
 														<INPUT class="input-one-full-line input-full fixed-height src-target" type="src"/>
 														<BUTTON class="input-one-full-line file-button fixed-height" title="Browse library" data-fb-target="src-target">Browse library</BUTTON>
 													</DIV>
 													::elseif (name=="uri-multiple")::
-							                       	<DIV class="type-container uri-multiple-style MultipleUrlEditor">
+							                       	<DIV class="type-container uri-multiple-style UrlEditor">
 														<TEXTAREA class="input-one-full-line fixed-height src-target"></TEXTAREA>
 														<BUTTON class="input-one-full-line add-multiple-files-button fixed-height"
 														data-fb-target="src-target" title="Browse library">Add from library</BUTTON>

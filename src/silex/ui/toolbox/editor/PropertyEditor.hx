@@ -1,5 +1,6 @@
 package silex.ui.toolbox.editor;
 
+import silex.ui.dialog.TextEditorDialog;
 import silex.property.PropertyModel;
 import silex.component.ComponentModel;
 import silex.publication.PublicationModel;
@@ -11,17 +12,25 @@ import js.Lib;
 import js.Dom;
 
 import brix.component.ui.DisplayObject;
+import brix.component.navigation.Page;
 import brix.component.navigation.Layer;
 import brix.util.DomTools;
 
 /**
+ * This class handles the link with the TextEditorDialog:
+ * - opens the page text-editor with the TextEditor component
+ * - retrieve the result and put it in selectedItem.innerHTML
  * Editor for component properties, e.g. the URL of the image tag. 
  * Editors are Brix components, in charge of handling HTML input elements, 
  * in order to let the user enter values and edit css style values or tag attributes.
  */
-class PropertyEditor extends EditorBase 
+class PropertyEditor extends UrlEditor 
 {
 	public static inline var ALL_CONTEXTS = ["context-video", "context-audio", "context-img", "context-layer", "context-div"];
+	/**
+	 * The css class name of the "edit text" button
+	 */
+	public static inline var OPEN_TEXT_EDITOR_CLASS_NAME = "property-editor-edit-text";
 	/**
 	 * class name expected for the button
 	 */
@@ -42,7 +51,6 @@ class PropertyEditor extends EditorBase
 	 * handle the click on delete button, remove the selection from model and view
 	 */
 	override private function onClick(e:Event) {
-
 		super.onClick(e);
 		// retrieve the node who triggered the event
 		var target:HtmlDom = e.target;
@@ -67,7 +75,35 @@ class PropertyEditor extends EditorBase
 					ComponentModel.getInstance().removeComponent(selectedItem);
 			}
 		}
+		else if (DomTools.hasClass(e.target, OPEN_TEXT_EDITOR_CLASS_NAME)){
+			// prevent default button behaviour
+			e.preventDefault();
+			// open the text editor page
+			openTextEditor();
+		}
 	}
+	////////////////////////////////////////////
+	// Text Editor 
+	////////////////////////////////////////////
+	/**
+	 * open text editor
+	 * called when the user clicks on a button with "property-editor-edit-text" class
+	 */
+	private function openTextEditor(){
+		TextEditorDialog.onValidate = onTextEditorChange;
+		TextEditorDialog.textContent = selectedItem.innerHTML;
+		TextEditorDialog.message = "Edit text and click \"close\"";
+		Page.openPage(TextEditorDialog.TEXT_EDITOR_PAGE_NAME, true, null, null, brixInstanceId);
+	}
+	/**
+	 * callback for the TextEditorDialog
+	 */
+	private function onTextEditorChange(htmlText:String){
+		PropertyModel.getInstance().setProperty(selectedItem, "innerHTML", htmlText);
+	}
+	////////////////////////////////////////////
+	// Load, apply and reset: display or apply the properties of the selected HTML dom element
+	////////////////////////////////////////////
 	/**
 	 * reset the values
 	 */
@@ -103,9 +139,6 @@ class PropertyEditor extends EditorBase
 	 * display the property value
 	 */
 	override private function load(element:HtmlDom) {
-		// root url for the relative path
-		var pubUrl = PublicationConstants.PUBLICATION_FOLDER + PublicationModel.getInstance().currentName + "/";
-
 		// handle the context
 		var contextArray = [];
 		if (DomTools.hasClass(element, "Layer")){
@@ -131,13 +164,13 @@ class PropertyEditor extends EditorBase
 		if (value != null) setInputValue("name-property", value);
 
 		var value = propertyModel.getProperty(element, "src");
-		if (value != null) setInputValue("src-property", DomTools.abs2rel(value, pubUrl));
+		if (value != null) setInputValue("src-property", DomTools.abs2rel(value));
 		else setInputValue("src-property", "");
 
 		var sources = PublicationModel.getInstance().getModelFromView(element).getElementsByTagName("source");
 		var value = "";
 		for (idx in 0...sources.length){
-			value += DomTools.abs2rel(cast(sources[idx]).src, pubUrl) + "\n";
+			value += DomTools.abs2rel(cast(sources[idx]).src) + "\n";
 		}
 		setInputValue("multiple-src-property", value);
 
@@ -169,9 +202,6 @@ class PropertyEditor extends EditorBase
 	 * apply the property value
 	 */
 	override private function apply() {
-		// root url for the relative path
-		var pubUrl = PublicationConstants.PUBLICATION_FOLDER + PublicationModel.getInstance().currentName + "/";
-		// 
 		var propertyModel = PropertyModel.getInstance();
 
 		var value = getInputValue("name-property");
@@ -181,7 +211,7 @@ class PropertyEditor extends EditorBase
 			propertyModel.setProperty(selectedItem, "title", null);
 
 		var value = getInputValue("src-property");
-		if (value != null && value != "") propertyModel.setProperty(selectedItem, "src", DomTools.abs2rel(value, pubUrl));
+		if (value != null && value != "") propertyModel.setProperty(selectedItem, "src", DomTools.abs2rel(value));
 		else if (Reflect.hasField(selectedItem, "src")){
 			// only if the attrivute is defined 
 			// otherwise it my be on a node of type audio or video, which has no src attribute
@@ -205,10 +235,10 @@ class PropertyEditor extends EditorBase
 			for (sourceUrl in urls){
 				if (sourceUrl != ""){
 					var sourceElement = Lib.document.createElement("source");
-					cast(sourceElement).src = DomTools.abs2rel(sourceUrl, pubUrl);
+					cast(sourceElement).src = DomTools.abs2rel(sourceUrl);
 					modelHtmlDom.appendChild(sourceElement);
 					var sourceElement = Lib.document.createElement("source");
-					cast(sourceElement).src = DomTools.abs2rel(sourceUrl, pubUrl);
+					cast(sourceElement).src = DomTools.abs2rel(sourceUrl);
 					selectedItem.appendChild(sourceElement);
 				}
 			}

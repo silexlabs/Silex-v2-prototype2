@@ -52,6 +52,40 @@ class FileBrowserDialog extends DialogBase
 		// open the dialog
 		Page.openPage(FB_PAGE_NAME, true, null, null, brixInstanceId);
 	}
+	/**
+	 * compute the relative url from the returned path
+	 * file browser may return a url like http://localhost:8888/Silex/bin/publications/test.com/assets/IMG_0167.JPG
+	 * or /publications/test.com/assets/IMG_0167.JPG
+	 * depending on the browser (chrome / ff)
+	 */
+	public static function getRelativeURLFromFileBrowser(url:String){
+		var idx = url.indexOf("://");
+		// check that we have absolute urls
+		if (idx == -1){ // case of /publications/test.com/assets/IMG_0167.JPG
+			// remove path to the publication folder
+			var pubUrl = "publications/";
+			var idxPubFolder = url.indexOf(pubUrl);
+			if (idxPubFolder >= 0){
+				// remove all the common parts
+				url = url.substr(idxPubFolder + pubUrl.length);
+				// remove publication name if it is the current publication or add the relative path "../"
+				var pubUrl = PublicationModel.getInstance().currentName + "/";
+				var idxPubFolder = url.indexOf(pubUrl);
+				if (idxPubFolder >= 0){
+					// remove all the common parts
+					url = url.substr(idxPubFolder + pubUrl.length);
+				}
+				else{
+					// add the relative path to publication folder
+					url = "../"+url;
+				}
+			}
+		}
+		else{ // case of http://localhost:8888/Silex/bin/publications/test.com/assets/IMG_0167.JPG
+			url = DomTools.abs2rel(url);
+		}
+		return url;
+	}
 	////////////////////////////////////////////////////////////////////////
 	// component methods and attributes
 	////////////////////////////////////////////////////////////////////////
