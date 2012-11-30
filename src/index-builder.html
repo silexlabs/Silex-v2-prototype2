@@ -13,7 +13,6 @@
 		<script data-brix-use="brix.component.navigation.Layer"></script>
 		<script data-brix-use="brix.component.navigation.link.LinkToPage"></script>
 		<script data-brix-use="brix.component.navigation.link.LinkClosePage"></script>
-		<script data-brix-use="brix.component.navigation.link.LinkToContext"></script>
 		<script data-brix-use="brix.component.sound.SoundOn"></script>
 		<script data-brix-use="brix.component.sound.SoundOff"></script>
 		<script data-brix-use="brix.component.list.XmlList"></script>
@@ -34,6 +33,9 @@
 		<script data-brix-use="silex.ui.stage.InsertDropHandler"></script>
 		
 		<script data-brix-use="silex.ui.script.HScriptTag"></script>
+<!--
+		<script data-brix-use="brix.component.scripting.ScriptContainer"></script>
+-->
 
 		<script data-brix-use="silex.ui.toolbox.MenuController"></script>
 		<script data-brix-use="silex.ui.toolbox.ToolBoxController"></script>
@@ -65,8 +67,8 @@
 		<script type="text/hscript">
 			//Lib.alert('test!');
 			//PublicationModel.getInstance().load('default');
-			//MenuController.createPublication();
-			PublicationModel.getInstance().load('test.com');
+			MenuController.createPublication();
+			//PublicationModel.getInstance().load('test.com');
 		</script>
 	</head>
 	<body class="">

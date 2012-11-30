@@ -593,15 +593,20 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 .ribbon-list li:hover{
 }
 .ribbon-list .solid{
-}
-.ribbon-list .solid{
-	height:35px;
-	width:50px;
+	height:48px;
+	width:57px;
 	background:LightGray;
 	display:inline-block;
 	border:1px solid black;
-	margin-top:7px;
+	margin:5px 5px 0 5px;
 }
+.ribbon-list.layer-list ul li p,
+.ribbon-list.page-list ul li p{
+	margin-top: 0;
+	text-align: center;
+	overflow: hidden;
+}
+
 .temp-icon {
     background-image: url(../admin/assets/temporary-icon.png);
     background-size: 50px auto;
@@ -609,9 +614,8 @@ box-shadow: inset 0px 0px 2px 2px yellow;
     width: 50px;
 }
 .assets-page{
-	background:Gray;
-	border:1px solid black;
 	float: left;
+	height: 100%;
 }
 .ribbon-button{
 	cursor: pointer;

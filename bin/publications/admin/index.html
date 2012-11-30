@@ -15,7 +15,6 @@
 		
 		
 		
-		
 
 		
 		
@@ -33,6 +32,7 @@
 		
 		
 		
+
 
 		
 		
@@ -63,8 +63,8 @@
 		<SCRIPT type="text/hscript">
 			//Lib.alert('test!');
 			//PublicationModel.getInstance().load('default');
-			//MenuController.createPublication();
-			PublicationModel.getInstance().load('test.com');
+			MenuController.createPublication();
+			//PublicationModel.getInstance().load('test.com');
 		</SCRIPT>
 	<SCRIPT src="silex-builder.js"></SCRIPT></HEAD>
 	
@@ -428,7 +428,7 @@
 											
 				                       		<DIV class="Group3 property-container" data-property-name="::name::">
 												<LABEL>::cssName::</LABEL>
-												<BR></BR>
+												<BR/>
 												::foreach types::
 													
 													::if (name=="empty-space")::

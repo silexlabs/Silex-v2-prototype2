@@ -245,13 +245,22 @@ class PropertyEditor extends UrlEditor
 		}
 
 		var value:Bool = getInputValue("auto-start-property", "checked");
-		propertyModel.setProperty(selectedItem, "autoplay", value);
+		if (value == true)
+			propertyModel.setProperty(selectedItem, "autoplay", "autoplay");
+		else
+			propertyModel.setProperty(selectedItem, "autoplay", null);
 
 		var value:Bool = getInputValue("controls-property", "checked");
-		propertyModel.setProperty(selectedItem, "controls", value);
+		if (value == true)
+			propertyModel.setProperty(selectedItem, "controls", "controls");
+		else
+			propertyModel.setProperty(selectedItem, "controls", null);
 
 		var value:Bool = getInputValue("loop-property", "checked");
-		propertyModel.setProperty(selectedItem, "loop", value);
+		if (value == true)
+			propertyModel.setProperty(selectedItem, "loop", "loop");
+		else
+			propertyModel.setProperty(selectedItem, "loop", null);
 
 		var value:Bool = getInputValue("master-property", "checked");
 		if (value == true)

@@ -88,8 +88,8 @@ class DialogBase extends DisplayObject
 		}
 
 		// listen to the Layer class event
-		rootElement.addEventListener(Layer.EVENT_TYPE_SHOW, onLayerShow, false);
-		rootElement.addEventListener(Layer.EVENT_TYPE_HIDE, onLayerHide, false);
+		rootElement.addEventListener(Layer.EVENT_TYPE_SHOW_STOP, onLayerShow, false);
+		rootElement.addEventListener(Layer.EVENT_TYPE_HIDE_STOP, onLayerHide, false);
 		// listen to the buttons event
 		rootElement.addEventListener("click", onClick, false);
 	}

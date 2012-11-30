@@ -36,13 +36,23 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 * use css patterns ?? http://www.google.fr/search?hl=en&redir_esc=&client=ms-android-samsung&source=android-browser-type&v=133247963&qsubts=1352845988673&action=devloc&q=css+patterns&v=133247963
 * make a native desktop app http://appjs.org/ 
+* help buttons on all editors
+
+discours
+- http://www.applicationcraft.com/
+  . BROWSER BASED or DESKTOP
+  . BUILD PROTOTYPES, FRONT-ENDS & FULL-BLOWN APPS
+  . WEB APPS TO MOBILE APP STORES?
+  . EVERYTHING IS HTML5, CSS AND JAVASCRIPT
+  . YOU’D BE CRAZY TO GO NATIVE!
+  . php or nodejs
+  . html5 and flash
+
 
 ** to do **
 
-en cours : 
-* pass the text editor and/or the single URL logic from EditorBase to StringEditor or PropertyEditor
+history : back button of air android
 
-link: 
 - styles hover et active => data-style-* - http://www.w3schools.com/css/css_pseudo_classes.asp
   . selector in each accordion tab => set style to data-*
   . save in data-* instead of style only
@@ -53,27 +63,27 @@ link:
 
 remarques pol
 - keyboard shortcuts
+- editeur texte / enrichissement non pris en compte
+- "add a loading page" button
+> des assets se déplacent d’un container à l’autre.
+
 
 bugs !
-- background image browse lib
-- Insert tab, "container" position after drop
+- IE and null in styles
+- chrome and 
 - absolute => out of container, no more clickable
 - save a copy bug
-* bug backgroundPosition: should concat the X and Y values instead of selecting one of the 2
-* multiple urls in background and image src are all absolute => change before save (because when changed in the dom, the browser forces absolute URLs)
+- bug backgroundPosition: should concat the X and Y values instead of selecting one of the 2
+* chrome and color picker : read ok, load bug
 
 toolbox still missing :
-* code editor
-* mettre a jour les tests unitaires cote serveur
-* slelection drop zone : priorité aux petites zones * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
-* delete a container when it is a master or not, and uncheck master when the container is not on any page
 * tous les styles dans la boite a outil styles
   + descriptions / aide
   + groups and "apply to group" (e.g. for border-left border-rigth border-top and border- bottom)
-* ecouter window.resize, et dispatcher window.resize dans Page::open
-* ergo : disable les pixel+unit quand on a select un shorthand (exple background h pos)
-* chrome and color picker : read ok, load bug
-* autoriser display block?
+* selection drop zone : priorité aux petites zones 
+* les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
 * styles/themes
+* mettre a jour les tests unitaires cote serveur
+* delete a container when it is a master or not, and uncheck master when the container is not on any page
+* ecouter window.resize, et dispatcher window.resize dans Page::open
 * new from template
-* length editor : default pixel
