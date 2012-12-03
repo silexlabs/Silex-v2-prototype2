@@ -51,15 +51,6 @@ discours
 
 ** to do **
 
-history : back button of air android
-
-- styles hover et active => data-style-* - http://www.w3schools.com/css/css_pseudo_classes.asp
-  . selector in each accordion tab => set style to data-*
-  . save in data-* instead of style only
-  . init all at start
-  . listen over and out on body => set style to data-*
-  . check for active when open / close page
-  . save as style => .xxxx{} .xxxx:hover{} .xxxx:active{} 
 
 remarques pol
 - keyboard shortcuts
@@ -69,17 +60,31 @@ remarques pol
 
 
 bugs !
+- z-index should not be %
+- absolute => at the end of the DOM 
+- tab => browse all layers and comp
 - IE and null in styles
 - chrome and 
 - absolute => out of container, no more clickable
 - save a copy bug
 - bug backgroundPosition: should concat the X and Y values instead of selecting one of the 2
 * chrome and color picker : read ok, load bug
+- visual effects, cursor, not pluged with the library
 
 toolbox still missing :
+* lock a layer or component from edit
 * tous les styles dans la boite a outil styles
   + descriptions / aide
   + groups and "apply to group" (e.g. for border-left border-rigth border-top and border- bottom)
+
+- styles hover et active => data-style-* - http://www.w3schools.com/css/css_pseudo_classes.asp
+  . selector in each accordion tab => set style to data-*
+  . save in data-* instead of style only
+  . init all at start
+  . listen over and out on body => set style to data-*
+  . check for active when open / close page
+  . save as style => .xxxx{} .xxxx:hover{} .xxxx:active{} 
+* history : back button of air android
 * selection drop zone : priorité aux petites zones 
 * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
 * styles/themes

@@ -501,9 +501,9 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			throw("Error: can not save the publication because no publication is loaded.");
 
 		// reset model selection
-		var pageModel = PageModel.getInstance();
-		pageModel.hoveredItem = null;
-		pageModel.selectedItem = null;
+		// var pageModel = PageModel.getInstance();
+		// pageModel.hoveredItem = null;
+		// pageModel.selectedItem = null;
 
 		// dispatch the event 
 		dispatchEvent(createEvent(ON_SAVE_START), debugInfo);
@@ -545,9 +545,9 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			currentName = newName;
 
 		// reset model selection
-		var pageModel = PageModel.getInstance();
-		pageModel.hoveredItem = null;
-		pageModel.selectedItem = null;
+		// var pageModel = PageModel.getInstance();
+		// pageModel.hoveredItem = null;
+		// pageModel.selectedItem = null;
 
 		// dispatch the event 
 		dispatchEvent(createEvent(ON_SAVE_START), debugInfo);

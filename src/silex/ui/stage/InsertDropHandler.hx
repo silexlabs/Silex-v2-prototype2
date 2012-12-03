@@ -206,7 +206,7 @@ class InsertDropHandler extends DropHandlerBase{
 	 */
 	public function addLayer(dropZone:DropZone, page:Page):Layer {
 		if (page == null)
-			throw("Error: No selected page. Could not add a layer to the page "+page.name+".");
+			throw("Error: No selected page. Could not add a layer.");
 
 		return LayerModel.getInstance().addLayer(page.name, "", dropZone.position);
 	}

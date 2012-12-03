@@ -50,6 +50,7 @@
 		<script data-brix-use="silex.ui.toolbox.editor.PropertyEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.HtmlEditor"></script>
 		<script data-brix-use="silex.ui.toolbox.editor.LinkEditor"></script>
+		<script data-brix-use="silex.ui.toolbox.editor.BackgroundPositionEditor"></script>
 <!--
 -->
 
@@ -519,6 +520,97 @@
 															<OPTION value="smaller">smaller</OPTION>
 														</SELECT>
 													</DIV>
+													::elseif (name=="background-position")::
+													<div class="Group3 property-container BackgroundPositionEditor">
+														<label>X position</label>
+														<br />
+								                       	<div class="type-container keyword-style">
+															<select class="dropdown-full fixed-height keyword-x">
+																<option value=""></option>
+																<option title="" value="left">
+																	left
+																</option>
+																<option title="" value="center">
+																	center
+																</option>
+																<option title="" value="right">
+																	right
+																</option>
+															 
+															</select>
+														</div>
+								                       	<div class="type-container length-style" >
+															<select class="dropdown-half fixed-height length-select-x">
+																<option value="px">px</option>
+																<option value="cm">cm</option>
+																<option value="mm">mm</option>
+																<option value="in">in</option>
+																<option value="pt">pt</option>
+																<option value="pc">pc</option>
+																<option value="em">em</option>
+																<option value="ex">ex</option>
+																<option value="ch">ch</option>
+																<option value="rem">rem</option>
+																<option value="vw">vw</option>
+																<option value="vh">vh</option>
+																<option value="vmin">vmin</option>
+																<option value="vmax">vmax</option>
+															</select>
+															<input class="number input-half fixed-height length-input-x" type="number" max="5000" min="-5000" />
+														</div>
+								                       	<div class="type-container percentage-style " >
+															<input class="input-half fixed-height percentage-x" type="number" max="5000" min="-5000" /><p>  %</p>
+														</div>
+								                       	<div class="type-container empty-space-style">
+								                       	</div>
+								                       	<div class="type-container empty-space-style">
+								                       	</div>
+														<hr />
+														<label>Y position</label>
+														<br />
+								                       	<div class="type-container keyword-style " >
+															<select class="dropdown-full fixed-height keyword-y">
+																<option value=""></option>
+																<option title="" value="top">
+																	top
+																</option>
+																<option title="" value="center">
+																	center
+																</option>
+																<option title="" value="bottom">
+																	bottom
+																</option>
+															 
+															</select>
+														</div>
+								                       	<div class="type-container length-style " >
+															<select class="dropdown-half fixed-height length-select-y">
+																<option value="px">px</option>
+																<option value="cm">cm</option>
+																<option value="mm">mm</option>
+																<option value="in">in</option>
+																<option value="pt">pt</option>
+																<option value="pc">pc</option>
+																<option value="em">em</option>
+																<option value="ex">ex</option>
+																<option value="ch">ch</option>
+																<option value="rem">rem</option>
+																<option value="vw">vw</option>
+																<option value="vh">vh</option>
+																<option value="vmin">vmin</option>
+																<option value="vmax">vmax</option>
+															</select>
+															<input class="number input-half fixed-height length-input-y" type="number" max="5000" min="-5000" />
+														</div>
+								                       	<div class="type-container percentage-style" >
+															<input class="input-half fixed-height percentage-y" type="number" max="5000" min="-5000" /><p>  %</p>
+														</div>
+								                       	<div class="type-container empty-space-style">
+								                       	</div>
+								                       	<div class="type-container empty-space-style">
+								                       	</div>
+														<hr />
+													</div>
 													::elseif (name=="percentage")::
 							                       	<DIV class="type-container percentage-style PercentageEditor">
 														<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>

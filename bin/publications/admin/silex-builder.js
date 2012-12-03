@@ -2762,7 +2762,7 @@ brix.core.Application.prototype = {
 		var componentClass = Type.resolveClass(classname);
 		if(componentClass == null) {
 			throw "ERROR cannot resolve " + classname;
-			haxe.Log.trace("ERROR cannot resolve " + classname,{ fileName : "Application.hx", lineNumber : 770, className : "brix.core.Application", methodName : "resolveComponentClass"});
+			haxe.Log.trace("ERROR cannot resolve " + classname,{ fileName : "Application.hx", lineNumber : 774, className : "brix.core.Application", methodName : "resolveComponentClass"});
 		}
 		return componentClass;
 	}
@@ -2842,7 +2842,7 @@ brix.core.Application.prototype = {
 			node.removeAttribute("data-brix-id");
 			var isError = !this.nodeToCmpInstances.remove(nodeId);
 			if(isError) throw "Could not find the node in the associated components list.";
-		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 604, className : "brix.core.Application", methodName : "removeAllAssociatedComponent"});
+		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 608, className : "brix.core.Application", methodName : "removeAllAssociatedComponent"});
 	}
 	,removeAssociatedComponent: function(node,cmp) {
 		var nodeId = node.getAttribute("data-brix-id");
@@ -2855,7 +2855,7 @@ brix.core.Application.prototype = {
 				node.removeAttribute("data-brix-id");
 				this.nodeToCmpInstances.remove(nodeId);
 			}
-		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 579, className : "brix.core.Application", methodName : "removeAssociatedComponent"});
+		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 583, className : "brix.core.Application", methodName : "removeAssociatedComponent"});
 	}
 	,addAssociatedComponent: function(node,cmp) {
 		var nodeId = node.getAttribute("data-brix-id");
@@ -3024,6 +3024,8 @@ brix.core.ApplicationContext.prototype = {
 		this.registeredUIComponents.push({ classname : "brix.component.navigation.Page", args : null});
 		silex.ui.toolbox.editor.StringEditor;
 		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.StringEditor", args : null});
+		silex.ui.toolbox.editor.BackgroundPositionEditor;
+		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.BackgroundPositionEditor", args : null});
 		silex.ui.toolbox.editor.BoolEditor;
 		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.BoolEditor", args : null});
 		silex.ui.toolbox.MenuController;
@@ -8176,9 +8178,6 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 	,save: function(newName,successCallback) {
 		if(this.currentData == null) throw "Error: can not save the publication because no publication is loaded.";
 		if(newName != null) this.setPublicationName(newName);
-		var pageModel = silex.page.PageModel.getInstance();
-		pageModel.setHoveredItem(null);
-		pageModel.setSelectedItem(null);
 		this.dispatchEvent(this.createEvent("onPublicationSaveStart"),this.debugInfo);
 		this.publicationService.setPublicationConfig(this.currentName,this.currentConfig,(function(f,a1) {
 			return function() {
@@ -8203,9 +8202,6 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 	}
 	,saveACopy: function(newName) {
 		if(this.currentData == null) throw "Error: can not save the publication because no publication is loaded.";
-		var pageModel = silex.page.PageModel.getInstance();
-		pageModel.setHoveredItem(null);
-		pageModel.setSelectedItem(null);
 		this.dispatchEvent(this.createEvent("onPublicationSaveStart"),this.debugInfo);
 		if(this.currentData == null) throw "Error: can not save the publication because no publication is loaded.";
 		this.publicationService.duplicate(this.currentName,newName,(function(f,a1) {
@@ -8905,7 +8901,7 @@ silex.ui.stage.InsertDropHandler.__name__ = ["silex","ui","stage","InsertDropHan
 silex.ui.stage.InsertDropHandler.__super__ = silex.ui.stage.DropHandlerBase;
 silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerBase.prototype,{
 	addLayer: function(dropZone,page) {
-		if(page == null) throw "Error: No selected page. Could not add a layer to the page " + page.name + ".";
+		if(page == null) throw "Error: No selected page. Could not add a layer.";
 		return silex.layer.LayerModel.getInstance().addLayer(page.name,"",dropZone.position);
 	}
 	,addComponent: function(dropZone,nodeName) {
@@ -9590,6 +9586,106 @@ silex.ui.toolbox.editor.EditorBase.prototype = $extend(brix.component.ui.Display
 	,groupElement: null
 	,__class__: silex.ui.toolbox.editor.EditorBase
 	,__properties__: {set_selectedItem:"setSelectedItem"}
+});
+silex.ui.toolbox.editor.BackgroundPositionEditor = function(rootElement,BrixId) {
+	silex.ui.toolbox.editor.EditorBase.call(this,rootElement,BrixId);
+	this.keywordX = brix.util.DomTools.getSingleElement(rootElement,"keyword-x");
+	this.lengthSelectX = brix.util.DomTools.getSingleElement(rootElement,"length-select-x");
+	this.lengthInputX = brix.util.DomTools.getSingleElement(rootElement,"length-input-x");
+	this.percentageX = brix.util.DomTools.getSingleElement(rootElement,"percentage-x");
+	this.keywordY = brix.util.DomTools.getSingleElement(rootElement,"keyword-y");
+	this.lengthSelectY = brix.util.DomTools.getSingleElement(rootElement,"length-select-y");
+	this.lengthInputY = brix.util.DomTools.getSingleElement(rootElement,"length-input-y");
+	this.percentageY = brix.util.DomTools.getSingleElement(rootElement,"percentage-y");
+};
+$hxClasses["silex.ui.toolbox.editor.BackgroundPositionEditor"] = silex.ui.toolbox.editor.BackgroundPositionEditor;
+silex.ui.toolbox.editor.BackgroundPositionEditor.__name__ = ["silex","ui","toolbox","editor","BackgroundPositionEditor"];
+silex.ui.toolbox.editor.BackgroundPositionEditor.__super__ = silex.ui.toolbox.editor.EditorBase;
+silex.ui.toolbox.editor.BackgroundPositionEditor.prototype = $extend(silex.ui.toolbox.editor.EditorBase.prototype,{
+	apply: function() {
+		var valueX = "0%";
+		if(this.percentageX.value != "" && this.percentageX.value != null) valueX = this.percentageX.value + "%"; else if(this.keywordX.value != "") valueX = this.keywordX.value; else if(this.lengthInputX.value != "") {
+			valueX = this.lengthInputX.value;
+			if(this.lengthSelectX.value != "") valueX += this.lengthSelectX.value; else valueX += "px";
+		}
+		var valueY = "0%";
+		if(this.percentageY.value != "" && this.percentageY.value != null) valueY = this.percentageY.value + "%"; else if(this.keywordY.value != "") valueY = this.keywordY.value; else if(this.lengthInputY.value != "") {
+			valueY = this.lengthInputY.value;
+			if(this.lengthSelectY.value != "") valueY += this.lengthSelectY.value; else valueY += "px";
+		}
+		if(valueX != "0%" || valueY != "0%") silex.property.PropertyModel.getInstance().setStyle(this.selectedItem,"background-position",valueX + " " + valueY); else silex.property.PropertyModel.getInstance().setStyle(this.selectedItem,"background-position",null);
+	}
+	,load: function(element) {
+		this.reset();
+		var value = silex.property.PropertyModel.getInstance().getStyle(element,"background-position");
+		value = StringTools.trim(value);
+		if(value == "") return;
+		var values = value.split(" ");
+		var _g1 = 0, _g = values.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			values[idx] = StringTools.trim(values[idx]);
+		}
+		while(HxOverrides.remove(values,"")) {
+		}
+		if(values.length != 2) {
+			haxe.Log.trace("Error: found a value of " + value + " for background-position, but could not split it in 2 parts for X and Y. Length is " + values.length,{ fileName : "BackgroundPositionEditor.hx", lineNumber : 77, className : "silex.ui.toolbox.editor.BackgroundPositionEditor", methodName : "load"});
+			return;
+		}
+		if(values[0] == "0%") values[0] = "left";
+		if(values[0] == "50%") values[0] = "center";
+		if(values[0] == "100%") values[0] = "right";
+		if(values[0] == "left" || values[0] == "center" || values[0] == "right") this.keywordX.value = values[0]; else if(StringTools.endsWith(values[0],"%")) this.percentageX.value = HxOverrides.substr(values[0],0,-1); else {
+			var options = this.lengthSelectX.getElementsByTagName("option");
+			var unit = "";
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(values[0],options[idx].value)) {
+					this.lengthInputX.value = Std.string(Std.parseInt(values[0]));
+					unit = options[idx].value;
+					this.lengthSelectX.value = unit;
+					break;
+				}
+			}
+		}
+		if(values[1] == "0%") values[1] = "top";
+		if(values[1] == "50%") values[1] = "center";
+		if(values[1] == "100%") values[1] = "bottom";
+		if(values[1] == "top" || values[1] == "center" || values[1] == "bottom") this.keywordY.value = values[1]; else if(StringTools.endsWith(values[1],"%")) this.percentageY.value = HxOverrides.substr(values[1],0,-1); else {
+			var options = this.lengthSelectY.getElementsByTagName("option");
+			var unit = "";
+			var _g1 = 0, _g = options.length;
+			while(_g1 < _g) {
+				var idx = _g1++;
+				if(StringTools.endsWith(values[1],options[idx].value)) {
+					this.lengthInputY.value = Std.string(Std.parseInt(values[1]));
+					unit = options[idx].value;
+					this.lengthSelectY.value = unit;
+					break;
+				}
+			}
+		}
+	}
+	,reset: function() {
+		this.keywordX.value = "";
+		this.lengthSelectX.value = "";
+		this.lengthInputX.value = "";
+		this.percentageX.value = "";
+		this.keywordY.value = "";
+		this.lengthSelectY.value = "";
+		this.lengthInputY.value = "";
+		this.percentageY.value = "";
+	}
+	,percentageY: null
+	,lengthInputY: null
+	,lengthSelectY: null
+	,keywordY: null
+	,percentageX: null
+	,lengthInputX: null
+	,lengthSelectX: null
+	,keywordX: null
+	,__class__: silex.ui.toolbox.editor.BackgroundPositionEditor
 });
 silex.ui.toolbox.editor.BoolEditor = function(rootElement,BrixId) {
 	silex.ui.toolbox.editor.EditorBase.call(this,rootElement,BrixId);

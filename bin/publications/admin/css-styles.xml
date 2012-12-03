@@ -290,34 +290,7 @@ still missing:
 					<name>inherit</name>
 				</type>
 				<type>
-					<name>keyword</name>
-					<option>left</option>
-					<option>center</option>
-					<option>right</option>
-				</type>
-				<type>
-					<name>length</name>
-				</type>
-				<type>
-					<name>percentage</name>
-				</type>
-				<type>
-					<name>empty-space</name>
-				</type>
-				<type>
-					<name>empty-space</name>
-				</type>
-				<type>
-					<name>keyword</name>
-					<option>top</option>
-					<option>center</option>
-					<option>bottom</option>
-				</type>
-				<type>
-					<name>length</name>
-				</type>
-				<type>
-					<name>percentage</name>
+					<name>background-position</name>
 				</type>
 			</property>
 			<property>

@@ -47,6 +47,7 @@
 		
 		
 		
+		
 
 
 		
@@ -485,6 +486,97 @@
 															<OPTION value="larger">larger</OPTION>
 															<OPTION value="smaller">smaller</OPTION>
 														</SELECT>
+													</DIV>
+													::elseif (name=="background-position")::
+													<DIV class="Group3 property-container BackgroundPositionEditor" data-group-id="Group3">
+														<LABEL>X position</LABEL>
+														<BR/>
+								                       	<DIV class="type-container keyword-style">
+															<SELECT class="dropdown-full fixed-height keyword-x">
+																<OPTION value=""></OPTION>
+																<OPTION title="" value="left">
+																	left
+																</OPTION>
+																<OPTION title="" value="center">
+																	center
+																</OPTION>
+																<OPTION title="" value="right">
+																	right
+																</OPTION>
+															 
+															</SELECT>
+														</DIV>
+								                       	<DIV class="type-container length-style">
+															<SELECT class="dropdown-half fixed-height length-select-x">
+																<OPTION value="px">px</OPTION>
+																<OPTION value="cm">cm</OPTION>
+																<OPTION value="mm">mm</OPTION>
+																<OPTION value="in">in</OPTION>
+																<OPTION value="pt">pt</OPTION>
+																<OPTION value="pc">pc</OPTION>
+																<OPTION value="em">em</OPTION>
+																<OPTION value="ex">ex</OPTION>
+																<OPTION value="ch">ch</OPTION>
+																<OPTION value="rem">rem</OPTION>
+																<OPTION value="vw">vw</OPTION>
+																<OPTION value="vh">vh</OPTION>
+																<OPTION value="vmin">vmin</OPTION>
+																<OPTION value="vmax">vmax</OPTION>
+															</SELECT>
+															<INPUT class="number input-half fixed-height length-input-x" type="number" max="5000" min="-5000"/>
+														</DIV>
+								                       	<DIV class="type-container percentage-style ">
+															<INPUT class="input-half fixed-height percentage-x" type="number" max="5000" min="-5000"/><P>  %</P>
+														</DIV>
+								                       	<DIV class="type-container empty-space-style">
+								                       	</DIV>
+								                       	<DIV class="type-container empty-space-style">
+								                       	</DIV>
+														<HR></HR>
+														<LABEL>Y position</LABEL>
+														<BR/>
+								                       	<DIV class="type-container keyword-style ">
+															<SELECT class="dropdown-full fixed-height keyword-y">
+																<OPTION value=""></OPTION>
+																<OPTION title="" value="top">
+																	top
+																</OPTION>
+																<OPTION title="" value="center">
+																	center
+																</OPTION>
+																<OPTION title="" value="bottom">
+																	bottom
+																</OPTION>
+															 
+															</SELECT>
+														</DIV>
+								                       	<DIV class="type-container length-style ">
+															<SELECT class="dropdown-half fixed-height length-select-y">
+																<OPTION value="px">px</OPTION>
+																<OPTION value="cm">cm</OPTION>
+																<OPTION value="mm">mm</OPTION>
+																<OPTION value="in">in</OPTION>
+																<OPTION value="pt">pt</OPTION>
+																<OPTION value="pc">pc</OPTION>
+																<OPTION value="em">em</OPTION>
+																<OPTION value="ex">ex</OPTION>
+																<OPTION value="ch">ch</OPTION>
+																<OPTION value="rem">rem</OPTION>
+																<OPTION value="vw">vw</OPTION>
+																<OPTION value="vh">vh</OPTION>
+																<OPTION value="vmin">vmin</OPTION>
+																<OPTION value="vmax">vmax</OPTION>
+															</SELECT>
+															<INPUT class="number input-half fixed-height length-input-y" type="number" max="5000" min="-5000"/>
+														</DIV>
+								                       	<DIV class="type-container percentage-style">
+															<INPUT class="input-half fixed-height percentage-y" type="number" max="5000" min="-5000"/><P>  %</P>
+														</DIV>
+								                       	<DIV class="type-container empty-space-style">
+								                       	</DIV>
+								                       	<DIV class="type-container empty-space-style">
+								                       	</DIV>
+														<HR></HR>
 													</DIV>
 													::elseif (name=="percentage")::
 							                       	<DIV class="type-container percentage-style PercentageEditor" data-group-id="Group3">
