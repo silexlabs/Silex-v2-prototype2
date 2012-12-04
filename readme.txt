@@ -54,22 +54,22 @@ discours
 
 remarques pol
 - keyboard shortcuts
+- tab => browse all layers and comp 
 - editeur texte / enrichissement non pris en compte
-- "add a loading page" button
 > des assets se déplacent d’un container à l’autre.
 
 
 bugs !
-- z-index should not be %
+x- z-index should not be %
+x- save a copy bug
+x- visual effects, cursor, not pluged with the library
+x- add a loading page by default
+x- change the name of the initial page should change the meta
+- change the name of a page should change the links => bug in Brix? http://www.silexlabs.org/groups/brix/users/forum/topic/application-getcomponents-bug/
 - absolute => at the end of the DOM 
-- tab => browse all layers and comp
-- IE and null in styles
-- chrome and 
 - absolute => out of container, no more clickable
-- save a copy bug
-- bug backgroundPosition: should concat the X and Y values instead of selecting one of the 2
-* chrome and color picker : read ok, load bug
-- visual effects, cursor, not pluged with the library
+- IE and null in styles
+- replace getElementsByClassName by Application.getComponents
 
 toolbox still missing :
 * lock a layer or component from edit

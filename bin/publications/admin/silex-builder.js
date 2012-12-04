@@ -3245,10 +3245,11 @@ brix.util.DomTools.hasClass = function(element,className,orderedClassName) {
 		return true;
 	}
 }
-brix.util.DomTools.setMeta = function(metaName,metaValue,attributeName) {
+brix.util.DomTools.setMeta = function(metaName,metaValue,attributeName,head) {
 	if(attributeName == null) attributeName = "content";
 	var res = new Hash();
-	var metaTags = js.Lib.document.getElementsByTagName("META");
+	if(head == null) head = js.Lib.document.documentElement.getElementsByTagName("head")[0];
+	var metaTags = head.getElementsByTagName("META");
 	var found = false;
 	var _g1 = 0, _g = metaTags.length;
 	while(_g1 < _g) {
@@ -3269,7 +3270,6 @@ brix.util.DomTools.setMeta = function(metaName,metaValue,attributeName) {
 		var node = js.Lib.document.createElement("meta");
 		node.setAttribute("name",metaName);
 		node.setAttribute("content",metaValue);
-		var head = js.Lib.document.getElementsByTagName("head")[0];
 		head.appendChild(node);
 		res.set(metaName,metaValue);
 	}
@@ -3318,10 +3318,10 @@ brix.util.DomTools.getBaseTag = function() {
 brix.util.DomTools.setBaseTag = function(href) {
 	var head = js.Lib.document.getElementsByTagName("head")[0];
 	var baseNodes = js.Lib.document.getElementsByTagName("base");
-	haxe.Log.trace("set base tag " + href + " -> " + brix.util.DomTools.rel2abs(href),{ fileName : "DomTools.hx", lineNumber : 560, className : "brix.util.DomTools", methodName : "setBaseTag"});
+	haxe.Log.trace("set base tag " + href + " -> " + brix.util.DomTools.rel2abs(href),{ fileName : "DomTools.hx", lineNumber : 563, className : "brix.util.DomTools", methodName : "setBaseTag"});
 	href = brix.util.DomTools.rel2abs(href);
 	if(baseNodes.length > 0) {
-		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 563, className : "brix.util.DomTools", methodName : "setBaseTag"});
+		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 566, className : "brix.util.DomTools", methodName : "setBaseTag"});
 		baseNodes[0].setAttribute("href",href);
 	} else {
 		var node = js.Lib.document.createElement("base");
@@ -7693,10 +7693,19 @@ silex.component.ComponentModel.getInstance = function() {
 }
 silex.component.ComponentModel.__super__ = silex.ModelBase;
 silex.component.ComponentModel.prototype = $extend(silex.ModelBase.prototype,{
-	resetLinkToPage: function(htmlDom) {
-		var publicationModel = silex.publication.PublicationModel.getInstance();
+	updateLink: function(htmlDom,oldLink,newLink) {
+		var propertyModel = silex.property.PropertyModel.getInstance();
+		if(propertyModel.getAttribute(htmlDom,"href") == oldLink) propertyModel.setAttribute(htmlDom,"href",newLink);
+		if(propertyModel.getAttribute(htmlDom,"data-href") == oldLink) propertyModel.setAttribute(htmlDom,"data-href",newLink);
+		htmlDom.innerHTML = StringTools.replace(htmlDom.innerHTML,oldLink,newLink);
+		var modelHtmlDom = silex.publication.PublicationModel.getInstance().getModelFromView(htmlDom);
+		modelHtmlDom.innerHTML = StringTools.replace(modelHtmlDom.innerHTML,oldLink,newLink);
+		propertyModel.removeClass(htmlDom,"SilexLink");
+	}
+	,resetLinkToPage: function(htmlDom) {
 		var propertyModel = silex.property.PropertyModel.getInstance();
 		propertyModel.removeAttribute(htmlDom,"data-href");
+		propertyModel.removeAttribute(htmlDom,"href");
 		propertyModel.removeClass(htmlDom,"SilexLink");
 	}
 	,makeLinkToPage: function(htmlDom,pageName) {
@@ -7899,6 +7908,7 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		var publicationModel = silex.publication.PublicationModel.getInstance();
 		var viewHtmlDom = publicationModel.viewHtmlDom;
 		var modelHtmlDom = publicationModel.modelHtmlDom;
+		var headHtmlDom = publicationModel.headHtmlDom;
 		var viewNodes = brix.component.navigation.Layer.getLayerNodes(page.name,publicationModel.application.id,viewHtmlDom);
 		var modelNodes = brix.component.navigation.Layer.getLayerNodes(page.name,publicationModel.application.id,modelHtmlDom);
 		var _g1 = 0, _g = viewNodes.length;
@@ -7915,6 +7925,19 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 			brix.util.DomTools.removeClass(layerNode,page.name);
 			brix.util.DomTools.addClass(layerNode,newName);
 		}
+		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,headHtmlDom);
+		if(initialPageName == page.name) brix.util.DomTools.setMeta("initialPageName",newName,null,headHtmlDom);
+		var links = publicationModel.application.getComponents(silex.ui.link.SilexLink);
+		haxe.Log.trace("links: " + Std.string(links),{ fileName : "PageModel.hx", lineNumber : 252, className : "silex.page.PageModel", methodName : "renamePage"});
+		var $it0 = links.iterator();
+		while( $it0.hasNext() ) {
+			var link = $it0.next();
+			haxe.Log.trace("update link " + Std.string(link),{ fileName : "PageModel.hx", lineNumber : 254, className : "silex.page.PageModel", methodName : "renamePage"});
+			if(link.linkName == page.name) {
+				silex.component.ComponentModel.getInstance().updateLink(link.rootElement,page.name,newName);
+				link.linkName = newName;
+			}
+		}
 		var viewPageNode = brix.util.DomTools.getElementsByAttribute(viewHtmlDom,"name",page.name)[0];
 		var modelPageNode = brix.util.DomTools.getElementsByAttribute(modelHtmlDom,"name",page.name)[0];
 		viewPageNode.setAttribute("name",newName);
@@ -7927,7 +7950,7 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		var viewHtmlDom = publicationModel.viewHtmlDom;
 		var modelHtmlDom = publicationModel.modelHtmlDom;
 		var navBarNode = brix.util.DomTools.getSingleElement(publicationModel.viewHtmlDom,"nav",true);
-		var linkNodes = navBarNode.getElementsByClassName("LinkToPage");
+		var linkNodes = navBarNode.getElementsByClassName("SilexLink");
 		var _g1 = 0, _g = linkNodes.length;
 		while(_g1 < _g) {
 			var nodeIdx = _g1++;

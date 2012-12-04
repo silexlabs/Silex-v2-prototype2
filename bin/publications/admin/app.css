@@ -689,15 +689,15 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 	background-image: url("assets/save-as_clic-state.png");
 }
 
-.ribbon-list ul li.save-publication-as-copy{
+.ribbon-list ul li.save-publication-copy{
 	background-image: url("assets/save-as-copy_normal-state.png");
 }
 
-.ribbon-list ul li.save-publication-as-copy:hover{
+.ribbon-list ul li.save-publication-copy:hover{
 	background-image: url("assets/save-as-copy_roll-over-state.png");
 }
 
-.ribbon-list ul li.save-publication-as-copy:active{
+.ribbon-list ul li.save-publication-copy:active{
 	background-image: url("assets/save-as-copy_clic-state.png");
 }
 

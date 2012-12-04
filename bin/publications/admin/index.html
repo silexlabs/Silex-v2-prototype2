@@ -120,7 +120,7 @@
 							</LI>
 							<LI class="close-publication" title="close" data-menu-item="close-publication">
 							</LI>
-							<LI class="save-publication-as-copy" title="save as copy" data-menu-item="save-publication-as-copy">
+							<LI class="save-publication-copy" title="save as copy" data-menu-item="save-publication-copy">
 							</LI>
 							<LI class="disabled-element settings" title="settings" data-menu-item="settings">
 							</LI>
@@ -590,7 +590,7 @@
 													::elseif (name=="uri")::
 							                       	<DIV class="type-container uri-style UrlEditor" data-group-id="Group3">
 														<INPUT class="input-one-full-line input-full fixed-height src-target" type="src"/>
-														<BUTTON class="input-one-full-line file-button fixed-height" title="Browse library" data-fb-target="src-target">Browse library</BUTTON>
+														<BUTTON class="input-one-full-line file-button select-file-button fixed-height" title="Browse library" data-fb-target="src-target">Browse library</BUTTON>
 													</DIV>
 													::elseif (name=="uri-multiple")::
 							                       	<DIV class="type-container uri-multiple-style UrlEditor" data-group-id="Group3">
@@ -599,11 +599,11 @@
 													</DIV>
 													::elseif (name=="integer")::
 							                       	<DIV class="type-container integer-style StringEditor" data-group-id="Group3">
-														<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><P>  %</P>
+														<INPUT class="input-full fixed-height" type="number" max="5000" min="-5000"/>
 													</DIV>
 													::elseif (name=="number")::
 							                       	<DIV class="type-container number-style StringEditor" data-group-id="Group3">
-														<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><P>  %</P>
+														<INPUT class="input-full fixed-height" type="number" max="5000" min="-5000"/>
 													</DIV>
 													::elseif (name=="bool")::
 							                       	<DIV class="type-container bool-style BoolEditor" data-value="::options.0.name::" data-group-id="Group3">

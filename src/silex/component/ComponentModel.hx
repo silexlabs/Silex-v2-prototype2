@@ -184,15 +184,39 @@ class ComponentModel extends ModelBase<HtmlDom>{
 		linkToPage.init();
 	}
 	/**
-	 * make the given component a link to the given page
+	 * remove the link from the given component
 	 */
 	public function resetLinkToPage(htmlDom:HtmlDom){
-		// get the publication model
-		var publicationModel = PublicationModel.getInstance();
+		// get the model
 		var propertyModel = PropertyModel.getInstance();
 
 		// remove the link attribute in view and model
 		propertyModel.removeAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_DATA_ATTR);
+		propertyModel.removeAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_ATTR);
+
+		// remove class in view and model
+		propertyModel.removeClass(htmlDom, "SilexLink");
+
+		// delete the component instance
+		// TODO: remove from Brix
+	}
+	/**
+	 * update the link from the given component
+	 */
+	public function updateLink(htmlDom:HtmlDom, oldLink:String, newLink:String){
+		// get the model
+		var propertyModel = PropertyModel.getInstance();
+
+		// update the link attribute in view and model
+		if(propertyModel.getAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_ATTR)==oldLink)
+			propertyModel.setAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_ATTR, newLink);
+		if(propertyModel.getAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_DATA_ATTR)==oldLink)
+			propertyModel.setAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_DATA_ATTR, newLink);
+
+		// replace the text
+		htmlDom.innerHTML = StringTools.replace(htmlDom.innerHTML, oldLink, newLink);
+		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(htmlDom);
+		modelHtmlDom.innerHTML = StringTools.replace(modelHtmlDom.innerHTML, oldLink, newLink);
 
 		// remove class in view and model
 		propertyModel.removeClass(htmlDom, "SilexLink");

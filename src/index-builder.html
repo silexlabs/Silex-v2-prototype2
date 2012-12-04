@@ -126,7 +126,7 @@
 							</LI>
 							<LI data-menu-item="close-publication" class="close-publication" title="close">
 							</LI>
-							<LI data-menu-item="save-publication-as-copy" class="save-publication-as-copy" title="save as copy">
+							<LI data-menu-item="save-publication-copy" class="save-publication-copy" title="save as copy">
 							</LI>
 							<LI data-menu-item="settings" class="disabled-element settings" title="settings">
 							</LI>
@@ -623,7 +623,7 @@
 													::elseif (name=="uri")::
 							                       	<DIV class="type-container uri-style UrlEditor">
 														<INPUT class="input-one-full-line input-full fixed-height src-target" type="src"/>
-														<BUTTON class="input-one-full-line file-button fixed-height" title="Browse library" data-fb-target="src-target">Browse library</BUTTON>
+														<BUTTON class="input-one-full-line file-button select-file-button fixed-height" title="Browse library" data-fb-target="src-target">Browse library</BUTTON>
 													</DIV>
 													::elseif (name=="uri-multiple")::
 							                       	<DIV class="type-container uri-multiple-style UrlEditor">
@@ -633,11 +633,11 @@
 													</DIV>
 													::elseif (name=="integer")::
 							                       	<DIV class="type-container integer-style StringEditor">
-														<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>
+														<INPUT class="input-full fixed-height" type="number" max="5000" min="-5000"/>
 													</DIV>
 													::elseif (name=="number")::
 							                       	<DIV class="type-container number-style StringEditor">
-														<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><p>  %</p>
+														<INPUT class="input-full fixed-height" type="number" max="5000" min="-5000"/>
 													</DIV>
 													::elseif (name=="bool")::
 							                       	<DIV class="type-container bool-style BoolEditor"
