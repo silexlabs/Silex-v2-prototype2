@@ -3022,6 +3022,8 @@ brix.core.ApplicationContext.prototype = {
 		this.registeredUIComponents.push({ classname : "brix.component.layout.Accordion", args : null});
 		brix.component.navigation.Page;
 		this.registeredUIComponents.push({ classname : "brix.component.navigation.Page", args : null});
+		silex.ui.link.SilexLink;
+		this.registeredUIComponents.push({ classname : "silex.ui.link.SilexLink", args : null});
 		silex.ui.toolbox.editor.StringEditor;
 		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.StringEditor", args : null});
 		silex.ui.toolbox.editor.BackgroundPositionEditor;
@@ -7700,7 +7702,6 @@ silex.component.ComponentModel.prototype = $extend(silex.ModelBase.prototype,{
 		htmlDom.innerHTML = StringTools.replace(htmlDom.innerHTML,oldLink,newLink);
 		var modelHtmlDom = silex.publication.PublicationModel.getInstance().getModelFromView(htmlDom);
 		modelHtmlDom.innerHTML = StringTools.replace(modelHtmlDom.innerHTML,oldLink,newLink);
-		propertyModel.removeClass(htmlDom,"SilexLink");
 	}
 	,resetLinkToPage: function(htmlDom) {
 		var propertyModel = silex.property.PropertyModel.getInstance();
@@ -7902,6 +7903,9 @@ silex.page.PageModel.getInstance = function() {
 	if(silex.page.PageModel.instance == null) silex.page.PageModel.instance = new silex.page.PageModel();
 	return silex.page.PageModel.instance;
 }
+silex.page.PageModel.cleanupForPageName = function(name) {
+	return name.toLowerCase().split(" ").join("");
+}
 silex.page.PageModel.__super__ = silex.ModelBase;
 silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 	renamePage: function(page,newName) {
@@ -7927,12 +7931,12 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		}
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,headHtmlDom);
 		if(initialPageName == page.name) brix.util.DomTools.setMeta("initialPageName",newName,null,headHtmlDom);
-		var links = publicationModel.application.getComponents(silex.ui.link.SilexLink);
-		haxe.Log.trace("links: " + Std.string(links),{ fileName : "PageModel.hx", lineNumber : 252, className : "silex.page.PageModel", methodName : "renamePage"});
+		var links = publicationModel.application.getComponents(brix.component.navigation.link.LinkBase);
+		haxe.Log.trace("links: " + Std.string(links),{ fileName : "PageModel.hx", lineNumber : 257, className : "silex.page.PageModel", methodName : "renamePage"});
 		var $it0 = links.iterator();
 		while( $it0.hasNext() ) {
 			var link = $it0.next();
-			haxe.Log.trace("update link " + Std.string(link),{ fileName : "PageModel.hx", lineNumber : 254, className : "silex.page.PageModel", methodName : "renamePage"});
+			haxe.Log.trace("update link " + Std.string(link),{ fileName : "PageModel.hx", lineNumber : 259, className : "silex.page.PageModel", methodName : "renamePage"});
 			if(link.linkName == page.name) {
 				silex.component.ComponentModel.getInstance().updateLink(link.rootElement,page.name,newName);
 				link.linkName = newName;
@@ -7987,7 +7991,7 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 	,addPage: function(name) {
 		if(name == null) name = "";
 		if(name == "") name = this.getNewName();
-		var className = name.toLowerCase().split(" ").join("");
+		var className = silex.page.PageModel.cleanupForPageName(name);
 		var publicationModel = silex.publication.PublicationModel.getInstance();
 		var viewHtmlDom = publicationModel.viewHtmlDom;
 		var modelHtmlDom = publicationModel.modelHtmlDom;

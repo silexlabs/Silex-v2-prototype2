@@ -218,9 +218,6 @@ class ComponentModel extends ModelBase<HtmlDom>{
 		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(htmlDom);
 		modelHtmlDom.innerHTML = StringTools.replace(modelHtmlDom.innerHTML, oldLink, newLink);
 
-		// remove class in view and model
-		propertyModel.removeClass(htmlDom, "SilexLink");
-
 		// delete the component instance
 		// TODO: remove from Brix
 	}

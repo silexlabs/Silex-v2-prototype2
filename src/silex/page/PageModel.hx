@@ -58,6 +58,12 @@ class PageModel extends ModelBase<Page>{
 	 */
 	public static inline var ON_LIST_CHANGE = "onPageListChange";
 	/**
+	 * Cleanup a name so that it can be used as a page name, i.e. class name
+	 */
+	static public function cleanupForPageName(name:String):String {
+		return name.toLowerCase().split(" ").join("");
+	}
+	/**
 	 * Models are singletons
 	 * Constructor is private
 	 */
@@ -84,7 +90,7 @@ class PageModel extends ModelBase<Page>{
 	public function addPage(name:String = ""){
 		// default value
 		if (name == "") name = getNewName();
-		var className = name.toLowerCase().split(" ").join("");
+		var className = cleanupForPageName(name);
 		
 		// get the publication model
 		var publicationModel = PublicationModel.getInstance();

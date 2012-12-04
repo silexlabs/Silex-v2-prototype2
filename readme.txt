@@ -60,12 +60,7 @@ remarques pol
 
 
 bugs !
-x- z-index should not be %
-x- save a copy bug
-x- visual effects, cursor, not pluged with the library
-x- add a loading page by default
-x- change the name of the initial page should change the meta
-- change the name of a page should change the links => bug in Brix? http://www.silexlabs.org/groups/brix/users/forum/topic/application-getcomponents-bug/
+- change the name of a page should change the links
 - absolute => at the end of the DOM 
 - absolute => out of container, no more clickable
 - IE and null in styles
