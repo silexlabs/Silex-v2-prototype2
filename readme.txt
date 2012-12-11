@@ -60,7 +60,6 @@ remarques pol
 
 
 bugs !
-- change the name of a page should change the links
 - absolute => at the end of the DOM 
 - absolute => out of container, no more clickable
 - IE and null in styles

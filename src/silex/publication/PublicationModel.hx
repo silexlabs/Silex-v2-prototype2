@@ -289,11 +289,9 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		var headOpenIdx = lowerCaseHtml.indexOf("<head>");
 		if (headOpenIdx == -1) headOpenIdx = lowerCaseHtml.indexOf("<head ");
 		var headCloseIdx = lowerCaseHtml.indexOf("</head>");
-		if (headCloseIdx == -1) headCloseIdx = lowerCaseHtml.indexOf("</HEAD>");
 		var bodyOpenIdx = lowerCaseHtml.indexOf("<body>");
 		if (bodyOpenIdx == -1) bodyOpenIdx = lowerCaseHtml.indexOf("<body ");
 		var bodyCloseIdx = lowerCaseHtml.indexOf("</body>");
-		if (bodyCloseIdx == -1) bodyCloseIdx = lowerCaseHtml.indexOf("</BODY>");
 
 		if (headOpenIdx > -1 && headCloseIdx > -1){
 			// look for the first ">" after "<head"
