@@ -2665,12 +2665,12 @@ brix.component.sound.SoundOn.mute = function(doMute) {
 brix.component.sound.SoundOn.__super__ = brix.component.ui.DisplayObject;
 brix.component.sound.SoundOn.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
 	onClick: function(e) {
+		brix.component.sound.SoundOn.mute(false);
+	}
+	,init: function() {
 		brix.util.DomTools.doLater(function() {
 			return brix.component.sound.SoundOn.mute(false);
 		});
-	}
-	,init: function() {
-		brix.component.sound.SoundOn.mute(false);
 	}
 	,__class__: brix.component.sound.SoundOn
 });
@@ -2730,6 +2730,7 @@ brix.core.Application.get = function(BrixId) {
 	return brix.core.Application.instances.get(BrixId);
 }
 brix.core.Application.main = function() {
+	haxe.Firebug.redirectTraces();
 }
 brix.core.Application.createApplication = function(args) {
 	var newId = brix.core.Application.generateUniqueId();
@@ -2745,7 +2746,7 @@ brix.core.Application.prototype = {
 		var componentClass = Type.resolveClass(classname);
 		if(componentClass == null) {
 			throw "ERROR cannot resolve " + classname;
-			haxe.Log.trace("ERROR cannot resolve " + classname,{ fileName : "Application.hx", lineNumber : 826, className : "brix.core.Application", methodName : "resolveComponentClass"});
+			haxe.Log.trace("ERROR cannot resolve " + classname,{ fileName : "Application.hx", lineNumber : 845, className : "brix.core.Application", methodName : "resolveComponentClass"});
 		}
 		return componentClass;
 	}
@@ -2825,7 +2826,7 @@ brix.core.Application.prototype = {
 			node.removeAttribute("data-brix-id");
 			var isError = !this.nodeToCmpInstances.remove(nodeId);
 			if(isError) throw "Could not find the node in the associated components list.";
-		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 660, className : "brix.core.Application", methodName : "removeAllAssociatedComponent"});
+		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 679, className : "brix.core.Application", methodName : "removeAllAssociatedComponent"});
 	}
 	,removeAssociatedComponent: function(node,cmp) {
 		var nodeId = node.getAttribute("data-brix-id");
@@ -2838,7 +2839,7 @@ brix.core.Application.prototype = {
 				node.removeAttribute("data-brix-id");
 				this.nodeToCmpInstances.remove(nodeId);
 			}
-		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 635, className : "brix.core.Application", methodName : "removeAssociatedComponent"});
+		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 654, className : "brix.core.Application", methodName : "removeAssociatedComponent"});
 	}
 	,addAssociatedComponent: function(node,cmp) {
 		var nodeId = node.getAttribute("data-brix-id");
@@ -2926,13 +2927,15 @@ brix.core.Application.prototype = {
 		this.htmlRootElement = appendTo;
 		if(this.htmlRootElement == null || this.htmlRootElement.nodeType != js.Lib.document.documentElement.nodeType) this.htmlRootElement = js.Lib.document.documentElement;
 		if(this.htmlRootElement == null) {
-			haxe.Log.trace("ERROR Lib.document.documentElement is null => You are trying to start your application while the document loading is probably not complete yet." + " To fix that, add the noAutoStart option to your Brix application and control the application startup with: window.onload = function() { myApplication.init() };",{ fileName : "Application.hx", lineNumber : 252, className : "brix.core.Application", methodName : "initDom"});
+			haxe.Log.trace("ERROR Lib.document.documentElement is null => You are trying to start your application while the document loading is probably not complete yet." + " To fix that, add the noAutoStart option to your Brix application and control the application startup with: window.onload = function() { myApplication.init() };",{ fileName : "Application.hx", lineNumber : 261, className : "brix.core.Application", methodName : "initDom"});
 			return;
 		}
-	}
-	,attachBody: function() {
-		js.Lib.document.body.appendChild(this.body);
 		this.body = js.Lib.document.body;
+	}
+	,attachBody: function(appendTo) {
+		if(appendTo == null) appendTo = js.Lib.document.body;
+		if(this.body.parentNode == null) appendTo.appendChild(this.body);
+		this.body = appendTo;
 	}
 	,getRegisteredGlobalComponents: function() {
 		return this.applicationContext.registeredGlobalComponents;
@@ -3395,6 +3398,36 @@ haxe.FastList.prototype = {
 	}
 	,head: null
 	,__class__: haxe.FastList
+}
+haxe.Firebug = function() { }
+$hxClasses["haxe.Firebug"] = haxe.Firebug;
+haxe.Firebug.__name__ = ["haxe","Firebug"];
+haxe.Firebug.detect = function() {
+	try {
+		return console != null && console.error != null;
+	} catch( e ) {
+		return false;
+	}
+}
+haxe.Firebug.redirectTraces = function() {
+	haxe.Log.trace = haxe.Firebug.trace;
+	js.Lib.onerror = haxe.Firebug.onError;
+}
+haxe.Firebug.onError = function(err,stack) {
+	var buf = err + "\n";
+	var _g = 0;
+	while(_g < stack.length) {
+		var s = stack[_g];
+		++_g;
+		buf += "Called from " + s + "\n";
+	}
+	haxe.Firebug.trace(buf,null);
+	return true;
+}
+haxe.Firebug.trace = function(v,inf) {
+	var type = inf != null && inf.customParams != null?inf.customParams[0]:null;
+	if(type != "warn" && type != "info" && type != "debug" && type != "error") type = inf == null?"error":"log";
+	console[type]((inf == null?"":inf.fileName + ":" + inf.lineNumber + " : ") + Std.string(v));
 }
 haxe.Http = function(url) {
 	this.url = url;
@@ -7663,9 +7696,10 @@ silex.Silex.init = function(unused) {
 	var publicationBody = brix.util.DomTools.getMeta("publicationBody");
 	if(publicationBody != null) {
 		var value = brix.util.DomTools.getMeta("publicationBody");
-		js.Lib.document.body.innerHTML = value;
+		application.body.innerHTML = value;
 	}
 	application.initComponents();
+	application.attachBody();
 	js.Lib.document.body.style.visibility = "visible";
 }
 silex.component = {}
@@ -8161,7 +8195,7 @@ silex.publication.PublicationModel.__super__ = silex.ModelBase;
 silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onPublicationSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 632, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 633, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
 	}
 	,onSaveError: function(msg) {
 		this.dispatchEvent(this.createEvent("onPublicationSaveError"),this.debugInfo);
@@ -8225,7 +8259,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		})($bind(this,this.onCopyCreated),newName),$bind(this,this.onSaveError));
 	}
 	,onDeleteSuccess: function() {
-		haxe.Log.trace("PUBLICATION DELETED ",{ fileName : "PublicationModel.hx", lineNumber : 488, className : "silex.publication.PublicationModel", methodName : "onDeleteSuccess"});
+		haxe.Log.trace("PUBLICATION DELETED ",{ fileName : "PublicationModel.hx", lineNumber : 489, className : "silex.publication.PublicationModel", methodName : "onDeleteSuccess"});
 		this.unload();
 	}
 	,trash: function(name) {
@@ -8262,13 +8296,14 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 	,initBrixApplication: function(rootElement) {
 		this.application = brix.core.Application.createApplication();
 		this.application.initDom(rootElement);
+		this.application.attachBody(rootElement);
 		this.application.initComponents();
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,this.headHtmlDom);
 		if(initialPageName != null) {
 			var page = brix.component.navigation.Page.getPageByName(initialPageName,this.application.id,this.viewHtmlDom);
-			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "PublicationModel.hx", lineNumber : 412, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
-		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "PublicationModel.hx", lineNumber : 416, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
-		haxe.Log.trace("PublicationModel exec " + Std.string(rootElement) + " - " + rootElement.className,{ fileName : "PublicationModel.hx", lineNumber : 421, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
+			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "PublicationModel.hx", lineNumber : 413, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
+		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "PublicationModel.hx", lineNumber : 417, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
+		haxe.Log.trace("PublicationModel exec " + Std.string(rootElement) + " - " + rootElement.className,{ fileName : "PublicationModel.hx", lineNumber : 422, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
 		silex.interpreter.Interpreter.getInstance().execScriptTags(rootElement);
 	}
 	,generateNewId: function() {

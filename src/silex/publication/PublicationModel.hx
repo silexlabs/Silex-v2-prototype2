@@ -399,6 +399,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 
 		// init Brix
 		application.initDom(rootElement);
+		application.attachBody(rootElement);
 		application.initComponents();
 
 		// initial page
@@ -419,8 +420,8 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		// execute debug actions
 		#if silexDebug
 			trace("PublicationModel exec "+rootElement+" - "+rootElement.className);
-			Interpreter.getInstance().execScriptTags(rootElement);
 		#end
+		Interpreter.getInstance().execScriptTags(rootElement);
 	}
 	/**
 	 * An error occured
