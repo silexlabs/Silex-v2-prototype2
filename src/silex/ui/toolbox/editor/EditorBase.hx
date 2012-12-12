@@ -4,15 +4,12 @@ import js.Lib;
 import js.Dom;
 
 import silex.publication.PublicationModel;
+import silex.publication.PublicationData;
 import silex.layer.LayerModel;
 import silex.component.ComponentModel;
 import silex.property.PropertyModel;
 
-import silex.ui.dialog.FileBrowserDialog;
-import silex.ui.dialog.TextEditorDialog;
-
 import brix.component.ui.DisplayObject;
-import brix.component.navigation.Page;
 import brix.util.DomTools;
 
 import brix.component.group.IGroupable;
@@ -21,15 +18,9 @@ using brix.component.group.IGroupable.Groupable;
 /**
  * This component is the base class for all editors in Silex. 
  * Editors are Brix components, in charge of editing the CSS types, 
- * This class handles the link with the FileBrowserDialog:
  * Editors are "groupable", the use the html node  referenced by groupElement to communicate together,
  * for editors of the same properties, e.g. the keyword and length editors of the width CSS style
  * in order to let the user enter values and edit css style values or tag attributes.
- * - opens the page file-browser-dialog when a button with class name select-file-button is clicked
- * - and calls this.selectFile to attach an event to retrieve the selected file
- * This class handles the link with the TextEditorDialog:
- * - opens the page text-editor with the TextEditor component
- * - retrieve the result and put it in selectedItem.innerHTML
  */
 class EditorBase extends DisplayObject, implements IGroupable
 {
@@ -43,20 +34,6 @@ class EditorBase extends DisplayObject, implements IGroupable
 	 */ 
 	public static inline var DEBUG_INFO:String = "silex.ui.toolbox.editor.EditorBase class";
 	/**
-	 * class name for the "open media lib" buttons
-	 * when clicked, it will automatically open the FB and link the returned URL to a text field
-	 */ 
-	public static inline var OPEN_FILE_BROWSER_CLASS_NAME:String = "select-file-button";
-	/**
-	 * class name for the "open media lib" buttons
-	 * when clicked, it will automatically open the FB and link the returned URL to a text field
-	 */ 
-	public static inline var ADD_MULTIPLE_FILE_BROWSER_CLASS_NAME:String = "add-multiple-files-button";
-	/**
-	 * The css class name of the "edit text" button
-	 */
-	public static inline var OPEN_TEXT_EDITOR_CLASS_NAME = "property-editor-edit-text";
-	/**
 	 * selected element
 	 */ 
 	public var selectedItem(default, setSelectedItem):HtmlDom;
@@ -65,7 +42,7 @@ class EditorBase extends DisplayObject, implements IGroupable
 	 */
 	private var propertyChangePending:Bool = false;
 	/**
-	 * store the property name, taken in the attribute "data-property-name" of the group node 
+	 * store the property name, taken in the attribute "data-property-js-name" of the group node 
 	 */
 	private var propertyName:String;
 	/**
@@ -82,6 +59,7 @@ class EditorBase extends DisplayObject, implements IGroupable
 
 		// listen to the property change event
 		PropertyModel.getInstance().addEventListener(PropertyModel.ON_PROPERTY_CHANGE, onPropertyChange, DEBUG_INFO);
+		PropertyModel.getInstance().addEventListener(PropertyModel.ON_STYLE_CHANGE, onPropertyChange, DEBUG_INFO);
 		// listen to the component change event
 		ComponentModel.getInstance().addEventListener(ComponentModel.ON_SELECTION_CHANGE, onSelectComponent, DEBUG_INFO);
 		// listen to the component change event
@@ -93,14 +71,21 @@ class EditorBase extends DisplayObject, implements IGroupable
 		startGroupable(rootElement);
 		// group element is body element by default
 		if (groupElement == null){
-			throw("Editor found outside a group.");
+			trace("Warning: Editor found outside a property group.");
 		}
-		propertyName = groupElement.getAttribute("data-property-name");
-		if (propertyName == null || propertyName == ""){
-			// case of the template, will be defined later
-			trace("Could not find the property name for the editor. It was not set in the attribute \"data-property-name\" of the group node ("+groupElement.className+").");
+		else{
+			propertyName = groupElement.getAttribute("data-property-name");
+			if (propertyName == null || propertyName == ""){
+				// case of the template, will be defined later
+				trace("Could not find the property name for the editor. It was not set in the attribute \"data-property-name\" of the group node ("+groupElement.className+").");
+			}
 		}
-		reset();
+		try{
+			reset();
+		}
+		catch(e:Dynamic){
+			throw("Error in the implementation of the method reset: "+e);
+		}
 	}
 	/**
 	 * clean the component
@@ -115,6 +100,7 @@ class EditorBase extends DisplayObject, implements IGroupable
 		rootElement.removeEventListener("click", onClick, true);
 
 		PropertyModel.getInstance().removeEventListener(PropertyModel.ON_PROPERTY_CHANGE, onPropertyChange);
+		PropertyModel.getInstance().removeEventListener(PropertyModel.ON_STYLE_CHANGE, onPropertyChange);
 		ComponentModel.getInstance().removeEventListener(ComponentModel.ON_SELECTION_CHANGE, onSelectComponent);
 		LayerModel.getInstance().removeEventListener(LayerModel.ON_SELECTION_CHANGE, onSelectLayer);
 	}
@@ -172,9 +158,20 @@ class EditorBase extends DisplayObject, implements IGroupable
 	 */
 	private function refresh() {
 		if (selectedItem != null)
-			load(selectedItem);
-		else
-			reset();
+			try{
+				load(selectedItem);
+			}
+			catch(e:Dynamic){
+				throw("Error in the implementation of the method load: "+e);
+			}
+		else{
+			try{
+				reset();
+			}
+			catch(e:Dynamic){
+				throw("Error in the implementation of the method reset: "+e);
+			}
+		}
 	}
 	////////////////////////////////////////////
 	// Manipulation of the HTML input
@@ -222,103 +219,18 @@ class EditorBase extends DisplayObject, implements IGroupable
 	private function onInput(e:Event) {
 		e.preventDefault();
 		beforeApply();
-		apply();
+		try{
+			apply();
+		}
+		catch(e:Dynamic){
+			throw("Error in the implementation of the method apply: "+e);
+		}
 		afterApply();
 	}
 	/**
 	 * callback for the click event, check if a dialog must be opened
 	 */
 	private function onClick(e:Event) {
-		if (DomTools.hasClass(e.target, OPEN_FILE_BROWSER_CLASS_NAME)){
-			e.preventDefault();
-			var inputControlClassName = e.target.getAttribute("data-fb-target");
-			selectFile(inputControlClassName);
-		}
-		else if (DomTools.hasClass(e.target, ADD_MULTIPLE_FILE_BROWSER_CLASS_NAME)){
-			e.preventDefault();
-			var inputControlClassName = e.target.getAttribute("data-fb-target");
-			selectMultipleFiles(inputControlClassName);
-		}
-		else if (DomTools.hasClass(e.target, OPEN_TEXT_EDITOR_CLASS_NAME)){
-			// prevent default button behaviour
-			e.preventDefault();
-			// open the text editor page
-			openTextEditor();
-		}
-
-	}
-	////////////////////////////////////////////
-	// Text Editor 
-	////////////////////////////////////////////
-	/**
-	 * open text editor
-	 * called when the user clicks on a button with "property-editor-edit-text" class
-	 */
-	private function openTextEditor(){
-		TextEditorDialog.onValidate = onTextEditorChange;
-		TextEditorDialog.textContent = selectedItem.innerHTML;
-		TextEditorDialog.message = "Edit text and click \"close\"";
-		Page.openPage(TextEditorDialog.TEXT_EDITOR_PAGE_NAME, true, null, null, brixInstanceId);
-	}
-	/**
-	 * callback for the TextEditorDialog
-	 */
-	private function onTextEditorChange(htmlText:String){
-		PropertyModel.getInstance().setProperty(selectedItem, "innerHTML", htmlText);
-	}
-	////////////////////////////////////////////
-	// File Browser 
-	////////////////////////////////////////////
-	/**
-	 * callback for the FileBrowserDialog
-	 */
-	private function onFileChosen(inputControlClassName:String, fileUrl:String){
-		
-		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
-		cast(inputElement).value = abs2rel(fileUrl);
-		beforeApply();
-		apply();
-		afterApply();
-		DomTools.doLater(refreshSelection);
-	}
-	/**
-	 * open file browser
-	 * called when the user clicks on a button with "select-file-button" class
-	 */
-	private function selectFile(inputControlClassName:String){
-		var userMessage = "Double click to select a file!";
-		var validateCallback = callback(onFileChosen, inputControlClassName);
-
-		FileBrowserDialog.onValidate = validateCallback;
-		FileBrowserDialog.message = userMessage;
-		FileBrowserDialog.expectMultipleFiles = false;
-		Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, brixInstanceId);
-	}
-	/**
-	 * callback for the FileBrowserDialog
-	 */
-	private function onMultipleFilesChosen(inputControlClassName:String, files:Array<String>){
-		
-		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
-		if (cast(inputElement).value != "") cast(inputElement).value += "\n";
-		cast(inputElement).value += abs2rel(files.join("\n"));
-		beforeApply();
-		apply();
-		afterApply();
-		DomTools.doLater(refreshSelection);
-	}
-	/**
-	 * open file browser
-	 * called when the user clicks on a button with "select-file-button" class
-	 */
-	private function selectMultipleFiles(inputControlClassName:String){
-		var userMessage = "Double click to select one or more file(s)!";
-		var validateCallback = callback(onMultipleFilesChosen, inputControlClassName);
-
-		FileBrowserDialog.onValidateMultiple = validateCallback;
-		FileBrowserDialog.message = userMessage;
-		FileBrowserDialog.expectMultipleFiles = true;
-		Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, brixInstanceId);
 	}
 	////////////////////////////////////////////
 	// Callbacks for the model
@@ -327,10 +239,12 @@ class EditorBase extends DisplayObject, implements IGroupable
 	 * refresh the model
 	 */
 	private function refreshSelection(){
-		if (ComponentModel.getInstance().selectedItem != null)
+		if (ComponentModel.getInstance().selectedItem != null){
 			ComponentModel.getInstance().refresh();
-		else
+		}
+		else if (LayerModel.getInstance().selectedItem != null){
 			LayerModel.getInstance().refresh();
+		}
 	}
 	/**
 	 * Callback for the PropertyModel singleton
@@ -342,7 +256,12 @@ class EditorBase extends DisplayObject, implements IGroupable
 			return;
 		if (e.detail.name == propertyName){
 			// reset myself, another editor is taking care of the property
-			reset();
+			try{
+				reset();
+			}
+			catch(e:Dynamic){
+				throw("Error in the implementation of the method reset: "+e);
+			}
 		}
 		else{
 			// do nothing, I am not concerned
@@ -369,38 +288,5 @@ class EditorBase extends DisplayObject, implements IGroupable
 		else{
 			selectedItem = e.detail.rootElement;
 		}
-	}
-	////////////////////////////////////////////
-	// Helpers
-	////////////////////////////////////////////
-	/**
-	 * convert into relative url
-	 */
-	private function abs2rel(url:Null<String>):Null<String>{
-		if (url == null)
-			return null;
-			
-		if (url == "")
-			return "";
-
-		// remove path to the publication folder
-		var pubUrl = "publications/";
-		var idxPubFolder = url.indexOf(pubUrl);
-		if (idxPubFolder >= 0){
-			// remove all the common parts
-			url = url.substr(idxPubFolder + pubUrl.length);
-			// remove publication name if it is the current publication or add the relative path "../"
-			var pubUrl = PublicationModel.getInstance().currentName + "/";
-			var idxPubFolder = url.indexOf(pubUrl);
-			if (idxPubFolder >= 0){
-				// remove all the common parts
-				url = url.substr(idxPubFolder + pubUrl.length);
-			}
-			else{
-				// add the relative path to publication folder
-				url = "../"+url;
-			}
-		}
-		return url;
 	}
 }

@@ -10,7 +10,7 @@ import silex.property.PropertyModel;
  * This component ihandles boolean CSS properties. 
  * @see 	silex.ui.toolbox.editor.EditorBase
  */
-class PercentageEditor extends EditorBase
+class StringEditor extends EditorBase
 {
 	/**
 	 * input element
@@ -40,13 +40,7 @@ class PercentageEditor extends EditorBase
 	 */
 	override private function load(element:HtmlDom) {
 		var value:String = PropertyModel.getInstance().getStyle(element, propertyName);
-		value = StringTools.trim(value);
-		if (StringTools.endsWith(value, "%")){
-			cast(inputElement).value = value.substr(0,-1);
-		}
-		else{
-			reset();
-		}
+		cast(inputElement).value = value;
 	}
 	/**
 	 * apply the property value
@@ -55,7 +49,7 @@ class PercentageEditor extends EditorBase
 	override private function apply() {
 		var value = cast(inputElement).value;
 		if (value != "" && value != null){
-			PropertyModel.getInstance().setStyle(selectedItem, propertyName, value + "%");
+			PropertyModel.getInstance().setStyle(selectedItem, propertyName, value);
 		}
 		else{
 			PropertyModel.getInstance().setStyle(selectedItem, propertyName, null);

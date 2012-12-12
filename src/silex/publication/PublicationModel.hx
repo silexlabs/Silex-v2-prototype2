@@ -289,11 +289,9 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		var headOpenIdx = lowerCaseHtml.indexOf("<head>");
 		if (headOpenIdx == -1) headOpenIdx = lowerCaseHtml.indexOf("<head ");
 		var headCloseIdx = lowerCaseHtml.indexOf("</head>");
-		if (headCloseIdx == -1) headCloseIdx = lowerCaseHtml.indexOf("</HEAD>");
 		var bodyOpenIdx = lowerCaseHtml.indexOf("<body>");
 		if (bodyOpenIdx == -1) bodyOpenIdx = lowerCaseHtml.indexOf("<body ");
 		var bodyCloseIdx = lowerCaseHtml.indexOf("</body>");
-		if (bodyCloseIdx == -1) bodyCloseIdx = lowerCaseHtml.indexOf("</BODY>");
 
 		if (headOpenIdx > -1 && headCloseIdx > -1){
 			// look for the first ">" after "<head"
@@ -401,6 +399,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 
 		// init Brix
 		application.initDom(rootElement);
+		application.attachBody(rootElement);
 		application.initComponents();
 
 		// initial page
@@ -421,8 +420,8 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		// execute debug actions
 		#if silexDebug
 			trace("PublicationModel exec "+rootElement+" - "+rootElement.className);
-			Interpreter.getInstance().execScriptTags(rootElement);
 		#end
+		Interpreter.getInstance().execScriptTags(rootElement);
 	}
 	/**
 	 * An error occured
@@ -501,9 +500,9 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			throw("Error: can not save the publication because no publication is loaded.");
 
 		// reset model selection
-		var pageModel = PageModel.getInstance();
-		pageModel.hoveredItem = null;
-		pageModel.selectedItem = null;
+		// var pageModel = PageModel.getInstance();
+		// pageModel.hoveredItem = null;
+		// pageModel.selectedItem = null;
 
 		// dispatch the event 
 		dispatchEvent(createEvent(ON_SAVE_START), debugInfo);
@@ -545,9 +544,9 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 			currentName = newName;
 
 		// reset model selection
-		var pageModel = PageModel.getInstance();
-		pageModel.hoveredItem = null;
-		pageModel.selectedItem = null;
+		// var pageModel = PageModel.getInstance();
+		// pageModel.hoveredItem = null;
+		// pageModel.selectedItem = null;
 
 		// dispatch the event 
 		dispatchEvent(createEvent(ON_SAVE_START), debugInfo);

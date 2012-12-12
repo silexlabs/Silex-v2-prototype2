@@ -46,14 +46,20 @@ class PageList extends List<Page>
 	 * if you override this, either call super.reloadData() to redraw immediately, or call doRedraw() when the data is ready
 	 */
 	override public function reloadData(){
-		var publicationModel = PublicationModel.getInstance();
-		// trace("reloadData "+publicationModel+" - "+publicationModel.viewHtmlDom);
-		// if a publication is loaded only
-		if(publicationModel.application != null){
-			dataProvider = PageModel.getInstance().getClasses(publicationModel.viewHtmlDom, publicationModel.application.id, Page);
-			selectedItem = PageModel.getInstance().selectedItem;
-		}
+		dataProvider = buildDataProvider();
+		selectedItem = PageModel.getInstance().selectedItem;
 		super.reloadData();
+	}
+	/**
+	 * build the data provider out of the pages array in the loaded publication
+	 */
+	private function buildDataProvider():Array<Page>{
+		var publicationModel = PublicationModel.getInstance();
+		if(publicationModel.application != null){
+			// if a publication is loaded only
+			return dataProvider = PageModel.getInstance().getClasses(publicationModel.viewHtmlDom, publicationModel.application.id, Page);
+		}
+		return new Array();
 	}
 	public function onListChange(e:CustomEvent){
 		// trace("onListChange("+e+")");

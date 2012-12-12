@@ -8,8 +8,11 @@ import silex.ModelBase;
 import silex.publication.PublicationModel;
 import silex.layer.LayerModel;
 import silex.property.PropertyModel;
+
 import brix.component.navigation.Layer;
-import brix.component.navigation.link.LinkToPage;
+import brix.util.DomTools;
+
+import silex.ui.link.SilexLink;
 import brix.component.navigation.link.LinkBase;
 
 
@@ -77,8 +80,8 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	override public function setSelectedItem(item:HtmlDom):HtmlDom {
 		if (item!=null){
 			// change the layer selection
-			var layer = PublicationModel.getInstance().application.getAssociatedComponents(item.parentNode, Layer).first();
-			LayerModel.getInstance().selectedItem = layer;
+			//var layer = PublicationModel.getInstance().application.getAssociatedComponents(item.parentNode, Layer).first();
+			//LayerModel.getInstance().selectedItem = layer;
 		}
 
 		return super.setSelectedItem(item);
@@ -164,36 +167,56 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	/**
 	 * make the given component a link to the given page
 	 */
-	public function makeLinkToPage(htmlDom:HtmlDom, pageName:String):LinkToPage{
-		// get the publication model
+	public function makeLinkToPage(htmlDom:HtmlDom, pageName:String){
+		// get the model
 		var publicationModel = PublicationModel.getInstance();
 		var propertyModel = PropertyModel.getInstance();
+
+		// add  class in view and model
+		DomTools.addClass(htmlDom, "SilexLink");
+		PropertyModel.getInstance().addClass(htmlDom, "SilexLink");
 
 		// add the link attribute in view and model
 		propertyModel.setAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_DATA_ATTR, pageName);
 
-		// add  class in view and model
-		propertyModel.addClass(htmlDom, "LinkToPage");
-
 		// create the component instance
-		var linkToPage = new LinkToPage(htmlDom, publicationModel.application.id);
+		var linkToPage = new SilexLink(htmlDom, publicationModel.application.id);
 		linkToPage.init();
-
-		return linkToPage;
 	}
 	/**
-	 * make the given component a link to the given page
+	 * remove the link from the given component
 	 */
 	public function resetLinkToPage(htmlDom:HtmlDom){
-		// get the publication model
-		var publicationModel = PublicationModel.getInstance();
+		// get the model
 		var propertyModel = PropertyModel.getInstance();
 
 		// remove the link attribute in view and model
 		propertyModel.removeAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_DATA_ATTR);
+		propertyModel.removeAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_ATTR);
 
 		// remove class in view and model
-		propertyModel.removeClass(htmlDom, "LinkToPage");
+		propertyModel.removeClass(htmlDom, "SilexLink");
+
+		// delete the component instance
+		// TODO: remove from Brix
+	}
+	/**
+	 * update the link from the given component
+	 */
+	public function updateLink(htmlDom:HtmlDom, oldLink:String, newLink:String){
+		// get the model
+		var propertyModel = PropertyModel.getInstance();
+
+		// update the link attribute in view and model
+		if(propertyModel.getAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_ATTR)==oldLink)
+			propertyModel.setAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_ATTR, newLink);
+		if(propertyModel.getAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_DATA_ATTR)==oldLink)
+			propertyModel.setAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_DATA_ATTR, newLink);
+
+		// replace the text
+		htmlDom.innerHTML = StringTools.replace(htmlDom.innerHTML, oldLink, newLink);
+		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(htmlDom);
+		modelHtmlDom.innerHTML = StringTools.replace(modelHtmlDom.innerHTML, oldLink, newLink);
 
 		// delete the component instance
 		// TODO: remove from Brix

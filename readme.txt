@@ -32,21 +32,57 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
-** known bugs **
+** to integrate in roadmap **
 
-* toolbox still missing :
-  . component attributes (name, URL, seo, ...)
-  . delete component
-* mettre a jour les tests unitaires cote serveur
-* url par defaut image, video, son
-* slelection drop zone : priorité aux petites zones * les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
-* delete a container when it is a master or not, and uncheck master when the container is not on any page
+* use css patterns ?? http://www.google.fr/search?hl=en&redir_esc=&client=ms-android-samsung&source=android-browser-type&v=133247963&qsubts=1352845988673&action=devloc&q=css+patterns&v=133247963
+* make a native desktop app http://appjs.org/ 
+* help buttons on all editors
+
+discours
+- http://www.applicationcraft.com/
+  . BROWSER BASED or DESKTOP
+  . BUILD PROTOTYPES, FRONT-ENDS & FULL-BLOWN APPS
+  . WEB APPS TO MOBILE APP STORES?
+  . EVERYTHING IS HTML5, CSS AND JAVASCRIPT
+  . YOU’D BE CRAZY TO GO NATIVE!
+  . php or nodejs
+  . html5 and flash
+
+
+** to do **
+
+
+remarques pol
+- keyboard shortcuts
+- tab => browse all layers and comp 
+- editeur texte / enrichissement non pris en compte
+> des assets se déplacent d’un container à l’autre.
+
+
+bugs !
+- absolute => out of container, no more clickable
+- absolute => at the end of the DOM 
+- IE and null in styles
+- replace getElementsByClassName by Application.getComponents
+
+toolbox still missing :
+* lock a layer or component from edit
 * tous les styles dans la boite a outil styles
   + descriptions / aide
   + groups and "apply to group" (e.g. for border-left border-rigth border-top and border- bottom)
-* ecouter window.resize, et dispatcher window.resize dans Page::open
-* ergo : disable les pixel+unit quand on a select un shorthand (exple background h pos)
-* chrome and color picker : read ok, load bug
-* autoriser display block?
+
+- styles hover et active => data-style-* - http://www.w3schools.com/css/css_pseudo_classes.asp
+  . selector in each accordion tab => set style to data-*
+  . save in data-* instead of style only
+  . init all at start
+  . listen over and out on body => set style to data-*
+  . check for active when open / close page
+  . save as style => .xxxx{} .xxxx:hover{} .xxxx:active{} 
+* history : back button of air android
+* selection drop zone : priorité aux petites zones 
+* les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
 * styles/themes
+* mettre a jour les tests unitaires cote serveur
+* delete a container when it is a master or not, and uncheck master when the container is not on any page
+* ecouter window.resize, et dispatcher window.resize dans Page::open
 * new from template

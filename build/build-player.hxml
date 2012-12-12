@@ -9,16 +9,18 @@
 -debug
 -lib hscript
 
--main silex.Silex
---macro brix.core.Builder.create('../src/index-player.html', 'useless.html')
+-main brix.core.Application
+--macro brix.core.Builder.create('../src/index-player.html')
 
-#-D slpdebug
+#-D brixdebug
 -D disableEmbedHtml
 -D noAutoStart
 -D stopOnError
 
 -D silexClientSide
 -D silexDebug
+-D redirectFlashTraces
+
 
 #########
 # player Flash
@@ -41,6 +43,8 @@
 -D stopOnError
 
 -D silexClientSide
+-D redirectFlashTraces
+
 # only in js : -D silexDebug
 
 #--no-traces

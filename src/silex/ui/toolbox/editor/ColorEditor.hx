@@ -46,7 +46,6 @@ class ColorEditor extends EditorBase
 	 */
 	override private function load(element:HtmlDom) {
 		var value:String = PropertyModel.getInstance().getStyle(element, propertyName);
-trace("load "+value);
 		if (value == null || value == ""){
 			cast(inputElement).value = "";
 			cast(checkElement).checked = true;

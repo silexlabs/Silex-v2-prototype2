@@ -118,13 +118,13 @@ class Silex {
 			/**/
 			var value = DomTools.getMeta(CONFIG_PUBLICATION_BODY);
 			// var value = StringTools.htmlUnescape(DomTools.getMeta(CONFIG_PUBLICATION_BODY));
-			Lib.document.body.innerHTML = value;
+			application.body.innerHTML = value;
 			// set base tag so the ./ is the publicaiton folder
 			//DomTools.setBaseTag(PublicationConstants.PUBLICATION_FOLDER+publicationName+"/");
 		}
-		
 		// init Brix components
 		application.initComponents();
+		application.attachBody();
 
 		// make the publication visible
 		Lib.document.body.style.visibility = "visible";
