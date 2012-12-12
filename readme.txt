@@ -60,8 +60,8 @@ remarques pol
 
 
 bugs !
-- absolute => at the end of the DOM 
 - absolute => out of container, no more clickable
+- absolute => at the end of the DOM 
 - IE and null in styles
 - replace getElementsByClassName by Application.getComponents
 

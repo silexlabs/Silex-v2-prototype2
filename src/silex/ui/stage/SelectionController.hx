@@ -7,6 +7,7 @@ import brix.component.ui.DisplayObject;
 import brix.util.DomTools;
 import brix.component.navigation.Layer;
 import brix.core.Application;
+import brix.component.interaction.Draggable;
 
 import silex.property.PropertyModel;
 import silex.component.ComponentModel;
@@ -79,6 +80,11 @@ class SelectionController extends DisplayObject
 	 */
 	private var layerModel:LayerModel;
 	/**
+	 * flag used to store the state
+	 * true when a draggable element is being dragged
+	 */
+	private var isDragging:Bool = false;
+	/**
 	 * Constructor
 	 * Create the markers
 	 * Start listening the node (view) and to the model
@@ -117,6 +123,10 @@ class SelectionController extends DisplayObject
 		selectionMarker = DomTools.getSingleElement(rootElement, SELECTION_MARKER_STYLE_NAME, true);
 		selectionMarker.addEventListener("click", onClickSelection, false);
 		//selectionContainer.appendChild(selectionMarker);
+
+		// listen to the Draggable components events
+		rootElement.addEventListener(Draggable.EVENT_DROPPED, onDrop, false);
+		rootElement.addEventListener(Draggable.EVENT_DRAG, onDrag, false);
 
 		// listen to the view events
 		rootElement.addEventListener("mousemove", onMouseMove, false);
@@ -157,6 +167,21 @@ class SelectionController extends DisplayObject
 		if (componentModel.hoveredItem!=null || layerModel.hoveredItem == null) setMarkerPosition(hoverLayerMarker, null);
 		else  setMarkerPosition(hoverLayerMarker, layerModel.hoveredItem.rootElement);
 	}
+	/**
+	 * Handle Draggable events
+	 */
+	public function onDrag(e:Event) {
+		trace("onDrag");
+		isDragging=true;
+	}
+	/**
+	 * Handle Draggable events
+	 */
+	public function onDrop(e:Event) {
+		trace("onDrop");
+		isDragging=false;
+	}
+
 	//////////////////////////////////////////////////////
 	// Selection clicks
 	//////////////////////////////////////////////////////
@@ -227,55 +252,82 @@ class SelectionController extends DisplayObject
 	 * Handle mouse events
 	 */
 	public function onMouseMove(e:Event) {
-		// browse all layers to check if it should be set as hovered
-		var found = false;
-		var layers = DomTools.getElementsByAttribute(rootElement, "data-silex-layer-id", "*");
-		for (idx in 0...layers.length){
-			if (checkIsOver(layers[idx], e.clientX, e.clientY)){
-				// the mouse is over a layer
-				// get the Brix application from the loaded publication
-				var application = PublicationModel.getInstance().application;
-				// get the Layer instance associated with the layers[idx]
-				var layerList = application.getAssociatedComponents(layers[idx], Layer); // there should be 1 and only 1 element here
-				if (layerList.length != 1){
-					trace("Warning: there should be 1 and only 1 Layer instance associated with this node, not "+layerList.length);
-				}
-				layerModel.hoveredItem = layerList.first();
-				found = true;
-				break;
-			}
-		}
-		if (found == false){
-			layerModel.hoveredItem = null;
-		}else{
-			
+		// do nothing while dragging 
+		if (isDragging){
+			setMarkerPosition(hoverLayerMarker, null);
+			setMarkerPosition(hoverMarker, null);
+			return;
 		}
 
-		// mouse move on the currently hovered layer
-		var found = false;
-		if (layerModel.hoveredItem != null){
-			// browse all components to check if it should be set as hovered
-			var comps = DomTools.getElementsByAttribute(layerModel.hoveredItem.rootElement, "data-silex-component-id", "*");
-			for (idx in 0...comps.length){
-				if (checkIsOver(comps[idx], e.clientX, e.clientY)){
-					// the mouse is over a layer
-					componentModel.hoveredItem = comps[idx];
-					found = true;
-					break;
+		// browse all layers to check if it should be set as hovered
+		var layerFound:Layer = null;
+		var layerFoundBoundingBox:BoundingBox = null;
+		var layers = DomTools.getElementsByAttribute(rootElement, "data-silex-layer-id", "*");
+		for (idx in 0...layers.length){
+			// get the boundig box for the element
+			var boundingBox = DomTools.getElementBoundingBox(layers[idx]);
+			// check if the mouse is over the layer
+			if (checkIsOver(boundingBox, e.clientX, e.clientY)){
+				// if a layer has allready been found, take the smallest of the two
+				if (layerFound == null || (boundingBox.w * boundingBox.h < layerFoundBoundingBox.w * layerFoundBoundingBox.h)){
+					// get the Brix application from the loaded publication
+					var application = PublicationModel.getInstance().application;
+					// get the Layer instance associated with the layers[idx]
+					var layerList = application.getAssociatedComponents(layers[idx], Layer); // there should be 1 and only 1 element here
+					if (layerList.length != 1){
+						trace("Warning: there should be 1 and only 1 Layer instance associated with this node, not "+layerList.length);
+					}
+					layerFound = layerList.first();
+					layerFoundBoundingBox = boundingBox;
 				}
 			}
 		}
-		if (found == false){
-			componentModel.hoveredItem = null;
-		}else{
+		layerModel.hoveredItem = layerFound;
+
+		// **
+		// get the currently hovered component
+		var compFound:HtmlDom = null;
+		var compFoundBoundingBox:BoundingBox = null;
+//		if (layerModel.hoveredItem != null)
+		{
+			// browse all components to check if it should be set as hovered
+//			var comps = DomTools.getElementsByAttribute(layerModel.hoveredItem.rootElement, "data-silex-component-id", "*");
+			var comps = DomTools.getElementsByAttribute(rootElement, "data-silex-component-id", "*");
+			for (idx in 0...comps.length){
+				// get the boundig box for the element
+				var boundingBox = DomTools.getElementBoundingBox(comps[idx]);
+				// check if the mouse is over the component
+				if (checkIsOver(boundingBox, e.clientX, e.clientY)){
+					// if a component has allready been found, take the smallest of the two
+					if (compFound == null || (boundingBox.w * boundingBox.h < compFoundBoundingBox.w * compFoundBoundingBox.h)){
+						// the mouse is over a component
+						compFound = comps[idx];
+						compFoundBoundingBox = boundingBox;
+					}
+				}
+			}
+		}
+		componentModel.hoveredItem = compFound;
+
+		// reset selection when over a new item
+		// this is made to be abble to select an item which is under the current selection
+		if (componentModel.selectedItem != null){
+			if (componentModel.selectedItem != compFound && compFound != null)
+				setMarkerPosition(selectionMarker, null);
+			else
+				setMarkerPosition(selectionMarker, componentModel.selectedItem);
+		}
+		else if (layerModel.selectedItem != null){
+			if (layerModel.selectedItem != layerFound && layerFound != null)
+				setMarkerPosition(selectionLayerMarker, null);
+			else
+				setMarkerPosition(selectionLayerMarker, layerModel.selectedItem.rootElement);
 		}
 	}
 	/**
 	 * Check if the mouse is over a given node
 	 */
-	private function checkIsOver(target:HtmlDom, mouseX:Int, mouseY:Int):Bool{
-		// get the boundig box for the element
-		var boundingBox = DomTools.getElementBoundingBox(target);
+	private function checkIsOver(boundingBox:BoundingBox, mouseX:Int, mouseY:Int):Bool{
 		// return true if the mouse is in the bounding box
 		var res = mouseX > boundingBox.x 
 			&& mouseX < boundingBox.x+boundingBox.w

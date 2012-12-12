@@ -1510,7 +1510,7 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 			this.setAsBestDropZone(null);
 			this.setAsBestDropZone(this.getBestDropZone(this.currentMouseX,this.currentMouseY));
 			var event = js.Lib.document.createEvent("CustomEvent");
-			event.initCustomEvent("dragEventMove",false,false,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
+			event.initCustomEvent("dragEventMove",true,true,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
 			this.rootElement.dispatchEvent(event);
 		}
 	}
@@ -1535,11 +1535,11 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 				this.rootElement.parentNode.removeChild(this.rootElement);
 				this.bestDropZone.parent.insertBefore(this.rootElement,this.bestDropZone.parent.childNodes[this.bestDropZone.position]);
 				var event = js.Lib.document.createEvent("CustomEvent");
-				event.initCustomEvent("dragEventDropped",false,false,{ dropZone : this.bestDropZone, target : this.bestDropZone.parent, draggable : this});
+				event.initCustomEvent("dragEventDropped",true,true,{ dropZone : this.bestDropZone, target : this.bestDropZone.parent, draggable : this});
 				this.bestDropZone.parent.dispatchEvent(event);
 			}
 			var event = js.Lib.document.createEvent("CustomEvent");
-			event.initCustomEvent("dragEventDropped",false,false,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
+			event.initCustomEvent("dragEventDropped",true,true,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
 			this.rootElement.dispatchEvent(event);
 			this.state = brix.component.interaction.DraggableState.none;
 			this.resetRootElementStyle();
@@ -1564,7 +1564,7 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 			js.Lib.document.body.addEventListener("mousemove",this.moveCallback,false);
 			this.move(e);
 			var event = js.Lib.document.createEvent("CustomEvent");
-			event.initCustomEvent("dragEventDrag",false,false,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
+			event.initCustomEvent("dragEventDrag",true,true,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
 			this.rootElement.dispatchEvent(event);
 		}
 		e.preventDefault();
@@ -7764,8 +7764,6 @@ silex.component.ComponentModel.prototype = $extend(silex.ModelBase.prototype,{
 	}
 	,setSelectedItem: function(item) {
 		if(item != null) {
-			var layer = silex.publication.PublicationModel.getInstance().application.getAssociatedComponents(item.parentNode,brix.component.navigation.Layer).first();
-			silex.layer.LayerModel.getInstance().setSelectedItem(layer);
 		}
 		return silex.ModelBase.prototype.setSelectedItem.call(this,item);
 	}
@@ -9085,6 +9083,7 @@ silex.ui.stage.PublicationViewer.prototype = $extend(brix.component.ui.DisplayOb
 	,__class__: silex.ui.stage.PublicationViewer
 });
 silex.ui.stage.SelectionController = function(rootElement,BrixId) {
+	this.isDragging = false;
 	brix.component.ui.DisplayObject.call(this,rootElement,BrixId);
 	var selectionContainer = js.Lib.document.body;
 	this.hoverLayerMarker = brix.util.DomTools.getSingleElement(rootElement,"hover-layer-marker",true);
@@ -9097,6 +9096,8 @@ silex.ui.stage.SelectionController = function(rootElement,BrixId) {
 	this.hoverMarker.addEventListener("mouseout",$bind(this,this.onOutHover),false);
 	this.selectionMarker = brix.util.DomTools.getSingleElement(rootElement,"selection-marker",true);
 	this.selectionMarker.addEventListener("click",$bind(this,this.onClickSelection),false);
+	rootElement.addEventListener("dragEventDropped",$bind(this,this.onDrop),false);
+	rootElement.addEventListener("dragEventDrag",$bind(this,this.onDrag),false);
 	rootElement.addEventListener("mousemove",$bind(this,this.onMouseMove),false);
 	this.componentModel = silex.component.ComponentModel.getInstance();
 	this.componentModel.addEventListener("onComponentSelectionChange",$bind(this,this.onSelectionChanged),"SelectionController class");
@@ -9152,42 +9153,53 @@ silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.Display
 	,onLayerSelectionChanged: function(event) {
 		if(this.layerModel.selectedItem == null || this.componentModel.selectedItem != null) this.setMarkerPosition(this.selectionLayerMarker,null); else this.setMarkerPosition(this.selectionLayerMarker,this.layerModel.selectedItem.rootElement);
 	}
-	,checkIsOver: function(target,mouseX,mouseY) {
-		var boundingBox = brix.util.DomTools.getElementBoundingBox(target);
+	,checkIsOver: function(boundingBox,mouseX,mouseY) {
 		var res = mouseX > boundingBox.x && mouseX < boundingBox.x + boundingBox.w && mouseY > boundingBox.y && mouseY < boundingBox.y + boundingBox.h;
 		return res;
 	}
 	,onMouseMove: function(e) {
-		var found = false;
+		if(this.isDragging) {
+			this.setMarkerPosition(this.hoverLayerMarker,null);
+			this.setMarkerPosition(this.hoverMarker,null);
+			return;
+		}
+		var layerFound = null;
+		var layerFoundBoundingBox = null;
 		var layers = brix.util.DomTools.getElementsByAttribute(this.rootElement,"data-silex-layer-id","*");
 		var _g1 = 0, _g = layers.length;
 		while(_g1 < _g) {
 			var idx = _g1++;
-			if(this.checkIsOver(layers[idx],e.clientX,e.clientY)) {
-				var application = silex.publication.PublicationModel.getInstance().application;
-				var layerList = application.getAssociatedComponents(layers[idx],brix.component.navigation.Layer);
-				if(layerList.length != 1) haxe.Log.trace("Warning: there should be 1 and only 1 Layer instance associated with this node, not " + layerList.length,{ fileName : "SelectionController.hx", lineNumber : 241, className : "silex.ui.stage.SelectionController", methodName : "onMouseMove"});
-				this.layerModel.setHoveredItem(layerList.first());
-				found = true;
-				break;
-			}
-		}
-		if(found == false) this.layerModel.setHoveredItem(null); else {
-		}
-		var found1 = false;
-		if(this.layerModel.hoveredItem != null) {
-			var comps = brix.util.DomTools.getElementsByAttribute(this.layerModel.hoveredItem.rootElement,"data-silex-component-id","*");
-			var _g1 = 0, _g = comps.length;
-			while(_g1 < _g) {
-				var idx = _g1++;
-				if(this.checkIsOver(comps[idx],e.clientX,e.clientY)) {
-					this.componentModel.setHoveredItem(comps[idx]);
-					found1 = true;
-					break;
+			var boundingBox = brix.util.DomTools.getElementBoundingBox(layers[idx]);
+			if(this.checkIsOver(boundingBox,e.clientX,e.clientY)) {
+				if(layerFound == null || boundingBox.w * boundingBox.h < layerFoundBoundingBox.w * layerFoundBoundingBox.h) {
+					var application = silex.publication.PublicationModel.getInstance().application;
+					var layerList = application.getAssociatedComponents(layers[idx],brix.component.navigation.Layer);
+					if(layerList.length != 1) haxe.Log.trace("Warning: there should be 1 and only 1 Layer instance associated with this node, not " + layerList.length,{ fileName : "SelectionController.hx", lineNumber : 278, className : "silex.ui.stage.SelectionController", methodName : "onMouseMove"});
+					layerFound = layerList.first();
+					layerFoundBoundingBox = boundingBox;
 				}
 			}
 		}
-		if(found1 == false) this.componentModel.setHoveredItem(null); else {
+		this.layerModel.setHoveredItem(layerFound);
+		var compFound = null;
+		var compFoundBoundingBox = null;
+		var comps = brix.util.DomTools.getElementsByAttribute(this.rootElement,"data-silex-component-id","*");
+		var _g1 = 0, _g = comps.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			var boundingBox = brix.util.DomTools.getElementBoundingBox(comps[idx]);
+			if(this.checkIsOver(boundingBox,e.clientX,e.clientY)) {
+				if(compFound == null || boundingBox.w * boundingBox.h < compFoundBoundingBox.w * compFoundBoundingBox.h) {
+					compFound = comps[idx];
+					compFoundBoundingBox = boundingBox;
+				}
+			}
+		}
+		this.componentModel.setHoveredItem(compFound);
+		if(this.componentModel.selectedItem != null) {
+			if(this.componentModel.selectedItem != compFound && compFound != null) this.setMarkerPosition(this.selectionMarker,null); else this.setMarkerPosition(this.selectionMarker,this.componentModel.selectedItem);
+		} else if(this.layerModel.selectedItem != null) {
+			if(this.layerModel.selectedItem != layerFound && layerFound != null) this.setMarkerPosition(this.selectionLayerMarker,null); else this.setMarkerPosition(this.selectionLayerMarker,this.layerModel.selectedItem.rootElement);
 		}
 	}
 	,onOutLayerHover: function(e) {
@@ -9209,12 +9221,21 @@ silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.Display
 	,onClickHover: function(e) {
 		this.componentModel.setSelectedItem(this.componentModel.hoveredItem);
 	}
+	,onDrop: function(e) {
+		haxe.Log.trace("onDrop",{ fileName : "SelectionController.hx", lineNumber : 181, className : "silex.ui.stage.SelectionController", methodName : "onDrop"});
+		this.isDragging = false;
+	}
+	,onDrag: function(e) {
+		haxe.Log.trace("onDrag",{ fileName : "SelectionController.hx", lineNumber : 174, className : "silex.ui.stage.SelectionController", methodName : "onDrag"});
+		this.isDragging = true;
+	}
 	,redraw: function(e) {
 		this.setMarkerPosition(this.selectionMarker,this.componentModel.selectedItem);
 		this.setMarkerPosition(this.hoverMarker,this.componentModel.hoveredItem);
 		if(this.componentModel.selectedItem != null || this.layerModel.selectedItem == null) this.setMarkerPosition(this.selectionLayerMarker,null); else this.setMarkerPosition(this.selectionLayerMarker,this.layerModel.selectedItem.rootElement);
 		if(this.componentModel.hoveredItem != null || this.layerModel.hoveredItem == null) this.setMarkerPosition(this.hoverLayerMarker,null); else this.setMarkerPosition(this.hoverLayerMarker,this.layerModel.hoveredItem.rootElement);
 	}
+	,isDragging: null
 	,layerModel: null
 	,componentModel: null
 	,hoverLayerMarker: null
