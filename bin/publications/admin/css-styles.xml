@@ -21,11 +21,12 @@ still missing:
 
 -->
 	<category>
-		<name>Box Model</name>
+		<name>Box-Model</name>
 		<group>
 			<name>Dimensions</name>
 			<property>
 				<name>width</name>
+				<cssName>width</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -42,6 +43,7 @@ still missing:
 			</property>
 			<property>
 				<name>height</name>
+				<cssName>height</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -57,7 +59,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>max-height</name>
+				<name>maxHeight</name>
+				<cssName>max-height</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -73,7 +76,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>max-width</name>
+				<name>maxWidth</name>
+				<cssName>max-width</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -89,7 +93,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>min-height</name>
+				<name>minHeight</name>
+				<cssName>min-height</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -101,7 +106,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>min-width</name>
+				<name>minWidth</name>
+				<cssName>min-width</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -116,7 +122,8 @@ still missing:
 		<group>
 			<name>Margins And Paddings</name>
 			<property>
-				<name>margin-right</name>
+				<name>marginRight</name>
+				<cssName>margin-right</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -132,7 +139,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>margin-left</name>
+				<name>marginLeft</name>
+				<cssName>margin-left</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -148,7 +156,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>margin-top</name>
+				<name>marginTop</name>
+				<cssName>margin-top</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -164,7 +173,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>margin-bottom</name>
+				<name>marginBottom</name>
+				<cssName>margin-bottom</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -180,7 +190,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>padding-top</name>
+				<name>paddingTop</name>
+				<cssName>padding-top</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -192,7 +203,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>padding-right</name>
+				<name>paddingRight</name>
+				<cssName>padding-right</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -204,7 +216,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>padding-bottom</name>
+				<name>paddingBottom</name>
+				<cssName>padding-bottom</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -216,7 +229,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>padding-left</name>
+				<name>paddingLeft</name>
+				<cssName>padding-left</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -230,11 +244,12 @@ still missing:
 		</group>
 	</category>
 	<category>
-		<name>Box Design</name>
+		<name>Box-Design</name>
 		<group>
 			<name>Background</name>
 			<property>
-				<name>background-attachment</name>
+				<name>backgroundAttachment</name>
+				<cssName>background-attachment</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -245,7 +260,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>background-color</name>
+				<name>backgroundColor</name>
+				<cssName>background-color</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -254,7 +270,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>background-image</name>
+				<name>backgroundImage</name>
+				<cssName>background-image</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -263,44 +280,22 @@ still missing:
 					<option>none</option>
 				</type>
 				<type>
-					<name>uri</name>
+					<name>uri-multiple</name>
 				</type>
 			</property>
 			<property>
-				<name>background-position-x</name>
+				<name>backgroundPosition</name>
+				<cssName>background-position</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
 				<type>
-					<name>keyword</name>
-					<option>left</option>
-					<option>center</option>
-					<option>right</option>
-				</type>
-				<type>
-					<name>length</name>
-				</type>
-				<type>
-					<name>percentage</name>
+					<name>background-position</name>
 				</type>
 			</property>
 			<property>
-				<name>background-position-y</name>
-				<type>
-					<name>keyword</name>
-					<option>top</option>
-					<option>center</option>
-					<option>bottom</option>
-				</type>
-				<type>
-					<name>length</name>
-				</type>
-				<type>
-					<name>percentage</name>
-				</type>
-			</property>
-			<property>
-				<name>background-repeat</name>
+				<name>backgroundRepeat</name>
+				<cssName>background-repeat</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -316,7 +311,8 @@ still missing:
 		<group>
 			<name>Border</name>
 			<property>
-				<name>border-top-color</name>
+				<name>borderTopColor</name>
+				<cssName>border-top-color</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -325,7 +321,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>border-left-color</name>
+				<name>borderLeftColor</name>
+				<cssName>border-left-color</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -334,7 +331,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>border-bottom-color</name>
+				<name>borderBottomColor</name>
+				<cssName>border-bottom-color</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -343,7 +341,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>border-right-color</name>
+				<name>borderRightColor</name>
+				<cssName>border-right-color</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -352,7 +351,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>border-top-style</name>
+				<name>borderTopStyle</name>
+				<cssName>border-top-style</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -363,7 +363,7 @@ still missing:
 					<option help="The border is a series of dots.">dotted</option>
 					<option help="The border is a series of short line segments.">dashed</option>
 					<option help="The border is a single line segment.">solid</option>
-					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double.</option>
+					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double</option>
 					<option help="The border looks as though it were carved into the canvas.">groove</option>
 					<option help="The opposite of 'groove': the border looks as though it were coming out of the canvas.">ridge</option>
 					<option help="The border makes the box look as though it were embedded in the canvas.">inset</option>
@@ -371,7 +371,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>border-left-style</name>
+				<name>borderLeftStyle</name>
+				<cssName>border-left-style</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -382,7 +383,7 @@ still missing:
 					<option help="The border is a series of dots.">dotted</option>
 					<option help="The border is a series of short line segments.">dashed</option>
 					<option help="The border is a single line segment.">solid</option>
-					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double.</option>
+					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double</option>
 					<option help="The border looks as though it were carved into the canvas.">groove</option>
 					<option help="The opposite of 'groove': the border looks as though it were coming out of the canvas.">ridge</option>
 					<option help="The border makes the box look as though it were embedded in the canvas.">inset</option>
@@ -390,7 +391,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>border-bottom-style</name>
+				<name>borderBottomStyle</name>
+				<cssName>border-bottom-style</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -401,7 +403,7 @@ still missing:
 					<option help="The border is a series of dots.">dotted</option>
 					<option help="The border is a series of short line segments.">dashed</option>
 					<option help="The border is a single line segment.">solid</option>
-					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double.</option>
+					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double</option>
 					<option help="The border looks as though it were carved into the canvas.">groove</option>
 					<option help="The opposite of 'groove': the border looks as though it were coming out of the canvas.">ridge</option>
 					<option help="The border makes the box look as though it were embedded in the canvas.">inset</option>
@@ -409,7 +411,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>border-right-style</name>
+				<name>borderRightStyle</name>
+				<cssName>border-right-style</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -420,7 +423,7 @@ still missing:
 					<option help="The border is a series of dots.">dotted</option>
 					<option help="The border is a series of short line segments.">dashed</option>
 					<option help="The border is a single line segment.">solid</option>
-					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double.</option>
+					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double</option>
 					<option help="The border looks as though it were carved into the canvas.">groove</option>
 					<option help="The opposite of 'groove': the border looks as though it were coming out of the canvas.">ridge</option>
 					<option help="The border makes the box look as though it were embedded in the canvas.">inset</option>
@@ -428,7 +431,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>border-top-width</name>
+				<name>borderTopWidth</name>
+				<cssName>border-top-width</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -443,7 +447,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>border-left-width</name>
+				<name>borderLeftWidth</name>
+				<cssName>border-left-width</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -458,7 +463,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>border-bottom-width</name>
+				<name>borderBottomWidth</name>
+				<cssName>border-bottom-width</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -473,7 +479,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>border-right-width</name>
+				<name>borderRightWidth</name>
+				<cssName>border-right-width</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -495,6 +502,7 @@ still missing:
 			<name>Positionning</name>
 			<property>
 				<name>top</name>
+				<cssName>top</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -511,6 +519,7 @@ still missing:
 			</property>
 			<property>
 				<name>left</name>
+				<cssName>left</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -527,6 +536,7 @@ still missing:
 			</property>
 			<property>
 				<name>right</name>
+				<cssName>right</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -543,6 +553,7 @@ still missing:
 			</property>
 			<property>
 				<name>bottom</name>
+				<cssName>bottom</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -559,6 +570,7 @@ still missing:
 			</property>
 			<property>
 				<name>position</name>
+				<cssName>position</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -572,6 +584,7 @@ still missing:
 			</property>
 			<property>
 				<name>float</name>
+				<cssName>float</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -584,6 +597,7 @@ still missing:
 			</property>
 			<property>
 				<name>display</name>
+				<cssName>display</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -608,6 +622,7 @@ still missing:
 			</property>
 			<property>
 				<name>clear</name>
+				<cssName>clear</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -620,7 +635,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>z-index</name>
+				<name>zIndex</name>
+				<cssName>z-index</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -636,7 +652,8 @@ still missing:
 		<group>
 			<name>Tables</name>
 			<property>
-				<name>empty-cells</name>
+				<name>emptyCells</name>
+				<cssName>empty-cells</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -647,7 +664,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>table-layout</name>
+				<name>tableLayout</name>
+				<cssName>table-layout</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -665,6 +683,7 @@ still missing:
 			<name>Basic</name>
 			<property>
 				<name>color</name>
+				<cssName>color</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -673,7 +692,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>letter-spacing</name>
+				<name>letterSpacing</name>
+				<cssName>letter-spacing</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -686,7 +706,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>line-height</name>
+				<name>lineHeight</name>
+				<cssName>line-height</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -705,7 +726,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>text-align</name>
+				<name>textAlign</name>
+				<cssName>text-align</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -718,7 +740,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>text-decoration</name>
+				<name>textDecoration</name>
+				<cssName>text-decoration</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -732,7 +755,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>text-indent</name>
+				<name>textIndent</name>
+				<cssName>text-indent</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -744,7 +768,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>text-transform</name>
+				<name>textTransform</name>
+				<cssName>text-transform</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -757,7 +782,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>vertical-align</name>
+				<name>verticalAlign</name>
+				<cssName>vertical-align</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -780,7 +806,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>white-space</name>
+				<name>whiteSpace</name>
+				<cssName>white-space</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -794,7 +821,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>word-spacing</name>
+				<name>wordSpacing</name>
+				<cssName>word-spacing</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -813,7 +841,8 @@ still missing:
 		<group>
 			<name>Font</name>
 			<property>
-				<name>font-family</name>
+				<name>fontFamily</name>
+				<cssName>font-family</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -825,7 +854,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>font-size</name>
+				<name>fontSize</name>
+				<cssName>font-size</cssName>
 				<type>
 					<name>font-absolute-size</name>
 				</type>
@@ -843,7 +873,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>font-style</name>
+				<name>fontStyle</name>
+				<cssName>font-style</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -855,7 +886,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>font-variant</name>
+				<name>fontVariant</name>
+				<cssName>font-variant</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -866,7 +898,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>font-weight</name>
+				<name>fontWeight</name>
+				<cssName>font-weight</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -892,6 +925,7 @@ still missing:
 			<name>Advanced </name>
 			<property>
 				<name>direction</name>
+				<cssName>direction</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -902,7 +936,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>unicode-bidi</name>
+				<name>unicodeBidi</name>
+				<cssName>unicode-bidi</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -917,7 +952,8 @@ still missing:
 		<group>
 			<name>List</name>
 			<property>
-				<name>caption-side</name>
+				<name>captionSide</name>
+				<cssName>caption-side</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -928,7 +964,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>list-style-image</name>
+				<name>listStyleImage</name>
+				<cssName>list-style-image</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -941,7 +978,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>list-style-position</name>
+				<name>listStylePosition</name>
+				<cssName>list-style-position</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -952,7 +990,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>list-style-type</name>
+				<name>listStyleType</name>
+				<cssName>list-style-type</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -978,11 +1017,12 @@ still missing:
 		</group>
 	</category>
 	<category>
-		<name>Visual Effects</name>
+		<name>Visual-Effects</name>
 		<group>
 			<name>Basic</name>
 			<property>
 				<name>clip</name>
+				<cssName>clip</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -1024,6 +1064,7 @@ still missing:
 			</property>
 			<property>
 				<name>overflow</name>
+				<cssName>overflow</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -1037,6 +1078,7 @@ still missing:
 			</property>
 			<property>
 				<name>opacity</name>
+				<cssName>opacity</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -1046,6 +1088,7 @@ still missing:
 			</property>
 			<property>
 				<name>visibility</name>
+				<cssName>visibility</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -1060,7 +1103,8 @@ still missing:
 		<group>
 			<name>Shadows And Outlines</name>
 			<property>
-				<name>outline-color</name>
+				<name>outlineColor</name>
+				<cssName>outline-color</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -1073,7 +1117,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>outline-style</name>
+				<name>outlineStyle</name>
+				<cssName>outline-style</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -1084,7 +1129,7 @@ still missing:
 					<option help="The border is a series of dots.">dotted</option>
 					<option help="The border is a series of short line segments.">dashed</option>
 					<option help="The border is a single line segment.">solid</option>
-					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double.</option>
+					<option help="The border is two solid lines. The sum of the two lines and the space between them equals the value of 'border-width'">double</option>
 					<option help="The border looks as though it were carved into the canvas.">groove</option>
 					<option help="The opposite of 'groove': the border looks as though it were coming out of the canvas.">ridge</option>
 					<option help="The border makes the box look as though it were embedded in the canvas.">inset</option>
@@ -1092,7 +1137,8 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>outline-width</name>
+				<name>outlineWidth</name>
+				<cssName>outline-width</cssName>
 				<type>
 					<name>inherit</name>
 				</type>
@@ -1108,6 +1154,7 @@ still missing:
 			<name>User Interface</name>
 			<property>
 				<name>cursor</name>
+				<cssName>cursor</cssName>
 				<type>
 					<name>inherit</name>
 				</type>

@@ -23,24 +23,15 @@ class HScriptTag implements IBrixComponent {
 	/**
 	 * constructor
 	 */
-	public function new(rootElement:HtmlDom, brixId:String){
-	}
-	/**
-	 * todo: this is temporary, it is a workaround since the composition with brix BrixComponent does not work
-	 */
-	function initBrixComponent(brixInstanceId) {
-		this.brixInstanceId = brixInstanceId;
-		DomTools.doLater(init);
-	} 
-	/**
-	 * init the component
-	 */
-	public function init() : Void {
+	public function new(args:Hash<String>) {
 		if (executed == false){
 			executed = true;
-			var htmlTag = Lib.document.getElementsByTagName("head")[0];
-			Interpreter.getInstance().execScriptTags(htmlTag);
+			DomTools.doLater(findAndInterprete, 5);
 		}
+	}
+	private function findAndInterprete(){
+		var htmlTag = Lib.document.getElementsByTagName("head")[0];
+		Interpreter.getInstance().execScriptTags(htmlTag);
 	}
 	/**
 	 * the Brix Application instance id.

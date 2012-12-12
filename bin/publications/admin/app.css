@@ -3,7 +3,7 @@
 body{
 	margin:0px !important;
 	padding:0px !important;
-	font-family:Arial, Helvetica, sans-serif !important;
+	font-family : Tahoma, Arial, Helvetica, sans-serif !important;
 	width:100% !important;
 	height:100% !important;
 	max-width: none !important;
@@ -537,7 +537,7 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 .group-ribbon, .ribbon-tabs a{
 	text-decoration:none;
 	color:#3C3C3C;
-	font-family:Tahoma;
+	font-family : Tahoma, Arial, Helvetica, sans-serif;
 	font-size:13px;
 }
 .layer-list ul li{
@@ -545,7 +545,7 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 }
 
 .ribbon-list .listSelectedItem{
-	color:#7F7F7F;
+	color:black;
 }
 
 /* **************** */
@@ -593,15 +593,20 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 .ribbon-list li:hover{
 }
 .ribbon-list .solid{
-}
-.ribbon-list .solid{
-	height:35px;
-	width:50px;
+	height:48px;
+	width:57px;
 	background:LightGray;
 	display:inline-block;
 	border:1px solid black;
-	margin-top:7px;
+	margin:5px 5px 0 5px;
 }
+.ribbon-list.layer-list ul li p,
+.ribbon-list.page-list ul li p{
+	margin-top: 0;
+	text-align: center;
+	overflow: hidden;
+}
+
 .temp-icon {
     background-image: url(../admin/assets/temporary-icon.png);
     background-size: 50px auto;
@@ -609,9 +614,8 @@ box-shadow: inset 0px 0px 2px 2px yellow;
     width: 50px;
 }
 .assets-page{
-	background:Gray;
-	border:1px solid black;
 	float: left;
+	height: 100%;
 }
 .ribbon-button{
 	cursor: pointer;
@@ -627,6 +631,8 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 	height:70px;
 	margin:0;
 	padding:0;
+	margin-left:3px;
+	margin-top:3px;
 }
 
 .ribbon-list ul.small{
@@ -634,10 +640,7 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 }
 
 .ribbon-list ul li{
-	display:block;
-	float:left;
-	margin-left:3px;
-	margin-top:3px;
+	display:inline-block;
 	border:1px solid black;
 	width:69px;
 	height:71px;
@@ -686,15 +689,15 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 	background-image: url("assets/save-as_clic-state.png");
 }
 
-.ribbon-list ul li.save-publication-as-copy{
+.ribbon-list ul li.save-publication-copy{
 	background-image: url("assets/save-as-copy_normal-state.png");
 }
 
-.ribbon-list ul li.save-publication-as-copy:hover{
+.ribbon-list ul li.save-publication-copy:hover{
 	background-image: url("assets/save-as-copy_roll-over-state.png");
 }
 
-.ribbon-list ul li.save-publication-as-copy:active{
+.ribbon-list ul li.save-publication-copy:active{
 	background-image: url("assets/save-as-copy_clic-state.png");
 }
 
@@ -794,12 +797,27 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 	border-left: solid 1px #CCCCCC;
 	padding: 0 10px;
 }
-.silex-toolbox .property-container{
-	padding: 0;
-	margin: 0;
+.silex-toolbox .PropertyEditor .property-container label,
+.silex-toolbox .properties-link .property-container label,
+.silex-toolbox .properties-html-editor .property-container label{
+	clear: both;
+	display: block;
+	margin: 10px 0 10px 0;
+}
+.silex-toolbox .internal-link-editor{
+	width: 95%;
+}
+.silex-toolbox .PropertyEditor .type-container{
+	width: 95%;
 }
 .silex-toolbox .inherit-style{
 	display: none;
+}
+.silex-toolbox .uri-multiple-style{
+	clear: both;
+}
+.silex-toolbox .uri-style{
+	clear: both;
 }
 .silex-toolbox .percentage-style input{
 	margin-top: 5px;
@@ -872,7 +890,6 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 }
 .silex-toolbox .LinkToPage.page-opened{
 	background-color:white;
-	font-weight: normal;
 	color: #3C3C3C;
 }
 
@@ -938,6 +955,8 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 .silex-toolbox fieldset{
 	margin-left:auto;
 	margin-right:auto;
+	margin-bottom: 5px;
+	margin-top: 5px;
 	font-size:12px;
 }
 
@@ -947,20 +966,6 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 
 }
 
-.silex-toolbox fieldset.PropertyEditor{
-
-	margin-left:auto;
-	margin-right:auto;
-	font-size:12px;
-	width:90%;
-}
-.silex-toolbox fieldset.PropertyEditor legend{
-	/*margin-left:auto;
-	margin-right:auto;*/
-	font-weight:bold;
-
-
-}
 .silex-toolbox fieldset.TextStyleEditor{
 	margin-left:auto;
 	margin-right:auto;

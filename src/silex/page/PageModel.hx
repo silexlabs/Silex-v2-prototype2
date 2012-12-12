@@ -58,6 +58,12 @@ class PageModel extends ModelBase<Page>{
 	 */
 	public static inline var ON_LIST_CHANGE = "onPageListChange";
 	/**
+	 * Cleanup a name so that it can be used as a page name, i.e. class name
+	 */
+	static public function cleanupForPageName(name:String):String {
+		return name.toLowerCase().split(" ").join("");
+	}
+	/**
 	 * Models are singletons
 	 * Constructor is private
 	 */
@@ -84,7 +90,7 @@ class PageModel extends ModelBase<Page>{
 	public function addPage(name:String = ""){
 		// default value
 		if (name == "") name = getNewName();
-		var className = name.toLowerCase().split(" ").join("");
+		var className = cleanupForPageName(name);
 		
 		// get the publication model
 		var publicationModel = PublicationModel.getInstance();
@@ -123,7 +129,7 @@ class PageModel extends ModelBase<Page>{
 		var layerInstance = publicationModel.application.getAssociatedComponents(navBarNode, Layer).first();
 		var textElement = ComponentModel.getInstance().addComponent("div", layerInstance, navBarNode.childNodes.length);
 		PropertyModel.getInstance().setAttribute(textElement, "title", "Link to "+name);
-		PropertyModel.getInstance().setProperty(textElement, "innerHTML", "<p>"+name+"</p>");
+		PropertyModel.getInstance().setProperty(textElement, "innerHTML", name);
 		ComponentModel.getInstance().makeLinkToPage(textElement, className);
 
 		// open the new page
@@ -153,7 +159,7 @@ class PageModel extends ModelBase<Page>{
 
 		// remove the link from the nav bar
 		var navBarNode = DomTools.getSingleElement(publicationModel.viewHtmlDom, LayerModel.NAV_LAYER_NAME, true);
-		var linkNodes = navBarNode.getElementsByClassName("LinkToPage");
+		var linkNodes = navBarNode.getElementsByClassName("SilexLink");
 		// browse link nodes and remove the one which links to the page
 		for (nodeIdx in 0...linkNodes.length){
 			var node = linkNodes[nodeIdx];
@@ -221,6 +227,7 @@ class PageModel extends ModelBase<Page>{
 		// get the view and model DOM
 		var viewHtmlDom = publicationModel.viewHtmlDom;
 		var modelHtmlDom = publicationModel.modelHtmlDom;
+		var headHtmlDom = publicationModel.headHtmlDom;
 
 		// update all layers which has the class name as css rule
 		var viewNodes = Layer.getLayerNodes(page.name, publicationModel.application.id, viewHtmlDom);
@@ -238,6 +245,24 @@ class PageModel extends ModelBase<Page>{
 			DomTools.removeClass(layerNode, page.name);
 			DomTools.addClass(layerNode, newName);
 		}
+		// update the initial page name if needed
+		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, headHtmlDom);
+		if (initialPageName == page.name){
+			DomTools.setMeta(Page.CONFIG_INITIAL_PAGE_NAME, newName, null, headHtmlDom);
+		}
+
+		// update the links
+		var links = publicationModel.application.getComponents(LinkBase);
+		// browse links and update those which link to the page
+		trace("links: "+links);
+		for (link in links){
+			trace("update link "+link);
+			if (link.linkName == page.name){
+				ComponentModel.getInstance().updateLink(link.rootElement, page.name, newName);
+				link.linkName = newName;
+			}
+		}
+
 		// change the page name
 		var viewPageNode = DomTools.getElementsByAttribute(viewHtmlDom, "name", page.name)[0];
 		var modelPageNode = DomTools.getElementsByAttribute(modelHtmlDom, "name", page.name)[0];

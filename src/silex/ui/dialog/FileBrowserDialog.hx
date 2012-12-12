@@ -17,6 +17,78 @@ import silex.publication.PublicationData;
  */
 class FileBrowserDialog extends DialogBase
 {
+	////////////////////////////////////////////////////////////////////////
+	// static helper methods
+	////////////////////////////////////////////////////////////////////////
+	/**
+	 * open file browser
+	 * called when the user clicks on a button with "select-file-button" class
+	 */
+	public static function selectMultipleFiles(userCallback:Array<String>->Void, brixInstanceId:String, msg:String = null){
+		// default message
+		if (msg==null) msg = "Double click to select one or more files!";
+		// callback
+		onValidateMultiple = userCallback;
+		// message
+		message = msg;
+		// config
+		expectMultipleFiles = true;
+		// open the dialog
+		Page.openPage(FB_PAGE_NAME, true, null, null, brixInstanceId);
+	}
+	/**
+	 * open file browser
+	 * called when the user clicks on a button with "select-file-button" class
+	 */
+	public static function selectFile(userCallback:String->Void, brixInstanceId:String, msg:String = null){
+		// default message
+		if (msg==null) msg = "Double click to select a file!";
+		// callback
+		onValidate = userCallback;
+		// message
+		message = msg;
+		// config
+		expectMultipleFiles = false;
+		// open the dialog
+		Page.openPage(FB_PAGE_NAME, true, null, null, brixInstanceId);
+	}
+	/**
+	 * compute the relative url from the returned path
+	 * file browser may return a url like http://localhost:8888/Silex/bin/publications/test.com/assets/IMG_0167.JPG
+	 * or /publications/test.com/assets/IMG_0167.JPG
+	 * depending on the browser (chrome / ff)
+	 */
+	public static function getRelativeURLFromFileBrowser(url:String){
+		var idx = url.indexOf("://");
+		// check that we have absolute urls
+		if (idx == -1){ // case of /publications/test.com/assets/IMG_0167.JPG
+			// remove path to the publication folder
+			var pubUrl = "publications/";
+			var idxPubFolder = url.indexOf(pubUrl);
+			if (idxPubFolder >= 0){
+				// remove all the common parts
+				url = url.substr(idxPubFolder + pubUrl.length);
+				// remove publication name if it is the current publication or add the relative path "../"
+				var pubUrl = PublicationModel.getInstance().currentName + "/";
+				var idxPubFolder = url.indexOf(pubUrl);
+				if (idxPubFolder >= 0){
+					// remove all the common parts
+					url = url.substr(idxPubFolder + pubUrl.length);
+				}
+				else{
+					// add the relative path to publication folder
+					url = "../"+url;
+				}
+			}
+		}
+		else{ // case of http://localhost:8888/Silex/bin/publications/test.com/assets/IMG_0167.JPG
+			url = DomTools.abs2rel(url);
+		}
+		return url;
+	}
+	////////////////////////////////////////////////////////////////////////
+	// component methods and attributes
+	////////////////////////////////////////////////////////////////////////
 	/**
 	 * The css class name of the div used to display the file browser
 	 */
@@ -100,6 +172,7 @@ class FileBrowserDialog extends DialogBase
 	 * Called after a click on the submit button
 	 */
 	public function validateMultipleSelection(files:Array<String>) {
+		trace("validateMultipleSelection "+files);
     	if (files != null){
 			if (onValidateMultiple != null){
 				onValidateMultiple(files);

@@ -10,12 +10,16 @@ import silex.property.PropertyModel;
  * This component ihandles boolean CSS properties. 
  * @see 	silex.ui.toolbox.editor.EditorBase
  */
-class NumberEditor extends EditorBase
+class LengthEditor extends EditorBase
 {
 	/**
 	 * input element
 	 */
 	private var inputElement : HtmlDom;
+	/**
+	 * input element
+	 */
+	private var unitElement : HtmlDom;
 	/**
 	 * Constructor
 	 * get references to the inputs
@@ -24,6 +28,8 @@ class NumberEditor extends EditorBase
 		super(rootElement, BrixId);
 		var elements = rootElement.getElementsByTagName("input");
 		inputElement = elements[0];
+		var elements = rootElement.getElementsByTagName("select");
+		unitElement = elements[0];
 	}
 	/**
 	 * reset the values
@@ -31,6 +37,7 @@ class NumberEditor extends EditorBase
 	 */
 	override private function reset() {
 		cast(inputElement).value = "";
+		cast(unitElement).value = "px";
 	}
 	/**
 	 * display the property value
@@ -38,7 +45,26 @@ class NumberEditor extends EditorBase
 	 */
 	override private function load(element:HtmlDom) {
 		var value:String = PropertyModel.getInstance().getStyle(element, propertyName);
-		cast(inputElement).value = value;
+		if (value == null || value == ""){
+			reset();
+		}
+		else{
+			var options = unitElement.getElementsByTagName("option");
+			var unit = "";
+			for (idx in 0...options.length){
+				// if the value ends with one of the units
+				if (StringTools.endsWith(value, cast(options[idx]).value)){
+					// case of a number + unit
+					cast(inputElement).value = Std.string(Std.parseInt(value));
+					// unit
+					unit = cast(options[idx]).value;
+					cast(unitElement).value = unit;
+				}
+			}
+			if (unit==""){
+				reset();
+			}
+		}
 	}
 	/**
 	 * apply the property value
@@ -46,8 +72,9 @@ class NumberEditor extends EditorBase
 	 */
 	override private function apply() {
 		var value = cast(inputElement).value;
-		if (value != "" && value != null){
-			PropertyModel.getInstance().setStyle(selectedItem, propertyName, value);
+		var unit = cast(unitElement).value;
+		if (value != "" && value != null && unit != "" && unit != null){
+			PropertyModel.getInstance().setStyle(selectedItem, propertyName, value+unit);
 		}
 		else{
 			PropertyModel.getInstance().setStyle(selectedItem, propertyName, null);
