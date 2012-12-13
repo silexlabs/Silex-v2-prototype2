@@ -69,7 +69,6 @@ class Silex {
 	 * Open the default page or the page designated by the deeplink
 	 */
 	static public function main() {
-				haxe.Firebug.redirectTraces();
 		trace("Hello Silex!");
 		#if redirectTraces
 			if (haxe.Firebug.detect())

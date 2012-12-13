@@ -2714,7 +2714,6 @@ brix.component.template.TemplateMacros.trace = function(resolve,obj) {
 }
 brix.core = {}
 brix.core.Application = function(id,args) {
-	haxe.Log.trace("new",{ fileName : "Application.hx", lineNumber : 168, className : "brix.core.Application", methodName : "new"});
 	this.dataObject = args;
 	this.id = id;
 	this.nodesIdSequence = 0;
@@ -2738,7 +2737,6 @@ brix.core.Application.main = function() {
 	} else haxe.Log.trace("Warning: Brix can not redirect traces to console, because no console was found",{ fileName : "Application.hx", lineNumber : 134, className : "brix.core.Application", methodName : "main"});
 }
 brix.core.Application.createApplication = function(args) {
-	haxe.Log.trace("createApplication",{ fileName : "Application.hx", lineNumber : 195, className : "brix.core.Application", methodName : "createApplication"});
 	var newId = brix.core.Application.generateUniqueId();
 	var newInstance = new brix.core.Application(newId,args);
 	brix.core.Application.instances.set(newId,newInstance);
@@ -2921,18 +2919,15 @@ brix.core.Application.prototype = {
 		return compsToInit;
 	}
 	,initNode: function(node) {
-		haxe.Log.trace("initNode",{ fileName : "Application.hx", lineNumber : 368, className : "brix.core.Application", methodName : "initNode"});
 		var comps = this.createUIComponents(node);
 		if(comps == null) return;
 		this.initUIComponents(comps);
 	}
 	,initComponents: function() {
-		haxe.Log.trace("initComponents",{ fileName : "Application.hx", lineNumber : 348, className : "brix.core.Application", methodName : "initComponents"});
 		this.createGlobalComponents();
 		this.initNode(this.body);
 	}
 	,initDom: function(appendTo) {
-		haxe.Log.trace("initDom",{ fileName : "Application.hx", lineNumber : 246, className : "brix.core.Application", methodName : "initDom"});
 		this.htmlRootElement = appendTo;
 		if(this.htmlRootElement == null || this.htmlRootElement.nodeType != js.Lib.document.documentElement.nodeType) this.htmlRootElement = js.Lib.document.documentElement;
 		if(this.htmlRootElement == null) {
@@ -2942,7 +2937,6 @@ brix.core.Application.prototype = {
 		this.body = js.Lib.document.body;
 	}
 	,attachBody: function(appendTo) {
-		haxe.Log.trace("attachBody",{ fileName : "Application.hx", lineNumber : 221, className : "brix.core.Application", methodName : "attachBody"});
 		if(appendTo == null) appendTo = js.Lib.document.body;
 		if(this.body.parentNode == null) appendTo.appendChild(this.body);
 		this.body = appendTo;
@@ -7693,16 +7687,17 @@ silex.Silex = function() { }
 $hxClasses["silex.Silex"] = silex.Silex;
 silex.Silex.__name__ = ["silex","Silex"];
 silex.Silex.main = function() {
-	haxe.Firebug.redirectTraces();
-	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 73, className : "silex.Silex", methodName : "main"});
+	if(js.Lib.window.webkitNotifications) haxe.Log.trace("Notifications are supported!",{ fileName : "Silex.hx", lineNumber : 75, className : "silex.Silex", methodName : "main"}); else haxe.Log.trace("Notifications are not supported for this Browser/OS version yet.",{ fileName : "Silex.hx", lineNumber : 78, className : "silex.Silex", methodName : "main"});
+	return;
+	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 82, className : "silex.Silex", methodName : "main"});
 	if(haxe.Firebug.detect()) {
 		haxe.Firebug.redirectTraces();
-		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Silex.hx", lineNumber : 78, className : "silex.Silex", methodName : "main"});
-	} else haxe.Log.trace("Warning: Brix can not redirect traces to console, because no console was found",{ fileName : "Silex.hx", lineNumber : 82, className : "silex.Silex", methodName : "main"});
+		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Silex.hx", lineNumber : 87, className : "silex.Silex", methodName : "main"});
+	} else haxe.Log.trace("Warning: Brix can not redirect traces to console, because no console was found",{ fileName : "Silex.hx", lineNumber : 91, className : "silex.Silex", methodName : "main"});
 	if(js.Lib.document.body == null) js.Lib.window.onload = silex.Silex.init; else silex.Silex.init();
 }
 silex.Silex.init = function(unused) {
-	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 98, className : "silex.Silex", methodName : "init"});
+	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 107, className : "silex.Silex", methodName : "init"});
 	var application = brix.core.Application.createApplication();
 	application.initDom();
 	if(js.Lib.window.location.hash != "" && brix.util.DomTools.getMeta("useDeeplink") != "false") {
