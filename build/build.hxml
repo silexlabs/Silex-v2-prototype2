@@ -19,7 +19,7 @@
 
 -D silexClientSide
 -D silexDebug
--D redirectFlashTraces
+-D redirectTraces
 
 --next
 #########
@@ -33,7 +33,7 @@
 -debug
 -lib hscript
 
--main brix.core.Application
+-main silex.Silex
 --macro brix.core.Builder.create('../src/index-player.html')
 
 #-D brixdebug
@@ -43,4 +43,4 @@
 
 -D silexClientSide
 -D silexDebug
--D redirectFlashTraces
+-D redirectTraces

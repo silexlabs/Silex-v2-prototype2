@@ -51,7 +51,6 @@ discours
 
 ** to do **
 
-
 remarques pol
 - keyboard shortcuts
 - tab => browse all layers and comp 
@@ -60,16 +59,20 @@ remarques pol
 
 
 bugs !
-- absolute => out of container, no more clickable
-- absolute => at the end of the DOM 
 - IE and null in styles
 - replace getElementsByClassName by Application.getComponents
+- display none => how to get it back??
+- display inline => 0 width
 
 toolbox still missing :
-* lock a layer or component from edit
+- messages
+  . saved
+  . error
+  . 
 * tous les styles dans la boite a outil styles
   + descriptions / aide
   + groups and "apply to group" (e.g. for border-left border-rigth border-top and border- bottom)
+* lock a layer or component from edit
 
 - styles hover et active => data-style-* - http://www.w3schools.com/css/css_pseudo_classes.asp
   . selector in each accordion tab => set style to data-*

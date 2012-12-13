@@ -217,7 +217,6 @@ class PropertyModel extends ModelBase<PropertyData>{
 		catch(e:Dynamic){
 			throw("Error: the selected element has no field "+name+" or there was an error ("+e+")");
 		}
-		// create the property data object
 		return value;
 	}
 

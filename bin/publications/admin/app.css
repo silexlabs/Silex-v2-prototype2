@@ -43,8 +43,8 @@ body{
 	color: grey ! important;
 }
 .silex-view .Layer{
-	min-height: 20px;
-	min-width: 20px;
+	min-height: 20px ! important;
+	min-width: 20px ! important;
 }
 .loading-container{
 	width: 100%;
@@ -604,6 +604,8 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 .ribbon-list.page-list ul li p{
 	margin-top: 0;
 	text-align: center;
+	text-overflow:ellipsis;
+	white-space:nowrap;
 	overflow: hidden;
 }
 
@@ -638,10 +640,12 @@ box-shadow: inset 0px 0px 2px 2px yellow;
 .ribbon-list ul.small{
 	width:200px;
 }
+.ribbon-list ul.small li{
+	border:1px solid black;
+}
 
 .ribbon-list ul li{
 	display:inline-block;
-	border:1px solid black;
 	width:69px;
 	height:71px;
 	background-repeat: no-repeat;

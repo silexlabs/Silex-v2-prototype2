@@ -19,7 +19,7 @@
 
 -D silexClientSide
 -D silexDebug
--D redirectFlashTraces
+-D redirectTraces
 
 
 #########
@@ -43,7 +43,7 @@
 -D stopOnError
 
 -D silexClientSide
--D redirectFlashTraces
+-D redirectTraces
 
 # only in js : -D silexDebug
 
