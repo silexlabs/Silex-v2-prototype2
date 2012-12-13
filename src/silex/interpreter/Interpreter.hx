@@ -98,6 +98,7 @@ class Interpreter{
 				exec(script);
 			}catch(e:Dynamic){
 				throw("Error while executing the script in the config file of the publication (debugModeAction variable). The error: "+e);
+				brix.component.interaction.NotificationManager.NotificationManager.notifyError("Error", "An error occured while executing the script. The error: "+e);
 			}
 		}
 	}

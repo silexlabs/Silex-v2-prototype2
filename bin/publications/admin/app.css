@@ -59,6 +59,63 @@ body{
 }
 
 /* **************** */
+/* 	notification	*/
+/* **************** */
+.notification-zone ul{
+	position: absolute;
+	width: 450px;
+    right: 50px;
+    z-index: 100000;
+	list-style: none;
+}
+.notification-zone li{
+    border: 1px solid #CCCCCC;
+    color: #666666;
+
+    background-color: Gainsboro;
+	background-image: url(../admin/assets/notification-shadow.png) top center no-repeat;
+
+	margin-bottom: 15px;
+	padding: 10px 10px 10px 40px;
+	min-height: 20px;
+	font-family: Arial,Tahoma,sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	line-height: 20px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-moz-box-shadow: 0 1px 0 0 rgba(255,255,255,0.5) inset;
+	-webkit-box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.5) inset;
+	-o-box-shadow: 0 1px 0 0 rgba(255,255,255,0.5) inset;
+	box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.5) inset;
+
+	background-image: -webkit-gradient(linear,50% 0%,50% 100%,color-stop(0%,#F4F4F4),color-stop(100%,#E0E0E0));
+	background-image: -webkit-linear-gradient(#F4F4F4,#E0E0E0);
+	background-image: -moz-linear-gradient(#F4F4F4,#E0E0E0);
+	background-image: -o-linear-gradient(#F4F4F4,#E0E0E0);
+	background-image: linear-gradient(#F4F4F4,#E0E0E0);
+	-moz-text-shadow: 0px 1px rgba(255,255,255,0.2);
+	text-shadow: 0px 1px rgba(255, 255, 255, 0.2);
+
+}
+.notification-zone img{
+    float: left;
+	max-width: 50px;
+	margin: 10px;
+}
+.notification-zone h1{
+	font-size: 1em;
+}
+.notification-zone p{
+    font-size: 1em;
+}
+
+/* **************** */
+/* 	/notification	*/
+/* **************** */
+/* **************** */
 /* 		stage 		*/
 /* **************** */
 

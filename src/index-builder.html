@@ -4,6 +4,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
 
 		<script data-brix-use="brix.component.interaction.Draggable"></script>
+		<script data-brix-use="brix.component.interaction.NotificationManager"></script>
 		<script data-brix-use="brix.component.layout.Panel"></script>
 		<script data-brix-use="brix.component.layout.Accordion"></script>
 
@@ -75,10 +76,25 @@
 		</script>
 	</head>
 	<body class="">
-		<DIV class="group-main Panel" 
+		<DIV class="group-main Panel NotificationManager" 
 			data-panel-header-class-name="panel-publication-header"
 			data-panel-body-class-name="panel-publication-body"
 		>
+			<!-- 	**************************	-->
+			<!-- 			Notifications 		-->
+			<div class="notification-zone">
+				<ul>
+	               	::foreach notifications::
+	               	<li>
+	               		<img src="::iconUrl::" />
+	               		<h1>::title::</h1>
+	               		<p>::body::</p>
+	               	</li>
+	               	::end::
+				</ul>
+			</div>
+			<!-- 			/Notifications 		-->
+			<!-- 	**************************	-->
 			<!-- 	**************************	-->
 			<!-- 			Loading page 		-->
 			<a name="loading" class="Page">loading</a>

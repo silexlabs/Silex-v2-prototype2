@@ -5,6 +5,7 @@
 		
 		
 		
+		
 
 		
 
@@ -72,7 +73,22 @@
 	<SCRIPT src="silex-builder.js"></SCRIPT></HEAD>
 	
 <BODY class="">
-		<DIV class="group-main Panel" data-panel-header-class-name="panel-publication-header" data-panel-body-class-name="panel-publication-body">
+		<DIV class="group-main Panel NotificationManager" data-panel-header-class-name="panel-publication-header" data-panel-body-class-name="panel-publication-body">
+			
+			
+			<DIV class="notification-zone">
+				<UL>
+	               	::foreach notifications::
+	               	<LI>
+	               		<IMG src="::iconUrl::"/>
+	               		<H1>::title::</H1>
+	               		<P>::body::</P>
+	               	</LI>
+	               	::end::
+				</UL>
+			</DIV>
+			
+			
 			
 			
 			<A class="Page" name="loading">loading</A>

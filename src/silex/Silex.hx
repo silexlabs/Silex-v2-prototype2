@@ -69,7 +69,7 @@ class Silex {
 	 * Open the default page or the page designated by the deeplink
 	 */
 	static public function main() {
-		trace("Hello Silex!");
+ 		trace("Hello Silex!");
 		#if redirectTraces
 			if (haxe.Firebug.detect())
 			{
@@ -81,6 +81,7 @@ class Silex {
 				trace("Warning: Brix can not redirect traces to console, because no console was found");
 			}
 		#end
+
 		if (Lib.document.body == null){
 			// the script has been loaded at start
 			Lib.window.onload = init;
