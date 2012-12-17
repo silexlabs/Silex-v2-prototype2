@@ -8850,6 +8850,7 @@ silex.ui.dialog.TextEditorDialog.message = null;
 silex.ui.dialog.TextEditorDialog.__super__ = silex.ui.dialog.DialogBase;
 silex.ui.dialog.TextEditorDialog.prototype = $extend(silex.ui.dialog.DialogBase.prototype,{
 	close: function() {
+		haxe.Log.trace("editor close" + window.parent.CKEDITOR.textContent,{ fileName : "TextEditorDialog.hx", lineNumber : 109, className : "silex.ui.dialog.TextEditorDialog", methodName : "close"});
 		var element = brix.util.DomTools.getSingleElement(this.rootElement,"text-editor-div",true);
 		element.innerHTML = "";
 		silex.ui.dialog.DialogBase.prototype.close.call(this);
