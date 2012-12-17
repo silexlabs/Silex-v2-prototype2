@@ -113,27 +113,27 @@ class InsertDropHandler extends DropHandlerBase{
 			if (DomTools.hasClass(rootElement, IMAGE_TYPE)){
 				element = addComponent(dropZone, "img");
 				//PropertyModel.getInstance().setAttribute(element, "src", "enter image url here");
-				PropertyModel.getInstance().setAttribute(element, "title", "New image component");
+				PropertyModel.getInstance().setAttribute(element, "data-silex-name", "New image component");
 				DomTools.doLater(callback(initImageComp, element));
 			}
 			else if (DomTools.hasClass(rootElement, TEXT_TYPE)){
 				element = addComponent(dropZone, "div");
-				PropertyModel.getInstance().setAttribute(element, "title", "New text field");
+				PropertyModel.getInstance().setAttribute(element, "data-silex-name", "New text field");
 				PropertyModel.getInstance().setProperty(element, "innerHTML", "<p>Insert text here.</p>");
 			}
 			else if (DomTools.hasClass(rootElement, AUDIO_TYPE)){
 				element = addComponent(dropZone, "audio");
-				PropertyModel.getInstance().setAttribute(element, "title", "New media component");
+				PropertyModel.getInstance().setAttribute(element, "data-silex-name", "New media component");
 				DomTools.doLater(callback(initMediaComp, element));
 			}
 			else if (DomTools.hasClass(rootElement, VIDEO_TYPE)){
 				element = addComponent(dropZone, "video");
-				PropertyModel.getInstance().setAttribute(element, "title", "New media component");
+				PropertyModel.getInstance().setAttribute(element, "data-silex-name", "New media component");
 				DomTools.doLater(callback(initMediaComp, element));
 			}
 			else if (DomTools.hasClass(rootElement, LAYER_TYPE)){
 				element = addLayer(dropZone, PageModel.getInstance().selectedItem).rootElement;
-				PropertyModel.getInstance().setAttribute(element, "title", "New container");
+				PropertyModel.getInstance().setAttribute(element, "data-silex-name", "New container");
 			}
 			else {
 				throw("unknown element has been drop on stage from the insert menu");

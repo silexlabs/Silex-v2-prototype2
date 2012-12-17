@@ -125,6 +125,10 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * Brix application used to create the components in the loaded publication (the view)
 	 */
 	public var application:Application;
+	/**
+	 * initial value of the window title - the content of the document title tag
+	 */
+	public var initialDocumentTitle:String;
 
 	/**
 	 * Models are singletons
@@ -133,6 +137,12 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	private function new(){
 		// do not use the selection pattern
 		super(null, null, DEBUG_INFO);
+		// store the document title
+		initialDocumentTitle = "";
+		var nodes = Lib.document.getElementsByTagName("title");
+		if (nodes.length > 0){
+			initialDocumentTitle = nodes[0].innerHTML;
+		}
 		// store the service provider
 		publicationService = new PublicationService();
 		// expose the class to the scripts interpreter
@@ -218,19 +228,6 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 * Reset model selection
 	 */
 	public function load(name:String, configData:PublicationConfigData = null){
-		// set base tag so that ./ is the publication folder
-/*		var currentBasTag = DomTools.getBaseTag();
-		if (currentBasTag == PublicationConstants.PUBLICATION_FOLDER + currentName + "/"
-			|| currentBasTag == PublicationConstants.PUBLICATION_FOLDER + PublicationConstants.BUILDER_PUBLICATION_NAME + "/"
-			){
-			DomTools.setBaseTag(PublicationConstants.PUBLICATION_FOLDER + name+"/");
-		}
-		else{
-			// case of a publication displayed directly from the publicaiton folder, i.e. publications/default/index.html
-			DomTools.setBaseTag("../" + name + "/");
-		}
-*/
-
 		// store the new publication name
 		currentName = name;
 
@@ -318,6 +315,13 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 
 		// dispatch the event, the DOM is then assumed to be attached to the browser DOM
 		dispatchEvent(createEvent(ON_DATA), debugInfo);
+
+		// refresh silex builder title
+		var title = initialDocumentTitle;
+		if (currentName != ""){
+			title = title + " (" + currentName + ")";
+		}
+		Lib.document.title = title;
 
 		// refresh selection
 		refresh();

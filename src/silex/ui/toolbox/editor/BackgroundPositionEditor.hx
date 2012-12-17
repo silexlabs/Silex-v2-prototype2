@@ -62,78 +62,80 @@ class BackgroundPositionEditor extends EditorBase
 	override private function load(element:HtmlDom) {
 		reset();
 		var value:String = PropertyModel.getInstance().getStyle(element, "background-position");
-		value = StringTools.trim(value);
-		if (value == "")
-			return;
+		if (value != null){
+			value = StringTools.trim(value);
+			if (value == "")
+				return;
 
-		var values = value.split(" ");
-		// clean up emty spaces
-		for (idx in 0...values.length){
-			values[idx] = StringTools.trim(values[idx]);
-		}
-		while (values.remove("")){
-		}
-		if (values.length != 2){
-			trace("Error: found a value of "+value+" for background-position, but could not split it in 2 parts for X and Y. Length is "+values.length);
-			return;
-		}
-		// **
-		// X position
-		// keyword
-		if(values[0] == "0%") values[0] = "left";
-		if(values[0] == "50%") values[0] = "center";
-		if(values[0] == "100%") values[0] = "right";
-		if (values[0] == "left" || values[0] == "center" || values[0] == "right"){
-			cast(keywordX).value = values[0];
-		}
-		// percent
-		else if (StringTools.endsWith(values[0], "%")){
-			cast(percentageX).value = values[0].substr(0,-1);
-		}
-		// length
-		else {
-			var options = lengthSelectX.getElementsByTagName("option");
-			var unit = "";
-			for (idx in 0...options.length){
-				// if the value ends with one of the units
-				if (StringTools.endsWith(values[0], cast(options[idx]).value)){
-					// case of a number + unit
-					cast(lengthInputX).value = Std.string(Std.parseInt(values[0]));
-					// unit
-					unit = cast(options[idx]).value;
-					cast(lengthSelectX).value = unit;
+			var values = value.split(" ");
+			// clean up emty spaces
+			for (idx in 0...values.length){
+				values[idx] = StringTools.trim(values[idx]);
+			}
+			while (values.remove("")){
+			}
+			if (values.length != 2){
+				trace("Error: found a value of "+value+" for background-position, but could not split it in 2 parts for X and Y. Length is "+values.length);
+				return;
+			}
+			// **
+			// X position
+			// keyword
+			if(values[0] == "0%") values[0] = "left";
+			if(values[0] == "50%") values[0] = "center";
+			if(values[0] == "100%") values[0] = "right";
+			if (values[0] == "left" || values[0] == "center" || values[0] == "right"){
+				cast(keywordX).value = values[0];
+			}
+			// percent
+			else if (StringTools.endsWith(values[0], "%")){
+				cast(percentageX).value = values[0].substr(0,-1);
+			}
+			// length
+			else {
+				var options = lengthSelectX.getElementsByTagName("option");
+				var unit = "";
+				for (idx in 0...options.length){
+					// if the value ends with one of the units
+					if (StringTools.endsWith(values[0], cast(options[idx]).value)){
+						// case of a number + unit
+						cast(lengthInputX).value = Std.string(Std.parseInt(values[0]));
+						// unit
+						unit = cast(options[idx]).value;
+						cast(lengthSelectX).value = unit;
 
-					break;
+						break;
+					}
 				}
 			}
-		}
-		// **
-		// Y position
-		// keyword
-		if(values[1] == "0%") values[1] = "top";
-		if(values[1] == "50%") values[1] = "center";
-		if(values[1] == "100%") values[1] = "bottom";
-		if (values[1] == "top" || values[1] == "center" || values[1] == "bottom"){
-			cast(keywordY).value = values[1];
-		}
-		// percent
-		else if (StringTools.endsWith(values[1], "%")){
-			cast(percentageY).value = values[1].substr(0,-1);
-		}
-		// length
-		else {
-			var options = lengthSelectY.getElementsByTagName("option");
-			var unit = "";
-			for (idx in 0...options.length){
-				// if the value ends with one of the units
-				if (StringTools.endsWith(values[1], cast(options[idx]).value)){
-					// case of a number + unit
-					cast(lengthInputY).value = Std.string(Std.parseInt(values[1]));
-					// unit
-					unit = cast(options[idx]).value;
-					cast(lengthSelectY).value = unit;
+			// **
+			// Y position
+			// keyword
+			if(values[1] == "0%") values[1] = "top";
+			if(values[1] == "50%") values[1] = "center";
+			if(values[1] == "100%") values[1] = "bottom";
+			if (values[1] == "top" || values[1] == "center" || values[1] == "bottom"){
+				cast(keywordY).value = values[1];
+			}
+			// percent
+			else if (StringTools.endsWith(values[1], "%")){
+				cast(percentageY).value = values[1].substr(0,-1);
+			}
+			// length
+			else {
+				var options = lengthSelectY.getElementsByTagName("option");
+				var unit = "";
+				for (idx in 0...options.length){
+					// if the value ends with one of the units
+					if (StringTools.endsWith(values[1], cast(options[idx]).value)){
+						// case of a number + unit
+						cast(lengthInputY).value = Std.string(Std.parseInt(values[1]));
+						// unit
+						unit = cast(options[idx]).value;
+						cast(lengthSelectY).value = unit;
 
-					break;
+						break;
+					}
 				}
 			}
 		}

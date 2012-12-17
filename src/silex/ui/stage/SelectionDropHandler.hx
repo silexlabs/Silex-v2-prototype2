@@ -96,11 +96,11 @@ class SelectionDropHandler extends DropHandlerBase{
 			        		componentName: null,
 			        	};
 					if (LayerModel.getInstance().selectedItem != null)
-						context.layerName = LayerModel.getInstance().selectedItem.rootElement.getAttribute("title");
+						context.layerName = LayerModel.getInstance().selectedItem.rootElement.getAttribute("data-silex-name");
 					else if (ComponentModel.getInstance().selectedItem != null )
-						context.layerName = ComponentModel.getInstance().selectedItem.parentNode.getAttribute("title");
+						context.layerName = ComponentModel.getInstance().selectedItem.parentNode.getAttribute("data-silex-name");
 					if (ComponentModel.getInstance().selectedItem != null )
-						context.componentName = ComponentModel.getInstance().selectedItem.getAttribute("title");
+						context.componentName = ComponentModel.getInstance().selectedItem.getAttribute("data-silex-name");
 			        
 			        var output = t.execute(context);
 		
@@ -137,14 +137,14 @@ class SelectionDropHandler extends DropHandlerBase{
 			// case of a layer
 			var layer = LayerModel.getInstance().selectedItem;
 			var page = PageModel.getInstance().selectedItem;
-			var name:String = layer.rootElement.getAttribute("title");
+			var name:String = layer.rootElement.getAttribute("data-silex-name");
 			if (name == null) name = "";
 			var confirm = Lib.window.confirm("I am about to delete the container "+name+". Are you sure?");
 			if (confirm == true)
 				LayerModel.getInstance().removeLayer(layer, page.name);
 		}
 		else{
-			var name:String = component.getAttribute("title");
+			var name:String = component.getAttribute("data-silex-name");
 			if (name == null) name = "";
 			var confirm = Lib.window.confirm("I am about to delete the component "+name+". Are you sure?");
 			if (confirm == true)

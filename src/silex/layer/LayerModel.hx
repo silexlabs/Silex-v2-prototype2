@@ -225,8 +225,6 @@ class LayerModel extends ModelBase<Layer>{
 			// remove ffrom the dom
 			viewHtmlDom.parentNode.removeChild(viewHtmlDom);
 			modelHtmlDom.parentNode.removeChild(modelHtmlDom);
-			// todo: maybe free the domelement, not possible to write layer.rootElement = null;
-			// todo: unregister class from Brix
 		}
 		else{
 			layer.hide(null, true);

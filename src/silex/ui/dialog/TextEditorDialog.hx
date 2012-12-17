@@ -106,6 +106,7 @@ class TextEditorDialog extends DialogBase
 	 * It uses the dialog name as a css class
 	 */
 	override public function close() {
+		trace("editor close"+untyped window.parent.CKEDITOR.textContent);
 		// cleanup
 		var element = DomTools.getSingleElement(rootElement, TEXT_EDITOR_CONTAINER_CLASS_NAME, true);
 		element.innerHTML = "";
