@@ -18,6 +18,7 @@ import silex.publication.PublicationModel;
 import brix.core.Application;
 import brix.util.DomTools;
 import brix.component.navigation.Page;
+import brix.component.interaction.NotificationManager;
 
 
 /**
@@ -430,6 +431,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		// todo: display notification
 		dispatchEvent(createEvent(ON_ERROR), debugInfo);
 		throw("An error occured while loading publications list ("+msg+")");
+		NotificationManager.notifyError("Error", "An error occured while loading publications list ("+msg+")", viewHtmlDom);
 	}
 	/**
 	 * Data is loaded 
@@ -496,8 +498,10 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 */
 	public function saveACopy(newName:String){
 		// check that a publication is loaded
-		if (currentData == null)
+		if (currentData == null){
+			NotificationManager.notifyError("Error", "I can not save the publication because no publication is loaded.", viewHtmlDom);
 			throw("Error: can not save the publication because no publication is loaded.");
+		}
 
 		// reset model selection
 		// var pageModel = PageModel.getInstance();
@@ -508,8 +512,10 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 		dispatchEvent(createEvent(ON_SAVE_START), debugInfo);
 
 		// check that a publication is loaded
-		if (currentData == null)
+		if (currentData == null){
+			NotificationManager.notifyError("Error", "I can not save the publication because no publication is loaded.", viewHtmlDom);
 			throw("Error: can not save the publication because no publication is loaded.");
+		}
 
 		publicationService.duplicate(currentName, newName, callback(onCopyCreated, newName), onSaveError);
 	}
@@ -524,8 +530,10 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 */
 	public function saveAs(newName:String){
 		// check that a publication is loaded
-		if (currentData == null)
+		if (currentData == null){
+			NotificationManager.notifyError("Error", "I can not save the publication because no publication is loaded.", viewHtmlDom);
 			throw("Error: can not save the publication because no publication is loaded.");
+		}
 
 		publicationService.duplicate(currentName, newName, callback(save, newName), onSaveError);
 	}
@@ -536,8 +544,10 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	 */
 	public function save(newName:Null<String> = null, successCallback:Void->Void=null){
 		// check that a publication is loaded
-		if (currentData == null)
+		if (currentData == null){
+			NotificationManager.notifyError("Error", "I can not save the publication because no publication is loaded.", viewHtmlDom);
 			throw("Error: can not save the publication because no publication is loaded.");
+		}
 
 		// check the publication was renamed
 		if (newName != null)
@@ -623,6 +633,7 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	private function onSaveError(msg:String):Void{
 		dispatchEvent(createEvent(ON_SAVE_ERROR), debugInfo);
 		throw("An error occured while saving the publication ("+msg+")");
+		NotificationManager.notifyError("Error", "An error occured while saving "+currentName+" ("+msg+")", viewHtmlDom);
 	}
 
 	/**
@@ -631,6 +642,6 @@ class PublicationModel extends ModelBase<PublicationConfigData>{
 	private function onSaveSuccess():Void{
 		dispatchEvent(createEvent(ON_SAVE_SUCCESS), debugInfo);
 		trace("PUBLICATION SAVED");
+		NotificationManager.notifySuccess("Publication saved", currentName+" has been saved successfully.", viewHtmlDom);
 	}
-
 }

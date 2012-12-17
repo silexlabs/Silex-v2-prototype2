@@ -4,6 +4,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
 
 		<script data-brix-use="brix.component.interaction.Draggable"></script>
+		<script data-brix-use="brix.component.interaction.NotificationManager"></script>
 		<script data-brix-use="brix.component.layout.Panel"></script>
 		<script data-brix-use="brix.component.layout.Accordion"></script>
 
@@ -70,18 +71,37 @@
 			//Lib.alert('test!');
 			PublicationModel.getInstance().load('theme1');
 			//MenuController.createPublication();
-			//PublicationModel.getInstance().load('test.com');
 		</script>
 	</head>
 	<body class="">
-		<DIV class="group-main Panel" 
+		<DIV class="group-main Panel NotificationManager" 
 			data-panel-header-class-name="panel-publication-header"
 			data-panel-body-class-name="panel-publication-body"
 		>
 			<!-- 	**************************	-->
+			<!-- 			Notifications 		-->
+			<div class="notification-zone">
+				<ul>
+	               	::foreach notifications::
+	               	<li>
+	               		<img src="::iconUrl::" />
+	               		<h1>::title::</h1>
+	               		<p>::body::</p>
+	               	</li>
+	               	::end::
+				</ul>
+			</div>
+			<!-- 			/Notifications 		-->
+			<!-- 	**************************	-->
+			<!-- 	**************************	-->
 			<!-- 			Loading page 		-->
 			<a name="loading" class="Page">loading</a>
 			<div class="Layer loading loading-container">
+				<div class="loading-bar loading-bar1"></div>
+				<div class="loading-bar loading-bar2"></div>
+				<div class="loading-bar loading-bar3"></div>
+				<div class="loading-bar loading-bar4"></div>
+				<div class="loading-bar loading-bar5"></div>
 			</div>
 			<!-- 			/Loading page 		-->
 			<!-- 	**************************	-->
@@ -152,21 +172,19 @@
 
 					
 					<A class="Page" name="page-list">Pages</A>
-
 					<DIV class="Layer page-list ribbon-list selectable">
 						<DIV class="assets-page">
 							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-add.png" title="Add a page" data-menu-item="add-page"/>
 							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-delete.png" title="Delete selected page" data-menu-item="del-page"/>
 							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-rename.png" title="Rename selected page" data-menu-item="rename-page"/>
 						</DIV>
-						<UL class="PageList">
+						<UL class="PageList thumbs-list">
 							<LI class="">
 								<DIV class="solid"></DIV>
 								<P>::name::</P>
 							</LI>
 						</UL>
 					</DIV>
-
 					
 					<A class="Page" name="layer-list">Masters</A>
 
@@ -258,10 +276,17 @@
 				<!-- Open Dialog -->
 				<A class="Page" name="open-dialog" ></A>
 				<form class="Layer open-dialog dialog-foreground OpenDialog" data-dialog-name="open-dialog">
-					<DIV class="container-open-publication">
+					<DIV class="container-open-publication ">
 						<header>
-							<p>Silex Publications Browser</p>
+							<p>Your Publications</p>
 						</header>
+						<div class="publications-list-loading loading-container">
+							<div class="loading-bar loading-bar1"></div>
+							<div class="loading-bar loading-bar2"></div>
+							<div class="loading-bar loading-bar3"></div>
+							<div class="loading-bar loading-bar4"></div>
+							<div class="loading-bar loading-bar5"></div>
+						</div>
 						<div class="publications-list-container">
 							<ul class="PublicationList publications">
 								<li>::name:: <DIV class="column"><small>Last change by ::configData.lastChange.author:: on ::configData.lastChange.date::</small></DIV></li>
@@ -460,6 +485,11 @@
 				                       			data-property-name="::name::"
 				                       			>
 												<LABEL>::cssName::</LABEL>
+												<a title="Help page about ::cssName:: property."
+													class="link-to-help" 
+													href="http://www.w3.org/wiki/CSS/Properties/::cssName::" target="_blank">
+													<img src="../admin/assets/info-link.png" />
+												</a>
 												<br />
 												::foreach types::
 													<!-- each type has a corresponding class, 
