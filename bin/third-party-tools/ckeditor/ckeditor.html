@@ -37,44 +37,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	        height: 400,
 	        width: "100%",
 			/*
-			 * Core styles.
-			 */
-			coreStyles_bold: {
-				element: 'span',
-				attributes: { 'class': 'Bold' }
-			},
-			coreStyles_italic: {
-				element: 'span',
-				attributes: { 'class': 'Italic' }
-			},
-			coreStyles_underline: {
-				element: 'span',
-				attributes: { 'class': 'Underline' }
-			},
-			coreStyles_strike: {
-				element: 'span',
-				attributes: { 'class': 'StrikeThrough' },
-				overrides: 'strike'
-			},
-			coreStyles_subscript: {
-				element: 'span',
-				attributes: { 'class': 'Subscript' },
-				overrides: 'sub'
-			},
-			coreStyles_superscript: {
-				element: 'span',
-				attributes: { 'class': 'Superscript' },
-				overrides: 'sup'
-			},
-
-			/*
 			 * Font face.
 			 */
-
 			// List of fonts available in the toolbar combo. Each font definition is
 			// separated by a semi-colon (;). We are using class names here, so each font
 			// is defined by {Combo Label}/{Class Name}.
-			font_names : 'Comic Sans MS/FontComic;Courier New/FontCourier;Times New Roman/FontTimes',
+//			font_names : 'Comic Sans MS/FontComic;Courier New/FontCourier;Times New Roman/FontTimes',
 
 			// Define the way font elements will be applied to the document. The "span"
 			// element will be used. When a font is selected, the font name defined in the
@@ -82,7 +50,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// injected in the "class" attribute.
 			// We must also instruct the editor to replace span elements that are used to
 			// set the font (Overrides).
-			font_style: {
+/*			font_style: {
 				element: 'span',
 				attributes: { 'class': '#(family)' },
 				overrides: [
@@ -94,12 +62,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					}
 				]
 			},
-
+*/
 			/*
 			 * Font sizes.
 			 */
-			fontSize_sizes: 'Smaller/FontSmaller;Larger/FontLarger;8pt/FontSmall;14pt/FontBig;Double Size/FontDouble',
-			fontSize_style: {
+//			fontSize_sizes: 'Smaller/FontSmaller;Larger/FontLarger;8pt/FontSmall;14pt/FontBig;Double Size/FontDouble',
+/*			fontSize_style: {
 				element: 'span',
 				attributes: { 'class' : '#(size)' },
 				overrides: [
@@ -111,14 +79,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					}
 				]
 			} ,
-
+*/
 			/*
 			 * Font colors.
 			 */
-			colorButton_enableMore : false,
+//			colorButton_enableMore : false,
 
-			colorButton_colors: 'FontColor1/FF9900,FontColor2/0066CC,FontColor3/F00',
-			colorButton_foreStyle: {
+//			colorButton_colors: 'FontColor1/FF9900,FontColor2/0066CC,FontColor3/F00',
+/*			colorButton_foreStyle: {
 				element: 'span',
 				attributes: { 'class' : '#(color)' },
 				overrides: [
@@ -143,16 +111,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					}
 				]
 			},
-
+*/
 			/*
 			 * Indentation.
 			 */
-			indentClasses: [ 'Indent1', 'Indent2', 'Indent3' ],
+//			indentClasses: [ 'Indent1', 'Indent2', 'Indent3' ],
 
 			/*
 			 * Paragraph justification.
 			 */
-			justifyClasses: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyFull' ],
+//			justifyClasses: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyFull' ],
 
 			/*
 			 * Styles combo.
@@ -173,17 +141,26 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{ name: 'Inline Quotation', element: 'q' }
 			]
 		});
-		//editorInstance.on("afterCommandExec", function(){
-		//document.onkeyup = function(){
+
 		editorInstance.on("instanceReady", function(){
-			
-			//editorInstance.resize( '100%', '100%', true );
-			//editorInstance.resize( '100%', '100%');
-			editorInstance.document.on("keyup", function(){
-				window.parent.CKEDITOR.textContent = editorInstance.getData();
-				window.parent.CKEDITOR.callBack(window.parent.CKEDITOR.textContent);
-			});
+
+			// listen the keyboard events to call the callback when the user enters text
+			editorInstance.document.on("keyup", onUserInput);
+			// for the menu buttons 
+			window.document.addEventListener("mousedown", function(){
+				setTimeout(onUserInput, 500);
+			}, false);
+			// for the combo boxes to be taken into account
+			timer = setInterval(onUserInput,1000);
+
 		});
+
+		function onUserInput(){
+			//console.log("onUserInput");
+			window.parent.CKEDITOR.textContent = editorInstance.getData();
+			window.parent.CKEDITOR.callBack(window.parent.CKEDITOR.textContent);
+		}
+
 	</script>
 </body>
 </html>

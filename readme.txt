@@ -39,17 +39,6 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 ** to do **
 
 bugs !
-* notif : 
-  . si on n accepte pas ni refuse => passer en custom notif
-  . load la template au démararage?
-- editeur texte / enrichissement non pris en compte
-- IE and null in styles
-- replace getElementsByClassName by Application.getComponents
-- display none => how to get it back??
-- display inline => 0 width
-* delete a container when it is a master or not, and uncheck master when the container is not on any page
-* ecouter window.resize, et dispatcher window.resize dans Page::open
-* pas de "name" par defaut car tooltip relou
 * icon "edit" sur les composants (edit text ou url)
 * supprimer la fonction "fermer"?
 * ajout road map: 
@@ -57,6 +46,11 @@ bugs !
   . templates comme dans l'éditeur text
 * themes tab: rename "styles"
 * add "functions" tab
+
+- display none
+  => how to get it back??
+- IE and null in styles
+- replace getElementsByClassName by Application.getComponents
 
 
 

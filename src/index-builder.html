@@ -58,10 +58,6 @@
 
 		<!-- info -->
 		<title>Silex Builder</title>
-		<meta name="description" content="Silex online editor" />
-		<meta name="keywords" content="HTML,CSS,website editor" />
-		<meta name="author" content="lexoyo" />
-		<meta name="revised" content="lexoyo, 29/08/2011" />
 
 		<!-- config -->
 		<meta name="initialPageName" content="start-page"></meta>
@@ -69,7 +65,7 @@
 		<link href="app.css" rel="stylesheet"></link>
 		<script type="text/hscript">
 			//Lib.alert('test!');
-			PublicationModel.getInstance().load('theme1');
+			PublicationModel.getInstance().load('test');
 			//MenuController.createPublication();
 		</script>
 	</head>
@@ -388,6 +384,18 @@
 										<BUTTON class="property-editor-delete-selected"></BUTTON>
 									</div>
 								</div>
+								<div class="property-container">
+									<label>title (for seo)</label>
+									<div class="type-container">
+										<INPUT class="title-property fixed-height" type="text" max-lenght="20" value="21"/>
+									</div>
+								</div>
+								<div class="property-container context-img">
+									<label>alt (for seo)</label>
+									<div class="type-container">
+										<INPUT class="alt-property fixed-height" type="text" max-lenght="20" value="21"/>
+									</div>
+								</div>
 								<div class="property-container context-video context-audio context-video context-audio context-img context-div">
 									<label>Html Content</label>
 									<div class="type-container">
@@ -558,13 +566,13 @@
 								                       	<div class="type-container keyword-style">
 															<select class="dropdown-full fixed-height keyword-x">
 																<option value=""></option>
-																<option title="" value="left">
+																<option value="left">
 																	left
 																</option>
-																<option title="" value="center">
+																<option value="center">
 																	center
 																</option>
-																<option title="" value="right">
+																<option value="right">
 																	right
 																</option>
 															 
@@ -602,13 +610,13 @@
 								                       	<div class="type-container keyword-style " >
 															<select class="dropdown-full fixed-height keyword-y">
 																<option value=""></option>
-																<option title="" value="top">
+																<option value="top">
 																	top
 																</option>
-																<option title="" value="center">
+																<option value="center">
 																	center
 																</option>
-																<option title="" value="bottom">
+																<option value="bottom">
 																	bottom
 																</option>
 															 

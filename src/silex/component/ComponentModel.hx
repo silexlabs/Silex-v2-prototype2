@@ -79,9 +79,9 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	 */
 	override public function setSelectedItem(item:HtmlDom):HtmlDom {
 		if (item!=null){
-			// change the layer selection
-			//var layer = PublicationModel.getInstance().application.getAssociatedComponents(item.parentNode, Layer).first();
-			//LayerModel.getInstance().selectedItem = layer;
+			// change the layer selection (used in the layer marker to display the container name)
+			var layer = PublicationModel.getInstance().application.getAssociatedComponents(item.parentNode, Layer).first();
+			LayerModel.getInstance().selectedItem = layer;
 		}
 
 		return super.setSelectedItem(item);
