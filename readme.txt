@@ -39,9 +39,6 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 ** to do **
 
 bugs !
-* notif : 
-  . si on n accepte pas ni refuse => passer en custom notif
-  . load la template au démararage?
 - editeur texte / enrichissement non pris en compte
 - IE and null in styles
 - replace getElementsByClassName by Application.getComponents

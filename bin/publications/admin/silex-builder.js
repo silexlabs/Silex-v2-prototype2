@@ -1693,18 +1693,18 @@ brix.component.interaction.NotificationManager.prototype = $extend(brix.componen
 		this.refreshNotifications();
 	}
 	,refreshNotifications: function() {
-		haxe.Log.trace("refreshNotifications " + Std.string(this.notifications) + " - " + this.notificationTemplate,{ fileName : "NotificationManager.hx", lineNumber : 276, className : "brix.component.interaction.NotificationManager", methodName : "refreshNotifications"});
+		haxe.Log.trace("refreshNotifications " + Std.string(this.notifications) + " - " + this.notificationTemplate,{ fileName : "NotificationManager.hx", lineNumber : 278, className : "brix.component.interaction.NotificationManager", methodName : "refreshNotifications"});
 		var t = new haxe.Template(this.notificationTemplate);
 		try {
 			this.notificationZone.innerHTML = t.execute({ notifications : this.notifications});
 		} catch( e ) {
-			haxe.Log.trace("Error: " + Std.string(e),{ fileName : "NotificationManager.hx", lineNumber : 284, className : "brix.component.interaction.NotificationManager", methodName : "refreshNotifications"});
+			haxe.Log.trace("Error: " + Std.string(e),{ fileName : "NotificationManager.hx", lineNumber : 286, className : "brix.component.interaction.NotificationManager", methodName : "refreshNotifications"});
 		}
-		haxe.Log.trace("refreshNotifications " + this.notificationZone.innerHTML,{ fileName : "NotificationManager.hx", lineNumber : 286, className : "brix.component.interaction.NotificationManager", methodName : "refreshNotifications"});
+		haxe.Log.trace("refreshNotifications " + this.notificationZone.innerHTML,{ fileName : "NotificationManager.hx", lineNumber : 288, className : "brix.component.interaction.NotificationManager", methodName : "refreshNotifications"});
 	}
 	,sendCustomNotification: function(notification,duration) {
 		if(duration == null) duration = 10000;
-		haxe.Log.trace("sendCustomNotification " + Std.string(notification),{ fileName : "NotificationManager.hx", lineNumber : 263, className : "brix.component.interaction.NotificationManager", methodName : "sendCustomNotification"});
+		haxe.Log.trace("sendCustomNotification " + Std.string(notification),{ fileName : "NotificationManager.hx", lineNumber : 265, className : "brix.component.interaction.NotificationManager", methodName : "sendCustomNotification"});
 		if(duration > 0) haxe.Timer.delay((function(f,a1) {
 			return function() {
 				return f(a1);
@@ -1718,13 +1718,13 @@ brix.component.interaction.NotificationManager.prototype = $extend(brix.componen
 	}
 	,sendNotification: function(e,duration) {
 		if(duration == null) duration = 10000;
-		haxe.Log.trace("sendNotification " + Std.string(e),{ fileName : "NotificationManager.hx", lineNumber : 227, className : "brix.component.interaction.NotificationManager", methodName : "sendNotification"});
+		haxe.Log.trace("sendNotification " + Std.string(e),{ fileName : "NotificationManager.hx", lineNumber : 229, className : "brix.component.interaction.NotificationManager", methodName : "sendNotification"});
 		if(!this.hasNotification()) {
-			haxe.Log.trace("NO NOTIFICATION SYSTEM",{ fileName : "NotificationManager.hx", lineNumber : 230, className : "brix.component.interaction.NotificationManager", methodName : "sendNotification"});
+			haxe.Log.trace("NO NOTIFICATION SYSTEM",{ fileName : "NotificationManager.hx", lineNumber : 232, className : "brix.component.interaction.NotificationManager", methodName : "sendNotification"});
 			throw "NO NOTIFICATION SYSTEM";
 		}
 		if(!this.hasPermission()) {
-			haxe.Log.trace("NO NOTIFICATION PERMISSION",{ fileName : "NotificationManager.hx", lineNumber : 235, className : "brix.component.interaction.NotificationManager", methodName : "sendNotification"});
+			haxe.Log.trace("NO NOTIFICATION PERMISSION",{ fileName : "NotificationManager.hx", lineNumber : 237, className : "brix.component.interaction.NotificationManager", methodName : "sendNotification"});
 			throw "NO NOTIFICATION PERMISSION";
 		}
 		var notification;
@@ -1737,23 +1737,23 @@ brix.component.interaction.NotificationManager.prototype = $extend(brix.componen
 		})($bind(this,this.destroyNotification),notification),duration);
 	}
 	,requestPermission: function(acceptCallback,denyCallback) {
-		haxe.Log.trace("requestPermission ",{ fileName : "NotificationManager.hx", lineNumber : 205, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
+		haxe.Log.trace("requestPermission ",{ fileName : "NotificationManager.hx", lineNumber : 207, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
 		if(this.hasNotification()) {
 			if(this.hasPermission()) {
-				haxe.Log.trace("PERMISSION ALLOWED",{ fileName : "NotificationManager.hx", lineNumber : 210, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
+				haxe.Log.trace("PERMISSION ALLOWED",{ fileName : "NotificationManager.hx", lineNumber : 212, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
 				acceptCallback();
 			} else {
-				haxe.Log.trace("PERMISSION ASKED",{ fileName : "NotificationManager.hx", lineNumber : 213, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
+				haxe.Log.trace("PERMISSION ASKED",{ fileName : "NotificationManager.hx", lineNumber : 215, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
 				window.webkitNotifications.requestPermission((function(f,a1,a2) {
 					return function() {
 						return f(a1,a2);
 					};
 				})($bind(this,this.permissionRequestCallback),acceptCallback,denyCallback));
 			}
-		} else haxe.Log.trace("NO NOTIFICATION SYSTEM",{ fileName : "NotificationManager.hx", lineNumber : 219, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
+		} else haxe.Log.trace("NO NOTIFICATION SYSTEM",{ fileName : "NotificationManager.hx", lineNumber : 221, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
 	}
 	,permissionRequestCallback: function(acceptCallback,denyCallback) {
-		haxe.Log.trace("permissionRequestCallback " + Std.string(this.hasPermission()),{ fileName : "NotificationManager.hx", lineNumber : 188, className : "brix.component.interaction.NotificationManager", methodName : "permissionRequestCallback"});
+		haxe.Log.trace("permissionRequestCallback " + Std.string(this.hasPermission()),{ fileName : "NotificationManager.hx", lineNumber : 190, className : "brix.component.interaction.NotificationManager", methodName : "permissionRequestCallback"});
 		if(this.hasNotification() && this.hasPermission()) {
 			if(acceptCallback != null) acceptCallback();
 		} else if(denyCallback != null) denyCallback();
@@ -1767,15 +1767,10 @@ brix.component.interaction.NotificationManager.prototype = $extend(brix.componen
 	,onNotificationReceived: function(e) {
 		haxe.Log.trace("onNotificationReceived " + Std.string(e.detail) + " - " + Std.string(this.hasNotification()) + " - " + Std.string(this.hasPermission()),{ fileName : "NotificationManager.hx", lineNumber : 149, className : "brix.component.interaction.NotificationManager", methodName : "onNotificationReceived"});
 		if(this.hasNotification()) {
-			if(this.hasPermission()) this.sendNotification(e.detail); else this.requestPermission((function(f,e1) {
-				return function() {
-					return f(e1);
-				};
-			})($bind(this,this.sendNotification),e.detail),(function(f,a1) {
-				return function() {
-					return f(a1);
-				};
-			})($bind(this,this.sendCustomNotification),e.detail));
+			if(this.hasPermission()) this.sendNotification(e.detail); else {
+				this.requestPermission(null,null);
+				this.sendCustomNotification(e.detail);
+			}
 		} else this.sendCustomNotification(e.detail);
 	}
 	,initNotifications: function(e) {
@@ -8329,6 +8324,9 @@ silex.publication.PublicationState.Private.toString = $estr;
 silex.publication.PublicationState.Private.__enum__ = silex.publication.PublicationState;
 silex.publication.PublicationModel = function() {
 	silex.ModelBase.call(this,null,null,"PublicationModel class");
+	this.initialDocumentTitle = "";
+	var nodes = js.Lib.document.getElementsByTagName("title");
+	if(nodes.length > 0) this.initialDocumentTitle = nodes[0].innerHTML;
 	this.publicationService = new silex.publication.PublicationService();
 	silex.interpreter.Interpreter.getInstance().expose("PublicationModel",silex.publication.PublicationModel);
 };
@@ -8343,7 +8341,7 @@ silex.publication.PublicationModel.__super__ = silex.ModelBase;
 silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onPublicationSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 644, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("PUBLICATION SAVED",{ fileName : "PublicationModel.hx", lineNumber : 648, className : "silex.publication.PublicationModel", methodName : "onSaveSuccess"});
 		brix.component.interaction.NotificationManager.notifySuccess("Publication saved",this.currentName + " has been saved successfully.",this.viewHtmlDom);
 	}
 	,onSaveError: function(msg) {
@@ -8421,7 +8419,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		})($bind(this,this.onCopyCreated),newName),$bind(this,this.onSaveError));
 	}
 	,onDeleteSuccess: function() {
-		haxe.Log.trace("PUBLICATION DELETED ",{ fileName : "PublicationModel.hx", lineNumber : 491, className : "silex.publication.PublicationModel", methodName : "onDeleteSuccess"});
+		haxe.Log.trace("PUBLICATION DELETED ",{ fileName : "PublicationModel.hx", lineNumber : 495, className : "silex.publication.PublicationModel", methodName : "onDeleteSuccess"});
 		this.unload();
 	}
 	,trash: function(name) {
@@ -8464,9 +8462,9 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,this.headHtmlDom);
 		if(initialPageName != null) {
 			var page = brix.component.navigation.Page.getPageByName(initialPageName,this.application.id,this.viewHtmlDom);
-			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "PublicationModel.hx", lineNumber : 414, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
-		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "PublicationModel.hx", lineNumber : 418, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
-		haxe.Log.trace("PublicationModel exec " + Std.string(rootElement) + " - " + rootElement.className,{ fileName : "PublicationModel.hx", lineNumber : 423, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
+			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "PublicationModel.hx", lineNumber : 418, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
+		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "PublicationModel.hx", lineNumber : 422, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
+		haxe.Log.trace("PublicationModel exec " + Std.string(rootElement) + " - " + rootElement.className,{ fileName : "PublicationModel.hx", lineNumber : 427, className : "silex.publication.PublicationModel", methodName : "initBrixApplication"});
 		silex.interpreter.Interpreter.getInstance().execScriptTags(rootElement);
 	}
 	,generateNewId: function() {
@@ -8515,6 +8513,9 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		this.initViewHtmlDom();
 		this.initBrixApplication(this.viewHtmlDom);
 		this.dispatchEvent(this.createEvent("onPublicationData"),this.debugInfo);
+		var title = this.initialDocumentTitle;
+		if(this.currentName != "") title = title + " (" + this.currentName + ")";
+		js.Lib.document.title = title;
 		this.refresh();
 		silex.page.PageModel.getInstance().refresh();
 		silex.layer.LayerModel.getInstance().refresh();
@@ -8533,7 +8534,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 		pageModel.setSelectedItem(null);
 		this.dispatchEvent(this.createEvent("onPublicationChange"),this.debugInfo);
 		if(name == "") {
-			haxe.Log.trace("unload",{ fileName : "PublicationModel.hx", lineNumber : 248, className : "silex.publication.PublicationModel", methodName : "load"});
+			haxe.Log.trace("unload",{ fileName : "PublicationModel.hx", lineNumber : 245, className : "silex.publication.PublicationModel", methodName : "load"});
 			this.currentConfig = null;
 			this.currentData = null;
 			this.viewHtmlDom = null;
@@ -8547,7 +8548,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 	}
 	,getModelFromView: function(viewHtmlDom) {
 		if(viewHtmlDom == null) {
-			haxe.Log.trace("Warning: could not retrieve the model for element because it is null.",{ fileName : "PublicationModel.hx", lineNumber : 166, className : "silex.publication.PublicationModel", methodName : "getModelFromView"});
+			haxe.Log.trace("Warning: could not retrieve the model for element because it is null.",{ fileName : "PublicationModel.hx", lineNumber : 176, className : "silex.publication.PublicationModel", methodName : "getModelFromView"});
 			return null;
 		}
 		try {
@@ -8561,7 +8562,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 			if(results == null || results.length != 1) throw "Error: 1 and only 1 component or layer is expected to have ID \"" + id + "\" (" + Std.string(results) + ").";
 			return results[0];
 		} catch( e ) {
-			haxe.Log.trace("Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").",{ fileName : "PublicationModel.hx", lineNumber : 197, className : "silex.publication.PublicationModel", methodName : "getModelFromView"});
+			haxe.Log.trace("Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").",{ fileName : "PublicationModel.hx", lineNumber : 207, className : "silex.publication.PublicationModel", methodName : "getModelFromView"});
 			throw "Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").";
 		}
 		return null;
@@ -8572,6 +8573,7 @@ silex.publication.PublicationModel.prototype = $extend(silex.ModelBase.prototype
 	,loadList: function() {
 		this.publicationService.getPublications([silex.publication.PublicationState.Published(null),silex.publication.PublicationState.Private],[silex.publication.PublicationCategory.Publication],$bind(this,this.onListResult),$bind(this,this.onError));
 	}
+	,initialDocumentTitle: null
 	,application: null
 	,viewHtmlDom: null
 	,headHtmlDom: null
