@@ -19,5 +19,5 @@
 
 -D silexClientSide
 -D silexDebug
--D redirectFlashTraces
+-D redirectTraces
 

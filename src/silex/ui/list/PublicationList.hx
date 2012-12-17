@@ -25,6 +25,10 @@ class PublicationList extends List<PublicationListItem>
 	 */ 
 	public static inline var DEBUG_INFO = "PublicationList class";
 	/**
+	 * CSS class name for the container of the loagin anim
+	 */ 
+	public static inline var LOADING_ANIM_CONTAINER_CLASS_NAME = "publications-list-loading";
+	/**
 	 * Publication model, used to interact with the DOM
 	 */
 	private var publicationModel:PublicationModel;
@@ -45,17 +49,36 @@ class PublicationList extends List<PublicationListItem>
 	 * to be overriden to handle the model or do nothing if you manipulate the list and dataProvider by composition
 	 * if you override this, either call super.reloadData() to redraw immediately, or call doRedraw() when the data is ready
 	 */
-	override public function reloadData()
-	{
+	override public function reloadData(){
 		// reload data, this will trigger a  refresh on the list when onListData is dispatched by the model
 		PublicationModel.getInstance().loadList();
+
+		// empty the list
+		dataProvider = [];
+		doRedraw();
+
+		// show the loading anim
+		var loadingAnimContainer = DomTools.getSingleElement(Lib.document.body, LOADING_ANIM_CONTAINER_CLASS_NAME, false);
+		if (loadingAnimContainer == null){
+			throw("Error: could not find the container of the loading anim of the publications list component");
+		}
+		loadingAnimContainer.style.display = "inline";
 	}
 	/**
 	 * callback for the onList event, dispatched by the PublicationModel
-	 * call the list doRedraw method to redraw the display
+* call the list doRedraw method to redraw the display
 	 */
 	private function onListResult(event:Event){
 		dataProvider = cast(event).detail;
+
+		// redraw the list
 		doRedraw();
+
+		// hide the loading anim
+		var loadingAnimContainer = DomTools.getSingleElement(Lib.document.body, LOADING_ANIM_CONTAINER_CLASS_NAME, false);
+		if (loadingAnimContainer == null){
+			throw("Error: could not find the container of the loading anim of the publications list component");
+		}
+		loadingAnimContainer.style.display = "none";
 	}
 }
