@@ -61,14 +61,14 @@ class PropertyEditor extends UrlEditor
 			if (DomTools.hasClass(selectedItem, "Layer")){
 				var layer = LayerModel.getInstance().selectedItem;
 				var page = PageModel.getInstance().selectedItem;
-				var name:String = layer.rootElement.getAttribute("title");
+				var name:String = layer.rootElement.getAttribute("data-silex-name");
 				if (name == null) name = "";
 				var confirm = Lib.window.confirm("I am about to delete the container "+name+". Are you sure?");
 				if (confirm == true)
 					LayerModel.getInstance().removeLayer(layer, page.name);
 			}
 			else{
-				var name:String = selectedItem.getAttribute("title");
+				var name:String = selectedItem.getAttribute("data-silex-name");
 				if (name == null) name = "";
 				var confirm = Lib.window.confirm("I am about to delete the component "+name+". Are you sure?");
 				if (confirm == true)
@@ -111,6 +111,8 @@ class PropertyEditor extends UrlEditor
 		// 
 		// font family
 		setInputValue("name-property", "");
+		setInputValue("title-property", "");
+		setInputValue("alt-property", "");
 		setInputValue("multiple-src-property", "");
 		setInputValue("src-property", "");
 		setInputValue("auto-start-property", null, "checked");
@@ -160,8 +162,14 @@ class PropertyEditor extends UrlEditor
 
 		var propertyModel = PropertyModel.getInstance();
 
-		var value = propertyModel.getProperty(element, "title");
+		var value = propertyModel.getAttribute(element, "data-silex-name");
 		if (value != null) setInputValue("name-property", value);
+
+		var value = propertyModel.getAttribute(element, "title");
+		if (value != null) setInputValue("title-property", value);
+
+		var value = propertyModel.getAttribute(element, "alt");
+		if (value != null) setInputValue("alt-property", value);
 
 		var value = propertyModel.getProperty(element, "src");
 		if (value != null) setInputValue("src-property", DomTools.abs2rel(value));
@@ -206,9 +214,21 @@ class PropertyEditor extends UrlEditor
 
 		var value = getInputValue("name-property");
 		if (value != null && value != "")
-			propertyModel.setProperty(selectedItem, "title", getInputValue("name-property"));
+			propertyModel.setAttribute(selectedItem, "data-silex-name", getInputValue("name-property"));
 		else
-			propertyModel.setProperty(selectedItem, "title", null);
+			propertyModel.setAttribute(selectedItem, "data-silex-name", null);
+
+		var value = getInputValue("title-property");
+		if (value != null && value != "")
+			propertyModel.setAttribute(selectedItem, "title", getInputValue("title-property"));
+		else
+			propertyModel.setAttribute(selectedItem, "title", null);
+
+		var value = getInputValue("alt-property");
+		if (value != null && value != "")
+			propertyModel.setAttribute(selectedItem, "alt", getInputValue("alt-property"));
+		else
+			propertyModel.setAttribute(selectedItem, "alt", null);
 
 		var value = getInputValue("src-property");
 		if (value != null && value != "") propertyModel.setProperty(selectedItem, "src", DomTools.abs2rel(value));

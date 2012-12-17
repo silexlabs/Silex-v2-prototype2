@@ -3205,16 +3205,10 @@ brix.util.DomTools.abs2rel = function(url) {
 		return initialUrl;
 	} else base = HxOverrides.substr(base,idx + 3,null);
 	var idx1 = url.indexOf("://");
-	if(idx1 == -1) {
-		haxe.Log.trace("Warning, could not make URL relative because it is relative already - could not find pattern \"://\". Now returns " + initialUrl,{ fileName : "DomTools.hx", lineNumber : 92, className : "brix.util.DomTools", methodName : "abs2rel"});
-		return initialUrl;
-	} else url = HxOverrides.substr(url,idx1 + 3,null);
+	if(idx1 == -1) return initialUrl; else url = HxOverrides.substr(url,idx1 + 3,null);
 	var baseArray = base.split("/");
 	var urlArray = url.split("/");
-	if(baseArray[0] != urlArray[0]) {
-		haxe.Log.trace("Warning, could not make URL relative because the url is absolute external url - " + urlArray[0] + " != " + baseArray[0] + ". Now returns initial URL " + initialUrl,{ fileName : "DomTools.hx", lineNumber : 109, className : "brix.util.DomTools", methodName : "abs2rel"});
-		return initialUrl;
-	}
+	if(baseArray[0] != urlArray[0]) return initialUrl;
 	var diffIdx = 0;
 	var _g1 = 0, _g = baseArray.length;
 	while(_g1 < _g) {
@@ -7907,6 +7901,8 @@ silex.component.ComponentModel.prototype = $extend(silex.ModelBase.prototype,{
 	}
 	,setSelectedItem: function(item) {
 		if(item != null) {
+			var layer = silex.publication.PublicationModel.getInstance().application.getAssociatedComponents(item.parentNode,brix.component.navigation.Layer).first();
+			silex.layer.LayerModel.getInstance().setSelectedItem(layer);
 		}
 		return silex.ModelBase.prototype.setSelectedItem.call(this,item);
 	}
@@ -9176,7 +9172,7 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 		if(dropZone != null) {
 			if(brix.util.DomTools.hasClass(this.rootElement,"image")) {
 				element = this.addComponent(dropZone,"img");
-				silex.property.PropertyModel.getInstance().setAttribute(element,"title","New image component");
+				silex.property.PropertyModel.getInstance().setAttribute(element,"data-silex-name","New image component");
 				brix.util.DomTools.doLater((function(f,a1) {
 					return function() {
 						return f(a1);
@@ -9184,11 +9180,11 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 				})($bind(this,this.initImageComp),element));
 			} else if(brix.util.DomTools.hasClass(this.rootElement,"text")) {
 				element = this.addComponent(dropZone,"div");
-				silex.property.PropertyModel.getInstance().setAttribute(element,"title","New text field");
+				silex.property.PropertyModel.getInstance().setAttribute(element,"data-silex-name","New text field");
 				silex.property.PropertyModel.getInstance().setProperty(element,"innerHTML","<p>Insert text here.</p>");
 			} else if(brix.util.DomTools.hasClass(this.rootElement,"audio")) {
 				element = this.addComponent(dropZone,"audio");
-				silex.property.PropertyModel.getInstance().setAttribute(element,"title","New media component");
+				silex.property.PropertyModel.getInstance().setAttribute(element,"data-silex-name","New media component");
 				brix.util.DomTools.doLater((function(f,a1) {
 					return function() {
 						return f(a1);
@@ -9196,7 +9192,7 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 				})($bind(this,this.initMediaComp),element));
 			} else if(brix.util.DomTools.hasClass(this.rootElement,"video")) {
 				element = this.addComponent(dropZone,"video");
-				silex.property.PropertyModel.getInstance().setAttribute(element,"title","New media component");
+				silex.property.PropertyModel.getInstance().setAttribute(element,"data-silex-name","New media component");
 				brix.util.DomTools.doLater((function(f,a1) {
 					return function() {
 						return f(a1);
@@ -9204,7 +9200,7 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 				})($bind(this,this.initMediaComp),element));
 			} else if(brix.util.DomTools.hasClass(this.rootElement,"container")) {
 				element = this.addLayer(dropZone,silex.page.PageModel.getInstance().selectedItem).rootElement;
-				silex.property.PropertyModel.getInstance().setAttribute(element,"title","New container");
+				silex.property.PropertyModel.getInstance().setAttribute(element,"data-silex-name","New container");
 			} else throw "unknown element has been drop on stage from the insert menu";
 		} else haxe.Log.trace("onDrop - a drop zone was NOT found",{ fileName : "InsertDropHandler.hx", lineNumber : 143, className : "silex.ui.stage.InsertDropHandler", methodName : "onDrop"});
 	}
@@ -9350,7 +9346,8 @@ silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.Display
 		while(_g1 < _g) {
 			var idx = _g1++;
 			var boundingBox = brix.util.DomTools.getElementBoundingBox(layers[idx]);
-			if(boundingBox.w == 0 && boundingBox.h == 0) haxe.Log.trace("todo: this element has display='none', let's give it the size which it would have otherwise " + layers[idx].className,{ fileName : "SelectionController.hx", lineNumber : 276, className : "silex.ui.stage.SelectionController", methodName : "onMouseMove"});
+			if(boundingBox.w == 0 && boundingBox.h == 0) {
+			}
 			if(this.checkIsOver(boundingBox,e.clientX,e.clientY)) {
 				if(layerFound == null || boundingBox.w * boundingBox.h < layerFoundBoundingBox.w * layerFoundBoundingBox.h) {
 					var application = silex.publication.PublicationModel.getInstance().application;
@@ -9369,7 +9366,8 @@ silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.Display
 		while(_g1 < _g) {
 			var idx = _g1++;
 			var boundingBox = brix.util.DomTools.getElementBoundingBox(comps[idx]);
-			if(boundingBox.w == 0 && boundingBox.h == 0) haxe.Log.trace("todo: this element has display='none', let's give it the size which it would have otherwise " + layers[idx].className,{ fileName : "SelectionController.hx", lineNumber : 311, className : "silex.ui.stage.SelectionController", methodName : "onMouseMove"});
+			if(boundingBox.w == 0 && boundingBox.h == 0) {
+			}
 			if(this.checkIsOver(boundingBox,e.clientX,e.clientY)) {
 				if(compFound == null || boundingBox.w * boundingBox.h < compFoundBoundingBox.w * compFoundBoundingBox.h) {
 					compFound = comps[idx];
@@ -9458,12 +9456,12 @@ silex.ui.stage.SelectionDropHandler.prototype = $extend(silex.ui.stage.DropHandl
 		if(component == null) {
 			var layer = silex.layer.LayerModel.getInstance().selectedItem;
 			var page = silex.page.PageModel.getInstance().selectedItem;
-			var name = layer.rootElement.getAttribute("title");
+			var name = layer.rootElement.getAttribute("data-silex-name");
 			if(name == null) name = "";
 			var confirm = js.Lib.window.confirm("I am about to delete the container " + name + ". Are you sure?");
 			if(confirm == true) silex.layer.LayerModel.getInstance().removeLayer(layer,page.name);
 		} else {
-			var name = component.getAttribute("title");
+			var name = component.getAttribute("data-silex-name");
 			if(name == null) name = "";
 			var confirm = js.Lib.window.confirm("I am about to delete the component " + name + ". Are you sure?");
 			if(confirm == true) silex.component.ComponentModel.getInstance().removeComponent(component);
@@ -9482,8 +9480,8 @@ silex.ui.stage.SelectionDropHandler.prototype = $extend(silex.ui.stage.DropHandl
 				this.delBtn.style.display = "block";
 				var t = new haxe.Template(this.displayZoneTemplate);
 				var context = { layerName : null, componentName : null};
-				if(silex.layer.LayerModel.getInstance().selectedItem != null) context.layerName = silex.layer.LayerModel.getInstance().selectedItem.rootElement.getAttribute("title"); else if(silex.component.ComponentModel.getInstance().selectedItem != null) context.layerName = silex.component.ComponentModel.getInstance().selectedItem.parentNode.getAttribute("title");
-				if(silex.component.ComponentModel.getInstance().selectedItem != null) context.componentName = silex.component.ComponentModel.getInstance().selectedItem.getAttribute("title");
+				if(silex.layer.LayerModel.getInstance().selectedItem != null) context.layerName = silex.layer.LayerModel.getInstance().selectedItem.rootElement.getAttribute("data-silex-name"); else if(silex.component.ComponentModel.getInstance().selectedItem != null) context.layerName = silex.component.ComponentModel.getInstance().selectedItem.parentNode.getAttribute("data-silex-name");
+				if(silex.component.ComponentModel.getInstance().selectedItem != null) context.componentName = silex.component.ComponentModel.getInstance().selectedItem.getAttribute("data-silex-name");
 				var output = t.execute(context);
 				this.displayZone.innerHTML = output;
 			} catch( e1 ) {
@@ -10299,9 +10297,13 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 	apply: function() {
 		var propertyModel = silex.property.PropertyModel.getInstance();
 		var value = this.getInputValue("name-property");
-		if(value != null && value != "") propertyModel.setProperty(this.selectedItem,"title",this.getInputValue("name-property")); else propertyModel.setProperty(this.selectedItem,"title",null);
-		var value1 = this.getInputValue("src-property");
-		if(value1 != null && value1 != "") propertyModel.setProperty(this.selectedItem,"src",brix.util.DomTools.abs2rel(value1)); else if(Reflect.hasField(this.selectedItem,"src")) propertyModel.setProperty(this.selectedItem,"src","");
+		if(value != null && value != "") propertyModel.setAttribute(this.selectedItem,"data-silex-name",this.getInputValue("name-property")); else propertyModel.setAttribute(this.selectedItem,"data-silex-name",null);
+		var value1 = this.getInputValue("title-property");
+		if(value1 != null && value1 != "") propertyModel.setAttribute(this.selectedItem,"title",this.getInputValue("title-property")); else propertyModel.setAttribute(this.selectedItem,"title",null);
+		var value2 = this.getInputValue("alt-property");
+		if(value2 != null && value2 != "") propertyModel.setAttribute(this.selectedItem,"alt",this.getInputValue("alt-property")); else propertyModel.setAttribute(this.selectedItem,"alt",null);
+		var value3 = this.getInputValue("src-property");
+		if(value3 != null && value3 != "") propertyModel.setProperty(this.selectedItem,"src",brix.util.DomTools.abs2rel(value3)); else if(Reflect.hasField(this.selectedItem,"src")) propertyModel.setProperty(this.selectedItem,"src","");
 		var modelHtmlDom = silex.publication.PublicationModel.getInstance().getModelFromView(this.selectedItem);
 		var sources = modelHtmlDom.getElementsByTagName("source");
 		var _g1 = 0, _g = sources.length;
@@ -10315,9 +10317,9 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 			var idx = _g1++;
 			sources1[0].parentNode.removeChild(sources1[0]);
 		}
-		var value2 = this.getInputValue("multiple-src-property");
-		if(value2 != null) {
-			var urls = value2.split("\n");
+		var value4 = this.getInputValue("multiple-src-property");
+		if(value4 != null) {
+			var urls = value4.split("\n");
 			var _g = 0;
 			while(_g < urls.length) {
 				var sourceUrl = urls[_g];
@@ -10332,14 +10334,14 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 				}
 			}
 		}
-		var value3 = this.getInputValue("auto-start-property","checked");
-		if(value3 == true) propertyModel.setProperty(this.selectedItem,"autoplay","autoplay"); else propertyModel.setProperty(this.selectedItem,"autoplay",null);
-		var value4 = this.getInputValue("controls-property","checked");
-		if(value4 == true) propertyModel.setProperty(this.selectedItem,"controls","controls"); else propertyModel.setProperty(this.selectedItem,"controls",null);
-		var value5 = this.getInputValue("loop-property","checked");
-		if(value5 == true) propertyModel.setProperty(this.selectedItem,"loop","loop"); else propertyModel.setProperty(this.selectedItem,"loop",null);
-		var value6 = this.getInputValue("master-property","checked");
-		if(value6 == true) propertyModel.setAttribute(this.selectedItem,"data-master","true"); else propertyModel.setAttribute(this.selectedItem,"data-master",null);
+		var value5 = this.getInputValue("auto-start-property","checked");
+		if(value5 == true) propertyModel.setProperty(this.selectedItem,"autoplay","autoplay"); else propertyModel.setProperty(this.selectedItem,"autoplay",null);
+		var value6 = this.getInputValue("controls-property","checked");
+		if(value6 == true) propertyModel.setProperty(this.selectedItem,"controls","controls"); else propertyModel.setProperty(this.selectedItem,"controls",null);
+		var value7 = this.getInputValue("loop-property","checked");
+		if(value7 == true) propertyModel.setProperty(this.selectedItem,"loop","loop"); else propertyModel.setProperty(this.selectedItem,"loop",null);
+		var value8 = this.getInputValue("master-property","checked");
+		if(value8 == true) propertyModel.setAttribute(this.selectedItem,"data-master","true"); else propertyModel.setAttribute(this.selectedItem,"data-master",null);
 	}
 	,load: function(element) {
 		var contextArray = [];
@@ -10359,26 +10361,30 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 		}
 		this.updateContext(contextArray);
 		var propertyModel = silex.property.PropertyModel.getInstance();
-		var value = propertyModel.getProperty(element,"title");
+		var value = propertyModel.getAttribute(element,"data-silex-name");
 		if(value != null) this.setInputValue("name-property",value);
-		var value1 = propertyModel.getProperty(element,"src");
-		if(value1 != null) this.setInputValue("src-property",brix.util.DomTools.abs2rel(value1)); else this.setInputValue("src-property","");
+		var value1 = propertyModel.getAttribute(element,"title");
+		if(value1 != null) this.setInputValue("title-property",value1);
+		var value2 = propertyModel.getAttribute(element,"alt");
+		if(value2 != null) this.setInputValue("alt-property",value2);
+		var value3 = propertyModel.getProperty(element,"src");
+		if(value3 != null) this.setInputValue("src-property",brix.util.DomTools.abs2rel(value3)); else this.setInputValue("src-property","");
 		var sources = silex.publication.PublicationModel.getInstance().getModelFromView(element).getElementsByTagName("source");
-		var value2 = "";
+		var value4 = "";
 		var _g1 = 0, _g = sources.length;
 		while(_g1 < _g) {
 			var idx = _g1++;
-			value2 += brix.util.DomTools.abs2rel(sources[idx].src) + "\n";
+			value4 += brix.util.DomTools.abs2rel(sources[idx].src) + "\n";
 		}
-		this.setInputValue("multiple-src-property",value2);
-		var value3 = propertyModel.getProperty(element,"autoplay");
-		if(value3 == null || value3 == false) this.setInputValue("auto-start-property",null,"checked"); else this.setInputValue("auto-start-property","checked","checked");
-		var value4 = propertyModel.getProperty(element,"loop");
-		if(value4 == null || value4 == false) this.setInputValue("loop-property",null,"checked"); else this.setInputValue("loop-property","checked","checked");
-		var value5 = propertyModel.getProperty(element,"controls");
-		if(value5 == null || value5 == false) this.setInputValue("controls-property",null,"checked"); else this.setInputValue("controls-property","checked","checked");
-		var value6 = propertyModel.getAttribute(element,"data-master");
-		if(value6 == null || value6 == false) this.setInputValue("master-property",null,"checked"); else this.setInputValue("master-property","checked","checked");
+		this.setInputValue("multiple-src-property",value4);
+		var value5 = propertyModel.getProperty(element,"autoplay");
+		if(value5 == null || value5 == false) this.setInputValue("auto-start-property",null,"checked"); else this.setInputValue("auto-start-property","checked","checked");
+		var value6 = propertyModel.getProperty(element,"loop");
+		if(value6 == null || value6 == false) this.setInputValue("loop-property",null,"checked"); else this.setInputValue("loop-property","checked","checked");
+		var value7 = propertyModel.getProperty(element,"controls");
+		if(value7 == null || value7 == false) this.setInputValue("controls-property",null,"checked"); else this.setInputValue("controls-property","checked","checked");
+		var value8 = propertyModel.getAttribute(element,"data-master");
+		if(value8 == null || value8 == false) this.setInputValue("master-property",null,"checked"); else this.setInputValue("master-property","checked","checked");
 	}
 	,updateContext: function(contextArray) {
 		if(silex.ui.toolbox.editor.PropertyEditor.styleSheet != null) js.Lib.document.getElementsByTagName("head")[0].removeChild(silex.ui.toolbox.editor.PropertyEditor.styleSheet);
@@ -10399,6 +10405,8 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 	}
 	,reset: function() {
 		this.setInputValue("name-property","");
+		this.setInputValue("title-property","");
+		this.setInputValue("alt-property","");
 		this.setInputValue("multiple-src-property","");
 		this.setInputValue("src-property","");
 		this.setInputValue("auto-start-property",null,"checked");
@@ -10424,12 +10432,12 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 			if(brix.util.DomTools.hasClass(this.selectedItem,"Layer")) {
 				var layer = silex.layer.LayerModel.getInstance().selectedItem;
 				var page = silex.page.PageModel.getInstance().selectedItem;
-				var name = layer.rootElement.getAttribute("title");
+				var name = layer.rootElement.getAttribute("data-silex-name");
 				if(name == null) name = "";
 				var confirm = js.Lib.window.confirm("I am about to delete the container " + name + ". Are you sure?");
 				if(confirm == true) silex.layer.LayerModel.getInstance().removeLayer(layer,page.name);
 			} else {
-				var name = this.selectedItem.getAttribute("title");
+				var name = this.selectedItem.getAttribute("data-silex-name");
 				if(name == null) name = "";
 				var confirm = js.Lib.window.confirm("I am about to delete the component " + name + ". Are you sure?");
 				if(confirm == true) silex.component.ComponentModel.getInstance().removeComponent(this.selectedItem);

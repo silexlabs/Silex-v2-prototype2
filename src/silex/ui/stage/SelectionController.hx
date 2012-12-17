@@ -273,7 +273,7 @@ class SelectionController extends DisplayObject
 			var boundingBox = DomTools.getElementBoundingBox(layers[idx]);
 			// if this element has display='none', let's give it the size which it would have otherwise
 			if (boundingBox.w == 0 && boundingBox.h == 0){
-				trace("todo: this element has display='none', let's give it the size which it would have otherwise "+layers[idx].className);
+				//trace("todo: this element has display='none', let's give it the size which it would have otherwise "+layers[idx].className);
 				// todo: this element has display='none', let's give it the size which it would have otherwise
 			}
 			// check if the mouse is over the layer
@@ -308,7 +308,7 @@ class SelectionController extends DisplayObject
 				var boundingBox = DomTools.getElementBoundingBox(comps[idx]);
 				// if this element has display='none', let's give it the size which it would have otherwise
 				if (boundingBox.w == 0 && boundingBox.h == 0){
-					trace("todo: this element has display='none', let's give it the size which it would have otherwise "+layers[idx].className);
+					//trace("todo: this element has display='none', let's give it the size which it would have otherwise "+layers[idx].className);
 					// todo: this element has display='none', let's give it the size which it would have otherwise
 				}
 				// check if the mouse is over the component
