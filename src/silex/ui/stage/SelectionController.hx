@@ -50,6 +50,11 @@ class SelectionController extends DisplayObject
 	public static inline var HOVER_MARKER_STYLE_NAME = "hover-marker";
 	public static inline var HOVER_LAYER_MARKER_STYLE_NAME = "hover-layer-marker";
 	/**
+	 * Minimum marker width/height
+	 */
+	public static inline var MIN_WIDTH = 10;
+	public static inline var MIN_HEIGHT = 10;
+	/**
 	 * Selection marker
 	 * The selection marker placed over the selected item. 
 	 * it intercept the click to handle the editing actions
@@ -266,6 +271,11 @@ class SelectionController extends DisplayObject
 		for (idx in 0...layers.length){
 			// get the boundig box for the element
 			var boundingBox = DomTools.getElementBoundingBox(layers[idx]);
+			// if this element has display='none', let's give it the size which it would have otherwise
+			if (boundingBox.w == 0 && boundingBox.h == 0){
+				trace("todo: this element has display='none', let's give it the size which it would have otherwise "+layers[idx].className);
+				// todo: this element has display='none', let's give it the size which it would have otherwise
+			}
 			// check if the mouse is over the layer
 			if (checkIsOver(boundingBox, e.clientX, e.clientY)){
 				// if a layer has allready been found, take the smallest of the two
@@ -296,6 +306,11 @@ class SelectionController extends DisplayObject
 			for (idx in 0...comps.length){
 				// get the boundig box for the element
 				var boundingBox = DomTools.getElementBoundingBox(comps[idx]);
+				// if this element has display='none', let's give it the size which it would have otherwise
+				if (boundingBox.w == 0 && boundingBox.h == 0){
+					trace("todo: this element has display='none', let's give it the size which it would have otherwise "+layers[idx].className);
+					// todo: this element has display='none', let's give it the size which it would have otherwise
+				}
 				// check if the mouse is over the component
 				if (checkIsOver(boundingBox, e.clientX, e.clientY)){
 					// if a component has allready been found, take the smallest of the two
@@ -328,6 +343,9 @@ class SelectionController extends DisplayObject
 	 * Check if the mouse is over a given node
 	 */
 	private function checkIsOver(boundingBox:BoundingBox, mouseX:Int, mouseY:Int):Bool{
+		// min width/height in order to be able to click on the element
+		if (boundingBox.w < MIN_WIDTH) boundingBox.w = MIN_WIDTH;
+		if (boundingBox.h < MIN_HEIGHT) boundingBox.h = MIN_HEIGHT;
 		// return true if the mouse is in the bounding box
 		var res = mouseX > boundingBox.x 
 			&& mouseX < boundingBox.x+boundingBox.w
@@ -392,11 +410,14 @@ class SelectionController extends DisplayObject
 	 * todo: with transformations + rotation
 	 */
 	private function setMarkerPosition(marker:HtmlDom, target:HtmlDom){
-		if (target == null || target.style.display == "none"){
+		if (target == null 
+			// || target.style.display == "none"
+			){
 			marker.style.display = "none";
 			marker.style.visibility = "hidden";
 		}
-		else{			
+		else
+		{
 			marker.style.display = "inline";
 			marker.style.visibility = "visible";
 			var boundingBox = DomTools.getElementBoundingBox(target);
@@ -420,8 +441,14 @@ class SelectionController extends DisplayObject
 	 * position the given marker at the given position
 	 */
 	private function doSetMarkerPosition(marker:HtmlDom, left:Int, top:Int, width:Int, height:Int) {
+		// min width/height in order to be able to click on the element
+		if (width < MIN_WIDTH) width = MIN_WIDTH;
+		if (height < MIN_HEIGHT) height = MIN_HEIGHT;
+
 		// use moveTo in order to handle the absolut position or relative position of rootElement
 		DomTools.moveTo(marker, left, top);
+
+		// element width/height
 		marker.style.width = width + "px";
 		marker.style.height = height + "px";
 	}

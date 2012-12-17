@@ -9295,12 +9295,14 @@ silex.ui.stage.SelectionController.__name__ = ["silex","ui","stage","SelectionCo
 silex.ui.stage.SelectionController.__super__ = brix.component.ui.DisplayObject;
 silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
 	doSetMarkerPosition: function(marker,left,top,width,height) {
+		if(width < 10) width = 10;
+		if(height < 10) height = 10;
 		brix.util.DomTools.moveTo(marker,left,top);
 		marker.style.width = width + "px";
 		marker.style.height = height + "px";
 	}
 	,setMarkerPosition: function(marker,target) {
-		if(target == null || target.style.display == "none") {
+		if(target == null) {
 			marker.style.display = "none";
 			marker.style.visibility = "hidden";
 		} else {
@@ -9330,6 +9332,8 @@ silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.Display
 		if(this.layerModel.selectedItem == null || this.componentModel.selectedItem != null) this.setMarkerPosition(this.selectionLayerMarker,null); else this.setMarkerPosition(this.selectionLayerMarker,this.layerModel.selectedItem.rootElement);
 	}
 	,checkIsOver: function(boundingBox,mouseX,mouseY) {
+		if(boundingBox.w < 10) boundingBox.w = 10;
+		if(boundingBox.h < 10) boundingBox.h = 10;
 		var res = mouseX > boundingBox.x && mouseX < boundingBox.x + boundingBox.w && mouseY > boundingBox.y && mouseY < boundingBox.y + boundingBox.h;
 		return res;
 	}
@@ -9346,11 +9350,12 @@ silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.Display
 		while(_g1 < _g) {
 			var idx = _g1++;
 			var boundingBox = brix.util.DomTools.getElementBoundingBox(layers[idx]);
+			if(boundingBox.w == 0 && boundingBox.h == 0) haxe.Log.trace("todo: this element has display='none', let's give it the size which it would have otherwise " + layers[idx].className,{ fileName : "SelectionController.hx", lineNumber : 276, className : "silex.ui.stage.SelectionController", methodName : "onMouseMove"});
 			if(this.checkIsOver(boundingBox,e.clientX,e.clientY)) {
 				if(layerFound == null || boundingBox.w * boundingBox.h < layerFoundBoundingBox.w * layerFoundBoundingBox.h) {
 					var application = silex.publication.PublicationModel.getInstance().application;
 					var layerList = application.getAssociatedComponents(layers[idx],brix.component.navigation.Layer);
-					if(layerList.length != 1) haxe.Log.trace("Warning: there should be 1 and only 1 Layer instance associated with this node, not " + layerList.length,{ fileName : "SelectionController.hx", lineNumber : 278, className : "silex.ui.stage.SelectionController", methodName : "onMouseMove"});
+					if(layerList.length != 1) haxe.Log.trace("Warning: there should be 1 and only 1 Layer instance associated with this node, not " + layerList.length,{ fileName : "SelectionController.hx", lineNumber : 288, className : "silex.ui.stage.SelectionController", methodName : "onMouseMove"});
 					layerFound = layerList.first();
 					layerFoundBoundingBox = boundingBox;
 				}
@@ -9364,6 +9369,7 @@ silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.Display
 		while(_g1 < _g) {
 			var idx = _g1++;
 			var boundingBox = brix.util.DomTools.getElementBoundingBox(comps[idx]);
+			if(boundingBox.w == 0 && boundingBox.h == 0) haxe.Log.trace("todo: this element has display='none', let's give it the size which it would have otherwise " + layers[idx].className,{ fileName : "SelectionController.hx", lineNumber : 311, className : "silex.ui.stage.SelectionController", methodName : "onMouseMove"});
 			if(this.checkIsOver(boundingBox,e.clientX,e.clientY)) {
 				if(compFound == null || boundingBox.w * boundingBox.h < compFoundBoundingBox.w * compFoundBoundingBox.h) {
 					compFound = comps[idx];
@@ -9398,11 +9404,11 @@ silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.Display
 		this.componentModel.setSelectedItem(this.componentModel.hoveredItem);
 	}
 	,onDrop: function(e) {
-		haxe.Log.trace("onDrop",{ fileName : "SelectionController.hx", lineNumber : 181, className : "silex.ui.stage.SelectionController", methodName : "onDrop"});
+		haxe.Log.trace("onDrop",{ fileName : "SelectionController.hx", lineNumber : 186, className : "silex.ui.stage.SelectionController", methodName : "onDrop"});
 		this.isDragging = false;
 	}
 	,onDrag: function(e) {
-		haxe.Log.trace("onDrag",{ fileName : "SelectionController.hx", lineNumber : 174, className : "silex.ui.stage.SelectionController", methodName : "onDrag"});
+		haxe.Log.trace("onDrag",{ fileName : "SelectionController.hx", lineNumber : 179, className : "silex.ui.stage.SelectionController", methodName : "onDrag"});
 		this.isDragging = true;
 	}
 	,redraw: function(e) {
@@ -9862,51 +9868,53 @@ silex.ui.toolbox.editor.BackgroundPositionEditor.prototype = $extend(silex.ui.to
 	,load: function(element) {
 		this.reset();
 		var value = silex.property.PropertyModel.getInstance().getStyle(element,"background-position");
-		value = StringTools.trim(value);
-		if(value == "") return;
-		var values = value.split(" ");
-		var _g1 = 0, _g = values.length;
-		while(_g1 < _g) {
-			var idx = _g1++;
-			values[idx] = StringTools.trim(values[idx]);
-		}
-		while(HxOverrides.remove(values,"")) {
-		}
-		if(values.length != 2) {
-			haxe.Log.trace("Error: found a value of " + value + " for background-position, but could not split it in 2 parts for X and Y. Length is " + values.length,{ fileName : "BackgroundPositionEditor.hx", lineNumber : 77, className : "silex.ui.toolbox.editor.BackgroundPositionEditor", methodName : "load"});
-			return;
-		}
-		if(values[0] == "0%") values[0] = "left";
-		if(values[0] == "50%") values[0] = "center";
-		if(values[0] == "100%") values[0] = "right";
-		if(values[0] == "left" || values[0] == "center" || values[0] == "right") this.keywordX.value = values[0]; else if(StringTools.endsWith(values[0],"%")) this.percentageX.value = HxOverrides.substr(values[0],0,-1); else {
-			var options = this.lengthSelectX.getElementsByTagName("option");
-			var unit = "";
-			var _g1 = 0, _g = options.length;
+		if(value != null) {
+			value = StringTools.trim(value);
+			if(value == "") return;
+			var values = value.split(" ");
+			var _g1 = 0, _g = values.length;
 			while(_g1 < _g) {
 				var idx = _g1++;
-				if(StringTools.endsWith(values[0],options[idx].value)) {
-					this.lengthInputX.value = Std.string(Std.parseInt(values[0]));
-					unit = options[idx].value;
-					this.lengthSelectX.value = unit;
-					break;
+				values[idx] = StringTools.trim(values[idx]);
+			}
+			while(HxOverrides.remove(values,"")) {
+			}
+			if(values.length != 2) {
+				haxe.Log.trace("Error: found a value of " + value + " for background-position, but could not split it in 2 parts for X and Y. Length is " + values.length,{ fileName : "BackgroundPositionEditor.hx", lineNumber : 78, className : "silex.ui.toolbox.editor.BackgroundPositionEditor", methodName : "load"});
+				return;
+			}
+			if(values[0] == "0%") values[0] = "left";
+			if(values[0] == "50%") values[0] = "center";
+			if(values[0] == "100%") values[0] = "right";
+			if(values[0] == "left" || values[0] == "center" || values[0] == "right") this.keywordX.value = values[0]; else if(StringTools.endsWith(values[0],"%")) this.percentageX.value = HxOverrides.substr(values[0],0,-1); else {
+				var options = this.lengthSelectX.getElementsByTagName("option");
+				var unit = "";
+				var _g1 = 0, _g = options.length;
+				while(_g1 < _g) {
+					var idx = _g1++;
+					if(StringTools.endsWith(values[0],options[idx].value)) {
+						this.lengthInputX.value = Std.string(Std.parseInt(values[0]));
+						unit = options[idx].value;
+						this.lengthSelectX.value = unit;
+						break;
+					}
 				}
 			}
-		}
-		if(values[1] == "0%") values[1] = "top";
-		if(values[1] == "50%") values[1] = "center";
-		if(values[1] == "100%") values[1] = "bottom";
-		if(values[1] == "top" || values[1] == "center" || values[1] == "bottom") this.keywordY.value = values[1]; else if(StringTools.endsWith(values[1],"%")) this.percentageY.value = HxOverrides.substr(values[1],0,-1); else {
-			var options = this.lengthSelectY.getElementsByTagName("option");
-			var unit = "";
-			var _g1 = 0, _g = options.length;
-			while(_g1 < _g) {
-				var idx = _g1++;
-				if(StringTools.endsWith(values[1],options[idx].value)) {
-					this.lengthInputY.value = Std.string(Std.parseInt(values[1]));
-					unit = options[idx].value;
-					this.lengthSelectY.value = unit;
-					break;
+			if(values[1] == "0%") values[1] = "top";
+			if(values[1] == "50%") values[1] = "center";
+			if(values[1] == "100%") values[1] = "bottom";
+			if(values[1] == "top" || values[1] == "center" || values[1] == "bottom") this.keywordY.value = values[1]; else if(StringTools.endsWith(values[1],"%")) this.percentageY.value = HxOverrides.substr(values[1],0,-1); else {
+				var options = this.lengthSelectY.getElementsByTagName("option");
+				var unit = "";
+				var _g1 = 0, _g = options.length;
+				while(_g1 < _g) {
+					var idx = _g1++;
+					if(StringTools.endsWith(values[1],options[idx].value)) {
+						this.lengthInputY.value = Std.string(Std.parseInt(values[1]));
+						unit = options[idx].value;
+						this.lengthSelectY.value = unit;
+						break;
+					}
 				}
 			}
 		}
@@ -10181,7 +10189,6 @@ silex.ui.toolbox.editor.UrlEditor.__super__ = silex.ui.toolbox.editor.EditorBase
 silex.ui.toolbox.editor.UrlEditor.prototype = $extend(silex.ui.toolbox.editor.EditorBase.prototype,{
 	onMultipleFilesChosen: function(inputControlClassName,files) {
 		var inputElement = brix.util.DomTools.getSingleElement(this.rootElement,inputControlClassName,true);
-		haxe.Log.trace("onMultipleFilesChosen " + Std.string(files) + " - " + inputControlClassName + " - " + Std.string(inputElement) + " - " + inputElement.className,{ fileName : "UrlEditor.hx", lineNumber : 161, className : "silex.ui.toolbox.editor.UrlEditor", methodName : "onMultipleFilesChosen"});
 		var value = inputElement.value;
 		if(value != "") value += "\n";
 		value = StringTools.replace(value,"none\n","");
@@ -10224,7 +10231,6 @@ silex.ui.toolbox.editor.UrlEditor.prototype = $extend(silex.ui.toolbox.editor.Ed
 				};
 			})($bind(this,this.onMultipleFilesChosen),inputControlClassName);
 			silex.ui.dialog.FileBrowserDialog.selectMultipleFiles(cbk,this.brixInstanceId);
-			haxe.Log.trace("select multiple " + inputControlClassName,{ fileName : "UrlEditor.hx", lineNumber : 127, className : "silex.ui.toolbox.editor.UrlEditor", methodName : "onClick"});
 		} else if(brix.util.DomTools.hasClass(e.target,"select-file-button")) {
 			e.preventDefault();
 			var inputControlClassName = e.target.getAttribute("data-fb-target");
@@ -10247,10 +10253,7 @@ silex.ui.toolbox.editor.UrlEditor.prototype = $extend(silex.ui.toolbox.editor.Ed
 				++_g;
 				if(StringTools.trim(entry) == "") continue;
 				if(res != "") res += ", ";
-				if(entry == "none" || entry == "inherit") res += entry; else {
-					res += "url('" + brix.util.DomTools.abs2rel(entry) + "')";
-					haxe.Log.trace("apply URL " + res,{ fileName : "UrlEditor.hx", lineNumber : 107, className : "silex.ui.toolbox.editor.UrlEditor", methodName : "apply"});
-				}
+				if(entry == "none" || entry == "inherit") res += entry; else res += "url('" + brix.util.DomTools.abs2rel(entry) + "')";
 			}
 			silex.property.PropertyModel.getInstance().setStyle(this.selectedItem,this.propertyName,res);
 		} else silex.property.PropertyModel.getInstance().setStyle(this.selectedItem,this.propertyName,null);
@@ -10277,7 +10280,6 @@ silex.ui.toolbox.editor.UrlEditor.prototype = $extend(silex.ui.toolbox.editor.Ed
 			}
 			urls.push(value1);
 		}
-		haxe.Log.trace("load URL " + Std.string(urls),{ fileName : "UrlEditor.hx", lineNumber : 85, className : "silex.ui.toolbox.editor.UrlEditor", methodName : "load"});
 		this.inputElement.value = urls.join("\n");
 	}
 	,reset: function() {
@@ -10727,6 +10729,8 @@ silex.ui.stage.SelectionController.SELECTION_MARKER_STYLE_NAME = "selection-mark
 silex.ui.stage.SelectionController.SELECTION_LAYER_MARKER_STYLE_NAME = "selection-layer-marker";
 silex.ui.stage.SelectionController.HOVER_MARKER_STYLE_NAME = "hover-marker";
 silex.ui.stage.SelectionController.HOVER_LAYER_MARKER_STYLE_NAME = "hover-layer-marker";
+silex.ui.stage.SelectionController.MIN_WIDTH = 10;
+silex.ui.stage.SelectionController.MIN_HEIGHT = 10;
 silex.ui.stage.SelectionDropHandler.__meta__ = { obj : { tagNameFilter : ["DIV"]}};
 silex.ui.stage.SelectionDropHandler.DELETE_BUTTON_CLASS_NAME = "selection-marker-delete";
 silex.ui.stage.SelectionDropHandler.DISPLAY_ZONE_CLASS_NAME = "selection-marker-name";

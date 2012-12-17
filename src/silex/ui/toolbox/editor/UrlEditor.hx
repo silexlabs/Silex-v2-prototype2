@@ -82,7 +82,6 @@ class UrlEditor extends EditorBase
 			}
 			urls.push(value);
 		}
-		trace("load URL "+urls);
 		cast(inputElement).value = urls.join("\n");
 	}
 	/**
@@ -104,7 +103,6 @@ class UrlEditor extends EditorBase
 				else{
 					// convert into relative url
 					res += "url('" + DomTools.abs2rel(entry) + "')";
-					trace("apply URL "+res);
 				}
 			}
 			PropertyModel.getInstance().setStyle(selectedItem, propertyName, res);
@@ -124,7 +122,6 @@ class UrlEditor extends EditorBase
 			var inputControlClassName = e.target.getAttribute("data-fb-target");
 			var cbk = callback(onMultipleFilesChosen, inputControlClassName);
 			FileBrowserDialog.selectMultipleFiles(cbk, brixInstanceId);
-			trace("select multiple "+inputControlClassName);
 		}
 		else if (DomTools.hasClass(e.target, OPEN_FILE_BROWSER_CLASS_NAME)){
 			e.preventDefault();
@@ -158,7 +155,6 @@ class UrlEditor extends EditorBase
 	 */
 	private function onMultipleFilesChosen(inputControlClassName:String, files:Array<String>){
 		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
-		trace("onMultipleFilesChosen "+files+" - "+inputControlClassName+" - "+inputElement+" - "+inputElement.className);
 		var value = cast(inputElement).value;
 
 		if (value != "") value += "\n";
