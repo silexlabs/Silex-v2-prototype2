@@ -34,58 +34,79 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** to integrate in roadmap **
 
-* use css patterns ?? http://www.google.fr/search?hl=en&redir_esc=&client=ms-android-samsung&source=android-browser-type&v=133247963&qsubts=1352845988673&action=devloc&q=css+patterns&v=133247963
-* make a native desktop app http://appjs.org/ 
-* help buttons on all editors
-
-discours
-- http://www.applicationcraft.com/
-  . BROWSER BASED or DESKTOP
-  . BUILD PROTOTYPES, FRONT-ENDS & FULL-BLOWN APPS
-  . WEB APPS TO MOBILE APP STORES?
-  . EVERYTHING IS HTML5, CSS AND JAVASCRIPT
-  . YOU’D BE CRAZY TO GO NATIVE!
-  . php or nodejs
-  . html5 and flash
 
 
 ** to do **
 
-remarques pol
-- keyboard shortcuts
-- tab => browse all layers and comp 
-- editeur texte / enrichissement non pris en compte
-> des assets se déplacent d’un container à l’autre.
-
-
 bugs !
+* notif : 
+  . si on n accepte pas ni refuse => passer en custom notif
+  . load la template au démararage?
+- editeur texte / enrichissement non pris en compte
 - IE and null in styles
 - replace getElementsByClassName by Application.getComponents
 - display none => how to get it back??
 - display inline => 0 width
-
-toolbox still missing :
-- messages
-  . saved
-  . error
-  . 
-* tous les styles dans la boite a outil styles
-  + descriptions / aide
-  + groups and "apply to group" (e.g. for border-left border-rigth border-top and border- bottom)
-* lock a layer or component from edit
-
-- styles hover et active => data-style-* - http://www.w3schools.com/css/css_pseudo_classes.asp
-  . selector in each accordion tab => set style to data-*
-  . save in data-* instead of style only
-  . init all at start
-  . listen over and out on body => set style to data-*
-  . check for active when open / close page
-  . save as style => .xxxx{} .xxxx:hover{} .xxxx:active{} 
-* history : back button of air android
-* selection drop zone : priorité aux petites zones 
-* les layers/comp en absolute doivent etre selectionnables => faire en sorte que le getBestDropZone parcurs toutes les zones? prendre la + petite?
-* styles/themes
-* mettre a jour les tests unitaires cote serveur
 * delete a container when it is a master or not, and uncheck master when the container is not on any page
 * ecouter window.resize, et dispatcher window.resize dans Page::open
-* new from template
+* pas de "name" par defaut car tooltip relou
+* icon "edit" sur les composants (edit text ou url)
+* supprimer la fonction "fermer"?
+* ajout road map: 
+  . designer friendly => brix components in "insert" menu + select styles for each comp
+  . templates comme dans l'éditeur text
+* themes tab: rename "styles"
+* add "functions" tab
+
+
+
+silex v2 functionnal specs
+
+questions/notes
+* functions are plugins? what about slextend?
+
+new notions
+• themes
+• styles and rules
+• functions
+
+a theme is a set of styles, assets, functions...
+a style is a css file with css classes / rules
+a function is a Brix component ([js class] + css styles/skins + html/template) + the component's interface description 
+
+theme
+• 1 theme = 1 folder in bin/theme/
+• contains styles in bin/themes/*/styles/*.css
+• contains assets in bin/themes/*/assets/
+• contains functions in bin/themes/*/functions/*.js and *.css and *.html
+• all themes installed on the server make 
+∘ styles available in the "styles" tab
+∘ assets available in the "clipart" tab? in the library?
+∘ functions in the insert tab? separate from components because they can be dropped on components and layers, not added to the dom
+
+styles
+• 1 style = 1 css file in bin/bin/themes/*/styles/
+• each style contains css classes (rules)
+• when a style sheet is added to a publication
+∘   . adds styles to the css classes of the publication
+∘   . may change the default styles (header, nav...)
+• the components and containers have a list of css classes in properties and one can add some from the publication's styles
+• all css classes listed are named silex-css-rule-*
+
+functions
+• 1 function = files *.js and *.css and *.html in bin/themes/*/functions/
+• each function can be dropped on certain types of components or containers (like brix comp)
+• each function has a set of attributes, editable in the properties tool box when an element having the function is selected
+• case of the brix global components: drop it on the stage? simply select it?
+
+
+example of the XML list function
+• drop it on a layer
+• select the layer and edit the "Url" property, set a url of an XML file
+• select the style of the list (provided with this functionality, e.g. "vertical", "menu", ...)
+• in the properties, click "select root node" => it displays the XML and ask you to select the "root node"
+• let's assume that the items are like <item><title>my cell title</title><image>http://.../icone.jpg </image></item>
+• in the layer, add a text field and an image
+• in the text field set the text to "::title::"
+• in the image, set URL to ::image::
+• save and preview the publication => it repeats the template with all the items, with image and title

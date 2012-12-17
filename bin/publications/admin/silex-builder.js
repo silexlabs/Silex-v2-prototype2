@@ -8994,9 +8994,17 @@ silex.ui.list.PublicationList.prototype = $extend(brix.component.list.List.proto
 	onListResult: function(event) {
 		this.dataProvider = event.detail;
 		this.doRedraw();
+		var loadingAnimContainer = brix.util.DomTools.getSingleElement(js.Lib.document.body,"publications-list-loading",false);
+		if(loadingAnimContainer == null) throw "Error: could not find the container of the loading anim of the publications list component";
+		loadingAnimContainer.style.display = "none";
 	}
 	,reloadData: function() {
 		silex.publication.PublicationModel.getInstance().loadList();
+		this.dataProvider = [];
+		this.doRedraw();
+		var loadingAnimContainer = brix.util.DomTools.getSingleElement(js.Lib.document.body,"publications-list-loading",false);
+		if(loadingAnimContainer == null) throw "Error: could not find the container of the loading anim of the publications list component";
+		loadingAnimContainer.style.display = "inline";
 	}
 	,publicationModel: null
 	,__class__: silex.ui.list.PublicationList
@@ -10698,6 +10706,7 @@ silex.ui.list.LayersList.DEBUG_INFO = "LayersList class";
 silex.ui.list.PageList.DEBUG_INFO = "PageList class";
 silex.ui.list.PublicationList.__meta__ = { obj : { tagNameFilter : ["ul"]}};
 silex.ui.list.PublicationList.DEBUG_INFO = "PublicationList class";
+silex.ui.list.PublicationList.LOADING_ANIM_CONTAINER_CLASS_NAME = "publications-list-loading";
 silex.ui.script.HScriptTag.executed = false;
 silex.ui.stage.DropHandlerBase.__meta__ = { obj : { tagNameFilter : ["DIV"]}};
 silex.ui.stage.InsertDropHandler.IMAGE_TYPE = "image";

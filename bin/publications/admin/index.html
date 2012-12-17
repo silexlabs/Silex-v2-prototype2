@@ -65,10 +65,8 @@
 		<LINK href="app.css" rel="stylesheet"></LINK>
 		<SCRIPT type="text/hscript">
 			//Lib.alert('test!');
-			//PublicationModel.getInstance().load('theme1');
-			PublicationModel.getInstance().load('test10');
+			PublicationModel.getInstance().load('theme1');
 			//MenuController.createPublication();
-			//PublicationModel.getInstance().load('test.com');
 		</SCRIPT>
 	<SCRIPT src="silex-builder.js"></SCRIPT></HEAD>
 	
@@ -93,6 +91,11 @@
 			
 			<A class="Page" name="loading">loading</A>
 			<DIV class="Layer loading loading-container">
+				<DIV class="loading-bar loading-bar1"></DIV>
+				<DIV class="loading-bar loading-bar2"></DIV>
+				<DIV class="loading-bar loading-bar3"></DIV>
+				<DIV class="loading-bar loading-bar4"></DIV>
+				<DIV class="loading-bar loading-bar5"></DIV>
 			</DIV>
 			
 			
@@ -163,21 +166,19 @@
 
 					
 					<A class="Page" name="page-list" data-group-id="Group1">Pages</A>
-
 					<DIV class="Layer page-list ribbon-list selectable">
 						<DIV class="assets-page">
 							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-add.png" title="Add a page" data-menu-item="add-page"/>
 							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-delete.png" title="Delete selected page" data-menu-item="del-page"/>
 							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-rename.png" title="Rename selected page" data-menu-item="rename-page"/>
 						</DIV>
-						<UL class="PageList">
+						<UL class="PageList thumbs-list">
 							<LI class="">
 								<DIV class="solid"></DIV>
 								<P>::name::</P>
 							</LI>
 						</UL>
 					</DIV>
-
 					
 					<A class="Page" name="layer-list" data-group-id="Group1">Masters</A>
 
@@ -269,10 +270,17 @@
 				
 				<A class="Page" name="open-dialog"></A>
 				<FORM class="Layer open-dialog dialog-foreground OpenDialog" data-dialog-name="open-dialog">
-					<DIV class="container-open-publication">
+					<DIV class="container-open-publication ">
 						<HEADER>
-							<P>Silex Publications Browser</P>
+							<P>Your Publications</P>
 						</HEADER>
+						<DIV class="publications-list-loading loading-container">
+							<DIV class="loading-bar loading-bar1"></DIV>
+							<DIV class="loading-bar loading-bar2"></DIV>
+							<DIV class="loading-bar loading-bar3"></DIV>
+							<DIV class="loading-bar loading-bar4"></DIV>
+							<DIV class="loading-bar loading-bar5"></DIV>
+						</DIV>
 						<DIV class="publications-list-container">
 							<UL class="PublicationList publications">
 								<LI>::name:: <DIV class="column"><SMALL>Last change by ::configData.lastChange.author:: on ::configData.lastChange.date::</SMALL></DIV></LI>
@@ -447,6 +455,9 @@
 											
 				                       		<DIV class="Group3 property-container" data-property-name="::name::">
 												<LABEL>::cssName::</LABEL>
+												<A href="http://www.w3.org/wiki/CSS/Properties/::cssName::" class="link-to-help" target="_blank" title="Help page about ::cssName:: property.">
+													<IMG src="../admin/assets/info-link.png"/>
+												</A>
 												<BR/>
 												::foreach types::
 													
