@@ -151,7 +151,7 @@ class InsertDropHandler extends DropHandlerBase{
 
 		// open the browse library dialog
 		var cbk = callback(onMultipleFilesChosen, element);
-		FileBrowserDialog.selectMultipleFiles(cbk, brixInstanceId);
+		FileBrowserDialog.selectMultipleFiles(cbk, brixInstanceId, null, "files/assets/");
 	}
 	/**
 	 * callback for the FileBrowserDialog
@@ -181,7 +181,7 @@ class InsertDropHandler extends DropHandlerBase{
 
 		// open the browse library dialog
 		var cbk = callback(onFileChosen, element);
-		FileBrowserDialog.selectFile(cbk, brixInstanceId);
+		FileBrowserDialog.selectFile(cbk, brixInstanceId, null, "files/assets/");
 	}
 	/**
 	 * callback for the FileBrowserDialog

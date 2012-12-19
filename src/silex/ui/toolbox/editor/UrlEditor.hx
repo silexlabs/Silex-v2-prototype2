@@ -121,13 +121,13 @@ class UrlEditor extends EditorBase
 			e.preventDefault();
 			var inputControlClassName = e.target.getAttribute("data-fb-target");
 			var cbk = callback(onMultipleFilesChosen, inputControlClassName);
-			FileBrowserDialog.selectMultipleFiles(cbk, brixInstanceId);
+			FileBrowserDialog.selectMultipleFiles(cbk, brixInstanceId, null, "files/assets/");
 		}
 		else if (DomTools.hasClass(e.target, OPEN_FILE_BROWSER_CLASS_NAME)){
 			e.preventDefault();
 			var inputControlClassName = e.target.getAttribute("data-fb-target");
 			var cbk = callback(onFileChosen, inputControlClassName);
-			FileBrowserDialog.selectFile(cbk, brixInstanceId);
+			FileBrowserDialog.selectFile(cbk, brixInstanceId, null, "files/assets/");
 		}
 	}
 	////////////////////////////////////////////

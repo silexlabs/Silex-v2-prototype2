@@ -100,7 +100,7 @@ class silex_file_server_FileService extends silex_ServiceBase {
 					$GLOBALS['%e']->unshift($GLOBALS['%s']->pop());
 				}
 				$GLOBALS['%s']->push($GLOBALS['%e'][0]);
-				throw new HException("load(" . $name . ") error: " . Std::string($e));
+				throw new HException("load(" . $name . ") error: " . Std::string($e) . " - current directory: " . (dirname($_SERVER["SCRIPT_FILENAME"]) . "/"));
 			}
 		}
 		{

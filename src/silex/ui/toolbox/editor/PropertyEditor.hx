@@ -45,6 +45,12 @@ class PropertyEditor extends UrlEditor
 	public function new(rootElement:HtmlDom, BrixId:String){
 		super(rootElement, BrixId);
 	}
+	override private function onPropertyChange(e:CustomEvent) {
+		trace("onPropertyChange "+propertyChangePending+" - "+e.detail.name+" - "+propertyName);
+		if (propertyChangePending)
+			return;
+		refresh();
+	}
 	/**
 	 * callback for toolbox events
 	 * handle the click on delete button, remove the selection from model and view
@@ -107,6 +113,7 @@ class PropertyEditor extends UrlEditor
 	 * reset the values
 	 */
 	override private function reset() {
+		trace("reset");
 		// 
 		// font family
 		setInputValue("name-property", "");
@@ -140,6 +147,7 @@ class PropertyEditor extends UrlEditor
 	 * display the property value
 	 */
 	override private function load(element:HtmlDom) {
+		trace("load");
 		// handle the context
 		var contextArray = [];
 		if (DomTools.hasClass(element, "Layer")){
@@ -232,10 +240,11 @@ class PropertyEditor extends UrlEditor
 		var value = getInputValue("src-property");
 		if (value != null && value != "") propertyModel.setProperty(selectedItem, "src", DomTools.abs2rel(value));
 		else if (Reflect.hasField(selectedItem, "src")){
-			// only if the attrivute is defined 
-			// otherwise it my be on a node of type audio or video, which has no src attribute
+			// only if the attribute is defined 
+			// otherwise it may be on a node of type audio or video, which has no src attribute
 			propertyModel.setProperty(selectedItem, "src", "");
 		}
+		trace("apply "+DomTools.abs2rel(value));
 
 		var modelHtmlDom = FileModel.getInstance().getModelFromView(selectedItem);
 		var sources = modelHtmlDom.getElementsByTagName("source");

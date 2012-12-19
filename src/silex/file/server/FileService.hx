@@ -2,13 +2,12 @@ package silex.file.server;
 
 import silex.ServiceBase;
 
-import js.Lib;
-import js.Dom;
+import php.Web;
 
 import sys.io.File;
 import sys.FileSystem;
 
-import silex.server.ServerConfig;
+import silex.config.ServerConfig;
 
 /**
  * server side implementation of the file service
@@ -41,7 +40,7 @@ class FileService extends ServiceBase{
 			content = File.getContent(name);
 		}
 		catch(e:Dynamic){
-			throw("load("+name+") error: "+e);
+			throw("load("+name+") error: "+e+" - current directory: "+Web.getCwd());
 		}
 		return content;
 	}

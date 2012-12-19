@@ -38,7 +38,8 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** to do **
 
-bugs !
+* "files/" on the client side?!
+* remove "unload" icon + remove "delete" and add "manage files"
 * icon "edit" sur les composants (edit text ou url)
 * supprimer la fonction "fermer"?
 * ajout road map: 
@@ -53,6 +54,10 @@ bugs !
 - replace getElementsByClassName by Application.getComponents
 
 
+silex v2 with dropbox
+- server side service
+- file browser with https://www.dropbox.com/developers/chooser
+- at start => open page "dropbox add app"
 
 silex v2 functionnal specs
 

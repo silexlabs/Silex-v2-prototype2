@@ -39,12 +39,20 @@ class MenuController extends DisplayObject
 	 * open the "open file" popup
 	 */
 	static public function openFile(){
-		Page.openPage("open-dialog", true, null, null, menuBrixId);
+		FileBrowserDialog.selectFile(onFileChosen, menuBrixId);
+
+	}
+	/**
+	 * callback for the FileBrowserDialog
+	 */
+	static private function onFileChosen(fileUrl:String){
+		var file = FileBrowserDialog.getRelativeURLFromFileBrowser(fileUrl);
+		FileModel.getInstance().load("files/"+file);
 	}
 	/**
 	 * close the current file
 	 */
-	static public function closeFile(){
+/*	static public function closeFile(){
 		FileModel.getInstance().unload();
 	}
 	/**
@@ -59,14 +67,7 @@ class MenuController extends DisplayObject
 	 */
 	static public function saveFile(){
 		// check the case where a new file is about to be created
-		if (FileModel.getInstance().currentData.name == FileModel.CREATION_TEMPLATE_FILE_NAME){
-			var newName = Lib.window.prompt("New name for your file?", "");
-			if (newName != null && newName!="")
-				FileModel.getInstance().save(newName);
-		}
-		else{
-			FileModel.getInstance().save();
-		}
+		FileModel.getInstance().save();
 	}
 	/**
 	 * ask for a new name and save the current pulication as
@@ -161,8 +162,8 @@ class MenuController extends DisplayObject
 				trashFile();
 			case "open-file":
 				openFile();
-			case "close-file":
-				closeFile();
+//			case "close-file":
+//				closeFile();
 			case "view-file":
 				viewFile();
 			case "save-file":

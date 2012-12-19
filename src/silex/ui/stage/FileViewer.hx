@@ -68,6 +68,7 @@ class FileViewer extends DisplayObject{
 		// display the file for editing
 		rootElement.innerHTML = "";
 		rootElement.appendChild(fileModel.currentData.viewHtmlDom);
+		rootElement.appendChild(fileModel.currentData.headHtmlDom);
 		LayoutBase.redrawLayouts();
 	}
 	/**

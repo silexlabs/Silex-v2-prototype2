@@ -51,10 +51,8 @@ $_CONFIG = array(
     'deniedExts' => "exe com msi bat php phps phtml php3 php4 cgi pl",
 
     'types' => array(
-        // Silex type
-        'silex-html-files'   =>  "*.html",
-        // Silex type
-        'silex-all-files'   =>  "",
+        // Silex no type
+        'files'   =>  "",
         // CKEditor & FCKEditor types
         'files'   =>  "",
         'flash'   =>  "swf",
@@ -84,7 +82,7 @@ $_CONFIG = array(
     'thumbWidth' => 100,
     'thumbHeight' => 100,
 
-    'thumbsDir' => "third-party-tools/kcfinder/.thumbs",
+    'thumbsDir' => "libs/kcfinder/.thumbs",
 
     'jpegQuality' => 90,
 

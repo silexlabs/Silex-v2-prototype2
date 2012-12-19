@@ -11,6 +11,7 @@ body{
 	background-color:white !important;
 }
 /* loading  */
+.builder-view,
 .silex-view{
 	visibility: hidden;
 }
@@ -103,7 +104,7 @@ body{
     color: #666666;
 
     background-color: Gainsboro;
-	background-image: url(../admin/assets/notification-shadow.png) top center no-repeat;
+	background-image: url(../assets/admin/notification-shadow.png) top center no-repeat;
 
 	margin-bottom: 15px;
 	padding: 10px 10px 10px 40px;
@@ -561,7 +562,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	right: 0;
 	z-index:1000;
 	cursor:pointer;
-	background-image:url(../admin/assets/sv2-ico-delete.png);
+	background-image:url(../assets/admin/sv2-ico-delete.png);
 	background-color: rgba(66, 66, 66, 0.7);
 }
 
@@ -674,7 +675,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 }
 
 .temp-icon {
-    background-image: url(../admin/assets/temporary-icon.png);
+    background-image: url(../assets/admin/temporary-icon.png);
     background-size: 50px auto;
     height: 50px;
     width: 50px;
@@ -730,63 +731,63 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	FILE
 */
 .ribbon-list ul li.new{
-	background-image: url("assets/file-new.png");
+	background-image: url("../assets/admin/file-new.png");
 }
 
 .ribbon-list ul li.template{
-	background-image: url("assets/file-new-from-template.png");
+	background-image: url("../assets/admin/file-new-from-template.png");
 }
 
 .ribbon-list ul li.open{
-	background-image: url("assets/file-open-big.png");
+	background-image: url("../assets/admin/file-open-big.png");
 }
 
 .ribbon-list ul li.save-file{
-	background-image: url("assets/file-save-big.png");
+	background-image: url("../assets/admin/file-save-big.png");
 }
 
 .ribbon-list ul li.save-file-as{
-	background-image: url("assets/save-as_normal-state.png");
+	background-image: url("../assets/admin/save-as_normal-state.png");
 }
 
 .ribbon-list ul li.save-file-as:hover {
-	background-image: url("assets/save-as_roll-over-state.png");
+	background-image: url("../assets/admin/save-as_roll-over-state.png");
 }
 
 .ribbon-list ul li.save-file-as:active {
-	background-image: url("assets/save-as_clic-state.png");
+	background-image: url("../assets/admin/save-as_clic-state.png");
 }
 
 .ribbon-list ul li.save-file-copy{
-	background-image: url("assets/save-as-copy_normal-state.png");
+	background-image: url("../assets/admin/save-as-copy_normal-state.png");
 }
 
 .ribbon-list ul li.save-file-copy:hover{
-	background-image: url("assets/save-as-copy_roll-over-state.png");
+	background-image: url("../assets/admin/save-as-copy_roll-over-state.png");
 }
 
 .ribbon-list ul li.save-file-copy:active{
-	background-image: url("assets/save-as-copy_clic-state.png");
+	background-image: url("../assets/admin/save-as-copy_clic-state.png");
 }
 
 .ribbon-list ul li.close-file{
-	background-image: url("assets/close_normal-state.png");
+	background-image: url("../assets/admin/close_normal-state.png");
 }
 
 .ribbon-list ul li.close-file:hover{
-	background-image: url("assets/close_roll-over-state.png");
+	background-image: url("../assets/admin/close_roll-over-state.png");
 }
 
 .ribbon-list ul li.close-file:active{
-	background-image: url("assets/close_clic-state.png");
+	background-image: url("../assets/admin/close_clic-state.png");
 }
 
 .ribbon-list ul li.delete{
-	background-image: url("assets/page-delete.png");
+	background-image: url("../assets/admin/page-delete.png");
 }
 
 .ribbon-list ul li.settings{
-	background-image: url("assets/file-settings.png");
+	background-image: url("../assets/admin/file-settings.png");
 }
 
 
@@ -795,19 +796,19 @@ box-shadow: inset 0px 0px 2px 2px #888;
 */
 
 .ribbon-list ul li.image{
-	background-image: url("assets/insert-image.png");
+	background-image: url("../assets/admin/insert-image.png");
 }
 
 .ribbon-list ul li.text{
-	background-image: url("assets/insert-text.png");
+	background-image: url("../assets/admin/insert-text.png");
 }
 
 .ribbon-list ul li.audio{
-	background-image: url("assets/insert-son.png");
+	background-image: url("../assets/admin/insert-son.png");
 }
 
 .ribbon-list ul li.video{
-	background-image: url("assets/insert_video.png");
+	background-image: url("../assets/admin/insert_video.png");
 }
 
 /**
@@ -815,7 +816,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 */
 
 .ribbon-list ul li.master{
-	background-image: url("assets/master.png");
+	background-image: url("../assets/admin/master.png");
 }
 
 /**
@@ -823,19 +824,19 @@ box-shadow: inset 0px 0px 2px 2px #888;
 */
 
 .ribbon-list ul li.page{
-	background-image: url("assets/page.png");
+	background-image: url("../assets/admin/page.png");
 }
 
 .ribbon-list ul li.add-page{
-	background-image: url("assets/page-add.png");
+	background-image: url("../assets/admin/page-add.png");
 }
 
 .ribbon-list ul li.delete-page{
-	background-image: url("assets/page-delete.png");
+	background-image: url("../assets/admin/page-delete.png");
 }
 
 .ribbon-list ul li.rename-page{
-	background-image: url("assets/page-rename.png");
+	background-image: url("../assets/admin/page-rename.png");
 }
 
 /* **************** */
@@ -1025,7 +1026,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	height:27px;
 	margin:0;
 	padding:2px;
-	background-image:url(../admin/assets/sv2-ico-delete.png);
+	background-image:url(../assets/admin/sv2-ico-delete.png);
 	background-color:#666;
 	float:right;
 	cursor:pointer;

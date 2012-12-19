@@ -20,8 +20,8 @@ import sys.io.File;
 import haxe.remoting.HttpConnection;
 import haxe.Unserializer;
 
-import silex.server.ServerConfig;
 import silex.ServiceBase;
+import silex.config.ServerConfig;
 #else
 import haxe.Serializer;
 #end

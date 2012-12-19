@@ -40,7 +40,7 @@ class ServerConfig extends ConfigBase{
 	/**
 	 * remove server protexted config data and creates a client config object
 	 */
-	override public function toClientConfig():ClientConfig{
+/*	override public function toClientConfig():ClientConfig{
 		return {
 			defaultFile:defaultFile,
 			userFolder:userFolder,

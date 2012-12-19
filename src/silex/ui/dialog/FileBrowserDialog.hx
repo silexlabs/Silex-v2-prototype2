@@ -16,7 +16,7 @@ import silex.file.FileModel;
  */
 class FileBrowserDialog extends DialogBase
 {
-	public static inline var KC_FINDER_URL = "libs/kcfinder/";
+	public static inline var KC_FINDER_URL = "../libs/kcfinder/";
 	////////////////////////////////////////////////////////////////////////
 	// static helper methods
 	////////////////////////////////////////////////////////////////////////
@@ -24,9 +24,11 @@ class FileBrowserDialog extends DialogBase
 	 * open file browser
 	 * called when the user clicks on a button with "select-file-button" class
 	 */
-	public static function selectMultipleFiles(userCallback:Array<String>->Void, brixInstanceId:String, msg:String = null){
+	public static function selectMultipleFiles(userCallback:Array<String>->Void, brixInstanceId:String, msg:String = null, intialPath:String = "files/"){
 		// default message
 		if (msg==null) msg = "Double click to select one or more files!";
+		// intial folder path
+		FileBrowserDialog.intialPath = intialPath;
 		// callback
 		onValidateMultiple = userCallback;
 		// message
@@ -40,9 +42,11 @@ class FileBrowserDialog extends DialogBase
 	 * open file browser
 	 * called when the user clicks on a button with "select-file-button" class
 	 */
-	public static function selectFile(userCallback:String->Void, brixInstanceId:String, msg:String = null){
+	public static function selectFile(userCallback:String->Void, brixInstanceId:String, msg:String = null, intialPath:String = "files/"){
 		// default message
 		if (msg==null) msg = "Double click to select a file!";
+		// intial folder path
+		FileBrowserDialog.intialPath = intialPath;
 		// callback
 		onValidate = userCallback;
 		// message
@@ -62,25 +66,14 @@ class FileBrowserDialog extends DialogBase
 		var idx = url.indexOf("://");
 		// check that we have absolute urls
 		if (idx == -1){ // case of /files/assets/IMG_0167.JPG
-/*			// remove path to the publication folder
-			var pubUrl = "publications/";
+			// remove path to the publication folder
+			var pubUrl = "files/";
 			var idxPubFolder = url.indexOf(pubUrl);
 			if (idxPubFolder >= 0){
 				// remove all the common parts
 				url = url.substr(idxPubFolder + pubUrl.length);
-				// remove publication name if it is the current publication or add the relative path "../"
-				var pubUrl = FileModel.getInstance().currentData.name + "/";
-				var idxPubFolder = url.indexOf(pubUrl);
-				if (idxPubFolder >= 0){
-					// remove all the common parts
-					url = url.substr(idxPubFolder + pubUrl.length);
-				}
-				else{
-					// add the relative path to publication folder
-					url = "../"+url;
-				}
 			}
-*/		}
+		}
 		else{ // case of http://localhost:8888/Silex/bin/files/assets/IMG_0167.JPG
 			url = DomTools.abs2rel(url);
 		}
@@ -122,6 +115,11 @@ class FileBrowserDialog extends DialogBase
 	 */
 	public static var message:String;
 	/**
+	 * static property to be set before openning this dialog
+	 * folder to display by default
+	 */
+	public static var intialPath:String;
+	/**
 	 * Constructor
 	 * Define the callbacks
 	 */
@@ -134,8 +132,12 @@ class FileBrowserDialog extends DialogBase
 	 */
 	public function requestRedraw(transitionData:TransitionData) {
 		// redraw the list, which will reload data and then refresh the list when onListData is dispatched by the model
+/*		var element = DomTools.getSingleElement(rootElement, FB_CLASS_NAME, true);
+		element.innerHTML = '<iframe name="kcfinder_iframe" src="'+KC_FINDER_URL+'browse.php?type=files&dir=./files/assets/" ' +
+        'frameborder="0" width="100%" height="100%" marginwidth="0" marginheight="0" scrolling="no" />';
+*/
 		var element = DomTools.getSingleElement(rootElement, FB_CLASS_NAME, true);
-		element.innerHTML = '<iframe name="kcfinder_iframe" src="'+KC_FINDER_URL+'browse.php?type=silex-all-files&dir=./assets/" ' +
+		element.innerHTML = '<iframe name="kcfinder_iframe" src="../libs/kcfinder/browse.php?type=files&dir='+intialPath+'" ' +
         'frameborder="0" width="100%" height="100%" marginwidth="0" marginheight="0" scrolling="no" />';
 
 		// display the message in the element
@@ -160,6 +162,7 @@ class FileBrowserDialog extends DialogBase
 	 * Called after a click on the submit button
 	 */
 	public function validateSelection(url:String) {
+		trace("validateSelection "+url);
 		if (url != null){
 			if (onValidate != null){
 				onValidate(url);

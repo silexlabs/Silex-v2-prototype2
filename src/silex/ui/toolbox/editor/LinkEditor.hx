@@ -68,7 +68,6 @@ class LinkEditor extends EditorBase
 	 * this method should be implemented in the derived class
 	 */
 	override private function reset() {
-		trace("reset "+targetElement);
 		cast(inputElement).value = "";
 		cast(targetElement).value = "";
 		cast(pageSelectElement).selectedIndex = -1;
@@ -78,7 +77,6 @@ class LinkEditor extends EditorBase
 	 * this method should be implemented in the derived class
 	 */
 	override private function load(element:HtmlDom) {
-		trace("load "+targetElement);
 		// do nothing if the element is not a link, or there is no file loaded
 		if (!DomTools.hasClass(element, "SilexLink") || FileModel.getInstance().application == null){
 			reset();
@@ -104,7 +102,6 @@ class LinkEditor extends EditorBase
 	 * this method should be implemented in the derived class
 	 */
 	override private function apply() {
-		trace("apply "+targetElement);
 		var value = cast(inputElement).value;
 		if (value != "" && value != null){
 			// there is a link to set

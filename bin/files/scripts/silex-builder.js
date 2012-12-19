@@ -1671,10 +1671,10 @@ brix.component.interaction.NotificationManager = function(rootElement,brixId) {
 $hxClasses["brix.component.interaction.NotificationManager"] = brix.component.interaction.NotificationManager;
 brix.component.interaction.NotificationManager.__name__ = ["brix","component","interaction","NotificationManager"];
 brix.component.interaction.NotificationManager.notifySuccess = function(title,body,rootElement) {
-	brix.component.interaction.NotificationManager.notify("../admin/assets/notification-info.png",title,body,rootElement);
+	brix.component.interaction.NotificationManager.notify("assets/admin/notification-info.png",title,body,rootElement);
 }
 brix.component.interaction.NotificationManager.notifyError = function(title,body,rootElement) {
-	brix.component.interaction.NotificationManager.notify("../admin/assets/notification-error.png",title,body,rootElement);
+	brix.component.interaction.NotificationManager.notify("assets/admin/notification-error.png",title,body,rootElement);
 }
 brix.component.interaction.NotificationManager.notify = function(iconUrl,title,body,rootElement) {
 	if(rootElement == null) {
@@ -5957,15 +5957,15 @@ hscript.Interp.prototype = {
 			case 0:
 				var v = $e[2];
 				return v;
+			case 3:
+				var v = $e[2];
+				return v;
 			case 1:
 				var f = $e[2];
 				return f;
 			case 2:
 				var s = $e[2];
 				return s;
-			case 3:
-				var v = $e[2];
-				return v;
 			}
 			break;
 		case 1:
@@ -6522,6 +6522,10 @@ hscript.Parser.prototype = {
 				var v = $e[2];
 				$r = Std.string(v);
 				break;
+			case 3:
+				var v = $e[2];
+				$r = Std.string(v);
+				break;
 			case 1:
 				var f = $e[2];
 				$r = Std.string(f);
@@ -6529,10 +6533,6 @@ hscript.Parser.prototype = {
 			case 2:
 				var s = $e[2];
 				$r = s;
-				break;
-			case 3:
-				var v = $e[2];
-				$r = Std.string(v);
 				break;
 			}
 			return $r;
@@ -7918,7 +7918,7 @@ silex.file.FileModel.__super__ = silex.ModelBase;
 silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onFileSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("FILE SAVED",{ fileName : "FileModel.hx", lineNumber : 534, className : "silex.file.FileModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("FILE SAVED",{ fileName : "FileModel.hx", lineNumber : 541, className : "silex.file.FileModel", methodName : "onSaveSuccess"});
 		brix.component.interaction.NotificationManager.notifySuccess("File saved",this.currentData.name + " has been saved successfully.",this.currentData.viewHtmlDom);
 	}
 	,onSaveError: function(msg) {
@@ -7944,7 +7944,13 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 			brix.component.interaction.NotificationManager.notifyError("Error","I can not save the file because no file is loaded.",this.currentData.viewHtmlDom);
 			throw "Error: can not save the file because no file is loaded.";
 		}
-		if(tempName == null) tempName = this.currentData.name;
+		if(tempName == null) {
+			if(this.currentData.name == "files/creation-template.html") {
+				var newName = js.Lib.window.prompt("New name for your file?","files/your-file-" + Math.round(Math.random() * 100) + ".html");
+				if(newName != null && newName != "") this.currentData.name = newName;
+			}
+			tempName = this.currentData.name;
+		}
 		this.dispatchEvent(this.createEvent("onFileSaveStart"),this.debugInfo);
 		var tempModelHead = this.currentData.headHtmlDom.cloneNode(true);
 		var tempModelBody = this.currentData.modelHtmlDom.cloneNode(true);
@@ -7965,18 +7971,17 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 			brix.component.interaction.NotificationManager.notifyError("Error","I can not save the file because no file is loaded.",this.currentData.viewHtmlDom);
 			throw "Error: can not save the file because no file is loaded.";
 		}
-		this.dispatchEvent(this.createEvent("onFileSaveStart"),this.debugInfo);
 		this.save(newName);
 	}
 	,onDeleteSuccess: function() {
-		haxe.Log.trace("FILE DELETED ",{ fileName : "FileModel.hx", lineNumber : 406, className : "silex.file.FileModel", methodName : "onDeleteSuccess"});
-		this.unload();
+		haxe.Log.trace("FILE DELETED ",{ fileName : "FileModel.hx", lineNumber : 410, className : "silex.file.FileModel", methodName : "onDeleteSuccess"});
+		this.create();
 	}
 	,trash: function(name) {
 		this.fileService.trash(name,$bind(this,this.onDeleteSuccess),$bind(this,this.onSaveError));
 	}
 	,create: function() {
-		this.load("creation-template.html");
+		this.load("files/creation-template.html");
 	}
 	,onError: function(msg) {
 		this.dispatchEvent(this.createEvent("onFileError"),this.debugInfo);
@@ -7991,8 +7996,8 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,this.currentData.headHtmlDom);
 		if(initialPageName != null) {
 			var page = brix.component.navigation.Page.getPageByName(initialPageName,this.application.id,this.currentData.viewHtmlDom);
-			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "FileModel.hx", lineNumber : 361, className : "silex.file.FileModel", methodName : "initBrixApplication"});
-		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "FileModel.hx", lineNumber : 365, className : "silex.file.FileModel", methodName : "initBrixApplication"});
+			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "FileModel.hx", lineNumber : 365, className : "silex.file.FileModel", methodName : "initBrixApplication"});
+		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "FileModel.hx", lineNumber : 369, className : "silex.file.FileModel", methodName : "initBrixApplication"});
 		silex.interpreter.Interpreter.getInstance().execScriptTags(this.currentData.viewHtmlDom);
 	}
 	,generateNewId: function() {
@@ -8019,6 +8024,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	}
 	,onData: function(content) {
 		this.currentData.rawHtml = content;
+		this.currentData.isLoaded = true;
 		this.currentData.modelHtmlDom = js.Lib.document.createElement("div");
 		this.currentData.headHtmlDom = js.Lib.document.createElement("div");
 		var lowerCaseHtml = this.currentData.rawHtml.toLowerCase();
@@ -8049,21 +8055,18 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		silex.component.ComponentModel.getInstance().refresh();
 		silex.property.PropertyModel.getInstance().refresh();
 	}
-	,load: function(name,configData) {
+	,load: function(name) {
+		haxe.Log.trace("load " + name,{ fileName : "FileModel.hx", lineNumber : 208, className : "silex.file.FileModel", methodName : "load"});
 		this.currentData.name = name;
 		var pageModel = silex.page.PageModel.getInstance();
 		pageModel.setHoveredItem(null);
 		pageModel.setSelectedItem(null);
 		this.dispatchEvent(this.createEvent("onLoadStart"),this.debugInfo);
-		if(name == "") {
-			haxe.Log.trace("unload",{ fileName : "FileModel.hx", lineNumber : 207, className : "silex.file.FileModel", methodName : "load"});
-			this.currentData = { modelHtmlDom : null, headHtmlDom : null, viewHtmlDom : null, rawHtml : "", name : name, isLoaded : false};
-		}
 		this.fileService.load(this.currentData.name,$bind(this,this.onData),$bind(this,this.onError));
 	}
 	,getModelFromView: function(viewHtmlDom) {
 		if(viewHtmlDom == null) {
-			haxe.Log.trace("Warning: could not retrieve the model for element because it is null.",{ fileName : "FileModel.hx", lineNumber : 149, className : "silex.file.FileModel", methodName : "getModelFromView"});
+			haxe.Log.trace("Warning: could not retrieve the model for element because it is null.",{ fileName : "FileModel.hx", lineNumber : 141, className : "silex.file.FileModel", methodName : "getModelFromView"});
 			return null;
 		}
 		try {
@@ -8077,13 +8080,10 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 			if(results == null || results.length != 1) throw "Error: 1 and only 1 component or layer is expected to have ID \"" + id + "\" (" + Std.string(results) + ").";
 			return results[0];
 		} catch( e ) {
-			haxe.Log.trace("Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").",{ fileName : "FileModel.hx", lineNumber : 180, className : "silex.file.FileModel", methodName : "getModelFromView"});
+			haxe.Log.trace("Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").",{ fileName : "FileModel.hx", lineNumber : 172, className : "silex.file.FileModel", methodName : "getModelFromView"});
 			throw "Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").";
 		}
 		return null;
-	}
-	,unload: function() {
-		this.load("");
 	}
 	,initialDocumentTitle: null
 	,application: null
@@ -8596,15 +8596,19 @@ silex.ui.dialog.FileBrowserDialog = function(rootElement,BrixId) {
 };
 $hxClasses["silex.ui.dialog.FileBrowserDialog"] = silex.ui.dialog.FileBrowserDialog;
 silex.ui.dialog.FileBrowserDialog.__name__ = ["silex","ui","dialog","FileBrowserDialog"];
-silex.ui.dialog.FileBrowserDialog.selectMultipleFiles = function(userCallback,brixInstanceId,msg) {
+silex.ui.dialog.FileBrowserDialog.selectMultipleFiles = function(userCallback,brixInstanceId,msg,intialPath) {
+	if(intialPath == null) intialPath = "files/";
 	if(msg == null) msg = "Double click to select one or more files!";
+	silex.ui.dialog.FileBrowserDialog.intialPath = intialPath;
 	silex.ui.dialog.FileBrowserDialog.onValidateMultiple = userCallback;
 	silex.ui.dialog.FileBrowserDialog.message = msg;
 	silex.ui.dialog.FileBrowserDialog.expectMultipleFiles = true;
 	brix.component.navigation.Page.openPage("file-browser-dialog",true,null,null,brixInstanceId);
 }
-silex.ui.dialog.FileBrowserDialog.selectFile = function(userCallback,brixInstanceId,msg) {
+silex.ui.dialog.FileBrowserDialog.selectFile = function(userCallback,brixInstanceId,msg,intialPath) {
+	if(intialPath == null) intialPath = "files/";
 	if(msg == null) msg = "Double click to select a file!";
+	silex.ui.dialog.FileBrowserDialog.intialPath = intialPath;
 	silex.ui.dialog.FileBrowserDialog.onValidate = userCallback;
 	silex.ui.dialog.FileBrowserDialog.message = msg;
 	silex.ui.dialog.FileBrowserDialog.expectMultipleFiles = false;
@@ -8613,12 +8617,16 @@ silex.ui.dialog.FileBrowserDialog.selectFile = function(userCallback,brixInstanc
 silex.ui.dialog.FileBrowserDialog.getRelativeURLFromFileBrowser = function(url) {
 	var idx = url.indexOf("://");
 	if(idx == -1) {
+		var pubUrl = "files/";
+		var idxPubFolder = url.indexOf(pubUrl);
+		if(idxPubFolder >= 0) url = HxOverrides.substr(url,idxPubFolder + pubUrl.length,null);
 	} else url = brix.util.DomTools.abs2rel(url);
 	return url;
 }
 silex.ui.dialog.FileBrowserDialog.onValidate = null;
 silex.ui.dialog.FileBrowserDialog.onValidateMultiple = null;
 silex.ui.dialog.FileBrowserDialog.message = null;
+silex.ui.dialog.FileBrowserDialog.intialPath = null;
 silex.ui.dialog.FileBrowserDialog.__super__ = silex.ui.dialog.DialogBase;
 silex.ui.dialog.FileBrowserDialog.prototype = $extend(silex.ui.dialog.DialogBase.prototype,{
 	close: function() {
@@ -8632,13 +8640,14 @@ silex.ui.dialog.FileBrowserDialog.prototype = $extend(silex.ui.dialog.DialogBase
 		this.close();
 	}
 	,validateMultipleSelection: function(files) {
-		haxe.Log.trace("validateMultipleSelection " + Std.string(files),{ fileName : "FileBrowserDialog.hx", lineNumber : 174, className : "silex.ui.dialog.FileBrowserDialog", methodName : "validateMultipleSelection"});
+		haxe.Log.trace("validateMultipleSelection " + Std.string(files),{ fileName : "FileBrowserDialog.hx", lineNumber : 177, className : "silex.ui.dialog.FileBrowserDialog", methodName : "validateMultipleSelection"});
 		if(files != null) {
 			if(silex.ui.dialog.FileBrowserDialog.onValidateMultiple != null) silex.ui.dialog.FileBrowserDialog.onValidateMultiple(files);
 			this.close();
 		}
 	}
 	,validateSelection: function(url) {
+		haxe.Log.trace("validateSelection " + url,{ fileName : "FileBrowserDialog.hx", lineNumber : 165, className : "silex.ui.dialog.FileBrowserDialog", methodName : "validateSelection"});
 		if(url != null) {
 			if(silex.ui.dialog.FileBrowserDialog.onValidate != null) silex.ui.dialog.FileBrowserDialog.onValidate(url);
 			this.close();
@@ -8646,7 +8655,7 @@ silex.ui.dialog.FileBrowserDialog.prototype = $extend(silex.ui.dialog.DialogBase
 	}
 	,requestRedraw: function(transitionData) {
 		var element = brix.util.DomTools.getSingleElement(this.rootElement,"file-browser-div",true);
-		element.innerHTML = "<iframe name=\"kcfinder_iframe\" src=\"" + "libs/kcfinder/" + "browse.php?type=silex-all-files&dir=./assets/\" " + "frameborder=\"0\" width=\"100%\" height=\"100%\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" />";
+		element.innerHTML = "<iframe name=\"kcfinder_iframe\" src=\"../libs/kcfinder/browse.php?type=files&dir=" + silex.ui.dialog.FileBrowserDialog.intialPath + "\" " + "frameborder=\"0\" width=\"100%\" height=\"100%\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" />";
 		if(silex.ui.dialog.FileBrowserDialog.message != null) {
 			var element1 = brix.util.DomTools.getSingleElement(this.rootElement,"message-zone",false);
 			if(element1 != null) element1.innerHTML = silex.ui.dialog.FileBrowserDialog.message;
@@ -8920,6 +8929,7 @@ silex.ui.stage.FileViewer.prototype = $extend(brix.component.ui.DisplayObject.pr
 	,onFileData: function(event) {
 		this.rootElement.innerHTML = "";
 		this.rootElement.appendChild(this.fileModel.currentData.viewHtmlDom);
+		this.rootElement.appendChild(this.fileModel.currentData.headHtmlDom);
 		brix.component.layout.LayoutBase.redrawLayouts();
 	}
 	,onFileChange: function(event) {
@@ -8957,7 +8967,7 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 				return f(a1,a2);
 			};
 		})($bind(this,this.onFileChosen),element);
-		silex.ui.dialog.FileBrowserDialog.selectFile(cbk,this.brixInstanceId);
+		silex.ui.dialog.FileBrowserDialog.selectFile(cbk,this.brixInstanceId,null,"files/assets/");
 	}
 	,onMultipleFilesChosen: function(element,files) {
 		haxe.Log.trace("onMultipleFilesChosen " + Std.string(files),{ fileName : "InsertDropHandler.hx", lineNumber : 160, className : "silex.ui.stage.InsertDropHandler", methodName : "onMultipleFilesChosen"});
@@ -8982,7 +8992,7 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 				return f(a1,a2);
 			};
 		})($bind(this,this.onMultipleFilesChosen),element);
-		silex.ui.dialog.FileBrowserDialog.selectMultipleFiles(cbk,this.brixInstanceId);
+		silex.ui.dialog.FileBrowserDialog.selectMultipleFiles(cbk,this.brixInstanceId,null,"files/assets/");
 	}
 	,onDrop: function(e) {
 		silex.ui.stage.DropHandlerBase.prototype.onDrop.call(this,e);
@@ -9310,19 +9320,17 @@ silex.ui.toolbox.MenuController.trashFile = function() {
 	if(confirm == true) silex.file.FileModel.getInstance().trash(silex.file.FileModel.getInstance().currentData.name);
 }
 silex.ui.toolbox.MenuController.openFile = function() {
-	brix.component.navigation.Page.openPage("open-dialog",true,null,null,silex.ui.toolbox.MenuController.menuBrixId);
+	silex.ui.dialog.FileBrowserDialog.selectFile(silex.ui.toolbox.MenuController.onFileChosen,silex.ui.toolbox.MenuController.menuBrixId);
 }
-silex.ui.toolbox.MenuController.closeFile = function() {
-	silex.file.FileModel.getInstance().unload();
+silex.ui.toolbox.MenuController.onFileChosen = function(fileUrl) {
+	var file = silex.ui.dialog.FileBrowserDialog.getRelativeURLFromFileBrowser(fileUrl);
+	silex.file.FileModel.getInstance().load("files/" + file);
 }
 silex.ui.toolbox.MenuController.viewFile = function() {
 	js.Lib.window.open("./" + silex.file.FileModel.getInstance().currentData.name,"_blank");
 }
 silex.ui.toolbox.MenuController.saveFile = function() {
-	if(silex.file.FileModel.getInstance().currentData.name == "creation-template.html") {
-		var newName = js.Lib.window.prompt("New name for your file?","");
-		if(newName != null && newName != "") silex.file.FileModel.getInstance().save(newName);
-	} else silex.file.FileModel.getInstance().save();
+	silex.file.FileModel.getInstance().save();
 }
 silex.ui.toolbox.MenuController.saveFileAs = function() {
 	var newName = js.Lib.window.prompt("New name for your file?",silex.file.FileModel.getInstance().currentData.name);
@@ -9364,9 +9372,6 @@ silex.ui.toolbox.MenuController.prototype = $extend(brix.component.ui.DisplayObj
 			break;
 		case "open-file":
 			silex.ui.toolbox.MenuController.openFile();
-			break;
-		case "close-file":
-			silex.ui.toolbox.MenuController.closeFile();
 			break;
 		case "view-file":
 			silex.ui.toolbox.MenuController.viewFile();
@@ -9902,7 +9907,6 @@ silex.ui.toolbox.editor.LinkEditor.__name__ = ["silex","ui","toolbox","editor","
 silex.ui.toolbox.editor.LinkEditor.__super__ = silex.ui.toolbox.editor.EditorBase;
 silex.ui.toolbox.editor.LinkEditor.prototype = $extend(silex.ui.toolbox.editor.EditorBase.prototype,{
 	apply: function() {
-		haxe.Log.trace("apply " + Std.string(this.targetElement),{ fileName : "LinkEditor.hx", lineNumber : 107, className : "silex.ui.toolbox.editor.LinkEditor", methodName : "apply"});
 		var value = this.inputElement.value;
 		if(value != "" && value != null) {
 			silex.component.ComponentModel.getInstance().makeLinkToPage(this.selectedItem,value);
@@ -9915,7 +9919,6 @@ silex.ui.toolbox.editor.LinkEditor.prototype = $extend(silex.ui.toolbox.editor.E
 		}
 	}
 	,load: function(element) {
-		haxe.Log.trace("load " + Std.string(this.targetElement),{ fileName : "LinkEditor.hx", lineNumber : 81, className : "silex.ui.toolbox.editor.LinkEditor", methodName : "load"});
 		if(!brix.util.DomTools.hasClass(element,"SilexLink") || silex.file.FileModel.getInstance().application == null) this.reset(); else {
 			var value = silex.property.PropertyModel.getInstance().getAttribute(element,"data-href");
 			if(silex.ui.link.SilexLink.isUrl(value)) {
@@ -9926,7 +9929,6 @@ silex.ui.toolbox.editor.LinkEditor.prototype = $extend(silex.ui.toolbox.editor.E
 		}
 	}
 	,reset: function() {
-		haxe.Log.trace("reset " + Std.string(this.targetElement),{ fileName : "LinkEditor.hx", lineNumber : 71, className : "silex.ui.toolbox.editor.LinkEditor", methodName : "reset"});
 		this.inputElement.value = "";
 		this.targetElement.value = "";
 		this.pageSelectElement.selectedIndex = -1;
@@ -10020,7 +10022,7 @@ silex.ui.toolbox.editor.UrlEditor.prototype = $extend(silex.ui.toolbox.editor.Ed
 					return f(a1,a2);
 				};
 			})($bind(this,this.onMultipleFilesChosen),inputControlClassName);
-			silex.ui.dialog.FileBrowserDialog.selectMultipleFiles(cbk,this.brixInstanceId);
+			silex.ui.dialog.FileBrowserDialog.selectMultipleFiles(cbk,this.brixInstanceId,null,"files/assets/");
 		} else if(brix.util.DomTools.hasClass(e.target,"select-file-button")) {
 			e.preventDefault();
 			var inputControlClassName = e.target.getAttribute("data-fb-target");
@@ -10029,7 +10031,7 @@ silex.ui.toolbox.editor.UrlEditor.prototype = $extend(silex.ui.toolbox.editor.Ed
 					return f(a1,a2);
 				};
 			})($bind(this,this.onFileChosen),inputControlClassName);
-			silex.ui.dialog.FileBrowserDialog.selectFile(cbk,this.brixInstanceId);
+			silex.ui.dialog.FileBrowserDialog.selectFile(cbk,this.brixInstanceId,null,"files/assets/");
 		}
 	}
 	,apply: function() {
@@ -10096,6 +10098,7 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 		if(value2 != null && value2 != "") propertyModel.setAttribute(this.selectedItem,"alt",this.getInputValue("alt-property")); else propertyModel.setAttribute(this.selectedItem,"alt",null);
 		var value3 = this.getInputValue("src-property");
 		if(value3 != null && value3 != "") propertyModel.setProperty(this.selectedItem,"src",brix.util.DomTools.abs2rel(value3)); else if(Reflect.hasField(this.selectedItem,"src")) propertyModel.setProperty(this.selectedItem,"src","");
+		haxe.Log.trace("apply " + brix.util.DomTools.abs2rel(value3),{ fileName : "PropertyEditor.hx", lineNumber : 247, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "apply"});
 		var modelHtmlDom = silex.file.FileModel.getInstance().getModelFromView(this.selectedItem);
 		var sources = modelHtmlDom.getElementsByTagName("source");
 		var _g1 = 0, _g = sources.length;
@@ -10136,6 +10139,7 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 		if(value8 == true) propertyModel.setAttribute(this.selectedItem,"data-master","true"); else propertyModel.setAttribute(this.selectedItem,"data-master",null);
 	}
 	,load: function(element) {
+		haxe.Log.trace("load",{ fileName : "PropertyEditor.hx", lineNumber : 150, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "load"});
 		var contextArray = [];
 		if(brix.util.DomTools.hasClass(element,"Layer")) contextArray.push("context-layer"); else switch(element.nodeName.toLowerCase()) {
 		case "audio":
@@ -10196,6 +10200,7 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 		silex.ui.toolbox.editor.PropertyEditor.styleSheet = brix.util.DomTools.addCssRules(cssText);
 	}
 	,reset: function() {
+		haxe.Log.trace("reset",{ fileName : "PropertyEditor.hx", lineNumber : 116, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "reset"});
 		this.setInputValue("name-property","");
 		this.setInputValue("title-property","");
 		this.setInputValue("alt-property","");
@@ -10238,6 +10243,11 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 			e.preventDefault();
 			this.openTextEditor();
 		}
+	}
+	,onPropertyChange: function(e) {
+		haxe.Log.trace("onPropertyChange " + Std.string(this.propertyChangePending) + " - " + Std.string(e.detail.name) + " - " + this.propertyName,{ fileName : "PropertyEditor.hx", lineNumber : 49, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "onPropertyChange"});
+		if(this.propertyChangePending) return;
+		this.refresh();
 	}
 	,__class__: silex.ui.toolbox.editor.PropertyEditor
 });
@@ -10343,8 +10353,8 @@ brix.component.interaction.Draggable.EVENT_DRAG = "dragEventDrag";
 brix.component.interaction.Draggable.EVENT_DROPPED = "dragEventDropped";
 brix.component.interaction.Draggable.EVENT_MOVE = "dragEventMove";
 brix.component.interaction.NotificationManager.DEFAULT_MESSAGE_DURATION = 10000;
-brix.component.interaction.NotificationManager.DEFAULT_SUCCESS_ICON = "../admin/assets/notification-info.png";
-brix.component.interaction.NotificationManager.DEFAULT_ERROR_ICON = "../admin/assets/notification-error.png";
+brix.component.interaction.NotificationManager.DEFAULT_SUCCESS_ICON = "assets/admin/notification-info.png";
+brix.component.interaction.NotificationManager.DEFAULT_ERROR_ICON = "assets/admin/notification-error.png";
 brix.component.interaction.NotificationManager.CSS_CLASS_NOTIFICAITON_ZONE = "notification-zone";
 brix.component.interaction.NotificationManager.NOTIFICATION_EVENT = "notificationEvent";
 brix.component.layout.LayoutBase.EVENT_LAYOUT_REDRAW = "layoutRedraw";
@@ -10445,7 +10455,7 @@ silex.component.ComponentModel.ON_LIST_CHANGE = "onComponentListChange";
 silex.file.FileModel.DEBUG_INFO = "FileModel class";
 silex.file.FileModel.CLASS_NAME_MAIN_GROUP = "silex-main-group";
 silex.file.FileModel.BUILDER_ROOT_NODE_CLASS = "silex-view";
-silex.file.FileModel.CREATION_TEMPLATE_FILE_NAME = "creation-template.html";
+silex.file.FileModel.CREATION_TEMPLATE_FILE_NAME = "files/creation-template.html";
 silex.file.FileModel.ON_LOAD_START = "onLoadStart";
 silex.file.FileModel.ON_LOAD_SUCCESS = "onLoadSuccess";
 silex.file.FileModel.ON_ERROR = "onFileError";
@@ -10486,7 +10496,7 @@ silex.ui.dialog.AuthDialog.LOGIN_INPUT_FIELD_NOT_FOUND = "Could not find the inp
 silex.ui.dialog.AuthDialog.PASSWORD_INPUT_FIELD_NOT_FOUND = "Could not find the input field for password. It is expected to have input-field-pass as a css class name.";
 silex.ui.dialog.AuthDialog.ALL_FIELDS_REQUIRED = "All fields are required.";
 silex.ui.dialog.AuthDialog.NETWORK_ERROR = "Network error.";
-silex.ui.dialog.FileBrowserDialog.KC_FINDER_URL = "libs/kcfinder/";
+silex.ui.dialog.FileBrowserDialog.KC_FINDER_URL = "../libs/kcfinder/";
 silex.ui.dialog.FileBrowserDialog.FB_CLASS_NAME = "file-browser-div";
 silex.ui.dialog.FileBrowserDialog.FB_MESSAGE_CLASS_NAME = "message-zone";
 silex.ui.dialog.FileBrowserDialog.FB_PAGE_NAME = "file-browser-dialog";

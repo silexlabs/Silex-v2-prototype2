@@ -62,7 +62,7 @@ class FileModel extends ModelBase<HtmlDom>{
 	/**
 	 * File used as a template for new files
 	 */ 
-	public static inline var CREATION_TEMPLATE_FILE_NAME = "creation-template.html";
+	public static inline var CREATION_TEMPLATE_FILE_NAME = "files/creation-template.html";
 	/**
 	 * event dispatched when a file about to be loaded
 	 */
@@ -134,14 +134,6 @@ class FileModel extends ModelBase<HtmlDom>{
 	// helpers
 	////////////////////////////////////////////////
 	/**
-	 * Load a file
-	 * Load the config data first if needed
-	 * Reset model selection
-	 */
-	public function unload(){
-		load("");
-	}
-	/**
 	 * Retrieve a reference to the selected component or layer in the FileModel::modelHtmlDom object
 	 */
 	public function getModelFromView(viewHtmlDom:HtmlDom):HtmlDom{
@@ -186,10 +178,34 @@ class FileModel extends ModelBase<HtmlDom>{
 	// load
 	////////////////////////////////////////////////
 	/**
+	 * unload the current file
+	 */
+/*	public function unload(){
+		trace("unload "+currentData.name);
+		// reset file name
+		currentData.name = "";
+
+		// reset model selection
+		var pageModel = PageModel.getInstance();
+		pageModel.hoveredItem = null;
+		pageModel.selectedItem = null;
+
+		selectedItem = null;
+		currentData = {
+			modelHtmlDom:null,
+			headHtmlDom:null,
+			viewHtmlDom:null,
+			rawHtml:"",
+			name:"",
+			isLoaded:false,
+		};
+	}
+	/**
 	 * Load a file
 	 * Reset model selection
 	 */
-	public function load(name:String, configData:FileData = null){
+	public function load(name:String){
+		trace("load "+name);
 		// store the new file name
 		currentData.name = name;
 
@@ -201,19 +217,6 @@ class FileModel extends ModelBase<HtmlDom>{
 		// dispatch the event 
 		dispatchEvent(createEvent(ON_LOAD_START), debugInfo);
 
-		// Start the loading process
-		if (name == ""){
-			// unload
-			trace("unload");
-			currentData = {
-				modelHtmlDom:null,
-				headHtmlDom:null,
-				viewHtmlDom:null,
-				rawHtml:"",
-				name:name,
-				isLoaded:false,
-			};
-		}
 		// start the loading process
 		fileService.load(currentData.name, onData, onError);
 	}
@@ -224,6 +227,7 @@ class FileModel extends ModelBase<HtmlDom>{
 	private function onData(content:String):Void{
 		// store the data / update the model
 		currentData.rawHtml = content;
+		currentData.isLoaded = true;
 
 		// parse the data and make it available as HTML
 		currentData.modelHtmlDom = Lib.document.createElement("div");
@@ -404,7 +408,7 @@ class FileModel extends ModelBase<HtmlDom>{
 	 */
 	private function onDeleteSuccess():Void{
 		trace("FILE DELETED ");
-		unload();
+		create();
 	}
 	/**
 	 * Save a copy of the current file with a new name
@@ -422,9 +426,6 @@ class FileModel extends ModelBase<HtmlDom>{
 		// var pageModel = PageModel.getInstance();
 		// pageModel.hoveredItem = null;
 		// pageModel.selectedItem = null;
-
-		// dispatch the event 
-		dispatchEvent(createEvent(ON_SAVE_START), debugInfo);
 
 		save(newName);
 	}
@@ -452,11 +453,17 @@ class FileModel extends ModelBase<HtmlDom>{
 			NotificationManager.notifyError("Error", "I can not save the file because no file is loaded.", currentData.viewHtmlDom);
 			throw("Error: can not save the file because no file is loaded.");
 		}
-
 		// check the file name
-		if (tempName == null)
+		if (tempName == null){
+			// handle a new publication
+			if (currentData.name == CREATION_TEMPLATE_FILE_NAME){
+				var newName = Lib.window.prompt("New name for your file?", "files/your-file-"+Math.round(Math.random()*100)+".html");
+				if (newName != null && newName!=""){
+					currentData.name = newName;
+				}
+			}
 			tempName = currentData.name;
-
+		}
 		// reset model selection
 		// var pageModel = PageModel.getInstance();
 		// pageModel.hoveredItem = null;
