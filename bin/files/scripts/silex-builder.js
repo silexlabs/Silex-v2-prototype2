@@ -7918,7 +7918,7 @@ silex.file.FileModel.__super__ = silex.ModelBase;
 silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onFileSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("FILE SAVED",{ fileName : "FileModel.hx", lineNumber : 541, className : "silex.file.FileModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("FILE SAVED",{ fileName : "FileModel.hx", lineNumber : 594, className : "silex.file.FileModel", methodName : "onSaveSuccess"});
 		brix.component.interaction.NotificationManager.notifySuccess("File saved",this.currentData.name + " has been saved successfully.",this.currentData.viewHtmlDom);
 	}
 	,onSaveError: function(msg) {
@@ -7974,7 +7974,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		this.save(newName);
 	}
 	,onDeleteSuccess: function() {
-		haxe.Log.trace("FILE DELETED ",{ fileName : "FileModel.hx", lineNumber : 410, className : "silex.file.FileModel", methodName : "onDeleteSuccess"});
+		haxe.Log.trace("FILE DELETED ",{ fileName : "FileModel.hx", lineNumber : 463, className : "silex.file.FileModel", methodName : "onDeleteSuccess"});
 		this.create();
 	}
 	,trash: function(name) {
@@ -7996,12 +7996,28 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,this.currentData.headHtmlDom);
 		if(initialPageName != null) {
 			var page = brix.component.navigation.Page.getPageByName(initialPageName,this.application.id,this.currentData.viewHtmlDom);
-			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "FileModel.hx", lineNumber : 365, className : "silex.file.FileModel", methodName : "initBrixApplication"});
-		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "FileModel.hx", lineNumber : 369, className : "silex.file.FileModel", methodName : "initBrixApplication"});
+			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "FileModel.hx", lineNumber : 418, className : "silex.file.FileModel", methodName : "initBrixApplication"});
+		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "FileModel.hx", lineNumber : 422, className : "silex.file.FileModel", methodName : "initBrixApplication"});
 		silex.interpreter.Interpreter.getInstance().execScriptTags(this.currentData.viewHtmlDom);
 	}
 	,generateNewId: function() {
 		return silex.file.FileModel.nextId++ + "";
+	}
+	,prepareForEditVanilaHtml: function(modelDom) {
+		if(modelDom.nodeType != 1) return;
+		if(this.application == null) return;
+		if(this.application.getAssociatedComponents(modelDom,brix.component.ui.DisplayObject).length == 0) {
+			if(modelDom.nodeName.toLowerCase() == "div") modelDom.setAttribute("data-silex-component-id",this.generateNewId()); else {
+				var nodeName = modelDom.nodeName.toLowerCase();
+				if(nodeName == "img" || nodeName == "button" || nodeName == "video" || nodeName == "audio" || nodeName == "input") modelDom.setAttribute("data-silex-component-id",this.generateNewId());
+			}
+		}
+		var _g1 = 0, _g = modelDom.childNodes.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			var modelChild = modelDom.childNodes[idx];
+			this.prepareForEditVanilaHtml(modelChild);
+		}
 	}
 	,prepareForEdit: function(modelDom) {
 		if(modelDom.nodeType != 1) return;
@@ -8043,6 +8059,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 			this.currentData.modelHtmlDom.innerHTML = this.currentData.rawHtml.substring(closingTagIdx + 1,bodyCloseIdx);
 		}
 		this.prepareForEdit(this.currentData.modelHtmlDom);
+		this.prepareForEditVanilaHtml(this.currentData.modelHtmlDom);
 		this.initViewHtmlDom();
 		this.initBrixApplication();
 		this.dispatchEvent(this.createEvent("onLoadSuccess"),this.debugInfo);
@@ -8056,7 +8073,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		silex.property.PropertyModel.getInstance().refresh();
 	}
 	,load: function(name) {
-		haxe.Log.trace("load " + name,{ fileName : "FileModel.hx", lineNumber : 208, className : "silex.file.FileModel", methodName : "load"});
+		haxe.Log.trace("load " + name,{ fileName : "FileModel.hx", lineNumber : 209, className : "silex.file.FileModel", methodName : "load"});
 		this.currentData.name = name;
 		var pageModel = silex.page.PageModel.getInstance();
 		pageModel.setHoveredItem(null);
@@ -8066,7 +8083,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	}
 	,getModelFromView: function(viewHtmlDom) {
 		if(viewHtmlDom == null) {
-			haxe.Log.trace("Warning: could not retrieve the model for element because it is null.",{ fileName : "FileModel.hx", lineNumber : 141, className : "silex.file.FileModel", methodName : "getModelFromView"});
+			haxe.Log.trace("Warning: could not retrieve the model for element because it is null.",{ fileName : "FileModel.hx", lineNumber : 142, className : "silex.file.FileModel", methodName : "getModelFromView"});
 			return null;
 		}
 		try {
@@ -8080,7 +8097,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 			if(results == null || results.length != 1) throw "Error: 1 and only 1 component or layer is expected to have ID \"" + id + "\" (" + Std.string(results) + ").";
 			return results[0];
 		} catch( e ) {
-			haxe.Log.trace("Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").",{ fileName : "FileModel.hx", lineNumber : 172, className : "silex.file.FileModel", methodName : "getModelFromView"});
+			haxe.Log.trace("Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").",{ fileName : "FileModel.hx", lineNumber : 173, className : "silex.file.FileModel", methodName : "getModelFromView"});
 			throw "Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").";
 		}
 		return null;
@@ -9327,7 +9344,7 @@ silex.ui.toolbox.MenuController.onFileChosen = function(fileUrl) {
 	silex.file.FileModel.getInstance().load("files/" + file);
 }
 silex.ui.toolbox.MenuController.viewFile = function() {
-	js.Lib.window.open("./" + silex.file.FileModel.getInstance().currentData.name,"_blank");
+	js.Lib.window.open("../" + silex.file.FileModel.getInstance().currentData.name,"_blank");
 }
 silex.ui.toolbox.MenuController.saveFile = function() {
 	silex.file.FileModel.getInstance().save();
@@ -10554,5 +10571,3 @@ function $hxExpose(src, path) {
 	o[parts[parts.length-1]] = src;
 }
 })();
-
-//@ sourceMappingURL=silex-builder.js.map

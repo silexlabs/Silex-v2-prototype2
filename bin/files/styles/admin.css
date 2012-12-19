@@ -47,7 +47,7 @@ body{
 	width: 100%;
 	height: 100%;
 	position: absolute;
-	z-index: 99999;
+	z-index: 999999000;
 	margin-left: 45%;
 	margin-top: 50%;
 }
@@ -96,7 +96,7 @@ body{
 	position: absolute;
 	width: 450px;
     right: 50px;
-    z-index: 100000;
+    z-index: 9999999000;
 	list-style: none;
 }
 .notification-zone li{
@@ -175,7 +175,7 @@ body{
 	width:100%;
 	height:100%;
 	left:0;
-	z-index: 2500;
+	z-index: 2500000;
 	position:absolute;
 	background-color:black;
 	opacity:0.5;
@@ -197,7 +197,7 @@ body{
 	height: 100%;
 	position: absolute;
 	width: 100%;
-	z-index: 2600;
+	z-index: 2600000;
 }
 .dialogs .container{
 
@@ -499,12 +499,12 @@ opacity:1;
 	display: none;
 }
 .hover-marker{
-	z-index: 300;
+	z-index: 300000;
 	cursor: pointer;
 	background-color: rgba(80, 80, 80, 0.3);
 }
 .selection-marker{
-	z-index: 400;
+	z-index: 400000;
 	background-color: rgba(80, 80, 80, 0.3);
 	cursor: move;
 	opacity: 0.75 !important;
@@ -512,14 +512,14 @@ opacity:1;
 .selection-marker:hover{
 }
 .hover-layer-marker{
-	z-index: 100;
+	z-index: 100000;
 	cursor: pointer;
 -moz-box-shadow: inset 0px 0px 2px 2px #888;
 -webkit-box-shadow: inset 0px 0px 2px 2px #888;
 box-shadow: inset 0px 0px 2px 2px #888;
 }
 .selection-layer-marker{
-	z-index: 200;
+	z-index: 200000;
 /*	border: 2px dotted green; */
 	cursor: move;
 	opacity: 0.75 !important;
@@ -560,7 +560,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	padding:0;
 	position:absolute;
 	right: 0;
-	z-index:1000;
+	z-index:1000000;
 	cursor:pointer;
 	background-image:url(../assets/admin/sv2-ico-delete.png);
 	background-color: rgba(66, 66, 66, 0.7);
@@ -571,7 +571,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	background-color: rgba(66, 66, 66, 0.7);
 	font-size:10px;
 	color:#FFF;
-	z-index:500;
+	z-index:500000;
 	position:absolute;
 	top:-20;
 	right:0;
@@ -589,7 +589,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 .group-ribbon{
 	width: 100%;
 	position: relative;
-	z-index: 2000;
+	z-index: 2000000;
 	margin:0;
 	
 	border-bottom:black 1px solid;
@@ -851,7 +851,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	/*border-radius: 5px;*/
 	border: 1px black solid;
 	overflow: hidden;
-	z-index: 2000;
+	z-index: 2000000;
 	float: right;
 }
 .silex-toolbox .style-block-tab{

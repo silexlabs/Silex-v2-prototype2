@@ -14,6 +14,7 @@ import silex.layer.LayerModel;
 import silex.page.PageModel;
 
 import brix.core.Application;
+import brix.component.ui.DisplayObject;
 import brix.util.DomTools;
 import brix.component.navigation.Page;
 import brix.component.interaction.NotificationManager;
@@ -258,6 +259,7 @@ class FileModel extends ModelBase<HtmlDom>{
 
 		// add attributes to nodes recursively
 		prepareForEdit(currentData.modelHtmlDom);
+		prepareForEditVanilaHtml(currentData.modelHtmlDom);
 
 		// init the view
 		initViewHtmlDom();
@@ -334,6 +336,57 @@ class FileModel extends ModelBase<HtmlDom>{
 			var modelChild = modelDom.childNodes[idx];
 			prepareForEdit(modelChild);
 		}
+	}
+	/**
+	 */
+	public function prepareForEditVanilaHtml(modelDom:HtmlDom) {
+//		var hasLayerInChildren = false;
+		// Take only HtmlDom elements, not TextNode
+		if (modelDom.nodeType != 1){
+			return;
+		}
+		// only after init
+		if (application == null){
+			return;
+		}
+		if (application.getAssociatedComponents(modelDom, DisplayObject).length == 0){		
+			if (modelDom.nodeName.toLowerCase() == "div"){
+				// add the attribute data-silex-component-id to nodes which parent is a layer
+				modelDom.setAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, generateNewId());
+			}
+			else{
+				var nodeName = modelDom.nodeName.toLowerCase();
+				if (nodeName == "img" || nodeName == "button" || nodeName == "video" || nodeName == "audio" || nodeName == "input"){
+					// add the attribute data-silex-component-id to nodes which parent is a layer
+					modelDom.setAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, generateNewId());
+				}
+			}
+		}
+		// browse the children
+		for(idx in 0...modelDom.childNodes.length){
+			var modelChild = modelDom.childNodes[idx];
+			prepareForEditVanilaHtml(modelChild);
+		}
+/*
+		if (modelDom.nodeName.toLowerCase() == "div"){
+			if (!DomTools.hasClass(modelDom.parentNode, "Layer")){
+				// browse the children
+				for(idx in 0...modelDom.childNodes.length){
+					var modelChild = modelDom.childNodes[idx];
+					if (prepareForEditVanilaHtml(modelChild)){
+						hasLayerInChildren = true;
+					}
+				}
+				if (hasLayerInChildren == false){
+					// add the attribute data-silex-component-id to nodes which parent is a layer
+					modelDom.setAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, generateNewId());
+				}
+			}
+			else{
+				hasLayerInChildren = true;
+			}
+		}
+*/
 	}
 	private static var nextId = 0;
 	/**

@@ -6,11 +6,37 @@
 -cp ../../Brix/src/
 -cp ../../Cocktail/src/
 #--no-traces
--debug
+#-debug
 -lib hscript
 
 -main silex.Silex
 --macro brix.core.Builder.create('../src/index-builder.html', '../bin/files/admin.html')
+
+#-D brixdebug
+-D disableEmbedHtml
+-D noAutoStart
+-D stopOnError
+
+-D silexClientSide
+#-D silexDebug
+-D redirectTraces
+
+--next
+
+
+#########
+# player JS
+#########
+-js ../bin/libs/silex/silex.js
+-cp ../src/
+-cp ../../Brix/src/
+-cp ../../Cocktail/src/
+#--no-traces
+-debug
+-lib hscript
+
+-main silex.Silex
+--macro brix.core.Builder.create('../src/index-player.html')
 
 #-D brixdebug
 -D disableEmbedHtml

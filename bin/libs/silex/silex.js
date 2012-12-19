@@ -1016,10 +1016,10 @@ brix.component.interaction.NotificationManager = function(rootElement,brixId) {
 $hxClasses["brix.component.interaction.NotificationManager"] = brix.component.interaction.NotificationManager;
 brix.component.interaction.NotificationManager.__name__ = ["brix","component","interaction","NotificationManager"];
 brix.component.interaction.NotificationManager.notifySuccess = function(title,body,rootElement) {
-	brix.component.interaction.NotificationManager.notify("../admin/assets/notification-info.png",title,body,rootElement);
+	brix.component.interaction.NotificationManager.notify("assets/admin/notification-info.png",title,body,rootElement);
 }
 brix.component.interaction.NotificationManager.notifyError = function(title,body,rootElement) {
-	brix.component.interaction.NotificationManager.notify("../admin/assets/notification-error.png",title,body,rootElement);
+	brix.component.interaction.NotificationManager.notify("assets/admin/notification-error.png",title,body,rootElement);
 }
 brix.component.interaction.NotificationManager.notify = function(iconUrl,title,body,rootElement) {
 	if(rootElement == null) {
@@ -4453,15 +4453,15 @@ hscript.Interp.prototype = {
 			case 0:
 				var v = $e[2];
 				return v;
+			case 3:
+				var v = $e[2];
+				return v;
 			case 1:
 				var f = $e[2];
 				return f;
 			case 2:
 				var s = $e[2];
 				return s;
-			case 3:
-				var v = $e[2];
-				return v;
 			}
 			break;
 		case 1:
@@ -5018,6 +5018,10 @@ hscript.Parser.prototype = {
 				var v = $e[2];
 				$r = Std.string(v);
 				break;
+			case 3:
+				var v = $e[2];
+				$r = Std.string(v);
+				break;
 			case 1:
 				var f = $e[2];
 				$r = Std.string(f);
@@ -5025,10 +5029,6 @@ hscript.Parser.prototype = {
 			case 2:
 				var s = $e[2];
 				$r = s;
-				break;
-			case 3:
-				var v = $e[2];
-				$r = Std.string(v);
 				break;
 			}
 			return $r;
@@ -6434,8 +6434,8 @@ js.XMLHttpRequest = window.XMLHttpRequest?XMLHttpRequest:window.ActiveXObject?fu
 	return $r;
 }(this));
 brix.component.interaction.NotificationManager.DEFAULT_MESSAGE_DURATION = 10000;
-brix.component.interaction.NotificationManager.DEFAULT_SUCCESS_ICON = "../admin/assets/notification-info.png";
-brix.component.interaction.NotificationManager.DEFAULT_ERROR_ICON = "../admin/assets/notification-error.png";
+brix.component.interaction.NotificationManager.DEFAULT_SUCCESS_ICON = "assets/admin/notification-info.png";
+brix.component.interaction.NotificationManager.DEFAULT_ERROR_ICON = "assets/admin/notification-error.png";
 brix.component.interaction.NotificationManager.CSS_CLASS_NOTIFICAITON_ZONE = "notification-zone";
 brix.component.interaction.NotificationManager.NOTIFICATION_EVENT = "notificationEvent";
 brix.component.navigation.Layer.EVENT_TYPE_SHOW_START = "onLayerShowStart";
@@ -6504,11 +6504,11 @@ hscript.Parser.readPos = 0;
 hscript.Parser.tokenMin = 0;
 hscript.Parser.tokenMax = 0;
 js.Lib.onerror = null;
-silex.ServiceBase.GATEWAY_URL = "../../";
+silex.ServiceBase.GATEWAY_URL = "../";
 silex.Silex.CONFIG_FILE_BODY = "fileBody";
 silex.Silex.CONFIG_USE_DEEPLINK = "useDeeplink";
 silex.Silex.LOADER_SCRIPT_PATH = "../../libs/silex/loader.js";
-silex.file.client.FileService.SERVICE_NAME = "ClientService";
+silex.file.client.FileService.SERVICE_NAME = "FileService";
 silex.interpreter.Interpreter.BASIC_CONTEXT = { Lib : js.Lib, Math : Math, Timer : haxe.Timer, StringTools : StringTools, DomTools : brix.util.DomTools, Application : brix.core.Application, Page : brix.component.navigation.Page, Layer : brix.component.navigation.Layer};
 silex.ui.script.HScriptTag.executed = false;
 silex.Silex.main();

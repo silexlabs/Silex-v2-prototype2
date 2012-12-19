@@ -59,7 +59,7 @@ class MenuController extends DisplayObject
 	 * open the current file in a new browser window
 	 */
 	static public function viewFile(){
-		Lib.window.open("./"+FileModel.getInstance().currentData.name, '_blank');
+		Lib.window.open("../"+FileModel.getInstance().currentData.name, '_blank');
 	}
 	/**
 	 * save the current file with its current name
