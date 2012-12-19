@@ -8,7 +8,7 @@ import brix.util.DomTools;
 import brix.component.navigation.Layer;
 import brix.component.interaction.Draggable;
 import silex.layer.LayerModel;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 import silex.component.ComponentModel;
 
 /**
@@ -70,7 +70,7 @@ class DropHandlerBase extends DisplayObject{
 	public function onDrag(e:Event) {
 		// check that we have finished dragging any other element
 		var event:CustomEvent = cast(e);
-		event.detail.draggable.groupElement = PublicationModel.getInstance().viewHtmlDom.parentNode;
+		event.detail.draggable.groupElement = FileModel.getInstance().currentData.viewHtmlDom.parentNode;
 		setDraggedElement(event.detail);
 		var draggedElement = getDraggedElement(event.detail);
 
@@ -147,9 +147,9 @@ class DropHandlerBase extends DisplayObject{
 				try{
 					// and also move in the model if needed
 					// link view to model
-					var modelElement = PublicationModel.getInstance().getModelFromView(element);
-					var modelBeforeElement = PublicationModel.getInstance().getModelFromView(beforeElement);
-					var modelParent = PublicationModel.getInstance().getModelFromView(parent);
+					var modelElement = FileModel.getInstance().getModelFromView(element);
+					var modelBeforeElement = FileModel.getInstance().getModelFromView(beforeElement);
+					var modelParent = FileModel.getInstance().getModelFromView(parent);
 
 					// remove the element from the model
 					if (modelElement == null) 

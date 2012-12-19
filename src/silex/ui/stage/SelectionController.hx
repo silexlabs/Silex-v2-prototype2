@@ -13,7 +13,7 @@ import silex.property.PropertyModel;
 import silex.component.ComponentModel;
 import silex.layer.LayerModel;
 import silex.page.PageModel;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 
 /**
  * This component listen to the mouse events and start the desired actions. 
@@ -152,7 +152,7 @@ class SelectionController extends DisplayObject
 
 		// listen to the model events
 		PageModel.getInstance().addEventListener(PageModel.ON_LIST_CHANGE, redraw, DEBUG_INFO);
-		PublicationModel.getInstance().addEventListener(PublicationModel.ON_DATA, redraw, DEBUG_INFO);
+		FileModel.getInstance().addEventListener(FileModel.ON_LOAD_SUCCESS, redraw, DEBUG_INFO);
 		PropertyModel.getInstance().addEventListener(PropertyModel.ON_PROPERTY_CHANGE, redraw, DEBUG_INFO);
 		PropertyModel.getInstance().addEventListener(PropertyModel.ON_STYLE_CHANGE, redraw, DEBUG_INFO);
 		
@@ -280,8 +280,8 @@ class SelectionController extends DisplayObject
 			if (checkIsOver(boundingBox, e.clientX, e.clientY)){
 				// if a layer has allready been found, take the smallest of the two
 				if (layerFound == null || (boundingBox.w * boundingBox.h < layerFoundBoundingBox.w * layerFoundBoundingBox.h)){
-					// get the Brix application from the loaded publication
-					var application = PublicationModel.getInstance().application;
+					// get the Brix application from the loaded file
+					var application = FileModel.getInstance().application;
 					// get the Layer instance associated with the layers[idx]
 					var layerList = application.getAssociatedComponents(layers[idx], Layer); // there should be 1 and only 1 element here
 					if (layerList.length != 1){

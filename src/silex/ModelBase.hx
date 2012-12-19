@@ -15,7 +15,7 @@ typedef EventListener = {
 	debugInfo:String
 }
 /**
- * The models in Silex are used only when editing, not when viewing a publication.
+ * The models in Silex are used only when editing, not when viewing a file.
  * This class implements an event system, so that the views can be notified of changes in the model. 
  * Also this class implements a selection pattern, for the PageModel, LayerModel, ComponentModel classes.
  */
@@ -37,13 +37,13 @@ class ModelBase <FinalType>{
 	////////////////////////////////////////////////
 	/** 
 	 * retrieve all the instances of a given component
-	 * @example 	all the layers: LayerModel.getInstance().getClasses(publicationModel.viewHtmlDom, publicationModel.application.id, Layer);
+	 * @example 	all the layers: LayerModel.getInstance().getClasses(fileModel.currentData.viewHtmlDom, fileModel.application.id, Layer);
 	 */
 	public function getClasses(viewHtmlDom:HtmlDom, brixInstanceId:String, finalType:Class<DisplayObject>):Array<FinalType>{
 		// get all nodes which have instances of FinalType, i.e. all element with class name "FinalType"
 		var classes:Array<FinalType> = new Array();
 
-		// if a publication is loaded only
+		// if a file is loaded only
 		if (viewHtmlDom == null)
 			return classes;
 			

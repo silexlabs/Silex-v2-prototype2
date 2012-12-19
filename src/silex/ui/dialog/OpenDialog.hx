@@ -1,3 +1,9 @@
+
+NOT USED
+SHOULD EXTEND THE FILE BROWSER DIALOG
+
+
+
 package silex.ui.dialog;
 
 import js.Lib;
@@ -9,21 +15,19 @@ import brix.component.navigation.link.LinkToPage;
 import brix.component.navigation.Page;
 import brix.util.DomTools;
 
-import silex.publication.PublicationData;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 import silex.ui.dialog.DialogBase;
-import silex.ui.list.PublicationList;
-import silex.ui.stage.PublicationViewer;
+import silex.ui.stage.FileViewer;
 
 /**
- * This component displays a window with a list of publications and let the user choose which one to use.
+ * This component displays a window with a list of files and let the user choose which one to use.
  * It has to be position on the foreground with the CSS styles of the DOM element with which it is associated. 
- * &gt;div class="OpenPublicationDialog"&lt;
+ * &gt;div class="OpenFileDialog"&lt;
  */
 class OpenDialog extends DialogBase
 {
 	/**
-	 * The css class name of the list used to display the publications
+	 * The css class name of the list used to display the files
 	 */
 	public static inline var LIST_CLASS_NAME = "PublicationList";
 	/**
@@ -52,7 +56,7 @@ class OpenDialog extends DialogBase
 		var item:PublicationListItem = list.selectedItem;
 		// if a publication is selected
 		if (item != null){
-			PublicationModel.getInstance().load(item.name, item.configData);
+			FileModel.getInstance().load(item.name, item.configData);
 			close();
 		}
 	}

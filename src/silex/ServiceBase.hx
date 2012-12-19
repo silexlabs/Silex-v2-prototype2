@@ -21,7 +21,7 @@ class ServiceBase{
 	/**
 	 * Default Silex server URL
 	 */
-	public static var GATEWAY_URL:String = "../../";
+	public static var GATEWAY_URL:String = "../";
 	/**
 	 * Connection to the gateway (Haxe remoting)
 	 */

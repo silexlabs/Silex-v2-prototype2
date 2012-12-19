@@ -10,8 +10,7 @@ import brix.component.navigation.Page;
 import brix.component.interaction.Draggable;
 import silex.page.PageModel;
 import silex.layer.LayerModel;
-import silex.publication.PublicationModel;
-import silex.publication.PublicationData;
+import silex.file.FileModel;
 import silex.component.ComponentModel;
 import silex.property.PropertyModel;
 import silex.ui.dialog.FileBrowserDialog;
@@ -84,7 +83,7 @@ class InsertDropHandler extends DropHandlerBase{
 	override public function onDrag(e:Event) {
 		super.onDrag(e);
 		var event:CustomEvent = cast(e);
-		event.detail.draggable.groupElement = PublicationModel.getInstance().viewHtmlDom.parentNode;
+		event.detail.draggable.groupElement = FileModel.getInstance().currentData.viewHtmlDom.parentNode;
 	}
 	/**
 	 * reset dragged element
@@ -162,7 +161,7 @@ class InsertDropHandler extends DropHandlerBase{
 
 		PropertyModel.getInstance().setAttribute(element, "controls", "controls");
 		
-		var modelHtmlDom = PublicationModel.getInstance().getModelFromView(element);
+		var modelHtmlDom = FileModel.getInstance().getModelFromView(element);
 
 		for (sourceUrl in files){
 			var sourceElement = Lib.document.createElement("source");
@@ -195,7 +194,7 @@ class InsertDropHandler extends DropHandlerBase{
 	 * add an element in the layer
 	 */
 	public function addComponent(dropZone:DropZone, nodeName:String):HtmlDom {
-		var layers = PublicationModel.getInstance().application.getAssociatedComponents(dropZone.parent, Layer);
+		var layers = FileModel.getInstance().application.getAssociatedComponents(dropZone.parent, Layer);
 		if (layers.length != 1){
 			throw("Error: search for the layer gave "+layers.length+" results");
 		}

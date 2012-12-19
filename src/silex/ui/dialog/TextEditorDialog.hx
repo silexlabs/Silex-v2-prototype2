@@ -9,7 +9,7 @@ import brix.util.DomTools;
 
 import brix.component.navigation.transition.TransitionData;
 
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 
 /**
  * This component displays a text editor and lets one edit html
@@ -57,7 +57,7 @@ class TextEditorDialog extends DialogBase
 	}
 	/**
 	 * Callback for the "show" event of the Layer class
-	 * Update the publications list when the page is opened
+	 * Update when the page is opened
 	 */
 	public function requestRedraw(transitionData:TransitionData) {
 //		contentLoaded(haxe.Http.requestUrl(TEXT_EDITOR_HTML_PAGE));

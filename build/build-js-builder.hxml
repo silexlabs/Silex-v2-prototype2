@@ -1,7 +1,7 @@
 #########
 # builder
 #########
--js ../bin/publications/admin/silex-builder.js
+-js ../bin/files/scripts/silex-builder.js
 -cp ../src/
 -cp ../../Brix/src/
 -cp ../../Cocktail/src/
@@ -10,7 +10,7 @@
 -lib hscript
 
 -main silex.Silex
---macro brix.core.Builder.create('../src/index-builder.html', '../bin/publications/admin/index.html')
+--macro brix.core.Builder.create('../src/index-builder.html', '../bin/files/admin.html')
 
 #-D brixdebug
 -D disableEmbedHtml
@@ -20,4 +20,3 @@
 -D silexClientSide
 -D silexDebug
 -D redirectTraces
-

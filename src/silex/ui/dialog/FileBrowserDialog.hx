@@ -8,8 +8,7 @@ import brix.component.navigation.transition.TransitionData;
 import brix.component.navigation.Page;
 import brix.util.DomTools;
 
-import silex.publication.PublicationModel;
-import silex.publication.PublicationData;
+import silex.file.FileModel;
 
 /**
  * This component displays a file browser and lets one choose a file or manage them
@@ -17,6 +16,7 @@ import silex.publication.PublicationData;
  */
 class FileBrowserDialog extends DialogBase
 {
+	public static inline var KC_FINDER_URL = "libs/kcfinder/";
 	////////////////////////////////////////////////////////////////////////
 	// static helper methods
 	////////////////////////////////////////////////////////////////////////
@@ -54,22 +54,22 @@ class FileBrowserDialog extends DialogBase
 	}
 	/**
 	 * compute the relative url from the returned path
-	 * file browser may return a url like http://localhost:8888/Silex/bin/publications/test.com/assets/IMG_0167.JPG
-	 * or /publications/test.com/assets/IMG_0167.JPG
+	 * file browser may return a url like http://localhost:8888/Silex/bin/files/assets/IMG_0167.JPG
+	 * or /files/assets/IMG_0167.JPG
 	 * depending on the browser (chrome / ff)
 	 */
 	public static function getRelativeURLFromFileBrowser(url:String){
 		var idx = url.indexOf("://");
 		// check that we have absolute urls
-		if (idx == -1){ // case of /publications/test.com/assets/IMG_0167.JPG
-			// remove path to the publication folder
+		if (idx == -1){ // case of /files/assets/IMG_0167.JPG
+/*			// remove path to the publication folder
 			var pubUrl = "publications/";
 			var idxPubFolder = url.indexOf(pubUrl);
 			if (idxPubFolder >= 0){
 				// remove all the common parts
 				url = url.substr(idxPubFolder + pubUrl.length);
 				// remove publication name if it is the current publication or add the relative path "../"
-				var pubUrl = PublicationModel.getInstance().currentName + "/";
+				var pubUrl = FileModel.getInstance().currentData.name + "/";
 				var idxPubFolder = url.indexOf(pubUrl);
 				if (idxPubFolder >= 0){
 					// remove all the common parts
@@ -80,8 +80,8 @@ class FileBrowserDialog extends DialogBase
 					url = "../"+url;
 				}
 			}
-		}
-		else{ // case of http://localhost:8888/Silex/bin/publications/test.com/assets/IMG_0167.JPG
+*/		}
+		else{ // case of http://localhost:8888/Silex/bin/files/assets/IMG_0167.JPG
 			url = DomTools.abs2rel(url);
 		}
 		return url;
@@ -130,13 +130,12 @@ class FileBrowserDialog extends DialogBase
 	}
 	/**
 	 * Callback for the "show" event of the Layer class
-	 * Update the publications list when the page is opened
+	 * Update when the page is opened
 	 */
 	public function requestRedraw(transitionData:TransitionData) {
 		// redraw the list, which will reload data and then refresh the list when onListData is dispatched by the model
 		var element = DomTools.getSingleElement(rootElement, FB_CLASS_NAME, true);
-		element.innerHTML = '<iframe name="kcfinder_iframe" src="../../third-party-tools/kcfinder/browse.php?type=publications&dir='+
-		PublicationConstants.PUBLICATION_FOLDER+PublicationModel.getInstance().currentName+"/"+PublicationConstants.PUBLICATION_ASSETS_FOLDER+'/" ' +
+		element.innerHTML = '<iframe name="kcfinder_iframe" src="'+KC_FINDER_URL+'browse.php?type=silex-all-files&dir=./assets/" ' +
         'frameborder="0" width="100%" height="100%" marginwidth="0" marginheight="0" scrolling="no" />';
 
 		// display the message in the element

@@ -9,7 +9,7 @@ import brix.util.DomTools;
 
 import silex.layer.LayerModel;
 import silex.page.PageModel;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 import silex.property.PropertyModel;
 
 /**
@@ -38,7 +38,7 @@ class LayersList extends List<Layer>
 		// store a reference to the model
 		var layerModel = LayerModel.getInstance();
 
-		// update the data when the publication data changed
+		// update the data when the file data changed
 		layerModel.addEventListener(LayerModel.ON_LIST_CHANGE, onListChange, DEBUG_INFO);
 
 		// update the selection
@@ -55,17 +55,17 @@ class LayersList extends List<Layer>
 	override public function reloadData(){
 		if (propertyChangePending == true) return;
 
-		var publicationModel = PublicationModel.getInstance();
-		// if a publication is loaded only
-		if(publicationModel.viewHtmlDom != null){
+		var fileModel = FileModel.getInstance();
+		// if a file is loaded only
+		if(fileModel.currentData.isLoaded == true){
 			// get the list of all layers
-			var nodes = DomTools.getElementsByAttribute(publicationModel.viewHtmlDom, "data-master", "*");
+			var nodes = DomTools.getElementsByAttribute(fileModel.currentData.viewHtmlDom, "data-master", "*");
 			// get a list of instances 
 			var layers:Array<Layer> = new Array();
 			// browse all nodes
 			for (idx in 0...nodes.length){
 				// retrieve the class instance associated with this node
-				var instances = publicationModel.application.getAssociatedComponents(nodes[idx], Layer);
+				var instances = fileModel.application.getAssociatedComponents(nodes[idx], Layer);
 
 				if (instances.length == 1){
 					// store the first instance

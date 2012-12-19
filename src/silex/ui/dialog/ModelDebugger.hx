@@ -13,12 +13,12 @@ import silex.property.PropertyModel;
 import silex.component.ComponentModel;
 import silex.layer.LayerModel;
 import silex.page.PageModel;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 
 /**
- * This component displays a window with a list of publications and let the user choose which one to use.
+ * This component displays a window with a list of files and let the user choose which one to use.
  * It has to be position on the foreground with the CSS styles of the DOM element with which it is associated. 
- * &gt;div class="OpenPublicationDialog"&lt;
+ * &gt;div class="OpenFileDialog"&lt;
  */
 class ModelDebugger extends DialogBase
 {
@@ -37,7 +37,7 @@ class ModelDebugger extends DialogBase
 		ComponentModel.getInstance().addEventListener(ComponentModel.ON_LIST_CHANGE, redraw, DEBUG_INFO);
 		LayerModel.getInstance().addEventListener(LayerModel.ON_LIST_CHANGE, redraw, DEBUG_INFO);
 		PageModel.getInstance().addEventListener(PageModel.ON_LIST_CHANGE, redraw, DEBUG_INFO);
-		PublicationModel.getInstance().addEventListener(PublicationModel.ON_DATA, redraw, DEBUG_INFO);
+		fileModel.getInstance().addEventListener(FileModel.ON_LOAD_SUCCESS, redraw, DEBUG_INFO);
 		PropertyModel.getInstance().addEventListener(PropertyModel.ON_PROPERTY_CHANGE, redraw, DEBUG_INFO);
 		PropertyModel.getInstance().addEventListener(PropertyModel.ON_STYLE_CHANGE, redraw, DEBUG_INFO);
 */
@@ -50,7 +50,7 @@ class ModelDebugger extends DialogBase
 		var htmlContainer = DomTools.getSingleElement(rootElement, "debug-html", true);
 		var rawContainer = DomTools.getSingleElement(rootElement, "debug-raw", true);
 
-		var htmlString = PublicationModel.getInstance().modelHtmlDom.innerHTML;
+		var htmlString = FileModel.getInstance().currentData.modelHtmlDom.innerHTML;
 
 		htmlContainer.innerHTML = htmlString;
 

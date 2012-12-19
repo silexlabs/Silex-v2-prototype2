@@ -3,8 +3,7 @@ package silex.ui.toolbox.editor;
 import js.Lib;
 import js.Dom;
 
-import silex.publication.PublicationModel;
-import silex.publication.PublicationData;
+import silex.file.FileModel;
 import silex.layer.LayerModel;
 import silex.component.ComponentModel;
 import silex.property.PropertyModel;

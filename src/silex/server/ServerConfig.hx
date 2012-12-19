@@ -2,7 +2,7 @@ package silex.server;
 
 import haxe.xml.Fast;
 
-import silex.ConfigBase;
+import silex.config.ConfigBase;
 
 /**
  * This class is in charge of loading and storing the configuration data of the Silex server
@@ -14,19 +14,24 @@ class ServerConfig extends ConfigBase{
 	public static inline var SERVER_CONFIG_FILE = "conf/server-config.xml.php";
 	/**
 	 * Config data
-	 * Default publication
+	 * Default file
 	 */
-	public var defaultPublication:String;
+	public var defaultFile:String;
 	/**
 	 * Config data
-	 * Admin user, the one who has installed Silex
+	 * path of the user folder, i.e. the folder where all files are stored
 	 */
-	public var admin:String;
+	public var userFolder:String;
 	/**
-	 * Actions to be executed at start, on the client side for debugging
-	 * @example	openPublication("test1"); to open the publication directly at
+	 * Config data
+	 * application key, used when compiled for dropbox mode
 	 */
-	public var debugModeAction:String;
+	public var key:String;
+	/**
+	 * Config data
+	 * application secret key, used when compiled for dropbox mode
+	 */
+	public var secret:String;
 	/**
 	 * Constructor
 	 * Load the provided config file
@@ -40,20 +45,21 @@ class ServerConfig extends ConfigBase{
 	 * This method is automatically called by Config::loadData
 	 */
 	override public function xmlToConfData(xml:Fast){
-		if(xml.hasNode.defaultPublication)
-			defaultPublication = xml.node.defaultPublication.innerData;
+		if(xml.hasNode.defaultFile)
+			defaultFile = xml.node.defaultFile.innerData;
 		else
-			trace("Warning: missing defaultPublication in config file ");
+			trace("Warning: missing defaultFile in config file ");
 
-		if(xml.hasNode.admin)
-			admin = xml.node.admin.innerData;
+		if(xml.hasNode.userFolder)
+			userFolder = xml.node.userFolder.innerData;
 		else
-			trace("Warning: missing admin in config file ");
+			trace("Warning: missing userFolder in config file ");
 
-		if(xml.hasNode.debugModeAction)
-			debugModeAction = xml.node.debugModeAction.innerData;
-		else
-			debugModeAction = "";
+		if(xml.hasNode.key)
+			key = xml.node.key.innerData;
+
+		if(xml.hasNode.secret)
+			secret = xml.node.secret.innerData;
 	}
 	/**
 	 * Convert the structured config data to XML data
@@ -66,13 +72,10 @@ class ServerConfig extends ConfigBase{
 		var node:Xml = xml.x.firstChild();
 		// add one node per config data
 		node.addChild(Xml.parse("
-			<defaultPublication>"+defaultPublication+"</defaultPublication>
+			<defaultFile>"+defaultFile+"</defaultFile>
 "));
 		node.addChild(Xml.parse("
-			<admin>"+admin+"</admin>
-"));
-		node.addChild(Xml.parse("
-			<debugModeAction>"+debugModeAction+"</debugModeAction>
+			<userFolder>"+userFolder+"</userFolder>
 "));
 		return xml;
 	}

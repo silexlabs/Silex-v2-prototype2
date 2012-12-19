@@ -8,7 +8,7 @@ import brix.component.list.List;
 import brix.util.DomTools;
 
 import silex.page.PageModel;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 import silex.property.PropertyModel;
 
 /**
@@ -31,9 +31,6 @@ class PageList extends List<Page>
 		// store a reference to the model
 		var pageModel = PageModel.getInstance();
 
-		// update the data when the publication data changed
-		pageModel.addEventListener(PageModel.ON_LIST_CHANGE, onListChange, DEBUG_INFO);
-
 		// update the selection
 		pageModel.addEventListener(PageModel.ON_SELECTION_CHANGE, onListChange, DEBUG_INFO);
 
@@ -51,13 +48,13 @@ class PageList extends List<Page>
 		super.reloadData();
 	}
 	/**
-	 * build the data provider out of the pages array in the loaded publication
+	 * build the data provider out of the pages array in the loaded file
 	 */
 	private function buildDataProvider():Array<Page>{
-		var publicationModel = PublicationModel.getInstance();
-		if(publicationModel.application != null){
-			// if a publication is loaded only
-			return dataProvider = PageModel.getInstance().getClasses(publicationModel.viewHtmlDom, publicationModel.application.id, Page);
+		var fileModel = FileModel.getInstance();
+		if(fileModel.application != null){
+			// if a file is loaded only
+			return dataProvider = PageModel.getInstance().getClasses(fileModel.currentData.viewHtmlDom, fileModel.application.id, Page);
 		}
 		return new Array();
 	}

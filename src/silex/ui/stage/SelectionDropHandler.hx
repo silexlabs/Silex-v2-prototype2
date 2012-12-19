@@ -8,7 +8,7 @@ import brix.component.navigation.Layer;
 import brix.component.interaction.Draggable;
 import silex.layer.LayerModel;
 import silex.page.PageModel;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 import silex.component.ComponentModel;
 import silex.interpreter.Interpreter;
 

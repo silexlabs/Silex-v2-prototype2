@@ -33,23 +33,3 @@ nav div a{
 .page-opened{
 	font-weight: bold;
 }
-
-/* 		Publication styles 			 */
-/* 		You can edit these styles 	 */
-
-/*
-.anim0{
-	opacity: 0;
-	transition: opacity 2s;
-	-moz-transition: opacity 2s; 
-	-webkit-transition: opacity 2s;
-	-o-transition: opacity 2s; 
-}
-.anim100{
-	opacity: 1;
-	transition: opacity 2s 2s;
-	-moz-transition: opacity 2s 2s; 
-	-webkit-transition: opacity 2s 2s; 
-	-o-transition: opacity 2s 2s; 
-}
-*/

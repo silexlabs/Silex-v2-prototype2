@@ -31,7 +31,7 @@ function addScript(scriptPath){
  * load the javascript version of Silex
  */
 function startSilexJs(){
-	addScript("../../libs/silex/silex.js");
+	addScript("../libs/silex/silex.js");
 }
 /**
  * load the Flash version of Silex
@@ -45,7 +45,7 @@ function startSilexFlash(){
 	//document.body.innerHTML = "";
 	document.body.appendChild(node);
 
-	var node = addScript("../../libs/swfobject.js");
+	var node = addScript("../libs/swfobject.js");
 	node.onload = swfobjectLoaded;
 }
 /**
@@ -81,7 +81,7 @@ function swfobjectLoaded(){
 	}
 
 	// embed silex
-	swfobject.embedSWF("../../libs/silex/silex.swf", "flashContainer", "100%", "100%", "10.2.0", null, flashvars);
+	swfobject.embedSWF("../libs/silex/silex.swf", "flashContainer", "100%", "100%", "10.2.0", null, flashvars);
 
 	var node = document.getElementById("flashContainer");
 	node.style.position = "absolute";

@@ -3,7 +3,7 @@ package silex.ui.toolbox.editor;
 import silex.property.PropertyModel;
 import silex.component.ComponentModel;
 import silex.layer.LayerModel;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 
 import silex.ui.link.SilexLink;
 import brix.component.navigation.link.LinkBase;
@@ -79,8 +79,8 @@ class LinkEditor extends EditorBase
 	 */
 	override private function load(element:HtmlDom) {
 		trace("load "+targetElement);
-		// do nothing if the element is not a link, or there is no publication loaded
-		if (!DomTools.hasClass(element, "SilexLink") || PublicationModel.getInstance().application == null){
+		// do nothing if the element is not a link, or there is no file loaded
+		if (!DomTools.hasClass(element, "SilexLink") || FileModel.getInstance().application == null){
 			reset();
 		}
 		else{
@@ -91,7 +91,7 @@ class LinkEditor extends EditorBase
 				var value:String = PropertyModel.getInstance().getAttribute(element, LinkBase.CONFIG_TARGET_ATTR);
 				cast(targetElement).value = value;
 			}
-			else if (SilexLink.isPage(value, PublicationModel.getInstance().application.id)){
+			else if (SilexLink.isPage(value, FileModel.getInstance().application.id)){
 				cast(pageSelectElement).value = value;
 			}
 			else{

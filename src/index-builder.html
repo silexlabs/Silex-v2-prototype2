@@ -1,4 +1,4 @@
-<!-- This page is used to compile bin/publications/admin/silex-builder.js -->
+<!-- This page is used to compile bin/files/scripts/silex-builder.js -->
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
@@ -18,16 +18,13 @@
 		<script data-brix-use="brix.component.sound.SoundOff"></script>
 		<script data-brix-use="brix.component.list.XmlList"></script>
 
-		<script data-brix-use="silex.ui.dialog.ModelDebugger"></script>
 		<script data-brix-use="silex.ui.dialog.AuthDialog"></script>
-		<script data-brix-use="silex.ui.dialog.OpenDialog"></script>
 		<script data-brix-use="silex.ui.dialog.FileBrowserDialog"></script>
 		<script data-brix-use="silex.ui.dialog.TextEditorDialog"></script>
 
-		<script data-brix-use="silex.ui.list.PublicationList"></script>
 		<script data-brix-use="silex.ui.list.PageList"></script>
 		<script data-brix-use="silex.ui.list.LayersList"></script>
-		<script data-brix-use="silex.ui.stage.PublicationViewer"></script>
+		<script data-brix-use="silex.ui.stage.FileViewer"></script>
 		<script data-brix-use="silex.ui.stage.SelectionController"></script>
 
 		<script data-brix-use="silex.ui.stage.SelectionDropHandler"></script>
@@ -37,6 +34,7 @@
 		<script data-brix-use="silex.ui.link.SilexLink"></script>
 <!--
 		<script data-brix-use="brix.component.scripting.ScriptContainer"></script>
+		<script data-brix-use="silex.ui.dialog.ModelDebugger"></script>
 -->
 
 		<script data-brix-use="silex.ui.toolbox.MenuController"></script>
@@ -62,17 +60,18 @@
 		<!-- config -->
 		<meta name="initialPageName" content="start-page"></meta>
 		<meta name="useDeeplink" content="false" />
-		<link href="app.css" rel="stylesheet"></link>
+		<link href="styles/admin.css" rel="stylesheet"></link>
+		<script type="text/javascript" src="scripts/silex-builder.js" />
 		<script type="text/hscript">
 			//Lib.alert('test!');
-			PublicationModel.getInstance().load('test');
-			//MenuController.createPublication();
+			FileModel.getInstance().load('files/test.html');
+			//MenuController.createFile();
 		</script>
 	</head>
 	<body class="">
 		<DIV class="group-main Panel NotificationManager" 
-			data-panel-header-class-name="panel-publication-header"
-			data-panel-body-class-name="panel-publication-body"
+			data-panel-header-class-name="panel-file-header"
+			data-panel-body-class-name="panel-file-body"
 		>
 			<!-- 	**************************	-->
 			<!-- 			Notifications 		-->
@@ -104,7 +103,7 @@
 
 
 			<A class="Page" name="start-page">Start Page</A>
-			<DIV class="panel-publication-header">
+			<DIV class="panel-file-header">
 				<!-- 	**************************	-->
 				<!-- 		Ribbon Toolbox 		-->
 				<DIV class="Group group-ribbon MenuController" data-initial-page-name="file-menu">
@@ -125,25 +124,25 @@
 
 					<DIV class="Layer file-menu ribbon-list selectable">
 						<UL>
-							<LI data-menu-item="create-publication" class="new">
+							<LI data-menu-item="create-file" class="new">
 								<P>new</P>
 							</LI>
 							<LI class="disabled-element template" data-menu-item="create-from-template">
 								<P>template</P>
 							</LI>
-							<LI data-menu-item="open-publication" class="open">
+							<LI data-menu-item="open-file" class="open">
 								<P>open</P>
 							</LI>
-							<LI data-menu-item="save-publication" class="save-publication">
+							<LI data-menu-item="save-file" class="save-file">
 								<P>save</P>
 							</LI>
 						</UL>
 						<UL class="small">
-							<LI data-menu-item="save-publication-as" class="save-publication-as" title="save as">
+							<LI data-menu-item="save-file-as" class="save-file-as" title="save as">
 							</LI>
-							<LI data-menu-item="close-publication" class="close-publication" title="close">
+							<LI data-menu-item="close-file" class="close-file" title="close">
 							</LI>
-							<LI data-menu-item="save-publication-copy" class="save-publication-copy" title="save as copy">
+							<LI data-menu-item="save-file-copy" class="save-file-copy" title="save as copy">
 							</LI>
 							<LI data-menu-item="settings" class="disabled-element settings" title="settings">
 							</LI>
@@ -151,13 +150,13 @@
 							</LI>
 							<LI class="disabled-element" data-menu-item="export" title="export">
 							</LI>
-							<LI data-menu-item="trash-publication" class="delete" title="delete">
+							<LI data-menu-item="trash-file" class="delete" title="delete">
 							</LI>
 							<LI class="disabled-element" data-menu-item="publish" title="publish">
 							</LI>
 							<LI data-menu-item="open-file-browser" title="media">
 							</LI>
-							<LI data-menu-item="view-publication" title="view">
+							<LI data-menu-item="view-file" title="view">
 							</LI>
 						</UL>
 					</DIV>
@@ -170,9 +169,9 @@
 					<A class="Page" name="page-list">Pages</A>
 					<DIV class="Layer page-list ribbon-list selectable">
 						<DIV class="assets-page">
-							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-add.png" title="Add a page" data-menu-item="add-page"/>
-							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-delete.png" title="Delete selected page" data-menu-item="del-page"/>
-							<IMG class="ribbon-button" src="../admin/assets/sv2-ico-rename.png" title="Rename selected page" data-menu-item="rename-page"/>
+							<IMG class="ribbon-button" src="assets/admin/sv2-ico-add.png" title="Add a page" data-menu-item="add-page"/>
+							<IMG class="ribbon-button" src="assets/admin/sv2-ico-delete.png" title="Delete selected page" data-menu-item="del-page"/>
+							<IMG class="ribbon-button" src="assets/admin/sv2-ico-rename.png" title="Rename selected page" data-menu-item="rename-page"/>
 						</DIV>
 						<UL class="PageList thumbs-list">
 							<LI class="">
@@ -245,7 +244,7 @@
 				<DIV class="container">
 					<form class="Layer login-dialog dialog-foreground AuthDialog" data-dialog-name="login-dialog">
 						<DIV class="header">
-							<img src="../admin/assets/logo.png"></img>
+							<img src="assets/admin/logo.png"></img>
 						</DIV>
 						<fieldset> 
 							<DIV class="login-pass-container">
@@ -269,34 +268,6 @@
 					</form>
 
 				</DIV>
-				<!-- Open Dialog -->
-				<A class="Page" name="open-dialog" ></A>
-				<form class="Layer open-dialog dialog-foreground OpenDialog" data-dialog-name="open-dialog">
-					<DIV class="container-open-publication ">
-						<header>
-							<p>Your Publications</p>
-						</header>
-						<div class="publications-list-loading loading-container">
-							<div class="loading-bar loading-bar1"></div>
-							<div class="loading-bar loading-bar2"></div>
-							<div class="loading-bar loading-bar3"></div>
-							<div class="loading-bar loading-bar4"></div>
-							<div class="loading-bar loading-bar5"></div>
-						</div>
-						<div class="publications-list-container">
-							<ul class="PublicationList publications">
-								<li>::name:: <DIV class="column"><small>Last change by ::configData.lastChange.author:: on ::configData.lastChange.date::</small></DIV></li>
-							</ul>
-						</div>
-						<footer class="foot">
-							<hr />
-							<input type="submit" value="Ok" class="validate-button"></input>
-							<button class="cancel-button">Cancel</button>
-						
-						</footer>
-						
-					</DIV>
-				</form>
 				<!-- FileBrowser Dialog -->
 				<A class="Page" name="file-browser-dialog" ></A>
 				<form class="Layer file-browser-dialog dialog-foreground FileBrowserDialog" 
@@ -354,7 +325,7 @@
 			<!-- ----------	 -->
 			<!-- Builder 	 -->
 			<!-- ----------	 -->
-			<DIV class="builder-scene panel-publication-body Panel"
+			<DIV class="builder-scene panel-file-body Panel"
 				data-panel-body-class-name="panel-builder-body"
 				data-panel-footer-class-name="panel-builder-footer"
 				data-panel-is-horizontal="true"
@@ -496,7 +467,7 @@
 												<a title="Help page about ::cssName:: property."
 													class="link-to-help" 
 													href="http://www.w3.org/wiki/CSS/Properties/::cssName::" target="_blank">
-													<img src="../admin/assets/info-link.png" />
+													<img src="assets/admin/info-link.png" />
 												</a>
 												<br />
 												::foreach types::
@@ -718,7 +689,7 @@
 				<!-- 	**************************	-->
 				<!-- 		Selection and stage			-->
 				<DIV class="Group SelectionController panel-builder-body" >
-					<DIV class="PublicationViewer" >
+					<DIV class="FileViewer" >
 					</DIV>
 					<DIV class="selection-marker Draggable SelectionDropHandler"
 						data-dropzones-class-name="Layer"

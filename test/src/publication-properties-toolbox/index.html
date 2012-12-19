@@ -48,14 +48,14 @@
 
 		<META name="debugModeAction" content="
 			trace('properties toolbox - Loading publication  ');
-			PublicationModel.getInstance().load('test-publication');
+			FileModel.getInstance().load('test-publication');
 
 			Timer.delay(function(){
 				var element = Lib.document.getElementById('testComponentForToolBox');
 				trace('properties toolbox - Selecting element '+element);
 				 ComponentModel.getInstance().setSelectedItem(element);
 				/*
-				var layer = PublicationModel.getInstance().application.getAssociatedComponents(element, Layer).first();
+				var layer = FileModel.getInstance().application.getAssociatedComponents(element, Layer).first();
 				trace('select layer '+layer);
 				LayerModel.getInstance().setSelectedItem(layer);
 				trace('properties toolbox - Selecting element '+element);

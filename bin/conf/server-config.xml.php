@@ -6,6 +6,8 @@
 </"."xml>");
 		?>
 	-->
-	<defaultPublication>default</defaultPublication>
-	<admin>silexlabs</admin>
+	<defaultFile>admin.html</defaultFile>
+	<userFolder>files/</userFolder>
+	<key>ofkiejv31uyyrfc</key>
+	<secret>2qjqwovsx3n8udp</secret>
 </xml>

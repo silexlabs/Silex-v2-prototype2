@@ -1,7 +1,7 @@
 #########
 # builder
 #########
--js ../bin/publications/admin/silex-builder.js
+-js ../bin/files/scripts/silex-builder.js
 -cp ../src/
 -cp ../../Brix/src/
 -cp ../../Cocktail/src/
@@ -10,7 +10,7 @@
 -lib hscript
 
 -main silex.Silex
---macro brix.core.Builder.create('../src/index-builder.html', '../bin/publications/admin/index.html')
+--macro brix.core.Builder.create('../src/index-builder.html', '../bin/files/admin.html')
 
 #-D brixdebug
 -D disableEmbedHtml
@@ -20,27 +20,29 @@
 -D silexClientSide
 -D silexDebug
 -D redirectTraces
-
 --next
+
 #########
-# player JS
+# server
 #########
--js ../bin/libs/silex/silex.js
+-php ../bin/libs/silex/silex.php
 -cp ../src/
 -cp ../../Brix/src/
 -cp ../../Cocktail/src/
-#--no-traces
+--no-traces
 -debug
 -lib hscript
 
+--remap js:cocktail
 -main silex.Silex
---macro brix.core.Builder.create('../src/index-player.html')
+--macro brix.core.Builder.create('../src/index-server.html')
 
-#-D brixdebug
+#-D slpdebug
 -D disableEmbedHtml
 -D noAutoStart
 -D stopOnError
 
--D silexClientSide
--D silexDebug
--D redirectTraces
+-D silexServerSide
+#-D silexDropboxMode
+# only in js : -D silexDebug
+

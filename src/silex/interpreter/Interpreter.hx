@@ -17,10 +17,6 @@ import haxe.Timer;
  */
 class Interpreter{
 	/**
-	 * Debug action executed at start
-	 */
-	public static inline var CONFIG_TAG_DEBUG_MODE_ACTION = "debugModeAction";
-	/**
 	 * Basic context for Silex
 	 */
 	public static inline var BASIC_CONTEXT = {
@@ -97,7 +93,7 @@ class Interpreter{
 			try{
 				exec(script);
 			}catch(e:Dynamic){
-				throw("Error while executing the script in the config file of the publication (debugModeAction variable). The error: "+e);
+				throw("Error while executing the script in the file. The error: "+e);
 				brix.component.interaction.NotificationManager.NotificationManager.notifyError("Error", "An error occured while executing the script. The error: "+e);
 			}
 		}

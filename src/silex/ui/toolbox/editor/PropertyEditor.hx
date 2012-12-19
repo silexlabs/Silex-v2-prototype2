@@ -3,8 +3,7 @@ package silex.ui.toolbox.editor;
 import silex.ui.dialog.TextEditorDialog;
 import silex.property.PropertyModel;
 import silex.component.ComponentModel;
-import silex.publication.PublicationModel;
-import silex.publication.PublicationData;
+import silex.file.FileModel;
 import silex.layer.LayerModel;
 import silex.page.PageModel;
 
@@ -175,7 +174,7 @@ class PropertyEditor extends UrlEditor
 		if (value != null) setInputValue("src-property", DomTools.abs2rel(value));
 		else setInputValue("src-property", "");
 
-		var sources = PublicationModel.getInstance().getModelFromView(element).getElementsByTagName("source");
+		var sources = FileModel.getInstance().getModelFromView(element).getElementsByTagName("source");
 		var value = "";
 		for (idx in 0...sources.length){
 			value += DomTools.abs2rel(cast(sources[idx]).src) + "\n";
@@ -238,7 +237,7 @@ class PropertyEditor extends UrlEditor
 			propertyModel.setProperty(selectedItem, "src", "");
 		}
 
-		var modelHtmlDom = PublicationModel.getInstance().getModelFromView(selectedItem);
+		var modelHtmlDom = FileModel.getInstance().getModelFromView(selectedItem);
 		var sources = modelHtmlDom.getElementsByTagName("source");
 		for (idx in 0...sources.length){
 			// always take "0" element because this remove an item from sources 
