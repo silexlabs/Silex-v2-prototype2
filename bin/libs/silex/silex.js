@@ -1791,6 +1791,7 @@ brix.core.Application.get = function(BrixId) {
 	return brix.core.Application.instances.get(BrixId);
 }
 brix.core.Application.main = function() {
+	haxe.Log.trace("----",{ fileName : "Application.hx", lineNumber : 125, className : "brix.core.Application", methodName : "main"});
 	if(haxe.Firebug.detect()) {
 		haxe.Firebug.redirectTraces();
 		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Application.hx", lineNumber : 130, className : "brix.core.Application", methodName : "main"});
@@ -2308,13 +2309,20 @@ brix.util.DomTools.setBaseTag = function(href) {
 	} else {
 		var node = js.Lib.document.createElement("base");
 		node.setAttribute("href",href);
-		node.setAttribute("target","_self");
 		if(head.childNodes.length > 0) head.insertBefore(node,head.childNodes[0]); else head.appendChild(node);
 	}
 }
+brix.util.DomTools.removeBaseTag = function() {
+	var baseNodes = js.Lib.document.getElementsByTagName("base");
+	while(baseNodes.length > 0) baseNodes[0].parentNode.removeChild(baseNodes[0]);
+}
 brix.util.DomTools.getBaseUrl = function() {
 	var base = brix.util.DomTools.getBaseTag();
-	if(base == null) base = js.Lib.window.location.href;
+	if(base == null) {
+		var idxSlash = js.Lib.window.location.href.lastIndexOf("/");
+		var idxDot = js.Lib.window.location.href.lastIndexOf(".");
+		if(idxSlash < idxDot) base = base = HxOverrides.substr(js.Lib.window.location.href,0,idxSlash + 1); else base = js.Lib.window.location.href;
+	}
 	return base;
 }
 brix.util.DomTools.isUndefined = function(value) {
@@ -6209,32 +6217,33 @@ js.Lib.setErrorHandler = function(f) {
 var silex = {}
 silex.ServiceBase = function(serviceName) {
 	this.serviceName = serviceName;
-	this.connection = haxe.remoting.HttpAsyncConnection.urlConnect(silex.ServiceBase.GATEWAY_URL);
 };
 $hxClasses["silex.ServiceBase"] = silex.ServiceBase;
 silex.ServiceBase.__name__ = ["silex","ServiceBase"];
 silex.ServiceBase.prototype = {
 	callServerMethod: function(methodName,args,onResult,onError) {
-		this.connection.setErrorHandler(onError);
-		this.connection.resolve(this.serviceName).resolve(methodName).call(args,onResult);
+		var connection = haxe.remoting.HttpAsyncConnection.urlConnect(silex.Silex.initialBaseUrl + silex.ServiceBase.GATEWAY_URL);
+		connection.setErrorHandler(onError);
+		connection.resolve(this.serviceName).resolve(methodName).call(args,onResult);
 	}
-	,connection: null
 	,serviceName: null
 	,__class__: silex.ServiceBase
 }
 silex.Silex = function() { }
 $hxClasses["silex.Silex"] = silex.Silex;
 silex.Silex.__name__ = ["silex","Silex"];
+silex.Silex.initialBaseUrl = null;
 silex.Silex.main = function() {
-	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 66, className : "silex.Silex", methodName : "main"});
+	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 70, className : "silex.Silex", methodName : "main"});
 	if(haxe.Firebug.detect()) {
 		haxe.Firebug.redirectTraces();
-		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Silex.hx", lineNumber : 71, className : "silex.Silex", methodName : "main"});
-	} else haxe.Log.trace("Warning: Brix can not redirect traces to console, because no console was found",{ fileName : "Silex.hx", lineNumber : 75, className : "silex.Silex", methodName : "main"});
+		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Silex.hx", lineNumber : 75, className : "silex.Silex", methodName : "main"});
+	} else haxe.Log.trace("Warning: Brix can not redirect traces to console, because no console was found",{ fileName : "Silex.hx", lineNumber : 79, className : "silex.Silex", methodName : "main"});
+	silex.Silex.initialBaseUrl = brix.util.DomTools.getBaseUrl();
 	if(js.Lib.document.body == null) js.Lib.window.onload = silex.Silex.init; else silex.Silex.init();
 }
 silex.Silex.init = function(unused) {
-	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 92, className : "silex.Silex", methodName : "init"});
+	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 99, className : "silex.Silex", methodName : "init"});
 	var application = brix.core.Application.createApplication();
 	application.initDom();
 	if(js.Lib.window.location.hash != "" && brix.util.DomTools.getMeta("useDeeplink") != "false") {

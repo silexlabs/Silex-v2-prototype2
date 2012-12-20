@@ -24,6 +24,9 @@ class MenuController extends DisplayObject
 	 * static attribute set by the instance constructor
 	 */
 	static public var menuBrixId:String;
+	/** 
+	 * create a new empty file
+	 */
 	static public function createFile(){
 		FileModel.getInstance().create();
 	}
@@ -47,7 +50,7 @@ class MenuController extends DisplayObject
 	 */
 	static private function onFileChosen(fileUrl:String){
 		var file = FileBrowserDialog.getRelativeURLFromFileBrowser(fileUrl);
-		FileModel.getInstance().load("files/"+file);
+		FileModel.getInstance().load(file);
 	}
 	/**
 	 * close the current file
@@ -59,7 +62,7 @@ class MenuController extends DisplayObject
 	 * open the current file in a new browser window
 	 */
 	static public function viewFile(){
-		Lib.window.open("../"+FileModel.getInstance().currentData.name, '_blank');
+		Lib.window.open(Silex.initialBaseUrl+FileModel.getInstance().currentData.name, '_blank');
 	}
 	/**
 	 * save the current file with its current name

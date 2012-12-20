@@ -13,7 +13,7 @@ class silex_file_server_FileService extends silex_ServiceBase {
 		$GLOBALS['%s']->push("silex.file.server.FileService::save");
 		$»spos = $GLOBALS['%s']->length;
 		try {
-			sys_io_File::saveContent($name, $content);
+			sys_io_File::saveContent($this->serverConfig->userFolder . $name, $content);
 		}catch(Exception $»e) {
 			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
 			$e = $_ex_;
@@ -32,7 +32,7 @@ class silex_file_server_FileService extends silex_ServiceBase {
 		$GLOBALS['%s']->push("silex.file.server.FileService::trash");
 		$»spos = $GLOBALS['%s']->length;
 		try {
-			@unlink($name);
+			@unlink($this->serverConfig->userFolder . $name);
 		}catch(Exception $»e) {
 			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
 			$e = $_ex_;
@@ -51,7 +51,7 @@ class silex_file_server_FileService extends silex_ServiceBase {
 		$GLOBALS['%s']->push("silex.file.server.FileService::rename");
 		$»spos = $GLOBALS['%s']->length;
 		try {
-			rename($src, $dst);
+			rename($this->serverConfig->userFolder . $src, $this->serverConfig->userFolder . $dst);
 		}catch(Exception $»e) {
 			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
 			$e = $_ex_;
@@ -70,7 +70,7 @@ class silex_file_server_FileService extends silex_ServiceBase {
 		$GLOBALS['%s']->push("silex.file.server.FileService::duplicate");
 		$»spos = $GLOBALS['%s']->length;
 		try {
-			sys_io_File::copy($src, $dst);
+			sys_io_File::copy($this->serverConfig->userFolder . $src, $this->serverConfig->userFolder . $dst);
 		}catch(Exception $»e) {
 			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
 			$e = $_ex_;
@@ -90,7 +90,7 @@ class silex_file_server_FileService extends silex_ServiceBase {
 		$»spos = $GLOBALS['%s']->length;
 		$content = "";
 		try {
-			$content = sys_io_File::getContent($name);
+			$content = sys_io_File::getContent($this->serverConfig->userFolder . $name);
 		}catch(Exception $»e) {
 			$_ex_ = ($»e instanceof HException) ? $»e->e : $»e;
 			$e = $_ex_;

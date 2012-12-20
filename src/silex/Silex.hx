@@ -54,6 +54,10 @@ class Silex {
 
 #if silexClientSide
 	/**
+	 * store the initial URL, since it will change with base tags
+	 */
+	public static var initialBaseUrl:String;
+	/**
 	 * Entry point for Silex applications
 	 * Load Silex config
 	 * Load HTML and site config
@@ -75,6 +79,9 @@ class Silex {
 				trace("Warning: Brix can not redirect traces to console, because no console was found");
 			}
 		#end
+
+		// store the initial URL
+		initialBaseUrl = DomTools.getBaseUrl();
 
 		if (Lib.document.body == null){
 			// the script has been loaded at start

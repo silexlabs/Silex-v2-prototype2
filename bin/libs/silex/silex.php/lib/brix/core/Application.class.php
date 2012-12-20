@@ -424,6 +424,7 @@ class brix_core_Application {
 	static function main() {
 		$GLOBALS['%s']->push("brix.core.Application::main");
 		$»spos = $GLOBALS['%s']->length;
+		null;
 		$GLOBALS['%s']->pop();
 	}
 	static function createApplication($args = null) {

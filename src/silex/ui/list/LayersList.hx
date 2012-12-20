@@ -12,6 +12,11 @@ import silex.page.PageModel;
 import silex.file.FileModel;
 import silex.property.PropertyModel;
 
+typedef ClassData<ClassInstance> = {
+	name:String,
+	classInstance: ClassInstance, 
+}
+
 /**
  * list component used to visualize and manipulate layers 
  * by default it displays only the masters, i.e. the layers which nodes have a "data-master" attribute
@@ -19,7 +24,7 @@ import silex.property.PropertyModel;
  * @example 	<ul class="LayersList"><li>::rootElement.className:: (::status::)</li></ul> displays the name of the items
  */
 @tagNameFilter("ul")
-class LayersList extends List<Layer>
+class LayersList extends List<ClassData<Layer>>
 {
 	/**
 	 * Information for debugging, e.g. the class name
@@ -61,7 +66,7 @@ class LayersList extends List<Layer>
 			// get the list of all layers
 			var nodes = DomTools.getElementsByAttribute(fileModel.currentData.viewHtmlDom, "data-master", "*");
 			// get a list of instances 
-			var layers:Array<Layer> = new Array();
+			var layers:Array<ClassData<Layer>> = new Array();
 			// browse all nodes
 			for (idx in 0...nodes.length){
 				// retrieve the class instance associated with this node
@@ -69,7 +74,12 @@ class LayersList extends List<Layer>
 
 				if (instances.length == 1){
 					// store the first instance
-					layers.push(instances.first());
+					var instance = instances.first();
+					var name = nodes[idx].getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
+					layers.push({
+						name:name,
+						classInstance: instance,
+					});
 				}
 				else{
 					throw ("Error: there should be 1 and only 1 instance of Layer associated with this node, and there is "+instances.length);
@@ -96,7 +106,7 @@ class LayersList extends List<Layer>
 	}
 	public function addLayer(){
 		var page = PageModel.getInstance().selectedItem;
-		LayerModel.getInstance().addMaster(selectedItem, page.name);
+		LayerModel.getInstance().addMaster(selectedItem.classInstance, page.name);
 	}
 	/**
 	 * selection changed, open the selected page
@@ -105,8 +115,8 @@ class LayersList extends List<Layer>
 		idx = super.setSelectedIndex(idx);
 		if (propertyChangePending == true) return idx;
 
-		if (LayerModel.getInstance().selectedItem != selectedItem){
-			LayerModel.getInstance().selectedItem = selectedItem;
+		if (LayerModel.getInstance().selectedItem != selectedItem.classInstance){
+			LayerModel.getInstance().selectedItem = selectedItem.classInstance;
 		}
 		return idx;
 	}

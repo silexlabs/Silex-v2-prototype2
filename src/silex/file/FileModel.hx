@@ -63,7 +63,7 @@ class FileModel extends ModelBase<HtmlDom>{
 	/**
 	 * File used as a template for new files
 	 */ 
-	public static inline var CREATION_TEMPLATE_FILE_NAME = "files/creation-template.html";
+	public static inline var CREATION_TEMPLATE_FILE_NAME = "creation-template.html";
 	/**
 	 * event dispatched when a file about to be loaded
 	 */
@@ -205,10 +205,21 @@ class FileModel extends ModelBase<HtmlDom>{
 	 * Load a file
 	 * Reset model selection
 	 */
+	public function changeBaseTag(name:String){
+		var idx = currentData.name.lastIndexOf("/");
+		if (idx>0){
+			trace("setBaseTag "+name.substr(0, idx+1));
+			DomTools.setBaseTag(name.substr(0, idx+1));
+		}
+		else{
+			DomTools.removeBaseTag();
+		}
+	}
 	public function load(name:String){
 		trace("load "+name);
 		// store the new file name
 		currentData.name = name;
+		changeBaseTag(name);
 
 		// reset model selection
 		var pageModel = PageModel.getInstance();
@@ -228,6 +239,7 @@ class FileModel extends ModelBase<HtmlDom>{
 	private function onData(content:String):Void{
 		// store the data / update the model
 		currentData.rawHtml = content;
+		trace(currentData.rawHtml);
 		currentData.isLoaded = true;
 
 		// parse the data and make it available as HTML
@@ -349,7 +361,10 @@ class FileModel extends ModelBase<HtmlDom>{
 		if (application == null){
 			return;
 		}
-		if (application.getAssociatedComponents(modelDom, DisplayObject).length == 0){		
+		// Dom Root
+		if (modelDom.parentNode == null){
+		}
+		else if (application.getAssociatedComponents(modelDom, DisplayObject).length == 0){		
 			if (modelDom.nodeName.toLowerCase() == "div"){
 				// add the attribute data-silex-component-id to nodes which parent is a layer
 				modelDom.setAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, generateNewId());
@@ -367,26 +382,6 @@ class FileModel extends ModelBase<HtmlDom>{
 			var modelChild = modelDom.childNodes[idx];
 			prepareForEditVanilaHtml(modelChild);
 		}
-/*
-		if (modelDom.nodeName.toLowerCase() == "div"){
-			if (!DomTools.hasClass(modelDom.parentNode, "Layer")){
-				// browse the children
-				for(idx in 0...modelDom.childNodes.length){
-					var modelChild = modelDom.childNodes[idx];
-					if (prepareForEditVanilaHtml(modelChild)){
-						hasLayerInChildren = true;
-					}
-				}
-				if (hasLayerInChildren == false){
-					// add the attribute data-silex-component-id to nodes which parent is a layer
-					modelDom.setAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, generateNewId());
-				}
-			}
-			else{
-				hasLayerInChildren = true;
-			}
-		}
-*/
 	}
 	private static var nextId = 0;
 	/**
@@ -494,6 +489,7 @@ class FileModel extends ModelBase<HtmlDom>{
 			throw("Error: can not save the file because no file is loaded.");
 		}
 		currentData.name = newName;
+		changeBaseTag(newName);
 		save();
 	}
 	/**
@@ -510,7 +506,7 @@ class FileModel extends ModelBase<HtmlDom>{
 		if (tempName == null){
 			// handle a new publication
 			if (currentData.name == CREATION_TEMPLATE_FILE_NAME){
-				var newName = Lib.window.prompt("New name for your file?", "files/your-file-"+Math.round(Math.random()*100)+".html");
+				var newName = Lib.window.prompt("New name for your file?", "your-file-"+Math.round(Math.random()*100)+".html");
 				if (newName != null && newName!=""){
 					currentData.name = newName;
 				}

@@ -2863,6 +2863,7 @@ brix.core.Application.get = function(BrixId) {
 	return brix.core.Application.instances.get(BrixId);
 }
 brix.core.Application.main = function() {
+	haxe.Log.trace("----",{ fileName : "Application.hx", lineNumber : 125, className : "brix.core.Application", methodName : "main"});
 	if(haxe.Firebug.detect()) {
 		haxe.Firebug.redirectTraces();
 		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Application.hx", lineNumber : 130, className : "brix.core.Application", methodName : "main"});
@@ -3444,13 +3445,20 @@ brix.util.DomTools.setBaseTag = function(href) {
 	} else {
 		var node = js.Lib.document.createElement("base");
 		node.setAttribute("href",href);
-		node.setAttribute("target","_self");
 		if(head.childNodes.length > 0) head.insertBefore(node,head.childNodes[0]); else head.appendChild(node);
 	}
 }
+brix.util.DomTools.removeBaseTag = function() {
+	var baseNodes = js.Lib.document.getElementsByTagName("base");
+	while(baseNodes.length > 0) baseNodes[0].parentNode.removeChild(baseNodes[0]);
+}
 brix.util.DomTools.getBaseUrl = function() {
 	var base = brix.util.DomTools.getBaseTag();
-	if(base == null) base = js.Lib.window.location.href;
+	if(base == null) {
+		var idxSlash = js.Lib.window.location.href.lastIndexOf("/");
+		var idxDot = js.Lib.window.location.href.lastIndexOf(".");
+		if(idxSlash < idxDot) base = base = HxOverrides.substr(js.Lib.window.location.href,0,idxSlash + 1); else base = js.Lib.window.location.href;
+	}
 	return base;
 }
 brix.util.DomTools.isUndefined = function(value) {
@@ -7792,32 +7800,33 @@ silex.ModelBase.prototype = {
 }
 silex.ServiceBase = function(serviceName) {
 	this.serviceName = serviceName;
-	this.connection = haxe.remoting.HttpAsyncConnection.urlConnect(silex.ServiceBase.GATEWAY_URL);
 };
 $hxClasses["silex.ServiceBase"] = silex.ServiceBase;
 silex.ServiceBase.__name__ = ["silex","ServiceBase"];
 silex.ServiceBase.prototype = {
 	callServerMethod: function(methodName,args,onResult,onError) {
-		this.connection.setErrorHandler(onError);
-		this.connection.resolve(this.serviceName).resolve(methodName).call(args,onResult);
+		var connection = haxe.remoting.HttpAsyncConnection.urlConnect(silex.Silex.initialBaseUrl + silex.ServiceBase.GATEWAY_URL);
+		connection.setErrorHandler(onError);
+		connection.resolve(this.serviceName).resolve(methodName).call(args,onResult);
 	}
-	,connection: null
 	,serviceName: null
 	,__class__: silex.ServiceBase
 }
 silex.Silex = function() { }
 $hxClasses["silex.Silex"] = silex.Silex;
 silex.Silex.__name__ = ["silex","Silex"];
+silex.Silex.initialBaseUrl = null;
 silex.Silex.main = function() {
-	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 66, className : "silex.Silex", methodName : "main"});
+	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 70, className : "silex.Silex", methodName : "main"});
 	if(haxe.Firebug.detect()) {
 		haxe.Firebug.redirectTraces();
-		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Silex.hx", lineNumber : 71, className : "silex.Silex", methodName : "main"});
-	} else haxe.Log.trace("Warning: Brix can not redirect traces to console, because no console was found",{ fileName : "Silex.hx", lineNumber : 75, className : "silex.Silex", methodName : "main"});
+		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Silex.hx", lineNumber : 75, className : "silex.Silex", methodName : "main"});
+	} else haxe.Log.trace("Warning: Brix can not redirect traces to console, because no console was found",{ fileName : "Silex.hx", lineNumber : 79, className : "silex.Silex", methodName : "main"});
+	silex.Silex.initialBaseUrl = brix.util.DomTools.getBaseUrl();
 	if(js.Lib.document.body == null) js.Lib.window.onload = silex.Silex.init; else silex.Silex.init();
 }
 silex.Silex.init = function(unused) {
-	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 92, className : "silex.Silex", methodName : "init"});
+	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 99, className : "silex.Silex", methodName : "init"});
 	var application = brix.core.Application.createApplication();
 	application.initDom();
 	if(js.Lib.window.location.hash != "" && brix.util.DomTools.getMeta("useDeeplink") != "false") {
@@ -7918,7 +7927,7 @@ silex.file.FileModel.__super__ = silex.ModelBase;
 silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onFileSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("FILE SAVED",{ fileName : "FileModel.hx", lineNumber : 594, className : "silex.file.FileModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("FILE SAVED",{ fileName : "FileModel.hx", lineNumber : 590, className : "silex.file.FileModel", methodName : "onSaveSuccess"});
 		brix.component.interaction.NotificationManager.notifySuccess("File saved",this.currentData.name + " has been saved successfully.",this.currentData.viewHtmlDom);
 	}
 	,onSaveError: function(msg) {
@@ -7945,8 +7954,8 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 			throw "Error: can not save the file because no file is loaded.";
 		}
 		if(tempName == null) {
-			if(this.currentData.name == "files/creation-template.html") {
-				var newName = js.Lib.window.prompt("New name for your file?","files/your-file-" + Math.round(Math.random() * 100) + ".html");
+			if(this.currentData.name == "creation-template.html") {
+				var newName = js.Lib.window.prompt("New name for your file?","your-file-" + Math.round(Math.random() * 100) + ".html");
 				if(newName != null && newName != "") this.currentData.name = newName;
 			}
 			tempName = this.currentData.name;
@@ -7964,6 +7973,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 			throw "Error: can not save the file because no file is loaded.";
 		}
 		this.currentData.name = newName;
+		this.changeBaseTag(newName);
 		this.save();
 	}
 	,saveACopy: function(newName) {
@@ -7974,14 +7984,14 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		this.save(newName);
 	}
 	,onDeleteSuccess: function() {
-		haxe.Log.trace("FILE DELETED ",{ fileName : "FileModel.hx", lineNumber : 463, className : "silex.file.FileModel", methodName : "onDeleteSuccess"});
+		haxe.Log.trace("FILE DELETED ",{ fileName : "FileModel.hx", lineNumber : 458, className : "silex.file.FileModel", methodName : "onDeleteSuccess"});
 		this.create();
 	}
 	,trash: function(name) {
 		this.fileService.trash(name,$bind(this,this.onDeleteSuccess),$bind(this,this.onSaveError));
 	}
 	,create: function() {
-		this.load("files/creation-template.html");
+		this.load("creation-template.html");
 	}
 	,onError: function(msg) {
 		this.dispatchEvent(this.createEvent("onFileError"),this.debugInfo);
@@ -7996,8 +8006,8 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,this.currentData.headHtmlDom);
 		if(initialPageName != null) {
 			var page = brix.component.navigation.Page.getPageByName(initialPageName,this.application.id,this.currentData.viewHtmlDom);
-			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "FileModel.hx", lineNumber : 418, className : "silex.file.FileModel", methodName : "initBrixApplication"});
-		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "FileModel.hx", lineNumber : 422, className : "silex.file.FileModel", methodName : "initBrixApplication"});
+			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "FileModel.hx", lineNumber : 413, className : "silex.file.FileModel", methodName : "initBrixApplication"});
+		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "FileModel.hx", lineNumber : 417, className : "silex.file.FileModel", methodName : "initBrixApplication"});
 		silex.interpreter.Interpreter.getInstance().execScriptTags(this.currentData.viewHtmlDom);
 	}
 	,generateNewId: function() {
@@ -8006,7 +8016,8 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	,prepareForEditVanilaHtml: function(modelDom) {
 		if(modelDom.nodeType != 1) return;
 		if(this.application == null) return;
-		if(this.application.getAssociatedComponents(modelDom,brix.component.ui.DisplayObject).length == 0) {
+		if(modelDom.parentNode == null) {
+		} else if(this.application.getAssociatedComponents(modelDom,brix.component.ui.DisplayObject).length == 0) {
 			if(modelDom.nodeName.toLowerCase() == "div") modelDom.setAttribute("data-silex-component-id",this.generateNewId()); else {
 				var nodeName = modelDom.nodeName.toLowerCase();
 				if(nodeName == "img" || nodeName == "button" || nodeName == "video" || nodeName == "audio" || nodeName == "input") modelDom.setAttribute("data-silex-component-id",this.generateNewId());
@@ -8040,6 +8051,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	}
 	,onData: function(content) {
 		this.currentData.rawHtml = content;
+		haxe.Log.trace(this.currentData.rawHtml,{ fileName : "FileModel.hx", lineNumber : 242, className : "silex.file.FileModel", methodName : "onData"});
 		this.currentData.isLoaded = true;
 		this.currentData.modelHtmlDom = js.Lib.document.createElement("div");
 		this.currentData.headHtmlDom = js.Lib.document.createElement("div");
@@ -8073,13 +8085,21 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		silex.property.PropertyModel.getInstance().refresh();
 	}
 	,load: function(name) {
-		haxe.Log.trace("load " + name,{ fileName : "FileModel.hx", lineNumber : 209, className : "silex.file.FileModel", methodName : "load"});
+		haxe.Log.trace("load " + name,{ fileName : "FileModel.hx", lineNumber : 219, className : "silex.file.FileModel", methodName : "load"});
 		this.currentData.name = name;
+		this.changeBaseTag(name);
 		var pageModel = silex.page.PageModel.getInstance();
 		pageModel.setHoveredItem(null);
 		pageModel.setSelectedItem(null);
 		this.dispatchEvent(this.createEvent("onLoadStart"),this.debugInfo);
 		this.fileService.load(this.currentData.name,$bind(this,this.onData),$bind(this,this.onError));
+	}
+	,changeBaseTag: function(name) {
+		var idx = this.currentData.name.lastIndexOf("/");
+		if(idx > 0) {
+			haxe.Log.trace("setBaseTag " + HxOverrides.substr(name,0,idx + 1),{ fileName : "FileModel.hx", lineNumber : 211, className : "silex.file.FileModel", methodName : "changeBaseTag"});
+			brix.util.DomTools.setBaseTag(HxOverrides.substr(name,0,idx + 1));
+		} else brix.util.DomTools.removeBaseTag();
 	}
 	,getModelFromView: function(viewHtmlDom) {
 		if(viewHtmlDom == null) {
@@ -8248,7 +8268,7 @@ silex.layer.LayerModel.prototype = $extend(silex.ModelBase.prototype,{
 		var modelHtmlDom = fileModel.currentData.modelHtmlDom;
 		var newNode = js.Lib.document.createElement("div");
 		newNode.className = "Layer " + pageName + " " + "container";
-		newNode.setAttribute("title",layerName);
+		newNode.setAttribute("data-silex-name",layerName);
 		if(position > viewHtmlDom.childNodes.length - 1) viewHtmlDom.appendChild(newNode); else viewHtmlDom.insertBefore(newNode,viewHtmlDom.childNodes[position]);
 		fileModel.prepareForEdit(newNode);
 		if(position > modelHtmlDom.childNodes.length - 1) modelHtmlDom.appendChild(newNode.cloneNode(true)); else modelHtmlDom.insertBefore(newNode.cloneNode(true),modelHtmlDom.childNodes[position]);
@@ -8256,7 +8276,7 @@ silex.layer.LayerModel.prototype = $extend(silex.ModelBase.prototype,{
 		newLayer.init();
 		newLayer.show();
 		var textElement = silex.component.ComponentModel.getInstance().addComponent("div",newLayer);
-		silex.property.PropertyModel.getInstance().setAttribute(textElement,"title","New text field");
+		silex.property.PropertyModel.getInstance().setAttribute(textElement,"data-silex-name","New text field");
 		silex.property.PropertyModel.getInstance().setProperty(textElement,"innerHTML","<p>Insert text here.</p>");
 		this.dispatchEvent(this.createEvent("onLayerListChange",newLayer),"LayerModel class");
 		return newLayer;
@@ -8657,14 +8677,14 @@ silex.ui.dialog.FileBrowserDialog.prototype = $extend(silex.ui.dialog.DialogBase
 		this.close();
 	}
 	,validateMultipleSelection: function(files) {
-		haxe.Log.trace("validateMultipleSelection " + Std.string(files),{ fileName : "FileBrowserDialog.hx", lineNumber : 177, className : "silex.ui.dialog.FileBrowserDialog", methodName : "validateMultipleSelection"});
+		haxe.Log.trace("validateMultipleSelection " + Std.string(files),{ fileName : "FileBrowserDialog.hx", lineNumber : 178, className : "silex.ui.dialog.FileBrowserDialog", methodName : "validateMultipleSelection"});
 		if(files != null) {
 			if(silex.ui.dialog.FileBrowserDialog.onValidateMultiple != null) silex.ui.dialog.FileBrowserDialog.onValidateMultiple(files);
 			this.close();
 		}
 	}
 	,validateSelection: function(url) {
-		haxe.Log.trace("validateSelection " + url,{ fileName : "FileBrowserDialog.hx", lineNumber : 165, className : "silex.ui.dialog.FileBrowserDialog", methodName : "validateSelection"});
+		haxe.Log.trace("validateSelection " + url,{ fileName : "FileBrowserDialog.hx", lineNumber : 166, className : "silex.ui.dialog.FileBrowserDialog", methodName : "validateSelection"});
 		if(url != null) {
 			if(silex.ui.dialog.FileBrowserDialog.onValidate != null) silex.ui.dialog.FileBrowserDialog.onValidate(url);
 			this.close();
@@ -8672,7 +8692,7 @@ silex.ui.dialog.FileBrowserDialog.prototype = $extend(silex.ui.dialog.DialogBase
 	}
 	,requestRedraw: function(transitionData) {
 		var element = brix.util.DomTools.getSingleElement(this.rootElement,"file-browser-div",true);
-		element.innerHTML = "<iframe name=\"kcfinder_iframe\" src=\"../libs/kcfinder/browse.php?type=files&dir=" + silex.ui.dialog.FileBrowserDialog.intialPath + "\" " + "frameborder=\"0\" width=\"100%\" height=\"100%\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" />";
+		element.innerHTML = "<iframe name=\"kcfinder_iframe\" src=\"" + silex.Silex.initialBaseUrl + "../libs/kcfinder/browse.php?type=files&dir=" + silex.ui.dialog.FileBrowserDialog.intialPath + "\" " + "frameborder=\"0\" width=\"100%\" height=\"100%\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" />";
 		if(silex.ui.dialog.FileBrowserDialog.message != null) {
 			var element1 = brix.util.DomTools.getSingleElement(this.rootElement,"message-zone",false);
 			if(element1 != null) element1.innerHTML = silex.ui.dialog.FileBrowserDialog.message;
@@ -8716,7 +8736,7 @@ silex.ui.dialog.TextEditorDialog.prototype = $extend(silex.ui.dialog.DialogBase.
 		js.Lib.window.CKEDITOR = { textContent : silex.ui.dialog.TextEditorDialog.textContent, callBack : $bind(this,this.validateSelection)};
 	}
 	,requestRedraw: function(transitionData) {
-		this.contentLoaded("<iframe name=\"kcfinder_iframe\" src=\"" + "../../third-party-tools/ckeditor/ckeditor.html" + "\"" + " frameborder=\"0\" width=\"100%\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" />");
+		this.contentLoaded("<iframe name=\"kcfinder_iframe\" src=\"" + silex.Silex.initialBaseUrl + "../libs/ckeditor/ckeditor.html" + "\"" + " frameborder=\"0\" width=\"100%\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" />");
 	}
 	,__class__: silex.ui.dialog.TextEditorDialog
 });
@@ -8763,12 +8783,12 @@ silex.ui.list.LayersList.prototype = $extend(brix.component.list.List.prototype,
 	setSelectedIndex: function(idx) {
 		idx = brix.component.list.List.prototype.setSelectedIndex.call(this,idx);
 		if(this.propertyChangePending == true) return idx;
-		if(silex.layer.LayerModel.getInstance().selectedItem != this.getSelectedItem()) silex.layer.LayerModel.getInstance().setSelectedItem(this.getSelectedItem());
+		if(silex.layer.LayerModel.getInstance().selectedItem != this.getSelectedItem().classInstance) silex.layer.LayerModel.getInstance().setSelectedItem(this.getSelectedItem().classInstance);
 		return idx;
 	}
 	,addLayer: function() {
 		var page = silex.page.PageModel.getInstance().selectedItem;
-		silex.layer.LayerModel.getInstance().addMaster(this.getSelectedItem(),page.name);
+		silex.layer.LayerModel.getInstance().addMaster(this.getSelectedItem().classInstance,page.name);
 	}
 	,onListChange: function(e) {
 		this.reloadData();
@@ -8783,7 +8803,11 @@ silex.ui.list.LayersList.prototype = $extend(brix.component.list.List.prototype,
 			while(_g1 < _g) {
 				var idx = _g1++;
 				var instances = fileModel.application.getAssociatedComponents(nodes[idx],brix.component.navigation.Layer);
-				if(instances.length == 1) layers.push(instances.first()); else throw "Error: there should be 1 and only 1 instance of Layer associated with this node, and there is " + instances.length;
+				if(instances.length == 1) {
+					var instance = instances.first();
+					var name = nodes[idx].getAttribute("data-silex-name");
+					layers.push({ name : name, classInstance : instance});
+				} else throw "Error: there should be 1 and only 1 instance of Layer associated with this node, and there is " + instances.length;
 			}
 			this.dataProvider = layers;
 			this.propertyChangePending = true;
@@ -9341,10 +9365,10 @@ silex.ui.toolbox.MenuController.openFile = function() {
 }
 silex.ui.toolbox.MenuController.onFileChosen = function(fileUrl) {
 	var file = silex.ui.dialog.FileBrowserDialog.getRelativeURLFromFileBrowser(fileUrl);
-	silex.file.FileModel.getInstance().load("files/" + file);
+	silex.file.FileModel.getInstance().load(file);
 }
 silex.ui.toolbox.MenuController.viewFile = function() {
-	js.Lib.window.open("../" + silex.file.FileModel.getInstance().currentData.name,"_blank");
+	js.Lib.window.open(silex.Silex.initialBaseUrl + silex.file.FileModel.getInstance().currentData.name,"_blank");
 }
 silex.ui.toolbox.MenuController.saveFile = function() {
 	silex.file.FileModel.getInstance().save();
@@ -10472,7 +10496,7 @@ silex.component.ComponentModel.ON_LIST_CHANGE = "onComponentListChange";
 silex.file.FileModel.DEBUG_INFO = "FileModel class";
 silex.file.FileModel.CLASS_NAME_MAIN_GROUP = "silex-main-group";
 silex.file.FileModel.BUILDER_ROOT_NODE_CLASS = "silex-view";
-silex.file.FileModel.CREATION_TEMPLATE_FILE_NAME = "files/creation-template.html";
+silex.file.FileModel.CREATION_TEMPLATE_FILE_NAME = "creation-template.html";
 silex.file.FileModel.ON_LOAD_START = "onLoadStart";
 silex.file.FileModel.ON_LOAD_SUCCESS = "onLoadSuccess";
 silex.file.FileModel.ON_ERROR = "onFileError";
@@ -10483,6 +10507,7 @@ silex.file.FileModel.nextId = 0;
 silex.file.client.FileService.SERVICE_NAME = "FileService";
 silex.interpreter.Interpreter.BASIC_CONTEXT = { Lib : js.Lib, Math : Math, Timer : haxe.Timer, StringTools : StringTools, DomTools : brix.util.DomTools, Application : brix.core.Application, Page : brix.component.navigation.Page, Layer : brix.component.navigation.Layer};
 silex.layer.LayerModel.LAYER_ID_ATTRIBUTE_NAME = "data-silex-layer-id";
+silex.layer.LayerModel.LAYER_NAME_ATTRIBUTE_NAME = "data-silex-name";
 silex.layer.LayerModel.DEBUG_INFO = "LayerModel class";
 silex.layer.LayerModel.ON_SELECTION_CHANGE = "onLayerSelectionChange";
 silex.layer.LayerModel.ON_HOVER_CHANGE = "onLayerHoverChange";
@@ -10521,7 +10546,7 @@ silex.ui.dialog.FileBrowserDialog.expectMultipleFiles = false;
 silex.ui.dialog.TextEditorDialog.TEXT_EDITOR_CONTAINER_CLASS_NAME = "text-editor-div";
 silex.ui.dialog.TextEditorDialog.MESSAGE_ZONE_CLASS_NAME = "message-zone";
 silex.ui.dialog.TextEditorDialog.TEXT_EDITOR_PAGE_NAME = "text-editor-dialog";
-silex.ui.dialog.TextEditorDialog.TEXT_EDITOR_HTML_PAGE = "../../third-party-tools/ckeditor/ckeditor.html";
+silex.ui.dialog.TextEditorDialog.TEXT_EDITOR_HTML_PAGE = "../libs/ckeditor/ckeditor.html";
 silex.ui.list.LayersList.__meta__ = { obj : { tagNameFilter : ["ul"]}};
 silex.ui.list.LayersList.DEBUG_INFO = "LayersList class";
 silex.ui.list.PageList.DEBUG_INFO = "PageList class";

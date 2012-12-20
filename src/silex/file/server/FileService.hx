@@ -37,7 +37,7 @@ class FileService extends ServiceBase{
 	public function load(name:String):String {
 		var content:String="";
 		try{
-			content = File.getContent(name);
+			content = File.getContent(serverConfig.userFolder + name);
 		}
 		catch(e:Dynamic){
 			throw("load("+name+") error: "+e+" - current directory: "+Web.getCwd());
@@ -49,7 +49,7 @@ class FileService extends ServiceBase{
 	 */
 	public function duplicate(src:String, dst:String) {
 		try{
-			File.copy(src, dst);
+			File.copy(serverConfig.userFolder + src, serverConfig.userFolder + dst);
 		}
 		catch(e:Dynamic){
 			throw("duplicate("+src+", "+dst+") error: "+e);
@@ -60,7 +60,7 @@ class FileService extends ServiceBase{
 	 */
 	public function rename(src:String, dst:String) {
 		try{
-			FileSystem.rename(src, dst);
+			FileSystem.rename(serverConfig.userFolder + src, serverConfig.userFolder + dst);
 		}
 		catch(e:Dynamic){
 			throw("rename("+src+", "+dst+") error: "+e);
@@ -72,7 +72,7 @@ class FileService extends ServiceBase{
 	 */
 	public function trash(name:String) {
 		try{
-			FileSystem.deleteFile(name);
+			FileSystem.deleteFile(serverConfig.userFolder + name);
 		}
 		catch(e:Dynamic){
 			throw("trash("+name+") error: "+e);
@@ -84,7 +84,7 @@ class FileService extends ServiceBase{
 	 */
 	public function save(name:String, content:String) {
 		try{
-			File.saveContent(name, content);
+			File.saveContent(serverConfig.userFolder + name, content);
 		}
 		catch(e:Dynamic){
 			throw("save("+name+", "+content+") error: "+e);

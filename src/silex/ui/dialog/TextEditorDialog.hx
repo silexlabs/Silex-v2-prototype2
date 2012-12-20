@@ -9,7 +9,7 @@ import brix.util.DomTools;
 
 import brix.component.navigation.transition.TransitionData;
 
-import silex.file.FileModel;
+import silex.Silex;
 
 /**
  * This component displays a text editor and lets one edit html
@@ -32,7 +32,7 @@ class TextEditorDialog extends DialogBase
 	/**
 	 * The CKEditor main html page
 	 */
-	public static inline var TEXT_EDITOR_HTML_PAGE = "../../third-party-tools/ckeditor/ckeditor.html";
+	public static inline var TEXT_EDITOR_HTML_PAGE = "../libs/ckeditor/ckeditor.html";
 	/**
 	 * static callback method
 	 * Called after a click on the submit button
@@ -61,7 +61,7 @@ class TextEditorDialog extends DialogBase
 	 */
 	public function requestRedraw(transitionData:TransitionData) {
 //		contentLoaded(haxe.Http.requestUrl(TEXT_EDITOR_HTML_PAGE));
-		contentLoaded('<iframe name="kcfinder_iframe" src="'+TEXT_EDITOR_HTML_PAGE+'"'
+		contentLoaded('<iframe name="kcfinder_iframe" src="'+Silex.initialBaseUrl+TEXT_EDITOR_HTML_PAGE+'"'
 			+' frameborder="0" width="100%" marginwidth="0" marginheight="0" scrolling="no" />'
 		);
 	}

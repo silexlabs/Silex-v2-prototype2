@@ -38,18 +38,18 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** to do **
 
-* "files/" on the client side?!
 * remove "unload" icon + remove "delete" and add "manage files"
-* icon "edit" sur les composants (edit text ou url)
 * supprimer la fonction "fermer"?
+* icon "edit" sur les composants (edit text ou url)
 * ajout road map: 
   . designer friendly => brix components in "insert" menu + select styles for each comp
   . templates comme dans l'éditeur text
-* themes tab: rename "styles"
-* add "functions" tab
+* themes tab: rename "styles" + add "functions" tab?
 
 - display none
   => how to get it back??
+
+brix
 - IE and null in styles
 - replace getElementsByClassName by Application.getComponents
 

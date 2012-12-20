@@ -9,6 +9,7 @@ import brix.component.navigation.Page;
 import brix.util.DomTools;
 
 import silex.file.FileModel;
+import silex.Silex;
 
 /**
  * This component displays a file browser and lets one choose a file or manage them
@@ -137,7 +138,7 @@ class FileBrowserDialog extends DialogBase
         'frameborder="0" width="100%" height="100%" marginwidth="0" marginheight="0" scrolling="no" />';
 */
 		var element = DomTools.getSingleElement(rootElement, FB_CLASS_NAME, true);
-		element.innerHTML = '<iframe name="kcfinder_iframe" src="../libs/kcfinder/browse.php?type=files&dir='+intialPath+'" ' +
+		element.innerHTML = '<iframe name="kcfinder_iframe" src="'+Silex.initialBaseUrl+'../libs/kcfinder/browse.php?type=files&dir='+intialPath+'" ' +
         'frameborder="0" width="100%" height="100%" marginwidth="0" marginheight="0" scrolling="no" />';
 
 		// display the message in the element

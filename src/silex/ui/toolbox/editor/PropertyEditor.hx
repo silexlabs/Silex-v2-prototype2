@@ -66,14 +66,14 @@ class PropertyEditor extends UrlEditor
 			if (DomTools.hasClass(selectedItem, "Layer")){
 				var layer = LayerModel.getInstance().selectedItem;
 				var page = PageModel.getInstance().selectedItem;
-				var name:String = layer.rootElement.getAttribute("data-silex-name");
+				var name:String = layer.rootElement.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
 				if (name == null) name = "";
 				var confirm = Lib.window.confirm("I am about to delete the container "+name+". Are you sure?");
 				if (confirm == true)
 					LayerModel.getInstance().removeLayer(layer, page.name);
 			}
 			else{
-				var name:String = selectedItem.getAttribute("data-silex-name");
+				var name:String = selectedItem.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
 				if (name == null) name = "";
 				var confirm = Lib.window.confirm("I am about to delete the component "+name+". Are you sure?");
 				if (confirm == true)
@@ -169,7 +169,7 @@ class PropertyEditor extends UrlEditor
 
 		var propertyModel = PropertyModel.getInstance();
 
-		var value = propertyModel.getAttribute(element, "data-silex-name");
+		var value = propertyModel.getAttribute(element, LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
 		if (value != null) setInputValue("name-property", value);
 
 		var value = propertyModel.getAttribute(element, "title");
@@ -221,9 +221,9 @@ class PropertyEditor extends UrlEditor
 
 		var value = getInputValue("name-property");
 		if (value != null && value != "")
-			propertyModel.setAttribute(selectedItem, "data-silex-name", getInputValue("name-property"));
+			propertyModel.setAttribute(selectedItem, LayerModel.LAYER_NAME_ATTRIBUTE_NAME, getInputValue("name-property"));
 		else
-			propertyModel.setAttribute(selectedItem, "data-silex-name", null);
+			propertyModel.setAttribute(selectedItem, LayerModel.LAYER_NAME_ATTRIBUTE_NAME, null);
 
 		var value = getInputValue("title-property");
 		if (value != null && value != "")

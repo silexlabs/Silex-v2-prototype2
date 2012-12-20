@@ -458,12 +458,20 @@ class brix_util_DomTools {
 		} else {
 			$node = cocktail_Lib::get_document()->createElement("base");
 			$node->setAttribute("href", $href);
-			$node->setAttribute("target", "_self");
 			if($head->childNodes->length > 0) {
 				$head->insertBefore($node, $head->childNodes[0]);
 			} else {
 				$head->appendChild($node);
 			}
+		}
+		$GLOBALS['%s']->pop();
+	}
+	static function removeBaseTag() {
+		$GLOBALS['%s']->push("brix.util.DomTools::removeBaseTag");
+		$»spos = $GLOBALS['%s']->length;
+		$baseNodes = cocktail_Lib::get_document()->getElementsByTagName("base");
+		while($baseNodes->length > 0) {
+			_hx_array_get($baseNodes, 0)->parentNode->removeChild($baseNodes[0]);
 		}
 		$GLOBALS['%s']->pop();
 	}
