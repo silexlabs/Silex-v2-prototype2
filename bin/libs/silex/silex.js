@@ -1154,7 +1154,6 @@ brix.component.navigation.Layer = function(rootElement,brixId) {
 	this.childrenArray = new Array();
 	this.setStatus(brix.component.navigation.LayerStatus.notInit);
 	this.styleAttrDisplay = rootElement.style.display;
-	haxe.Log.trace("Layer initial display=" + this.styleAttrDisplay,{ fileName : "Layer.hx", lineNumber : 96, className : "brix.component.navigation.Layer", methodName : "new"});
 };
 $hxClasses["brix.component.navigation.Layer"] = brix.component.navigation.Layer;
 brix.component.navigation.Layer.__name__ = ["brix","component","navigation","Layer"];
@@ -1175,7 +1174,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 				element.pause();
 				element.currentTime = 0;
 			} catch( e ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 578, className : "brix.component.navigation.Layer", methodName : "cleanupVideoElements"});
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 577, className : "brix.component.navigation.Layer", methodName : "cleanupVideoElements"});
 			}
 		}
 	}
@@ -1188,7 +1187,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 				element.pause();
 				element.currentTime = 0;
 			} catch( e ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 556, className : "brix.component.navigation.Layer", methodName : "cleanupAudioElements"});
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 555, className : "brix.component.navigation.Layer", methodName : "cleanupAudioElements"});
 			}
 		}
 	}
@@ -1204,7 +1203,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 				}
 				element.muted = brix.component.sound.SoundOn.isMuted;
 			} catch( e ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 534, className : "brix.component.navigation.Layer", methodName : "setupVideoElements"});
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 533, className : "brix.component.navigation.Layer", methodName : "setupVideoElements"});
 			}
 		}
 	}
@@ -1220,17 +1219,17 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 				}
 				element.muted = brix.component.sound.SoundOn.isMuted;
 			} catch( e ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 509, className : "brix.component.navigation.Layer", methodName : "setupAudioElements"});
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 508, className : "brix.component.navigation.Layer", methodName : "setupAudioElements"});
 			}
 		}
 	}
 	,doHide: function(transitionData,transitionObserver,preventTransitions,e) {
 		if(e != null && e.target != this.rootElement) {
-			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 438, className : "brix.component.navigation.Layer", methodName : "doHide"});
+			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 437, className : "brix.component.navigation.Layer", methodName : "doHide"});
 			return;
 		}
 		if(preventTransitions == false && this.doHideCallback == null) {
-			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 443, className : "brix.component.navigation.Layer", methodName : "doHide"});
+			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 442, className : "brix.component.navigation.Layer", methodName : "doHide"});
 			return;
 		}
 		if(preventTransitions == false) {
@@ -1243,7 +1242,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 			event.initCustomEvent("onLayerHideStop",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
 			this.rootElement.dispatchEvent(event);
 		} catch( e1 ) {
-			haxe.Log.trace("Error: could not dispatch event " + Std.string(e1),{ fileName : "Layer.hx", lineNumber : 468, className : "brix.component.navigation.Layer", methodName : "doHide"});
+			haxe.Log.trace("Error: could not dispatch event " + Std.string(e1),{ fileName : "Layer.hx", lineNumber : 467, className : "brix.component.navigation.Layer", methodName : "doHide"});
 		}
 		if(transitionObserver != null) transitionObserver.removeTransition(this);
 		while(this.rootElement.childNodes.length > 0) {
@@ -1256,11 +1255,11 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 	,hide: function(transitionData,transitionObserver,preventTransitions) {
 		if(preventTransitions == null) preventTransitions = false;
 		if(this.status == brix.component.navigation.LayerStatus.hideTransition) {
-			haxe.Log.trace("Warning: hide break previous transition hide",{ fileName : "Layer.hx", lineNumber : 374, className : "brix.component.navigation.Layer", methodName : "hide"});
+			haxe.Log.trace("Warning: hide break previous transition hide",{ fileName : "Layer.hx", lineNumber : 373, className : "brix.component.navigation.Layer", methodName : "hide"});
 			this.doHideCallback(null);
 			this.removeTransitionEvent(this.doHideCallback);
 		} else if(this.status == brix.component.navigation.LayerStatus.showTransition) {
-			haxe.Log.trace("Warning: hide break previous transition show",{ fileName : "Layer.hx", lineNumber : 381, className : "brix.component.navigation.Layer", methodName : "hide"});
+			haxe.Log.trace("Warning: hide break previous transition show",{ fileName : "Layer.hx", lineNumber : 380, className : "brix.component.navigation.Layer", methodName : "hide"});
 			this.doShowCallback(null);
 			this.removeTransitionEvent(this.doShowCallback);
 		}
@@ -1272,7 +1271,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 			event.initCustomEvent("onLayerHideStart",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
 			this.rootElement.dispatchEvent(event);
 		} catch( e ) {
-			haxe.Log.trace("Error: could not dispatch event " + Std.string(e),{ fileName : "Layer.hx", lineNumber : 410, className : "brix.component.navigation.Layer", methodName : "hide"});
+			haxe.Log.trace("Error: could not dispatch event " + Std.string(e),{ fileName : "Layer.hx", lineNumber : 409, className : "brix.component.navigation.Layer", methodName : "hide"});
 		}
 		var audioNodes = this.rootElement.getElementsByTagName("audio");
 		this.cleanupAudioElements(audioNodes);
@@ -1289,11 +1288,11 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 	}
 	,doShow: function(transitionData,transitionObserver,preventTransitions,e) {
 		if(e != null && e.target != this.rootElement) {
-			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 322, className : "brix.component.navigation.Layer", methodName : "doShow"});
+			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 321, className : "brix.component.navigation.Layer", methodName : "doShow"});
 			return;
 		}
 		if(preventTransitions == false && this.doShowCallback == null) {
-			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 326, className : "brix.component.navigation.Layer", methodName : "doShow"});
+			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 325, className : "brix.component.navigation.Layer", methodName : "doShow"});
 			return;
 		}
 		if(preventTransitions == false) this.endTransition(brix.component.navigation.transition.TransitionType.show,transitionData,this.doShowCallback);
@@ -1308,18 +1307,18 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 			event.initCustomEvent("onLayerShowStop",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
 			this.rootElement.dispatchEvent(event);
 		} catch( e1 ) {
-			haxe.Log.trace("Error: could not dispatch event " + Std.string(e1),{ fileName : "Layer.hx", lineNumber : 356, className : "brix.component.navigation.Layer", methodName : "doShow"});
+			haxe.Log.trace("Error: could not dispatch event " + Std.string(e1),{ fileName : "Layer.hx", lineNumber : 355, className : "brix.component.navigation.Layer", methodName : "doShow"});
 		}
 		if(transitionObserver != null) transitionObserver.removeTransition(this);
 	}
 	,show: function(transitionData,transitionObserver,preventTransitions) {
 		if(preventTransitions == null) preventTransitions = false;
 		if(this.status == brix.component.navigation.LayerStatus.hideTransition) {
-			haxe.Log.trace("Warning: show break previous transition hide",{ fileName : "Layer.hx", lineNumber : 255, className : "brix.component.navigation.Layer", methodName : "show"});
+			haxe.Log.trace("Warning: show break previous transition hide",{ fileName : "Layer.hx", lineNumber : 254, className : "brix.component.navigation.Layer", methodName : "show"});
 			this.doHideCallback(null);
 			this.removeTransitionEvent(this.doHideCallback);
 		} else if(this.status == brix.component.navigation.LayerStatus.showTransition) {
-			haxe.Log.trace("Warning: show break previous transition show",{ fileName : "Layer.hx", lineNumber : 262, className : "brix.component.navigation.Layer", methodName : "show"});
+			haxe.Log.trace("Warning: show break previous transition show",{ fileName : "Layer.hx", lineNumber : 261, className : "brix.component.navigation.Layer", methodName : "show"});
 			this.doShowCallback(null);
 			this.removeTransitionEvent(this.doShowCallback);
 		}
@@ -1335,7 +1334,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 			event.initCustomEvent("onLayerShowStart",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
 			this.rootElement.dispatchEvent(event);
 		} catch( e ) {
-			haxe.Log.trace("Error: could not dispatch event " + Std.string(e),{ fileName : "Layer.hx", lineNumber : 299, className : "brix.component.navigation.Layer", methodName : "show"});
+			haxe.Log.trace("Error: could not dispatch event " + Std.string(e),{ fileName : "Layer.hx", lineNumber : 298, className : "brix.component.navigation.Layer", methodName : "show"});
 		}
 		if(preventTransitions == false) {
 			this.doShowCallback = (function(f,a1,a2,a3) {
@@ -1408,7 +1407,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 	}
 	,checkForNeverEndingTransition: function() {
 		if(this.status == brix.component.navigation.LayerStatus.showTransition || this.status == brix.component.navigation.LayerStatus.hideTransition) {
-			haxe.Log.trace("Warning, transition is not over. This may be a layer with data-show-start but with a style which does not has CSS transition. Root node with css class: " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 131, className : "brix.component.navigation.Layer", methodName : "checkForNeverEndingTransition"});
+			haxe.Log.trace("Warning, transition is not over. This may be a layer with data-show-start but with a style which does not has CSS transition. Root node with css class: " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 130, className : "brix.component.navigation.Layer", methodName : "checkForNeverEndingTransition"});
 			haxe.Timer.delay($bind(this,this.checkForNeverEndingTransition),2500);
 		}
 	}

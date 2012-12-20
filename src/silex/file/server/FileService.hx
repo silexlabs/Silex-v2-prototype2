@@ -3,6 +3,7 @@ package silex.file.server;
 import silex.ServiceBase;
 
 import php.Web;
+import php.Lib;
 
 import sys.io.File;
 import sys.FileSystem;

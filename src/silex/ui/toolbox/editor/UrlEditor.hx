@@ -4,14 +4,12 @@ import js.Lib;
 import js.Dom;
 
 import silex.property.PropertyModel;
-import silex.ui.dialog.FileBrowserDialog;
+import silex.file.FileBrowser;
 import brix.util.DomTools;
 
 /**
  * this editor handles single URL and multiple URL
- * This class handles the link with the FileBrowserDialog:
- * - opens the page file-browser-dialog when a button with class name select-file-button is clicked
- * - and calls this.selectFile to attach an event to retrieve the selected file
+ * This class handles the link with the FileBrowser
  * Editors are Brix components, in charge of editing the CSS types, 
  * This component ihandles boolean CSS properties. 
  * @see 	silex.ui.toolbox.editor.EditorBase
@@ -121,24 +119,24 @@ class UrlEditor extends EditorBase
 			e.preventDefault();
 			var inputControlClassName = e.target.getAttribute("data-fb-target");
 			var cbk = callback(onMultipleFilesChosen, inputControlClassName);
-			FileBrowserDialog.selectMultipleFiles(cbk, brixInstanceId, null, "files/assets/");
+			FileBrowser.selectMultipleFiles(cbk, brixInstanceId, null, "files/assets/");
 		}
 		else if (DomTools.hasClass(e.target, OPEN_FILE_BROWSER_CLASS_NAME)){
 			e.preventDefault();
 			var inputControlClassName = e.target.getAttribute("data-fb-target");
 			var cbk = callback(onFileChosen, inputControlClassName);
-			FileBrowserDialog.selectFile(cbk, brixInstanceId, null, "files/assets/");
+			FileBrowser.selectFile(cbk, brixInstanceId, null, "files/assets/");
 		}
 	}
 	////////////////////////////////////////////
 	// File Browser 
 	////////////////////////////////////////////
 	/**
-	 * callback for the FileBrowserDialog
+	 * callback for the FileBrowser
 	 */
 	private function onFileChosen(inputControlClassName:String, fileUrl:String){
 		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
-		cast(inputElement).value = FileBrowserDialog.getRelativeURLFromFileBrowser(fileUrl);
+		cast(inputElement).value = FileBrowser.getRelativeURLFromFileBrowser(fileUrl);
 
 		beforeApply();
 		try{
@@ -151,7 +149,7 @@ class UrlEditor extends EditorBase
 		DomTools.doLater(refreshSelection);
 	}
 	/**
-	 * callback for the FileBrowserDialog
+	 * callback for the FileBrowser
 	 */
 	private function onMultipleFilesChosen(inputControlClassName:String, files:Array<String>){
 		var inputElement = DomTools.getSingleElement(rootElement, inputControlClassName, true);
@@ -162,7 +160,7 @@ class UrlEditor extends EditorBase
 
 		// convert urls to relative
 		for (sourceUrl in files){
-			value += FileBrowserDialog.getRelativeURLFromFileBrowser(sourceUrl) + "\n";
+			value += FileBrowser.getRelativeURLFromFileBrowser(sourceUrl) + "\n";
 		}
 		// set the value in the text area
 		cast(inputElement).value = value;

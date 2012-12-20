@@ -16,7 +16,6 @@ import brix.component.navigation.Page;
 import silex.interpreter.Interpreter;
 import silex.file.FileModel;
 import silex.page.PageModel;
-import silex.ui.dialog.FileBrowserDialog;
 
 import haxe.remoting.HttpAsyncConnection;
 

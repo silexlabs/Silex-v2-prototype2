@@ -7,6 +7,7 @@ class silex_file_server_FileService extends silex_ServiceBase {
 		$»spos = $GLOBALS['%s']->length;
 		parent::__construct(silex_file_server_FileService::$SERVICE_NAME);
 		$this->serverConfig = $serverConfig;
+		require_once("libs/dropbox/functions.php");
 		$GLOBALS['%s']->pop();
 	}}
 	public function save($name, $content) {

@@ -9,7 +9,6 @@ class brix_component_navigation_Layer extends brix_component_ui_DisplayObject {
 		$this->childrenArray = new _hx_array(array());
 		$this->setStatus(brix_component_navigation_LayerStatus::$notInit);
 		$this->styleAttrDisplay = $rootElement->style->get_display();
-		null;
 		$GLOBALS['%s']->pop();
 	}}
 	public function cleanupVideoElements($nodeList) {
@@ -478,7 +477,7 @@ function brix_component_navigation_Layer_2(&$裨his, &$onComplete, &$sumOfTransit
 function brix_component_navigation_Layer_3(&$a1, &$a2, &$a3, &$audioNodes, &$e, &$f, &$preventTransitions, &$transitionData, &$transitionObserver, &$videoNodes, $e2) {
 	$製pos = $GLOBALS['%s']->length;
 	{
-		$GLOBALS['%s']->push("brix.component.navigation.Layer::getLayerNodes@421");
+		$GLOBALS['%s']->push("brix.component.navigation.Layer::getLayerNodes@420");
 		$製pos2 = $GLOBALS['%s']->length;
 		{
 			$裨mp = call_user_func_array($f, array($a1, $a2, $a3, $e2));
@@ -492,7 +491,7 @@ function brix_component_navigation_Layer_3(&$a1, &$a2, &$a3, &$audioNodes, &$e, 
 function brix_component_navigation_Layer_4(&$a1, &$a2, &$a3, &$e, &$f, &$preventTransitions, &$transitionData, &$transitionObserver, $e2) {
 	$製pos = $GLOBALS['%s']->length;
 	{
-		$GLOBALS['%s']->push("brix.component.navigation.Layer::getLayerNodes@305");
+		$GLOBALS['%s']->push("brix.component.navigation.Layer::getLayerNodes@304");
 		$製pos2 = $GLOBALS['%s']->length;
 		{
 			$裨mp = call_user_func_array($f, array($a1, $a2, $a3, $e2));
@@ -506,7 +505,7 @@ function brix_component_navigation_Layer_4(&$a1, &$a2, &$a3, &$e, &$f, &$prevent
 function brix_component_navigation_Layer_5(&$a1, &$a2, &$f, &$onComplete, &$sumOfTransitions, &$transitionData, &$transitionData2, &$type) {
 	$製pos = $GLOBALS['%s']->length;
 	{
-		$GLOBALS['%s']->push("brix.component.navigation.Layer::getLayerNodes@173");
+		$GLOBALS['%s']->push("brix.component.navigation.Layer::getLayerNodes@172");
 		$製pos2 = $GLOBALS['%s']->length;
 		{
 			$裨mp = call_user_func_array($f, array($a1, $a2));

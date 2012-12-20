@@ -37,7 +37,15 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 
 ** to do **
+* no possible :( * start in origin=App... https://www.dropbox.com/chooser?origin=http%3A%2F%2Flocalhost%3A8888&app_key=hxo7uimig22bi2o&link_type=direct&trigger=js
+* multiple files selection
+* message "can only open files from Applications/Silex, live web creation"
+* 1st install => takes time
+* dropbox config from silex config file
+* Applications/Silex, live web creation/ from silex config file
+* check db setup?
 
+* insert menu just after edit
 * remove "unload" icon + remove "delete" and add "manage files"
 * supprimer la fonction "fermer"?
 * icon "edit" sur les composants (edit text ou url)

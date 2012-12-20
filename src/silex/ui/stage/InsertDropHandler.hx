@@ -13,7 +13,7 @@ import silex.layer.LayerModel;
 import silex.file.FileModel;
 import silex.component.ComponentModel;
 import silex.property.PropertyModel;
-import silex.ui.dialog.FileBrowserDialog;
+import silex.file.FileBrowser;
 
 /**
  * Selection markers are selection rectangles put over the selection, 
@@ -151,10 +151,10 @@ class InsertDropHandler extends DropHandlerBase{
 
 		// open the browse library dialog
 		var cbk = callback(onMultipleFilesChosen, element);
-		FileBrowserDialog.selectMultipleFiles(cbk, brixInstanceId, null, "files/assets/");
+		FileBrowser.selectMultipleFiles(cbk, brixInstanceId, null, "files/assets/");
 	}
 	/**
-	 * callback for the FileBrowserDialog
+	 * callback for the FileBrowser
 	 */
 	private function onMultipleFilesChosen(element:HtmlDom, files:Array<String>){
 		trace("onMultipleFilesChosen "+files);
@@ -165,10 +165,10 @@ class InsertDropHandler extends DropHandlerBase{
 
 		for (sourceUrl in files){
 			var sourceElement = Lib.document.createElement("source");
-			cast(sourceElement).src = FileBrowserDialog.getRelativeURLFromFileBrowser(sourceUrl);
+			cast(sourceElement).src = FileBrowser.getRelativeURLFromFileBrowser(sourceUrl);
 			modelHtmlDom.appendChild(sourceElement);
 			var sourceElement = Lib.document.createElement("source");
-			cast(sourceElement).src = FileBrowserDialog.getRelativeURLFromFileBrowser(sourceUrl);
+			cast(sourceElement).src = FileBrowser.getRelativeURLFromFileBrowser(sourceUrl);
 			element.appendChild(sourceElement);
 		}
 	}
@@ -181,14 +181,14 @@ class InsertDropHandler extends DropHandlerBase{
 
 		// open the browse library dialog
 		var cbk = callback(onFileChosen, element);
-		FileBrowserDialog.selectFile(cbk, brixInstanceId, null, "files/assets/");
+		FileBrowser.selectFile(cbk, brixInstanceId, null, "files/assets/");
 	}
 	/**
-	 * callback for the FileBrowserDialog
+	 * callback for the FileBrowser
 	 */
 	private function onFileChosen(element:HtmlDom, fileUrl:String){
 		trace("onFileChosen "+fileUrl);
-		PropertyModel.getInstance().setAttribute(element, "src", FileBrowserDialog.getRelativeURLFromFileBrowser(fileUrl));
+		PropertyModel.getInstance().setAttribute(element, "src", FileBrowser.getRelativeURLFromFileBrowser(fileUrl));
 	}
 	/**
 	 * add an element in the layer

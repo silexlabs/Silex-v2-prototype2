@@ -50,6 +50,11 @@ class FileModel extends ModelBase<HtmlDom>{
 	 */ 
 	public static inline var DEBUG_INFO = "FileModel class";
 	/**
+	 * Prefix for all files to be loaded through dropbox
+	 * url rewriting with htaccess should conevrt this into ../libs/dropbox/getFile.php?name=
+	 */ 
+	public static inline var DROPBOX_GET_FILE = "../libs/dropbox/";
+	/**
 	 * CSS class name for the root group of the file being edited
 	 * It is applyed when the file is loaded and it is not saved in the file
 	 */ 
@@ -207,13 +212,27 @@ class FileModel extends ModelBase<HtmlDom>{
 	 */
 	public function changeBaseTag(name:String){
 		var idx = currentData.name.lastIndexOf("/");
+
+/*if silexDropboxMode
 		if (idx>0){
+			// keep only the folders
+			name = name.substr(0, idx+1);
+		}
+		else{
+			// no folder
+			name="";
+		}
+		trace("setBaseTag "+Silex.initialBaseUrl + DROPBOX_GET_FILE + name);
+		DomTools.setBaseTag(Silex.initialBaseUrl + DROPBOX_GET_FILE + name);
+else
+*/		if (idx>0){
 			trace("setBaseTag "+name.substr(0, idx+1));
 			DomTools.setBaseTag(name.substr(0, idx+1));
 		}
 		else{
 			DomTools.removeBaseTag();
 		}
+//end
 	}
 	public function load(name:String){
 		trace("load "+name);
@@ -424,10 +443,10 @@ class FileModel extends ModelBase<HtmlDom>{
 	 * An error occured
 	 */
 	private function onError(msg:String):Void{
-		// todo: display notification
+		// display notification
 		dispatchEvent(createEvent(ON_ERROR), debugInfo);
 		NotificationManager.notifyError("Error", "An error occured while loading the file \""+currentData.name+"\" ("+msg+")", currentData.viewHtmlDom);
-		throw("An error occured while loading files list ("+msg+")");
+		throw("An error occured while loading file ("+msg+")");
 	}
 	////////////////////////////////////////////////
 	// Save
@@ -578,8 +597,8 @@ class FileModel extends ModelBase<HtmlDom>{
 	 */
 	private function onSaveError(msg:String):Void{
 		dispatchEvent(createEvent(ON_SAVE_ERROR), debugInfo);
-		throw("An error occured while saving the file ("+msg+")");
 		NotificationManager.notifyError("Error", "An error occured while saving "+currentData.name+" ("+msg+")", currentData.viewHtmlDom);
+		throw("An error occured while saving the file ("+msg+")");
 	}
 
 	/**

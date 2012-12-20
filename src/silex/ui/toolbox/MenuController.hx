@@ -9,8 +9,8 @@ import brix.util.DomTools;
 
 import silex.interpreter.Interpreter;
 import silex.file.FileModel;
+import silex.file.FileBrowser;
 import silex.page.PageModel;
-import silex.ui.dialog.FileBrowserDialog;
 
 /**
  * This component listen to the menu events and start the desired actions. 
@@ -42,14 +42,13 @@ class MenuController extends DisplayObject
 	 * open the "open file" popup
 	 */
 	static public function openFile(){
-		FileBrowserDialog.selectFile(onFileChosen, menuBrixId);
-
+		FileBrowser.selectFile(onFileChosen, menuBrixId);
 	}
 	/**
-	 * callback for the FileBrowserDialog
+	 * callback for the FileBrowser
 	 */
 	static private function onFileChosen(fileUrl:String){
-		var file = FileBrowserDialog.getRelativeURLFromFileBrowser(fileUrl);
+		var file = FileBrowser.getRelativeURLFromFileBrowser(fileUrl);
 		FileModel.getInstance().load(file);
 	}
 	/**
@@ -117,8 +116,8 @@ class MenuController extends DisplayObject
 	 * open the file manager
 	 */
 	static public function openFileBrowser(){
-		FileBrowserDialog.message = "Manage your files and click \"close\"";
-		Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, menuBrixId);
+		FileBrowser.message = "Manage your files and click \"close\"";
+		FileBrowser.selectFile(null, menuBrixId);
 	}
 	/**
 	 * Constructor

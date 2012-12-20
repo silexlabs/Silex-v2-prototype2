@@ -18,11 +18,11 @@
 -D stopOnError
 
 -D silexClientSide
+-D silexDropboxMode
 #-D silexDebug
 -D redirectTraces
 
 --next
-
 
 #########
 # player JS
@@ -46,6 +46,7 @@
 -D silexClientSide
 -D silexDebug
 -D redirectTraces
+
 
 --next
 
@@ -71,6 +72,6 @@
 -D stopOnError
 
 -D silexServerSide
-#-D silexDropboxMode
+-D silexDropboxMode
 # only in js : -D silexDebug
 

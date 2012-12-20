@@ -19,7 +19,7 @@
 		<script data-brix-use="brix.component.list.XmlList"></script>
 
 		<script data-brix-use="silex.ui.dialog.AuthDialog"></script>
-		<script data-brix-use="silex.ui.dialog.FileBrowserDialog"></script>
+		<script data-brix-use="silex.ui.dialog.KCFinderDialog"></script>
 		<script data-brix-use="silex.ui.dialog.TextEditorDialog"></script>
 
 		<script data-brix-use="silex.ui.list.PageList"></script>
@@ -61,7 +61,11 @@
 		<meta name="initialPageName" content="start-page"></meta>
 		<meta name="useDeeplink" content="false" />
 		<link href="styles/admin.css" rel="stylesheet"></link>
+		
+		<!-- scripts -->
 		<script type="text/javascript" src="scripts/silex-builder.js" />
+		<script type="text/javascript" src="https://www.dropbox.com/static/api/1/dropbox.js" id="dropboxjs" data-app-key="hxo7uimig22bi2o"></script>
+		
 		<script type="text/hscript">
 			//Lib.alert('test!');
 			//FileModel.getInstance().load('files/test.html');
@@ -270,7 +274,7 @@
 				</DIV>
 				<!-- FileBrowser Dialog -->
 				<A class="Page" name="file-browser-dialog" ></A>
-				<form class="Layer file-browser-dialog dialog-foreground FileBrowserDialog" 
+				<form class="Layer file-browser-dialog dialog-foreground KCFinderDialog" 
 					data-dialog-name="file-browser-dialog">
 					<DIV class="container-file-browser">
 						<header>
