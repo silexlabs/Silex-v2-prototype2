@@ -1,3 +1,12 @@
+UNUSED
+REPLACED BY FILE BROWSER
+
+
+
+
+
+
+
 package silex.ui.list;
 
 import js.Lib;
@@ -6,7 +15,7 @@ import js.Dom;
 import brix.component.list.List;
 import brix.util.DomTools;
 
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 import silex.publication.PublicationData;
 
 /**
@@ -14,7 +23,7 @@ import silex.publication.PublicationData;
  * takes objects in its data provider, with the name of the publication, and its config
  * takes a template in the HTML and duplicate it for each element
  * listen to the model events to get the PublicationConfigData
- * to refresh this list, simply call PublicationModel.getInstance().listPublications()
+ * to refresh this list, simply call FileModel.getInstance().listPublications()
  * @example 	<ul class="PublicationList"><li>::name::</li></ul> displays the name of the items
  */
 @tagNameFilter("ul")
@@ -39,7 +48,7 @@ class PublicationList extends List<PublicationListItem>
 		super(rootElement, BrixId);
 
 		// store a reference to the model
-		publicationModel = PublicationModel.getInstance();
+		publicationModel = FileModel.getInstance();
 
 		// update the data when the publication data changed
 		publicationModel.addEventListener(PublicationModel.ON_LIST, onListResult, DEBUG_INFO);
@@ -51,7 +60,7 @@ class PublicationList extends List<PublicationListItem>
 	 */
 	override public function reloadData(){
 		// reload data, this will trigger a  refresh on the list when onListData is dispatched by the model
-		PublicationModel.getInstance().loadList();
+		FileModel.getInstance().loadList();
 
 		// empty the list
 		dataProvider = [];

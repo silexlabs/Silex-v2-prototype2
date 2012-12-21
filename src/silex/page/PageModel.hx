@@ -5,7 +5,7 @@ import js.Dom;
 
 import silex.interpreter.Interpreter;
 import silex.ModelBase;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 import silex.layer.LayerModel;
 import silex.component.ComponentModel;
 import silex.property.PropertyModel;
@@ -18,7 +18,7 @@ import brix.util.DomTools;
 /**
  * Manipulation of pages, remove, add, etc. 
  * This class is a singleton and it can be used on the client side (may be used on the server side with cocktail).
- * The models in Silex are used only when editing, not when viewing a publication.
+ * The models in Silex are used only when editing, not when viewing a file.
  */
 class PageModel extends ModelBase<Page>{
 	////////////////////////////////////////////////
@@ -84,7 +84,7 @@ class PageModel extends ModelBase<Page>{
 		return super.setSelectedItem(item);
 	}
 	/**
-	 * add a page to the view and model of the publication
+	 * add a page to the view and model of the file
 	 * dispatch the change event
 	 */
 	public function addPage(name:String = ""){
@@ -92,11 +92,11 @@ class PageModel extends ModelBase<Page>{
 		if (name == "") name = getNewName();
 		var className = cleanupForPageName(name);
 		
-		// get the publication model
-		var publicationModel = PublicationModel.getInstance();
+		// get the file model
+		var fileModel = FileModel.getInstance();
 		// get the view and model DOM
-		var viewHtmlDom = publicationModel.viewHtmlDom;
-		var modelHtmlDom = publicationModel.modelHtmlDom;
+		var viewHtmlDom = fileModel.currentData.viewHtmlDom;
+		var modelHtmlDom = fileModel.currentData.modelHtmlDom;
 
 		// create the node and the associated instance
 		var newNode = Lib.document.createElement("a");
@@ -109,24 +109,24 @@ class PageModel extends ModelBase<Page>{
 		viewHtmlDom.appendChild(newNode);
 
 		// add the needed data to edit the component
-		publicationModel.prepareForEdit(newNode);
+		fileModel.prepareForEdit(newNode);
 
 		// create the Page instance
 /**/
-		var newPage:Page = new Page(newNode, publicationModel.application.id);
-		//publicationModel.application.addAssociatedComponent(newNode, newPage);
+		var newPage:Page = new Page(newNode, fileModel.application.id);
+		//fileModel.application.addAssociatedComponent(newNode, newPage);
 		newPage.init();
 /*
-		publicationModel.application.initDom(newNode);
-		publicationModel.application.initComponents();
-		var newPage:Page = publicationModel.application.getAssociatedComponents(newNode, Page).first();
+		fileModel.application.initDom(newNode);
+		fileModel.application.initComponents();
+		var newPage:Page = fileModel.application.getAssociatedComponents(newNode, Page).first();
 /**/
 		// create an empty new layer
 		LayerModel.getInstance().addRequiredMasters(className, true);
 
 		// add a link in the nav bar
-		var navBarNode = DomTools.getSingleElement(publicationModel.viewHtmlDom, LayerModel.NAV_LAYER_NAME, true);
-		var layerInstance = publicationModel.application.getAssociatedComponents(navBarNode, Layer).first();
+		var navBarNode = DomTools.getSingleElement(fileModel.currentData.viewHtmlDom, LayerModel.NAV_LAYER_NAME, true);
+		var layerInstance = fileModel.application.getAssociatedComponents(navBarNode, Layer).first();
 		var textElement = ComponentModel.getInstance().addComponent("div", layerInstance, navBarNode.childNodes.length);
 		PropertyModel.getInstance().setAttribute(textElement, "title", "Link to "+name);
 		PropertyModel.getInstance().setProperty(textElement, "innerHTML", name);
@@ -146,19 +146,19 @@ class PageModel extends ModelBase<Page>{
 		return "New Page Name "+Math.round(Math.random()*999999);
 	}
 	/**
-	 * remove a page from the view and model of the publication
+	 * remove a page from the view and model of the file
 	 * remove the page from all layers css class name
 	 * dispatch the change event
 	 */
 	public function removePage(page:Page){
-		// get the publication model
-		var publicationModel = PublicationModel.getInstance();
+		// get the file model
+		var fileModel = FileModel.getInstance();
 		// get the view and model DOM
-		var viewHtmlDom = publicationModel.viewHtmlDom;
-		var modelHtmlDom = publicationModel.modelHtmlDom;
+		var viewHtmlDom = fileModel.currentData.viewHtmlDom;
+		var modelHtmlDom = fileModel.currentData.modelHtmlDom;
 
 		// remove the link from the nav bar
-		var navBarNode = DomTools.getSingleElement(publicationModel.viewHtmlDom, LayerModel.NAV_LAYER_NAME, true);
+		var navBarNode = DomTools.getSingleElement(fileModel.currentData.viewHtmlDom, LayerModel.NAV_LAYER_NAME, true);
 		var linkNodes = navBarNode.getElementsByClassName("SilexLink");
 		// browse link nodes and remove the one which links to the page
 		for (nodeIdx in 0...linkNodes.length){
@@ -173,19 +173,19 @@ class PageModel extends ModelBase<Page>{
 		}
 
 		// remove the page from all layers which has the class name as css rule
-		var nodes = Layer.getLayerNodes(page.name, publicationModel.application.id, viewHtmlDom);
+		var nodes = Layer.getLayerNodes(page.name, fileModel.application.id, viewHtmlDom);
 
 		// browse the layers
 		for (idxLayerNode in 0...nodes.length){
 			// always take the 1st element since the HtmlList is updated, and the nodes are removed automatically
 			var layerNode = nodes[0];
-			var layerInstance:Layer = publicationModel.application.getAssociatedComponents(layerNode, Layer).first();
+			var layerInstance:Layer = fileModel.application.getAssociatedComponents(layerNode, Layer).first();
 			LayerModel.getInstance().removeLayer(layerInstance, page.name);
 		}
 
 		// retrieve the node in the model, which is associated to the page instance
 		// get all pages, i.e. all element with class name "page"
-		var pages:HtmlCollection<HtmlDom> = Page.getPageNodes(publicationModel.application.id, modelHtmlDom);
+		var pages:HtmlCollection<HtmlDom> = Page.getPageNodes(fileModel.application.id, modelHtmlDom);
 		// browse all pages
 		for (pageIdx in 0...pages.length){
 			// check if it has the desired name
@@ -197,7 +197,7 @@ class PageModel extends ModelBase<Page>{
 		}
 
 		// reset components associated wit hthis element
-		publicationModel.application.removeAllAssociatedComponent(page.rootElement);
+		fileModel.application.removeAllAssociatedComponent(page.rootElement);
 		// remove element from dom
 		page.rootElement.parentNode.removeChild(page.rootElement);
 		// todo: maybe free the domelement, not possible to write page.rootElement = null;
@@ -208,30 +208,30 @@ class PageModel extends ModelBase<Page>{
 			selectedItem = null;
 
 		// open the default page
-		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, publicationModel.headHtmlDom);
-		Page.getPageByName(initialPageName, publicationModel.application.id, viewHtmlDom).open(null, null, true, true);
+		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, fileModel.currentData.headHtmlDom);
+		Page.getPageByName(initialPageName, fileModel.application.id, viewHtmlDom).open(null, null, true, true);
 		// todo: handle the case where we are removing the default page
 
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE), DEBUG_INFO);
 	}
 	/**
-	 * rename a page from the view and model of the publication
+	 * rename a page from the view and model of the file
 	 * change the page name from all layers css class name
 	 * dispatch the change event
 	 */
 	public function renamePage(page:Page, newName:String){
-		// get the publication model
-		var publicationModel = PublicationModel.getInstance();
+		// get the file model
+		var fileModel = FileModel.getInstance();
 		
 		// get the view and model DOM
-		var viewHtmlDom = publicationModel.viewHtmlDom;
-		var modelHtmlDom = publicationModel.modelHtmlDom;
-		var headHtmlDom = publicationModel.headHtmlDom;
+		var viewHtmlDom = fileModel.currentData.viewHtmlDom;
+		var modelHtmlDom = fileModel.currentData.modelHtmlDom;
+		var headHtmlDom = fileModel.currentData.headHtmlDom;
 
 		// update all layers which has the class name as css rule
-		var viewNodes = Layer.getLayerNodes(page.name, publicationModel.application.id, viewHtmlDom);
-		var modelNodes = Layer.getLayerNodes(page.name, publicationModel.application.id, modelHtmlDom);
+		var viewNodes = Layer.getLayerNodes(page.name, fileModel.application.id, viewHtmlDom);
+		var modelNodes = Layer.getLayerNodes(page.name, fileModel.application.id, modelHtmlDom);
 
 		// browse the layers and replace page name in the view
 		for (idxLayerNode in 0...viewNodes.length){
@@ -252,7 +252,7 @@ class PageModel extends ModelBase<Page>{
 		}
 
 		// update the links
-		var links = publicationModel.application.getComponents(LinkBase);
+		var links = fileModel.application.getComponents(LinkBase);
 		// browse links and update those which link to the page
 		trace("links: "+links);
 		for (link in links){

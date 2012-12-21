@@ -4,7 +4,7 @@ import silex.interpreter.Interpreter;
 import silex.ModelBase;
 import silex.property.PropertyData;
 import silex.component.ComponentModel;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 import silex.layer.LayerModel;
 
 import brix.util.DomTools;
@@ -15,7 +15,7 @@ import js.Dom;
 /**
  * Manipulation of properties, set/get styles, set/get attributes, maintain the 2 DOM synced - view and model, etc. 
  * This class is a singleton and it can be used on the client side (may be used on the server side with cocktail).
- * The models in Silex are used only when editing, not when viewing a publication.
+ * The models in Silex are used only when editing, not when viewing a file.
  */
 class PropertyModel extends ModelBase<PropertyData>{
 	////////////////////////////////////////////////
@@ -70,7 +70,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 			return;
 		}
 		// retrieve the model of the component 
-		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
+		var modelHtmlDom:HtmlDom = FileModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
 		try{
 			viewHtmlDom.setAttribute(name, value);
@@ -97,7 +97,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 */
 	public function removeAttribute(viewHtmlDom:HtmlDom, name:String){
 		// retrieve the model of the component 
-		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
+		var modelHtmlDom:HtmlDom = FileModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
 		try{
 			viewHtmlDom.removeAttribute(name);
@@ -123,7 +123,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	public function getAttribute(viewHtmlDom:HtmlDom, name:String):Dynamic{
 		var value:String;
 		// retrieve the model of the component 
-		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
+		var modelHtmlDom:HtmlDom = FileModel.getInstance().getModelFromView(viewHtmlDom);
 		// get the value
 		try{
 			value = modelHtmlDom.getAttribute(name);
@@ -141,7 +141,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 */
 	public function setProperty(viewHtmlDom:HtmlDom, name:String, value:Null<Dynamic>){
 		// retrieve the model of the component 
-		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
+		var modelHtmlDom:HtmlDom = FileModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
 		try{
 			Reflect.setField(viewHtmlDom, name, value);
@@ -167,7 +167,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	public function getProperty(viewHtmlDom:HtmlDom, name:String):Dynamic{
 		var value:String;
 		// retrieve the model of the component 
-		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
+		var modelHtmlDom:HtmlDom = FileModel.getInstance().getModelFromView(viewHtmlDom);
 		// get the value
 		try{
 			value = Reflect.field(modelHtmlDom, name);
@@ -184,7 +184,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 */
 	public function setStyle(viewHtmlDom:HtmlDom, name:String, value:String){
 		// retrieve the model of the component 
-		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
+		var modelHtmlDom:HtmlDom = FileModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
 		try{
 			Reflect.setField(viewHtmlDom.style, name, value);
@@ -210,7 +210,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	public function getStyle(viewHtmlDom:HtmlDom, name:String):String{
 		var value:String;
 		// retrieve the model of the component 
-		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
+		var modelHtmlDom:HtmlDom = FileModel.getInstance().getModelFromView(viewHtmlDom);
 		// get the value
 		try{
 			value = Reflect.field(modelHtmlDom.style, name);
@@ -227,7 +227,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 */
 	public function addClass(viewHtmlDom:HtmlDom, className:String){
 		// retrieve the model of the component 
-		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
+		var modelHtmlDom:HtmlDom = FileModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
 		try{
 			DomTools.addClass(viewHtmlDom, className);
@@ -253,7 +253,7 @@ class PropertyModel extends ModelBase<PropertyData>{
 	 */
 	public function removeClass(viewHtmlDom:HtmlDom, className:String){
 		// retrieve the model of the component 
-		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(viewHtmlDom);
+		var modelHtmlDom:HtmlDom = FileModel.getInstance().getModelFromView(viewHtmlDom);
 		// apply the change 
 		try{
 			DomTools.removeClass(viewHtmlDom, className);

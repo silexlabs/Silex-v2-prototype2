@@ -37,22 +37,32 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 
 ** to do **
+* no possible :( * start in origin=App... https://www.dropbox.com/chooser?origin=http%3A%2F%2Flocalhost%3A8888&app_key=hxo7uimig22bi2o&link_type=direct&trigger=js
 
-bugs !
-* icon "edit" sur les composants (edit text ou url)
+* !! checkinstall ERROR in silex player
+* !! keep loading while checkinstall
+
+* insert menu just after edit
+* remove "unload" icon + remove "delete" and add "manage files"
 * supprimer la fonction "fermer"?
+* icon "edit" sur les composants (edit text ou url)
 * ajout road map: 
   . designer friendly => brix components in "insert" menu + select styles for each comp
   . templates comme dans l'éditeur text
-* themes tab: rename "styles"
-* add "functions" tab
+* themes tab: rename "styles" + add "functions" tab?
 
 - display none
   => how to get it back??
+
+brix
 - IE and null in styles
 - replace getElementsByClassName by Application.getComponents
 
 
+silex v2 with dropbox
+- server side service
+- file browser with https://www.dropbox.com/developers/chooser
+- at start => open page "dropbox add app"
 
 silex v2 functionnal specs
 

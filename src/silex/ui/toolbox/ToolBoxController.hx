@@ -14,10 +14,8 @@ import brix.component.template.TemplateMacros;
 import brix.component.navigation.Page;
 
 import silex.interpreter.Interpreter;
-import silex.publication.PublicationData;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 import silex.page.PageModel;
-import silex.ui.dialog.FileBrowserDialog;
 
 import haxe.remoting.HttpAsyncConnection;
 
@@ -50,7 +48,7 @@ class ToolBoxController extends DisplayObject
 	/**
 	 * CSS styles descriptor (XML file) URL
 	 */
-	public static var CSS_DESCRIPTOR_FILE_URL:String = "../admin/css-styles.xml";
+	public static var CSS_DESCRIPTOR_FILE_URL:String = "assets/admin/css-styles.xml";
 	/**
 	 * class name expected for the container of the template
 	 */

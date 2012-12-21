@@ -1,0 +1,66 @@
+<HTML>
+		<HEAD>
+			
+			
+			
+		<meta name="initialPageName" content="home">
+		<meta name="useDeeplink" content="true">
+
+		<script src="scripts/loader.js"></script>
+		
+		<style type="text/css">
+			.silex-view
+			{
+				padding:0px;
+				font-family:arial, helvetica, sans-serif;
+				margin: auto;
+				max-width: 800px;
+				padding: 0;
+				visibility: hidden; /* during loading */
+			}
+			.loading{
+				visibility: visible; /* during loading */
+			}
+			/* /loading */
+			.silex-view .Page{
+				display: none;
+			}
+			.silex-view .Layer{
+				padding-top: 10px;
+				padding-bottom: 10px;
+			}
+			.silex-view .container{
+				display: inline-block;
+			}
+			.silex-view .side-bar{
+				float: left;
+			}
+			.silex-view .footer{
+				clear: both;
+			}
+			.silex-view .nav>*{
+				display: inline-block;
+			}
+		</style>
+		
+		</HEAD>
+		<BODY class="silex-view">
+			
+			
+			
+		<a name="loading" class="Page">loading</a>
+		<div data-silex-name="container1" class="Layer loading"></div>
+		<a name="home" class="Page">home</a>
+		<header data-master="true" data-silex-name="header" class="Layer home header"></header>
+		<nav data-master="true" data-silex-name="nav" class="Layer home nav">
+			<div data-silex-name="Link to home" data-href="home" class="SilexLink">home</div>
+		</nav>
+		<div data-master="true" data-silex-name="side-bar" class="Layer home side-bar"></div>
+		<div data-silex-name="container1" class="Layer home container"></div>
+		<footer data-master="true" data-silex-name="footer" class="Layer home footer"></footer>
+	
+		
+		
+		</BODY>
+	</HTML>
+		

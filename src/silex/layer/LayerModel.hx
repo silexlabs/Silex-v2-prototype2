@@ -6,7 +6,7 @@ import js.Dom;
 import silex.interpreter.Interpreter;
 import silex.ModelBase;
 import silex.component.ComponentModel;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 import silex.property.PropertyModel;
 
 import brix.component.navigation.Layer;
@@ -16,7 +16,7 @@ import brix.util.DomTools;
 /**
  * Manipulation of layers, remove, add, etc. 
  * This class is a singleton and it can be used on the client side (may be used on the server side with cocktail).
- * The models in Silex are used only when editing, not when viewing a publication.
+ * The models in Silex are used only when editing, not when viewing a file.
  */
 class LayerModel extends ModelBase<Layer>{
 	////////////////////////////////////////////////
@@ -40,10 +40,15 @@ class LayerModel extends ModelBase<Layer>{
 	////////////////////////////////////////////////
 	/**
 	 * Name of the attribute for the layer id
-	 * The layer id is used only when editing a Silex publication, and it is not saved in the HTML file
-	 * It is used to ease the synch between the view and the model, i.e. the publication DOM which is displayed by the browser and the one which is stored by Silex
+	 * The layer id is used only when editing a Silex file, and it is not saved in the HTML file
+	 * It is used to ease the synch between the view and the model, i.e. the file DOM which is displayed by the browser and the one which is stored by Silex
 	 */ 
 	public static inline var LAYER_ID_ATTRIBUTE_NAME = "data-silex-layer-id";
+	/**
+	 * Name of the attribute for the layer name
+	 * The layer name is used only when editing a Silex file, but it is saved in the HTML file
+	 */ 
+	public static inline var LAYER_NAME_ATTRIBUTE_NAME = "data-silex-name";
 	////////////////////////////////////////////////
 	// Selection
 	////////////////////////////////////////////////
@@ -126,7 +131,7 @@ class LayerModel extends ModelBase<Layer>{
 		// simply add the name of the page to the css class of the layer node
 		DomTools.addClass(layer.rootElement, pageName);
 		// do the same in the model
-		DomTools.addClass(PublicationModel.getInstance().getModelFromView(layer.rootElement), pageName);
+		DomTools.addClass(FileModel.getInstance().getModelFromView(layer.rootElement), pageName);
 		//show the layer
 		layer.show();
 		// dispatch the change event
@@ -138,16 +143,16 @@ class LayerModel extends ModelBase<Layer>{
 	 */
 	public function addLayer(pageName:String, layerName:String, position:Int = 0):Layer{
 		// trace("addLayer "+page+", "+layerName+", "+position);
-		// get the publication model
-		var publicationModel = PublicationModel.getInstance();
+		// get the file model
+		var fileModel = FileModel.getInstance();
 		// get the view and model DOM
-		var viewHtmlDom = publicationModel.viewHtmlDom;
-		var modelHtmlDom = publicationModel.modelHtmlDom;
+		var viewHtmlDom = fileModel.currentData.viewHtmlDom;
+		var modelHtmlDom = fileModel.currentData.modelHtmlDom;
 
 		// create a node for an empty new layer
 		var newNode = Lib.document.createElement("div");
 		newNode.className = "Layer " + pageName + " " + NEW_LAYER_CSS_CLASS;
-		newNode.setAttribute("title", layerName);
+		newNode.setAttribute(LAYER_NAME_ATTRIBUTE_NAME, layerName);
 
 
 		// add to the view DOM
@@ -161,7 +166,7 @@ class LayerModel extends ModelBase<Layer>{
 		}
 
 		// add the layer id
-		publicationModel.prepareForEdit(newNode);
+		fileModel.prepareForEdit(newNode);
 
 		// add to the model DOM
 		if (position > modelHtmlDom.childNodes.length - 1){
@@ -176,17 +181,17 @@ class LayerModel extends ModelBase<Layer>{
 
 		// create the Layer instance
 /**/
-		var newLayer:Layer = new Layer(newNode, publicationModel.application.id);
+		var newLayer:Layer = new Layer(newNode, fileModel.application.id);
 		newLayer.init();
 		newLayer.show();
 /*
-		publicationModel.application.initDom(newNode);
-		publicationModel.application.initComponents();
-		var newLayer = publicationModel.application.getAssociatedComponents(newNode, Layer).first();
+		fileModel.application.initDom(newNode);
+		fileModel.application.initComponents();
+		var newLayer = fileModel.application.getAssociatedComponents(newNode, Layer).first();
 /**/
 		// add a text field
 		var textElement = ComponentModel.getInstance().addComponent("div", newLayer);
-		PropertyModel.getInstance().setAttribute(textElement, "title", "New text field");
+		PropertyModel.getInstance().setAttribute(textElement, LAYER_NAME_ATTRIBUTE_NAME, "New text field");
 		PropertyModel.getInstance().setProperty(textElement, "innerHTML", "<p>Insert text here.</p>");
 
 		// dispatch the change event
@@ -194,22 +199,22 @@ class LayerModel extends ModelBase<Layer>{
 		return newLayer;
 	}
 	/**
-	 * remove a page from the view and model of the publication
+	 * remove a page from the view and model of the file
 	 * remove the page from all layers css class name
 	 * dispatch the change event
 	 */
 	public function removeLayer(layer:Layer, pageName:String){
-		// get the publication model
-		var publicationModel = PublicationModel.getInstance();
+		// get the file model
+		var fileModel = FileModel.getInstance();
 		// get the view and model DOM
 		var viewHtmlDom = layer.rootElement;
-		var modelHtmlDom = publicationModel.getModelFromView(layer.rootElement);
+		var modelHtmlDom = fileModel.getModelFromView(layer.rootElement);
 
 		// remove the page from layer css class name
 		DomTools.removeClass(viewHtmlDom, pageName);
 		DomTools.removeClass(modelHtmlDom, pageName);
 
-		var allPageNodes = Page.getPageNodes(publicationModel.application.id, publicationModel.viewHtmlDom);
+		var allPageNodes = Page.getPageNodes(fileModel.application.id, fileModel.currentData.viewHtmlDom);
 		var found = false;
 		for (idx in 0...allPageNodes.length){
 			if (DomTools.hasClass(viewHtmlDom, allPageNodes[idx].getAttribute(Page.CONFIG_NAME_ATTR))){
@@ -221,7 +226,7 @@ class LayerModel extends ModelBase<Layer>{
 		if (layer.rootElement.getAttribute(MASTER_PROPERTY_NAME) == null
 			&& found == false){
 			// reset components associated wit hthis element
-			publicationModel.application.removeAllAssociatedComponent(viewHtmlDom);
+			fileModel.application.removeAllAssociatedComponent(viewHtmlDom);
 			// remove ffrom the dom
 			viewHtmlDom.parentNode.removeChild(viewHtmlDom);
 			modelHtmlDom.parentNode.removeChild(modelHtmlDom);
@@ -240,11 +245,11 @@ class LayerModel extends ModelBase<Layer>{
 	 * add the required masters
 	 */
 	public function addRequiredMasters(pageName:String, addEmptyContainer:Bool = true){
-		// get the publication model
-		var publicationModel = PublicationModel.getInstance();
+		// get the file model
+		var fileModel = FileModel.getInstance();
 
 		// get the side bar position
-		var sideBarNode = DomTools.getSingleElement(publicationModel.viewHtmlDom, SIDE_BAR_LAYER_NAME, true);
+		var sideBarNode = DomTools.getSingleElement(fileModel.currentData.viewHtmlDom, SIDE_BAR_LAYER_NAME, true);
 		var nextPosition:Int;
 		if (sideBarNode.nextSibling != null)
 			nextPosition = DomTools.getElementIndex(sideBarNode.nextSibling);
@@ -257,8 +262,8 @@ class LayerModel extends ModelBase<Layer>{
 		// browe all required masters
 		for (idx in 0...REQUIRED_CONTAINERS.length){
 			var masterName = REQUIRED_CONTAINERS[idx];
-			var masterNode = DomTools.getSingleElement(publicationModel.viewHtmlDom, masterName, true);
-			var masterInstance = publicationModel.application.getAssociatedComponents(masterNode, Layer).first();
+			var masterNode = DomTools.getSingleElement(fileModel.currentData.viewHtmlDom, masterName, true);
+			var masterInstance = fileModel.application.getAssociatedComponents(masterNode, Layer).first();
 			addMaster(masterInstance, pageName);
 		}
 	}
