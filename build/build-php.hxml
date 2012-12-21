@@ -2,8 +2,6 @@
 #########
 # server
 #########
---next
-
 -php ../bin/libs/silex/silex.php
 -cp ../src/
 -cp ../../Brix/src/
@@ -22,4 +20,6 @@
 -D stopOnError
 
 -D silexServerSide
+#-D silexDropboxMode
 # only in js : -D silexDebug
+

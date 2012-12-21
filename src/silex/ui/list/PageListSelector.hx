@@ -8,7 +8,7 @@ import brix.component.list.List;
 import brix.util.DomTools;
 
 import silex.page.PageModel;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 import silex.property.PropertyModel;
 
 /**

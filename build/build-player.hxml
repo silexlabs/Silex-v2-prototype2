@@ -1,7 +1,7 @@
 #########
 # player JS
 #########
--js ../bin/libs/silex/silex.js
+-js ../bin/files/scripts/silex.js
 -cp ../src/
 -cp ../../Brix/src/
 -cp ../../Cocktail/src/
@@ -9,7 +9,7 @@
 -debug
 -lib hscript
 
--main brix.core.Application
+-main silex.Silex
 --macro brix.core.Builder.create('../src/index-player.html')
 
 #-D brixdebug
@@ -28,12 +28,12 @@
 
 --next
 
--swf ../bin/libs/silex/silex.swf
+-swf ../bin/files/scripts/silex.swf
 -cp ../src/
 -cp ../../Brix/src/
 -cp ../../Cocktail/src/
 -main silex.Silex
---macro brix.core.Builder.create('../src/index-player.html', 'useless.html')
+--macro brix.core.Builder.create('../src/index-player.html')
 -lib hscript
 --remap js:cocktail
 -swf-version 10.2

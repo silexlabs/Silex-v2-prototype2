@@ -8,7 +8,7 @@ import brix.component.navigation.Layer;
 import brix.component.interaction.Draggable;
 import silex.layer.LayerModel;
 import silex.page.PageModel;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 import silex.component.ComponentModel;
 import silex.interpreter.Interpreter;
 
@@ -96,11 +96,11 @@ class SelectionDropHandler extends DropHandlerBase{
 			        		componentName: null,
 			        	};
 					if (LayerModel.getInstance().selectedItem != null)
-						context.layerName = LayerModel.getInstance().selectedItem.rootElement.getAttribute("data-silex-name");
+						context.layerName = LayerModel.getInstance().selectedItem.rootElement.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
 					else if (ComponentModel.getInstance().selectedItem != null )
-						context.layerName = ComponentModel.getInstance().selectedItem.parentNode.getAttribute("data-silex-name");
+						context.layerName = ComponentModel.getInstance().selectedItem.parentNode.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
 					if (ComponentModel.getInstance().selectedItem != null )
-						context.componentName = ComponentModel.getInstance().selectedItem.getAttribute("data-silex-name");
+						context.componentName = ComponentModel.getInstance().selectedItem.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
 			        
 			        var output = t.execute(context);
 		
@@ -137,14 +137,14 @@ class SelectionDropHandler extends DropHandlerBase{
 			// case of a layer
 			var layer = LayerModel.getInstance().selectedItem;
 			var page = PageModel.getInstance().selectedItem;
-			var name:String = layer.rootElement.getAttribute("data-silex-name");
+			var name:String = layer.rootElement.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
 			if (name == null) name = "";
 			var confirm = Lib.window.confirm("I am about to delete the container "+name+". Are you sure?");
 			if (confirm == true)
 				LayerModel.getInstance().removeLayer(layer, page.name);
 		}
 		else{
-			var name:String = component.getAttribute("data-silex-name");
+			var name:String = component.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
 			if (name == null) name = "";
 			var confirm = Lib.window.confirm("I am about to delete the component "+name+". Are you sure?");
 			if (confirm == true)

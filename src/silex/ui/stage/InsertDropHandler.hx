@@ -10,11 +10,10 @@ import brix.component.navigation.Page;
 import brix.component.interaction.Draggable;
 import silex.page.PageModel;
 import silex.layer.LayerModel;
-import silex.publication.PublicationModel;
-import silex.publication.PublicationData;
+import silex.file.FileModel;
 import silex.component.ComponentModel;
 import silex.property.PropertyModel;
-import silex.ui.dialog.FileBrowserDialog;
+import silex.file.FileBrowser;
 
 /**
  * Selection markers are selection rectangles put over the selection, 
@@ -84,7 +83,7 @@ class InsertDropHandler extends DropHandlerBase{
 	override public function onDrag(e:Event) {
 		super.onDrag(e);
 		var event:CustomEvent = cast(e);
-		event.detail.draggable.groupElement = PublicationModel.getInstance().viewHtmlDom.parentNode;
+		event.detail.draggable.groupElement = FileModel.getInstance().currentData.viewHtmlDom.parentNode;
 	}
 	/**
 	 * reset dragged element
@@ -113,27 +112,27 @@ class InsertDropHandler extends DropHandlerBase{
 			if (DomTools.hasClass(rootElement, IMAGE_TYPE)){
 				element = addComponent(dropZone, "img");
 				//PropertyModel.getInstance().setAttribute(element, "src", "enter image url here");
-				PropertyModel.getInstance().setAttribute(element, "data-silex-name", "New image component");
+				PropertyModel.getInstance().setAttribute(element, LayerModel.LAYER_NAME_ATTRIBUTE_NAME, "New image component");
 				DomTools.doLater(callback(initImageComp, element));
 			}
 			else if (DomTools.hasClass(rootElement, TEXT_TYPE)){
 				element = addComponent(dropZone, "div");
-				PropertyModel.getInstance().setAttribute(element, "data-silex-name", "New text field");
+				PropertyModel.getInstance().setAttribute(element, LayerModel.LAYER_NAME_ATTRIBUTE_NAME, "New text field");
 				PropertyModel.getInstance().setProperty(element, "innerHTML", "<p>Insert text here.</p>");
 			}
 			else if (DomTools.hasClass(rootElement, AUDIO_TYPE)){
 				element = addComponent(dropZone, "audio");
-				PropertyModel.getInstance().setAttribute(element, "data-silex-name", "New media component");
+				PropertyModel.getInstance().setAttribute(element, LayerModel.LAYER_NAME_ATTRIBUTE_NAME, "New media component");
 				DomTools.doLater(callback(initMediaComp, element));
 			}
 			else if (DomTools.hasClass(rootElement, VIDEO_TYPE)){
 				element = addComponent(dropZone, "video");
-				PropertyModel.getInstance().setAttribute(element, "data-silex-name", "New media component");
+				PropertyModel.getInstance().setAttribute(element, LayerModel.LAYER_NAME_ATTRIBUTE_NAME, "New media component");
 				DomTools.doLater(callback(initMediaComp, element));
 			}
 			else if (DomTools.hasClass(rootElement, LAYER_TYPE)){
 				element = addLayer(dropZone, PageModel.getInstance().selectedItem).rootElement;
-				PropertyModel.getInstance().setAttribute(element, "data-silex-name", "New container");
+				PropertyModel.getInstance().setAttribute(element, LayerModel.LAYER_NAME_ATTRIBUTE_NAME, "New container");
 			}
 			else {
 				throw("unknown element has been drop on stage from the insert menu");
@@ -152,24 +151,24 @@ class InsertDropHandler extends DropHandlerBase{
 
 		// open the browse library dialog
 		var cbk = callback(onMultipleFilesChosen, element);
-		FileBrowserDialog.selectMultipleFiles(cbk, brixInstanceId);
+		FileBrowser.selectMultipleFiles(cbk, brixInstanceId, null, "files/assets/");
 	}
 	/**
-	 * callback for the FileBrowserDialog
+	 * callback for the FileBrowser
 	 */
 	private function onMultipleFilesChosen(element:HtmlDom, files:Array<String>){
 		trace("onMultipleFilesChosen "+files);
 
 		PropertyModel.getInstance().setAttribute(element, "controls", "controls");
 		
-		var modelHtmlDom = PublicationModel.getInstance().getModelFromView(element);
+		var modelHtmlDom = FileModel.getInstance().getModelFromView(element);
 
 		for (sourceUrl in files){
 			var sourceElement = Lib.document.createElement("source");
-			cast(sourceElement).src = FileBrowserDialog.getRelativeURLFromFileBrowser(sourceUrl);
+			cast(sourceElement).src = FileBrowser.getRelativeURLFromFileBrowser(sourceUrl);
 			modelHtmlDom.appendChild(sourceElement);
 			var sourceElement = Lib.document.createElement("source");
-			cast(sourceElement).src = FileBrowserDialog.getRelativeURLFromFileBrowser(sourceUrl);
+			cast(sourceElement).src = FileBrowser.getRelativeURLFromFileBrowser(sourceUrl);
 			element.appendChild(sourceElement);
 		}
 	}
@@ -182,20 +181,20 @@ class InsertDropHandler extends DropHandlerBase{
 
 		// open the browse library dialog
 		var cbk = callback(onFileChosen, element);
-		FileBrowserDialog.selectFile(cbk, brixInstanceId);
+		FileBrowser.selectFile(cbk, brixInstanceId, null, "files/assets/");
 	}
 	/**
-	 * callback for the FileBrowserDialog
+	 * callback for the FileBrowser
 	 */
 	private function onFileChosen(element:HtmlDom, fileUrl:String){
 		trace("onFileChosen "+fileUrl);
-		PropertyModel.getInstance().setAttribute(element, "src", FileBrowserDialog.getRelativeURLFromFileBrowser(fileUrl));
+		PropertyModel.getInstance().setAttribute(element, "src", FileBrowser.getRelativeURLFromFileBrowser(fileUrl));
 	}
 	/**
 	 * add an element in the layer
 	 */
 	public function addComponent(dropZone:DropZone, nodeName:String):HtmlDom {
-		var layers = PublicationModel.getInstance().application.getAssociatedComponents(dropZone.parent, Layer);
+		var layers = FileModel.getInstance().application.getAssociatedComponents(dropZone.parent, Layer);
 		if (layers.length != 1){
 			throw("Error: search for the layer gave "+layers.length+" results");
 		}

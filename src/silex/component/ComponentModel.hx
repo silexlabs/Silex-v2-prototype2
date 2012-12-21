@@ -5,7 +5,7 @@ import js.Dom;
 
 import silex.interpreter.Interpreter;
 import silex.ModelBase;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 import silex.layer.LayerModel;
 import silex.property.PropertyModel;
 
@@ -19,7 +19,7 @@ import brix.component.navigation.link.LinkBase;
 /**
  * Manipulation of components, selection etc. 
  * This class is a singleton and it can be used on the client side (may be used on the server side with cocktail).
- * The models in Silex are used only when editing, not when viewing a publication.
+ * The models in Silex are used only when editing, not when viewing a file.
  */
 class ComponentModel extends ModelBase<HtmlDom>{
 	////////////////////////////////////////////////
@@ -43,8 +43,8 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	////////////////////////////////////////////////
 	/**
 	 * Name of the attribute for the component id
-	 * The component id is used only when editing a Silex publication, and it is not saved in the HTML file
-	 * It is used to ease the synch between the view and the model, i.e. the publication DOM which is displayed by the browser and the one which is stored by Silex
+	 * The component id is used only when editing a Silex file, and it is not saved in the HTML file
+	 * It is used to ease the synch between the view and the model, i.e. the file DOM which is displayed by the browser and the one which is stored by Silex
 	 */ 
 	public static inline var COMPONENT_ID_ATTRIBUTE_NAME = "data-silex-component-id";
 	/**
@@ -80,7 +80,7 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	override public function setSelectedItem(item:HtmlDom):HtmlDom {
 		if (item!=null){
 			// change the layer selection (used in the layer marker to display the container name)
-			var layer = PublicationModel.getInstance().application.getAssociatedComponents(item.parentNode, Layer).first();
+			var layer = FileModel.getInstance().application.getAssociatedComponents(item.parentNode, Layer).first();
 			LayerModel.getInstance().selectedItem = layer;
 		}
 
@@ -93,11 +93,11 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	 */
 	public function addComponent(nodeName:String, layer:Layer, position:Int = 0):HtmlDom{
 		// trace("addComponent "+nodeName+", "+layer+", "+position);
-		// get the publication model
-		var publicationModel = PublicationModel.getInstance();
+		// get the file model
+		var fileModel = FileModel.getInstance();
 		// get the view and model DOM
 		var viewHtmlDom = layer.rootElement;
-		var modelHtmlDom = publicationModel.getModelFromView(layer.rootElement);
+		var modelHtmlDom = fileModel.getModelFromView(layer.rootElement);
 
 		// create a node for an empty new layer
 		var newNode = Lib.document.createElement(nodeName);
@@ -113,7 +113,7 @@ class ComponentModel extends ModelBase<HtmlDom>{
 		}
 		
 		// add the layer id
-		publicationModel.prepareForEdit(newNode);
+		fileModel.prepareForEdit(newNode);
 
 		// clone the node for the model
 		var cloneNode = newNode.cloneNode(true);
@@ -128,8 +128,8 @@ class ComponentModel extends ModelBase<HtmlDom>{
 			modelHtmlDom.insertBefore(cloneNode, modelHtmlDom.childNodes[position]);
 		}
 /*
-		publicationModel.application.initDom(newNode);
-		publicationModel.application.initComponents();
+		fileModel.application.initDom(newNode);
+		fileModel.application.initComponents();
 */
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE, newNode), DEBUG_INFO);
@@ -138,20 +138,20 @@ class ComponentModel extends ModelBase<HtmlDom>{
 		return newNode;
 	}
 	/**
-	 * remove a page from the view and model of the publication
+	 * remove a page from the view and model of the file
 	 * remove the page from all layers css class name
 	 * dispatch the change event
 	 */
 	public function removeComponent(element:HtmlDom){
-		// get the publication model
-		var publicationModel = PublicationModel.getInstance();
+		// get the file model
+		var fileModel = FileModel.getInstance();
 
 		// get the view and model DOM
 		var viewHtmlDom = element;
-		var modelHtmlDom = publicationModel.getModelFromView(element);
+		var modelHtmlDom = fileModel.getModelFromView(element);
 
 		// reset components associated wit hthis element
-		publicationModel.application.removeAllAssociatedComponent(viewHtmlDom);
+		fileModel.application.removeAllAssociatedComponent(viewHtmlDom);
 
 		// remove element from dom
 		viewHtmlDom.parentNode.removeChild(viewHtmlDom);
@@ -169,7 +169,7 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	 */
 	public function makeLinkToPage(htmlDom:HtmlDom, pageName:String){
 		// get the model
-		var publicationModel = PublicationModel.getInstance();
+		var fileModel = FileModel.getInstance();
 		var propertyModel = PropertyModel.getInstance();
 
 		// add  class in view and model
@@ -180,7 +180,7 @@ class ComponentModel extends ModelBase<HtmlDom>{
 		propertyModel.setAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_DATA_ATTR, pageName);
 
 		// create the component instance
-		var linkToPage = new SilexLink(htmlDom, publicationModel.application.id);
+		var linkToPage = new SilexLink(htmlDom, fileModel.application.id);
 		linkToPage.init();
 	}
 	/**
@@ -215,7 +215,7 @@ class ComponentModel extends ModelBase<HtmlDom>{
 
 		// replace the text
 		htmlDom.innerHTML = StringTools.replace(htmlDom.innerHTML, oldLink, newLink);
-		var modelHtmlDom:HtmlDom = PublicationModel.getInstance().getModelFromView(htmlDom);
+		var modelHtmlDom:HtmlDom = FileModel.getInstance().getModelFromView(htmlDom);
 		modelHtmlDom.innerHTML = StringTools.replace(modelHtmlDom.innerHTML, oldLink, newLink);
 
 		// delete the component instance

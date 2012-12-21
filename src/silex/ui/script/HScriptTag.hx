@@ -17,7 +17,7 @@ using brix.component.IBrixComponent.BrixComponent;
  */
 class HScriptTag implements IBrixComponent {
 	/**
-	 * executed once, used to prevent to execute the head script twice when the builder loads a publication in the builder publicaiton
+	 * executed once, used to prevent to execute the head script twice when the builder loads a file in the builder publicaiton
 	 */
 	private static var executed:Bool = false;
 	/**

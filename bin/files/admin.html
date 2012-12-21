@@ -1,0 +1,685 @@
+<HTML>
+	<HEAD>
+		<META http-equiv="Content-Type" content="text/html; charset=UTF-8"></META> 
+
+		
+		
+		
+		
+
+		
+
+		
+		
+		
+		
+		
+		
+		
+
+		
+		
+		
+
+		
+		
+		
+		
+
+		
+		
+		
+		
+		
+
+
+		
+		
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+
+		
+		<TITLE>Silex Builder</TITLE>
+
+		
+		<META name="initialPageName" content="start-page"></META>
+		<META name="useDeeplink" content="false"></META>
+		<LINK href="styles/admin.css" rel="stylesheet"></LINK>
+		
+		
+		<SCRIPT type="text/javascript" src="scripts/silex-builder.js"></SCRIPT>
+		<SCRIPT data-app-key="hxo7uimig22bi2o" type="text/javascript" id="dropboxjs" src="https://www.dropbox.com/static/api/1/dropbox.js"></SCRIPT>
+		
+		<SCRIPT type="text/hscript">
+			//Lib.alert('test!');
+			//FileModel.getInstance().load('files/test.html');
+			MenuController.createFile();
+		</SCRIPT>
+	</HEAD>
+	
+<BODY class="builder-view">
+		<DIV class="group-main Panel NotificationManager" data-panel-header-class-name="panel-file-header" data-panel-body-class-name="panel-file-body">
+			
+			
+			<DIV class="notification-zone">
+				<UL>
+	               	::foreach notifications::
+	               	<LI>
+	               		<H1>::title::</H1>
+	               		<P>::body::</P>
+	               	</LI>
+	               	::end::
+				</UL>
+			</DIV>
+			
+			
+			
+			
+			<A class="Page" name="loading">loading</A>
+			<DIV class="Layer loading loading-container">
+				<DIV class="loading-bar loading-bar1"></DIV>
+				<DIV class="loading-bar loading-bar2"></DIV>
+				<DIV class="loading-bar loading-bar3"></DIV>
+				<DIV class="loading-bar loading-bar4"></DIV>
+				<DIV class="loading-bar loading-bar5"></DIV>
+			</DIV>
+			
+			
+
+
+			<A class="Page" name="start-page">Start Page</A>
+			<DIV class="panel-file-header">
+				
+				
+				<DIV class="Group1 group-ribbon MenuController" data-initial-page-name="file-menu">
+					
+					<DIV class="ribbon-tabs">
+						<A href="#file-menu" class="LinkToPage" data-group-id="Group1">File</A>
+						<A href="#edit-menu" class="LinkToPage disabled-element" data-group-id="Group1">Edit</A>
+						<A href="#page-list" class="LinkToPage" data-group-id="Group1">Pages</A>
+						<A href="#layer-list" class="LinkToPage" data-group-id="Group1">Masters</A>
+						<A href="#insert-list" class="LinkToPage" data-group-id="Group1">Insert</A>
+						<A href="#theme-list" class="LinkToPage disabled-element" data-group-id="Group1">Themes</A>
+						<A href="#user-menu" class="LinkToPage disabled-element" data-group-id="Group1">User</A>
+						<A href="#tool-menu" class="LinkToPage disabled-element" data-group-id="Group1">Tool</A>
+						<A href="#help-menu" class="LinkToPage disabled-element" data-group-id="Group1">Help</A>
+					</DIV>
+					
+					<A class="Page" name="file-menu" data-group-id="Group1">File</A>
+
+					<DIV class="Layer file-menu ribbon-list selectable">
+						<UL>
+							<LI class="new" data-menu-item="create-file">
+								<P>new</P>
+							</LI>
+							<LI class="disabled-element template" data-menu-item="create-from-template">
+								<P>template</P>
+							</LI>
+							<LI class="open" data-menu-item="open-file">
+								<P>open</P>
+							</LI>
+							<LI class="save-file" data-menu-item="save-file">
+								<P>save</P>
+							</LI>
+						</UL>
+						<UL class="small">
+							<LI class="save-file-as" title="save as" data-menu-item="save-file-as">
+							</LI>
+							<LI class="close-file" title="close" data-menu-item="close-file">
+							</LI>
+							<LI class="save-file-copy" title="save as copy" data-menu-item="save-file-copy">
+							</LI>
+							<LI class="disabled-element settings" title="settings" data-menu-item="settings">
+							</LI>
+							<LI class="disabled-element" title="backup all" data-menu-item="backup-all">
+							</LI>
+							<LI class="disabled-element" title="export" data-menu-item="export">
+							</LI>
+							<LI class="delete" title="delete" data-menu-item="trash-file">
+							</LI>
+							<LI class="disabled-element" title="publish" data-menu-item="publish">
+							</LI>
+							<LI title="media" data-menu-item="open-file-browser">
+							</LI>
+							<LI title="view" data-menu-item="view-file">
+							</LI>
+						</UL>
+					</DIV>
+					
+					<A class="Page" name="edit-menu" data-group-id="Group1">Edit</A>
+					<DIV class="Layer edit-menu ribbon-list selectable">
+					</DIV>
+
+					
+					<A class="Page" name="page-list" data-group-id="Group1">Pages</A>
+					<DIV class="Layer page-list ribbon-list selectable">
+						<DIV class="assets-page">
+							<IMG class="ribbon-button" src="assets/admin/sv2-ico-add.png" title="Add a page" data-menu-item="add-page"/>
+							<IMG class="ribbon-button" src="assets/admin/sv2-ico-delete.png" title="Delete selected page" data-menu-item="del-page"/>
+							<IMG class="ribbon-button" src="assets/admin/sv2-ico-rename.png" title="Rename selected page" data-menu-item="rename-page"/>
+						</DIV>
+						<UL class="PageList thumbs-list">
+							<LI class="">
+								<DIV class="solid"></DIV>
+								<P>::name::</P>
+							</LI>
+						</UL>
+					</DIV>
+					
+					<A class="Page" name="layer-list" data-group-id="Group1">Masters</A>
+
+					<DIV class="Layer layer-list ribbon-list">
+						<UL class="LayersList">
+							<LI data-dropzones-class-name="silex-view" class="" data-phantom-class-name="master-phantom">
+								<DIV class="solid"></DIV>
+								<P>::name::</P>
+							</LI>
+						</UL>
+					</DIV>
+					
+					<A class="Page" name="theme-list" data-group-id="Group1">Themes</A>
+					<DIV class="Layer theme-list ribbon-list">
+					</DIV>
+
+					
+					<A class="Page" name="insert-list" data-group-id="Group1">Insert</A>
+
+					<DIV class="Layer insert-list ribbon-list">
+						<UL>
+							<LI data-dropzones-class-name="Layer" class="image Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
+								<P>Image</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="text Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
+								<P>Text</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="audio Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
+								<P>Audio</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="video Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
+								<P>Video</P>
+							</LI>
+							<LI data-dropzones-class-name="silex-view" class="container Draggable InsertDropHandler" data-phantom-class-name="master-phantom" data-group-id="Group1">
+								<P>Container</P>
+							</LI>
+						</UL>
+					</DIV>
+					
+					<A class="Page" name="user-menu" data-group-id="Group1">User</A>
+					<DIV class="Layer user-menu ribbon-list selectable">
+					</DIV>
+					
+					<A class="Page" name="tool-menu" data-group-id="Group1">Tool</A>
+					<DIV class="Layer tool-menu ribbon-list selectable">
+					</DIV>
+					
+					<A class="Page" name="help-menu" data-group-id="Group1">Help</A>
+					<DIV class="Layer help-menu ribbon-list selectable">
+					</DIV>
+				</DIV>
+				
+				
+
+			</DIV>
+			
+			
+			
+			<DIV class="dialogs">
+				
+				<A class="Page" name="login-dialog"></A>
+				<DIV class="container">
+					<FORM class="Layer login-dialog dialog-foreground AuthDialog" data-dialog-name="login-dialog">
+						<DIV class="header">
+							<IMG src="assets/admin/logo.png"/>
+						</DIV>
+						<FIELDSET> 
+							<DIV class="login-pass-container">
+							
+								<P class="login">Login</P><P><INPUT class="input-field-login" size="21" type="text" max-lenght="50"> </INPUT></P>
+								<P class="password">Password</P><P><INPUT class="input-field-pass" size="21" type="text" max-lenght="50"/></P>
+							</DIV>
+							<DIV class="assets-dialog">
+								
+								<INPUT class="validate-button" type="submit" value="Login"/>
+								<BUTTON class="cancel-button">Cancel</BUTTON>
+								<P class="error-text"></P>
+
+							</DIV>
+							<DIV class="solid"></DIV>
+							<DIV class="solid-2"></DIV>
+						</FIELDSET>
+						<FOOTER>
+							<P><A href="http://projects.Silexlabs.org/?/silex.v2/" target="blank"> Silex Official website</A> | <A href="http://www.silexlabs.org/silex/" target="blank"> Silex Labs</A> | <A class="disabled-link">Online help</A> | <A class="disabled-link">Forums</A></P>
+						</FOOTER>
+					</FORM>
+
+				</DIV>
+				
+				<A class="Page" name="file-browser-dialog"></A>
+				<FORM class="Layer file-browser-dialog dialog-foreground KCFinderDialog" data-dialog-name="file-browser-dialog">
+					<DIV class="container-file-browser">
+						<HEADER>
+							<P>Silex File Browser</P>
+						</HEADER>
+						<DIV class="file-browser-div">
+						</DIV>
+						<FOOTER class="foot">
+							<HR></HR>
+
+							<BUTTON class="cancel-button">Close</BUTTON>
+							<LABEL class="message-zone"></LABEL>
+						
+						</FOOTER>
+						
+					</DIV>
+				</FORM>
+				
+				<A class="Page" name="text-editor-dialog"></A>
+				<FORM class="Layer text-editor-dialog dialog-foreground TextEditorDialog" data-dialog-name="text-editor-dialog">
+					<DIV class="container-text-editor " data-panel-header-class-name="header-div" data-panel-body-class-name="text-editor-div" data-panel-footer-class-name="footer-div">
+						<HEADER class="header-div">
+							<P>Silex Text Editor</P>
+						</HEADER>
+						<DIV class="text-editor-div">
+						</DIV>
+						<FOOTER class="foot footer-div">
+							<HR></HR>
+
+							<BUTTON class="cancel-button">Close</BUTTON>
+							<LABEL class="message-zone"></LABEL>
+						</FOOTER>
+						
+					</DIV>
+				</FORM>
+				
+				<DIV class="Layer dialog-background login-dialog open-dialog file-browser-dialog text-editor-dialog"></DIV>
+			</DIV>
+			
+			
+			
+
+
+
+			
+			
+			
+			<DIV class="builder-scene panel-file-body Panel" data-panel-body-class-name="panel-builder-body" data-panel-footer-class-name="panel-builder-footer" data-panel-is-horizontal="true">
+
+				
+				
+				<DIV class="Group2 group-property-toolbox panel-builder-footer PropertiesToolbox silex-toolbox" data-toolbox-name="PropertiesToolbox" data-toolbox-dropzones-class-name="toolbox-drop-zone">
+
+					
+					<DIV class="Accordion ToolBoxController" data-initial-page-name="properties-tab">
+						
+						<A class="Page" name="properties-tab" data-group-id="Group2">Properties</A>
+						<A href="#properties-tab" class="LinkToPage accordion-header" data-group-id="Group2">Properties</A>
+						<FORM class="Layer accordion-item properties-tab">
+							<FIELDSET class="PropertyEditor" data-group-id="Group2">
+								<LEGEND>Attributes</LEGEND>
+								<DIV class="property-container">
+									<LABEL>Name</LABEL>
+									<DIV class="type-container">
+										<INPUT class="name-property fixed-height" type="text" max-lenght="20" value="21"/>
+										<BUTTON class="property-editor-delete-selected"></BUTTON>
+									</DIV>
+								</DIV>
+								<DIV class="property-container">
+									<LABEL>title (for seo)</LABEL>
+									<DIV class="type-container">
+										<INPUT class="title-property fixed-height" type="text" max-lenght="20" value="21"/>
+									</DIV>
+								</DIV>
+								<DIV class="property-container context-img">
+									<LABEL>alt (for seo)</LABEL>
+									<DIV class="type-container">
+										<INPUT class="alt-property fixed-height" type="text" max-lenght="20" value="21"/>
+									</DIV>
+								</DIV>
+								<DIV class="property-container context-video context-audio context-video context-audio context-img context-div">
+									<LABEL>Html Content</LABEL>
+									<DIV class="type-container">
+										<BUTTON class="property-editor-edit-text text-input">Open Text Editor</BUTTON>
+									</DIV>
+								</DIV>
+								<DIV class="property-container context-video context-audio">
+									<LABEL>Sources (1 by line)</LABEL>
+									<DIV class="type-container">
+										<TEXTAREA class="multiple-src-property"></TEXTAREA>
+										<BUTTON class="add-multiple-files-button" title="Browse library" data-fb-target="multiple-src-property">Add from library</BUTTON>
+									</DIV>
+								</DIV>
+								<DIV class="property-container context-img">
+									<LABEL>Source</LABEL>
+									<DIV class="type-container">
+										<INPUT class="src-property" name="URL" type="src"/>
+										<BUTTON class="select-file-button" title="Browse library" data-fb-target="src-property">Browse library</BUTTON>
+									</DIV>
+								</DIV>
+								<DIV class="property-container context-video context-audio">
+									<LABEL>Autoplay</LABEL>
+									<DIV class="type-container">
+										<INPUT class="auto-start-property" type="checkbox"/> On/Off
+									</DIV>
+								</DIV>
+								<DIV class="property-container context-video context-audio">
+									<LABEL>Controls</LABEL>
+									<DIV class="type-container">
+										<INPUT class="controls-property" type="checkbox"/> On/Off
+									</DIV>
+								</DIV>
+								<DIV class="property-container context-video context-audio">
+									<LABEL>Loop or stop at the end</LABEL>
+									<DIV class="type-container">
+										<INPUT class="loop-property" type="checkbox"/> On/Off
+									</DIV>
+								</DIV>
+								<DIV class="property-container context-layer">
+									<LABEL>Set as master</LABEL>
+									<DIV class="type-container">
+										 <DIV class="check"><INPUT class="master-property" type="checkbox"/> On/Off</DIV>
+									</DIV>
+								</DIV>
+							</FIELDSET>
+							<FIELDSET class="properties-link">
+								<LEGEND>Link</LEGEND>
+								<DIV class="property-container LinkEditor" data-group-id="Group2">
+									<LABEL>External link URL</LABEL>
+									<DIV class="type-container">
+			                            <INPUT class="link-url" type="src"/>
+										<SELECT class="dropdown-full fixed-height">
+											<OPTION value=""></OPTION>
+											<OPTION value="_blank">_blank</OPTION>
+											<OPTION value="_self">_self</OPTION>
+											<OPTION value="_parent">_parent</OPTION>
+											<OPTION value="_top">_top</OPTION>
+										</SELECT>
+									</DIV>
+									<LABEL>To a page</LABEL>
+									<DIV class="type-container internal-link-editor">
+										<SELECT class="PageList">
+											<OPTION value="::name::">::name::</OPTION>
+										</SELECT>
+										<BUTTON class="">None</BUTTON>
+									</DIV>
+									<LABEL class="disabled-element">Execute an action</LABEL>
+									<DIV class="type-container">
+										<BUTTON class="property-editor-edit-code disabled-element">Open Code Editor</BUTTON>
+									</DIV>
+								</DIV>
+							</FIELDSET>
+							<FIELDSET class="properties-html-editor HtmlEditor" data-group-id="Group2">
+								<LEGEND>HTML content - debug only</LEGEND>
+								<TEXTAREA class="text-input"></TEXTAREA>
+								<BUTTON class="property-editor-edit-code disabled-element">Open Code Editor</BUTTON>
+							</FIELDSET>
+						</FORM>
+						<DIV class="tool-box-controller-template">
+	                   	::foreach categories::
+							<A class="Page" name="::name::" data-group-id="Group2">::name::</A>
+	                        <A href="#::name::" class="LinkToPage accordion-header" data-group-id="Group2">::name::</A>
+	                        <FORM class="Layer accordion-item ::name::">
+		                       	::foreach groups::
+									<FIELDSET>
+										<LEGEND>::name::</LEGEND>
+				                       	::foreach properties::
+											
+				                       		<DIV class="Group3 property-container" data-property-name="::name::">
+												<LABEL>::cssName::</LABEL>
+												<A href="http://www.w3.org/wiki/CSS/Properties/::cssName::" class="link-to-help" target="_blank" title="Help page about ::cssName:: property.">
+													<IMG src="assets/admin/info-link.png"/>
+												</A>
+												<BR/>
+												::foreach types::
+													
+													::if (name=="empty-space")::
+							                       	<DIV class="type-container empty-space-style">
+							                       	</DIV>
+													::elseif (name=="keyword")::
+							                       	<DIV class="type-container keyword-style InlineDropdownEditor" data-group-id="Group3">
+														<SELECT class="dropdown-full fixed-height">
+															<OPTION value=""></OPTION>
+														::foreach options::
+															<OPTION title="::help::" value="::name::">
+																::name::
+															</OPTION>
+														::end:: 
+														</SELECT>
+													</DIV>
+													::elseif (name=="length")::
+							                       	<DIV class="type-container length-style LengthEditor" data-group-id="Group3">
+														<SELECT class="dropdown-half fixed-height">
+															<OPTION value="px">px</OPTION>
+															<OPTION value="cm">cm</OPTION>
+															<OPTION value="mm">mm</OPTION>
+															<OPTION value="in">in</OPTION>
+															<OPTION value="pt">pt</OPTION>
+															<OPTION value="pc">pc</OPTION>
+															<OPTION value="em">em</OPTION>
+															<OPTION value="ex">ex</OPTION>
+															<OPTION value="ch">ch</OPTION>
+															<OPTION value="rem">rem</OPTION>
+															<OPTION value="vw">vw</OPTION>
+															<OPTION value="vh">vh</OPTION>
+															<OPTION value="vmin">vmin</OPTION>
+															<OPTION value="vmax">vmax</OPTION>
+														</SELECT>
+														<INPUT class="number input-half  fixed-height" type="number" max="5000" min="-5000"/>
+													</DIV>
+													::elseif (name=="font-absolute-size")::
+							                       	<DIV class="type-container font-absolute-size-style InlineDropdownEditor" data-group-id="Group3">
+														<SELECT class="dropdown-full  fixed-height">
+															<OPTION value=""></OPTION>
+															<OPTION value="xx-small">xx-small</OPTION>
+															<OPTION value="x-small">x-small</OPTION>
+															<OPTION value="small">small</OPTION>
+															<OPTION value="medium">medium</OPTION>
+															<OPTION value="large">large</OPTION>
+															<OPTION value="x-large">x-large</OPTION>
+															<OPTION value="xx-large">xx-large</OPTION>
+														</SELECT>
+													</DIV>
+													::elseif (name=="font-relative-size")::
+							                       	<DIV class="type-container font-relative-size-style InlineDropdownEditor" data-group-id="Group3">
+														<SELECT class="dropdown-full  fixed-height">
+															<OPTION value=""></OPTION>
+															<OPTION value="larger">larger</OPTION>
+															<OPTION value="smaller">smaller</OPTION>
+														</SELECT>
+													</DIV>
+													::elseif (name=="background-position")::
+													<DIV class="Group3 property-container BackgroundPositionEditor" data-group-id="Group3">
+														<LABEL>X position</LABEL>
+														<BR/>
+								                       	<DIV class="type-container keyword-style">
+															<SELECT class="dropdown-full fixed-height keyword-x">
+																<OPTION value=""></OPTION>
+																<OPTION value="left">
+																	left
+																</OPTION>
+																<OPTION value="center">
+																	center
+																</OPTION>
+																<OPTION value="right">
+																	right
+																</OPTION>
+															 
+															</SELECT>
+														</DIV>
+								                       	<DIV class="type-container length-style">
+															<SELECT class="dropdown-half fixed-height length-select-x">
+																<OPTION value="px">px</OPTION>
+																<OPTION value="cm">cm</OPTION>
+																<OPTION value="mm">mm</OPTION>
+																<OPTION value="in">in</OPTION>
+																<OPTION value="pt">pt</OPTION>
+																<OPTION value="pc">pc</OPTION>
+																<OPTION value="em">em</OPTION>
+																<OPTION value="ex">ex</OPTION>
+																<OPTION value="ch">ch</OPTION>
+																<OPTION value="rem">rem</OPTION>
+																<OPTION value="vw">vw</OPTION>
+																<OPTION value="vh">vh</OPTION>
+																<OPTION value="vmin">vmin</OPTION>
+																<OPTION value="vmax">vmax</OPTION>
+															</SELECT>
+															<INPUT class="number input-half fixed-height length-input-x" type="number" max="5000" min="-5000"/>
+														</DIV>
+								                       	<DIV class="type-container percentage-style ">
+															<INPUT class="input-half fixed-height percentage-x" type="number" max="5000" min="-5000"/><P>  %</P>
+														</DIV>
+								                       	<DIV class="type-container empty-space-style">
+								                       	</DIV>
+								                       	<DIV class="type-container empty-space-style">
+								                       	</DIV>
+														<HR></HR>
+														<LABEL>Y position</LABEL>
+														<BR/>
+								                       	<DIV class="type-container keyword-style ">
+															<SELECT class="dropdown-full fixed-height keyword-y">
+																<OPTION value=""></OPTION>
+																<OPTION value="top">
+																	top
+																</OPTION>
+																<OPTION value="center">
+																	center
+																</OPTION>
+																<OPTION value="bottom">
+																	bottom
+																</OPTION>
+															 
+															</SELECT>
+														</DIV>
+								                       	<DIV class="type-container length-style ">
+															<SELECT class="dropdown-half fixed-height length-select-y">
+																<OPTION value="px">px</OPTION>
+																<OPTION value="cm">cm</OPTION>
+																<OPTION value="mm">mm</OPTION>
+																<OPTION value="in">in</OPTION>
+																<OPTION value="pt">pt</OPTION>
+																<OPTION value="pc">pc</OPTION>
+																<OPTION value="em">em</OPTION>
+																<OPTION value="ex">ex</OPTION>
+																<OPTION value="ch">ch</OPTION>
+																<OPTION value="rem">rem</OPTION>
+																<OPTION value="vw">vw</OPTION>
+																<OPTION value="vh">vh</OPTION>
+																<OPTION value="vmin">vmin</OPTION>
+																<OPTION value="vmax">vmax</OPTION>
+															</SELECT>
+															<INPUT class="number input-half fixed-height length-input-y" type="number" max="5000" min="-5000"/>
+														</DIV>
+								                       	<DIV class="type-container percentage-style">
+															<INPUT class="input-half fixed-height percentage-y" type="number" max="5000" min="-5000"/><P>  %</P>
+														</DIV>
+								                       	<DIV class="type-container empty-space-style">
+								                       	</DIV>
+								                       	<DIV class="type-container empty-space-style">
+								                       	</DIV>
+														<HR></HR>
+													</DIV>
+													::elseif (name=="percentage")::
+							                       	<DIV class="type-container percentage-style PercentageEditor" data-group-id="Group3">
+														<INPUT class="input-half fixed-height" type="number" max="5000" min="-5000"/><P>  %</P>
+													</DIV>
+													::elseif (name=="color")::
+							                       	<DIV class="type-container color-style ColorEditor" data-group-id="Group3">
+														<INPUT class="input-full fixed-height" type="color"/>
+														<INPUT class="input-full fixed-height" type="checkbox"/> <P> Transparent</P>
+													</DIV>
+													::elseif (name=="uri")::
+							                       	<DIV class="type-container uri-style UrlEditor" data-group-id="Group3">
+														<INPUT class="input-one-full-line input-full fixed-height src-target" type="src"/>
+														<BUTTON class="input-one-full-line file-button select-file-button fixed-height" title="Browse library" data-fb-target="src-target">Browse library</BUTTON>
+													</DIV>
+													::elseif (name=="uri-multiple")::
+							                       	<DIV class="type-container uri-multiple-style UrlEditor" data-group-id="Group3">
+														<TEXTAREA class="input-one-full-line fixed-height src-target"></TEXTAREA>
+														<BUTTON class="input-one-full-line add-multiple-files-button fixed-height" title="Browse library" data-fb-target="src-target">Add from library</BUTTON>
+													</DIV>
+													::elseif (name=="integer")::
+							                       	<DIV class="type-container integer-style StringEditor" data-group-id="Group3">
+														<INPUT class="input-full fixed-height" type="number" max="5000" min="-5000"/>
+													</DIV>
+													::elseif (name=="number")::
+							                       	<DIV class="type-container number-style StringEditor" data-group-id="Group3">
+														<INPUT class="input-full fixed-height" type="number" max="5000" min="-5000"/>
+													</DIV>
+													::elseif (name=="bool")::
+							                       	<DIV class="type-container bool-style BoolEditor" data-value="::options.0.name::" data-group-id="Group3">
+														<INPUT class="input-half fixed-height" type="checkbox"/> <P> ::options.0.name::</P>
+													</DIV>
+													::elseif (name=="font-family-name")::
+							                       	<DIV class="type-container font-family-name-style StringEditor" data-group-id="Group3">
+														<TEXTAREA class="input-one-full-line fixed-height"></TEXTAREA>
+													</DIV>
+													::elseif (name=="font-generic-family")::
+							                       	<DIV class="type-container font-generic-family-style InlineDropdownEditor" data-group-id="Group3">
+														<SELECT class="dropdown-full fixed-height">
+															<OPTION value=""></OPTION>
+															<OPTION value="inherit">inherit</OPTION>
+															<OPTION value="serif">serif</OPTION>
+															<OPTION value="sans-serif">sans-serif</OPTION>
+															<OPTION value="monospace">monospace</OPTION>
+															<OPTION value="fantasy">fantasy</OPTION>
+															<OPTION value="cursive">cursive</OPTION>
+														</SELECT>
+						                       		</DIV>
+							                        ::end::
+							                    ::end:: 
+											<HR></HR>
+										</DIV> 
+										::end:: 
+									</FIELDSET>
+								::end:: 
+							</FORM>
+						::end:: 
+					</DIV>
+					</DIV>
+				</DIV>
+				
+				
+
+
+				
+				
+				<DIV class="Group4 SelectionController panel-builder-body">
+					<DIV class="FileViewer">
+					</DIV>
+					<DIV data-dropzones-class-name="Layer" class="selection-marker Draggable SelectionDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group4">
+                    	<DIV class="selection-marker-delete"></DIV>
+                        <DIV class="selection-marker-name">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</DIV>
+                        <DIV class="draggable-dragzone"></DIV>
+					</DIV>
+					<DIV class="hover-marker">
+					</DIV>
+					<DIV data-dropzones-class-name="silex-view" class="selection-layer-marker Draggable SelectionDropHandler" data-phantom-class-name="master-phantom" data-group-id="Group4">
+                    	<DIV class="selection-marker-delete"></DIV>
+                        <DIV class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</DIV>
+                        <DIV class="draggable-dragzone"></DIV>
+					</DIV>
+					<DIV class="hover-layer-marker">
+					</DIV>
+				</DIV>
+				
+				
+
+
+			</DIV>
+			
+			
+			
+
+
+		</DIV>
+	</BODY></HTML>

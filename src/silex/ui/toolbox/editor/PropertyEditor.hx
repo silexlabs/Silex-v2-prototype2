@@ -3,8 +3,7 @@ package silex.ui.toolbox.editor;
 import silex.ui.dialog.TextEditorDialog;
 import silex.property.PropertyModel;
 import silex.component.ComponentModel;
-import silex.publication.PublicationModel;
-import silex.publication.PublicationData;
+import silex.file.FileModel;
 import silex.layer.LayerModel;
 import silex.page.PageModel;
 
@@ -46,6 +45,12 @@ class PropertyEditor extends UrlEditor
 	public function new(rootElement:HtmlDom, BrixId:String){
 		super(rootElement, BrixId);
 	}
+	override private function onPropertyChange(e:CustomEvent) {
+		trace("onPropertyChange "+propertyChangePending+" - "+e.detail.name+" - "+propertyName);
+		if (propertyChangePending)
+			return;
+		refresh();
+	}
 	/**
 	 * callback for toolbox events
 	 * handle the click on delete button, remove the selection from model and view
@@ -61,14 +66,14 @@ class PropertyEditor extends UrlEditor
 			if (DomTools.hasClass(selectedItem, "Layer")){
 				var layer = LayerModel.getInstance().selectedItem;
 				var page = PageModel.getInstance().selectedItem;
-				var name:String = layer.rootElement.getAttribute("data-silex-name");
+				var name:String = layer.rootElement.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
 				if (name == null) name = "";
 				var confirm = Lib.window.confirm("I am about to delete the container "+name+". Are you sure?");
 				if (confirm == true)
 					LayerModel.getInstance().removeLayer(layer, page.name);
 			}
 			else{
-				var name:String = selectedItem.getAttribute("data-silex-name");
+				var name:String = selectedItem.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
 				if (name == null) name = "";
 				var confirm = Lib.window.confirm("I am about to delete the component "+name+". Are you sure?");
 				if (confirm == true)
@@ -108,6 +113,7 @@ class PropertyEditor extends UrlEditor
 	 * reset the values
 	 */
 	override private function reset() {
+		trace("reset");
 		// 
 		// font family
 		setInputValue("name-property", "");
@@ -141,6 +147,7 @@ class PropertyEditor extends UrlEditor
 	 * display the property value
 	 */
 	override private function load(element:HtmlDom) {
+		trace("load");
 		// handle the context
 		var contextArray = [];
 		if (DomTools.hasClass(element, "Layer")){
@@ -162,7 +169,7 @@ class PropertyEditor extends UrlEditor
 
 		var propertyModel = PropertyModel.getInstance();
 
-		var value = propertyModel.getAttribute(element, "data-silex-name");
+		var value = propertyModel.getAttribute(element, LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
 		if (value != null) setInputValue("name-property", value);
 
 		var value = propertyModel.getAttribute(element, "title");
@@ -175,7 +182,7 @@ class PropertyEditor extends UrlEditor
 		if (value != null) setInputValue("src-property", DomTools.abs2rel(value));
 		else setInputValue("src-property", "");
 
-		var sources = PublicationModel.getInstance().getModelFromView(element).getElementsByTagName("source");
+		var sources = FileModel.getInstance().getModelFromView(element).getElementsByTagName("source");
 		var value = "";
 		for (idx in 0...sources.length){
 			value += DomTools.abs2rel(cast(sources[idx]).src) + "\n";
@@ -214,9 +221,9 @@ class PropertyEditor extends UrlEditor
 
 		var value = getInputValue("name-property");
 		if (value != null && value != "")
-			propertyModel.setAttribute(selectedItem, "data-silex-name", getInputValue("name-property"));
+			propertyModel.setAttribute(selectedItem, LayerModel.LAYER_NAME_ATTRIBUTE_NAME, getInputValue("name-property"));
 		else
-			propertyModel.setAttribute(selectedItem, "data-silex-name", null);
+			propertyModel.setAttribute(selectedItem, LayerModel.LAYER_NAME_ATTRIBUTE_NAME, null);
 
 		var value = getInputValue("title-property");
 		if (value != null && value != "")
@@ -233,12 +240,13 @@ class PropertyEditor extends UrlEditor
 		var value = getInputValue("src-property");
 		if (value != null && value != "") propertyModel.setProperty(selectedItem, "src", DomTools.abs2rel(value));
 		else if (Reflect.hasField(selectedItem, "src")){
-			// only if the attrivute is defined 
-			// otherwise it my be on a node of type audio or video, which has no src attribute
+			// only if the attribute is defined 
+			// otherwise it may be on a node of type audio or video, which has no src attribute
 			propertyModel.setProperty(selectedItem, "src", "");
 		}
+		trace("apply "+DomTools.abs2rel(value));
 
-		var modelHtmlDom = PublicationModel.getInstance().getModelFromView(selectedItem);
+		var modelHtmlDom = FileModel.getInstance().getModelFromView(selectedItem);
 		var sources = modelHtmlDom.getElementsByTagName("source");
 		for (idx in 0...sources.length){
 			// always take "0" element because this remove an item from sources 

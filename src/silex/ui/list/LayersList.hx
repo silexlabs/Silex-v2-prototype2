@@ -9,8 +9,13 @@ import brix.util.DomTools;
 
 import silex.layer.LayerModel;
 import silex.page.PageModel;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 import silex.property.PropertyModel;
+
+typedef ClassData<ClassInstance> = {
+	name:String,
+	classInstance: ClassInstance, 
+}
 
 /**
  * list component used to visualize and manipulate layers 
@@ -19,7 +24,7 @@ import silex.property.PropertyModel;
  * @example 	<ul class="LayersList"><li>::rootElement.className:: (::status::)</li></ul> displays the name of the items
  */
 @tagNameFilter("ul")
-class LayersList extends List<Layer>
+class LayersList extends List<ClassData<Layer>>
 {
 	/**
 	 * Information for debugging, e.g. the class name
@@ -38,7 +43,7 @@ class LayersList extends List<Layer>
 		// store a reference to the model
 		var layerModel = LayerModel.getInstance();
 
-		// update the data when the publication data changed
+		// update the data when the file data changed
 		layerModel.addEventListener(LayerModel.ON_LIST_CHANGE, onListChange, DEBUG_INFO);
 
 		// update the selection
@@ -55,21 +60,26 @@ class LayersList extends List<Layer>
 	override public function reloadData(){
 		if (propertyChangePending == true) return;
 
-		var publicationModel = PublicationModel.getInstance();
-		// if a publication is loaded only
-		if(publicationModel.viewHtmlDom != null){
+		var fileModel = FileModel.getInstance();
+		// if a file is loaded only
+		if(fileModel.currentData.isLoaded == true){
 			// get the list of all layers
-			var nodes = DomTools.getElementsByAttribute(publicationModel.viewHtmlDom, "data-master", "*");
+			var nodes = DomTools.getElementsByAttribute(fileModel.currentData.viewHtmlDom, "data-master", "*");
 			// get a list of instances 
-			var layers:Array<Layer> = new Array();
+			var layers:Array<ClassData<Layer>> = new Array();
 			// browse all nodes
 			for (idx in 0...nodes.length){
 				// retrieve the class instance associated with this node
-				var instances = publicationModel.application.getAssociatedComponents(nodes[idx], Layer);
+				var instances = fileModel.application.getAssociatedComponents(nodes[idx], Layer);
 
 				if (instances.length == 1){
 					// store the first instance
-					layers.push(instances.first());
+					var instance = instances.first();
+					var name = nodes[idx].getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
+					layers.push({
+						name:name,
+						classInstance: instance,
+					});
 				}
 				else{
 					throw ("Error: there should be 1 and only 1 instance of Layer associated with this node, and there is "+instances.length);
@@ -96,7 +106,7 @@ class LayersList extends List<Layer>
 	}
 	public function addLayer(){
 		var page = PageModel.getInstance().selectedItem;
-		LayerModel.getInstance().addMaster(selectedItem, page.name);
+		LayerModel.getInstance().addMaster(selectedItem.classInstance, page.name);
 	}
 	/**
 	 * selection changed, open the selected page
@@ -105,8 +115,8 @@ class LayersList extends List<Layer>
 		idx = super.setSelectedIndex(idx);
 		if (propertyChangePending == true) return idx;
 
-		if (LayerModel.getInstance().selectedItem != selectedItem){
-			LayerModel.getInstance().selectedItem = selectedItem;
+		if (LayerModel.getInstance().selectedItem != selectedItem.classInstance){
+			LayerModel.getInstance().selectedItem = selectedItem.classInstance;
 		}
 		return idx;
 	}

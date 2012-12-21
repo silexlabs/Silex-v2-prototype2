@@ -8,10 +8,9 @@ import brix.component.ui.DisplayObject;
 import brix.util.DomTools;
 
 import silex.interpreter.Interpreter;
-import silex.publication.PublicationData;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
+import silex.file.FileBrowser;
 import silex.page.PageModel;
-import silex.ui.dialog.FileBrowserDialog;
 
 /**
  * This component listen to the menu events and start the desired actions. 
@@ -25,68 +24,71 @@ class MenuController extends DisplayObject
 	 * static attribute set by the instance constructor
 	 */
 	static public var menuBrixId:String;
-	static public function createPublication(){
-		PublicationModel.getInstance().create();
+	/** 
+	 * create a new empty file
+	 */
+	static public function createFile(){
+		FileModel.getInstance().create();
 	}
 	/**
-	 * trash the current publication
+	 * trash the current file
 	 */
-	static public function trashPublication(){
-		var confirm = Lib.window.confirm("I am about to trash the publication "+PublicationModel.getInstance().currentName+". Are you sure?");
+	static public function trashFile(){
+		var confirm = Lib.window.confirm("I am about to trash the file "+FileModel.getInstance().currentData.name+". Are you sure?");
 		if (confirm == true)
-			PublicationModel.getInstance().trash(PublicationModel.getInstance().currentName);
+			FileModel.getInstance().trash(FileModel.getInstance().currentData.name);
 	}
 	/**
-	 * open the "open publication" popup
+	 * open the "open file" popup
 	 */
-	static public function openPublication(){
-		Page.openPage("open-dialog", true, null, null, menuBrixId);
+	static public function openFile(){
+		FileBrowser.selectFile(onFileChosen, menuBrixId);
 	}
 	/**
-	 * close the current publication
+	 * callback for the FileBrowser
 	 */
-	static public function closePublication(){
-		PublicationModel.getInstance().unload();
+	static private function onFileChosen(fileUrl:String){
+		var file = FileBrowser.getRelativeURLFromFileBrowser(fileUrl);
+		FileModel.getInstance().load(file);
 	}
 	/**
-	 * open the current publication in a new browser window
+	 * close the current file
 	 */
-	static public function viewPublication(){
-		Lib.window.open("../"+PublicationModel.getInstance().currentName, '_blank');
+/*	static public function closeFile(){
+		FileModel.getInstance().unload();
 	}
 	/**
-	 * save the current publication with its current name
-	 * if there is no current name, ask for one and create the new publication
+	 * open the current file in a new browser window
 	 */
-	static public function savePublication(){
-		// check the case where a new publication is about to be created
-		if (PublicationModel.getInstance().currentName == PublicationConstants.CREATION_TEMPLATE_PUBLICATION_NAME){
-			var newName = Lib.window.prompt("New name for your publication?", "");
-			if (newName != null && newName!="")
-				PublicationModel.getInstance().doCreate(newName);
-		}
-		else{
-			PublicationModel.getInstance().save();
-		}
+	static public function viewFile(){
+		Lib.window.open(Silex.initialBaseUrl+FileModel.getInstance().currentData.name, '_blank');
+	}
+	/**
+	 * save the current file with its current name
+	 * if there is no current name, ask for one and create the new file
+	 */
+	static public function saveFile(){
+		// check the case where a new file is about to be created
+		FileModel.getInstance().save();
 	}
 	/**
 	 * ask for a new name and save the current pulication as
 	 */
-	static public function savePublicationAs(){
-		var newName = Lib.window.prompt("New name for your publication?", PublicationModel.getInstance().currentName);
+	static public function saveFileAs(){
+		var newName = Lib.window.prompt("New name for your file?", FileModel.getInstance().currentData.name);
 		if (newName != null)
-			PublicationModel.getInstance().saveAs(newName);
+			FileModel.getInstance().saveAs(newName);
 	}
 	/**
 	 * save a copy of the current application with a new name
 	 */
-	static public function savePublicationCopy(){
-		var newName = Lib.window.prompt("What name for your copy?", PublicationModel.getInstance().currentName);
+	static public function saveFileCopy(){
+		var newName = Lib.window.prompt("What name for your copy?", FileModel.getInstance().currentData.name);
 		if (newName != null)
-			PublicationModel.getInstance().saveACopy(newName);
+			FileModel.getInstance().saveACopy(newName);
 	}
 	/**
-	 * add a page to the current publication
+	 * add a page to the current file
 	 */
 	static public function addPage(){
 		var newName = Lib.window.prompt("What name for your new page?");
@@ -114,8 +116,8 @@ class MenuController extends DisplayObject
 	 * open the file manager
 	 */
 	static public function openFileBrowser(){
-		FileBrowserDialog.message = "Manage your files and click \"close\"";
-		Page.openPage(FileBrowserDialog.FB_PAGE_NAME, true, null, null, menuBrixId);
+		FileBrowser.message = "Manage your files and click \"close\"";
+		FileBrowser.selectFile(null, menuBrixId);
 	}
 	/**
 	 * Constructor
@@ -156,22 +158,22 @@ class MenuController extends DisplayObject
 			/////////////
 			// file
 			/////////////
-			case "create-publication":
-				createPublication();
-			case "trash-publication":
-				trashPublication();
-			case "open-publication":
-				openPublication();
-			case "close-publication":
-				closePublication();
-			case "view-publication":
-				viewPublication();
-			case "save-publication":
-				savePublication();
-			case "save-publication-as":
-				savePublicationAs();
-			case "save-publication-copy":
-				savePublicationCopy();
+			case "create-file":
+				createFile();
+			case "trash-file":
+				trashFile();
+			case "open-file":
+				openFile();
+//			case "close-file":
+//				closeFile();
+			case "view-file":
+				viewFile();
+			case "save-file":
+				saveFile();
+			case "save-file-as":
+				saveFileAs();
+			case "save-file-copy":
+				saveFileCopy();
 
 			/////////////
 			// page

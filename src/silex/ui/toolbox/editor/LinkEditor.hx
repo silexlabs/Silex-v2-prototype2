@@ -3,7 +3,7 @@ package silex.ui.toolbox.editor;
 import silex.property.PropertyModel;
 import silex.component.ComponentModel;
 import silex.layer.LayerModel;
-import silex.publication.PublicationModel;
+import silex.file.FileModel;
 
 import silex.ui.link.SilexLink;
 import brix.component.navigation.link.LinkBase;
@@ -68,7 +68,6 @@ class LinkEditor extends EditorBase
 	 * this method should be implemented in the derived class
 	 */
 	override private function reset() {
-		trace("reset "+targetElement);
 		cast(inputElement).value = "";
 		cast(targetElement).value = "";
 		cast(pageSelectElement).selectedIndex = -1;
@@ -78,9 +77,8 @@ class LinkEditor extends EditorBase
 	 * this method should be implemented in the derived class
 	 */
 	override private function load(element:HtmlDom) {
-		trace("load "+targetElement);
-		// do nothing if the element is not a link, or there is no publication loaded
-		if (!DomTools.hasClass(element, "SilexLink") || PublicationModel.getInstance().application == null){
+		// do nothing if the element is not a link, or there is no file loaded
+		if (!DomTools.hasClass(element, "SilexLink") || FileModel.getInstance().application == null){
 			reset();
 		}
 		else{
@@ -91,7 +89,7 @@ class LinkEditor extends EditorBase
 				var value:String = PropertyModel.getInstance().getAttribute(element, LinkBase.CONFIG_TARGET_ATTR);
 				cast(targetElement).value = value;
 			}
-			else if (SilexLink.isPage(value, PublicationModel.getInstance().application.id)){
+			else if (SilexLink.isPage(value, FileModel.getInstance().application.id)){
 				cast(pageSelectElement).value = value;
 			}
 			else{
@@ -104,7 +102,6 @@ class LinkEditor extends EditorBase
 	 * this method should be implemented in the derived class
 	 */
 	override private function apply() {
-		trace("apply "+targetElement);
 		var value = cast(inputElement).value;
 		if (value != "" && value != null){
 			// there is a link to set

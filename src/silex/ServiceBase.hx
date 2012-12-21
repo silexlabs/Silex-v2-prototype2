@@ -2,6 +2,8 @@ package silex;
 
 #if silexClientSide
 import haxe.remoting.HttpAsyncConnection;
+import brix.util.DomTools;
+import silex.Silex;
 #end
 import haxe.remoting.Context;
 /**
@@ -21,11 +23,7 @@ class ServiceBase{
 	/**
 	 * Default Silex server URL
 	 */
-	public static var GATEWAY_URL:String = "../../";
-	/**
-	 * Connection to the gateway (Haxe remoting)
-	 */
-	public var connection:HttpAsyncConnection;
+	public static var GATEWAY_URL:String = "../";
 	/**
 	 * Constructor
 	 * Store the gateway URL
@@ -33,13 +31,13 @@ class ServiceBase{
 	public function new(serviceName:String){
 		// store the service name
 		this.serviceName = serviceName;
-		// init connection to the server
-		connection = HttpAsyncConnection.urlConnect(GATEWAY_URL);
 	}
 	/**
 	 * Make a remoting call
 	 */
 	public function callServerMethod(methodName:String, args:Array<Dynamic>, onResult:Dynamic, onError:String->Void=null) {
+		// init connection to the server
+		var connection = HttpAsyncConnection.urlConnect(Silex.initialBaseUrl+GATEWAY_URL);
 		// add error handler
 		connection.setErrorHandler(onError);
 

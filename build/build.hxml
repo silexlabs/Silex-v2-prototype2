@@ -1,16 +1,16 @@
 #########
 # builder
 #########
--js ../bin/publications/admin/silex-builder.js
+-js ../bin/files/scripts/silex-builder.js
 -cp ../src/
 -cp ../../Brix/src/
 -cp ../../Cocktail/src/
-#--no-traces
--debug
+--no-traces
+#-debug
 -lib hscript
 
 -main silex.Silex
---macro brix.core.Builder.create('../src/index-builder.html', '../bin/publications/admin/index.html')
+--macro brix.core.Builder.create('../src/index-builder.html', '../bin/files/admin.html')
 
 #-D brixdebug
 -D disableEmbedHtml
@@ -18,18 +18,21 @@
 -D stopOnError
 
 -D silexClientSide
--D silexDebug
+-D silexBuilder
+-D silexDropboxMode
+#-D silexDebug
 -D redirectTraces
 
 --next
+
 #########
 # player JS
 #########
--js ../bin/libs/silex/silex.js
+-js ../bin/files/scripts/silex.js
 -cp ../src/
 -cp ../../Brix/src/
 -cp ../../Cocktail/src/
-#--no-traces
+--no-traces
 -debug
 -lib hscript
 
@@ -44,3 +47,58 @@
 -D silexClientSide
 -D silexDebug
 -D redirectTraces
+
+#########
+# player Flash
+#########
+
+--next
+
+-swf ../bin/files/scripts/silex.swf
+-cp ../src/
+-cp ../../Brix/src/
+-cp ../../Cocktail/src/
+-main silex.Silex
+--macro brix.core.Builder.create('../src/index-player.html')
+-lib hscript
+--remap js:cocktail
+-swf-version 10.2
+#-D slpdebug
+#-D disableEmbedHtml
+-D noAutoStart
+-D stopOnError
+
+-D silexClientSide
+-D redirectTraces
+
+# only in js : -D silexDebug
+--no-traces
+
+
+--next
+
+
+#########
+# server
+#########
+-php ../bin/libs/silex/silex.php
+-cp ../src/
+-cp ../../Brix/src/
+-cp ../../Cocktail/src/
+--no-traces
+-debug
+-lib hscript
+
+--remap js:cocktail
+-main silex.Silex
+--macro brix.core.Builder.create('../src/index-server.html')
+
+#-D slpdebug
+-D disableEmbedHtml
+-D noAutoStart
+-D stopOnError
+
+-D silexServerSide
+-D silexDropboxMode
+# only in js : -D silexDebug
+
