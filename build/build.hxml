@@ -18,6 +18,7 @@
 -D stopOnError
 
 -D silexClientSide
+-D silexBuilder
 -D silexDropboxMode
 #-D silexDebug
 -D redirectTraces

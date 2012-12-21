@@ -67,11 +67,15 @@ function checkInstall(){
 	global $OAuth;
 	$res = getFile('scripts/loader.js');
 
-	// here it will never pass since Dropbox/OAuth/Consumer/ConsumerAbstract.php does exit at line 85
+	// when app is not authorized, it will never pass here since Dropbox/OAuth/Consumer/ConsumerAbstract.php does exit at line 85
 	// so call the script checkInstall.php directly instead
 
 	if($res == NULL){
 		if (copySilexFiles() == false){
+
+			return Array("redirect" => $OAuth->getAuthoriseUrl());
+
+
 			// reset
 			session_unset();
 			// retry

@@ -53,8 +53,8 @@ class Silex {
 	 * store the initial URL, since it will change with base tags
 	 */
 	public static var initialBaseUrl:String;
-	
-	public static inline var CHECK_INSTALL_SCRIPT = "../libs/dropbox/checkInstall.php";
+
+	public static inline var CHECK_INSTALL_SCRIPT = "../libs/dropbox/reset.php";
 	/**
 	 * Entry point for Silex applications
 	 * Load Silex config
@@ -81,15 +81,16 @@ class Silex {
 		// store the initial URL
 		initialBaseUrl = DomTools.getBaseUrl();
 
+#if silexBuilder
 		var fileService = new FileService();
 		fileService.checkInstall(onCheckInstall, onCheckInstallError);
-
 /*		var r = new haxe.Http("../libs/dropbox/checkInstall.php");
 		r.onError = onCheckInstallError;
 		r.onData = function(r) { init(); }
 		r.request(false);
-
-/*		if (Lib.document.body == null){
+*/
+#else
+		if (Lib.document.body == null){
 			// the script has been loaded at start
 			Lib.window.onload = init;
 		}
@@ -97,7 +98,9 @@ class Silex {
 			// the script has been loaded after the html page
 			init();
 		}
-*/	}
+#end
+	}
+#if silexBuilder
 	private static function onCheckInstall(installStatus:InstallStatus){
 		trace("onCheckInstall return latest silex version: "+installStatus);
 		if (installStatus.redirect != null){
@@ -115,6 +118,7 @@ class Silex {
 			Lib.window.location = CHECK_INSTALL_SCRIPT;
 		}
 	}
+#end
 	/**
 	 * Init Silex app
 	 */
