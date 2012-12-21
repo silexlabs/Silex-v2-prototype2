@@ -945,19 +945,13 @@ brix.component.group.Groupable.startGroupable = function(groupable,rootElement) 
 	if(groupId == null) return;
 	if(rootElement == null) {
 		var groupElements = groupable.getBrixApplication().body.getElementsByClassName(groupId);
-		if(groupElements.length < 1) {
-			haxe.Log.trace("WARNING: could not find the group component " + groupId,{ fileName : "IGroupable.hx", lineNumber : 54, className : "brix.component.group.Groupable", methodName : "startGroupable"});
-			return;
-		}
+		if(groupElements.length < 1) return;
 		if(groupElements.length > 1) throw "ERROR " + groupElements.length + " Group components are declared with the same group id " + groupId;
 		groupable.groupElement = groupElements[0];
 	} else {
 		var domElement = rootElement;
 		while(domElement != null && !brix.util.DomTools.hasClass(domElement,groupId)) domElement = domElement.parentNode;
-		if(domElement != null) groupable.groupElement = domElement; else {
-			haxe.Log.trace("WARNING: could not find the group component " + groupId,{ fileName : "IGroupable.hx", lineNumber : 80, className : "brix.component.group.Groupable", methodName : "startGroupable"});
-			return;
-		}
+		if(domElement != null) groupable.groupElement = domElement; else return;
 	}
 }
 brix.component.ui.DisplayObject = function(rootElement,brixId) {
@@ -1038,18 +1032,16 @@ brix.component.interaction.NotificationManager.prototype = $extend(brix.componen
 		this.refreshNotifications();
 	}
 	,refreshNotifications: function() {
-		haxe.Log.trace("refreshNotifications " + Std.string(this.notifications) + " - " + this.notificationTemplate,{ fileName : "NotificationManager.hx", lineNumber : 278, className : "brix.component.interaction.NotificationManager", methodName : "refreshNotifications"});
 		var t = new haxe.Template(this.notificationTemplate);
 		try {
 			this.notificationZone.innerHTML = t.execute({ notifications : this.notifications});
 		} catch( e ) {
-			haxe.Log.trace("Error: " + Std.string(e),{ fileName : "NotificationManager.hx", lineNumber : 286, className : "brix.component.interaction.NotificationManager", methodName : "refreshNotifications"});
+			null;
 		}
-		haxe.Log.trace("refreshNotifications " + this.notificationZone.innerHTML,{ fileName : "NotificationManager.hx", lineNumber : 288, className : "brix.component.interaction.NotificationManager", methodName : "refreshNotifications"});
+		null;
 	}
 	,sendCustomNotification: function(notification,duration) {
 		if(duration == null) duration = 10000;
-		haxe.Log.trace("sendCustomNotification " + Std.string(notification),{ fileName : "NotificationManager.hx", lineNumber : 265, className : "brix.component.interaction.NotificationManager", methodName : "sendCustomNotification"});
 		if(duration > 0) haxe.Timer.delay((function(f,a1) {
 			return function() {
 				return f(a1);
@@ -1063,15 +1055,8 @@ brix.component.interaction.NotificationManager.prototype = $extend(brix.componen
 	}
 	,sendNotification: function(e,duration) {
 		if(duration == null) duration = 10000;
-		haxe.Log.trace("sendNotification " + Std.string(e),{ fileName : "NotificationManager.hx", lineNumber : 229, className : "brix.component.interaction.NotificationManager", methodName : "sendNotification"});
-		if(!this.hasNotification()) {
-			haxe.Log.trace("NO NOTIFICATION SYSTEM",{ fileName : "NotificationManager.hx", lineNumber : 232, className : "brix.component.interaction.NotificationManager", methodName : "sendNotification"});
-			throw "NO NOTIFICATION SYSTEM";
-		}
-		if(!this.hasPermission()) {
-			haxe.Log.trace("NO NOTIFICATION PERMISSION",{ fileName : "NotificationManager.hx", lineNumber : 237, className : "brix.component.interaction.NotificationManager", methodName : "sendNotification"});
-			throw "NO NOTIFICATION PERMISSION";
-		}
+		if(!this.hasNotification()) throw "NO NOTIFICATION SYSTEM";
+		if(!this.hasPermission()) throw "NO NOTIFICATION PERMISSION";
 		var notification;
 		notification = window.webkitNotifications.createNotification(e.iconUrl,e.title,e.body);
 		notification.show();
@@ -1082,23 +1067,15 @@ brix.component.interaction.NotificationManager.prototype = $extend(brix.componen
 		})($bind(this,this.destroyNotification),notification),duration);
 	}
 	,requestPermission: function(acceptCallback,denyCallback) {
-		haxe.Log.trace("requestPermission ",{ fileName : "NotificationManager.hx", lineNumber : 207, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
 		if(this.hasNotification()) {
-			if(this.hasPermission()) {
-				haxe.Log.trace("PERMISSION ALLOWED",{ fileName : "NotificationManager.hx", lineNumber : 212, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
-				acceptCallback();
-			} else {
-				haxe.Log.trace("PERMISSION ASKED",{ fileName : "NotificationManager.hx", lineNumber : 215, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
-				window.webkitNotifications.requestPermission((function(f,a1,a2) {
-					return function() {
-						return f(a1,a2);
-					};
-				})($bind(this,this.permissionRequestCallback),acceptCallback,denyCallback));
-			}
-		} else haxe.Log.trace("NO NOTIFICATION SYSTEM",{ fileName : "NotificationManager.hx", lineNumber : 221, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
+			if(this.hasPermission()) acceptCallback(); else window.webkitNotifications.requestPermission((function(f,a1,a2) {
+				return function() {
+					return f(a1,a2);
+				};
+			})($bind(this,this.permissionRequestCallback),acceptCallback,denyCallback));
+		} else null;
 	}
 	,permissionRequestCallback: function(acceptCallback,denyCallback) {
-		haxe.Log.trace("permissionRequestCallback " + Std.string(this.hasPermission()),{ fileName : "NotificationManager.hx", lineNumber : 190, className : "brix.component.interaction.NotificationManager", methodName : "permissionRequestCallback"});
 		if(this.hasNotification() && this.hasPermission()) {
 			if(acceptCallback != null) acceptCallback();
 		} else if(denyCallback != null) denyCallback();
@@ -1110,7 +1087,6 @@ brix.component.interaction.NotificationManager.prototype = $extend(brix.componen
 		return window.webkitNotifications != null;
 	}
 	,onNotificationReceived: function(e) {
-		haxe.Log.trace("onNotificationReceived " + Std.string(e.detail) + " - " + Std.string(this.hasNotification()) + " - " + Std.string(this.hasPermission()),{ fileName : "NotificationManager.hx", lineNumber : 149, className : "brix.component.interaction.NotificationManager", methodName : "onNotificationReceived"});
 		if(this.hasNotification()) {
 			if(this.hasPermission()) this.sendNotification(e.detail); else {
 				this.requestPermission(null,null);
@@ -1119,11 +1095,9 @@ brix.component.interaction.NotificationManager.prototype = $extend(brix.componen
 		} else this.sendCustomNotification(e.detail);
 	}
 	,initNotifications: function(e) {
-		if(!this.hasPermission()) {
-			haxe.Log.trace("initNotifications",{ fileName : "NotificationManager.hx", lineNumber : 136, className : "brix.component.interaction.NotificationManager", methodName : "initNotifications"});
-			this.requestPermission(null,null);
-		}
+		if(!this.hasPermission()) this.requestPermission(null,null);
 		this.rootElement.removeEventListener("click",this.initNotificationsCallback,false);
+		this.rootElement.style.display = "inline-block";
 	}
 	,initNotificationsCallback: null
 	,notificationZone: null
@@ -1174,7 +1148,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 				element.pause();
 				element.currentTime = 0;
 			} catch( e ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 577, className : "brix.component.navigation.Layer", methodName : "cleanupVideoElements"});
+				null;
 			}
 		}
 	}
@@ -1187,7 +1161,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 				element.pause();
 				element.currentTime = 0;
 			} catch( e ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 555, className : "brix.component.navigation.Layer", methodName : "cleanupAudioElements"});
+				null;
 			}
 		}
 	}
@@ -1203,7 +1177,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 				}
 				element.muted = brix.component.sound.SoundOn.isMuted;
 			} catch( e ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 533, className : "brix.component.navigation.Layer", methodName : "setupVideoElements"});
+				null;
 			}
 		}
 	}
@@ -1219,19 +1193,13 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 				}
 				element.muted = brix.component.sound.SoundOn.isMuted;
 			} catch( e ) {
-				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 508, className : "brix.component.navigation.Layer", methodName : "setupAudioElements"});
+				null;
 			}
 		}
 	}
 	,doHide: function(transitionData,transitionObserver,preventTransitions,e) {
-		if(e != null && e.target != this.rootElement) {
-			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 437, className : "brix.component.navigation.Layer", methodName : "doHide"});
-			return;
-		}
-		if(preventTransitions == false && this.doHideCallback == null) {
-			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 442, className : "brix.component.navigation.Layer", methodName : "doHide"});
-			return;
-		}
+		if(e != null && e.target != this.rootElement) return;
+		if(preventTransitions == false && this.doHideCallback == null) return;
 		if(preventTransitions == false) {
 			this.endTransition(brix.component.navigation.transition.TransitionType.hide,transitionData,this.doHideCallback);
 			this.doHideCallback = null;
@@ -1242,7 +1210,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 			event.initCustomEvent("onLayerHideStop",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
 			this.rootElement.dispatchEvent(event);
 		} catch( e1 ) {
-			haxe.Log.trace("Error: could not dispatch event " + Std.string(e1),{ fileName : "Layer.hx", lineNumber : 467, className : "brix.component.navigation.Layer", methodName : "doHide"});
+			null;
 		}
 		if(transitionObserver != null) transitionObserver.removeTransition(this);
 		while(this.rootElement.childNodes.length > 0) {
@@ -1255,11 +1223,9 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 	,hide: function(transitionData,transitionObserver,preventTransitions) {
 		if(preventTransitions == null) preventTransitions = false;
 		if(this.status == brix.component.navigation.LayerStatus.hideTransition) {
-			haxe.Log.trace("Warning: hide break previous transition hide",{ fileName : "Layer.hx", lineNumber : 373, className : "brix.component.navigation.Layer", methodName : "hide"});
 			this.doHideCallback(null);
 			this.removeTransitionEvent(this.doHideCallback);
 		} else if(this.status == brix.component.navigation.LayerStatus.showTransition) {
-			haxe.Log.trace("Warning: hide break previous transition show",{ fileName : "Layer.hx", lineNumber : 380, className : "brix.component.navigation.Layer", methodName : "hide"});
 			this.doShowCallback(null);
 			this.removeTransitionEvent(this.doShowCallback);
 		}
@@ -1271,7 +1237,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 			event.initCustomEvent("onLayerHideStart",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
 			this.rootElement.dispatchEvent(event);
 		} catch( e ) {
-			haxe.Log.trace("Error: could not dispatch event " + Std.string(e),{ fileName : "Layer.hx", lineNumber : 409, className : "brix.component.navigation.Layer", methodName : "hide"});
+			null;
 		}
 		var audioNodes = this.rootElement.getElementsByTagName("audio");
 		this.cleanupAudioElements(audioNodes);
@@ -1287,14 +1253,8 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 		} else this.doHide(transitionData,transitionObserver,preventTransitions,null);
 	}
 	,doShow: function(transitionData,transitionObserver,preventTransitions,e) {
-		if(e != null && e.target != this.rootElement) {
-			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 321, className : "brix.component.navigation.Layer", methodName : "doShow"});
-			return;
-		}
-		if(preventTransitions == false && this.doShowCallback == null) {
-			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 325, className : "brix.component.navigation.Layer", methodName : "doShow"});
-			return;
-		}
+		if(e != null && e.target != this.rootElement) return;
+		if(preventTransitions == false && this.doShowCallback == null) return;
 		if(preventTransitions == false) this.endTransition(brix.component.navigation.transition.TransitionType.show,transitionData,this.doShowCallback);
 		this.doShowCallback = null;
 		this.setStatus(brix.component.navigation.LayerStatus.visible);
@@ -1307,18 +1267,16 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 			event.initCustomEvent("onLayerShowStop",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
 			this.rootElement.dispatchEvent(event);
 		} catch( e1 ) {
-			haxe.Log.trace("Error: could not dispatch event " + Std.string(e1),{ fileName : "Layer.hx", lineNumber : 355, className : "brix.component.navigation.Layer", methodName : "doShow"});
+			null;
 		}
 		if(transitionObserver != null) transitionObserver.removeTransition(this);
 	}
 	,show: function(transitionData,transitionObserver,preventTransitions) {
 		if(preventTransitions == null) preventTransitions = false;
 		if(this.status == brix.component.navigation.LayerStatus.hideTransition) {
-			haxe.Log.trace("Warning: show break previous transition hide",{ fileName : "Layer.hx", lineNumber : 254, className : "brix.component.navigation.Layer", methodName : "show"});
 			this.doHideCallback(null);
 			this.removeTransitionEvent(this.doHideCallback);
 		} else if(this.status == brix.component.navigation.LayerStatus.showTransition) {
-			haxe.Log.trace("Warning: show break previous transition show",{ fileName : "Layer.hx", lineNumber : 261, className : "brix.component.navigation.Layer", methodName : "show"});
 			this.doShowCallback(null);
 			this.removeTransitionEvent(this.doShowCallback);
 		}
@@ -1334,7 +1292,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 			event.initCustomEvent("onLayerShowStart",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
 			this.rootElement.dispatchEvent(event);
 		} catch( e ) {
-			haxe.Log.trace("Error: could not dispatch event " + Std.string(e),{ fileName : "Layer.hx", lineNumber : 298, className : "brix.component.navigation.Layer", methodName : "show"});
+			null;
 		}
 		if(preventTransitions == false) {
 			this.doShowCallback = (function(f,a1,a2,a3) {
@@ -1406,10 +1364,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 		}
 	}
 	,checkForNeverEndingTransition: function() {
-		if(this.status == brix.component.navigation.LayerStatus.showTransition || this.status == brix.component.navigation.LayerStatus.hideTransition) {
-			haxe.Log.trace("Warning, transition is not over. This may be a layer with data-show-start but with a style which does not has CSS transition. Root node with css class: " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 130, className : "brix.component.navigation.Layer", methodName : "checkForNeverEndingTransition"});
-			haxe.Timer.delay($bind(this,this.checkForNeverEndingTransition),2500);
-		}
+		if(this.status == brix.component.navigation.LayerStatus.showTransition || this.status == brix.component.navigation.LayerStatus.hideTransition) haxe.Timer.delay($bind(this,this.checkForNeverEndingTransition),2500);
 	}
 	,setStatus: function(newStatus) {
 		this.status = newStatus;
@@ -1613,7 +1568,7 @@ brix.component.navigation.link.LinkBase = function(rootElement,brixId) {
 	if(rootElement.getAttribute("href") != null) {
 		this.linkName = StringTools.trim(rootElement.getAttribute("href"));
 		this.linkName = HxOverrides.substr(this.linkName,this.linkName.indexOf("#") + 1,null);
-	} else if(rootElement.getAttribute("data-href") != null) this.linkName = StringTools.trim(rootElement.getAttribute("data-href")); else haxe.Log.trace("Warning: the link has no href atribute (" + Std.string(rootElement) + ")",{ fileName : "LinkBase.hx", lineNumber : 101, className : "brix.component.navigation.link.LinkBase", methodName : "new"});
+	} else if(rootElement.getAttribute("data-href") != null) this.linkName = StringTools.trim(rootElement.getAttribute("data-href")); else null;
 	if(rootElement.getAttribute("target") != null && StringTools.trim(rootElement.getAttribute("target")) != "") this.targetAttr = StringTools.trim(rootElement.getAttribute("target"));
 };
 $hxClasses["brix.component.navigation.link.LinkBase"] = brix.component.navigation.link.LinkBase;
@@ -1658,14 +1613,11 @@ brix.component.navigation.transition.TransitionObserver.prototype = {
 			event.initCustomEvent(eventName,true,true,this.page);
 			this.page.rootElement.dispatchEvent(event);
 		} catch( e ) {
-			haxe.Log.trace("Error: could not dispatch event " + Std.string(e),{ fileName : "TransitionObserver.hx", lineNumber : 94, className : "brix.component.navigation.transition.TransitionObserver", methodName : "dispatch"});
+			null;
 		}
 	}
 	,doRemoveTransition: function() {
-		if(this.hasStoped) {
-			haxe.Log.trace("Error: the watcher has allready been used and all transitions have finished. Canot reuse watchers.",{ fileName : "TransitionObserver.hx", lineNumber : 68, className : "brix.component.navigation.transition.TransitionObserver", methodName : "doRemoveTransition"});
-			return;
-		}
+		if(this.hasStoped) return;
 		this.pendingTransitions--;
 		if(this.pendingTransitions == 0) {
 			this.hasStoped = true;
@@ -1677,10 +1629,7 @@ brix.component.navigation.transition.TransitionObserver.prototype = {
 	}
 	,addTransition: function(layer) {
 		if(this.pendingTransitions == 0) {
-			if(this.hasStoped) {
-				haxe.Log.trace("Error: the watcher has allready been used and all transitions have finished. Canot reuse watchers.",{ fileName : "TransitionObserver.hx", lineNumber : 50, className : "brix.component.navigation.transition.TransitionObserver", methodName : "addTransition"});
-				return;
-			}
+			if(this.hasStoped) return;
 			this.hasStarted = true;
 			this.dispatch(this.startEvent);
 		}
@@ -1790,11 +1739,10 @@ brix.core.Application.get = function(BrixId) {
 	return brix.core.Application.instances.get(BrixId);
 }
 brix.core.Application.main = function() {
-	haxe.Log.trace("----",{ fileName : "Application.hx", lineNumber : 125, className : "brix.core.Application", methodName : "main"});
 	if(haxe.Firebug.detect()) {
 		haxe.Firebug.redirectTraces();
-		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Application.hx", lineNumber : 130, className : "brix.core.Application", methodName : "main"});
-	} else haxe.Log.trace("Warning: Brix can not redirect traces to console, because no console was found",{ fileName : "Application.hx", lineNumber : 134, className : "brix.core.Application", methodName : "main"});
+		null;
+	} else null;
 }
 brix.core.Application.createApplication = function(args) {
 	var newId = brix.core.Application.generateUniqueId();
@@ -1810,7 +1758,7 @@ brix.core.Application.prototype = {
 		var componentClass = Type.resolveClass(classname);
 		if(componentClass == null) {
 			throw "ERROR cannot resolve " + classname;
-			haxe.Log.trace("ERROR cannot resolve " + classname,{ fileName : "Application.hx", lineNumber : 853, className : "brix.core.Application", methodName : "resolveComponentClass"});
+			null;
 		}
 		return componentClass;
 	}
@@ -1890,7 +1838,7 @@ brix.core.Application.prototype = {
 			node.removeAttribute("data-brix-id");
 			var isError = !this.nodeToCmpInstances.remove(nodeId);
 			if(isError) throw "Could not find the node in the associated components list.";
-		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 687, className : "brix.core.Application", methodName : "removeAllAssociatedComponent"});
+		} else null;
 	}
 	,removeAssociatedComponent: function(node,cmp) {
 		var nodeId = node.getAttribute("data-brix-id");
@@ -1903,7 +1851,7 @@ brix.core.Application.prototype = {
 				node.removeAttribute("data-brix-id");
 				this.nodeToCmpInstances.remove(nodeId);
 			}
-		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 662, className : "brix.core.Application", methodName : "removeAssociatedComponent"});
+		} else null;
 	}
 	,addAssociatedComponent: function(node,cmp) {
 		var nodeId = node.getAttribute("data-brix-id");
@@ -1990,10 +1938,7 @@ brix.core.Application.prototype = {
 	,initDom: function(appendTo) {
 		this.htmlRootElement = appendTo;
 		if(this.htmlRootElement == null || this.htmlRootElement.nodeType != js.Lib.document.documentElement.nodeType) this.htmlRootElement = js.Lib.document.documentElement;
-		if(this.htmlRootElement == null) {
-			haxe.Log.trace("ERROR Lib.document.documentElement is null => You are trying to start your application while the document loading is probably not complete yet." + " To fix that, add the noAutoStart option to your Brix application and control the application startup with: window.onload = function() { myApplication.init() };",{ fileName : "Application.hx", lineNumber : 269, className : "brix.core.Application", methodName : "initDom"});
-			return;
-		}
+		if(this.htmlRootElement == null) return;
 		this.body = js.Lib.document.body;
 	}
 	,attachBody: function(appendTo) {
@@ -2058,10 +2003,7 @@ brix.util.DomTools.abs2rel = function(url) {
 	var initialUrl = url;
 	var base = brix.util.DomTools.getBaseUrl();
 	var idx = base.indexOf("://");
-	if(idx == -1) {
-		haxe.Log.trace("Warning, could not make URL relative because base URL is relative and should be absolute - could not find pattern \"://\" in " + base + ". Now returns " + initialUrl,{ fileName : "DomTools.hx", lineNumber : 81, className : "brix.util.DomTools", methodName : "abs2rel"});
-		return initialUrl;
-	} else base = HxOverrides.substr(base,idx + 3,null);
+	if(idx == -1) return initialUrl; else base = HxOverrides.substr(base,idx + 3,null);
 	var idx1 = url.indexOf("://");
 	if(idx1 == -1) return initialUrl; else url = HxOverrides.substr(url,idx1 + 3,null);
 	var baseArray = base.split("/");
@@ -2169,14 +2111,13 @@ brix.util.DomTools.moveTo = function(htmlDom,x,y) {
 	}
 }
 brix.util.DomTools.inspectTrace = function(obj,callingClass) {
-	haxe.Log.trace("-- " + callingClass + " inspecting element --",{ fileName : "DomTools.hx", lineNumber : 331, className : "brix.util.DomTools", methodName : "inspectTrace"});
 	var _g = 0, _g1 = Reflect.fields(obj);
 	while(_g < _g1.length) {
 		var prop = _g1[_g];
 		++_g;
-		haxe.Log.trace("- " + prop + " = " + Std.string(Reflect.field(obj,prop)),{ fileName : "DomTools.hx", lineNumber : 334, className : "brix.util.DomTools", methodName : "inspectTrace"});
+		null;
 	}
-	haxe.Log.trace("-- --",{ fileName : "DomTools.hx", lineNumber : 336, className : "brix.util.DomTools", methodName : "inspectTrace"});
+	null;
 }
 brix.util.DomTools.toggleClass = function(element,className) {
 	if(brix.util.DomTools.hasClass(element,className)) brix.util.DomTools.removeClass(element,className); else brix.util.DomTools.addClass(element,className);
@@ -2302,10 +2243,7 @@ brix.util.DomTools.setBaseTag = function(href) {
 	var head = js.Lib.document.getElementsByTagName("head")[0];
 	var baseNodes = js.Lib.document.getElementsByTagName("base");
 	href = brix.util.DomTools.rel2abs(href);
-	if(baseNodes.length > 0) {
-		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 560, className : "brix.util.DomTools", methodName : "setBaseTag"});
-		baseNodes[0].setAttribute("href",href);
-	} else {
+	if(baseNodes.length > 0) baseNodes[0].setAttribute("href",href); else {
 		var node = js.Lib.document.createElement("base");
 		node.setAttribute("href",href);
 		if(head.childNodes.length > 0) head.insertBefore(node,head.childNodes[0]); else head.appendChild(node);
@@ -6233,16 +6171,21 @@ $hxClasses["silex.Silex"] = silex.Silex;
 silex.Silex.__name__ = ["silex","Silex"];
 silex.Silex.initialBaseUrl = null;
 silex.Silex.main = function() {
-	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 70, className : "silex.Silex", methodName : "main"});
 	if(haxe.Firebug.detect()) {
 		haxe.Firebug.redirectTraces();
-		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Silex.hx", lineNumber : 75, className : "silex.Silex", methodName : "main"});
-	} else haxe.Log.trace("Warning: Brix can not redirect traces to console, because no console was found",{ fileName : "Silex.hx", lineNumber : 79, className : "silex.Silex", methodName : "main"});
+		null;
+	} else null;
 	silex.Silex.initialBaseUrl = brix.util.DomTools.getBaseUrl();
-	if(js.Lib.document.body == null) js.Lib.window.onload = silex.Silex.init; else silex.Silex.init();
+	var fileService = new silex.file.client.FileService();
+	fileService.checkInstall(silex.Silex.onCheckInstall,silex.Silex.onCheckInstallError);
+}
+silex.Silex.onCheckInstall = function(installStatus) {
+	if(installStatus.redirect != null) js.Lib.window.location = installStatus.redirect; else silex.Silex.init();
+}
+silex.Silex.onCheckInstallError = function(error) {
+	js.Lib.window.location = "../libs/dropbox/checkInstall.php";
 }
 silex.Silex.init = function(unused) {
-	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 99, className : "silex.Silex", methodName : "init"});
 	var application = brix.core.Application.createApplication();
 	application.initDom();
 	if(js.Lib.window.location.hash != "" && brix.util.DomTools.getMeta("useDeeplink") != "false") {
@@ -6265,9 +6208,6 @@ silex.file.client.FileService.prototype = $extend(silex.ServiceBase.prototype,{
 	save: function(name,content,onResult,onError) {
 		this.callServerMethod("save",[name,content],onResult,onError);
 	}
-	,load: function(name,onResult,onError) {
-		this.callServerMethod("load",[name],onResult,onError);
-	}
 	,rename: function(src,dst,onResult,onError) {
 		this.callServerMethod("rename",[src,dst],onResult,onError);
 	}
@@ -6276,6 +6216,12 @@ silex.file.client.FileService.prototype = $extend(silex.ServiceBase.prototype,{
 	}
 	,trash: function(name,onResult,onError) {
 		this.callServerMethod("trash",[name],onResult,onError);
+	}
+	,load: function(name,onResult,onError) {
+		this.callServerMethod("load",[name],onResult,onError);
+	}
+	,checkInstall: function(onResult,onError) {
+		this.callServerMethod("checkInstall",[],onResult,onError);
 	}
 	,__class__: silex.file.client.FileService
 });
@@ -6293,7 +6239,6 @@ silex.interpreter.Interpreter.getInstance = function() {
 silex.interpreter.Interpreter.prototype = {
 	execScriptTags: function(rootElement) {
 		var scriptTags = brix.util.DomTools.getElementsByAttribute(rootElement,"type","text/hscript");
-		haxe.Log.trace("execScriptTags " + Std.string(rootElement) + " - " + rootElement.className + " - " + scriptTags.length,{ fileName : "Interpreter.hx", lineNumber : 89, className : "silex.interpreter.Interpreter", methodName : "execScriptTags"});
 		var _g1 = 0, _g = scriptTags.length;
 		while(_g1 < _g) {
 			var idx = _g1++;
@@ -6307,7 +6252,6 @@ silex.interpreter.Interpreter.prototype = {
 		}
 	}
 	,expose: function(key,obj) {
-		haxe.Log.trace("expose " + key,{ fileName : "Interpreter.hx", lineNumber : 80, className : "silex.interpreter.Interpreter", methodName : "expose"});
 		this.context.set(key,obj);
 	}
 	,exec: function(script) {
@@ -6353,10 +6297,7 @@ silex.ui.link.SilexLink.__super__ = brix.component.navigation.link.LinkBase;
 silex.ui.link.SilexLink.prototype = $extend(brix.component.navigation.link.LinkBase.prototype,{
 	onClick: function(e) {
 		brix.component.navigation.link.LinkBase.prototype.onClick.call(this,e);
-		if(this.linkName == null) {
-			haxe.Log.trace("Warning: link could not be opened because it has no href nor data-href attribute set",{ fileName : "SilexLink.hx", lineNumber : 43, className : "silex.ui.link.SilexLink", methodName : "onClick"});
-			return;
-		}
+		if(this.linkName == null) return;
 		if(silex.ui.link.SilexLink.isUrl(this.linkName)) js.Lib.window.open(this.linkName,this.targetAttr); else if(silex.ui.link.SilexLink.isPage(this.linkName,this.brixInstanceId)) brix.component.navigation.Page.openPage(this.linkName,this.targetAttr == "_top",this.transitionDataShow,this.transitionDataHide,this.brixInstanceId,this.groupElement);
 	}
 	,__class__: silex.ui.link.SilexLink
@@ -6515,7 +6456,7 @@ js.Lib.onerror = null;
 silex.ServiceBase.GATEWAY_URL = "../";
 silex.Silex.CONFIG_FILE_BODY = "fileBody";
 silex.Silex.CONFIG_USE_DEEPLINK = "useDeeplink";
-silex.Silex.LOADER_SCRIPT_PATH = "../../libs/silex/loader.js";
+silex.Silex.CHECK_INSTALL_SCRIPT = "../libs/dropbox/checkInstall.php";
 silex.file.client.FileService.SERVICE_NAME = "FileService";
 silex.interpreter.Interpreter.BASIC_CONTEXT = { Lib : js.Lib, Math : Math, Timer : haxe.Timer, StringTools : StringTools, DomTools : brix.util.DomTools, Application : brix.core.Application, Page : brix.component.navigation.Page, Layer : brix.component.navigation.Layer};
 silex.ui.script.HScriptTag.executed = false;

@@ -8,6 +8,7 @@ class silex_file_dropbox_FileService extends silex_ServiceBase {
 		parent::__construct(silex_file_dropbox_FileService::$SERVICE_NAME);
 		$this->serverConfig = $serverConfig;
 		require_once("libs/dropbox/functions.php");
+		initDropbox($serverConfig->key, $serverConfig->secret, $serverConfig->encrypter, $serverConfig->dbHost, $serverConfig->dbName, $serverConfig->dbUser, $serverConfig->dbPass, $serverConfig->dbPort);
 		$GLOBALS['%s']->pop();
 	}}
 	public function save($name, $content) {
@@ -60,6 +61,19 @@ class silex_file_dropbox_FileService extends silex_ServiceBase {
 		{
 			$GLOBALS['%s']->pop();
 			return $content;
+		}
+		$GLOBALS['%s']->pop();
+	}
+	public function checkInstall() {
+		$GLOBALS['%s']->push("silex.file.dropbox.FileService::checkInstall");
+		$»spos = $GLOBALS['%s']->length;
+		$res = checkInstall();
+		if($res === null) {
+			throw new HException("Silex could not be initialized");
+		} else {
+			$»tmp = php_Lib::objectOfAssociativeArray($res);
+			$GLOBALS['%s']->pop();
+			return $»tmp;
 		}
 		$GLOBALS['%s']->pop();
 	}

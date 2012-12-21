@@ -1,6 +1,7 @@
  package silex.file.client;
 
 import silex.ServiceBase;
+import silex.file.FileService;
 
 import js.Lib;
 import js.Dom;
@@ -21,6 +22,19 @@ class FileService extends ServiceBase{
 		super(SERVICE_NAME);
 	}
 	/**
+	 * Check installation
+	 * Do initial actions the 1st time
+	 */
+	public function checkInstall(onResult:InstallStatus->Void, onError:String->Void=null) {
+		callServerMethod("checkInstall", [], onResult, onError);
+	}
+	/**
+	 * load a file content
+	 */
+	public function load(name:String, onResult:String->Void, onError:String->Void=null) {
+		callServerMethod("load", [name], onResult, onError);
+	}
+	/**
 	 * Move a file to trash
 	 */
 	public function trash(name:String, onResult:Void->Void, onError:String->Void=null) {
@@ -37,12 +51,6 @@ class FileService extends ServiceBase{
 	 */
 	public function rename(src:String, dst:String, onResult:Void->Void, onError:String->Void=null) {
 		callServerMethod("rename", [src, dst], onResult, onError);
-	}
-	/**
-	 * load a file content
-	 */
-	public function load(name:String, onResult:String->Void, onError:String->Void=null) {
-		callServerMethod("load", [name], onResult, onError);
 	}
 	/**
 	 * save a file content

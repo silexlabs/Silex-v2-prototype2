@@ -17,6 +17,14 @@ class silex_config_ServerConfig extends silex_config_ConfigBase {
 		$node = $xml->x->firstChild();
 		$node->addChild(Xml::parse("\x0A\x09\x09\x09<defaultFile>" . $this->defaultFile . "</defaultFile>\x0A"));
 		$node->addChild(Xml::parse("\x0A\x09\x09\x09<userFolder>" . $this->userFolder . "</userFolder>\x0A"));
+		$node->addChild(Xml::parse("\x0A\x09\x09\x09<key>" . $this->key . "</key>\x0A"));
+		$node->addChild(Xml::parse("\x0A\x09\x09\x09<secret>" . $this->secret . "</secret>\x0A"));
+		$node->addChild(Xml::parse("\x0A\x09\x09\x09<encrypter>" . $this->encrypter . "</encrypter>\x0A"));
+		$node->addChild(Xml::parse("\x0A\x09\x09\x09<dbHost>" . $this->dbHost . "</dbHost>\x0A"));
+		$node->addChild(Xml::parse("\x0A\x09\x09\x09<dbName>" . $this->dbName . "</dbName>\x0A"));
+		$node->addChild(Xml::parse("\x0A\x09\x09\x09<dbUser>" . $this->dbUser . "</dbUser>\x0A"));
+		$node->addChild(Xml::parse("\x0A\x09\x09\x09<dbPass>" . $this->dbPass . "</dbPass>\x0A"));
+		$node->addChild(Xml::parse("\x0A\x09\x09\x09<dbPort>" . $this->dbPort . "</dbPort>\x0A"));
 		{
 			$GLOBALS['%s']->pop();
 			return $xml;
@@ -38,8 +46,32 @@ class silex_config_ServerConfig extends silex_config_ConfigBase {
 		if($xml->hasNode->resolve("secret")) {
 			$this->secret = $xml->node->resolve("secret")->getInnerData();
 		}
+		if($xml->hasNode->resolve("encrypter")) {
+			$this->encrypter = $xml->node->resolve("encrypter")->getInnerData();
+		}
+		if($xml->hasNode->resolve("dbHost")) {
+			$this->dbHost = $xml->node->resolve("dbHost")->getInnerData();
+		}
+		if($xml->hasNode->resolve("dbName")) {
+			$this->dbName = $xml->node->resolve("dbName")->getInnerData();
+		}
+		if($xml->hasNode->resolve("dbUser")) {
+			$this->dbUser = $xml->node->resolve("dbUser")->getInnerData();
+		}
+		if($xml->hasNode->resolve("dbPass")) {
+			$this->dbPass = $xml->node->resolve("dbPass")->getInnerData();
+		}
+		if($xml->hasNode->resolve("dbPort")) {
+			$this->dbPort = $xml->node->resolve("dbPort")->getInnerData();
+		}
 		$GLOBALS['%s']->pop();
 	}
+	public $dbPort;
+	public $dbPass;
+	public $dbUser;
+	public $dbName;
+	public $dbHost;
+	public $encrypter;
 	public $secret;
 	public $key;
 	public $userFolder;

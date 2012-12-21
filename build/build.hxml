@@ -5,7 +5,7 @@
 -cp ../src/
 -cp ../../Brix/src/
 -cp ../../Cocktail/src/
-#--no-traces
+--no-traces
 #-debug
 -lib hscript
 
@@ -27,11 +27,11 @@
 #########
 # player JS
 #########
--js ../bin/libs/silex/silex.js
+-js ../bin/files/scripts/silex.js
 -cp ../src/
 -cp ../../Brix/src/
 -cp ../../Cocktail/src/
-#--no-traces
+--no-traces
 -debug
 -lib hscript
 
@@ -46,6 +46,32 @@
 -D silexClientSide
 -D silexDebug
 -D redirectTraces
+
+#########
+# player Flash
+#########
+
+--next
+
+-swf ../bin/files/scripts/silex.swf
+-cp ../src/
+-cp ../../Brix/src/
+-cp ../../Cocktail/src/
+-main silex.Silex
+--macro brix.core.Builder.create('../src/index-player.html')
+-lib hscript
+--remap js:cocktail
+-swf-version 10.2
+#-D slpdebug
+#-D disableEmbedHtml
+-D noAutoStart
+-D stopOnError
+
+-D silexClientSide
+-D redirectTraces
+
+# only in js : -D silexDebug
+--no-traces
 
 
 --next

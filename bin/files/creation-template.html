@@ -5,10 +5,43 @@
 			
 		<meta name="initialPageName" content="home">
 		<meta name="useDeeplink" content="true">
-		<link href="styles/classic-browser.css" rel="stylesheet">
-		<script src="../libs/silex/loader.js"></script>
-	
+
+		<script src="scripts/loader.js"></script>
 		
+		<style type="text/css">
+			.silex-view
+			{
+				padding:0px;
+				font-family:arial, helvetica, sans-serif;
+				margin: auto;
+				max-width: 800px;
+				padding: 0;
+				visibility: hidden; /* during loading */
+			}
+			.loading{
+				visibility: visible; /* during loading */
+			}
+			/* /loading */
+			.silex-view .Page{
+				display: none;
+			}
+			.silex-view .Layer{
+				padding-top: 10px;
+				padding-bottom: 10px;
+			}
+			.silex-view .container{
+				display: inline-block;
+			}
+			.silex-view .side-bar{
+				float: left;
+			}
+			.silex-view .footer{
+				clear: both;
+			}
+			.silex-view .nav>*{
+				display: inline-block;
+			}
+		</style>
 		
 		</HEAD>
 		<BODY class="silex-view">

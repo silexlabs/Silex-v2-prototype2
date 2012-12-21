@@ -4,7 +4,6 @@ class silex_Silex {
 	public function __construct(){}
 	static $CONFIG_FILE_BODY = "fileBody";
 	static $CONFIG_USE_DEEPLINK = "useDeeplink";
-	static $LOADER_SCRIPT_PATH = "../../libs/silex/loader.js";
 	static function main() {
 		$GLOBALS['%s']->push("silex.Silex::main");
 		$»spos = $GLOBALS['%s']->length;

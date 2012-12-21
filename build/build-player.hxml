@@ -1,7 +1,7 @@
 #########
 # player JS
 #########
--js ../bin/libs/silex/silex.js
+-js ../bin/files/scripts/silex.js
 -cp ../src/
 -cp ../../Brix/src/
 -cp ../../Cocktail/src/
@@ -28,7 +28,7 @@
 
 --next
 
--swf ../bin/libs/silex/silex.swf
+-swf ../bin/files/scripts/silex.swf
 -cp ../src/
 -cp ../../Brix/src/
 -cp ../../Cocktail/src/

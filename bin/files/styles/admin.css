@@ -92,6 +92,9 @@ body{
 /* **************** */
 /* 	notification	*/
 /* **************** */
+.notification-zone{
+	display: none; /* in order to not load ::icon:: at start, this will be changed by javascript */
+}
 .notification-zone ul{
 	position: absolute;
 	width: 450px;

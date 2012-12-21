@@ -46,10 +46,6 @@ class Silex {
 	 * used to pass data from the server to the client
 	 */
 	public static inline var CONFIG_USE_DEEPLINK:String = "useDeeplink";
-	/**
-	 * constant, path and file names
-	 */
-	public static inline var LOADER_SCRIPT_PATH:String = "../../libs/silex/loader.js";
 
 
 #if silexClientSide
@@ -57,6 +53,8 @@ class Silex {
 	 * store the initial URL, since it will change with base tags
 	 */
 	public static var initialBaseUrl:String;
+	
+	public static inline var CHECK_INSTALL_SCRIPT = "../libs/dropbox/checkInstall.php";
 	/**
 	 * Entry point for Silex applications
 	 * Load Silex config
@@ -83,13 +81,38 @@ class Silex {
 		// store the initial URL
 		initialBaseUrl = DomTools.getBaseUrl();
 
-		if (Lib.document.body == null){
+		var fileService = new FileService();
+		fileService.checkInstall(onCheckInstall, onCheckInstallError);
+
+/*		var r = new haxe.Http("../libs/dropbox/checkInstall.php");
+		r.onError = onCheckInstallError;
+		r.onData = function(r) { init(); }
+		r.request(false);
+
+/*		if (Lib.document.body == null){
 			// the script has been loaded at start
 			Lib.window.onload = init;
 		}
 		else{
 			// the script has been loaded after the html page
 			init();
+		}
+*/	}
+	private static function onCheckInstall(installStatus:InstallStatus){
+		trace("onCheckInstall return latest silex version: "+installStatus);
+		if (installStatus.redirect != null){
+			untyped {
+				Lib.window.location = installStatus.redirect;
+			}
+		}
+		else{
+			init();
+		}
+	}
+	private static function onCheckInstallError(error:String){
+		trace("onCheckInstall error: "+error);
+		untyped {
+			Lib.window.location = CHECK_INSTALL_SCRIPT;
 		}
 	}
 	/**
@@ -124,6 +147,7 @@ class Silex {
 		// make the file visible
 		Lib.document.body.style.visibility = "visible";
 	}
+
 #end
 #if silexServerSide
 	/**

@@ -31,6 +31,30 @@ class ServerConfig extends ConfigBase{
 	 */
 	public var secret:String;
 	/**
+	 * config data used only in dropbox mode
+	 */
+	public var encrypter:String;
+	/**
+	 * config data used only in dropbox mode
+	 */
+	public var dbHost:String;
+	/**
+	 * config data used only in dropbox mode
+	 */
+	public var dbName:String;
+	/**
+	 * config data used only in dropbox mode
+	 */
+	public var dbUser:String;
+	/**
+	 * config data used only in dropbox mode
+	 */
+	public var dbPass:String;
+	/**
+	 * config data used only in dropbox mode
+	 */
+	public var dbPort:String;
+	/**
 	 * Constructor
 	 * Load the provided config file
 	 */
@@ -64,9 +88,20 @@ class ServerConfig extends ConfigBase{
 
 		if(xml.hasNode.key)
 			key = xml.node.key.innerData;
-
 		if(xml.hasNode.secret)
 			secret = xml.node.secret.innerData;
+		if(xml.hasNode.encrypter)
+			encrypter = xml.node.encrypter.innerData;
+		if(xml.hasNode.dbHost)
+			dbHost = xml.node.dbHost.innerData;
+		if(xml.hasNode.dbName)
+			dbName = xml.node.dbName.innerData;
+		if(xml.hasNode.dbUser)
+			dbUser = xml.node.dbUser.innerData;
+		if(xml.hasNode.dbPass)
+			dbPass = xml.node.dbPass.innerData;
+		if(xml.hasNode.dbPort)
+			dbPort = xml.node.dbPort.innerData;
 	}
 	/**
 	 * Convert the structured config data to XML data
@@ -83,6 +118,30 @@ class ServerConfig extends ConfigBase{
 "));
 		node.addChild(Xml.parse("
 			<userFolder>"+userFolder+"</userFolder>
+"));
+		node.addChild(Xml.parse("
+			<key>"+key+"</key>
+"));
+		node.addChild(Xml.parse("
+			<secret>"+secret+"</secret>
+"));
+		node.addChild(Xml.parse("
+			<encrypter>"+encrypter+"</encrypter>
+"));
+		node.addChild(Xml.parse("
+			<dbHost>"+dbHost+"</dbHost>
+"));
+		node.addChild(Xml.parse("
+			<dbName>"+dbName+"</dbName>
+"));
+		node.addChild(Xml.parse("
+			<dbUser>"+dbUser+"</dbUser>
+"));
+		node.addChild(Xml.parse("
+			<dbPass>"+dbPass+"</dbPass>
+"));
+		node.addChild(Xml.parse("
+			<dbPort>"+dbPort+"</dbPort>
 "));
 		return xml;
 	}
