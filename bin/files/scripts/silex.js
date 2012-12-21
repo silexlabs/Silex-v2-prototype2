@@ -6176,14 +6176,7 @@ silex.Silex.main = function() {
 		null;
 	} else null;
 	silex.Silex.initialBaseUrl = brix.util.DomTools.getBaseUrl();
-	var fileService = new silex.file.client.FileService();
-	fileService.checkInstall(silex.Silex.onCheckInstall,silex.Silex.onCheckInstallError);
-}
-silex.Silex.onCheckInstall = function(installStatus) {
-	if(installStatus.redirect != null) js.Lib.window.location = installStatus.redirect; else silex.Silex.init();
-}
-silex.Silex.onCheckInstallError = function(error) {
-	js.Lib.window.location = "../libs/dropbox/checkInstall.php";
+	if(js.Lib.document.body == null) js.Lib.window.onload = silex.Silex.init; else silex.Silex.init();
 }
 silex.Silex.init = function(unused) {
 	var application = brix.core.Application.createApplication();
@@ -6456,7 +6449,7 @@ js.Lib.onerror = null;
 silex.ServiceBase.GATEWAY_URL = "../";
 silex.Silex.CONFIG_FILE_BODY = "fileBody";
 silex.Silex.CONFIG_USE_DEEPLINK = "useDeeplink";
-silex.Silex.CHECK_INSTALL_SCRIPT = "../libs/dropbox/checkInstall.php";
+silex.Silex.CHECK_INSTALL_SCRIPT = "../libs/dropbox/reset.php";
 silex.file.client.FileService.SERVICE_NAME = "FileService";
 silex.interpreter.Interpreter.BASIC_CONTEXT = { Lib : js.Lib, Math : Math, Timer : haxe.Timer, StringTools : StringTools, DomTools : brix.util.DomTools, Application : brix.core.Application, Page : brix.component.navigation.Page, Layer : brix.component.navigation.Layer};
 silex.ui.script.HScriptTag.executed = false;

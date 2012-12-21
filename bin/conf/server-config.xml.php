@@ -13,9 +13,9 @@
 	<secret>pu5yslzs0po2qau</secret>
 	<!-- Drop box php lib (uses mysql) -->
 	<encrypter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</encrypter>
-	<dbHost>localhost</dbHost>
-	<dbName>dropbox</dbName>
-	<dbUser>root</dbUser>
-	<dbPass>root</dbPass>
-	<dbPort>3306</dbPort>
+	<dbHost>XXXXXXXX</dbHost>
+	<dbName>XXXXXXXX</dbName>
+	<dbUser>XXXXXXXX</dbUser>
+	<dbPass>XXXXXXXX</dbPass>
+	<dbPort>XXXXXXXX</dbPort>
 </xml>

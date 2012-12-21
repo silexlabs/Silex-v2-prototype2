@@ -7758,7 +7758,7 @@ silex.Silex.onCheckInstall = function(installStatus) {
 	if(installStatus.redirect != null) js.Lib.window.location = installStatus.redirect; else silex.Silex.init();
 }
 silex.Silex.onCheckInstallError = function(error) {
-	js.Lib.window.location = "../libs/dropbox/checkInstall.php";
+	js.Lib.window.location = "../libs/dropbox/reset.php";
 }
 silex.Silex.init = function(unused) {
 	var application = brix.core.Application.createApplication();
@@ -10457,7 +10457,7 @@ js.Lib.onerror = null;
 silex.ServiceBase.GATEWAY_URL = "../";
 silex.Silex.CONFIG_FILE_BODY = "fileBody";
 silex.Silex.CONFIG_USE_DEEPLINK = "useDeeplink";
-silex.Silex.CHECK_INSTALL_SCRIPT = "../libs/dropbox/checkInstall.php";
+silex.Silex.CHECK_INSTALL_SCRIPT = "../libs/dropbox/reset.php";
 silex.component.ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME = "data-silex-component-id";
 silex.component.ComponentModel.DEBUG_INFO = "ComponentModel class";
 silex.component.ComponentModel.ON_SELECTION_CHANGE = "onComponentSelectionChange";
