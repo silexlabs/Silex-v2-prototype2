@@ -54,7 +54,7 @@ class Silex {
 	 */
 	public static var initialBaseUrl:String;
 
-	public static inline var CHECK_INSTALL_SCRIPT = "../libs/dropbox/reset.php";
+	public static inline var CHECK_INSTALL_SCRIPT = "../libs/dropbox/checkInstall.php";
 	/**
 	 * Entry point for Silex applications
 	 * Load Silex config

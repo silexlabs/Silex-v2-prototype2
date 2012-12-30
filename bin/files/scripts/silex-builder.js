@@ -2413,11 +2413,14 @@ brix.component.navigation.Page.__interfaces__ = [brix.component.group.IGroupable
 brix.component.navigation.Page.openPage = function(pageName,isPopup,transitionDataShow,transitionDataHide,brixId,root) {
 	var body = root;
 	if(root == null) body = brix.core.Application.get(brixId).body;
-	var page = brix.component.navigation.Page.getPageByName(pageName,brixId,body);
+	var pageURL = pageName.split("?");
+	var page = brix.component.navigation.Page.getPageByName(pageURL[0],brixId,body);
 	if(page == null) {
-		page = brix.component.navigation.Page.getPageByName(pageName,brixId);
+		page = brix.component.navigation.Page.getPageByName(pageURL[0],brixId);
 		if(page == null) throw "Error, could not find a page with name " + pageName;
 	}
+	page.query = { };
+	if(pageURL[1] != null) brix.component.navigation.Page.updateQuery(page,pageURL[1]);
 	page.open(transitionDataShow,transitionDataHide,!isPopup);
 }
 brix.component.navigation.Page.closePage = function(pageName,transitionData,brixId,root) {
@@ -2453,6 +2456,15 @@ brix.component.navigation.Page.getPageByName = function(pageName,brixId,root) {
 		}
 	}
 	return null;
+}
+brix.component.navigation.Page.updateQuery = function(page,queryString) {
+	var queryParams = queryString.split("&");
+	var _g1 = 0, _g = queryParams.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		var param = queryParams[i].split("=");
+		page.query[param[0]] = param[1];
+	}
 }
 brix.component.navigation.Page.__super__ = brix.component.ui.DisplayObject;
 brix.component.navigation.Page.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
@@ -2573,6 +2585,7 @@ brix.component.navigation.Page.prototype = $extend(brix.component.ui.DisplayObje
 		var event = e;
 		if(event.state != null && event.state.name == this.name) this.open(event.state.transitionDataShow,event.state.transitionDataHide,event.state.doCloseOthers,event.state.preventTransitions,false);
 	}
+	,query: null
 	,groupElement: null
 	,name: null
 	,__class__: brix.component.navigation.Page
@@ -3078,8 +3091,6 @@ brix.core.ApplicationContext.prototype = {
 		this.registeredUIComponents.push({ classname : "brix.component.layout.Accordion", args : null});
 		brix.component.navigation.Page;
 		this.registeredUIComponents.push({ classname : "brix.component.navigation.Page", args : null});
-		silex.ui.link.SilexLink;
-		this.registeredUIComponents.push({ classname : "silex.ui.link.SilexLink", args : null});
 		silex.ui.toolbox.editor.StringEditor;
 		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.StringEditor", args : null});
 		silex.ui.dialog.KCFinderDialog;
@@ -5894,15 +5905,15 @@ hscript.Interp.prototype = {
 			case 0:
 				var v = $e[2];
 				return v;
-			case 3:
-				var v = $e[2];
-				return v;
 			case 1:
 				var f = $e[2];
 				return f;
 			case 2:
 				var s = $e[2];
 				return s;
+			case 3:
+				var v = $e[2];
+				return v;
 			}
 			break;
 		case 1:
@@ -6459,10 +6470,6 @@ hscript.Parser.prototype = {
 				var v = $e[2];
 				$r = Std.string(v);
 				break;
-			case 3:
-				var v = $e[2];
-				$r = Std.string(v);
-				break;
 			case 1:
 				var f = $e[2];
 				$r = Std.string(f);
@@ -6470,6 +6477,10 @@ hscript.Parser.prototype = {
 			case 2:
 				var s = $e[2];
 				$r = s;
+				break;
+			case 3:
+				var v = $e[2];
+				$r = Std.string(v);
 				break;
 			}
 			return $r;
@@ -7758,7 +7769,7 @@ silex.Silex.onCheckInstall = function(installStatus) {
 	if(installStatus.redirect != null) js.Lib.window.location = installStatus.redirect; else silex.Silex.init();
 }
 silex.Silex.onCheckInstallError = function(error) {
-	js.Lib.window.location = "../libs/dropbox/reset.php";
+	js.Lib.window.location = "../libs/dropbox/checkInstall.php";
 }
 silex.Silex.init = function(unused) {
 	var application = brix.core.Application.createApplication();
@@ -8059,7 +8070,10 @@ $hxClasses["silex.file.client.FileService"] = silex.file.client.FileService;
 silex.file.client.FileService.__name__ = ["silex","file","client","FileService"];
 silex.file.client.FileService.__super__ = silex.ServiceBase;
 silex.file.client.FileService.prototype = $extend(silex.ServiceBase.prototype,{
-	save: function(name,content,onResult,onError) {
+	importFile: function(url,name,onResult,onError) {
+		this.callServerMethod("importFile",[url,name],onResult,onError);
+	}
+	,save: function(name,content,onResult,onError) {
 		this.callServerMethod("save",[name,content],onResult,onError);
 	}
 	,rename: function(src,dst,onResult,onError) {
@@ -8098,15 +8112,24 @@ silex.file.dropbox.FileBrowser.selectMultipleFiles = function(userCallback,brixI
 	Dropbox.choose(options);
 }
 silex.file.dropbox.FileBrowser.validateMultipleSelection = function(files) {
-	var urls = [];
-	var _g = 0;
-	while(_g < files.length) {
-		var file = files[_g];
-		++_g;
-		urls.push(file.link);
-	}
+	var url = files[0].link;
+	var idx = url.indexOf("Silex");
+	if(idx < 0) {
+		var idx1 = url.lastIndexOf("/");
+		var name = "assets/" + url.substring(idx1 + 1);
+		name = StringTools.replace(name," ","_");
+		name = StringTools.replace(name,"%20","_");
+		new silex.file.client.FileService().importFile(url,name,(function(f,a1) {
+			return function() {
+				return f(a1);
+			};
+		})(silex.file.dropbox.FileBrowser.doValidateMultipleSelection,name));
+		brix.component.interaction.NotificationManager.notifySuccess("Importing","I am importing the file into folder Applications/Silex/assets/. This may take some time...");
+	} else silex.file.dropbox.FileBrowser.doValidateMultipleSelection(url);
+}
+silex.file.dropbox.FileBrowser.doValidateMultipleSelection = function(url) {
 	if(silex.file.dropbox.FileBrowser.onValidateMultiple != null) {
-		silex.file.dropbox.FileBrowser.onValidateMultiple(urls);
+		silex.file.dropbox.FileBrowser.onValidateMultiple([url]);
 		silex.file.dropbox.FileBrowser.onValidateMultiple = null;
 	}
 }
@@ -8122,22 +8145,34 @@ silex.file.dropbox.FileBrowser.selectFile = function(userCallback,brixInstanceId
 }
 silex.file.dropbox.FileBrowser.validateSelection = function(files) {
 	var url = files[0].link;
-	if(url != null) {
-		if(silex.file.dropbox.FileBrowser.onValidate != null) {
-			silex.file.dropbox.FileBrowser.onValidate(url);
-			silex.file.dropbox.FileBrowser.onValidate = null;
-		}
+	var idx = url.indexOf("Silex");
+	if(idx < 0) {
+		var idx1 = url.lastIndexOf("/");
+		var name = "assets/" + url.substring(idx1 + 1);
+		name = StringTools.replace(name," ","_");
+		name = StringTools.replace(name,"%20","_");
+		new silex.file.client.FileService().importFile(url,name,(function(f,a1) {
+			return function() {
+				return f(a1);
+			};
+		})(silex.file.dropbox.FileBrowser.doValidateSelection,name));
+		brix.component.interaction.NotificationManager.notifySuccess("Importing","I am importing the file into folder Applications/Silex/assets/. This may take some time...");
+	} else silex.file.dropbox.FileBrowser.doValidateSelection(url);
+}
+silex.file.dropbox.FileBrowser.doValidateSelection = function(url) {
+	if(silex.file.dropbox.FileBrowser.onValidate != null) {
+		silex.file.dropbox.FileBrowser.onValidate(url);
+		silex.file.dropbox.FileBrowser.onValidate = null;
 	}
 }
 silex.file.dropbox.FileBrowser.getRelativeURLFromFileBrowser = function(url) {
 	var idx = url.indexOf("Silex");
 	if(idx < 0) {
-		brix.component.interaction.NotificationManager.notifyError("Error","Please choose from folder Applications/Silex, live web creation/");
-		throw "Can only take files from dropbox Application/Silex/ folder";
+	} else {
+		idx += 5;
+		idx = url.indexOf("/",idx);
+		url = HxOverrides.substr(url,idx + 1,null);
 	}
-	idx += 5;
-	idx = url.indexOf("/",idx + 1);
-	url = HxOverrides.substr(url,idx + 1,null);
 	return url;
 }
 silex.file.kcfinder = {}
@@ -10457,7 +10492,7 @@ js.Lib.onerror = null;
 silex.ServiceBase.GATEWAY_URL = "../";
 silex.Silex.CONFIG_FILE_BODY = "fileBody";
 silex.Silex.CONFIG_USE_DEEPLINK = "useDeeplink";
-silex.Silex.CHECK_INSTALL_SCRIPT = "../libs/dropbox/reset.php";
+silex.Silex.CHECK_INSTALL_SCRIPT = "../libs/dropbox/checkInstall.php";
 silex.component.ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME = "data-silex-component-id";
 silex.component.ComponentModel.DEBUG_INFO = "ComponentModel class";
 silex.component.ComponentModel.ON_SELECTION_CHANGE = "onComponentSelectionChange";

@@ -37,15 +37,28 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 
 ** to do **
-* no possible :( * start in origin=App... https://www.dropbox.com/chooser?origin=http%3A%2F%2Flocalhost%3A8888&app_key=hxo7uimig22bi2o&link_type=direct&trigger=js
 
-* !! checkinstall ERROR in silex player
-* !! keep loading while checkinstall
 
-* insert menu just after edit
-* remove "unload" icon + remove "delete" and add "manage files"
-* supprimer la fonction "fermer"?
-* icon "edit" sur les composants (edit text ou url)
+dropbox
+x  * allow to select a media outside Applications/Silex/ 
+ x   . copy to Applications/Silex/assets/
+  x  . or make silex a "dropbox full" app
+
+  * no possible :( * start in origin=App... https://www.dropbox.com/chooser?origin=http%3A%2F%2Flocalhost%3A8888&app_key=hxo7uimig22bi2o&link_type=direct&trigger=js
+  * insert menu just after edit
+  * remove "unload" icon + remove "delete" and add "manage files"
+  * supprimer la fonction "fermer"?
+  * icon "edit" sur les composants (edit text ou url)
+
+bugs
+* image without URL is too small and not visible
+
+silex to do
+* remove all dropbox related (.htaccess...)
+- new => ask which base css to apply
+* copy/paste/duplicate container or component
+* copy/paste style
+
 * ajout road map: 
   . designer friendly => brix components in "insert" menu + select styles for each comp
   . templates comme dans l'éditeur text

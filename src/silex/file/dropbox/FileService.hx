@@ -111,4 +111,17 @@ class FileService extends ServiceBase{
 			throw("There was an error saving the file. Did you installed Silex application in your dropbox account?");
 		// File.saveContent(serverConfig.userFolder + name, content);
 	}
+	/**
+	 * import an asset
+	 * todo: check file extension
+	 * @example importFile("http://test.com/test.jpg", "assets/test.jpg")
+	 */
+	public function importFile(url:String, name:String) {
+		// get the file content
+		var content = haxe.Http.requestUrl(url);
+
+		var resObj = untyped __call__("putFile", name, content);
+		if (resObj == false)
+			throw("There was an error importing the file.");
+	}
 }

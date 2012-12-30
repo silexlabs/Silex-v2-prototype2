@@ -11,6 +11,16 @@ class silex_file_dropbox_FileService extends silex_ServiceBase {
 		initDropbox($serverConfig->key, $serverConfig->secret, $serverConfig->encrypter, $serverConfig->dbHost, $serverConfig->dbName, $serverConfig->dbUser, $serverConfig->dbPass, $serverConfig->dbPort);
 		$GLOBALS['%s']->pop();
 	}}
+	public function importFile($url, $name) {
+		$GLOBALS['%s']->push("silex.file.dropbox.FileService::importFile");
+		$»spos = $GLOBALS['%s']->length;
+		$content = haxe_Http::requestUrl($url);
+		$resObj = putFile($name, $content);
+		if($resObj === false) {
+			throw new HException("There was an error importing the file.");
+		}
+		$GLOBALS['%s']->pop();
+	}
 	public function save($name, $content) {
 		$GLOBALS['%s']->push("silex.file.dropbox.FileService::save");
 		$»spos = $GLOBALS['%s']->length;

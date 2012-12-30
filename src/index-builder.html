@@ -31,8 +31,8 @@
 		<script data-brix-use="silex.ui.stage.InsertDropHandler"></script>
 		
 		<script data-brix-use="silex.ui.script.HScriptTag"></script>
-		<script data-brix-use="silex.ui.link.SilexLink"></script>
 <!--
+		<script data-brix-use="silex.ui.link.SilexLink"></script>
 		<script data-brix-use="brix.component.scripting.ScriptContainer"></script>
 		<script data-brix-use="silex.ui.dialog.ModelDebugger"></script>
 -->
@@ -83,6 +83,7 @@
 				<ul>
 	               	::foreach notifications::
 	               	<li>
+	               		<img src="::iconUrl::" />
 	               		<h1>::title::</h1>
 	               		<p>::body::</p>
 	               	</li>
@@ -114,13 +115,13 @@
 					<DIV class="ribbon-tabs">
 						<A href="#file-menu" class="LinkToPage">File</A>
 						<A href="#edit-menu" class="LinkToPage disabled-element">Edit</A>
+						<A href="#insert-list" class="LinkToPage">Insert</A>
 						<A href="#page-list" class="LinkToPage">Pages</A>
 						<A href="#layer-list" class="LinkToPage">Masters</A>
-						<A href="#insert-list" class="LinkToPage">Insert</A>
 						<A href="#theme-list" class="LinkToPage disabled-element">Themes</A>
 						<A href="#user-menu" class="LinkToPage disabled-element">User</A>
 						<A href="#tool-menu" class="LinkToPage disabled-element">Tool</A>
-						<A href="#help-menu" class="LinkToPage disabled-element">Help</A>
+						<A href="#help-menu" class="LinkToPage">Help</A>
 					</DIV>
 					
 					<A class="Page" name="file-menu">File</A>
@@ -168,6 +169,27 @@
 					<DIV class="Layer edit-menu ribbon-list selectable">
 					</DIV>
 
+					<A class="Page" name="insert-list">Insert</A>
+					<DIV class="Layer insert-list ribbon-list">
+						<UL>
+							<LI data-dropzones-class-name="Layer" class="image Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
+								<P>Image</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="text Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
+								<P>Text</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="audio Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
+								<P>Audio</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="video Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
+								<P>Video</P>
+							</LI>
+							<LI data-dropzones-class-name="silex-view" class="container Draggable InsertDropHandler" data-phantom-class-name="master-phantom">
+								<P>Container</P>
+							</LI>
+						</UL>
+					</DIV>
+
 					
 					<A class="Page" name="page-list">Pages</A>
 					<DIV class="Layer page-list ribbon-list selectable">
@@ -198,29 +220,6 @@
 					<A class="Page" name="theme-list">Themes</A>
 					<DIV class="Layer theme-list ribbon-list">
 					</DIV>
-
-					
-					<A class="Page" name="insert-list">Insert</A>
-
-					<DIV class="Layer insert-list ribbon-list">
-						<UL>
-							<LI data-dropzones-class-name="Layer" class="image Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
-								<P>Image</P>
-							</LI>
-							<LI data-dropzones-class-name="Layer" class="text Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
-								<P>Text</P>
-							</LI>
-							<LI data-dropzones-class-name="Layer" class="audio Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
-								<P>Audio</P>
-							</LI>
-							<LI data-dropzones-class-name="Layer" class="video Draggable InsertDropHandler" data-phantom-class-name="selection-phantom">
-								<P>Video</P>
-							</LI>
-							<LI data-dropzones-class-name="silex-view" class="container Draggable InsertDropHandler" data-phantom-class-name="master-phantom">
-								<P>Container</P>
-							</LI>
-						</UL>
-					</DIV>
 					
 					<A class="Page" name="user-menu">User</A>
 					<DIV class="Layer user-menu ribbon-list selectable">
@@ -232,6 +231,7 @@
 					
 					<A class="Page" name="help-menu">Help</A>
 					<DIV class="Layer help-menu ribbon-list selectable">
+						<a href="http://projects.Silexlabs.org/?/silex.v2/" target="blank"> Silex Official website</a> | <a href="http://www.silexlabs.org/silex/" target="blank"> Silex Labs</a> | <a class="disabled-link">Online help</a> | <a href="http://www.silexlabs.org/groups/silex/silex-users/forum/" target="blank">Forums</a>
 					</DIV>
 				</DIV>
 				<!-- 		/Ribbon Toolbox 		-->

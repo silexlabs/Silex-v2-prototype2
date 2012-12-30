@@ -30,7 +30,6 @@
 		
 		
 		
-		
 
 
 		
@@ -76,6 +75,7 @@
 				<UL>
 	               	::foreach notifications::
 	               	<LI>
+	               		<IMG src="::iconUrl::"/>
 	               		<H1>::title::</H1>
 	               		<P>::body::</P>
 	               	</LI>
@@ -107,13 +107,13 @@
 					<DIV class="ribbon-tabs">
 						<A href="#file-menu" class="LinkToPage" data-group-id="Group1">File</A>
 						<A href="#edit-menu" class="LinkToPage disabled-element" data-group-id="Group1">Edit</A>
+						<A href="#insert-list" class="LinkToPage" data-group-id="Group1">Insert</A>
 						<A href="#page-list" class="LinkToPage" data-group-id="Group1">Pages</A>
 						<A href="#layer-list" class="LinkToPage" data-group-id="Group1">Masters</A>
-						<A href="#insert-list" class="LinkToPage" data-group-id="Group1">Insert</A>
 						<A href="#theme-list" class="LinkToPage disabled-element" data-group-id="Group1">Themes</A>
 						<A href="#user-menu" class="LinkToPage disabled-element" data-group-id="Group1">User</A>
 						<A href="#tool-menu" class="LinkToPage disabled-element" data-group-id="Group1">Tool</A>
-						<A href="#help-menu" class="LinkToPage disabled-element" data-group-id="Group1">Help</A>
+						<A href="#help-menu" class="LinkToPage" data-group-id="Group1">Help</A>
 					</DIV>
 					
 					<A class="Page" name="file-menu" data-group-id="Group1">File</A>
@@ -161,6 +161,27 @@
 					<DIV class="Layer edit-menu ribbon-list selectable">
 					</DIV>
 
+					<A class="Page" name="insert-list" data-group-id="Group1">Insert</A>
+					<DIV class="Layer insert-list ribbon-list">
+						<UL>
+							<LI data-dropzones-class-name="Layer" class="image Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
+								<P>Image</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="text Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
+								<P>Text</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="audio Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
+								<P>Audio</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="video Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
+								<P>Video</P>
+							</LI>
+							<LI data-dropzones-class-name="silex-view" class="container Draggable InsertDropHandler" data-phantom-class-name="master-phantom" data-group-id="Group1">
+								<P>Container</P>
+							</LI>
+						</UL>
+					</DIV>
+
 					
 					<A class="Page" name="page-list" data-group-id="Group1">Pages</A>
 					<DIV class="Layer page-list ribbon-list selectable">
@@ -191,29 +212,6 @@
 					<A class="Page" name="theme-list" data-group-id="Group1">Themes</A>
 					<DIV class="Layer theme-list ribbon-list">
 					</DIV>
-
-					
-					<A class="Page" name="insert-list" data-group-id="Group1">Insert</A>
-
-					<DIV class="Layer insert-list ribbon-list">
-						<UL>
-							<LI data-dropzones-class-name="Layer" class="image Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
-								<P>Image</P>
-							</LI>
-							<LI data-dropzones-class-name="Layer" class="text Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
-								<P>Text</P>
-							</LI>
-							<LI data-dropzones-class-name="Layer" class="audio Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
-								<P>Audio</P>
-							</LI>
-							<LI data-dropzones-class-name="Layer" class="video Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
-								<P>Video</P>
-							</LI>
-							<LI data-dropzones-class-name="silex-view" class="container Draggable InsertDropHandler" data-phantom-class-name="master-phantom" data-group-id="Group1">
-								<P>Container</P>
-							</LI>
-						</UL>
-					</DIV>
 					
 					<A class="Page" name="user-menu" data-group-id="Group1">User</A>
 					<DIV class="Layer user-menu ribbon-list selectable">
@@ -225,6 +223,7 @@
 					
 					<A class="Page" name="help-menu" data-group-id="Group1">Help</A>
 					<DIV class="Layer help-menu ribbon-list selectable">
+						<A href="http://projects.Silexlabs.org/?/silex.v2/" target="blank"> Silex Official website</A> | <A href="http://www.silexlabs.org/silex/" target="blank"> Silex Labs</A> | <A class="disabled-link">Online help</A> | <A href="http://www.silexlabs.org/groups/silex/silex-users/forum/" target="blank">Forums</A>
 					</DIV>
 				</DIV>
 				
