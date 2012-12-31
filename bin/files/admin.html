@@ -15,7 +15,6 @@
 		
 		
 		
-		
 
 		
 		
@@ -63,19 +62,20 @@
 		
 		<SCRIPT type="text/hscript">
 			//Lib.alert('test!');
-			//FileModel.getInstance().load('files/test.html');
-			MenuController.createFile();
+			FileModel.getInstance().load('theme1.html');
+			//MenuController.createFile();
 		</SCRIPT>
 	</HEAD>
 	
 <BODY class="builder-view">
-		<DIV class="group-main Panel NotificationManager" data-panel-header-class-name="panel-file-header" data-panel-body-class-name="panel-file-body">
+		<DIV class="group-main Panel NotificationManager SilexContextManager" data-context-list="context-video, context-audio, context-img, context-layer, context-div" data-initial-context="" data-panel-header-class-name="panel-file-header" data-panel-body-class-name="panel-file-body">
 			
 			
 			<DIV class="notification-zone">
 				<UL>
 	               	::foreach notifications::
 	               	<LI>
+	               		<IMG src="::iconUrl::"/>
 	               		<H1>::title::</H1>
 	               		<P>::body::</P>
 	               	</LI>
@@ -107,13 +107,13 @@
 					<DIV class="ribbon-tabs">
 						<A href="#file-menu" class="LinkToPage" data-group-id="Group1">File</A>
 						<A href="#edit-menu" class="LinkToPage disabled-element" data-group-id="Group1">Edit</A>
+						<A href="#insert-list" class="LinkToPage" data-group-id="Group1">Insert</A>
 						<A href="#page-list" class="LinkToPage" data-group-id="Group1">Pages</A>
 						<A href="#layer-list" class="LinkToPage" data-group-id="Group1">Masters</A>
-						<A href="#insert-list" class="LinkToPage" data-group-id="Group1">Insert</A>
 						<A href="#theme-list" class="LinkToPage disabled-element" data-group-id="Group1">Themes</A>
 						<A href="#user-menu" class="LinkToPage disabled-element" data-group-id="Group1">User</A>
 						<A href="#tool-menu" class="LinkToPage disabled-element" data-group-id="Group1">Tool</A>
-						<A href="#help-menu" class="LinkToPage disabled-element" data-group-id="Group1">Help</A>
+						<A href="#help-menu" class="LinkToPage" data-group-id="Group1">Help</A>
 					</DIV>
 					
 					<A class="Page" name="file-menu" data-group-id="Group1">File</A>
@@ -136,8 +136,6 @@
 						<UL class="small">
 							<LI class="save-file-as" title="save as" data-menu-item="save-file-as">
 							</LI>
-							<LI class="close-file" title="close" data-menu-item="close-file">
-							</LI>
 							<LI class="save-file-copy" title="save as copy" data-menu-item="save-file-copy">
 							</LI>
 							<LI class="disabled-element settings" title="settings" data-menu-item="settings">
@@ -146,11 +144,9 @@
 							</LI>
 							<LI class="disabled-element" title="export" data-menu-item="export">
 							</LI>
-							<LI class="delete" title="delete" data-menu-item="trash-file">
-							</LI>
 							<LI class="disabled-element" title="publish" data-menu-item="publish">
 							</LI>
-							<LI title="media" data-menu-item="open-file-browser">
+							<LI title="Manage your files and media." data-menu-item="open-file-browser">
 							</LI>
 							<LI title="view" data-menu-item="view-file">
 							</LI>
@@ -159,6 +155,27 @@
 					
 					<A class="Page" name="edit-menu" data-group-id="Group1">Edit</A>
 					<DIV class="Layer edit-menu ribbon-list selectable">
+					</DIV>
+
+					<A class="Page" name="insert-list" data-group-id="Group1">Insert</A>
+					<DIV class="Layer insert-list ribbon-list">
+						<UL>
+							<LI data-dropzones-class-name="Layer" class="image Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
+								<P>Image</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="text Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
+								<P>Text</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="audio Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
+								<P>Audio</P>
+							</LI>
+							<LI data-dropzones-class-name="Layer" class="video Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
+								<P>Video</P>
+							</LI>
+							<LI data-dropzones-class-name="silex-view" class="container Draggable InsertDropHandler" data-phantom-class-name="master-phantom" data-group-id="Group1">
+								<P>Container</P>
+							</LI>
+						</UL>
 					</DIV>
 
 					
@@ -191,29 +208,6 @@
 					<A class="Page" name="theme-list" data-group-id="Group1">Themes</A>
 					<DIV class="Layer theme-list ribbon-list">
 					</DIV>
-
-					
-					<A class="Page" name="insert-list" data-group-id="Group1">Insert</A>
-
-					<DIV class="Layer insert-list ribbon-list">
-						<UL>
-							<LI data-dropzones-class-name="Layer" class="image Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
-								<P>Image</P>
-							</LI>
-							<LI data-dropzones-class-name="Layer" class="text Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
-								<P>Text</P>
-							</LI>
-							<LI data-dropzones-class-name="Layer" class="audio Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
-								<P>Audio</P>
-							</LI>
-							<LI data-dropzones-class-name="Layer" class="video Draggable InsertDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group1">
-								<P>Video</P>
-							</LI>
-							<LI data-dropzones-class-name="silex-view" class="container Draggable InsertDropHandler" data-phantom-class-name="master-phantom" data-group-id="Group1">
-								<P>Container</P>
-							</LI>
-						</UL>
-					</DIV>
 					
 					<A class="Page" name="user-menu" data-group-id="Group1">User</A>
 					<DIV class="Layer user-menu ribbon-list selectable">
@@ -225,6 +219,7 @@
 					
 					<A class="Page" name="help-menu" data-group-id="Group1">Help</A>
 					<DIV class="Layer help-menu ribbon-list selectable">
+						<A href="http://projects.Silexlabs.org/?/silex.v2/" target="blank"> Silex Official website</A> | <A href="http://www.silexlabs.org/silex/" target="blank"> Silex Labs</A> | <A class="disabled-link">Online help</A> | <A href="http://www.silexlabs.org/groups/silex/silex-users/forum/" target="blank">Forums</A>
 					</DIV>
 				</DIV>
 				
@@ -657,16 +652,25 @@
 					<DIV class="FileViewer">
 					</DIV>
 					<DIV data-dropzones-class-name="Layer" class="selection-marker Draggable SelectionDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group4">
-                    	<DIV class="selection-marker-delete"></DIV>
-                        <DIV class="selection-marker-name">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</DIV>
+						<DIV class="selection-ui-template">
+							::if (clientWidth &gt; 50)::
+								<DIV class="selection-marker-edit-text context-div"></DIV>
+								<DIV class="selection-marker-edit-image context-img"></DIV>
+								<DIV class="selection-marker-edit-media context-video context-sound"></DIV>
+		                    	<DIV class="selection-marker-delete"></DIV>
+	    	                    <DIV class="selection-marker-name">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</DIV>
+	                        ::end::
+						</DIV>
                         <DIV class="draggable-dragzone"></DIV>
 					</DIV>
 					<DIV class="hover-marker">
 					</DIV>
 					<DIV data-dropzones-class-name="silex-view" class="selection-layer-marker Draggable SelectionDropHandler" data-phantom-class-name="master-phantom" data-group-id="Group4">
-                    	<DIV class="selection-marker-delete"></DIV>
-                        <DIV class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</DIV>
-                        <DIV class="draggable-dragzone"></DIV>
+						<DIV class="selection-ui-template">
+							<DIV class="selection-marker-delete"></DIV>
+							<DIV class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</DIV>
+						</DIV>
+						<DIV class="draggable-dragzone"></DIV>
 					</DIV>
 					<DIV class="hover-layer-marker">
 					</DIV>

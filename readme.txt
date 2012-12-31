@@ -37,15 +37,32 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 
 ** to do **
-* no possible :( * start in origin=App... https://www.dropbox.com/chooser?origin=http%3A%2F%2Flocalhost%3A8888&app_key=hxo7uimig22bi2o&link_type=direct&trigger=js
 
-* !! checkinstall ERROR in silex player
-* !! keep loading while checkinstall
 
-* insert menu just after edit
-* remove "unload" icon + remove "delete" and add "manage files"
-* supprimer la fonction "fermer"?
-* icon "edit" sur les composants (edit text ou url)
+en cours
+* bug: pas de notif sous ff
+* erreurs dans filemodel => pas de display correct
+* ouvrir un fichier existant sur le serveur bug
+* pas besoin de silex-builder.js dans drobox
+
+* cleanup package ui (several single classes at root : script, SilexContextManager ...)
+
+!! * tester et commiter les nouveaux contexts et liens (based on events instead of reference)
+
+refactoring BRIX
+* enums for event.detail
+* no more static methods like openPage, use specialized version of Page and dispatch events
+* templates http://www.silexlabs.org/groups/brix/contributors/forum/topic/haxe-templates/
+
+bugs
+* image without URL is too small and not visible
+
+silex to do
+* remove all dropbox related (.htaccess...)
+- new => ask which base css to apply
+* copy/paste/duplicate container or component
+* copy/paste style
+
 * ajout road map: 
   . designer friendly => brix components in "insert" menu + select styles for each comp
   . templates comme dans l'éditeur text

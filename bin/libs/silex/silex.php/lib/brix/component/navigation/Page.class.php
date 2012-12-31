@@ -217,6 +217,7 @@ class brix_component_navigation_Page extends brix_component_ui_DisplayObject imp
 		}
 		$GLOBALS['%s']->pop();
 	}
+	public $query;
 	public $groupElement;
 	public $name;
 	public function __call($m, $a) {
@@ -249,12 +250,17 @@ class brix_component_navigation_Page extends brix_component_ui_DisplayObject imp
 		if($root === null) {
 			$body = brix_core_Application::get($brixId)->body;
 		}
-		$page = brix_component_navigation_Page::getPageByName($pageName, $brixId, $body);
+		$pageURL = _hx_explode("?", $pageName);
+		$page = brix_component_navigation_Page::getPageByName($pageURL[0], $brixId, $body);
 		if($page === null) {
-			$page = brix_component_navigation_Page::getPageByName($pageName, $brixId, null);
+			$page = brix_component_navigation_Page::getPageByName($pageURL[0], $brixId, null);
 			if($page === null) {
 				throw new HException("Error, could not find a page with name " . $pageName);
 			}
+		}
+		$page->query = _hx_anonymous(array());
+		if($pageURL[1] !== null) {
+			brix_component_navigation_Page::updateQuery($page, $pageURL[1]);
 		}
 		$page->open($transitionDataShow, $transitionDataHide, !$isPopup, null, null);
 		$GLOBALS['%s']->pop();
@@ -323,6 +329,21 @@ class brix_component_navigation_Page extends brix_component_ui_DisplayObject imp
 		{
 			$GLOBALS['%s']->pop();
 			return null;
+		}
+		$GLOBALS['%s']->pop();
+	}
+	static function updateQuery($page, $queryString) {
+		$GLOBALS['%s']->push("brix.component.navigation.Page::updateQuery");
+		$»spos = $GLOBALS['%s']->length;
+		$queryParams = _hx_explode("&", $queryString);
+		{
+			$_g1 = 0; $_g = $queryParams->length;
+			while($_g1 < $_g) {
+				$i = $_g1++;
+				$param = _hx_explode("=", $queryParams[$i]);
+				$page->query->{$param[0]} = $param[1];
+				unset($param,$i);
+			}
 		}
 		$GLOBALS['%s']->pop();
 	}

@@ -9,7 +9,7 @@ import brix.component.navigation.Page;
 import brix.component.interaction.NotificationManager;
 import brix.util.DomTools;
 
-import silex.file.FileModel;
+import silex.file.FileService;
 import silex.Silex;
 
 /**
@@ -45,6 +45,12 @@ class FileBrowser // extends DialogBase
 	public static var intialPath:String;
 	/**
 	 * open file browser
+	 */
+	public static function manageFiles(brixInstanceId:String, msg:String = null, path:String = "./"){
+		Lib.window.open("https://www.dropbox.com/home/Apps/Silex/"+path);
+	}
+	/**
+	 * open file browser
 	 * called when the user clicks on a button with "select-file-button" class
 	 */
 	public static function selectMultipleFiles(userCallback:Array<String>->Void, brixInstanceId:String, msg:String = null, path:String = "files/"){
@@ -70,15 +76,34 @@ class FileBrowser // extends DialogBase
 	}
 	/**
 	 * Called after a click on the submit button
+	 * take only 1 file
+	 * todo: support multiple files
 	 */
 	public static function validateMultipleSelection(files:Array<Dynamic>) {
 		trace("validateMultipleSelection "+files);
-		var urls = [];
-		for (file  in files){
-			urls.push(file.link);
+		var url:String = files[0].link;
+		var idx = url.indexOf("Silex");
+		if (idx <0){
+			// get the name of the file
+			var idx = url.lastIndexOf("/");
+			var name = "assets/"+url.substring(idx+1);
+			// cleanup file name
+			name = StringTools.replace(name, " ", "_");
+			name = StringTools.replace(name, "%20", "_");
+			// import into assets
+			(new FileService()).importFile(url, name, callback(doValidateMultipleSelection, name));
+			// notify user, this may take a while
+			NotificationManager.notifySuccess("Importing", "I am importing the file into folder Applications/Silex/assets/. This may take some time...");
 		}
+		else{
+			// do validate
+			doValidateMultipleSelection(url);
+		}
+	}
+	public static function doValidateMultipleSelection(url:String) {
+
 		if (FileBrowser.onValidateMultiple != null){
-			FileBrowser.onValidateMultiple(urls);
+			FileBrowser.onValidateMultiple([url]);
 			FileBrowser.onValidateMultiple = null;
 		}
 	}
@@ -112,12 +137,29 @@ class FileBrowser // extends DialogBase
 	 */
 	public static function validateSelection(files:Array<Dynamic>) {
 		trace("validateSelection "+files);
-		var url = files[0].link;
-		if (url != null){
-			if (FileBrowser.onValidate != null){
-				FileBrowser.onValidate(url);
-				FileBrowser.onValidate = null;
-			}
+		var url:String = files[0].link;
+		var idx = url.indexOf("Silex");
+		if (idx <0){
+			// get the name of the file
+			var idx = url.lastIndexOf("/");
+			var name = "assets/"+url.substring(idx+1);
+			// cleanup file name
+			name = StringTools.replace(name, " ", "_");
+			name = StringTools.replace(name, "%20", "_");
+			// import into assets
+			(new FileService()).importFile(url, name, callback(doValidateSelection, name));
+			// notify user, this may take a while
+			NotificationManager.notifySuccess("Importing", "I am importing the file into folder Applications/Silex/assets/. This may take some time...");
+		}
+		else{
+			// do validate
+			doValidateSelection(url);
+		}
+	}
+	public static function doValidateSelection(url:String) {
+		if (FileBrowser.onValidate != null){
+			FileBrowser.onValidate(url);
+			FileBrowser.onValidate = null;
 		}
 	}
 	/**
@@ -126,20 +168,18 @@ class FileBrowser // extends DialogBase
 	 * this method converts it to bemyapp/docs/specs.txt
 	 */
 	public static function getRelativeURLFromFileBrowser(url:String){
-		trace("getRelativeURLFromFileBrowser "+url);
 		// get the index of the 1st "/" after "view/"
 		var idx = url.indexOf("Silex");
 		if (idx <0){
-			NotificationManager.notifyError("Error", "Please choose from folder Applications/Silex, live web creation/");
-			throw ("Can only take files from dropbox Application/Silex/ folder");
+			//NotificationManager.notifyError("Error", "Please choose from folder Applications/Silex, live web creation/");
+			//throw ("Can only take files from dropbox Application/Silex/ folder");
 		}
-		idx += 5; // length of "Silex"
-		trace("getRelativeURLFromFileBrowser "+idx);
-		idx = url.indexOf("/", idx+1);
-		trace("getRelativeURLFromFileBrowser "+idx);
-		// remove all the absolute part
-		url = url.substr(idx+1);
-		trace("getRelativeURLFromFileBrowser "+url);
+		else{
+			idx += 5; // length of "Silex"
+			idx = url.indexOf("/", idx);
+			// remove all the absolute part
+			url = url.substr(idx+1);
+		}
 		return url;
 	}
 }

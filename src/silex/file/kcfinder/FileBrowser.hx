@@ -59,6 +59,12 @@ class FileBrowser
 	public static var intialPath:String;
 	/**
 	 * open file browser
+	 */
+	public static function manageFiles(brixInstanceId:String, msg:String = null, path:String = "./"){
+		selectFile(null, brixInstanceId, msg, path);
+	}
+	/**
+	 * open file browser
 	 * called when the user clicks on a button with "select-file-button" class
 	 */
 	public static function selectMultipleFiles(userCallback:Array<String>->Void, brixInstanceId:String, msg:String = null, path:String = "files/"){

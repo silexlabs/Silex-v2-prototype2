@@ -75,7 +75,7 @@ class LayersList extends List<ClassData<Layer>>
 				if (instances.length == 1){
 					// store the first instance
 					var instance = instances.first();
-					var name = nodes[idx].getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
+					var name = nodes[idx].getAttribute(LayerModel.NAME_ATTRIBUTE_NAME);
 					layers.push({
 						name:name,
 						classInstance: instance,

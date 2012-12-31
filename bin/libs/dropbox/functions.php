@@ -22,7 +22,17 @@ $protocol = (!empty($_SERVER['HTTPS'])) ? 'https' : 'http';
 $callback = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
 // User ID assigned by your auth system (used by persistent storage handlers)
-$userID = 1;
+// $userID = 1;
+session_start();
+if(isset($_SESSION['silex_user_id'])){
+	$userID = $_SESSION['silex_user_id'];
+}
+else{
+	$userID = time();//rand(100000, 999999);//uniqid();
+	$_SESSION['silex_user_id'] = $userID;
+}
+//exit($_SESSION['silex_user_id']);
+//unset($_SESSION['silex_user_id']);
 
 // If you use this, comment out lines 44-47
 //$storage = new \Dropbox\OAuth\Storage\Session($encrypter);
@@ -32,16 +42,12 @@ $userID = 1;
 //$storage = new \Dropbox\OAuth\Storage\Filesystem($encrypter, $userID);
 //$storage->setDirectory('tokens');
 
-function isAuthorized(){
-	global $OAuth;
-	//var_dump($e);
-	return false;
-}
 /**
  * call this function before any other one
  */
 function initDropbox($key, $secret, $encrypterString, $dbHost, $dbName, $dbUser, $dbPass, $dbPort){
 	global $OAuth, $callback, $userID;
+
 	$encrypter = new \Dropbox\OAuth\Storage\Encrypter($encrypterString);
 	$storage = new \Dropbox\OAuth\Storage\PDO($encrypter, $userID);
 	$storage->connect($dbHost, $dbName, $dbUser, $dbPass, $dbPort);
@@ -84,7 +90,8 @@ function checkInstall(){
 			}
 		}
 	}
-	return Array("version" => "2.0", "latest_version" => "2.0");
+	global $userID;
+	return Array("version" => "2.0", "latest_version" => "2.0", "debug" => $userID);
 }
 /**
  * Download a file and its metadata
@@ -94,14 +101,8 @@ function checkInstall(){
  * @link https://github.com/BenTheDesigner/Dropbox/blob/master/Dropbox/API.php#L129-168
  */
 function getFile($path){
-	try {
-		$res = getDropbox()->getFile($path, false);
-		return $res;
-//		return Array($res['data'], $res['mime']);
-	}
-	catch (Exception $e) {
-		return NULL;
-	}
+	$res = getDropbox()->getFile($path, false);
+	return $res;
 }
 
 /**
@@ -111,43 +112,40 @@ function getFile($path){
  */
 function putFile($path, $data){
 	
-	try {
-		// Create a temporary file and write some data to it
-		$tmp = tempnam('/tmp', 'dropbox');
-		
-		file_put_contents($tmp, $data);
+	// Create a temporary file and write some data to it
+	$tmp = tempnam('/tmp', 'dropbox');
+	
+	file_put_contents($tmp, $data);
 
-		// split the path and file name
-		$path_parts = pathinfo($path);
-		$filepath = $path_parts['dirname'];
-		$filename = $path_parts['basename'];
-		
-		// Upload the file with an alternative filename
-		$put = getDropbox()->putFile($tmp, $filename, $filepath);
-		
-		// Unlink the temporary file
-		unlink($tmp);
+	// split the path and file name
+	$path_parts = pathinfo($path);
+	$filepath = $path_parts['dirname'];
+	$filename = $path_parts['basename'];
+	
+	// Upload the file with an alternative filename
+	$put = getDropbox()->putFile($tmp, $filename, $filepath);
+	
+	// Unlink the temporary file
+	unlink($tmp);
 
-		return true;
-	}
-	catch (Exception $e) {
-		return false;
-	}
+	return $put !== NULL;
+}
+/**
+ * delete a file or folder from the authenticated user's Dropbox
+ */
+function deleteFile($path){
+	// Upload the file with an alternative filename
+	$put = getDropbox()->delete($path);
+	return $put !== NULL;
 }
 /**
  * Creates a folder
  * @param string New folder to create relative to root
  */
 function createFolder($path){
-	
-	try {
-		// Upload the file with an alternative filename
-		$put = getDropbox()->create($path);
-		return true;
-	}
-	catch (Exception $e) {
-		return false;
-	}
+	// Upload the file with an alternative filename
+	$put = getDropbox()->create($path);
+	return $put !== NULL;
 }
 
 

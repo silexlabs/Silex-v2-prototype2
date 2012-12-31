@@ -1409,13 +1409,19 @@ brix.component.group.Groupable.startGroupable = function(groupable,rootElement) 
 	if(groupId == null) return;
 	if(rootElement == null) {
 		var groupElements = groupable.getBrixApplication().body.getElementsByClassName(groupId);
-		if(groupElements.length < 1) return;
+		if(groupElements.length < 1) {
+			haxe.Log.trace("WARNING: could not find the group component " + groupId,{ fileName : "IGroupable.hx", lineNumber : 54, className : "brix.component.group.Groupable", methodName : "startGroupable"});
+			return;
+		}
 		if(groupElements.length > 1) throw "ERROR " + groupElements.length + " Group components are declared with the same group id " + groupId;
 		groupable.groupElement = groupElements[0];
 	} else {
 		var domElement = rootElement;
 		while(domElement != null && !brix.util.DomTools.hasClass(domElement,groupId)) domElement = domElement.parentNode;
-		if(domElement != null) groupable.groupElement = domElement; else return;
+		if(domElement != null) groupable.groupElement = domElement; else {
+			haxe.Log.trace("WARNING: could not find the group component " + groupId,{ fileName : "IGroupable.hx", lineNumber : 80, className : "brix.component.group.Groupable", methodName : "startGroupable"});
+			return;
+		}
 	}
 }
 brix.component.interaction = {}
@@ -1687,16 +1693,18 @@ brix.component.interaction.NotificationManager.prototype = $extend(brix.componen
 		this.refreshNotifications();
 	}
 	,refreshNotifications: function() {
+		haxe.Log.trace("refreshNotifications " + Std.string(this.notifications) + " - " + this.notificationTemplate,{ fileName : "NotificationManager.hx", lineNumber : 294, className : "brix.component.interaction.NotificationManager", methodName : "refreshNotifications"});
 		var t = new haxe.Template(this.notificationTemplate);
 		try {
 			this.notificationZone.innerHTML = t.execute({ notifications : this.notifications});
 		} catch( e ) {
-			null;
+			haxe.Log.trace("Error: " + Std.string(e),{ fileName : "NotificationManager.hx", lineNumber : 302, className : "brix.component.interaction.NotificationManager", methodName : "refreshNotifications"});
 		}
-		null;
+		haxe.Log.trace("refreshNotifications " + this.notificationZone.innerHTML,{ fileName : "NotificationManager.hx", lineNumber : 304, className : "brix.component.interaction.NotificationManager", methodName : "refreshNotifications"});
 	}
 	,sendCustomNotification: function(notification,duration) {
 		if(duration == null) duration = 10000;
+		haxe.Log.trace("sendCustomNotification " + Std.string(notification),{ fileName : "NotificationManager.hx", lineNumber : 281, className : "brix.component.interaction.NotificationManager", methodName : "sendCustomNotification"});
 		if(duration > 0) haxe.Timer.delay((function(f,a1) {
 			return function() {
 				return f(a1);
@@ -1710,8 +1718,15 @@ brix.component.interaction.NotificationManager.prototype = $extend(brix.componen
 	}
 	,sendNotification: function(e,duration) {
 		if(duration == null) duration = 10000;
-		if(!this.hasNotification()) throw "NO NOTIFICATION SYSTEM";
-		if(!this.hasPermission()) throw "NO NOTIFICATION PERMISSION";
+		haxe.Log.trace("sendNotification " + Std.string(e),{ fileName : "NotificationManager.hx", lineNumber : 244, className : "brix.component.interaction.NotificationManager", methodName : "sendNotification"});
+		if(!this.hasNotification()) {
+			haxe.Log.trace("NO NOTIFICATION SYSTEM",{ fileName : "NotificationManager.hx", lineNumber : 247, className : "brix.component.interaction.NotificationManager", methodName : "sendNotification"});
+			throw "NO NOTIFICATION SYSTEM";
+		}
+		if(!this.hasPermission()) {
+			haxe.Log.trace("NO NOTIFICATION PERMISSION",{ fileName : "NotificationManager.hx", lineNumber : 252, className : "brix.component.interaction.NotificationManager", methodName : "sendNotification"});
+			throw "NO NOTIFICATION PERMISSION";
+		}
 		var notification;
 		notification = window.webkitNotifications.createNotification(e.iconUrl,e.title,e.body);
 		notification.show();
@@ -1722,15 +1737,23 @@ brix.component.interaction.NotificationManager.prototype = $extend(brix.componen
 		})($bind(this,this.destroyNotification),notification),duration);
 	}
 	,requestPermission: function(acceptCallback,denyCallback) {
+		haxe.Log.trace("requestPermission ",{ fileName : "NotificationManager.hx", lineNumber : 220, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
 		if(this.hasNotification()) {
-			if(this.hasPermission()) acceptCallback(); else window.webkitNotifications.requestPermission((function(f,a1,a2) {
-				return function() {
-					return f(a1,a2);
-				};
-			})($bind(this,this.permissionRequestCallback),acceptCallback,denyCallback));
-		} else null;
+			if(this.hasPermission()) {
+				haxe.Log.trace("PERMISSION ALLOWED",{ fileName : "NotificationManager.hx", lineNumber : 225, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
+				acceptCallback();
+			} else {
+				haxe.Log.trace("PERMISSION ASKED",{ fileName : "NotificationManager.hx", lineNumber : 228, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
+				window.webkitNotifications.requestPermission((function(f,a1,a2) {
+					return function() {
+						return f(a1,a2);
+					};
+				})($bind(this,this.permissionRequestCallback),acceptCallback,denyCallback));
+			}
+		} else haxe.Log.trace("NO NOTIFICATION SYSTEM",{ fileName : "NotificationManager.hx", lineNumber : 234, className : "brix.component.interaction.NotificationManager", methodName : "requestPermission"});
 	}
 	,permissionRequestCallback: function(acceptCallback,denyCallback) {
+		haxe.Log.trace("permissionRequestCallback " + Std.string(this.hasPermission()),{ fileName : "NotificationManager.hx", lineNumber : 202, className : "brix.component.interaction.NotificationManager", methodName : "permissionRequestCallback"});
 		if(this.hasNotification() && this.hasPermission()) {
 			if(acceptCallback != null) acceptCallback();
 		} else if(denyCallback != null) denyCallback();
@@ -1742,6 +1765,7 @@ brix.component.interaction.NotificationManager.prototype = $extend(brix.componen
 		return window.webkitNotifications != null;
 	}
 	,onNotificationReceived: function(e) {
+		haxe.Log.trace("onNotificationReceived " + Std.string(e.detail) + " - " + Std.string(this.hasNotification()) + " - " + Std.string(this.hasPermission()),{ fileName : "NotificationManager.hx", lineNumber : 152, className : "brix.component.interaction.NotificationManager", methodName : "onNotificationReceived"});
 		if(this.hasNotification()) {
 			if(this.hasPermission()) this.sendNotification(e.detail); else {
 				this.requestPermission(null,null);
@@ -1750,7 +1774,10 @@ brix.component.interaction.NotificationManager.prototype = $extend(brix.componen
 		} else this.sendCustomNotification(e.detail);
 	}
 	,initNotifications: function(e) {
-		if(!this.hasPermission()) this.requestPermission(null,null);
+		if(!this.hasPermission()) {
+			haxe.Log.trace("initNotifications",{ fileName : "NotificationManager.hx", lineNumber : 136, className : "brix.component.interaction.NotificationManager", methodName : "initNotifications"});
+			this.requestPermission(null,null);
+		}
 		this.rootElement.removeEventListener("click",this.initNotificationsCallback,false);
 		this.rootElement.style.display = "inline-block";
 	}
@@ -1914,14 +1941,14 @@ brix.component.layout.Panel.prototype = $extend(brix.component.layout.LayoutBase
 		var cssClassName = this.rootElement.getAttribute("data-panel-header-class-name");
 		if(cssClassName == null) cssClassName = "panel-header";
 		this.header = brix.util.DomTools.getSingleElement(this.rootElement,cssClassName,false);
-		if(this.header == null) null;
+		if(this.header == null) haxe.Log.trace("Warning, no header for Panel component",{ fileName : "Panel.hx", lineNumber : 96, className : "brix.component.layout.Panel", methodName : "init"});
 		var cssClassName1 = this.rootElement.getAttribute("data-panel-body-class-name");
 		if(cssClassName1 == null) cssClassName1 = "panel-body";
 		this.body = brix.util.DomTools.getSingleElement(this.rootElement,cssClassName1,true);
 		var cssClassName2 = this.rootElement.getAttribute("data-panel-footer-class-name");
 		if(cssClassName2 == null) cssClassName2 = "panel-footer";
 		this.footer = brix.util.DomTools.getSingleElement(this.rootElement,cssClassName2,false);
-		if(this.footer == null) null;
+		if(this.footer == null) haxe.Log.trace("Warning, no footer for Panel component",{ fileName : "Panel.hx", lineNumber : 108, className : "brix.component.layout.Panel", methodName : "init"});
 		if(this.rootElement.getAttribute("data-panel-is-horizontal") == "true") this.isHorizontal = true; else this.isHorizontal = false;
 	}
 	,footer: null
@@ -1992,7 +2019,10 @@ brix.component.list.List.prototype = $extend(brix.component.ui.DisplayObject.pro
 						break;
 					}
 				}
-				if(children[idx] == null) continue;
+				if(children[idx] == null) {
+					haxe.Log.trace("--workaround--" + idx + "- " + Std.string(children[idx]),{ fileName : "List.hx", lineNumber : 277, className : "brix.component.list.List", methodName : "updateSelectionDisplay"});
+					continue;
+				}
 				if(found) brix.util.DomTools.addClass(children[idx],"listSelectedItem"); else brix.util.DomTools.removeClass(children[idx],"listSelectedItem");
 			}
 		}
@@ -2093,37 +2123,150 @@ brix.component.list.List.prototype = $extend(brix.component.ui.DisplayObject.pro
 	,__class__: brix.component.list.List
 	,__properties__: {set_selectedItem:"setSelectedItem",get_selectedItem:"getSelectedItem",set_selectedIndex:"setSelectedIndex",get_selectedIndex:"getSelectedIndex"}
 });
-brix.component.list.XmlList = function(rootElement,brixId) {
-	brix.component.list.List.call(this,rootElement,brixId);
-	var attr = rootElement.getAttribute("data-items");
-	var xmlData = Xml.parse(StringTools.htmlUnescape(attr));
-	this.dataProvider = [];
-	var $it0 = xmlData.elements();
-	while( $it0.hasNext() ) {
-		var item = $it0.next();
-		this.dataProvider.push(this.xmlToObj(item));
-	}
+brix.component.navigation = {}
+brix.component.navigation.ContextManager = function(rootElement,brixId) {
+	this.isDirty = false;
+	brix.component.ui.DisplayObject.call(this,rootElement,brixId);
+	if(rootElement.getAttribute("data-context-list") != null) this.allContexts = this.string2ContextList(rootElement.getAttribute("data-context-list")); else throw "Error: Context component needs param in " + "data-context-list";
+	rootElement.addEventListener("addContextsEvent",$bind(this,this.onAddContextEvent),true);
+	rootElement.addEventListener("removeContextsEvent",$bind(this,this.onRemoveContextEvent),true);
+	rootElement.addEventListener("resetContextsEvent",$bind(this,this.onResetContextEvent),true);
+	rootElement.addEventListener("replaceContextsEvent",$bind(this,this.onReplaceContextsEvent),true);
 };
-$hxClasses["brix.component.list.XmlList"] = brix.component.list.XmlList;
-brix.component.list.XmlList.__name__ = ["brix","component","list","XmlList"];
-brix.component.list.XmlList.__super__ = brix.component.list.List;
-brix.component.list.XmlList.prototype = $extend(brix.component.list.List.prototype,{
-	xmlToObj: function(xml) {
-		var res = { };
-		var $it0 = xml.iterator();
-		while( $it0.hasNext() ) {
-			var item = $it0.next();
-			if(item.nodeType == Xml.PCData || item.nodeType == Xml.CData || item.nodeType == Xml.Prolog) return item.getNodeValue(); else res[item.getNodeName()] = this.xmlToObj(item);
+$hxClasses["brix.component.navigation.ContextManager"] = brix.component.navigation.ContextManager;
+brix.component.navigation.ContextManager.__name__ = ["brix","component","navigation","ContextManager"];
+brix.component.navigation.ContextManager.styleSheet = null;
+brix.component.navigation.ContextManager.__super__ = brix.component.ui.DisplayObject;
+brix.component.navigation.ContextManager.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
+	contextList2String: function(contextList) {
+		return contextList.concat(", ");
+	}
+	,cleanupContextValue: function(contextName) {
+		return StringTools.trim(contextName).toLowerCase();
+	}
+	,string2ContextList: function(string) {
+		var contextList = string.split(",");
+		var _g1 = 0, _g = contextList.length;
+		while(_g1 < _g) {
+			var idx = _g1++;
+			contextList[idx] = this.cleanupContextValue(contextList[idx]);
 		}
-		return res;
+		return contextList;
+	}
+	,refresh: function() {
+		if(brix.component.navigation.ContextManager.styleSheet != null) this.getBrixApplication().htmlRootElement.getElementsByTagName("head")[0].removeChild(brix.component.navigation.ContextManager.styleSheet);
+		var cssText = "";
+		var _g = 0, _g1 = this.allContexts;
+		while(_g < _g1.length) {
+			var context = _g1[_g];
+			++_g;
+			cssText += "." + context + " { display : none; visibility : hidden; } ";
+		}
+		var _g = 0, _g1 = this.currentContexts;
+		while(_g < _g1.length) {
+			var context = _g1[_g];
+			++_g;
+			cssText += "." + context + " { display : inline; visibility : visible; } ";
+		}
+		brix.component.navigation.ContextManager.styleSheet = brix.util.DomTools.addCssRules(cssText);
+		this.isDirty = false;
+	}
+	,isOutContext: function(element) {
+		if(element.className != null) {
+			var elementClasses = element.className.split(" ");
+			var _g = 0;
+			while(_g < elementClasses.length) {
+				var className = elementClasses[_g];
+				++_g;
+				className = this.cleanupContextValue(className);
+				if(this.isContext(className) && !this.hasContext(className)) return true;
+			}
+		}
+		return false;
+	}
+	,isInContext: function(element) {
+		if(element.className != null) {
+			var elementClasses = element.className.split(" ");
+			var _g = 0;
+			while(_g < elementClasses.length) {
+				var className = elementClasses[_g];
+				++_g;
+				className = this.cleanupContextValue(className);
+				if(this.isContext(className) && this.hasContext(className)) return true;
+			}
+		}
+		return false;
+	}
+	,isContext: function(context) {
+		return Lambda.has(this.allContexts,context);
+	}
+	,hasContext: function(context) {
+		return Lambda.has(this.currentContexts,context);
+	}
+	,removeContext: function(context) {
+		if(!this.isContext(context)) throw "Error: unknown context \"" + context + "\". It should be defined in the \"" + "data-context-list" + "\" parameter of the Context component.";
+		if(this.hasContext(context)) {
+			HxOverrides.remove(this.currentContexts,context);
+			this.invalidate();
+		} else haxe.Log.trace("Warning: Could not remove the context \"" + context + "\" from the current context, because it is not in the currentContexts array.",{ fileName : "ContextManager.hx", lineNumber : 240, className : "brix.component.navigation.ContextManager", methodName : "removeContext"});
+	}
+	,addContext: function(context) {
+		if(!this.isContext(context)) throw "Error: unknown context \"" + context + "\". It should be defined in the \"" + "data-context-list" + "\" parameter of the Context component.";
+		if(!this.hasContext(context)) {
+			this.currentContexts.push(context);
+			this.invalidate();
+		} else haxe.Log.trace("Warning: Could not add the context \"" + context + "\" to the current context, because it is allready in the currentContexts array.",{ fileName : "ContextManager.hx", lineNumber : 222, className : "brix.component.navigation.ContextManager", methodName : "addContext"});
+	}
+	,setCurrentContexts: function(contextList) {
+		this.currentContexts = contextList;
+		this.invalidate();
+		return contextList;
+	}
+	,invalidate: function() {
+		this.refresh();
+		this.isDirty = true;
+		var event = js.Lib.document.createEvent("CustomEvent");
+		event.initCustomEvent("changeContextEvent",false,false,this.currentContexts);
+		this.rootElement.dispatchEvent(event);
+	}
+	,onResetContextEvent: function(e) {
+		this.resetContexts();
+	}
+	,onReplaceContextsEvent: function(e) {
+		var contextValues = e.detail;
+		this.setCurrentContexts(contextValues);
+	}
+	,onRemoveContextEvent: function(e) {
+		var contextValues = e.detail;
+		var _g = 0;
+		while(_g < contextValues.length) {
+			var contextValue = contextValues[_g];
+			++_g;
+			this.removeContext(contextValue);
+		}
+	}
+	,onAddContextEvent: function(e) {
+		var contextValues = e.detail;
+		var _g = 0;
+		while(_g < contextValues.length) {
+			var contextValue = contextValues[_g];
+			++_g;
+			this.addContext(contextValue);
+		}
+	}
+	,resetContexts: function() {
+		if(this.rootElement.getAttribute("data-initial-context") != null) this.setCurrentContexts(this.string2ContextList(this.rootElement.getAttribute("data-initial-context"))); else this.setCurrentContexts(new Array());
 	}
 	,init: function() {
-		this.redraw();
-		brix.component.list.List.prototype.init.call(this);
+		brix.component.ui.DisplayObject.prototype.init.call(this);
+		this.resetContexts();
 	}
-	,__class__: brix.component.list.XmlList
+	,isDirty: null
+	,currentContexts: null
+	,allContexts: null
+	,__class__: brix.component.navigation.ContextManager
+	,__properties__: {set_currentContexts:"setCurrentContexts"}
 });
-brix.component.navigation = {}
 brix.component.navigation.LayerStatus = $hxClasses["brix.component.navigation.LayerStatus"] = { __ename__ : ["brix","component","navigation","LayerStatus"], __constructs__ : ["showTransition","hideTransition","visible","hidden","notInit"] }
 brix.component.navigation.LayerStatus.showTransition = ["showTransition",0];
 brix.component.navigation.LayerStatus.showTransition.toString = $estr;
@@ -2166,7 +2309,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 				element.pause();
 				element.currentTime = 0;
 			} catch( e ) {
-				null;
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 577, className : "brix.component.navigation.Layer", methodName : "cleanupVideoElements"});
 			}
 		}
 	}
@@ -2179,7 +2322,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 				element.pause();
 				element.currentTime = 0;
 			} catch( e ) {
-				null;
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 555, className : "brix.component.navigation.Layer", methodName : "cleanupAudioElements"});
 			}
 		}
 	}
@@ -2195,7 +2338,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 				}
 				element.muted = brix.component.sound.SoundOn.isMuted;
 			} catch( e ) {
-				null;
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 533, className : "brix.component.navigation.Layer", methodName : "setupVideoElements"});
 			}
 		}
 	}
@@ -2211,13 +2354,19 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 				}
 				element.muted = brix.component.sound.SoundOn.isMuted;
 			} catch( e ) {
-				null;
+				haxe.Log.trace("Layer error: could not access audio or video element",{ fileName : "Layer.hx", lineNumber : 508, className : "brix.component.navigation.Layer", methodName : "setupAudioElements"});
 			}
 		}
 	}
 	,doHide: function(transitionData,transitionObserver,preventTransitions,e) {
-		if(e != null && e.target != this.rootElement) return;
-		if(preventTransitions == false && this.doHideCallback == null) return;
+		if(e != null && e.target != this.rootElement) {
+			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 437, className : "brix.component.navigation.Layer", methodName : "doHide"});
+			return;
+		}
+		if(preventTransitions == false && this.doHideCallback == null) {
+			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 442, className : "brix.component.navigation.Layer", methodName : "doHide"});
+			return;
+		}
 		if(preventTransitions == false) {
 			this.endTransition(brix.component.navigation.transition.TransitionType.hide,transitionData,this.doHideCallback);
 			this.doHideCallback = null;
@@ -2228,7 +2377,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 			event.initCustomEvent("onLayerHideStop",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
 			this.rootElement.dispatchEvent(event);
 		} catch( e1 ) {
-			null;
+			haxe.Log.trace("Error: could not dispatch event " + Std.string(e1),{ fileName : "Layer.hx", lineNumber : 467, className : "brix.component.navigation.Layer", methodName : "doHide"});
 		}
 		if(transitionObserver != null) transitionObserver.removeTransition(this);
 		while(this.rootElement.childNodes.length > 0) {
@@ -2241,9 +2390,11 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 	,hide: function(transitionData,transitionObserver,preventTransitions) {
 		if(preventTransitions == null) preventTransitions = false;
 		if(this.status == brix.component.navigation.LayerStatus.hideTransition) {
+			haxe.Log.trace("Warning: hide break previous transition hide",{ fileName : "Layer.hx", lineNumber : 373, className : "brix.component.navigation.Layer", methodName : "hide"});
 			this.doHideCallback(null);
 			this.removeTransitionEvent(this.doHideCallback);
 		} else if(this.status == brix.component.navigation.LayerStatus.showTransition) {
+			haxe.Log.trace("Warning: hide break previous transition show",{ fileName : "Layer.hx", lineNumber : 380, className : "brix.component.navigation.Layer", methodName : "hide"});
 			this.doShowCallback(null);
 			this.removeTransitionEvent(this.doShowCallback);
 		}
@@ -2255,7 +2406,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 			event.initCustomEvent("onLayerHideStart",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
 			this.rootElement.dispatchEvent(event);
 		} catch( e ) {
-			null;
+			haxe.Log.trace("Error: could not dispatch event " + Std.string(e),{ fileName : "Layer.hx", lineNumber : 409, className : "brix.component.navigation.Layer", methodName : "hide"});
 		}
 		var audioNodes = this.rootElement.getElementsByTagName("audio");
 		this.cleanupAudioElements(audioNodes);
@@ -2271,8 +2422,14 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 		} else this.doHide(transitionData,transitionObserver,preventTransitions,null);
 	}
 	,doShow: function(transitionData,transitionObserver,preventTransitions,e) {
-		if(e != null && e.target != this.rootElement) return;
-		if(preventTransitions == false && this.doShowCallback == null) return;
+		if(e != null && e.target != this.rootElement) {
+			haxe.Log.trace("End transition event from another html element",{ fileName : "Layer.hx", lineNumber : 321, className : "brix.component.navigation.Layer", methodName : "doShow"});
+			return;
+		}
+		if(preventTransitions == false && this.doShowCallback == null) {
+			haxe.Log.trace("Warning: end transition callback already called",{ fileName : "Layer.hx", lineNumber : 325, className : "brix.component.navigation.Layer", methodName : "doShow"});
+			return;
+		}
 		if(preventTransitions == false) this.endTransition(brix.component.navigation.transition.TransitionType.show,transitionData,this.doShowCallback);
 		this.doShowCallback = null;
 		this.setStatus(brix.component.navigation.LayerStatus.visible);
@@ -2285,16 +2442,18 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 			event.initCustomEvent("onLayerShowStop",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
 			this.rootElement.dispatchEvent(event);
 		} catch( e1 ) {
-			null;
+			haxe.Log.trace("Error: could not dispatch event " + Std.string(e1),{ fileName : "Layer.hx", lineNumber : 355, className : "brix.component.navigation.Layer", methodName : "doShow"});
 		}
 		if(transitionObserver != null) transitionObserver.removeTransition(this);
 	}
 	,show: function(transitionData,transitionObserver,preventTransitions) {
 		if(preventTransitions == null) preventTransitions = false;
 		if(this.status == brix.component.navigation.LayerStatus.hideTransition) {
+			haxe.Log.trace("Warning: show break previous transition hide",{ fileName : "Layer.hx", lineNumber : 254, className : "brix.component.navigation.Layer", methodName : "show"});
 			this.doHideCallback(null);
 			this.removeTransitionEvent(this.doHideCallback);
 		} else if(this.status == brix.component.navigation.LayerStatus.showTransition) {
+			haxe.Log.trace("Warning: show break previous transition show",{ fileName : "Layer.hx", lineNumber : 261, className : "brix.component.navigation.Layer", methodName : "show"});
 			this.doShowCallback(null);
 			this.removeTransitionEvent(this.doShowCallback);
 		}
@@ -2310,7 +2469,7 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 			event.initCustomEvent("onLayerShowStart",false,false,{ transitionData : transitionData, target : this.rootElement, layer : this});
 			this.rootElement.dispatchEvent(event);
 		} catch( e ) {
-			null;
+			haxe.Log.trace("Error: could not dispatch event " + Std.string(e),{ fileName : "Layer.hx", lineNumber : 298, className : "brix.component.navigation.Layer", methodName : "show"});
 		}
 		if(preventTransitions == false) {
 			this.doShowCallback = (function(f,a1,a2,a3) {
@@ -2382,7 +2541,10 @@ brix.component.navigation.Layer.prototype = $extend(brix.component.ui.DisplayObj
 		}
 	}
 	,checkForNeverEndingTransition: function() {
-		if(this.status == brix.component.navigation.LayerStatus.showTransition || this.status == brix.component.navigation.LayerStatus.hideTransition) haxe.Timer.delay($bind(this,this.checkForNeverEndingTransition),2500);
+		if(this.status == brix.component.navigation.LayerStatus.showTransition || this.status == brix.component.navigation.LayerStatus.hideTransition) {
+			haxe.Log.trace("Warning, transition is not over. This may be a layer with data-show-start but with a style which does not has CSS transition. Root node with css class: " + this.rootElement.className,{ fileName : "Layer.hx", lineNumber : 130, className : "brix.component.navigation.Layer", methodName : "checkForNeverEndingTransition"});
+			haxe.Timer.delay($bind(this,this.checkForNeverEndingTransition),2500);
+		}
 	}
 	,setStatus: function(newStatus) {
 		this.status = newStatus;
@@ -2413,11 +2575,14 @@ brix.component.navigation.Page.__interfaces__ = [brix.component.group.IGroupable
 brix.component.navigation.Page.openPage = function(pageName,isPopup,transitionDataShow,transitionDataHide,brixId,root) {
 	var body = root;
 	if(root == null) body = brix.core.Application.get(brixId).body;
-	var page = brix.component.navigation.Page.getPageByName(pageName,brixId,body);
+	var pageURL = pageName.split("?");
+	var page = brix.component.navigation.Page.getPageByName(pageURL[0],brixId,body);
 	if(page == null) {
-		page = brix.component.navigation.Page.getPageByName(pageName,brixId);
+		page = brix.component.navigation.Page.getPageByName(pageURL[0],brixId);
 		if(page == null) throw "Error, could not find a page with name " + pageName;
 	}
+	page.query = { };
+	if(pageURL[1] != null) brix.component.navigation.Page.updateQuery(page,pageURL[1]);
 	page.open(transitionDataShow,transitionDataHide,!isPopup);
 }
 brix.component.navigation.Page.closePage = function(pageName,transitionData,brixId,root) {
@@ -2453,6 +2618,15 @@ brix.component.navigation.Page.getPageByName = function(pageName,brixId,root) {
 		}
 	}
 	return null;
+}
+brix.component.navigation.Page.updateQuery = function(page,queryString) {
+	var queryParams = queryString.split("&");
+	var _g1 = 0, _g = queryParams.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		var param = queryParams[i].split("=");
+		page.query[param[0]] = param[1];
+	}
 }
 brix.component.navigation.Page.__super__ = brix.component.ui.DisplayObject;
 brix.component.navigation.Page.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
@@ -2573,6 +2747,7 @@ brix.component.navigation.Page.prototype = $extend(brix.component.ui.DisplayObje
 		var event = e;
 		if(event.state != null && event.state.name == this.name) this.open(event.state.transitionDataShow,event.state.transitionDataHide,event.state.doCloseOthers,event.state.preventTransitions,false);
 	}
+	,query: null
 	,groupElement: null
 	,name: null
 	,__class__: brix.component.navigation.Page
@@ -2586,7 +2761,7 @@ brix.component.navigation.link.LinkBase = function(rootElement,brixId) {
 	if(rootElement.getAttribute("href") != null) {
 		this.linkName = StringTools.trim(rootElement.getAttribute("href"));
 		this.linkName = HxOverrides.substr(this.linkName,this.linkName.indexOf("#") + 1,null);
-	} else if(rootElement.getAttribute("data-href") != null) this.linkName = StringTools.trim(rootElement.getAttribute("data-href")); else null;
+	} else if(rootElement.getAttribute("data-href") != null) this.linkName = StringTools.trim(rootElement.getAttribute("data-href")); else haxe.Log.trace("Warning: the link has no href atribute (" + Std.string(rootElement) + ")",{ fileName : "LinkBase.hx", lineNumber : 101, className : "brix.component.navigation.link.LinkBase", methodName : "new"});
 	if(rootElement.getAttribute("target") != null && StringTools.trim(rootElement.getAttribute("target")) != "") this.targetAttr = StringTools.trim(rootElement.getAttribute("target"));
 };
 $hxClasses["brix.component.navigation.link.LinkBase"] = brix.component.navigation.link.LinkBase;
@@ -2657,11 +2832,14 @@ brix.component.navigation.transition.TransitionObserver.prototype = {
 			event.initCustomEvent(eventName,true,true,this.page);
 			this.page.rootElement.dispatchEvent(event);
 		} catch( e ) {
-			null;
+			haxe.Log.trace("Error: could not dispatch event " + Std.string(e),{ fileName : "TransitionObserver.hx", lineNumber : 94, className : "brix.component.navigation.transition.TransitionObserver", methodName : "dispatch"});
 		}
 	}
 	,doRemoveTransition: function() {
-		if(this.hasStoped) return;
+		if(this.hasStoped) {
+			haxe.Log.trace("Error: the watcher has allready been used and all transitions have finished. Canot reuse watchers.",{ fileName : "TransitionObserver.hx", lineNumber : 68, className : "brix.component.navigation.transition.TransitionObserver", methodName : "doRemoveTransition"});
+			return;
+		}
 		this.pendingTransitions--;
 		if(this.pendingTransitions == 0) {
 			this.hasStoped = true;
@@ -2673,7 +2851,10 @@ brix.component.navigation.transition.TransitionObserver.prototype = {
 	}
 	,addTransition: function(layer) {
 		if(this.pendingTransitions == 0) {
-			if(this.hasStoped) return;
+			if(this.hasStoped) {
+				haxe.Log.trace("Error: the watcher has allready been used and all transitions have finished. Canot reuse watchers.",{ fileName : "TransitionObserver.hx", lineNumber : 50, className : "brix.component.navigation.transition.TransitionObserver", methodName : "addTransition"});
+				return;
+			}
 			this.hasStarted = true;
 			this.dispatch(this.startEvent);
 		}
@@ -2773,15 +2954,20 @@ brix.component.template.TemplateMacros.makeDateReadable = function(resolve,dateO
 	var date;
 	if(js.Boot.__instanceof(dateOrString,String)) {
 		date = HxOverrides.strDate(dateOrString);
-		null;
-	} else if(js.Boot.__instanceof(dateOrString,Date)) date = dateOrString; else {
+		haxe.Log.trace("makeDateReadable string " + Std.string(dateOrString),{ fileName : "TemplateMacros.hx", lineNumber : 31, className : "brix.component.template.TemplateMacros", methodName : "makeDateReadable"});
+	} else if(js.Boot.__instanceof(dateOrString,Date)) {
+		haxe.Log.trace("makeDateReadable date ",{ fileName : "TemplateMacros.hx", lineNumber : 34, className : "brix.component.template.TemplateMacros", methodName : "makeDateReadable"});
+		date = dateOrString;
+	} else {
 		date = null;
 		throw "Error, the parameter is supposed to be String or Date";
 	}
 	var res = DateTools.format(date,format);
+	haxe.Log.trace("makeDateReadable returns " + res,{ fileName : "TemplateMacros.hx", lineNumber : 43, className : "brix.component.template.TemplateMacros", methodName : "makeDateReadable"});
 	return res;
 }
 brix.component.template.TemplateMacros.trace = function(resolve,obj) {
+	haxe.Log.trace(obj,{ fileName : "TemplateMacros.hx", lineNumber : 51, className : "brix.component.template.TemplateMacros", methodName : "trace"});
 	return "";
 }
 brix.core = {}
@@ -2803,10 +2989,11 @@ brix.core.Application.get = function(BrixId) {
 	return brix.core.Application.instances.get(BrixId);
 }
 brix.core.Application.main = function() {
+	haxe.Log.trace("----",{ fileName : "Application.hx", lineNumber : 125, className : "brix.core.Application", methodName : "main"});
 	if(haxe.Firebug.detect()) {
 		haxe.Firebug.redirectTraces();
-		null;
-	} else null;
+		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Application.hx", lineNumber : 130, className : "brix.core.Application", methodName : "main"});
+	} else haxe.Log.trace("Warning: Brix can not redirect traces to console, because no console was found",{ fileName : "Application.hx", lineNumber : 134, className : "brix.core.Application", methodName : "main"});
 }
 brix.core.Application.createApplication = function(args) {
 	var newId = brix.core.Application.generateUniqueId();
@@ -2822,7 +3009,7 @@ brix.core.Application.prototype = {
 		var componentClass = Type.resolveClass(classname);
 		if(componentClass == null) {
 			throw "ERROR cannot resolve " + classname;
-			null;
+			haxe.Log.trace("ERROR cannot resolve " + classname,{ fileName : "Application.hx", lineNumber : 853, className : "brix.core.Application", methodName : "resolveComponentClass"});
 		}
 		return componentClass;
 	}
@@ -2902,7 +3089,7 @@ brix.core.Application.prototype = {
 			node.removeAttribute("data-brix-id");
 			var isError = !this.nodeToCmpInstances.remove(nodeId);
 			if(isError) throw "Could not find the node in the associated components list.";
-		} else null;
+		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 687, className : "brix.core.Application", methodName : "removeAllAssociatedComponent"});
 	}
 	,removeAssociatedComponent: function(node,cmp) {
 		var nodeId = node.getAttribute("data-brix-id");
@@ -2915,7 +3102,7 @@ brix.core.Application.prototype = {
 				node.removeAttribute("data-brix-id");
 				this.nodeToCmpInstances.remove(nodeId);
 			}
-		} else null;
+		} else haxe.Log.trace("Warning: there are no components associated with this node",{ fileName : "Application.hx", lineNumber : 662, className : "brix.core.Application", methodName : "removeAssociatedComponent"});
 	}
 	,addAssociatedComponent: function(node,cmp) {
 		var nodeId = node.getAttribute("data-brix-id");
@@ -3002,7 +3189,10 @@ brix.core.Application.prototype = {
 	,initDom: function(appendTo) {
 		this.htmlRootElement = appendTo;
 		if(this.htmlRootElement == null || this.htmlRootElement.nodeType != js.Lib.document.documentElement.nodeType) this.htmlRootElement = js.Lib.document.documentElement;
-		if(this.htmlRootElement == null) return;
+		if(this.htmlRootElement == null) {
+			haxe.Log.trace("ERROR Lib.document.documentElement is null => You are trying to start your application while the document loading is probably not complete yet." + " To fix that, add the noAutoStart option to your Brix application and control the application startup with: window.onload = function() { myApplication.init() };",{ fileName : "Application.hx", lineNumber : 269, className : "brix.core.Application", methodName : "initDom"});
+			return;
+		}
 		this.body = js.Lib.document.body;
 	}
 	,attachBody: function(appendTo) {
@@ -3044,8 +3234,6 @@ brix.core.ApplicationContext.prototype = {
 		this.registeredUIComponents.push({ classname : "silex.ui.dialog.AuthDialog", args : null});
 		silex.ui.dialog.TextEditorDialog;
 		this.registeredUIComponents.push({ classname : "silex.ui.dialog.TextEditorDialog", args : null});
-		brix.component.list.XmlList;
-		this.registeredUIComponents.push({ classname : "brix.component.list.XmlList", args : null});
 		brix.component.sound.SoundOff;
 		this.registeredUIComponents.push({ classname : "brix.component.sound.SoundOff", args : null});
 		brix.component.interaction.NotificationManager;
@@ -3078,8 +3266,6 @@ brix.core.ApplicationContext.prototype = {
 		this.registeredUIComponents.push({ classname : "brix.component.layout.Accordion", args : null});
 		brix.component.navigation.Page;
 		this.registeredUIComponents.push({ classname : "brix.component.navigation.Page", args : null});
-		silex.ui.link.SilexLink;
-		this.registeredUIComponents.push({ classname : "silex.ui.link.SilexLink", args : null});
 		silex.ui.toolbox.editor.StringEditor;
 		this.registeredUIComponents.push({ classname : "silex.ui.toolbox.editor.StringEditor", args : null});
 		silex.ui.dialog.KCFinderDialog;
@@ -3110,6 +3296,8 @@ brix.core.ApplicationContext.prototype = {
 		this.registeredUIComponents.push({ classname : "brix.component.navigation.link.LinkToPage", args : null});
 		silex.ui.list.PageList;
 		this.registeredUIComponents.push({ classname : "silex.ui.list.PageList", args : null});
+		silex.ui.stage.SilexContextManager;
+		this.registeredUIComponents.push({ classname : "silex.ui.stage.SilexContextManager", args : null});
 	}
 	,registeredGlobalComponents: null
 	,registeredUIComponents: null
@@ -3131,7 +3319,10 @@ brix.util.DomTools.abs2rel = function(url) {
 	var initialUrl = url;
 	var base = brix.util.DomTools.getBaseUrl();
 	var idx = base.indexOf("://");
-	if(idx == -1) return initialUrl; else base = HxOverrides.substr(base,idx + 3,null);
+	if(idx == -1) {
+		haxe.Log.trace("Warning, could not make URL relative because base URL is relative and should be absolute - could not find pattern \"://\" in " + base + ". Now returns " + initialUrl,{ fileName : "DomTools.hx", lineNumber : 81, className : "brix.util.DomTools", methodName : "abs2rel"});
+		return initialUrl;
+	} else base = HxOverrides.substr(base,idx + 3,null);
 	var idx1 = url.indexOf("://");
 	if(idx1 == -1) return initialUrl; else url = HxOverrides.substr(url,idx1 + 3,null);
 	var baseArray = base.split("/");
@@ -3239,13 +3430,14 @@ brix.util.DomTools.moveTo = function(htmlDom,x,y) {
 	}
 }
 brix.util.DomTools.inspectTrace = function(obj,callingClass) {
+	haxe.Log.trace("-- " + callingClass + " inspecting element --",{ fileName : "DomTools.hx", lineNumber : 331, className : "brix.util.DomTools", methodName : "inspectTrace"});
 	var _g = 0, _g1 = Reflect.fields(obj);
 	while(_g < _g1.length) {
 		var prop = _g1[_g];
 		++_g;
-		null;
+		haxe.Log.trace("- " + prop + " = " + Std.string(Reflect.field(obj,prop)),{ fileName : "DomTools.hx", lineNumber : 334, className : "brix.util.DomTools", methodName : "inspectTrace"});
 	}
-	null;
+	haxe.Log.trace("-- --",{ fileName : "DomTools.hx", lineNumber : 336, className : "brix.util.DomTools", methodName : "inspectTrace"});
 }
 brix.util.DomTools.toggleClass = function(element,className) {
 	if(brix.util.DomTools.hasClass(element,className)) brix.util.DomTools.removeClass(element,className); else brix.util.DomTools.addClass(element,className);
@@ -3371,7 +3563,10 @@ brix.util.DomTools.setBaseTag = function(href) {
 	var head = js.Lib.document.getElementsByTagName("head")[0];
 	var baseNodes = js.Lib.document.getElementsByTagName("base");
 	href = brix.util.DomTools.rel2abs(href);
-	if(baseNodes.length > 0) baseNodes[0].setAttribute("href",href); else {
+	if(baseNodes.length > 0) {
+		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 560, className : "brix.util.DomTools", methodName : "setBaseTag"});
+		baseNodes[0].setAttribute("href",href);
+	} else {
 		var node = js.Lib.document.createElement("base");
 		node.setAttribute("href",href);
 		if(head.childNodes.length > 0) head.insertBefore(node,head.childNodes[0]); else head.appendChild(node);
@@ -7746,21 +7941,25 @@ $hxClasses["silex.Silex"] = silex.Silex;
 silex.Silex.__name__ = ["silex","Silex"];
 silex.Silex.initialBaseUrl = null;
 silex.Silex.main = function() {
+	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 68, className : "silex.Silex", methodName : "main"});
 	if(haxe.Firebug.detect()) {
 		haxe.Firebug.redirectTraces();
-		null;
-	} else null;
+		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Silex.hx", lineNumber : 73, className : "silex.Silex", methodName : "main"});
+	} else haxe.Log.trace("Warning: Brix can not redirect traces to console, because no console was found",{ fileName : "Silex.hx", lineNumber : 77, className : "silex.Silex", methodName : "main"});
 	silex.Silex.initialBaseUrl = brix.util.DomTools.getBaseUrl();
 	var fileService = new silex.file.client.FileService();
 	fileService.checkInstall(silex.Silex.onCheckInstall,silex.Silex.onCheckInstallError);
 }
 silex.Silex.onCheckInstall = function(installStatus) {
+	haxe.Log.trace("onCheckInstall return latest silex version: " + Std.string(installStatus),{ fileName : "Silex.hx", lineNumber : 105, className : "silex.Silex", methodName : "onCheckInstall"});
 	if(installStatus.redirect != null) js.Lib.window.location = installStatus.redirect; else silex.Silex.init();
 }
 silex.Silex.onCheckInstallError = function(error) {
-	js.Lib.window.location = "../libs/dropbox/reset.php";
+	haxe.Log.trace("onCheckInstall error: " + error,{ fileName : "Silex.hx", lineNumber : 116, className : "silex.Silex", methodName : "onCheckInstallError"});
+	js.Lib.window.location = "../libs/dropbox/checkInstall.php";
 }
 silex.Silex.init = function(unused) {
+	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 126, className : "silex.Silex", methodName : "init"});
 	var application = brix.core.Application.createApplication();
 	application.initDom();
 	if(js.Lib.window.location.hash != "" && brix.util.DomTools.getMeta("useDeeplink") != "false") {
@@ -7861,6 +8060,7 @@ silex.file.FileModel.__super__ = silex.ModelBase;
 silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onFileSaveSuccess"),this.debugInfo);
+		haxe.Log.trace("FILE SAVED",{ fileName : "FileModel.hx", lineNumber : 608, className : "silex.file.FileModel", methodName : "onSaveSuccess"});
 		brix.component.interaction.NotificationManager.notifySuccess("File saved",this.currentData.name + " has been saved successfully.",this.currentData.viewHtmlDom);
 	}
 	,onSaveError: function(msg) {
@@ -7917,6 +8117,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		this.save(newName);
 	}
 	,onDeleteSuccess: function() {
+		haxe.Log.trace("FILE DELETED ",{ fileName : "FileModel.hx", lineNumber : 476, className : "silex.file.FileModel", methodName : "onDeleteSuccess"});
 		this.create();
 	}
 	,trash: function(name) {
@@ -7928,7 +8129,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	,onError: function(msg) {
 		this.dispatchEvent(this.createEvent("onFileError"),this.debugInfo);
 		brix.component.interaction.NotificationManager.notifyError("Error","An error occured while loading the file \"" + this.currentData.name + "\" (" + msg + ")",this.currentData.viewHtmlDom);
-		throw "An error occured while loading file (" + msg + ")";
+		haxe.Log.trace("An error occured while loading file (" + msg + ")",{ fileName : "FileModel.hx", lineNumber : 448, className : "silex.file.FileModel", methodName : "onError"});
 	}
 	,initBrixApplication: function() {
 		this.application = brix.core.Application.createApplication();
@@ -7938,8 +8139,8 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,this.currentData.headHtmlDom);
 		if(initialPageName != null) {
 			var page = brix.component.navigation.Page.getPageByName(initialPageName,this.application.id,this.currentData.viewHtmlDom);
-			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else null;
-		} else null;
+			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "FileModel.hx", lineNumber : 431, className : "silex.file.FileModel", methodName : "initBrixApplication"});
+		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "FileModel.hx", lineNumber : 435, className : "silex.file.FileModel", methodName : "initBrixApplication"});
 		silex.interpreter.Interpreter.getInstance().execScriptTags(this.currentData.viewHtmlDom);
 	}
 	,generateNewId: function() {
@@ -8016,6 +8217,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		silex.property.PropertyModel.getInstance().refresh();
 	}
 	,load: function(name) {
+		haxe.Log.trace("load " + name,{ fileName : "FileModel.hx", lineNumber : 238, className : "silex.file.FileModel", methodName : "load"});
 		this.currentData.name = name;
 		this.changeBaseTag(name);
 		var pageModel = silex.page.PageModel.getInstance();
@@ -8026,10 +8228,16 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	}
 	,changeBaseTag: function(name) {
 		var idx = this.currentData.name.lastIndexOf("/");
-		if(idx > 0) brix.util.DomTools.setBaseTag(HxOverrides.substr(name,0,idx + 1)); else brix.util.DomTools.removeBaseTag();
+		if(idx > 0) {
+			haxe.Log.trace("setBaseTag " + HxOverrides.substr(name,0,idx + 1),{ fileName : "FileModel.hx", lineNumber : 229, className : "silex.file.FileModel", methodName : "changeBaseTag"});
+			brix.util.DomTools.setBaseTag(HxOverrides.substr(name,0,idx + 1));
+		} else brix.util.DomTools.removeBaseTag();
 	}
 	,getModelFromView: function(viewHtmlDom) {
-		if(viewHtmlDom == null) return null;
+		if(viewHtmlDom == null) {
+			haxe.Log.trace("Warning: could not retrieve the model for element because it is null.",{ fileName : "FileModel.hx", lineNumber : 147, className : "silex.file.FileModel", methodName : "getModelFromView"});
+			return null;
+		}
 		try {
 			if(brix.util.DomTools.hasClass(viewHtmlDom,"silex-view")) return this.currentData.modelHtmlDom;
 			var results = null;
@@ -8041,6 +8249,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 			if(results == null || results.length != 1) throw "Error: 1 and only 1 component or layer is expected to have ID \"" + id + "\" (" + Std.string(results) + ").";
 			return results[0];
 		} catch( e ) {
+			haxe.Log.trace("Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").",{ fileName : "FileModel.hx", lineNumber : 178, className : "silex.file.FileModel", methodName : "getModelFromView"});
 			throw "Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").";
 		}
 		return null;
@@ -8059,7 +8268,10 @@ $hxClasses["silex.file.client.FileService"] = silex.file.client.FileService;
 silex.file.client.FileService.__name__ = ["silex","file","client","FileService"];
 silex.file.client.FileService.__super__ = silex.ServiceBase;
 silex.file.client.FileService.prototype = $extend(silex.ServiceBase.prototype,{
-	save: function(name,content,onResult,onError) {
+	importFile: function(url,name,onResult,onError) {
+		this.callServerMethod("importFile",[url,name],onResult,onError);
+	}
+	,save: function(name,content,onResult,onError) {
 		this.callServerMethod("save",[name,content],onResult,onError);
 	}
 	,rename: function(src,dst,onResult,onError) {
@@ -8087,6 +8299,10 @@ silex.file.dropbox.FileBrowser.onValidate = null;
 silex.file.dropbox.FileBrowser.onValidateMultiple = null;
 silex.file.dropbox.FileBrowser.message = null;
 silex.file.dropbox.FileBrowser.intialPath = null;
+silex.file.dropbox.FileBrowser.manageFiles = function(brixInstanceId,msg,path) {
+	if(path == null) path = "./";
+	js.Lib.window.open("https://www.dropbox.com/home/Apps/Silex/" + path);
+}
 silex.file.dropbox.FileBrowser.selectMultipleFiles = function(userCallback,brixInstanceId,msg,path) {
 	if(path == null) path = "files/";
 	if(msg == null) msg = "Double click to select a file!";
@@ -8098,15 +8314,25 @@ silex.file.dropbox.FileBrowser.selectMultipleFiles = function(userCallback,brixI
 	Dropbox.choose(options);
 }
 silex.file.dropbox.FileBrowser.validateMultipleSelection = function(files) {
-	var urls = [];
-	var _g = 0;
-	while(_g < files.length) {
-		var file = files[_g];
-		++_g;
-		urls.push(file.link);
-	}
+	haxe.Log.trace("validateMultipleSelection " + Std.string(files),{ fileName : "FileBrowser.hx", lineNumber : 83, className : "silex.file.dropbox.FileBrowser", methodName : "validateMultipleSelection"});
+	var url = files[0].link;
+	var idx = url.indexOf("Silex");
+	if(idx < 0) {
+		var idx1 = url.lastIndexOf("/");
+		var name = "assets/" + url.substring(idx1 + 1);
+		name = StringTools.replace(name," ","_");
+		name = StringTools.replace(name,"%20","_");
+		new silex.file.client.FileService().importFile(url,name,(function(f,a1) {
+			return function() {
+				return f(a1);
+			};
+		})(silex.file.dropbox.FileBrowser.doValidateMultipleSelection,name));
+		brix.component.interaction.NotificationManager.notifySuccess("Importing","I am importing the file into folder Applications/Silex/assets/. This may take some time...");
+	} else silex.file.dropbox.FileBrowser.doValidateMultipleSelection(url);
+}
+silex.file.dropbox.FileBrowser.doValidateMultipleSelection = function(url) {
 	if(silex.file.dropbox.FileBrowser.onValidateMultiple != null) {
-		silex.file.dropbox.FileBrowser.onValidateMultiple(urls);
+		silex.file.dropbox.FileBrowser.onValidateMultiple([url]);
 		silex.file.dropbox.FileBrowser.onValidateMultiple = null;
 	}
 }
@@ -8121,23 +8347,36 @@ silex.file.dropbox.FileBrowser.selectFile = function(userCallback,brixInstanceId
 	Dropbox.choose(options);
 }
 silex.file.dropbox.FileBrowser.validateSelection = function(files) {
+	haxe.Log.trace("validateSelection " + Std.string(files),{ fileName : "FileBrowser.hx", lineNumber : 139, className : "silex.file.dropbox.FileBrowser", methodName : "validateSelection"});
 	var url = files[0].link;
-	if(url != null) {
-		if(silex.file.dropbox.FileBrowser.onValidate != null) {
-			silex.file.dropbox.FileBrowser.onValidate(url);
-			silex.file.dropbox.FileBrowser.onValidate = null;
-		}
+	var idx = url.indexOf("Silex");
+	if(idx < 0) {
+		var idx1 = url.lastIndexOf("/");
+		var name = "assets/" + url.substring(idx1 + 1);
+		name = StringTools.replace(name," ","_");
+		name = StringTools.replace(name,"%20","_");
+		new silex.file.client.FileService().importFile(url,name,(function(f,a1) {
+			return function() {
+				return f(a1);
+			};
+		})(silex.file.dropbox.FileBrowser.doValidateSelection,name));
+		brix.component.interaction.NotificationManager.notifySuccess("Importing","I am importing the file into folder Applications/Silex/assets/. This may take some time...");
+	} else silex.file.dropbox.FileBrowser.doValidateSelection(url);
+}
+silex.file.dropbox.FileBrowser.doValidateSelection = function(url) {
+	if(silex.file.dropbox.FileBrowser.onValidate != null) {
+		silex.file.dropbox.FileBrowser.onValidate(url);
+		silex.file.dropbox.FileBrowser.onValidate = null;
 	}
 }
 silex.file.dropbox.FileBrowser.getRelativeURLFromFileBrowser = function(url) {
 	var idx = url.indexOf("Silex");
 	if(idx < 0) {
-		brix.component.interaction.NotificationManager.notifyError("Error","Please choose from folder Applications/Silex, live web creation/");
-		throw "Can only take files from dropbox Application/Silex/ folder";
+	} else {
+		idx += 5;
+		idx = url.indexOf("/",idx);
+		url = HxOverrides.substr(url,idx + 1,null);
 	}
-	idx += 5;
-	idx = url.indexOf("/",idx + 1);
-	url = HxOverrides.substr(url,idx + 1,null);
 	return url;
 }
 silex.file.kcfinder = {}
@@ -8148,6 +8387,10 @@ silex.file.kcfinder.FileBrowser.onValidate = null;
 silex.file.kcfinder.FileBrowser.onValidateMultiple = null;
 silex.file.kcfinder.FileBrowser.message = null;
 silex.file.kcfinder.FileBrowser.intialPath = null;
+silex.file.kcfinder.FileBrowser.manageFiles = function(brixInstanceId,msg,path) {
+	if(path == null) path = "./";
+	silex.file.kcfinder.FileBrowser.selectFile(null,brixInstanceId,msg,path);
+}
 silex.file.kcfinder.FileBrowser.selectMultipleFiles = function(userCallback,brixInstanceId,msg,path) {
 	if(path == null) path = "files/";
 	if(msg == null) msg = "Double click to select one or more files!";
@@ -8189,6 +8432,7 @@ silex.interpreter.Interpreter.getInstance = function() {
 silex.interpreter.Interpreter.prototype = {
 	execScriptTags: function(rootElement) {
 		var scriptTags = brix.util.DomTools.getElementsByAttribute(rootElement,"type","text/hscript");
+		haxe.Log.trace("execScriptTags " + Std.string(rootElement) + " - " + rootElement.className + " - " + scriptTags.length,{ fileName : "Interpreter.hx", lineNumber : 89, className : "silex.interpreter.Interpreter", methodName : "execScriptTags"});
 		var _g1 = 0, _g = scriptTags.length;
 		while(_g1 < _g) {
 			var idx = _g1++;
@@ -8202,6 +8446,7 @@ silex.interpreter.Interpreter.prototype = {
 		}
 	}
 	,expose: function(key,obj) {
+		haxe.Log.trace("expose " + key,{ fileName : "Interpreter.hx", lineNumber : 80, className : "silex.interpreter.Interpreter", methodName : "expose"});
 		this.context.set(key,obj);
 	}
 	,exec: function(script) {
@@ -8356,9 +8601,11 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,headHtmlDom);
 		if(initialPageName == page.name) brix.util.DomTools.setMeta("initialPageName",newName,null,headHtmlDom);
 		var links = fileModel.application.getComponents(brix.component.navigation.link.LinkBase);
+		haxe.Log.trace("links: " + Std.string(links),{ fileName : "PageModel.hx", lineNumber : 257, className : "silex.page.PageModel", methodName : "renamePage"});
 		var $it0 = links.iterator();
 		while( $it0.hasNext() ) {
 			var link = $it0.next();
+			haxe.Log.trace("update link " + Std.string(link),{ fileName : "PageModel.hx", lineNumber : 259, className : "silex.page.PageModel", methodName : "renamePage"});
 			if(link.linkName == page.name) {
 				silex.component.ComponentModel.getInstance().updateLink(link.rootElement,page.name,newName);
 				link.linkName = newName;
@@ -8561,6 +8808,16 @@ silex.property.PropertyModel.prototype = $extend(silex.ModelBase.prototype,{
 	}
 	,__class__: silex.property.PropertyModel
 });
+silex.property.TextEditor = function() { }
+$hxClasses["silex.property.TextEditor"] = silex.property.TextEditor;
+silex.property.TextEditor.__name__ = ["silex","property","TextEditor"];
+silex.property.TextEditor.openTextEditor = function(onChange,textContent,brixInstanceId,msg) {
+	if(msg == null) msg = "Edit text and click \"close\"";
+	silex.ui.dialog.TextEditorDialog.onValidate = onChange;
+	silex.ui.dialog.TextEditorDialog.textContent = textContent;
+	silex.ui.dialog.TextEditorDialog.message = msg;
+	brix.component.navigation.Page.openPage("text-editor-dialog",true,null,null,brixInstanceId);
+}
 silex.ui = {}
 silex.ui.dialog = {}
 silex.ui.dialog.DialogBase = function(rootElement,BrixId,onShow,onHide,onSubmit,onCancel) {
@@ -8570,7 +8827,7 @@ silex.ui.dialog.DialogBase = function(rootElement,BrixId,onShow,onHide,onSubmit,
 	this.onSubmit = onSubmit;
 	this.onCancel = onCancel;
 	this.dialogName = rootElement.getAttribute("data-dialog-name");
-	if(this.dialogName == null) null; else brix.util.DomTools.addClass(rootElement,this.dialogName);
+	if(this.dialogName == null) haxe.Log.trace("Warning, this dialog has no dialog name. It will not be able to close automatically.",{ fileName : "DialogBase.hx", lineNumber : 84, className : "silex.ui.dialog.DialogBase", methodName : "new"}); else brix.util.DomTools.addClass(rootElement,this.dialogName);
 	rootElement.addEventListener("onLayerShowStop",$bind(this,this.onLayerShow),false);
 	rootElement.addEventListener("onLayerHideStop",$bind(this,this.onLayerHide),false);
 	rootElement.addEventListener("click",$bind(this,this.onClick),false);
@@ -8614,6 +8871,7 @@ silex.ui.dialog.AuthDialog.__name__ = ["silex","ui","dialog","AuthDialog"];
 silex.ui.dialog.AuthDialog.__super__ = silex.ui.dialog.DialogBase;
 silex.ui.dialog.AuthDialog.prototype = $extend(silex.ui.dialog.DialogBase.prototype,{
 	onLoginError: function(msg) {
+		haxe.Log.trace("onLoginError " + msg,{ fileName : "AuthDialog.hx", lineNumber : 100, className : "silex.ui.dialog.AuthDialog", methodName : "onLoginError"});
 		brix.component.navigation.Page.openPage(this.dialogName,true,null,null,this.brixInstanceId);
 		var inputElements = this.rootElement.getElementsByClassName("error-text");
 		if(inputElements.length > 0) inputElements[0].innerHTML = msg;
@@ -8663,6 +8921,7 @@ silex.ui.dialog.KCFinderDialog.prototype = $extend(silex.ui.dialog.DialogBase.pr
 		this.close();
 	}
 	,validateMultipleSelection: function(files) {
+		haxe.Log.trace("validateMultipleSelection " + Std.string(files),{ fileName : "KCFinderDialog.hx", lineNumber : 80, className : "silex.ui.dialog.KCFinderDialog", methodName : "validateMultipleSelection"});
 		if(files != null) {
 			if(silex.file.kcfinder.FileBrowser.onValidateMultiple != null) {
 				silex.file.kcfinder.FileBrowser.onValidateMultiple(files);
@@ -8672,6 +8931,7 @@ silex.ui.dialog.KCFinderDialog.prototype = $extend(silex.ui.dialog.DialogBase.pr
 		}
 	}
 	,validateSelection: function(url) {
+		haxe.Log.trace("validateSelection " + url,{ fileName : "KCFinderDialog.hx", lineNumber : 67, className : "silex.ui.dialog.KCFinderDialog", methodName : "validateSelection"});
 		if(url != null) {
 			if(silex.file.kcfinder.FileBrowser.onValidate != null) {
 				silex.file.kcfinder.FileBrowser.onValidate(url);
@@ -8702,6 +8962,7 @@ silex.ui.dialog.TextEditorDialog.message = null;
 silex.ui.dialog.TextEditorDialog.__super__ = silex.ui.dialog.DialogBase;
 silex.ui.dialog.TextEditorDialog.prototype = $extend(silex.ui.dialog.DialogBase.prototype,{
 	close: function() {
+		haxe.Log.trace("editor close" + window.parent.CKEDITOR.textContent,{ fileName : "TextEditorDialog.hx", lineNumber : 109, className : "silex.ui.dialog.TextEditorDialog", methodName : "close"});
 		var element = brix.util.DomTools.getSingleElement(this.rootElement,"text-editor-div",true);
 		element.innerHTML = "";
 		silex.ui.dialog.DialogBase.prototype.close.call(this);
@@ -8710,6 +8971,7 @@ silex.ui.dialog.TextEditorDialog.prototype = $extend(silex.ui.dialog.DialogBase.
 		this.close();
 	}
 	,validateSelection: function(text) {
+		haxe.Log.trace("validateSelection " + text,{ fileName : "TextEditorDialog.hx", lineNumber : 90, className : "silex.ui.dialog.TextEditorDialog", methodName : "validateSelection"});
 		if(text != null) {
 			if(silex.ui.dialog.TextEditorDialog.onValidate != null) silex.ui.dialog.TextEditorDialog.onValidate(text);
 		}
@@ -8747,7 +9009,10 @@ silex.ui.link.SilexLink.__super__ = brix.component.navigation.link.LinkBase;
 silex.ui.link.SilexLink.prototype = $extend(brix.component.navigation.link.LinkBase.prototype,{
 	onClick: function(e) {
 		brix.component.navigation.link.LinkBase.prototype.onClick.call(this,e);
-		if(this.linkName == null) return;
+		if(this.linkName == null) {
+			haxe.Log.trace("Warning: link could not be opened because it has no href nor data-href attribute set",{ fileName : "SilexLink.hx", lineNumber : 43, className : "silex.ui.link.SilexLink", methodName : "onClick"});
+			return;
+		}
 		if(silex.ui.link.SilexLink.isUrl(this.linkName)) js.Lib.window.open(this.linkName,this.targetAttr); else if(silex.ui.link.SilexLink.isPage(this.linkName,this.brixInstanceId)) brix.component.navigation.Page.openPage(this.linkName,this.targetAttr == "_top",this.transitionDataShow,this.transitionDataHide,this.brixInstanceId,this.groupElement);
 	}
 	,__class__: silex.ui.link.SilexLink
@@ -8900,10 +9165,13 @@ silex.ui.stage.DropHandlerBase.prototype = $extend(brix.component.ui.DisplayObje
 					if(modelElement.parentNode == null) throw "Error while moving the element: the element in the model has no parent.";
 					if(modelBeforeElement == null) modelParent.appendChild(modelElement); else modelParent.insertBefore(modelElement,modelBeforeElement);
 				} catch( e1 ) {
-					null;
+					haxe.Log.trace("ON DROP ERROR: " + Std.string(e1) + "(" + Std.string(element) + " , " + Std.string(beforeElement) + ", " + Std.string(parent) + ")",{ fileName : "DropHandlerBase.hx", lineNumber : 174, className : "silex.ui.stage.DropHandlerBase", methodName : "onDrop"});
 				}
-			} else if(this.draggedElementParent.childNodes.length > this.draggedElementPosition) this.draggedElementParent.insertBefore(element,this.draggedElementParent.childNodes[this.draggedElementPosition]); else this.draggedElementParent.appendChild(element);
-		} else null;
+			} else {
+				haxe.Log.trace("a drop zone was NOT found",{ fileName : "DropHandlerBase.hx", lineNumber : 181, className : "silex.ui.stage.DropHandlerBase", methodName : "onDrop"});
+				if(this.draggedElementParent.childNodes.length > this.draggedElementPosition) this.draggedElementParent.insertBefore(element,this.draggedElementParent.childNodes[this.draggedElementPosition]); else this.draggedElementParent.appendChild(element);
+			}
+		} else haxe.Log.trace("Nothing being dragged",{ fileName : "DropHandlerBase.hx", lineNumber : 194, className : "silex.ui.stage.DropHandlerBase", methodName : "onDrop"});
 		this.resetDraggedMarker();
 	}
 	,onDrag: function(e) {
@@ -8980,6 +9248,7 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 		return silex.component.ComponentModel.getInstance().addComponent(nodeName,layers.first(),dropZone.position);
 	}
 	,onFileChosen: function(element,fileUrl) {
+		haxe.Log.trace("onFileChosen " + fileUrl,{ fileName : "InsertDropHandler.hx", lineNumber : 190, className : "silex.ui.stage.InsertDropHandler", methodName : "onFileChosen"});
 		silex.property.PropertyModel.getInstance().setAttribute(element,"src",silex.file.dropbox.FileBrowser.getRelativeURLFromFileBrowser(fileUrl));
 	}
 	,initImageComp: function(element) {
@@ -8992,6 +9261,7 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 		silex.file.dropbox.FileBrowser.selectFile(cbk,this.brixInstanceId,null,"files/assets/");
 	}
 	,onMultipleFilesChosen: function(element,files) {
+		haxe.Log.trace("onMultipleFilesChosen " + Std.string(files),{ fileName : "InsertDropHandler.hx", lineNumber : 160, className : "silex.ui.stage.InsertDropHandler", methodName : "onMultipleFilesChosen"});
 		silex.property.PropertyModel.getInstance().setAttribute(element,"controls","controls");
 		var modelHtmlDom = silex.file.FileModel.getInstance().getModelFromView(element);
 		var _g = 0;
@@ -9053,7 +9323,7 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 				element = this.addLayer(dropZone,silex.page.PageModel.getInstance().selectedItem).rootElement;
 				silex.property.PropertyModel.getInstance().setAttribute(element,"data-silex-name","New container");
 			} else throw "unknown element has been drop on stage from the insert menu";
-		} else null;
+		} else haxe.Log.trace("onDrop - a drop zone was NOT found",{ fileName : "InsertDropHandler.hx", lineNumber : 142, className : "silex.ui.stage.InsertDropHandler", methodName : "onDrop"});
 	}
 	,resetDraggedMarker: function() {
 		this.listElementClone.parentNode.removeChild(this.listElementClone);
@@ -9175,7 +9445,7 @@ silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.Display
 				if(layerFound == null || boundingBox.w * boundingBox.h < layerFoundBoundingBox.w * layerFoundBoundingBox.h) {
 					var application = silex.file.FileModel.getInstance().application;
 					var layerList = application.getAssociatedComponents(layers[idx],brix.component.navigation.Layer);
-					if(layerList.length != 1) null;
+					if(layerList.length != 1) haxe.Log.trace("Warning: there should be 1 and only 1 Layer instance associated with this node, not " + layerList.length,{ fileName : "SelectionController.hx", lineNumber : 288, className : "silex.ui.stage.SelectionController", methodName : "onMouseMove"});
 					layerFound = layerList.first();
 					layerFoundBoundingBox = boundingBox;
 				}
@@ -9225,9 +9495,11 @@ silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.Display
 		this.componentModel.setSelectedItem(this.componentModel.hoveredItem);
 	}
 	,onDrop: function(e) {
+		haxe.Log.trace("onDrop",{ fileName : "SelectionController.hx", lineNumber : 186, className : "silex.ui.stage.SelectionController", methodName : "onDrop"});
 		this.isDragging = false;
 	}
 	,onDrag: function(e) {
+		haxe.Log.trace("onDrag",{ fileName : "SelectionController.hx", lineNumber : 179, className : "silex.ui.stage.SelectionController", methodName : "onDrag"});
 		this.isDragging = true;
 	}
 	,redraw: function(e) {
@@ -9247,11 +9519,11 @@ silex.ui.stage.SelectionController.prototype = $extend(brix.component.ui.Display
 });
 silex.ui.stage.SelectionDropHandler = function(rootElement,BrixId) {
 	silex.ui.stage.DropHandlerBase.call(this,rootElement,BrixId);
-	this.delBtn = brix.util.DomTools.getSingleElement(rootElement,"selection-marker-delete",true);
-	this.delBtn.addEventListener("click",$bind(this,this.onClick),false);
+	rootElement.addEventListener("click",$bind(this,this.onClick),false);
 	rootElement.addEventListener("redraw",$bind(this,this.redraw),false);
-	this.displayZone = brix.util.DomTools.getSingleElement(rootElement,"selection-marker-name",false);
-	if(this.displayZone != null) this.displayZoneTemplate = this.displayZone.innerHTML;
+	this.displayZone = brix.util.DomTools.getSingleElement(rootElement,"selection-ui-template",false);
+	if(this.displayZone != null) this.displayZoneTemplate = StringTools.htmlUnescape(this.displayZone.innerHTML);
+	this.displayZone.innerHTML = "";
 };
 $hxClasses["silex.ui.stage.SelectionDropHandler"] = silex.ui.stage.SelectionDropHandler;
 silex.ui.stage.SelectionDropHandler.__name__ = ["silex","ui","stage","SelectionDropHandler"];
@@ -9271,6 +9543,57 @@ silex.ui.stage.SelectionDropHandler.prototype = $extend(silex.ui.stage.DropHandl
 	,setDraggedElement: function(draggableEvent) {
 		if(silex.ui.stage.SelectionDropHandler.draggedComponent != null || silex.ui.stage.SelectionDropHandler.draggedLayer != null) throw "Error: could not start dragging this component or layer, another layer is still being dragged";
 		if(silex.component.ComponentModel.getInstance().selectedItem != null) silex.ui.stage.SelectionDropHandler.draggedComponent = silex.component.ComponentModel.getInstance().selectedItem; else if(silex.layer.LayerModel.getInstance().selectedItem != null) silex.ui.stage.SelectionDropHandler.draggedLayer = silex.layer.LayerModel.getInstance().selectedItem;
+	}
+	,onTextEditorChange: function(component,htmlText) {
+		silex.property.PropertyModel.getInstance().setProperty(component,"innerHTML",htmlText);
+	}
+	,onMediaSourcesChosen: function(component,files) {
+		var modelHtmlDom = silex.file.FileModel.getInstance().getModelFromView(component);
+		var _g = 0;
+		while(_g < files.length) {
+			var sourceUrl = files[_g];
+			++_g;
+			sourceUrl = silex.file.dropbox.FileBrowser.getRelativeURLFromFileBrowser(sourceUrl);
+			var sourceElement = js.Lib.document.createElement("source");
+			sourceElement.innerHTML = sourceUrl;
+			modelHtmlDom.appendChild(sourceElement);
+			var sourceElement1 = js.Lib.document.createElement("source");
+			sourceElement1.innerHTML = sourceUrl;
+			component.appendChild(sourceElement1);
+		}
+	}
+	,onImageChosen: function(component,fileUrl) {
+		fileUrl = silex.file.dropbox.FileBrowser.getRelativeURLFromFileBrowser(fileUrl);
+		silex.property.PropertyModel.getInstance().setAttribute(component,"src",fileUrl);
+	}
+	,editMedia: function() {
+		var component = silex.component.ComponentModel.getInstance().selectedItem;
+		if(component == null) throw "edit is not implemented for layers";
+		var cbk = (function(f,a1) {
+			return function(a2) {
+				return f(a1,a2);
+			};
+		})($bind(this,this.onMediaSourcesChosen),component);
+		silex.file.dropbox.FileBrowser.selectMultipleFiles(cbk,this.brixInstanceId,null,"files/assets/");
+	}
+	,editImage: function() {
+		var component = silex.component.ComponentModel.getInstance().selectedItem;
+		if(component == null) throw "edit is not implemented for layers";
+		var cbk = (function(f,a1) {
+			return function(a2) {
+				return f(a1,a2);
+			};
+		})($bind(this,this.onImageChosen),component);
+		silex.file.dropbox.FileBrowser.selectFile(cbk,this.brixInstanceId,null,"files/assets/");
+	}
+	,editText: function() {
+		var component = silex.component.ComponentModel.getInstance().selectedItem;
+		if(component == null) throw "edit is not implemented for layers";
+		silex.property.TextEditor.openTextEditor((function(f,a1) {
+			return function(a2) {
+				return f(a1,a2);
+			};
+		})($bind(this,this.onTextEditorChange),component),component.innerHTML,this.brixInstanceId);
 	}
 	,deleteSelection: function() {
 		var component = silex.component.ComponentModel.getInstance().selectedItem;
@@ -9292,31 +9615,70 @@ silex.ui.stage.SelectionDropHandler.prototype = $extend(silex.ui.stage.DropHandl
 		if(brix.util.DomTools.hasClass(e.target,"selection-marker-delete")) {
 			e.preventDefault();
 			this.deleteSelection();
+		} else if(brix.util.DomTools.hasClass(e.target,"selection-marker-edit-image")) {
+			e.preventDefault();
+			this.editImage();
+		} else if(brix.util.DomTools.hasClass(e.target,"selection-marker-edit-media")) {
+			e.preventDefault();
+			this.editMedia();
+		} else if(brix.util.DomTools.hasClass(e.target,"selection-marker-edit-text")) {
+			e.preventDefault();
+			this.editText();
 		}
 	}
 	,redraw: function(e) {
-		if(this.displayZoneTemplate != null && this.displayZone != null) {
-			if(this.rootElement.clientWidth > 50 && this.rootElement.clientHeight > 25) try {
-				this.displayZone.style.display = "block";
-				this.delBtn.style.display = "block";
-				var t = new haxe.Template(this.displayZoneTemplate);
-				var context = { layerName : null, componentName : null};
-				if(silex.layer.LayerModel.getInstance().selectedItem != null) context.layerName = silex.layer.LayerModel.getInstance().selectedItem.rootElement.getAttribute("data-silex-name"); else if(silex.component.ComponentModel.getInstance().selectedItem != null) context.layerName = silex.component.ComponentModel.getInstance().selectedItem.parentNode.getAttribute("data-silex-name");
-				if(silex.component.ComponentModel.getInstance().selectedItem != null) context.componentName = silex.component.ComponentModel.getInstance().selectedItem.getAttribute("data-silex-name");
-				var output = t.execute(context);
-				this.displayZone.innerHTML = output;
-			} catch( e1 ) {
-				throw "Error while executing the template of the marker. The error: " + Std.string(e1);
-			} else {
-				this.displayZone.style.display = "none";
-				this.delBtn.style.display = "none";
-			}
+		if(this.displayZoneTemplate != null && this.displayZone != null) try {
+			var t = new haxe.Template(this.displayZoneTemplate);
+			var context = { layerName : null, componentName : null, clientWidth : this.rootElement.clientWidth, clientHeight : this.rootElement.clientHeight};
+			if(silex.layer.LayerModel.getInstance().selectedItem != null) context.layerName = silex.layer.LayerModel.getInstance().selectedItem.rootElement.getAttribute("data-silex-name"); else if(silex.component.ComponentModel.getInstance().selectedItem != null) context.layerName = silex.component.ComponentModel.getInstance().selectedItem.parentNode.getAttribute("data-silex-name");
+			if(silex.component.ComponentModel.getInstance().selectedItem != null) context.componentName = silex.component.ComponentModel.getInstance().selectedItem.getAttribute("data-silex-name");
+			var output = t.execute(context);
+			this.displayZone.innerHTML = output;
+		} catch( e1 ) {
+			throw "Error while executing the template of the marker. The error: " + Std.string(e1);
 		}
 	}
-	,delBtn: null
+	,currentContexts: null
 	,displayZone: null
 	,displayZoneTemplate: null
 	,__class__: silex.ui.stage.SelectionDropHandler
+});
+silex.ui.stage.SilexContextManager = function(rootElement,brixId) {
+	brix.component.navigation.ContextManager.call(this,rootElement,brixId);
+	silex.component.ComponentModel.getInstance().addEventListener("onComponentSelectionChange",$bind(this,this.onSelectComponent),"silex.ui.stage.SilexContextManager");
+	silex.layer.LayerModel.getInstance().addEventListener("onLayerSelectionChange",$bind(this,this.onSelectLayer),"silex.ui.stage.SilexContextManager");
+};
+$hxClasses["silex.ui.stage.SilexContextManager"] = silex.ui.stage.SilexContextManager;
+silex.ui.stage.SilexContextManager.__name__ = ["silex","ui","stage","SilexContextManager"];
+silex.ui.stage.SilexContextManager.__super__ = brix.component.navigation.ContextManager;
+silex.ui.stage.SilexContextManager.prototype = $extend(brix.component.navigation.ContextManager.prototype,{
+	onSelectLayer: function(e) {
+		if(silex.layer.LayerModel.getInstance().selectedItem == null) this.removeContext("context-layer"); else this.addContext("context-layer");
+	}
+	,onSelectComponent: function(e) {
+		var _g = 0, _g1 = ["context-video","context-audio","context-img","context-layer","context-div"];
+		while(_g < _g1.length) {
+			var contextValue = _g1[_g];
+			++_g;
+			this.removeContext(contextValue);
+		}
+		var item = silex.component.ComponentModel.getInstance().selectedItem;
+		if(item != null) switch(item.nodeName.toLowerCase()) {
+		case "audio":
+			this.addContext("context-audio");
+			break;
+		case "video":
+			this.addContext("context-video");
+			break;
+		case "img":
+			this.addContext("context-img");
+			break;
+		case "div":
+			this.addContext("context-div");
+			break;
+		}
+	}
+	,__class__: silex.ui.stage.SilexContextManager
 });
 silex.ui.toolbox = {}
 silex.ui.toolbox.MenuController = function(rootElement,BrixId) {
@@ -9372,8 +9734,7 @@ silex.ui.toolbox.MenuController.renamePage = function() {
 	if(newName != null) silex.page.PageModel.getInstance().renamePage(silex.page.PageModel.getInstance().selectedItem,newName);
 }
 silex.ui.toolbox.MenuController.openFileBrowser = function() {
-	silex.file.dropbox.FileBrowser.message = "Manage your files and click \"close\"";
-	silex.file.dropbox.FileBrowser.selectFile(null,silex.ui.toolbox.MenuController.menuBrixId);
+	silex.file.dropbox.FileBrowser.manageFiles(silex.ui.toolbox.MenuController.menuBrixId,"Manage your files and click \"close\"");
 }
 silex.ui.toolbox.MenuController.__super__ = brix.component.ui.DisplayObject;
 silex.ui.toolbox.MenuController.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
@@ -9440,6 +9801,7 @@ silex.ui.toolbox.ToolBoxController.__name__ = ["silex","ui","toolbox","ToolBoxCo
 silex.ui.toolbox.ToolBoxController.__super__ = brix.component.ui.DisplayObject;
 silex.ui.toolbox.ToolBoxController.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
 	redraw: function() {
+		haxe.Log.trace("redraw ",{ fileName : "ToolBoxController.hx", lineNumber : 194, className : "silex.ui.toolbox.ToolBoxController", methodName : "redraw"});
 		var innerHtml = "";
 		var t;
 		try {
@@ -9501,7 +9863,7 @@ silex.ui.toolbox.ToolBoxController.prototype = $extend(brix.component.ui.Display
 		this.dataProvider = this.xmlToObj(fast);
 		this.redraw();
 		var initialPage = this.rootElement.getAttribute("data-initial-page-name");
-		if(initialPage == null) null;
+		if(initialPage == null) haxe.Log.trace("Warning: the initialPage attribute is not set on the ToolBoxController node",{ fileName : "ToolBoxController.hx", lineNumber : 132, className : "silex.ui.toolbox.ToolBoxController", methodName : "onLoadSuccess"});
 		brix.component.navigation.Page.openPage(initialPage,false,null,null,this.brixInstanceId,this.rootElement);
 	}
 	,onLoadError: function(message) {
@@ -9633,9 +9995,9 @@ silex.ui.toolbox.editor.EditorBase.prototype = $extend(brix.component.ui.Display
 	}
 	,init: function() {
 		brix.component.group.Groupable.startGroupable(this,this.rootElement);
-		if(this.groupElement == null) null; else {
+		if(this.groupElement == null) haxe.Log.trace("Warning: Editor found outside a property group.",{ fileName : "EditorBase.hx", lineNumber : 73, className : "silex.ui.toolbox.editor.EditorBase", methodName : "init"}); else {
 			this.propertyName = this.groupElement.getAttribute("data-property-name");
-			if(this.propertyName == null || this.propertyName == "") null;
+			if(this.propertyName == null || this.propertyName == "") haxe.Log.trace("Could not find the property name for the editor. It was not set in the attribute \"data-property-name\" of the group node (" + this.groupElement.className + ").",{ fileName : "EditorBase.hx", lineNumber : 79, className : "silex.ui.toolbox.editor.EditorBase", methodName : "init"});
 		}
 		try {
 			this.reset();
@@ -9692,7 +10054,10 @@ silex.ui.toolbox.editor.BackgroundPositionEditor.prototype = $extend(silex.ui.to
 			}
 			while(HxOverrides.remove(values,"")) {
 			}
-			if(values.length != 2) return;
+			if(values.length != 2) {
+				haxe.Log.trace("Error: found a value of " + value + " for background-position, but could not split it in 2 parts for X and Y. Length is " + values.length,{ fileName : "BackgroundPositionEditor.hx", lineNumber : 78, className : "silex.ui.toolbox.editor.BackgroundPositionEditor", methodName : "load"});
+				return;
+			}
 			if(values[0] == "0%") values[0] = "left";
 			if(values[0] == "50%") values[0] = "center";
 			if(values[0] == "100%") values[0] = "right";
@@ -10100,7 +10465,6 @@ silex.ui.toolbox.editor.PropertyEditor = function(rootElement,BrixId) {
 };
 $hxClasses["silex.ui.toolbox.editor.PropertyEditor"] = silex.ui.toolbox.editor.PropertyEditor;
 silex.ui.toolbox.editor.PropertyEditor.__name__ = ["silex","ui","toolbox","editor","PropertyEditor"];
-silex.ui.toolbox.editor.PropertyEditor.styleSheet = null;
 silex.ui.toolbox.editor.PropertyEditor.__super__ = silex.ui.toolbox.editor.UrlEditor;
 silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.editor.UrlEditor.prototype,{
 	apply: function() {
@@ -10113,6 +10477,7 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 		if(value2 != null && value2 != "") propertyModel.setAttribute(this.selectedItem,"alt",this.getInputValue("alt-property")); else propertyModel.setAttribute(this.selectedItem,"alt",null);
 		var value3 = this.getInputValue("src-property");
 		if(value3 != null && value3 != "") propertyModel.setProperty(this.selectedItem,"src",brix.util.DomTools.abs2rel(value3)); else if(Reflect.hasField(this.selectedItem,"src")) propertyModel.setProperty(this.selectedItem,"src","");
+		haxe.Log.trace("apply " + brix.util.DomTools.abs2rel(value3),{ fileName : "PropertyEditor.hx", lineNumber : 192, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "apply"});
 		var modelHtmlDom = silex.file.FileModel.getInstance().getModelFromView(this.selectedItem);
 		var sources = modelHtmlDom.getElementsByTagName("source");
 		var _g1 = 0, _g = sources.length;
@@ -10153,22 +10518,7 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 		if(value8 == true) propertyModel.setAttribute(this.selectedItem,"data-master","true"); else propertyModel.setAttribute(this.selectedItem,"data-master",null);
 	}
 	,load: function(element) {
-		var contextArray = [];
-		if(brix.util.DomTools.hasClass(element,"Layer")) contextArray.push("context-layer"); else switch(element.nodeName.toLowerCase()) {
-		case "audio":
-			contextArray.push("context-audio");
-			break;
-		case "video":
-			contextArray.push("context-video");
-			break;
-		case "img":
-			contextArray.push("context-img");
-			break;
-		case "div":
-			contextArray.push("context-div");
-			break;
-		}
-		this.updateContext(contextArray);
+		haxe.Log.trace("load",{ fileName : "PropertyEditor.hx", lineNumber : 113, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "load"});
 		var propertyModel = silex.property.PropertyModel.getInstance();
 		var value = propertyModel.getAttribute(element,"data-silex-name");
 		if(value != null) this.setInputValue("name-property",value);
@@ -10195,24 +10545,8 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 		var value8 = propertyModel.getAttribute(element,"data-master");
 		if(value8 == null || value8 == false) this.setInputValue("master-property",null,"checked"); else this.setInputValue("master-property","checked","checked");
 	}
-	,updateContext: function(contextArray) {
-		if(silex.ui.toolbox.editor.PropertyEditor.styleSheet != null) js.Lib.document.getElementsByTagName("head")[0].removeChild(silex.ui.toolbox.editor.PropertyEditor.styleSheet);
-		var cssText = "";
-		var _g = 0, _g1 = ["context-video","context-audio","context-img","context-layer","context-div"];
-		while(_g < _g1.length) {
-			var context = _g1[_g];
-			++_g;
-			cssText += "." + context + " { display : none; visibility : hidden; } ";
-		}
-		var _g = 0;
-		while(_g < contextArray.length) {
-			var context = contextArray[_g];
-			++_g;
-			cssText += "." + context + " { display : inline; visibility : visible; } ";
-		}
-		silex.ui.toolbox.editor.PropertyEditor.styleSheet = brix.util.DomTools.addCssRules(cssText);
-	}
 	,reset: function() {
+		haxe.Log.trace("reset",{ fileName : "PropertyEditor.hx", lineNumber : 96, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "reset"});
 		this.setInputValue("name-property","");
 		this.setInputValue("title-property","");
 		this.setInputValue("alt-property","");
@@ -10222,16 +10556,9 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 		this.setInputValue("controls-property",null,"checked");
 		this.setInputValue("loop-property",null,"checked");
 		this.setInputValue("master-property",null,"checked");
-		this.updateContext([]);
 	}
-	,onTextEditorChange: function(htmlText) {
-		silex.property.PropertyModel.getInstance().setProperty(this.selectedItem,"innerHTML",htmlText);
-	}
-	,openTextEditor: function() {
-		silex.ui.dialog.TextEditorDialog.onValidate = $bind(this,this.onTextEditorChange);
-		silex.ui.dialog.TextEditorDialog.textContent = this.selectedItem.innerHTML;
-		silex.ui.dialog.TextEditorDialog.message = "Edit text and click \"close\"";
-		brix.component.navigation.Page.openPage("text-editor-dialog",true,null,null,this.brixInstanceId);
+	,onTextEditorChange: function(item,htmlText) {
+		silex.property.PropertyModel.getInstance().setProperty(item,"innerHTML",htmlText);
 	}
 	,onClick: function(e) {
 		silex.ui.toolbox.editor.UrlEditor.prototype.onClick.call(this,e);
@@ -10253,10 +10580,15 @@ silex.ui.toolbox.editor.PropertyEditor.prototype = $extend(silex.ui.toolbox.edit
 			}
 		} else if(brix.util.DomTools.hasClass(e.target,"property-editor-edit-text")) {
 			e.preventDefault();
-			this.openTextEditor();
+			silex.property.TextEditor.openTextEditor((function(f,a1) {
+				return function(a2) {
+					return f(a1,a2);
+				};
+			})($bind(this,this.onTextEditorChange),this.selectedItem),this.selectedItem.innerHTML,this.brixInstanceId);
 		}
 	}
 	,onPropertyChange: function(e) {
+		haxe.Log.trace("onPropertyChange " + Std.string(this.propertyChangePending) + " - " + Std.string(e.detail.name) + " - " + this.propertyName,{ fileName : "PropertyEditor.hx", lineNumber : 39, className : "silex.ui.toolbox.editor.PropertyEditor", methodName : "onPropertyChange"});
 		if(this.propertyChangePending) return;
 		this.refresh();
 	}
@@ -10385,7 +10717,13 @@ brix.component.list.List.DATA_ATTR_LIST_ITEM_INDEX = "data-list-item-idx";
 brix.component.list.List.EVENT_CHANGE = "listChange";
 brix.component.list.List.EVENT_CLICK = "listClick";
 brix.component.list.List.EVENT_ROLL_OVER = "listRollOver";
-brix.component.list.XmlList.ATTR_ITEMS = "data-items";
+brix.component.navigation.ContextManager.PARAM_DATA_CONTEXT_LIST = "data-context-list";
+brix.component.navigation.ContextManager.PARAM_DATA_INITIAL_CONTEXT = "data-initial-context";
+brix.component.navigation.ContextManager.EVENT_CONTEXT_CHANGE = "changeContextEvent";
+brix.component.navigation.ContextManager.EVENT_ADD_CONTEXTS = "addContextsEvent";
+brix.component.navigation.ContextManager.EVENT_REMOVE_CONTEXTS = "removeContextsEvent";
+brix.component.navigation.ContextManager.EVENT_REPLACE_CONTEXTS = "replaceContextsEvent";
+brix.component.navigation.ContextManager.EVENT_RESET_CONTEXTS = "resetContextsEvent";
 brix.component.navigation.Layer.EVENT_TYPE_SHOW_START = "onLayerShowStart";
 brix.component.navigation.Layer.EVENT_TYPE_HIDE_START = "onLayerHideStart";
 brix.component.navigation.Layer.EVENT_TYPE_SHOW_STOP = "onLayerShowStop";
@@ -10457,8 +10795,9 @@ js.Lib.onerror = null;
 silex.ServiceBase.GATEWAY_URL = "../";
 silex.Silex.CONFIG_FILE_BODY = "fileBody";
 silex.Silex.CONFIG_USE_DEEPLINK = "useDeeplink";
-silex.Silex.CHECK_INSTALL_SCRIPT = "../libs/dropbox/reset.php";
+silex.Silex.CHECK_INSTALL_SCRIPT = "../libs/dropbox/checkInstall.php";
 silex.component.ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME = "data-silex-component-id";
+silex.component.ComponentModel.NAME_ATTRIBUTE_NAME = "data-silex-name";
 silex.component.ComponentModel.DEBUG_INFO = "ComponentModel class";
 silex.component.ComponentModel.ON_SELECTION_CHANGE = "onComponentSelectionChange";
 silex.component.ComponentModel.ON_HOVER_CHANGE = "onComponentHoverChange";
@@ -10484,7 +10823,7 @@ silex.file.kcfinder.FileBrowser.FB_MESSAGE_CLASS_NAME = "message-zone";
 silex.file.kcfinder.FileBrowser.expectMultipleFiles = false;
 silex.interpreter.Interpreter.BASIC_CONTEXT = { Lib : js.Lib, Math : Math, Timer : haxe.Timer, StringTools : StringTools, DomTools : brix.util.DomTools, Application : brix.core.Application, Page : brix.component.navigation.Page, Layer : brix.component.navigation.Layer};
 silex.layer.LayerModel.LAYER_ID_ATTRIBUTE_NAME = "data-silex-layer-id";
-silex.layer.LayerModel.LAYER_NAME_ATTRIBUTE_NAME = "data-silex-name";
+silex.layer.LayerModel.NAME_ATTRIBUTE_NAME = "data-silex-name";
 silex.layer.LayerModel.DEBUG_INFO = "LayerModel class";
 silex.layer.LayerModel.ON_SELECTION_CHANGE = "onLayerSelectionChange";
 silex.layer.LayerModel.ON_HOVER_CHANGE = "onLayerHoverChange";
@@ -10543,9 +10882,17 @@ silex.ui.stage.SelectionController.MIN_WIDTH = 10;
 silex.ui.stage.SelectionController.MIN_HEIGHT = 10;
 silex.ui.stage.SelectionDropHandler.__meta__ = { obj : { tagNameFilter : ["DIV"]}};
 silex.ui.stage.SelectionDropHandler.DELETE_BUTTON_CLASS_NAME = "selection-marker-delete";
-silex.ui.stage.SelectionDropHandler.DISPLAY_ZONE_CLASS_NAME = "selection-marker-name";
-silex.ui.stage.SelectionDropHandler.MIN_WIDTH_FOR_DISPLAY_ZONE = 50;
-silex.ui.stage.SelectionDropHandler.MIN_HEIGHT_FOR_DISPLAY_ZONE = 25;
+silex.ui.stage.SelectionDropHandler.EDIT_IMG_BUTTON_CLASS_NAME = "selection-marker-edit-image";
+silex.ui.stage.SelectionDropHandler.EDIT_MEDIA_BUTTON_CLASS_NAME = "selection-marker-edit-media";
+silex.ui.stage.SelectionDropHandler.EDIT_TEXT_BUTTON_CLASS_NAME = "selection-marker-edit-text";
+silex.ui.stage.SelectionDropHandler.DISPLAY_ZONE_CLASS_NAME = "selection-ui-template";
+silex.ui.stage.SilexContextManager.DEBUG_INFO = "silex.ui.stage.SilexContextManager";
+silex.ui.stage.SilexContextManager.VIDEO_CONTEXT = "context-video";
+silex.ui.stage.SilexContextManager.AUDIO_CONTEXT = "context-audio";
+silex.ui.stage.SilexContextManager.IMG_CONTEXT = "context-img";
+silex.ui.stage.SilexContextManager.LAYER_CONTEXT = "context-layer";
+silex.ui.stage.SilexContextManager.DIV_CONTEXT = "context-div";
+silex.ui.stage.SilexContextManager.ALL_CONTEXTS = ["context-video","context-audio","context-img","context-layer","context-div"];
 silex.ui.toolbox.MenuController.__meta__ = { obj : { tagNameFilter : ["DIV"]}};
 silex.ui.toolbox.ToolBoxController.CSS_DESCRIPTOR_FILE_URL = "assets/admin/css-styles.xml";
 silex.ui.toolbox.ToolBoxController.TOOL_BOX_CONTROLLER_TEMPLATE = "tool-box-controller-template";
@@ -10553,7 +10900,6 @@ silex.ui.toolbox.editor.EditorBase.DEBUG_INFO = "silex.ui.toolbox.editor.EditorB
 silex.ui.toolbox.editor.HtmlEditor.TEXT_INPUT_CLASS_NAME = "text-input";
 silex.ui.toolbox.editor.UrlEditor.ADD_MULTIPLE_FILE_BROWSER_CLASS_NAME = "add-multiple-files-button";
 silex.ui.toolbox.editor.UrlEditor.OPEN_FILE_BROWSER_CLASS_NAME = "select-file-button";
-silex.ui.toolbox.editor.PropertyEditor.ALL_CONTEXTS = ["context-video","context-audio","context-img","context-layer","context-div"];
 silex.ui.toolbox.editor.PropertyEditor.OPEN_TEXT_EDITOR_CLASS_NAME = "property-editor-edit-text";
 silex.ui.toolbox.editor.PropertyEditor.DELETE_BUTTON_CLASS_NAME = "property-editor-delete-selected";
 silex.Silex.main();

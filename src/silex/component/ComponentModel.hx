@@ -48,6 +48,11 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	 */ 
 	public static inline var COMPONENT_ID_ATTRIBUTE_NAME = "data-silex-component-id";
 	/**
+	 * Name of the attribute for the layer name
+	 * The layer name is used only when editing a Silex file, but it is saved in the HTML file
+	 */ 
+	public static inline var NAME_ATTRIBUTE_NAME = "data-silex-name";
+	/**
 	 * Information for debugging, e.g. the class name
 	 */ 
 	public static inline var DEBUG_INFO = "ComponentModel class";

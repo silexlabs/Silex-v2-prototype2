@@ -9,8 +9,13 @@ import brix.component.interaction.Draggable;
 import silex.layer.LayerModel;
 import silex.page.PageModel;
 import silex.file.FileModel;
+import silex.file.FileBrowser;
 import silex.component.ComponentModel;
 import silex.interpreter.Interpreter;
+import silex.property.TextEditor;
+import silex.property.PropertyModel;
+import silex.ui.stage.SilexContextManager;
+import brix.component.navigation.ContextManager;
 
 /**
  * Selection markers are selection rectangles put over the selection, 
@@ -22,23 +27,37 @@ import silex.interpreter.Interpreter;
 @tagNameFilter("DIV")
 class SelectionDropHandler extends DropHandlerBase{
 	/**
-	 * class name expected for the add page button
+	 * class name expected for the button
 	 */
 	public static inline var DELETE_BUTTON_CLASS_NAME:String = "selection-marker-delete";
 	/**
+	 * class name expected for the button
+	 */
+	public static inline var EDIT_IMG_BUTTON_CLASS_NAME:String = "selection-marker-edit-image";
+	/**
+	 * class name expected for the button
+	 */
+	public static inline var EDIT_MEDIA_BUTTON_CLASS_NAME:String = "selection-marker-edit-media";
+	/**
+	 * class name expected for the button
+	 */
+	public static inline var EDIT_TEXT_BUTTON_CLASS_NAME:String = "selection-marker-edit-text";
+	/**
 	 * class name expected for the display zone, i.e. a div which contains a template to display selection info
 	 */
-	public static inline var DISPLAY_ZONE_CLASS_NAME:String = "selection-marker-name";
+	public static inline var DISPLAY_ZONE_CLASS_NAME:String = "selection-ui-template";
 	/**
 	 * minimum size for the component or layer, 
 	 * under this size, I will not display the trash and display zone
+	 * NOW IN THE HTML TEMPLATE
 	 */
-	public static inline var MIN_WIDTH_FOR_DISPLAY_ZONE:Int = 50;
+//	public static inline var MIN_WIDTH_FOR_DISPLAY_ZONE:Int = 50;
 	/**
 	 * minimum size for the component or layer, 
 	 * under this size, I will not display the trash and display zone
+	 * NOW IN THE HTML TEMPLATE
 	 */
-	public static inline var MIN_HEIGHT_FOR_DISPLAY_ZONE:Int = 25;
+//	public static inline var MIN_HEIGHT_FOR_DISPLAY_ZONE:Int = 25;
 	/**
 	 * selected component
 	 * store a component while dragging
@@ -58,25 +77,26 @@ class SelectionDropHandler extends DropHandlerBase{
 	 */ 
 	private var displayZone:HtmlDom;
 	/**
-	 * store the reference to the trash can icon
-	 */ 
-	private var delBtn:HtmlDom;
+	 * keep track of the current context
+	 */
+	private var currentContexts:ContextEventDetail;
 	/**
 	 * constructor
 	 * listen to the Draggable class events
 	 */
 	public function new(rootElement:HtmlDom, BrixId:String){
 		super(rootElement, BrixId);
-		delBtn = DomTools.getSingleElement(rootElement, DELETE_BUTTON_CLASS_NAME, true);
-		delBtn.addEventListener("click", onClick, false);
+
+		rootElement.addEventListener("click", onClick, false);
 		
 		rootElement.addEventListener(SelectionController.REDRAW_MARKER_EVENT, cast(redraw), false);
 
 		// store the template for the display zone
 		displayZone = DomTools.getSingleElement(rootElement, DISPLAY_ZONE_CLASS_NAME, false);
 		if (displayZone != null){
-			displayZoneTemplate = displayZone.innerHTML;
+			displayZoneTemplate = StringTools.htmlUnescape(displayZone.innerHTML);
 		}
+		displayZone.innerHTML = "";
 	}
 	/**
 	 * callback called when the marker is moved on a new component
@@ -84,23 +104,22 @@ class SelectionDropHandler extends DropHandlerBase{
 	private function redraw(e:CustomEvent) {
 		// update the name of the component
 		if (displayZoneTemplate != null && displayZone != null){
-			if (rootElement.clientWidth > MIN_WIDTH_FOR_DISPLAY_ZONE && rootElement.clientHeight > MIN_HEIGHT_FOR_DISPLAY_ZONE ){
+//			if (rootElement.clientWidth > MIN_WIDTH_FOR_DISPLAY_ZONE && rootElement.clientHeight > MIN_HEIGHT_FOR_DISPLAY_ZONE ){
 				try{
-					// the component is big enough to display the display zone
-					displayZone.style.display = "block";
-					delBtn.style.display = "block";
 					// resolve the template
 			        var t = new haxe.Template(displayZoneTemplate);
 			        var context = {
 			        		layerName: null,
 			        		componentName: null,
+			        		clientWidth: rootElement.clientWidth,
+			        		clientHeight: rootElement.clientHeight,
 			        	};
 					if (LayerModel.getInstance().selectedItem != null)
-						context.layerName = LayerModel.getInstance().selectedItem.rootElement.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
+						context.layerName = LayerModel.getInstance().selectedItem.rootElement.getAttribute(LayerModel.NAME_ATTRIBUTE_NAME);
 					else if (ComponentModel.getInstance().selectedItem != null )
-						context.layerName = ComponentModel.getInstance().selectedItem.parentNode.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
+						context.layerName = ComponentModel.getInstance().selectedItem.parentNode.getAttribute(LayerModel.NAME_ATTRIBUTE_NAME);
 					if (ComponentModel.getInstance().selectedItem != null )
-						context.componentName = ComponentModel.getInstance().selectedItem.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
+						context.componentName = ComponentModel.getInstance().selectedItem.getAttribute(ComponentModel.NAME_ATTRIBUTE_NAME);
 			        
 			        var output = t.execute(context);
 		
@@ -111,12 +130,7 @@ class SelectionDropHandler extends DropHandlerBase{
 					throw("Error while executing the template of the marker. The error: "+e);
 				}
 			}
-			else{
-				// the component is too small to display the display zone
-				displayZone.style.display = "none";
-				delBtn.style.display = "none";
-			}
-		}
+//		}
 	}
 	/**
 	 * check if the user clicked on a UI of the marker
@@ -127,7 +141,25 @@ class SelectionDropHandler extends DropHandlerBase{
 			e.preventDefault();
 			deleteSelection();
 		}
+		// edit component
+		else if (DomTools.hasClass(e.target, EDIT_IMG_BUTTON_CLASS_NAME)){
+			e.preventDefault();
+			editImage();
+		}
+		// edit component
+		else if (DomTools.hasClass(e.target, EDIT_MEDIA_BUTTON_CLASS_NAME)){
+			e.preventDefault();
+			editMedia();
+		}
+		// edit component
+		else if (DomTools.hasClass(e.target, EDIT_TEXT_BUTTON_CLASS_NAME)){
+			e.preventDefault();
+			editText();
+		}
 	}
+	////////////////////////////////////////////////////////////////////////
+	// edit selection
+	////////////////////////////////////////////////////////////////////////
 	/**
 	 * delete selection
 	 */
@@ -137,19 +169,91 @@ class SelectionDropHandler extends DropHandlerBase{
 			// case of a layer
 			var layer = LayerModel.getInstance().selectedItem;
 			var page = PageModel.getInstance().selectedItem;
-			var name:String = layer.rootElement.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
+			var name:String = layer.rootElement.getAttribute(LayerModel.NAME_ATTRIBUTE_NAME);
 			if (name == null) name = "";
 			var confirm = Lib.window.confirm("I am about to delete the container "+name+". Are you sure?");
 			if (confirm == true)
 				LayerModel.getInstance().removeLayer(layer, page.name);
 		}
 		else{
-			var name:String = component.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
+			var name:String = component.getAttribute(ComponentModel.NAME_ATTRIBUTE_NAME);
 			if (name == null) name = "";
 			var confirm = Lib.window.confirm("I am about to delete the component "+name+". Are you sure?");
 			if (confirm == true)
 				ComponentModel.getInstance().removeComponent(component);
 		}
+	}
+	/**
+	 * edit selection
+	 */
+	private function editText() {
+		var component = ComponentModel.getInstance().selectedItem;
+		if (component == null){
+			// case of a layer
+			throw("edit is not implemented for layers");
+		}
+		// open the text editor page
+		TextEditor.openTextEditor(callback(onTextEditorChange, component), component.innerHTML, brixInstanceId);
+	}
+	/**
+	 * edit selection
+	 */
+	private function editImage() {
+		var component = ComponentModel.getInstance().selectedItem;
+		if (component == null){
+			// case of a layer
+			throw("edit is not implemented for layers");
+		}
+		// image, browse source
+		var cbk = callback(onImageChosen, component);
+		FileBrowser.selectFile(cbk, brixInstanceId, null, "files/assets/");
+	}
+	/**
+	 * edit selection
+	 */
+	private function editMedia() {
+		var component = ComponentModel.getInstance().selectedItem;
+		if (component == null){
+			// case of a layer
+			throw("edit is not implemented for layers");
+		}
+		// media, select multiple files
+		var cbk = callback(onMediaSourcesChosen, component);
+		FileBrowser.selectMultipleFiles(cbk, brixInstanceId, null, "files/assets/");
+	}
+	/**
+	 * callback for the FileBrowser
+	 */
+	private function onImageChosen(component:HtmlDom, fileUrl:String){
+		// convert to relative
+		fileUrl = FileBrowser.getRelativeURLFromFileBrowser(fileUrl);
+		// apply change
+		PropertyModel.getInstance().setAttribute(component, "src", fileUrl);
+	}
+	/**
+	 * callback for the FileBrowser
+	 */
+	private function onMediaSourcesChosen(component:HtmlDom, files:Array<String>){
+		var modelHtmlDom = FileModel.getInstance().getModelFromView(component);
+		// convert urls to relative and add to the dom
+		for (sourceUrl in files){
+			// convert urls to relative
+			sourceUrl = FileBrowser.getRelativeURLFromFileBrowser(sourceUrl);
+			// add to the model
+			var sourceElement = Lib.document.createElement("source");
+			sourceElement.innerHTML = sourceUrl;
+			modelHtmlDom.appendChild(sourceElement);
+			// add to the view
+			var sourceElement = Lib.document.createElement("source");
+			sourceElement.innerHTML = sourceUrl;
+			component.appendChild(sourceElement);
+		}
+	}
+	/**
+	 * callback for the TextEditorDialog
+	 */
+	private function onTextEditorChange(component:HtmlDom, htmlText:String){
+		PropertyModel.getInstance().setProperty(component, "innerHTML", htmlText);
 	}
 	/**
 	 * virtual method to be implemented in derived classes
@@ -175,6 +279,9 @@ class SelectionDropHandler extends DropHandlerBase{
 			//draggableEvent.draggable.initPhantomStyle(draggedLayer.rootElement);
 		}
 	}
+	////////////////////////////////////////////////////////////////////////
+	// handle drag/drop
+	////////////////////////////////////////////////////////////////////////
 	/**
 	 * virtual method to be implemented in derived classes
 	 */

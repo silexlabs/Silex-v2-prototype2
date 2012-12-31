@@ -58,4 +58,11 @@ class FileService extends ServiceBase{
 	public function save(name:String, content:String, onResult:Void->Void, onError:String->Void=null) {
 		callServerMethod("save", [name, content], onResult, onError);
 	}
+	/**
+	 * import an asset
+	 * @example importFile("http://test.com/test.jpg", "assets/test.jpg")
+	 */
+	public function importFile(url:String, name:String, onResult:Void->Void, onError:String->Void=null) {
+		callServerMethod("importFile", [url, name], onResult, onError);
+	}
 }
