@@ -9,7 +9,7 @@ import brix.component.navigation.Page;
 import brix.util.DomTools;
 
 import silex.file.FileModel;
-import silex.file.kcfinder.FileBrowser;
+import silex.file.FileBrowser;
 import silex.Silex;
 
 /**

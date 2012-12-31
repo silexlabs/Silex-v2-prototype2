@@ -19,9 +19,63 @@
 
 -D silexClientSide
 -D silexBuilder
--D silexDropboxMode
+#-D silexDropboxMode
 #-D silexDebug
 -D redirectTraces
+
+--next
+
+#########
+# player JS
+#########
+-js ../bin/files/scripts/silex.js
+-cp ../src/
+-cp ../../Brix/src/
+-cp ../../Cocktail/src/
+#--no-traces
+-debug
+-lib hscript
+
+-main silex.Silex
+--macro brix.core.Builder.create('../src/index-player.html')
+
+#-D brixdebug
+-D disableEmbedHtml
+-D noAutoStart
+-D stopOnError
+
+-D silexClientSide
+-D silexDebug
+-D redirectTraces
+
+
+#########
+# player Flash
+#########
+
+--next
+
+-swf ../bin/files/scripts/silex.swf
+-cp ../src/
+-cp ../../Brix/src/
+-cp ../../Cocktail/src/
+-main silex.Silex
+--macro brix.core.Builder.create('../src/index-player.html')
+-lib hscript
+--remap js:cocktail
+-swf-version 10.2
+#-D slpdebug
+#-D disableEmbedHtml
+-D noAutoStart
+-D stopOnError
+
+-D silexClientSide
+-D redirectTraces
+
+# only in js : -D silexDebug
+
+#--no-traces
+
 
 --next
 
@@ -46,6 +100,6 @@
 -D stopOnError
 
 -D silexServerSide
--D silexDropboxMode
+#-D silexDropboxMode
 # only in js : -D silexDebug
 

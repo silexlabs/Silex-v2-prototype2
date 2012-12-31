@@ -39,15 +39,19 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 ** to do **
 
 
+
 en cours
+* layers: edit button (inplace) => browse for background image
 * bug: pas de notif sous ff
 * erreurs dans filemodel => pas de display correct
 * ouvrir un fichier existant sur le serveur bug
 * pas besoin de silex-builder.js dans drobox
-
 * cleanup package ui (several single classes at root : script, SilexContextManager ...)
 
-!! * tester et commiter les nouveaux contexts et liens (based on events instead of reference)
+
+
+
+!!Brix * tester et commiter les nouveaux contexts et liens (based on events instead of reference)
 
 refactoring BRIX
 * enums for event.detail

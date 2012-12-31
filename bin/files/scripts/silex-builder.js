@@ -8291,94 +8291,6 @@ silex.file.client.FileService.prototype = $extend(silex.ServiceBase.prototype,{
 	}
 	,__class__: silex.file.client.FileService
 });
-silex.file.dropbox = {}
-silex.file.dropbox.FileBrowser = function() { }
-$hxClasses["silex.file.dropbox.FileBrowser"] = silex.file.dropbox.FileBrowser;
-silex.file.dropbox.FileBrowser.__name__ = ["silex","file","dropbox","FileBrowser"];
-silex.file.dropbox.FileBrowser.onValidate = null;
-silex.file.dropbox.FileBrowser.onValidateMultiple = null;
-silex.file.dropbox.FileBrowser.message = null;
-silex.file.dropbox.FileBrowser.intialPath = null;
-silex.file.dropbox.FileBrowser.manageFiles = function(brixInstanceId,msg,path) {
-	if(path == null) path = "./";
-	js.Lib.window.open("https://www.dropbox.com/home/Apps/Silex/" + path);
-}
-silex.file.dropbox.FileBrowser.selectMultipleFiles = function(userCallback,brixInstanceId,msg,path) {
-	if(path == null) path = "files/";
-	if(msg == null) msg = "Double click to select a file!";
-	silex.file.dropbox.FileBrowser.intialPath = path;
-	silex.file.dropbox.FileBrowser.onValidateMultiple = userCallback;
-	silex.file.dropbox.FileBrowser.message = msg;
-	silex.file.dropbox.FileBrowser.expectMultipleFiles = false;
-	var options = { linkType : "direct", success : silex.file.dropbox.FileBrowser.validateMultipleSelection, cancel : null};
-	Dropbox.choose(options);
-}
-silex.file.dropbox.FileBrowser.validateMultipleSelection = function(files) {
-	haxe.Log.trace("validateMultipleSelection " + Std.string(files),{ fileName : "FileBrowser.hx", lineNumber : 83, className : "silex.file.dropbox.FileBrowser", methodName : "validateMultipleSelection"});
-	var url = files[0].link;
-	var idx = url.indexOf("Silex");
-	if(idx < 0) {
-		var idx1 = url.lastIndexOf("/");
-		var name = "assets/" + url.substring(idx1 + 1);
-		name = StringTools.replace(name," ","_");
-		name = StringTools.replace(name,"%20","_");
-		new silex.file.client.FileService().importFile(url,name,(function(f,a1) {
-			return function() {
-				return f(a1);
-			};
-		})(silex.file.dropbox.FileBrowser.doValidateMultipleSelection,name));
-		brix.component.interaction.NotificationManager.notifySuccess("Importing","I am importing the file into folder Applications/Silex/assets/. This may take some time...");
-	} else silex.file.dropbox.FileBrowser.doValidateMultipleSelection(url);
-}
-silex.file.dropbox.FileBrowser.doValidateMultipleSelection = function(url) {
-	if(silex.file.dropbox.FileBrowser.onValidateMultiple != null) {
-		silex.file.dropbox.FileBrowser.onValidateMultiple([url]);
-		silex.file.dropbox.FileBrowser.onValidateMultiple = null;
-	}
-}
-silex.file.dropbox.FileBrowser.selectFile = function(userCallback,brixInstanceId,msg,path) {
-	if(path == null) path = "files/";
-	if(msg == null) msg = "Double click to select a file!";
-	silex.file.dropbox.FileBrowser.intialPath = path;
-	silex.file.dropbox.FileBrowser.onValidate = userCallback;
-	silex.file.dropbox.FileBrowser.message = msg;
-	silex.file.dropbox.FileBrowser.expectMultipleFiles = false;
-	var options = { linkType : "direct", success : silex.file.dropbox.FileBrowser.validateSelection, cancel : null};
-	Dropbox.choose(options);
-}
-silex.file.dropbox.FileBrowser.validateSelection = function(files) {
-	haxe.Log.trace("validateSelection " + Std.string(files),{ fileName : "FileBrowser.hx", lineNumber : 139, className : "silex.file.dropbox.FileBrowser", methodName : "validateSelection"});
-	var url = files[0].link;
-	var idx = url.indexOf("Silex");
-	if(idx < 0) {
-		var idx1 = url.lastIndexOf("/");
-		var name = "assets/" + url.substring(idx1 + 1);
-		name = StringTools.replace(name," ","_");
-		name = StringTools.replace(name,"%20","_");
-		new silex.file.client.FileService().importFile(url,name,(function(f,a1) {
-			return function() {
-				return f(a1);
-			};
-		})(silex.file.dropbox.FileBrowser.doValidateSelection,name));
-		brix.component.interaction.NotificationManager.notifySuccess("Importing","I am importing the file into folder Applications/Silex/assets/. This may take some time...");
-	} else silex.file.dropbox.FileBrowser.doValidateSelection(url);
-}
-silex.file.dropbox.FileBrowser.doValidateSelection = function(url) {
-	if(silex.file.dropbox.FileBrowser.onValidate != null) {
-		silex.file.dropbox.FileBrowser.onValidate(url);
-		silex.file.dropbox.FileBrowser.onValidate = null;
-	}
-}
-silex.file.dropbox.FileBrowser.getRelativeURLFromFileBrowser = function(url) {
-	var idx = url.indexOf("Silex");
-	if(idx < 0) {
-	} else {
-		idx += 5;
-		idx = url.indexOf("/",idx);
-		url = HxOverrides.substr(url,idx + 1,null);
-	}
-	return url;
-}
 silex.file.kcfinder = {}
 silex.file.kcfinder.FileBrowser = function() { }
 $hxClasses["silex.file.kcfinder.FileBrowser"] = silex.file.kcfinder.FileBrowser;
@@ -9249,7 +9161,7 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 	}
 	,onFileChosen: function(element,fileUrl) {
 		haxe.Log.trace("onFileChosen " + fileUrl,{ fileName : "InsertDropHandler.hx", lineNumber : 190, className : "silex.ui.stage.InsertDropHandler", methodName : "onFileChosen"});
-		silex.property.PropertyModel.getInstance().setAttribute(element,"src",silex.file.dropbox.FileBrowser.getRelativeURLFromFileBrowser(fileUrl));
+		silex.property.PropertyModel.getInstance().setAttribute(element,"src",silex.file.kcfinder.FileBrowser.getRelativeURLFromFileBrowser(fileUrl));
 	}
 	,initImageComp: function(element) {
 		silex.component.ComponentModel.getInstance().setSelectedItem(element);
@@ -9258,7 +9170,7 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 				return f(a1,a2);
 			};
 		})($bind(this,this.onFileChosen),element);
-		silex.file.dropbox.FileBrowser.selectFile(cbk,this.brixInstanceId,null,"files/assets/");
+		silex.file.kcfinder.FileBrowser.selectFile(cbk,this.brixInstanceId,null,"files/assets/");
 	}
 	,onMultipleFilesChosen: function(element,files) {
 		haxe.Log.trace("onMultipleFilesChosen " + Std.string(files),{ fileName : "InsertDropHandler.hx", lineNumber : 160, className : "silex.ui.stage.InsertDropHandler", methodName : "onMultipleFilesChosen"});
@@ -9269,10 +9181,10 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 			var sourceUrl = files[_g];
 			++_g;
 			var sourceElement = js.Lib.document.createElement("source");
-			sourceElement.src = silex.file.dropbox.FileBrowser.getRelativeURLFromFileBrowser(sourceUrl);
+			sourceElement.src = silex.file.kcfinder.FileBrowser.getRelativeURLFromFileBrowser(sourceUrl);
 			modelHtmlDom.appendChild(sourceElement);
 			var sourceElement1 = js.Lib.document.createElement("source");
-			sourceElement1.src = silex.file.dropbox.FileBrowser.getRelativeURLFromFileBrowser(sourceUrl);
+			sourceElement1.src = silex.file.kcfinder.FileBrowser.getRelativeURLFromFileBrowser(sourceUrl);
 			element.appendChild(sourceElement1);
 		}
 	}
@@ -9283,7 +9195,7 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 				return f(a1,a2);
 			};
 		})($bind(this,this.onMultipleFilesChosen),element);
-		silex.file.dropbox.FileBrowser.selectMultipleFiles(cbk,this.brixInstanceId,null,"files/assets/");
+		silex.file.kcfinder.FileBrowser.selectMultipleFiles(cbk,this.brixInstanceId,null,"files/assets/");
 	}
 	,onDrop: function(e) {
 		silex.ui.stage.DropHandlerBase.prototype.onDrop.call(this,e);
@@ -9553,7 +9465,7 @@ silex.ui.stage.SelectionDropHandler.prototype = $extend(silex.ui.stage.DropHandl
 		while(_g < files.length) {
 			var sourceUrl = files[_g];
 			++_g;
-			sourceUrl = silex.file.dropbox.FileBrowser.getRelativeURLFromFileBrowser(sourceUrl);
+			sourceUrl = silex.file.kcfinder.FileBrowser.getRelativeURLFromFileBrowser(sourceUrl);
 			var sourceElement = js.Lib.document.createElement("source");
 			sourceElement.innerHTML = sourceUrl;
 			modelHtmlDom.appendChild(sourceElement);
@@ -9563,7 +9475,7 @@ silex.ui.stage.SelectionDropHandler.prototype = $extend(silex.ui.stage.DropHandl
 		}
 	}
 	,onImageChosen: function(component,fileUrl) {
-		fileUrl = silex.file.dropbox.FileBrowser.getRelativeURLFromFileBrowser(fileUrl);
+		fileUrl = silex.file.kcfinder.FileBrowser.getRelativeURLFromFileBrowser(fileUrl);
 		silex.property.PropertyModel.getInstance().setAttribute(component,"src",fileUrl);
 	}
 	,editMedia: function() {
@@ -9574,7 +9486,7 @@ silex.ui.stage.SelectionDropHandler.prototype = $extend(silex.ui.stage.DropHandl
 				return f(a1,a2);
 			};
 		})($bind(this,this.onMediaSourcesChosen),component);
-		silex.file.dropbox.FileBrowser.selectMultipleFiles(cbk,this.brixInstanceId,null,"files/assets/");
+		silex.file.kcfinder.FileBrowser.selectMultipleFiles(cbk,this.brixInstanceId,null,"files/assets/");
 	}
 	,editImage: function() {
 		var component = silex.component.ComponentModel.getInstance().selectedItem;
@@ -9584,7 +9496,7 @@ silex.ui.stage.SelectionDropHandler.prototype = $extend(silex.ui.stage.DropHandl
 				return f(a1,a2);
 			};
 		})($bind(this,this.onImageChosen),component);
-		silex.file.dropbox.FileBrowser.selectFile(cbk,this.brixInstanceId,null,"files/assets/");
+		silex.file.kcfinder.FileBrowser.selectFile(cbk,this.brixInstanceId,null,"files/assets/");
 	}
 	,editText: function() {
 		var component = silex.component.ComponentModel.getInstance().selectedItem;
@@ -9701,10 +9613,10 @@ silex.ui.toolbox.MenuController.trashFile = function() {
 	if(confirm == true) silex.file.FileModel.getInstance().trash(silex.file.FileModel.getInstance().currentData.name);
 }
 silex.ui.toolbox.MenuController.openFile = function() {
-	silex.file.dropbox.FileBrowser.selectFile(silex.ui.toolbox.MenuController.onFileChosen,silex.ui.toolbox.MenuController.menuBrixId);
+	silex.file.kcfinder.FileBrowser.selectFile(silex.ui.toolbox.MenuController.onFileChosen,silex.ui.toolbox.MenuController.menuBrixId);
 }
 silex.ui.toolbox.MenuController.onFileChosen = function(fileUrl) {
-	var file = silex.file.dropbox.FileBrowser.getRelativeURLFromFileBrowser(fileUrl);
+	var file = silex.file.kcfinder.FileBrowser.getRelativeURLFromFileBrowser(fileUrl);
 	silex.file.FileModel.getInstance().load(file);
 }
 silex.ui.toolbox.MenuController.viewFile = function() {
@@ -9734,7 +9646,7 @@ silex.ui.toolbox.MenuController.renamePage = function() {
 	if(newName != null) silex.page.PageModel.getInstance().renamePage(silex.page.PageModel.getInstance().selectedItem,newName);
 }
 silex.ui.toolbox.MenuController.openFileBrowser = function() {
-	silex.file.dropbox.FileBrowser.manageFiles(silex.ui.toolbox.MenuController.menuBrixId,"Manage your files and click \"close\"");
+	silex.file.kcfinder.FileBrowser.manageFiles(silex.ui.toolbox.MenuController.menuBrixId,"Manage your files and click \"close\"");
 }
 silex.ui.toolbox.MenuController.__super__ = brix.component.ui.DisplayObject;
 silex.ui.toolbox.MenuController.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
@@ -10368,7 +10280,7 @@ silex.ui.toolbox.editor.UrlEditor.prototype = $extend(silex.ui.toolbox.editor.Ed
 		while(_g < files.length) {
 			var sourceUrl = files[_g];
 			++_g;
-			value += silex.file.dropbox.FileBrowser.getRelativeURLFromFileBrowser(sourceUrl) + "\n";
+			value += silex.file.kcfinder.FileBrowser.getRelativeURLFromFileBrowser(sourceUrl) + "\n";
 		}
 		inputElement.value = value;
 		this.beforeApply();
@@ -10382,7 +10294,7 @@ silex.ui.toolbox.editor.UrlEditor.prototype = $extend(silex.ui.toolbox.editor.Ed
 	}
 	,onFileChosen: function(inputControlClassName,fileUrl) {
 		var inputElement = brix.util.DomTools.getSingleElement(this.rootElement,inputControlClassName,true);
-		inputElement.value = silex.file.dropbox.FileBrowser.getRelativeURLFromFileBrowser(fileUrl);
+		inputElement.value = silex.file.kcfinder.FileBrowser.getRelativeURLFromFileBrowser(fileUrl);
 		this.beforeApply();
 		try {
 			this.apply();
@@ -10402,7 +10314,7 @@ silex.ui.toolbox.editor.UrlEditor.prototype = $extend(silex.ui.toolbox.editor.Ed
 					return f(a1,a2);
 				};
 			})($bind(this,this.onMultipleFilesChosen),inputControlClassName);
-			silex.file.dropbox.FileBrowser.selectMultipleFiles(cbk,this.brixInstanceId,null,"files/assets/");
+			silex.file.kcfinder.FileBrowser.selectMultipleFiles(cbk,this.brixInstanceId,null,"files/assets/");
 		} else if(brix.util.DomTools.hasClass(e.target,"select-file-button")) {
 			e.preventDefault();
 			var inputControlClassName = e.target.getAttribute("data-fb-target");
@@ -10411,7 +10323,7 @@ silex.ui.toolbox.editor.UrlEditor.prototype = $extend(silex.ui.toolbox.editor.Ed
 					return f(a1,a2);
 				};
 			})($bind(this,this.onFileChosen),inputControlClassName);
-			silex.file.dropbox.FileBrowser.selectFile(cbk,this.brixInstanceId,null,"files/assets/");
+			silex.file.kcfinder.FileBrowser.selectFile(cbk,this.brixInstanceId,null,"files/assets/");
 		}
 	}
 	,apply: function() {
@@ -10815,7 +10727,6 @@ silex.file.FileModel.ON_SAVE_SUCCESS = "onFileSaveSuccess";
 silex.file.FileModel.ON_SAVE_ERROR = "onFileSaveError";
 silex.file.FileModel.nextId = 0;
 silex.file.client.FileService.SERVICE_NAME = "FileService";
-silex.file.dropbox.FileBrowser.expectMultipleFiles = false;
 silex.file.kcfinder.FileBrowser.FB_PAGE_NAME = "file-browser-dialog";
 silex.file.kcfinder.FileBrowser.KC_FINDER_URL = "../libs/kcfinder/";
 silex.file.kcfinder.FileBrowser.FB_CLASS_NAME = "file-browser-div";

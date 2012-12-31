@@ -8,7 +8,7 @@ class silex_Silex {
 		$GLOBALS['%s']->push("silex.Silex::main");
 		$»spos = $GLOBALS['%s']->length;
 		$serverConfig = new silex_config_ServerConfig(null);
-		$fileService = new silex_file_dropbox_FileService($serverConfig);
+		$fileService = new silex_file_kcfinder_FileService($serverConfig);
 		if(haxe_remoting_HttpConnection::handleRequest(silex_ServiceBase::$context)) {
 			$GLOBALS['%s']->pop();
 			return;
