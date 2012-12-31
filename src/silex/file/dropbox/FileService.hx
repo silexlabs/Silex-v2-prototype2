@@ -68,6 +68,7 @@ class FileService extends ServiceBase{
 			}
 			else{
 				throw("file not found "+Lib.dump(resObj));
+				return null;
 			}
 		}
 		return content;
@@ -98,7 +99,9 @@ class FileService extends ServiceBase{
 	 * todo: Put it in the trash 
 	 */
 	public function trash(name:String) {
-		throw("trash is not implemented for dropbox");
+		var resObj = untyped __call__("deleteFile", name);
+		if (resObj == false)
+			throw("There was an error deleting the file. ");
 		// FileSystem.deleteFile(serverConfig.userFolder + name);
 	}
 	/**
@@ -108,7 +111,7 @@ class FileService extends ServiceBase{
 	public function save(name:String, content:String) {
 		var resObj = untyped __call__("putFile", name, content);
 		if (resObj == false)
-			throw("There was an error saving the file. Did you installed Silex application in your dropbox account?");
+			throw("There was an error saving the file. Did you authorize Silex application in your dropbox account?");
 		// File.saveContent(serverConfig.userFolder + name, content);
 	}
 	/**

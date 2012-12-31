@@ -39,16 +39,20 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 ** to do **
 
 
-dropbox
-x  * allow to select a media outside Applications/Silex/ 
- x   . copy to Applications/Silex/assets/
-  x  . or make silex a "dropbox full" app
+en cours
+* bug: pas de notif sous ff
+* erreurs dans filemodel => pas de display correct
+* ouvrir un fichier existant sur le serveur bug
+* pas besoin de silex-builder.js dans drobox
 
-  * no possible :( * start in origin=App... https://www.dropbox.com/chooser?origin=http%3A%2F%2Flocalhost%3A8888&app_key=hxo7uimig22bi2o&link_type=direct&trigger=js
-  * insert menu just after edit
-  * remove "unload" icon + remove "delete" and add "manage files"
-  * supprimer la fonction "fermer"?
-  * icon "edit" sur les composants (edit text ou url)
+* cleanup package ui (several single classes at root : script, SilexContextManager ...)
+
+!! * tester et commiter les nouveaux contexts et liens (based on events instead of reference)
+
+refactoring BRIX
+* enums for event.detail
+* no more static methods like openPage, use specialized version of Page and dispatch events
+* templates http://www.silexlabs.org/groups/brix/contributors/forum/topic/haxe-templates/
 
 bugs
 * image without URL is too small and not visible

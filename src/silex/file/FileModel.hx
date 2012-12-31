@@ -258,7 +258,6 @@ else
 	private function onData(content:String):Void{
 		// store the data / update the model
 		currentData.rawHtml = content;
-		trace(currentData.rawHtml);
 		currentData.isLoaded = true;
 
 		// parse the data and make it available as HTML
@@ -446,7 +445,7 @@ else
 		// display notification
 		dispatchEvent(createEvent(ON_ERROR), debugInfo);
 		NotificationManager.notifyError("Error", "An error occured while loading the file \""+currentData.name+"\" ("+msg+")", currentData.viewHtmlDom);
-		throw("An error occured while loading file ("+msg+")");
+		trace("An error occured while loading file ("+msg+")");
 	}
 	////////////////////////////////////////////////
 	// Save

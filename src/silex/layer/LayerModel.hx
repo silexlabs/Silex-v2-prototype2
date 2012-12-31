@@ -48,7 +48,7 @@ class LayerModel extends ModelBase<Layer>{
 	 * Name of the attribute for the layer name
 	 * The layer name is used only when editing a Silex file, but it is saved in the HTML file
 	 */ 
-	public static inline var LAYER_NAME_ATTRIBUTE_NAME = "data-silex-name";
+	public static inline var NAME_ATTRIBUTE_NAME = "data-silex-name";
 	////////////////////////////////////////////////
 	// Selection
 	////////////////////////////////////////////////
@@ -152,7 +152,7 @@ class LayerModel extends ModelBase<Layer>{
 		// create a node for an empty new layer
 		var newNode = Lib.document.createElement("div");
 		newNode.className = "Layer " + pageName + " " + NEW_LAYER_CSS_CLASS;
-		newNode.setAttribute(LAYER_NAME_ATTRIBUTE_NAME, layerName);
+		newNode.setAttribute(NAME_ATTRIBUTE_NAME, layerName);
 
 
 		// add to the view DOM
@@ -191,7 +191,7 @@ class LayerModel extends ModelBase<Layer>{
 /**/
 		// add a text field
 		var textElement = ComponentModel.getInstance().addComponent("div", newLayer);
-		PropertyModel.getInstance().setAttribute(textElement, LAYER_NAME_ATTRIBUTE_NAME, "New text field");
+		PropertyModel.getInstance().setAttribute(textElement, ComponentModel.NAME_ATTRIBUTE_NAME, "New text field");
 		PropertyModel.getInstance().setProperty(textElement, "innerHTML", "<p>Insert text here.</p>");
 
 		// dispatch the change event

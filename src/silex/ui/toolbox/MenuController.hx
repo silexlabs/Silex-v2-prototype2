@@ -116,8 +116,7 @@ class MenuController extends DisplayObject
 	 * open the file manager
 	 */
 	static public function openFileBrowser(){
-		FileBrowser.message = "Manage your files and click \"close\"";
-		FileBrowser.selectFile(null, menuBrixId);
+		FileBrowser.manageFiles(menuBrixId, "Manage your files and click \"close\"");
 	}
 	/**
 	 * Constructor

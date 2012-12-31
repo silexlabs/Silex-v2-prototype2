@@ -26,14 +26,17 @@ class silex_file_dropbox_FileService extends silex_ServiceBase {
 		$»spos = $GLOBALS['%s']->length;
 		$resObj = putFile($name, $content);
 		if($resObj === false) {
-			throw new HException("There was an error saving the file. Did you installed Silex application in your dropbox account?");
+			throw new HException("There was an error saving the file. Did you authorize Silex application in your dropbox account?");
 		}
 		$GLOBALS['%s']->pop();
 	}
 	public function trash($name) {
 		$GLOBALS['%s']->push("silex.file.dropbox.FileService::trash");
 		$»spos = $GLOBALS['%s']->length;
-		throw new HException("trash is not implemented for dropbox");
+		$resObj = deleteFile($name);
+		if($resObj === false) {
+			throw new HException("There was an error deleting the file. ");
+		}
 		$GLOBALS['%s']->pop();
 	}
 	public function rename($src, $dst) {
@@ -66,6 +69,10 @@ class silex_file_dropbox_FileService extends silex_ServiceBase {
 				$content = $resObj->data;
 			} else {
 				throw new HException("file not found " . Std::string(php_Lib::dump($resObj)));
+				{
+					$GLOBALS['%s']->pop();
+					return null;
+				}
 			}
 		}
 		{

@@ -45,6 +45,12 @@ class FileBrowser // extends DialogBase
 	public static var intialPath:String;
 	/**
 	 * open file browser
+	 */
+	public static function manageFiles(brixInstanceId:String, msg:String = null, path:String = "./"){
+		Lib.window.open("https://www.dropbox.com/home/Apps/Silex/"+path);
+	}
+	/**
+	 * open file browser
 	 * called when the user clicks on a button with "select-file-button" class
 	 */
 	public static function selectMultipleFiles(userCallback:Array<String>->Void, brixInstanceId:String, msg:String = null, path:String = "files/"){

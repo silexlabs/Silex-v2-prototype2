@@ -16,7 +16,6 @@
 		<script data-brix-use="brix.component.navigation.link.LinkClosePage"></script>
 		<script data-brix-use="brix.component.sound.SoundOn"></script>
 		<script data-brix-use="brix.component.sound.SoundOff"></script>
-		<script data-brix-use="brix.component.list.XmlList"></script>
 
 		<script data-brix-use="silex.ui.dialog.AuthDialog"></script>
 		<script data-brix-use="silex.ui.dialog.KCFinderDialog"></script>
@@ -29,6 +28,7 @@
 
 		<script data-brix-use="silex.ui.stage.SelectionDropHandler"></script>
 		<script data-brix-use="silex.ui.stage.InsertDropHandler"></script>
+		<script data-brix-use="silex.ui.stage.SilexContextManager"></script>
 		
 		<script data-brix-use="silex.ui.script.HScriptTag"></script>
 <!--
@@ -68,12 +68,13 @@
 		
 		<script type="text/hscript">
 			//Lib.alert('test!');
-			//FileModel.getInstance().load('files/test.html');
-			MenuController.createFile();
+			FileModel.getInstance().load('theme1.html');
+			//MenuController.createFile();
 		</script>
 	</head>
 	<body class="builder-view">
-		<DIV class="group-main Panel NotificationManager" 
+		<DIV class="group-main Panel NotificationManager SilexContextManager"
+			data-context-list="context-video, context-audio, context-img, context-layer, context-div" data-initial-context=""
 			data-panel-header-class-name="panel-file-header"
 			data-panel-body-class-name="panel-file-body"
 		>
@@ -144,8 +145,6 @@
 						<UL class="small">
 							<LI data-menu-item="save-file-as" class="save-file-as" title="save as">
 							</LI>
-							<LI data-menu-item="close-file" class="close-file" title="close">
-							</LI>
 							<LI data-menu-item="save-file-copy" class="save-file-copy" title="save as copy">
 							</LI>
 							<LI data-menu-item="settings" class="disabled-element settings" title="settings">
@@ -154,11 +153,9 @@
 							</LI>
 							<LI class="disabled-element" data-menu-item="export" title="export">
 							</LI>
-							<LI data-menu-item="trash-file" class="delete" title="delete">
-							</LI>
 							<LI class="disabled-element" data-menu-item="publish" title="publish">
 							</LI>
-							<LI data-menu-item="open-file-browser" title="media">
+							<LI data-menu-item="open-file-browser" title="Manage your files and media.">
 							</LI>
 							<LI data-menu-item="view-file" title="view">
 							</LI>
@@ -698,8 +695,15 @@
 						data-dropzones-class-name="Layer"
 						data-phantom-class-name="selection-phantom"
 					>
-                    	<div class="selection-marker-delete"></div>
-                        <div class="selection-marker-name">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</div>
+						<div class="selection-ui-template">
+							::if (clientWidth &gt; 50)::
+								<div class="selection-marker-edit-text context-div"></div>
+								<div class="selection-marker-edit-image context-img"></div>
+								<div class="selection-marker-edit-media context-video context-sound"></div>
+		                    	<div class="selection-marker-delete"></div>
+	    	                    <div class="selection-marker-name">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</div>
+	                        ::end::
+						</div>
                         <DIV class="draggable-dragzone"></DIV>
 					</DIV>
 					<DIV class="hover-marker">
@@ -708,9 +712,11 @@
 						data-dropzones-class-name="silex-view"
 						data-phantom-class-name="master-phantom"
 					>
-                    	<div class="selection-marker-delete"></div>
-                        <div class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</div>
-                        <DIV class="draggable-dragzone"></DIV>
+						<div class="selection-ui-template">
+							<div class="selection-marker-delete"></div>
+							<div class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</div>
+						</div>
+						<DIV class="draggable-dragzone"></DIV>
 					</DIV>
 					<DIV class="hover-layer-marker">
 					</DIV>

@@ -5,7 +5,7 @@
 -cp ../src/
 -cp ../../Brix/src/
 -cp ../../Cocktail/src/
---no-traces
+#--no-traces
 #-debug
 -lib hscript
 

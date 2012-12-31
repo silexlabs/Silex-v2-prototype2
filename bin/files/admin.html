@@ -15,7 +15,6 @@
 		
 		
 		
-		
 
 		
 		
@@ -26,6 +25,7 @@
 		
 		
 
+		
 		
 		
 		
@@ -62,13 +62,13 @@
 		
 		<SCRIPT type="text/hscript">
 			//Lib.alert('test!');
-			//FileModel.getInstance().load('files/test.html');
-			MenuController.createFile();
+			FileModel.getInstance().load('theme1.html');
+			//MenuController.createFile();
 		</SCRIPT>
 	</HEAD>
 	
 <BODY class="builder-view">
-		<DIV class="group-main Panel NotificationManager" data-panel-header-class-name="panel-file-header" data-panel-body-class-name="panel-file-body">
+		<DIV class="group-main Panel NotificationManager SilexContextManager" data-context-list="context-video, context-audio, context-img, context-layer, context-div" data-initial-context="" data-panel-header-class-name="panel-file-header" data-panel-body-class-name="panel-file-body">
 			
 			
 			<DIV class="notification-zone">
@@ -136,8 +136,6 @@
 						<UL class="small">
 							<LI class="save-file-as" title="save as" data-menu-item="save-file-as">
 							</LI>
-							<LI class="close-file" title="close" data-menu-item="close-file">
-							</LI>
 							<LI class="save-file-copy" title="save as copy" data-menu-item="save-file-copy">
 							</LI>
 							<LI class="disabled-element settings" title="settings" data-menu-item="settings">
@@ -146,11 +144,9 @@
 							</LI>
 							<LI class="disabled-element" title="export" data-menu-item="export">
 							</LI>
-							<LI class="delete" title="delete" data-menu-item="trash-file">
-							</LI>
 							<LI class="disabled-element" title="publish" data-menu-item="publish">
 							</LI>
-							<LI title="media" data-menu-item="open-file-browser">
+							<LI title="Manage your files and media." data-menu-item="open-file-browser">
 							</LI>
 							<LI title="view" data-menu-item="view-file">
 							</LI>
@@ -656,16 +652,25 @@
 					<DIV class="FileViewer">
 					</DIV>
 					<DIV data-dropzones-class-name="Layer" class="selection-marker Draggable SelectionDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group4">
-                    	<DIV class="selection-marker-delete"></DIV>
-                        <DIV class="selection-marker-name">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</DIV>
+						<DIV class="selection-ui-template">
+							::if (clientWidth &gt; 50)::
+								<DIV class="selection-marker-edit-text context-div"></DIV>
+								<DIV class="selection-marker-edit-image context-img"></DIV>
+								<DIV class="selection-marker-edit-media context-video context-sound"></DIV>
+		                    	<DIV class="selection-marker-delete"></DIV>
+	    	                    <DIV class="selection-marker-name">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</DIV>
+	                        ::end::
+						</DIV>
                         <DIV class="draggable-dragzone"></DIV>
 					</DIV>
 					<DIV class="hover-marker">
 					</DIV>
 					<DIV data-dropzones-class-name="silex-view" class="selection-layer-marker Draggable SelectionDropHandler" data-phantom-class-name="master-phantom" data-group-id="Group4">
-                    	<DIV class="selection-marker-delete"></DIV>
-                        <DIV class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</DIV>
-                        <DIV class="draggable-dragzone"></DIV>
+						<DIV class="selection-ui-template">
+							<DIV class="selection-marker-delete"></DIV>
+							<DIV class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</DIV>
+						</DIV>
+						<DIV class="draggable-dragzone"></DIV>
 					</DIV>
 					<DIV class="hover-layer-marker">
 					</DIV>

@@ -556,17 +556,28 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	height: 100%;
 	position: absolute;
 }
-.selection-marker-delete {
+.selection-marker-delete,
+.selection-marker-edit-text,
+.selection-marker-edit-image,
+.selection-marker-edit-media {
 	width:27px;
 	height:27px;
 	margin:0;
 	padding:0;
 	position:absolute;
-	right: 0;
 	z-index:1000000;
 	cursor:pointer;
-	background-image:url(../assets/admin/sv2-ico-delete.png);
 	background-color: rgba(66, 66, 66, 0.7);
+}
+.selection-marker-delete {
+	background-image:url(../assets/admin/sv2-ico-delete.png);
+	right: 0;
+}
+.selection-marker-edit-text,
+.selection-marker-edit-image,
+.selection-marker-edit-media {
+	background-image:url(../assets/admin/sv2-ico-edit.png);
+	right: 30px;
 }
 
 .selection-marker-name  {
@@ -736,59 +747,33 @@ box-shadow: inset 0px 0px 2px 2px #888;
 .ribbon-list ul li.new{
 	background-image: url("../assets/admin/file-new.png");
 }
-
 .ribbon-list ul li.template{
 	background-image: url("../assets/admin/file-new-from-template.png");
 }
-
 .ribbon-list ul li.open{
 	background-image: url("../assets/admin/file-open-big.png");
 }
-
 .ribbon-list ul li.save-file{
 	background-image: url("../assets/admin/file-save-big.png");
 }
-
 .ribbon-list ul li.save-file-as{
 	background-image: url("../assets/admin/save-as_normal-state.png");
 }
-
 .ribbon-list ul li.save-file-as:hover {
 	background-image: url("../assets/admin/save-as_roll-over-state.png");
 }
-
 .ribbon-list ul li.save-file-as:active {
 	background-image: url("../assets/admin/save-as_clic-state.png");
 }
-
 .ribbon-list ul li.save-file-copy{
 	background-image: url("../assets/admin/save-as-copy_normal-state.png");
 }
-
 .ribbon-list ul li.save-file-copy:hover{
 	background-image: url("../assets/admin/save-as-copy_roll-over-state.png");
 }
-
 .ribbon-list ul li.save-file-copy:active{
 	background-image: url("../assets/admin/save-as-copy_clic-state.png");
 }
-
-.ribbon-list ul li.close-file{
-	background-image: url("../assets/admin/close_normal-state.png");
-}
-
-.ribbon-list ul li.close-file:hover{
-	background-image: url("../assets/admin/close_roll-over-state.png");
-}
-
-.ribbon-list ul li.close-file:active{
-	background-image: url("../assets/admin/close_clic-state.png");
-}
-
-.ribbon-list ul li.delete{
-	background-image: url("../assets/admin/page-delete.png");
-}
-
 .ribbon-list ul li.settings{
 	background-image: url("../assets/admin/file-settings.png");
 }
