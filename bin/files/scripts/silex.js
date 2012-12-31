@@ -1395,11 +1395,14 @@ brix.component.navigation.Page.__interfaces__ = [brix.component.group.IGroupable
 brix.component.navigation.Page.openPage = function(pageName,isPopup,transitionDataShow,transitionDataHide,brixId,root) {
 	var body = root;
 	if(root == null) body = brix.core.Application.get(brixId).body;
-	var page = brix.component.navigation.Page.getPageByName(pageName,brixId,body);
+	var pageURL = pageName.split("?");
+	var page = brix.component.navigation.Page.getPageByName(pageURL[0],brixId,body);
 	if(page == null) {
-		page = brix.component.navigation.Page.getPageByName(pageName,brixId);
+		page = brix.component.navigation.Page.getPageByName(pageURL[0],brixId);
 		if(page == null) throw "Error, could not find a page with name " + pageName;
 	}
+	page.query = { };
+	if(pageURL[1] != null) brix.component.navigation.Page.updateQuery(page,pageURL[1]);
 	page.open(transitionDataShow,transitionDataHide,!isPopup);
 }
 brix.component.navigation.Page.closePage = function(pageName,transitionData,brixId,root) {
@@ -1435,6 +1438,15 @@ brix.component.navigation.Page.getPageByName = function(pageName,brixId,root) {
 		}
 	}
 	return null;
+}
+brix.component.navigation.Page.updateQuery = function(page,queryString) {
+	var queryParams = queryString.split("&");
+	var _g1 = 0, _g = queryParams.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		var param = queryParams[i].split("=");
+		page.query[param[0]] = param[1];
+	}
 }
 brix.component.navigation.Page.__super__ = brix.component.ui.DisplayObject;
 brix.component.navigation.Page.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
@@ -1555,6 +1567,7 @@ brix.component.navigation.Page.prototype = $extend(brix.component.ui.DisplayObje
 		var event = e;
 		if(event.state != null && event.state.name == this.name) this.open(event.state.transitionDataShow,event.state.transitionDataHide,event.state.doCloseOthers,event.state.preventTransitions,false);
 	}
+	,query: null
 	,groupElement: null
 	,name: null
 	,__class__: brix.component.navigation.Page
@@ -4398,15 +4411,15 @@ hscript.Interp.prototype = {
 			case 0:
 				var v = $e[2];
 				return v;
-			case 3:
-				var v = $e[2];
-				return v;
 			case 1:
 				var f = $e[2];
 				return f;
 			case 2:
 				var s = $e[2];
 				return s;
+			case 3:
+				var v = $e[2];
+				return v;
 			}
 			break;
 		case 1:
@@ -4963,10 +4976,6 @@ hscript.Parser.prototype = {
 				var v = $e[2];
 				$r = Std.string(v);
 				break;
-			case 3:
-				var v = $e[2];
-				$r = Std.string(v);
-				break;
 			case 1:
 				var f = $e[2];
 				$r = Std.string(f);
@@ -4974,6 +4983,10 @@ hscript.Parser.prototype = {
 			case 2:
 				var s = $e[2];
 				$r = s;
+				break;
+			case 3:
+				var v = $e[2];
+				$r = Std.string(v);
 				break;
 			}
 			return $r;
@@ -6449,7 +6462,7 @@ js.Lib.onerror = null;
 silex.ServiceBase.GATEWAY_URL = "../";
 silex.Silex.CONFIG_FILE_BODY = "fileBody";
 silex.Silex.CONFIG_USE_DEEPLINK = "useDeeplink";
-silex.Silex.CHECK_INSTALL_SCRIPT = "../libs/dropbox/reset.php";
+silex.Silex.CHECK_INSTALL_SCRIPT = "../libs/dropbox/checkInstall.php";
 silex.file.client.FileService.SERVICE_NAME = "FileService";
 silex.interpreter.Interpreter.BASIC_CONTEXT = { Lib : js.Lib, Math : Math, Timer : haxe.Timer, StringTools : StringTools, DomTools : brix.util.DomTools, Application : brix.core.Application, Page : brix.component.navigation.Page, Layer : brix.component.navigation.Layer};
 silex.ui.script.HScriptTag.executed = false;

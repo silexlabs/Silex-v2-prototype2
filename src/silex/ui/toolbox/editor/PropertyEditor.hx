@@ -1,7 +1,7 @@
 package silex.ui.toolbox.editor;
 
-import silex.ui.dialog.TextEditorDialog;
 import silex.property.PropertyModel;
+import silex.property.TextEditor;
 import silex.component.ComponentModel;
 import silex.file.FileModel;
 import silex.layer.LayerModel;
@@ -11,21 +11,15 @@ import js.Lib;
 import js.Dom;
 
 import brix.component.ui.DisplayObject;
-import brix.component.navigation.Page;
-import brix.component.navigation.Layer;
 import brix.util.DomTools;
 
 /**
- * This class handles the link with the TextEditorDialog:
- * - opens the page text-editor with the TextEditor component
- * - retrieve the result and put it in selectedItem.innerHTML
  * Editor for component properties, e.g. the URL of the image tag. 
  * Editors are Brix components, in charge of handling HTML input elements, 
  * in order to let the user enter values and edit css style values or tag attributes.
  */
 class PropertyEditor extends UrlEditor 
 {
-	public static inline var ALL_CONTEXTS = ["context-video", "context-audio", "context-img", "context-layer", "context-div"];
 	/**
 	 * The css class name of the "edit text" button
 	 */
@@ -34,10 +28,6 @@ class PropertyEditor extends UrlEditor
 	 * class name expected for the button
 	 */
 	public static inline var DELETE_BUTTON_CLASS_NAME:String = "property-editor-delete-selected";
-	/**
-	 * Stores the style node with the current context as visible 
-	 */
-	private static var styleSheet:HtmlDom;
 	/**
 	 * Constructor
 	 * Start listening the input events
@@ -66,14 +56,14 @@ class PropertyEditor extends UrlEditor
 			if (DomTools.hasClass(selectedItem, "Layer")){
 				var layer = LayerModel.getInstance().selectedItem;
 				var page = PageModel.getInstance().selectedItem;
-				var name:String = layer.rootElement.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
+				var name:String = layer.rootElement.getAttribute(LayerModel.NAME_ATTRIBUTE_NAME);
 				if (name == null) name = "";
 				var confirm = Lib.window.confirm("I am about to delete the container "+name+". Are you sure?");
 				if (confirm == true)
 					LayerModel.getInstance().removeLayer(layer, page.name);
 			}
 			else{
-				var name:String = selectedItem.getAttribute(LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
+				var name:String = selectedItem.getAttribute(ComponentModel.NAME_ATTRIBUTE_NAME);
 				if (name == null) name = "";
 				var confirm = Lib.window.confirm("I am about to delete the component "+name+". Are you sure?");
 				if (confirm == true)
@@ -84,27 +74,17 @@ class PropertyEditor extends UrlEditor
 			// prevent default button behaviour
 			e.preventDefault();
 			// open the text editor page
-			openTextEditor();
+			TextEditor.openTextEditor(callback(onTextEditorChange, selectedItem), selectedItem.innerHTML, brixInstanceId);
 		}
 	}
 	////////////////////////////////////////////
 	// Text Editor 
 	////////////////////////////////////////////
 	/**
-	 * open text editor
-	 * called when the user clicks on a button with "property-editor-edit-text" class
-	 */
-	private function openTextEditor(){
-		TextEditorDialog.onValidate = onTextEditorChange;
-		TextEditorDialog.textContent = selectedItem.innerHTML;
-		TextEditorDialog.message = "Edit text and click \"close\"";
-		Page.openPage(TextEditorDialog.TEXT_EDITOR_PAGE_NAME, true, null, null, brixInstanceId);
-	}
-	/**
 	 * callback for the TextEditorDialog
 	 */
-	private function onTextEditorChange(htmlText:String){
-		PropertyModel.getInstance().setProperty(selectedItem, "innerHTML", htmlText);
+	private function onTextEditorChange(item:HtmlDom, htmlText:String){
+		PropertyModel.getInstance().setProperty(item, "innerHTML", htmlText);
 	}
 	////////////////////////////////////////////
 	// Load, apply and reset: display or apply the properties of the selected HTML dom element
@@ -125,51 +105,16 @@ class PropertyEditor extends UrlEditor
 		setInputValue("controls-property", null, "checked");
 		setInputValue("loop-property", null, "checked");
 		setInputValue("master-property", null, "checked");
-		updateContext([]);
-
-	}
-	public function updateContext(contextArray:Array<String>){
-		// handle the context
-		if (styleSheet != null){
-			Lib.document.getElementsByTagName("head")[0].removeChild(cast(styleSheet));	
-		}
-		var cssText = "";
-		for (context in ALL_CONTEXTS){
-			cssText += "."+context+" { display : none; visibility : hidden; } ";
-		}
-		for (context in contextArray){
-			cssText += "."+context+" { display : inline; visibility : visible; } ";
-		}
-		// 
-		styleSheet = DomTools.addCssRules(cssText);
 	}
 	/**
 	 * display the property value
 	 */
 	override private function load(element:HtmlDom) {
 		trace("load");
-		// handle the context
-		var contextArray = [];
-		if (DomTools.hasClass(element, "Layer")){
-			contextArray.push("context-layer");
-		}
-		else{
-			switch (element.nodeName.toLowerCase()) {
-				case "audio":
-					contextArray.push("context-audio");
-				case "video":
-					contextArray.push("context-video");
-				case "img":
-					contextArray.push("context-img");
-				case "div":
-					contextArray.push("context-div");
-			}
-		}
-		updateContext(contextArray);
 
 		var propertyModel = PropertyModel.getInstance();
 
-		var value = propertyModel.getAttribute(element, LayerModel.LAYER_NAME_ATTRIBUTE_NAME);
+		var value = propertyModel.getAttribute(element, LayerModel.NAME_ATTRIBUTE_NAME);
 		if (value != null) setInputValue("name-property", value);
 
 		var value = propertyModel.getAttribute(element, "title");
@@ -221,9 +166,9 @@ class PropertyEditor extends UrlEditor
 
 		var value = getInputValue("name-property");
 		if (value != null && value != "")
-			propertyModel.setAttribute(selectedItem, LayerModel.LAYER_NAME_ATTRIBUTE_NAME, getInputValue("name-property"));
+			propertyModel.setAttribute(selectedItem, LayerModel.NAME_ATTRIBUTE_NAME, getInputValue("name-property"));
 		else
-			propertyModel.setAttribute(selectedItem, LayerModel.LAYER_NAME_ATTRIBUTE_NAME, null);
+			propertyModel.setAttribute(selectedItem, LayerModel.NAME_ATTRIBUTE_NAME, null);
 
 		var value = getInputValue("title-property");
 		if (value != null && value != "")

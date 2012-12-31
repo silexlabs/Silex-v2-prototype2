@@ -11,19 +11,32 @@ class silex_file_dropbox_FileService extends silex_ServiceBase {
 		initDropbox($serverConfig->key, $serverConfig->secret, $serverConfig->encrypter, $serverConfig->dbHost, $serverConfig->dbName, $serverConfig->dbUser, $serverConfig->dbPass, $serverConfig->dbPort);
 		$GLOBALS['%s']->pop();
 	}}
+	public function importFile($url, $name) {
+		$GLOBALS['%s']->push("silex.file.dropbox.FileService::importFile");
+		$»spos = $GLOBALS['%s']->length;
+		$content = haxe_Http::requestUrl($url);
+		$resObj = putFile($name, $content);
+		if($resObj === false) {
+			throw new HException("There was an error importing the file.");
+		}
+		$GLOBALS['%s']->pop();
+	}
 	public function save($name, $content) {
 		$GLOBALS['%s']->push("silex.file.dropbox.FileService::save");
 		$»spos = $GLOBALS['%s']->length;
 		$resObj = putFile($name, $content);
 		if($resObj === false) {
-			throw new HException("There was an error saving the file. Did you installed Silex application in your dropbox account?");
+			throw new HException("There was an error saving the file. Did you authorize Silex application in your dropbox account?");
 		}
 		$GLOBALS['%s']->pop();
 	}
 	public function trash($name) {
 		$GLOBALS['%s']->push("silex.file.dropbox.FileService::trash");
 		$»spos = $GLOBALS['%s']->length;
-		throw new HException("trash is not implemented for dropbox");
+		$resObj = deleteFile($name);
+		if($resObj === false) {
+			throw new HException("There was an error deleting the file. ");
+		}
 		$GLOBALS['%s']->pop();
 	}
 	public function rename($src, $dst) {
@@ -56,6 +69,10 @@ class silex_file_dropbox_FileService extends silex_ServiceBase {
 				$content = $resObj->data;
 			} else {
 				throw new HException("file not found " . Std::string(php_Lib::dump($resObj)));
+				{
+					$GLOBALS['%s']->pop();
+					return null;
+				}
 			}
 		}
 		{
