@@ -94,9 +94,6 @@ class Silex {
 		var fileService = new FileService();
 		fileService.checkInstall(onCheckInstall, onCheckInstallError);
 		#if dropbox
-			var element = DomTools.embedScript("https://www.dropbox.com/static/api/1/dropbox.js");
-			element.setAttribute("id", "dropboxjs");
-			element.setAttribute("data-app-key", "hxo7uimig22bi2o");
 		#end
 	}
 	private static function onCheckInstall(installStatus:InstallStatus){
