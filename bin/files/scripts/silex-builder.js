@@ -1792,15 +1792,14 @@ brix.component.layout.LayoutBase = function(rootElement,BrixId) {
 	this.preventRedraw = false;
 	brix.component.ui.DisplayObject.call(this,rootElement,BrixId);
 	js.Lib.window.addEventListener("resize",$bind(this,this.redrawCallback),false);
-	js.Lib.document.addEventListener("layoutRedraw",$bind(this,this.redrawCallback),false);
+	js.Lib.document.addEventListener("layoutRedraw",$bind(this,this.redrawCallback),true);
+	js.Lib.document.addEventListener("pageOpenStop",$bind(this,this.redrawCallback),true);
+	js.Lib.document.addEventListener("pageCloseStop",$bind(this,this.redrawCallback),true);
+	js.Lib.document.addEventListener("changeContextEvent",$bind(this,this.redrawCallback),true);
+	js.Lib.document.addEventListener("layoutRedraw",$bind(this,this.redrawCallback),true);
 };
 $hxClasses["brix.component.layout.LayoutBase"] = brix.component.layout.LayoutBase;
 brix.component.layout.LayoutBase.__name__ = ["brix","component","layout","LayoutBase"];
-brix.component.layout.LayoutBase.redrawLayouts = function() {
-	var event = js.Lib.document.createEvent("CustomEvent");
-	event.initCustomEvent("layoutRedraw",true,true,{ });
-	js.Lib.document.dispatchEvent(event);
-}
 brix.component.layout.LayoutBase.__super__ = brix.component.ui.DisplayObject;
 brix.component.layout.LayoutBase.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
 	redraw: function() {
@@ -1888,6 +1887,18 @@ brix.component.layout.Accordion.prototype = $extend(brix.component.layout.Layout
 });
 brix.component.layout.Panel = function(rootElement,brixId) {
 	brix.component.layout.LayoutBase.call(this,rootElement,brixId);
+	var cssClassName = rootElement.getAttribute("data-panel-header-class-name");
+	if(cssClassName == null) cssClassName = "panel-header";
+	this.header = brix.util.DomTools.getSingleElement(rootElement,cssClassName,false);
+	if(this.header == null) haxe.Log.trace("Warning, no header for Panel component",{ fileName : "Panel.hx", lineNumber : 88, className : "brix.component.layout.Panel", methodName : "new"});
+	var cssClassName1 = rootElement.getAttribute("data-panel-body-class-name");
+	if(cssClassName1 == null) cssClassName1 = "panel-body";
+	this.body = brix.util.DomTools.getSingleElement(rootElement,cssClassName1,true);
+	var cssClassName2 = rootElement.getAttribute("data-panel-footer-class-name");
+	if(cssClassName2 == null) cssClassName2 = "panel-footer";
+	this.footer = brix.util.DomTools.getSingleElement(rootElement,cssClassName2,false);
+	if(this.footer == null) haxe.Log.trace("Warning, no footer for Panel component",{ fileName : "Panel.hx", lineNumber : 100, className : "brix.component.layout.Panel", methodName : "new"});
+	if(rootElement.getAttribute("data-panel-is-horizontal") == "true") this.isHorizontal = true; else this.isHorizontal = false;
 };
 $hxClasses["brix.component.layout.Panel"] = brix.component.layout.Panel;
 brix.component.layout.Panel.__name__ = ["brix","component","layout","Panel"];
@@ -1938,18 +1949,6 @@ brix.component.layout.Panel.prototype = $extend(brix.component.layout.LayoutBase
 	}
 	,init: function() {
 		brix.component.layout.LayoutBase.prototype.init.call(this);
-		var cssClassName = this.rootElement.getAttribute("data-panel-header-class-name");
-		if(cssClassName == null) cssClassName = "panel-header";
-		this.header = brix.util.DomTools.getSingleElement(this.rootElement,cssClassName,false);
-		if(this.header == null) haxe.Log.trace("Warning, no header for Panel component",{ fileName : "Panel.hx", lineNumber : 96, className : "brix.component.layout.Panel", methodName : "init"});
-		var cssClassName1 = this.rootElement.getAttribute("data-panel-body-class-name");
-		if(cssClassName1 == null) cssClassName1 = "panel-body";
-		this.body = brix.util.DomTools.getSingleElement(this.rootElement,cssClassName1,true);
-		var cssClassName2 = this.rootElement.getAttribute("data-panel-footer-class-name");
-		if(cssClassName2 == null) cssClassName2 = "panel-footer";
-		this.footer = brix.util.DomTools.getSingleElement(this.rootElement,cssClassName2,false);
-		if(this.footer == null) haxe.Log.trace("Warning, no footer for Panel component",{ fileName : "Panel.hx", lineNumber : 108, className : "brix.component.layout.Panel", methodName : "init"});
-		if(this.rootElement.getAttribute("data-panel-is-horizontal") == "true") this.isHorizontal = true; else this.isHorizontal = false;
 	}
 	,footer: null
 	,header: null
@@ -2208,14 +2207,16 @@ brix.component.navigation.ContextManager.prototype = $extend(brix.component.ui.D
 		if(this.hasContext(context)) {
 			HxOverrides.remove(this.currentContexts,context);
 			this.invalidate();
-		} else haxe.Log.trace("Warning: Could not remove the context \"" + context + "\" from the current context, because it is not in the currentContexts array.",{ fileName : "ContextManager.hx", lineNumber : 240, className : "brix.component.navigation.ContextManager", methodName : "removeContext"});
+		} else {
+		}
 	}
 	,addContext: function(context) {
 		if(!this.isContext(context)) throw "Error: unknown context \"" + context + "\". It should be defined in the \"" + "data-context-list" + "\" parameter of the Context component.";
 		if(!this.hasContext(context)) {
 			this.currentContexts.push(context);
 			this.invalidate();
-		} else haxe.Log.trace("Warning: Could not add the context \"" + context + "\" to the current context, because it is allready in the currentContexts array.",{ fileName : "ContextManager.hx", lineNumber : 222, className : "brix.component.navigation.ContextManager", methodName : "addContext"});
+		} else {
+		}
 	}
 	,setCurrentContexts: function(contextList) {
 		this.currentContexts = contextList;
@@ -2989,7 +2990,6 @@ brix.core.Application.get = function(BrixId) {
 	return brix.core.Application.instances.get(BrixId);
 }
 brix.core.Application.main = function() {
-	haxe.Log.trace("----",{ fileName : "Application.hx", lineNumber : 125, className : "brix.core.Application", methodName : "main"});
 	if(haxe.Firebug.detect()) {
 		haxe.Firebug.redirectTraces();
 		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Application.hx", lineNumber : 130, className : "brix.core.Application", methodName : "main"});
@@ -7947,19 +7947,22 @@ silex.Silex.main = function() {
 		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Silex.hx", lineNumber : 73, className : "silex.Silex", methodName : "main"});
 	} else haxe.Log.trace("Warning: Brix can not redirect traces to console, because no console was found",{ fileName : "Silex.hx", lineNumber : 77, className : "silex.Silex", methodName : "main"});
 	silex.Silex.initialBaseUrl = brix.util.DomTools.getBaseUrl();
+	silex.Silex.startSilexInit();
+}
+silex.Silex.startSilexInit = function() {
 	var fileService = new silex.file.client.FileService();
 	fileService.checkInstall(silex.Silex.onCheckInstall,silex.Silex.onCheckInstallError);
 }
 silex.Silex.onCheckInstall = function(installStatus) {
-	haxe.Log.trace("onCheckInstall return latest silex version: " + Std.string(installStatus),{ fileName : "Silex.hx", lineNumber : 105, className : "silex.Silex", methodName : "onCheckInstall"});
-	if(installStatus.redirect != null) js.Lib.window.location = installStatus.redirect; else silex.Silex.init();
+	haxe.Log.trace("onCheckInstall return latest silex version: " + Std.string(installStatus),{ fileName : "Silex.hx", lineNumber : 103, className : "silex.Silex", methodName : "onCheckInstall"});
+	if(installStatus.redirect != null) js.Lib.window.location = installStatus.redirect; else brix.util.DomTools.doLater(silex.Silex.init);
 }
 silex.Silex.onCheckInstallError = function(error) {
-	haxe.Log.trace("onCheckInstall error: " + error,{ fileName : "Silex.hx", lineNumber : 116, className : "silex.Silex", methodName : "onCheckInstallError"});
+	haxe.Log.trace("onCheckInstall error: " + error,{ fileName : "Silex.hx", lineNumber : 114, className : "silex.Silex", methodName : "onCheckInstallError"});
 	js.Lib.window.location = "../libs/dropbox/checkInstall.php";
 }
-silex.Silex.init = function(unused) {
-	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 126, className : "silex.Silex", methodName : "init"});
+silex.Silex.init = function() {
+	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 143, className : "silex.Silex", methodName : "init"});
 	var application = brix.core.Application.createApplication();
 	application.initDom();
 	if(js.Lib.window.location.hash != "" && brix.util.DomTools.getMeta("useDeeplink") != "false") {
@@ -8060,7 +8063,7 @@ silex.file.FileModel.__super__ = silex.ModelBase;
 silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onFileSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("FILE SAVED",{ fileName : "FileModel.hx", lineNumber : 608, className : "silex.file.FileModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("FILE SAVED",{ fileName : "FileModel.hx", lineNumber : 611, className : "silex.file.FileModel", methodName : "onSaveSuccess"});
 		brix.component.interaction.NotificationManager.notifySuccess("File saved",this.currentData.name + " has been saved successfully.",this.currentData.viewHtmlDom);
 	}
 	,onSaveError: function(msg) {
@@ -8117,7 +8120,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		this.save(newName);
 	}
 	,onDeleteSuccess: function() {
-		haxe.Log.trace("FILE DELETED ",{ fileName : "FileModel.hx", lineNumber : 476, className : "silex.file.FileModel", methodName : "onDeleteSuccess"});
+		haxe.Log.trace("FILE DELETED ",{ fileName : "FileModel.hx", lineNumber : 479, className : "silex.file.FileModel", methodName : "onDeleteSuccess"});
 		this.create();
 	}
 	,trash: function(name) {
@@ -8129,7 +8132,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	,onError: function(msg) {
 		this.dispatchEvent(this.createEvent("onFileError"),this.debugInfo);
 		brix.component.interaction.NotificationManager.notifyError("Error","An error occured while loading the file \"" + this.currentData.name + "\" (" + msg + ")",this.currentData.viewHtmlDom);
-		haxe.Log.trace("An error occured while loading file (" + msg + ")",{ fileName : "FileModel.hx", lineNumber : 448, className : "silex.file.FileModel", methodName : "onError"});
+		haxe.Log.trace("An error occured while loading file (" + msg + ")",{ fileName : "FileModel.hx", lineNumber : 451, className : "silex.file.FileModel", methodName : "onError"});
 	}
 	,initBrixApplication: function() {
 		this.application = brix.core.Application.createApplication();
@@ -8139,9 +8142,8 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,this.currentData.headHtmlDom);
 		if(initialPageName != null) {
 			var page = brix.component.navigation.Page.getPageByName(initialPageName,this.application.id,this.currentData.viewHtmlDom);
-			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "FileModel.hx", lineNumber : 431, className : "silex.file.FileModel", methodName : "initBrixApplication"});
-		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "FileModel.hx", lineNumber : 435, className : "silex.file.FileModel", methodName : "initBrixApplication"});
-		silex.interpreter.Interpreter.getInstance().execScriptTags(this.currentData.viewHtmlDom);
+			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "FileModel.hx", lineNumber : 434, className : "silex.file.FileModel", methodName : "initBrixApplication"});
+		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "FileModel.hx", lineNumber : 438, className : "silex.file.FileModel", methodName : "initBrixApplication"});
 	}
 	,generateNewId: function() {
 		return silex.file.FileModel.nextId++ + "";
@@ -9016,7 +9018,7 @@ silex.ui.script = {}
 silex.ui.script.HScriptTag = function(args) {
 	if(silex.ui.script.HScriptTag.executed == false) {
 		silex.ui.script.HScriptTag.executed = true;
-		brix.util.DomTools.doLater($bind(this,this.findAndInterprete),5);
+		brix.util.DomTools.doLater($bind(this,this.findAndInterprete));
 	}
 };
 $hxClasses["silex.ui.script.HScriptTag"] = silex.ui.script.HScriptTag;
@@ -9129,15 +9131,17 @@ silex.ui.stage.FileViewer.prototype = $extend(brix.component.ui.DisplayObject.pr
 	onPageChange: function(event) {
 		if(this.pageModel.selectedItem != null) brix.component.navigation.Page.openPage(this.pageModel.selectedItem.name,false,null,null,this.fileModel.application.id,this.fileModel.currentData.viewHtmlDom);
 	}
+	,redrawLayouts: function() {
+	}
 	,onFileData: function(event) {
 		this.rootElement.innerHTML = "";
 		this.rootElement.appendChild(this.fileModel.currentData.viewHtmlDom);
 		this.rootElement.appendChild(this.fileModel.currentData.headHtmlDom);
-		brix.component.layout.LayoutBase.redrawLayouts();
+		this.redrawLayouts();
 	}
 	,onFileChange: function(event) {
 		this.rootElement.innerHTML = "";
-		brix.component.layout.LayoutBase.redrawLayouts();
+		this.redrawLayouts();
 	}
 	,pageModel: null
 	,fileModel: null
@@ -9478,6 +9482,10 @@ silex.ui.stage.SelectionDropHandler.prototype = $extend(silex.ui.stage.DropHandl
 		fileUrl = silex.file.kcfinder.FileBrowser.getRelativeURLFromFileBrowser(fileUrl);
 		silex.property.PropertyModel.getInstance().setAttribute(component,"src",fileUrl);
 	}
+	,onBackgroundImageChosen: function(component,fileUrl) {
+		fileUrl = silex.file.kcfinder.FileBrowser.getRelativeURLFromFileBrowser(fileUrl);
+		silex.property.PropertyModel.getInstance().setStyle(component,"backgroundImage","url('" + fileUrl + "')");
+	}
 	,editMedia: function() {
 		var component = silex.component.ComponentModel.getInstance().selectedItem;
 		if(component == null) throw "edit is not implemented for layers";
@@ -9506,6 +9514,17 @@ silex.ui.stage.SelectionDropHandler.prototype = $extend(silex.ui.stage.DropHandl
 				return f(a1,a2);
 			};
 		})($bind(this,this.onTextEditorChange),component),component.innerHTML,this.brixInstanceId);
+	}
+	,editLayer: function() {
+		var layer = silex.layer.LayerModel.getInstance().selectedItem;
+		if(layer == null) throw "Error: no container selected.";
+		var element = layer.rootElement;
+		var cbk = (function(f,a1) {
+			return function(a2) {
+				return f(a1,a2);
+			};
+		})($bind(this,this.onBackgroundImageChosen),element);
+		silex.file.kcfinder.FileBrowser.selectFile(cbk,this.brixInstanceId,null,"files/assets/");
 	}
 	,deleteSelection: function() {
 		var component = silex.component.ComponentModel.getInstance().selectedItem;
@@ -9536,6 +9555,9 @@ silex.ui.stage.SelectionDropHandler.prototype = $extend(silex.ui.stage.DropHandl
 		} else if(brix.util.DomTools.hasClass(e.target,"selection-marker-edit-text")) {
 			e.preventDefault();
 			this.editText();
+		} else if(brix.util.DomTools.hasClass(e.target,"selection-marker-edit-layer")) {
+			e.preventDefault();
+			this.editLayer();
 		}
 	}
 	,redraw: function(e) {
@@ -9816,9 +9838,10 @@ silex.ui.toolbox.editor.EditorBase.prototype = $extend(brix.component.ui.Display
 		this.setSelectedItem(e.detail);
 	}
 	,onPropertyChange: function(e) {
+		haxe.Log.trace("onPropertyChange " + Std.string(this.propertyChangePending) + " - " + Std.string(e.detail.name) + " - " + this.propertyName,{ fileName : "EditorBase.hx", lineNumber : 254, className : "silex.ui.toolbox.editor.EditorBase", methodName : "onPropertyChange"});
 		if(this.propertyChangePending) return;
-		if(e.detail.name == this.propertyName) try {
-			this.reset();
+		if(e.detail.name == this.propertyName || this.propertyName == null) try {
+			this.refresh();
 		} catch( e1 ) {
 			throw "Error in the implementation of the method reset: " + Std.string(e1);
 		} else {
@@ -10794,6 +10817,7 @@ silex.ui.stage.SelectionController.MIN_HEIGHT = 10;
 silex.ui.stage.SelectionDropHandler.__meta__ = { obj : { tagNameFilter : ["DIV"]}};
 silex.ui.stage.SelectionDropHandler.DELETE_BUTTON_CLASS_NAME = "selection-marker-delete";
 silex.ui.stage.SelectionDropHandler.EDIT_IMG_BUTTON_CLASS_NAME = "selection-marker-edit-image";
+silex.ui.stage.SelectionDropHandler.EDIT_LAYER_BUTTON_CLASS_NAME = "selection-marker-edit-layer";
 silex.ui.stage.SelectionDropHandler.EDIT_MEDIA_BUTTON_CLASS_NAME = "selection-marker-edit-media";
 silex.ui.stage.SelectionDropHandler.EDIT_TEXT_BUTTON_CLASS_NAME = "selection-marker-edit-text";
 silex.ui.stage.SelectionDropHandler.DISPLAY_ZONE_CLASS_NAME = "selection-ui-template";

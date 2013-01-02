@@ -38,25 +38,28 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** to do **
 
-
-
 en cours
-* layers: edit button (inplace) => browse for background image
+
+edit button (inplace) : layers browse for background image, min height, better display for the inplace uis
+
 * bug: pas de notif sous ff
+* cleanup Silex.hx : package core et split selon les options de config
+
+* !!! dropbox iframe only in dropbox mode
+
 * erreurs dans filemodel => pas de display correct
 * ouvrir un fichier existant sur le serveur bug
 * pas besoin de silex-builder.js dans drobox
 * cleanup package ui (several single classes at root : script, SilexContextManager ...)
 
-
-
-
-!!Brix * tester et commiter les nouveaux contexts et liens (based on events instead of reference)
-
 refactoring BRIX
 * enums for event.detail
 * no more static methods like openPage, use specialized version of Page and dispatch events
+* navigation
+  * declare Pages and NavigationGroups in the headers? use it for sitemap / seo with history api
+  * take history api out of the pages
 * templates http://www.silexlabs.org/groups/brix/contributors/forum/topic/haxe-templates/
+* layouts and redraw : have a queue of redraws? redraw children first?
 
 bugs
 * image without URL is too small and not visible

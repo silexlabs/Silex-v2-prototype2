@@ -696,13 +696,15 @@
 						data-phantom-class-name="selection-phantom"
 					>
 						<div class="selection-ui-template">
-							::if (clientWidth &gt; 50)::
-								<div class="selection-marker-edit-text context-div"></div>
-								<div class="selection-marker-edit-image context-img"></div>
-								<div class="selection-marker-edit-media context-video context-sound"></div>
-		                    	<div class="selection-marker-delete"></div>
-	    	                    <div class="selection-marker-name">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</div>
-	                        ::end::
+							::if (clientWidth &gt; 100)::::if (clientHeight &gt; 50)::
+								<div class="selection-marker-edit-text context-div" title="Edit text."></div>
+								<div class="selection-marker-edit-image context-img" title=""></div>
+								<div class="selection-marker-edit-media context-video context-sound" title=""></div>
+		                    	<div class="selection-marker-delete" title=""></div>
+	    	                    ::if componentName::
+	    	                    	<div class="selection-marker-name" title="::componentName::::if layerName:: in ::layerName::::end::">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</div>
+	    	                    ::end::
+	                        ::end::::end::
 						</div>
                         <DIV class="draggable-dragzone"></DIV>
 					</DIV>
@@ -713,8 +715,11 @@
 						data-phantom-class-name="master-phantom"
 					>
 						<div class="selection-ui-template">
-							<div class="selection-marker-delete"></div>
-							<div class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</div>
+							::if (clientWidth &gt; 100)::::if (clientHeight &gt; 50)::
+								<div class="selection-marker-edit-layer"></div>
+		                    	<div class="selection-marker-delete"></div>
+								<div class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</div>
+	                        ::end::::end::
 						</div>
 						<DIV class="draggable-dragzone"></DIV>
 					</DIV>

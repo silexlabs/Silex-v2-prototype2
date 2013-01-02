@@ -653,13 +653,13 @@
 					</DIV>
 					<DIV data-dropzones-class-name="Layer" class="selection-marker Draggable SelectionDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group4">
 						<DIV class="selection-ui-template">
-							::if (clientWidth &gt; 50)::
+							::if (clientWidth &gt; 100)::::if (clientHeight &gt; 50)::
 								<DIV class="selection-marker-edit-text context-div"></DIV>
 								<DIV class="selection-marker-edit-image context-img"></DIV>
 								<DIV class="selection-marker-edit-media context-video context-sound"></DIV>
 		                    	<DIV class="selection-marker-delete"></DIV>
 	    	                    <DIV class="selection-marker-name">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</DIV>
-	                        ::end::
+	                        ::end::::end::
 						</DIV>
                         <DIV class="draggable-dragzone"></DIV>
 					</DIV>
@@ -667,8 +667,11 @@
 					</DIV>
 					<DIV data-dropzones-class-name="silex-view" class="selection-layer-marker Draggable SelectionDropHandler" data-phantom-class-name="master-phantom" data-group-id="Group4">
 						<DIV class="selection-ui-template">
-							<DIV class="selection-marker-delete"></DIV>
-							<DIV class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</DIV>
+							::if (clientWidth &gt; 100)::::if (clientHeight &gt; 50)::
+								<DIV class="selection-marker-edit-layer"></DIV>
+		                    	<DIV class="selection-marker-delete"></DIV>
+								<DIV class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</DIV>
+	                        ::end::::end::
 						</DIV>
 						<DIV class="draggable-dragzone"></DIV>
 					</DIV>

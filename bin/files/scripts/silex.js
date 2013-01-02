@@ -1804,7 +1804,6 @@ brix.core.Application.get = function(BrixId) {
 	return brix.core.Application.instances.get(BrixId);
 }
 brix.core.Application.main = function() {
-	haxe.Log.trace("----",{ fileName : "Application.hx", lineNumber : 125, className : "brix.core.Application", methodName : "main"});
 	if(haxe.Firebug.detect()) {
 		haxe.Firebug.redirectTraces();
 		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Application.hx", lineNumber : 130, className : "brix.core.Application", methodName : "main"});
@@ -6253,10 +6252,16 @@ silex.Silex.main = function() {
 		haxe.Log.trace("Brix redirect traces to console",{ fileName : "Silex.hx", lineNumber : 73, className : "silex.Silex", methodName : "main"});
 	} else haxe.Log.trace("Warning: Brix can not redirect traces to console, because no console was found",{ fileName : "Silex.hx", lineNumber : 77, className : "silex.Silex", methodName : "main"});
 	silex.Silex.initialBaseUrl = brix.util.DomTools.getBaseUrl();
-	if(js.Lib.document.body == null) js.Lib.window.onload = silex.Silex.init; else silex.Silex.init();
+	silex.Silex.startSilexInit();
 }
-silex.Silex.init = function(unused) {
-	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 126, className : "silex.Silex", methodName : "init"});
+silex.Silex.startSilexInit = function() {
+	if(js.Lib.document.body == null) js.Lib.window.onload = silex.Silex.onLoad; else silex.Silex.init();
+}
+silex.Silex.onLoad = function(e) {
+	silex.Silex.init();
+}
+silex.Silex.init = function() {
+	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 143, className : "silex.Silex", methodName : "init"});
 	var application = brix.core.Application.createApplication();
 	application.initDom();
 	if(js.Lib.window.location.hash != "" && brix.util.DomTools.getMeta("useDeeplink") != "false") {
@@ -6385,7 +6390,7 @@ silex.ui.script = {}
 silex.ui.script.HScriptTag = function(args) {
 	if(silex.ui.script.HScriptTag.executed == false) {
 		silex.ui.script.HScriptTag.executed = true;
-		brix.util.DomTools.doLater($bind(this,this.findAndInterprete),5);
+		brix.util.DomTools.doLater($bind(this,this.findAndInterprete));
 	}
 };
 $hxClasses["silex.ui.script.HScriptTag"] = silex.ui.script.HScriptTag;
