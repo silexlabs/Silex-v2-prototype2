@@ -39,7 +39,6 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 ** to do **
 
 en cours
-* bug: pas de notif sous ff
 * !!! dropbox iframe only in dropbox mode
 * cleanup Silex.hx : package core et split selon les options de config
 
