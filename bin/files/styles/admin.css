@@ -950,7 +950,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	-o-transition: height .2s linear 0s;; /* Opera */
 }
 .accordion-item-open{
-	height: auto;
+	height: 1000px;
 }
 .accordion-item-close{
 	height: 0 !important;

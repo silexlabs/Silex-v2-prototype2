@@ -39,9 +39,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 ** to do **
 
 en cours
-* !!! dropbox iframe only in dropbox mode
 * cleanup Silex.hx : package core et split selon les options de config
-
 
 * erreurs dans filemodel => pas de display correct
 * ouvrir un fichier existant sur le serveur bug
@@ -49,6 +47,7 @@ en cours
 * cleanup package ui (several single classes at root : script, SilexContextManager ...)
 
 refactoring BRIX
+* suggerer compil cond dans le html?
 * enums for event.detail
 * no more static methods like openPage, use specialized version of Page and dispatch events
   - Page

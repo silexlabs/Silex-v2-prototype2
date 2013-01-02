@@ -3552,6 +3552,7 @@ brix.util.DomTools.embedScript = function(src) {
 	}
 	var node = js.Lib.document.createElement("script");
 	node.setAttribute("src",src);
+	node.setAttribute("type","text/javascript");
 	head.appendChild(node);
 	return node;
 }
@@ -3564,7 +3565,7 @@ brix.util.DomTools.setBaseTag = function(href) {
 	var baseNodes = js.Lib.document.getElementsByTagName("base");
 	href = brix.util.DomTools.rel2abs(href);
 	if(baseNodes.length > 0) {
-		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 560, className : "brix.util.DomTools", methodName : "setBaseTag"});
+		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 561, className : "brix.util.DomTools", methodName : "setBaseTag"});
 		baseNodes[0].setAttribute("href",href);
 	} else {
 		var node = js.Lib.document.createElement("base");
@@ -7954,12 +7955,11 @@ silex.Silex.startSilexInit = function() {
 	fileService.checkInstall(silex.Silex.onCheckInstall,silex.Silex.onCheckInstallError);
 }
 silex.Silex.onCheckInstall = function(installStatus) {
-	haxe.Log.trace("onCheckInstall return latest silex version: " + Std.string(installStatus),{ fileName : "Silex.hx", lineNumber : 98, className : "silex.Silex", methodName : "onCheckInstall"});
+	haxe.Log.trace("onCheckInstall return latest silex version: " + Std.string(installStatus),{ fileName : "Silex.hx", lineNumber : 103, className : "silex.Silex", methodName : "onCheckInstall"});
 	if(installStatus.redirect != null) js.Lib.window.location = installStatus.redirect; else silex.Silex.init();
 }
 silex.Silex.onCheckInstallError = function(error) {
-	haxe.Log.trace("onCheckInstall error: " + error,{ fileName : "Silex.hx", lineNumber : 109, className : "silex.Silex", methodName : "onCheckInstallError"});
-	js.Lib.window.location = "../libs/dropbox/checkInstall.php";
+	haxe.Log.trace("onCheckInstall error: " + error,{ fileName : "Silex.hx", lineNumber : 114, className : "silex.Silex", methodName : "onCheckInstallError"});
 }
 silex.Silex.init = function() {
 	if(js.Lib.document.body == null) js.Lib.window.onload = silex.Silex.onLoad; else silex.Silex.doInit();
@@ -7968,7 +7968,7 @@ silex.Silex.onLoad = function(e) {
 	silex.Silex.doInit();
 }
 silex.Silex.doInit = function() {
-	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 146, className : "silex.Silex", methodName : "doInit"});
+	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 153, className : "silex.Silex", methodName : "doInit"});
 	var application = brix.core.Application.createApplication();
 	application.initDom();
 	if(js.Lib.window.location.hash != "" && brix.util.DomTools.getMeta("useDeeplink") != "false") {
@@ -8841,7 +8841,7 @@ silex.ui.dialog.KCFinderDialog.prototype = $extend(silex.ui.dialog.DialogBase.pr
 		this.close();
 	}
 	,validateMultipleSelection: function(files) {
-		haxe.Log.trace("validateMultipleSelection " + Std.string(files),{ fileName : "KCFinderDialog.hx", lineNumber : 80, className : "silex.ui.dialog.KCFinderDialog", methodName : "validateMultipleSelection"});
+		haxe.Log.trace("validateMultipleSelection " + Std.string(files),{ fileName : "KCFinderDialog.hx", lineNumber : 81, className : "silex.ui.dialog.KCFinderDialog", methodName : "validateMultipleSelection"});
 		if(files != null) {
 			if(silex.file.kcfinder.FileBrowser.onValidateMultiple != null) {
 				silex.file.kcfinder.FileBrowser.onValidateMultiple(files);
@@ -8851,7 +8851,7 @@ silex.ui.dialog.KCFinderDialog.prototype = $extend(silex.ui.dialog.DialogBase.pr
 		}
 	}
 	,validateSelection: function(url) {
-		haxe.Log.trace("validateSelection " + url,{ fileName : "KCFinderDialog.hx", lineNumber : 67, className : "silex.ui.dialog.KCFinderDialog", methodName : "validateSelection"});
+		haxe.Log.trace("validateSelection " + url,{ fileName : "KCFinderDialog.hx", lineNumber : 68, className : "silex.ui.dialog.KCFinderDialog", methodName : "validateSelection"});
 		if(url != null) {
 			if(silex.file.kcfinder.FileBrowser.onValidate != null) {
 				silex.file.kcfinder.FileBrowser.onValidate(url);
