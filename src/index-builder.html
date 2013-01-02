@@ -345,7 +345,12 @@
 						<!-- Properties editor -->
 						<A class="Page" name="properties-tab">Properties</A>
 						<A href="#properties-tab" class="LinkToPage accordion-header">Properties</A>
-						<FORM class="Layer accordion-item properties-tab">
+						<FORM class="Layer accordion-item properties-tab"
+							data-show-start-style="accordion-item-close"
+							data-show-end-style="accordion-item-open"
+							data-hide-start-style="accordion-item-open"
+							data-hide-end-style="accordion-item-close"
+						>
 							<FIELDSET class="PropertyEditor">
 								<LEGEND>Attributes</LEGEND>
 								<div class="property-container">
@@ -451,7 +456,12 @@
 	                   	::foreach categories::
 							<A class="Page"  name="::name::">::name::</A>
 	                        <A href="#::name::" class="LinkToPage accordion-header">::name::</A>
-	                        <FORM class="Layer accordion-item ::name::">
+	                        <FORM class="Layer accordion-item ::name::"
+								data-show-start-style="accordion-item-close"
+								data-show-end-style="accordion-item-open"
+								data-hide-start-style="accordion-item-open"
+								data-hide-end-style="accordion-item-close"
+	                        >
 		                       	::foreach groups::
 									<FIELDSET>
 										<LEGEND>::name::</LEGEND>
@@ -697,12 +707,12 @@
 					>
 						<div class="selection-ui-template">
 							::if (clientWidth &gt; 100)::::if (clientHeight &gt; 50)::
-								<div class="selection-marker-edit-text context-div" title="Edit text."></div>
-								<div class="selection-marker-edit-image context-img" title=""></div>
-								<div class="selection-marker-edit-media context-video context-sound" title=""></div>
-		                    	<div class="selection-marker-delete" title=""></div>
+								<div class="selection-marker-ui selection-marker-edit-text context-div" title="Edit text."></div>
+								<div class="selection-marker-ui selection-marker-edit-image context-img" title=""></div>
+								<div class="selection-marker-ui selection-marker-edit-media context-video context-sound" title=""></div>
+		                    	<div class="selection-marker-ui selection-marker-delete" title=""></div>
 	    	                    ::if componentName::
-	    	                    	<div class="selection-marker-name" title="::componentName::::if layerName:: in ::layerName::::end::">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</div>
+	    	                    	<div class="selection-marker-ui selection-marker-name" title="::componentName::::if layerName:: in ::layerName::::end::">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</div>
 	    	                    ::end::
 	                        ::end::::end::
 						</div>
@@ -716,9 +726,9 @@
 					>
 						<div class="selection-ui-template">
 							::if (clientWidth &gt; 100)::::if (clientHeight &gt; 50)::
-								<div class="selection-marker-edit-layer"></div>
-		                    	<div class="selection-marker-delete"></div>
-								<div class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</div>
+								<div class="selection-marker-ui selection-marker-edit-layer"></div>
+		                    	<div class="selection-marker-ui selection-marker-delete"></div>
+								<div class="selection-marker-ui selection-marker-name">[ ::if layerName::::layerName::::end:: ]</div>
 	                        ::end::::end::
 						</div>
 						<DIV class="draggable-dragzone"></DIV>

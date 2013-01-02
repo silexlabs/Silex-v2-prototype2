@@ -39,13 +39,10 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 ** to do **
 
 en cours
-
-edit button (inplace) : layers browse for background image, min height, better display for the inplace uis
-
 * bug: pas de notif sous ff
+* !!! dropbox iframe only in dropbox mode
 * cleanup Silex.hx : package core et split selon les options de config
 
-* !!! dropbox iframe only in dropbox mode
 
 * erreurs dans filemodel => pas de display correct
 * ouvrir un fichier existant sur le serveur bug
@@ -55,11 +52,16 @@ edit button (inplace) : layers browse for background image, min height, better d
 refactoring BRIX
 * enums for event.detail
 * no more static methods like openPage, use specialized version of Page and dispatch events
+  - Page
+  - notification
 * navigation
   * declare Pages and NavigationGroups in the headers? use it for sitemap / seo with history api
   * take history api out of the pages
 * templates http://www.silexlabs.org/groups/brix/contributors/forum/topic/haxe-templates/
 * layouts and redraw : have a queue of redraws? redraw children first?
+* replace getElementsByClassName by Application.getComponents
+* unload
+
 
 bugs
 * image without URL is too small and not visible
@@ -78,9 +80,6 @@ silex to do
 - display none
   => how to get it back??
 
-brix
-- IE and null in styles
-- replace getElementsByClassName by Application.getComponents
 
 
 silex v2 with dropbox

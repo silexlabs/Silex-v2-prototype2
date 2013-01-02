@@ -93,11 +93,6 @@ class Silex {
 	{
 		var fileService = new FileService();
 		fileService.checkInstall(onCheckInstall, onCheckInstallError);
-/*		var r = new haxe.Http("../libs/dropbox/checkInstall.php");
-		r.onError = onCheckInstallError;
-		r.onData = function(r) { init(); }
-		r.request(false);
-*/
 	}
 	private static function onCheckInstall(installStatus:InstallStatus){
 		trace("onCheckInstall return latest silex version: "+installStatus);
@@ -107,7 +102,7 @@ class Silex {
 			}
 		}
 		else{
-			DomTools.doLater(init);
+			init();
 		}
 	}
 	private static function onCheckInstallError(error:String){
@@ -119,9 +114,17 @@ class Silex {
 #else
 	/**
 	 * player version
-	 * call init() right now, opr wait for the body to be ready
+	 * simply call call init()
 	 */
 	private static function startSilexInit() 
+	{
+		init();
+	}
+#end
+	/**
+	 * call init() right now, or wait for the body to be ready
+	 */
+	private static function init() 
 	{
 		if (Lib.document.body == null){
 			// the script has been loaded at start
@@ -129,17 +132,17 @@ class Silex {
 		}
 		else{
 			// the script has been loaded after the html page
-			init();
+			doInit();
 		}
 	}
 	static function onLoad(e:Event){
-		init();
+		doInit();
 	}
-#end
 	/**
 	 * Init Silex app
+	 * Here, the body is ready but the file may not be attached yet (brix "embeded" mode)
 	 */
-	static public function init(){
+	static public function doInit(){
 		trace("Hello Silex!");
 
 		// create a Brix app

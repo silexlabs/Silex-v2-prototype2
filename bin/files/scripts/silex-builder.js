@@ -7954,15 +7954,21 @@ silex.Silex.startSilexInit = function() {
 	fileService.checkInstall(silex.Silex.onCheckInstall,silex.Silex.onCheckInstallError);
 }
 silex.Silex.onCheckInstall = function(installStatus) {
-	haxe.Log.trace("onCheckInstall return latest silex version: " + Std.string(installStatus),{ fileName : "Silex.hx", lineNumber : 103, className : "silex.Silex", methodName : "onCheckInstall"});
-	if(installStatus.redirect != null) js.Lib.window.location = installStatus.redirect; else brix.util.DomTools.doLater(silex.Silex.init);
+	haxe.Log.trace("onCheckInstall return latest silex version: " + Std.string(installStatus),{ fileName : "Silex.hx", lineNumber : 98, className : "silex.Silex", methodName : "onCheckInstall"});
+	if(installStatus.redirect != null) js.Lib.window.location = installStatus.redirect; else silex.Silex.init();
 }
 silex.Silex.onCheckInstallError = function(error) {
-	haxe.Log.trace("onCheckInstall error: " + error,{ fileName : "Silex.hx", lineNumber : 114, className : "silex.Silex", methodName : "onCheckInstallError"});
+	haxe.Log.trace("onCheckInstall error: " + error,{ fileName : "Silex.hx", lineNumber : 109, className : "silex.Silex", methodName : "onCheckInstallError"});
 	js.Lib.window.location = "../libs/dropbox/checkInstall.php";
 }
 silex.Silex.init = function() {
-	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 143, className : "silex.Silex", methodName : "init"});
+	if(js.Lib.document.body == null) js.Lib.window.onload = silex.Silex.onLoad; else silex.Silex.doInit();
+}
+silex.Silex.onLoad = function(e) {
+	silex.Silex.doInit();
+}
+silex.Silex.doInit = function() {
+	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 146, className : "silex.Silex", methodName : "doInit"});
 	var application = brix.core.Application.createApplication();
 	application.initDom();
 	if(js.Lib.window.location.hash != "" && brix.util.DomTools.getMeta("useDeeplink") != "false") {

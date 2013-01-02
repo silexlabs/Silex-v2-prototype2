@@ -6255,13 +6255,16 @@ silex.Silex.main = function() {
 	silex.Silex.startSilexInit();
 }
 silex.Silex.startSilexInit = function() {
-	if(js.Lib.document.body == null) js.Lib.window.onload = silex.Silex.onLoad; else silex.Silex.init();
-}
-silex.Silex.onLoad = function(e) {
 	silex.Silex.init();
 }
 silex.Silex.init = function() {
-	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 143, className : "silex.Silex", methodName : "init"});
+	if(js.Lib.document.body == null) js.Lib.window.onload = silex.Silex.onLoad; else silex.Silex.doInit();
+}
+silex.Silex.onLoad = function(e) {
+	silex.Silex.doInit();
+}
+silex.Silex.doInit = function() {
+	haxe.Log.trace("Hello Silex!",{ fileName : "Silex.hx", lineNumber : 146, className : "silex.Silex", methodName : "doInit"});
 	var application = brix.core.Application.createApplication();
 	application.initDom();
 	if(js.Lib.window.location.hash != "" && brix.util.DomTools.getMeta("useDeeplink") != "false") {

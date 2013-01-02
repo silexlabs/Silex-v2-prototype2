@@ -12,8 +12,10 @@
 -main silex.Silex
 --macro brix.core.Builder.create('../src/index-builder.html', '../bin/files/admin.html')
 
-#-D brixdebug
+# disable embed in order to have a loading anim
 -D disableEmbedHtml
+
+#-D brixdebug
 -D noAutoStart
 -D stopOnError
 
