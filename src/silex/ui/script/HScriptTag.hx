@@ -26,7 +26,7 @@ class HScriptTag implements IBrixComponent {
 	public function new(args:Hash<String>) {
 		if (executed == false){
 			executed = true;
-			DomTools.doLater(findAndInterprete, 5);
+			DomTools.doLater(findAndInterprete);
 		}
 	}
 	private function findAndInterprete(){

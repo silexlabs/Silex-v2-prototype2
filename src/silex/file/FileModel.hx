@@ -305,7 +305,10 @@ else
 		if (currentData.name != ""){
 			title = title + " (" + currentData.name + ")";
 		}
+		#if js
+		// only for js, not cocktail
 		Lib.document.title = title;
+		#end
 
 		// refresh selection
 		refresh();
@@ -436,7 +439,7 @@ else
 		}
 
 		// execute scripts
-		Interpreter.getInstance().execScriptTags(currentData.viewHtmlDom);
+//		Interpreter.getInstance().execScriptTags(currentData.viewHtmlDom);
 	}
 	/**
 	 * An error occured

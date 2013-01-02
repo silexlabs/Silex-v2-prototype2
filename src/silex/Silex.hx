@@ -80,8 +80,17 @@ class Silex {
 
 		// store the initial URL
 		initialBaseUrl = DomTools.getBaseUrl();
-
+		// 
+		startSilexInit();
+	}
 #if silexBuilder
+	/**
+	 * builder version
+	 * check the install is ok, may redirect
+	 * then call init()
+	 */
+	private static function startSilexInit() 
+	{
 		var fileService = new FileService();
 		fileService.checkInstall(onCheckInstall, onCheckInstallError);
 /*		var r = new haxe.Http("../libs/dropbox/checkInstall.php");
@@ -89,18 +98,7 @@ class Silex {
 		r.onData = function(r) { init(); }
 		r.request(false);
 */
-#else
-		if (Lib.document.body == null){
-			// the script has been loaded at start
-			Lib.window.onload = init;
-		}
-		else{
-			// the script has been loaded after the html page
-			init();
-		}
-#end
 	}
-#if silexBuilder
 	private static function onCheckInstall(installStatus:InstallStatus){
 		trace("onCheckInstall return latest silex version: "+installStatus);
 		if (installStatus.redirect != null){
@@ -109,7 +107,7 @@ class Silex {
 			}
 		}
 		else{
-			init();
+			DomTools.doLater(init);
 		}
 	}
 	private static function onCheckInstallError(error:String){
@@ -118,12 +116,32 @@ class Silex {
 			Lib.window.location = CHECK_INSTALL_SCRIPT;
 		}
 	}
+#else
+	/**
+	 * player version
+	 * call init() right now, opr wait for the body to be ready
+	 */
+	private static function startSilexInit() 
+	{
+		if (Lib.document.body == null){
+			// the script has been loaded at start
+			Lib.window.onload = onLoad;
+		}
+		else{
+			// the script has been loaded after the html page
+			init();
+		}
+	}
+	static function onLoad(e:Event){
+		init();
+	}
 #end
 	/**
 	 * Init Silex app
 	 */
-	static public function init(unused:Dynamic=null){
+	static public function init(){
 		trace("Hello Silex!");
+
 		// create a Brix app
 		var application = Application.createApplication();
 		application.initDom();
@@ -145,6 +163,7 @@ class Silex {
 			DomTools.setMeta(Page.CONFIG_INITIAL_PAGE_NAME, initialPageName);
 		}
 	#end
+
 		// init Brix components
 		application.initComponents();
 		application.attachBody();
