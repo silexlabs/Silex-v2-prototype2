@@ -1509,9 +1509,6 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 		if(this.state == brix.component.interaction.DraggableState.dragging) {
 			this.setAsBestDropZone(null);
 			this.setAsBestDropZone(this.getBestDropZone(this.currentMouseX,this.currentMouseY));
-			var event = js.Lib.document.createEvent("CustomEvent");
-			event.initCustomEvent("dragEventMove",true,true,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
-			this.rootElement.dispatchEvent(event);
 		}
 	}
 	,invalidateBestDropZone: function() {
@@ -1528,6 +1525,9 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 		this.currentMouseY = e.clientY;
 		brix.util.DomTools.moveTo(this.rootElement,this.currentMouseX - this.initialMouseX,this.currentMouseY - this.initialMouseY);
 		this.invalidateBestDropZone();
+		var event = js.Lib.document.createEvent("CustomEvent");
+		event.initCustomEvent("dragEventMove",true,true,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
+		this.rootElement.dispatchEvent(event);
 	}
 	,stopDrag: function(e) {
 		if(this.state == brix.component.interaction.DraggableState.dragging) {
@@ -1562,7 +1562,7 @@ brix.component.interaction.Draggable.prototype = $extend(brix.component.ui.Displ
 				};
 			})($bind(this,this.move));
 			js.Lib.document.body.addEventListener("mousemove",this.moveCallback,false);
-			this.move(e);
+			brix.util.DomTools.moveTo(this.rootElement,boundingBox.x,boundingBox.y);
 			var event = js.Lib.document.createEvent("CustomEvent");
 			event.initCustomEvent("dragEventDrag",true,true,{ dropZone : this.bestDropZone, target : this.rootElement, draggable : this});
 			this.rootElement.dispatchEvent(event);
@@ -9053,11 +9053,14 @@ $hxClasses["silex.ui.stage.DropHandlerBase"] = silex.ui.stage.DropHandlerBase;
 silex.ui.stage.DropHandlerBase.__name__ = ["silex","ui","stage","DropHandlerBase"];
 silex.ui.stage.DropHandlerBase.__super__ = brix.component.ui.DisplayObject;
 silex.ui.stage.DropHandlerBase.prototype = $extend(brix.component.ui.DisplayObject.prototype,{
-	resetDraggedMarker: function() {
+	refresh: function() {
+		if(silex.component.ComponentModel.getInstance().selectedItem != null) silex.component.ComponentModel.getInstance().refresh(); else if(silex.layer.LayerModel.getInstance().selectedItem != null) silex.layer.LayerModel.getInstance().refresh();
+	}
+	,resetDraggedMarker: function() {
 		if(this.rootElement.parentNode != this.initialMarkerParent) {
 			if(this.initialMarkerParent.childNodes.length > this.initialMarkerPopsition) this.initialMarkerParent.insertBefore(this.rootElement,this.initialMarkerParent.childNodes[this.initialMarkerPopsition]); else this.initialMarkerParent.appendChild(this.rootElement);
 		}
-		if(silex.component.ComponentModel.getInstance().selectedItem != null) silex.component.ComponentModel.getInstance().refresh(); else if(silex.layer.LayerModel.getInstance().selectedItem != null) silex.layer.LayerModel.getInstance().refresh();
+		brix.util.DomTools.doLater($bind(this,this.refresh));
 	}
 	,onDrop: function(e) {
 		var event = e;
@@ -9085,13 +9088,13 @@ silex.ui.stage.DropHandlerBase.prototype = $extend(brix.component.ui.DisplayObje
 					if(modelElement.parentNode == null) throw "Error while moving the element: the element in the model has no parent.";
 					if(modelBeforeElement == null) modelParent.appendChild(modelElement); else modelParent.insertBefore(modelElement,modelBeforeElement);
 				} catch( e1 ) {
-					haxe.Log.trace("ON DROP ERROR: " + Std.string(e1) + "(" + Std.string(element) + " , " + Std.string(beforeElement) + ", " + Std.string(parent) + ")",{ fileName : "DropHandlerBase.hx", lineNumber : 174, className : "silex.ui.stage.DropHandlerBase", methodName : "onDrop"});
+					haxe.Log.trace("ON DROP ERROR: " + Std.string(e1) + "(" + Std.string(element) + " , " + Std.string(beforeElement) + ", " + Std.string(parent) + ")",{ fileName : "DropHandlerBase.hx", lineNumber : 176, className : "silex.ui.stage.DropHandlerBase", methodName : "onDrop"});
 				}
 			} else {
-				haxe.Log.trace("a drop zone was NOT found",{ fileName : "DropHandlerBase.hx", lineNumber : 181, className : "silex.ui.stage.DropHandlerBase", methodName : "onDrop"});
+				haxe.Log.trace("a drop zone was NOT found",{ fileName : "DropHandlerBase.hx", lineNumber : 183, className : "silex.ui.stage.DropHandlerBase", methodName : "onDrop"});
 				if(this.draggedElementParent.childNodes.length > this.draggedElementPosition) this.draggedElementParent.insertBefore(element,this.draggedElementParent.childNodes[this.draggedElementPosition]); else this.draggedElementParent.appendChild(element);
 			}
-		} else haxe.Log.trace("Nothing being dragged",{ fileName : "DropHandlerBase.hx", lineNumber : 194, className : "silex.ui.stage.DropHandlerBase", methodName : "onDrop"});
+		} else haxe.Log.trace("Nothing being dragged",{ fileName : "DropHandlerBase.hx", lineNumber : 196, className : "silex.ui.stage.DropHandlerBase", methodName : "onDrop"});
 		this.resetDraggedMarker();
 	}
 	,onDrag: function(e) {
@@ -9170,7 +9173,7 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 		return silex.component.ComponentModel.getInstance().addComponent(nodeName,layers.first(),dropZone.position);
 	}
 	,onFileChosen: function(element,fileUrl) {
-		haxe.Log.trace("onFileChosen " + fileUrl,{ fileName : "InsertDropHandler.hx", lineNumber : 190, className : "silex.ui.stage.InsertDropHandler", methodName : "onFileChosen"});
+		haxe.Log.trace("onFileChosen " + fileUrl,{ fileName : "InsertDropHandler.hx", lineNumber : 211, className : "silex.ui.stage.InsertDropHandler", methodName : "onFileChosen"});
 		silex.property.PropertyModel.getInstance().setAttribute(element,"src",silex.file.kcfinder.FileBrowser.getRelativeURLFromFileBrowser(fileUrl));
 	}
 	,initImageComp: function(element) {
@@ -9183,7 +9186,7 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 		silex.file.kcfinder.FileBrowser.selectFile(cbk,this.brixInstanceId,null,"files/assets/");
 	}
 	,onMultipleFilesChosen: function(element,files) {
-		haxe.Log.trace("onMultipleFilesChosen " + Std.string(files),{ fileName : "InsertDropHandler.hx", lineNumber : 160, className : "silex.ui.stage.InsertDropHandler", methodName : "onMultipleFilesChosen"});
+		haxe.Log.trace("onMultipleFilesChosen " + Std.string(files),{ fileName : "InsertDropHandler.hx", lineNumber : 181, className : "silex.ui.stage.InsertDropHandler", methodName : "onMultipleFilesChosen"});
 		silex.property.PropertyModel.getInstance().setAttribute(element,"controls","controls");
 		var modelHtmlDom = silex.file.FileModel.getInstance().getModelFromView(element);
 		var _g = 0;
@@ -9208,9 +9211,17 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 		silex.file.kcfinder.FileBrowser.selectMultipleFiles(cbk,this.brixInstanceId,null,"files/assets/");
 	}
 	,onDrop: function(e) {
-		silex.ui.stage.DropHandlerBase.prototype.onDrop.call(this,e);
 		var event = e;
 		var dropZone = event.detail.dropZone;
+		silex.ui.stage.DropHandlerBase.prototype.onDrop.call(this,e);
+		if(dropZone == null && !brix.util.DomTools.hasClass(this.rootElement,"container")) {
+			var defaultContainer = null;
+			if(silex.layer.LayerModel.getInstance().selectedItem != null) defaultContainer = silex.layer.LayerModel.getInstance().selectedItem.rootElement; else {
+				var nodes = brix.component.navigation.Layer.getLayerNodes(silex.page.PageModel.getInstance().selectedItem.name,silex.file.FileModel.getInstance().application.id,silex.file.FileModel.getInstance().currentData.viewHtmlDom);
+				if(nodes.length > 0) defaultContainer = nodes[0];
+			}
+			if(defaultContainer != null) dropZone = { position : 0, parent : defaultContainer};
+		}
 		var element;
 		if(dropZone != null) {
 			if(brix.util.DomTools.hasClass(this.rootElement,"image")) {
@@ -9245,7 +9256,7 @@ silex.ui.stage.InsertDropHandler.prototype = $extend(silex.ui.stage.DropHandlerB
 				element = this.addLayer(dropZone,silex.page.PageModel.getInstance().selectedItem).rootElement;
 				silex.property.PropertyModel.getInstance().setAttribute(element,"data-silex-name","New container");
 			} else throw "unknown element has been drop on stage from the insert menu";
-		} else haxe.Log.trace("onDrop - a drop zone was NOT found",{ fileName : "InsertDropHandler.hx", lineNumber : 142, className : "silex.ui.stage.InsertDropHandler", methodName : "onDrop"});
+		} else haxe.Log.trace("onDrop - a drop zone was NOT found",{ fileName : "InsertDropHandler.hx", lineNumber : 163, className : "silex.ui.stage.InsertDropHandler", methodName : "onDrop"});
 	}
 	,resetDraggedMarker: function() {
 		this.listElementClone.parentNode.removeChild(this.listElementClone);

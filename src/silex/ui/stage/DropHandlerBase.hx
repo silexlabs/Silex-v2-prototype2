@@ -34,6 +34,7 @@ class DropHandlerBase extends DisplayObject{
 	 * dragged element initial position in the DOM
 	 */
 	private var draggedElementPosition:Int;
+
 	/**
 	 * constructor
 	 * listen to the Draggable class events
@@ -84,6 +85,7 @@ class DropHandlerBase extends DisplayObject{
 			//draggedElement.parentNode.removeChild(draggedElement);
 			rootElement.appendChild(draggedElement);
 		}
+
 	}
 	/**
 	 * Handle Draggable events
@@ -94,7 +96,6 @@ class DropHandlerBase extends DisplayObject{
 
 		// the drop zone passed with the event 
 		var dropZone:DropZone = event.detail.dropZone;
-
 		// retrieve a reference to the dragged html dom (layer or component)
 		var element:HtmlDom;
 		var position:Int;
@@ -110,6 +111,7 @@ class DropHandlerBase extends DisplayObject{
 			var beforeElement:HtmlDom = null;
 
 			// get where to drop
+
 			if (dropZone != null){
 				// a drop zone was found
 				position = dropZone.position;
@@ -212,6 +214,10 @@ class DropHandlerBase extends DisplayObject{
 				initialMarkerParent.appendChild(rootElement);
 			}
 		}
+		DomTools.doLater(refresh);
+	}
+	private function refresh() 
+	{
 		// refresh the builder display
 		if (ComponentModel.getInstance().selectedItem != null){
 			// case of a component
