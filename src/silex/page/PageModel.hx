@@ -9,6 +9,7 @@ import silex.file.FileModel;
 import silex.layer.LayerModel;
 import silex.component.ComponentModel;
 import silex.property.PropertyModel;
+import silex.util.SilexTools;
 
 import brix.component.navigation.link.LinkBase;
 import brix.component.navigation.Page;
@@ -58,12 +59,6 @@ class PageModel extends ModelBase<Page>{
 	 */
 	public static inline var ON_LIST_CHANGE = "onPageListChange";
 	/**
-	 * Cleanup a name so that it can be used as a page name, i.e. class name
-	 */
-	static public function cleanupForPageName(name:String):String {
-		return name.toLowerCase().split(" ").join("-");
-	}
-	/**
 	 * Models are singletons
 	 * Constructor is private
 	 */
@@ -90,7 +85,7 @@ class PageModel extends ModelBase<Page>{
 	public function addPage(name:String = ""){
 		// default value
 		if (name == "") name = getNewName();
-		var className = cleanupForPageName(name);
+		var className = SilexTools.cleanupName(name);
 		
 		// get the file model
 		var fileModel = FileModel.getInstance();
@@ -226,7 +221,7 @@ class PageModel extends ModelBase<Page>{
 	public function renamePage(page:Page, newName:String){
 		// get the file model
 		var fileModel = FileModel.getInstance();
-		var className = cleanupForPageName(newName);
+		var className = SilexTools.cleanupName(newName);
 
 		
 		// get the view and model DOM
@@ -265,7 +260,7 @@ class PageModel extends ModelBase<Page>{
 			if (link.linkName == page.name){
 				var linkText: String = "";
 				// replace text if it was not changed
-				if (cleanupForPageName(link.rootElement.innerHTML) == page.name){
+				if (SilexTools.cleanupName(link.rootElement.innerHTML) == page.name){
 					linkText = newName;
 				}
 				// update the link

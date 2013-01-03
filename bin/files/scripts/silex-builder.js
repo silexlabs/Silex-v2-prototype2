@@ -8069,8 +8069,9 @@ silex.file.FileModel.__super__ = silex.ModelBase;
 silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onFileSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("FILE SAVED",{ fileName : "FileModel.hx", lineNumber : 614, className : "silex.file.FileModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("FILE SAVED",{ fileName : "FileModel.hx", lineNumber : 626, className : "silex.file.FileModel", methodName : "onSaveSuccess"});
 		brix.component.interaction.NotificationManager.notifySuccess("File saved",this.currentData.name + " has been saved successfully.",this.currentData.viewHtmlDom);
+		this.updatePageTitle();
 	}
 	,onSaveError: function(msg) {
 		this.dispatchEvent(this.createEvent("onFileSaveError"),this.debugInfo);
@@ -8098,10 +8099,11 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		if(tempName == null) {
 			if(this.currentData.name == "creation-template.html") {
 				var newName = js.Lib.window.prompt("New name for your file?","your-file-" + Math.round(Math.random() * 100) + ".html");
+				newName = silex.util.SilexTools.cleanupName(newName);
 				if(newName != null && newName != "") this.currentData.name = newName;
 			}
 			tempName = this.currentData.name;
-		}
+		} else tempName = silex.util.SilexTools.cleanupName(tempName);
 		this.dispatchEvent(this.createEvent("onFileSaveStart"),this.debugInfo);
 		var tempModelHead = this.currentData.headHtmlDom.cloneNode(true);
 		var tempModelBody = this.currentData.modelHtmlDom.cloneNode(true);
@@ -8114,7 +8116,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 			brix.component.interaction.NotificationManager.notifyError("Error","I can not save the file because no file is loaded.",this.currentData.viewHtmlDom);
 			throw "Error: can not save the file because no file is loaded.";
 		}
-		this.currentData.name = newName;
+		this.currentData.name = silex.util.SilexTools.cleanupName(newName);
 		this.changeBaseTag(newName);
 		this.save();
 	}
@@ -8126,7 +8128,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		this.save(newName);
 	}
 	,onDeleteSuccess: function() {
-		haxe.Log.trace("FILE DELETED ",{ fileName : "FileModel.hx", lineNumber : 482, className : "silex.file.FileModel", methodName : "onDeleteSuccess"});
+		haxe.Log.trace("FILE DELETED ",{ fileName : "FileModel.hx", lineNumber : 491, className : "silex.file.FileModel", methodName : "onDeleteSuccess"});
 		this.create();
 	}
 	,trash: function(name) {
@@ -8138,7 +8140,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	,onError: function(msg) {
 		this.dispatchEvent(this.createEvent("onFileError"),this.debugInfo);
 		brix.component.interaction.NotificationManager.notifyError("Error","An error occured while loading the file \"" + this.currentData.name + "\" (" + msg + ")",this.currentData.viewHtmlDom);
-		haxe.Log.trace("An error occured while loading file (" + msg + ")",{ fileName : "FileModel.hx", lineNumber : 454, className : "silex.file.FileModel", methodName : "onError"});
+		haxe.Log.trace("An error occured while loading file (" + msg + ")",{ fileName : "FileModel.hx", lineNumber : 463, className : "silex.file.FileModel", methodName : "onError"});
 	}
 	,initBrixApplication: function() {
 		this.application = brix.core.Application.createApplication();
@@ -8148,8 +8150,8 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,this.currentData.headHtmlDom);
 		if(initialPageName != null) {
 			var page = brix.component.navigation.Page.getPageByName(initialPageName,this.application.id,this.currentData.viewHtmlDom);
-			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "FileModel.hx", lineNumber : 437, className : "silex.file.FileModel", methodName : "initBrixApplication"});
-		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "FileModel.hx", lineNumber : 441, className : "silex.file.FileModel", methodName : "initBrixApplication"});
+			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "FileModel.hx", lineNumber : 446, className : "silex.file.FileModel", methodName : "initBrixApplication"});
+		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "FileModel.hx", lineNumber : 450, className : "silex.file.FileModel", methodName : "initBrixApplication"});
 	}
 	,generateNewId: function() {
 		return silex.file.FileModel.nextId++ + "";
@@ -8193,6 +8195,11 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		this.currentData.viewHtmlDom.className = "silex-view";
 		this.currentData.viewHtmlDom.style.visibility = "visible";
 	}
+	,updatePageTitle: function() {
+		var title = this.initialDocumentTitle;
+		if(this.currentData.name != "") title = title + " (" + this.currentData.name + ")";
+		js.Lib.document.title = title;
+	}
 	,onData: function(content) {
 		this.currentData.rawHtml = content;
 		this.currentData.isLoaded = true;
@@ -8218,9 +8225,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		this.initViewHtmlDom();
 		this.initBrixApplication();
 		this.dispatchEvent(this.createEvent("onLoadSuccess"),this.debugInfo);
-		var title = this.initialDocumentTitle;
-		if(this.currentData.name != "") title = title + " (" + this.currentData.name + ")";
-		js.Lib.document.title = title;
+		this.updatePageTitle();
 		this.refresh();
 		silex.page.PageModel.getInstance().refresh();
 		silex.layer.LayerModel.getInstance().refresh();
@@ -8228,7 +8233,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		silex.property.PropertyModel.getInstance().refresh();
 	}
 	,load: function(name) {
-		haxe.Log.trace("load " + name,{ fileName : "FileModel.hx", lineNumber : 238, className : "silex.file.FileModel", methodName : "load"});
+		haxe.Log.trace("load " + name,{ fileName : "FileModel.hx", lineNumber : 239, className : "silex.file.FileModel", methodName : "load"});
 		this.currentData.name = name;
 		this.changeBaseTag(name);
 		var pageModel = silex.page.PageModel.getInstance();
@@ -8240,13 +8245,13 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	,changeBaseTag: function(name) {
 		var idx = this.currentData.name.lastIndexOf("/");
 		if(idx > 0) {
-			haxe.Log.trace("setBaseTag " + HxOverrides.substr(name,0,idx + 1),{ fileName : "FileModel.hx", lineNumber : 229, className : "silex.file.FileModel", methodName : "changeBaseTag"});
+			haxe.Log.trace("setBaseTag " + HxOverrides.substr(name,0,idx + 1),{ fileName : "FileModel.hx", lineNumber : 230, className : "silex.file.FileModel", methodName : "changeBaseTag"});
 			brix.util.DomTools.setBaseTag(HxOverrides.substr(name,0,idx + 1));
 		} else brix.util.DomTools.removeBaseTag();
 	}
 	,getModelFromView: function(viewHtmlDom) {
 		if(viewHtmlDom == null) {
-			haxe.Log.trace("Warning: could not retrieve the model for element because it is null.",{ fileName : "FileModel.hx", lineNumber : 147, className : "silex.file.FileModel", methodName : "getModelFromView"});
+			haxe.Log.trace("Warning: could not retrieve the model for element because it is null.",{ fileName : "FileModel.hx", lineNumber : 148, className : "silex.file.FileModel", methodName : "getModelFromView"});
 			return null;
 		}
 		try {
@@ -8260,7 +8265,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 			if(results == null || results.length != 1) throw "Error: 1 and only 1 component or layer is expected to have ID \"" + id + "\" (" + Std.string(results) + ").";
 			return results[0];
 		} catch( e ) {
-			haxe.Log.trace("Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").",{ fileName : "FileModel.hx", lineNumber : 178, className : "silex.file.FileModel", methodName : "getModelFromView"});
+			haxe.Log.trace("Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").",{ fileName : "FileModel.hx", lineNumber : 179, className : "silex.file.FileModel", methodName : "getModelFromView"});
 			throw "Error, could not retrieve the model for element " + Std.string(viewHtmlDom) + " (" + Std.string(e) + ").";
 		}
 		return null;
@@ -8495,14 +8500,11 @@ silex.page.PageModel.getInstance = function() {
 	if(silex.page.PageModel.instance == null) silex.page.PageModel.instance = new silex.page.PageModel();
 	return silex.page.PageModel.instance;
 }
-silex.page.PageModel.cleanupForPageName = function(name) {
-	return name.toLowerCase().split(" ").join("-");
-}
 silex.page.PageModel.__super__ = silex.ModelBase;
 silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 	renamePage: function(page,newName) {
 		var fileModel = silex.file.FileModel.getInstance();
-		var className = silex.page.PageModel.cleanupForPageName(newName);
+		var className = silex.util.SilexTools.cleanupName(newName);
 		var viewHtmlDom = fileModel.currentData.viewHtmlDom;
 		var modelHtmlDom = fileModel.currentData.modelHtmlDom;
 		var headHtmlDom = fileModel.currentData.headHtmlDom;
@@ -8525,14 +8527,14 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,headHtmlDom);
 		if(initialPageName == page.name) brix.util.DomTools.setMeta("initialPageName",className,null,headHtmlDom);
 		var links = fileModel.application.getComponents(brix.component.navigation.link.LinkBase);
-		haxe.Log.trace("links: " + Std.string(links),{ fileName : "PageModel.hx", lineNumber : 262, className : "silex.page.PageModel", methodName : "renamePage"});
+		haxe.Log.trace("links: " + Std.string(links),{ fileName : "PageModel.hx", lineNumber : 257, className : "silex.page.PageModel", methodName : "renamePage"});
 		var $it0 = links.iterator();
 		while( $it0.hasNext() ) {
 			var link = $it0.next();
-			haxe.Log.trace("update link " + Std.string(link),{ fileName : "PageModel.hx", lineNumber : 264, className : "silex.page.PageModel", methodName : "renamePage"});
+			haxe.Log.trace("update link " + Std.string(link),{ fileName : "PageModel.hx", lineNumber : 259, className : "silex.page.PageModel", methodName : "renamePage"});
 			if(link.linkName == page.name) {
 				var linkText = "";
-				if(silex.page.PageModel.cleanupForPageName(link.rootElement.innerHTML) == page.name) linkText = newName;
+				if(silex.util.SilexTools.cleanupName(link.rootElement.innerHTML) == page.name) linkText = newName;
 				silex.component.ComponentModel.getInstance().updateLink(link.rootElement,page.name,className,linkText);
 				link.linkName = className;
 			}
@@ -8586,7 +8588,7 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 	,addPage: function(name) {
 		if(name == null) name = "";
 		if(name == "") name = this.getNewName();
-		var className = silex.page.PageModel.cleanupForPageName(name);
+		var className = silex.util.SilexTools.cleanupName(name);
 		var fileModel = silex.file.FileModel.getInstance();
 		var viewHtmlDom = fileModel.currentData.viewHtmlDom;
 		var modelHtmlDom = fileModel.currentData.modelHtmlDom;
@@ -10577,6 +10579,13 @@ silex.ui.toolbox.editor.StringEditor.prototype = $extend(silex.ui.toolbox.editor
 	,inputElement: null
 	,__class__: silex.ui.toolbox.editor.StringEditor
 });
+silex.util = {}
+silex.util.SilexTools = function() { }
+$hxClasses["silex.util.SilexTools"] = silex.util.SilexTools;
+silex.util.SilexTools.__name__ = ["silex","util","SilexTools"];
+silex.util.SilexTools.cleanupName = function(name) {
+	return name.toLowerCase().split(" ").join("-").split("'").join("-").split("\"").join("");
+}
 function $iterator(o) { if( o instanceof Array ) return function() { return HxOverrides.iter(o); }; return typeof(o.iterator) == 'function' ? $bind(o,o.iterator) : o.iterator; };
 var $_;
 function $bind(o,m) { var f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; return f; };
