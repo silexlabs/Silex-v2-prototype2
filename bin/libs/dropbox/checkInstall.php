@@ -12,9 +12,13 @@ $config = xml2array(file_get_contents('../../conf/server-config.xml.php'));
 // init dropbox
 initDropbox($config['xml']['key'], $config['xml']['secret'], $config['xml']['encrypter'], $config['xml']['dbHost'], $config['xml']['dbName'], $config['xml']['dbUser'], $config['xml']['dbPass'], $config['xml']['dbPort']);
 
-if(checkInstall()){
-    header('Location: ../../');
-    exit;
+$check = checkInstall();
+if($check != NULL){
+	$redirectUrl = '../../';
+	if (isset($check['redirect'])){
+		$redirectUrl = $check['redirect'];
+	}
+    header('Location: '.$redirectUrl);
 }
 else{
 	echo 'an error occured, I could not drop Silex files to your dropbox.';
