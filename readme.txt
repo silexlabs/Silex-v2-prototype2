@@ -39,6 +39,7 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 ** to do **
 
 en cours
+* remplacer silex-view par silex-body
 * cleanup Silex.hx : package core et split selon les options de config
 
 * erreurs dans filemodel => pas de display correct
@@ -63,6 +64,9 @@ refactoring BRIX
 
 bugs
 * image without URL is too small and not visible
+
+https://github.com/silexlabs/Silex-v2.x/issues/36
+
 
 silex to do
 * remove all dropbox related (.htaccess...)

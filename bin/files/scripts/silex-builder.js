@@ -1815,7 +1815,6 @@ brix.component.layout.LayoutBase.prototype = $extend(brix.component.ui.DisplayOb
 	}
 	,init: function() {
 		brix.component.ui.DisplayObject.prototype.init.call(this);
-		brix.util.DomTools.doLater($bind(this,this.redraw));
 	}
 	,preventRedraw: null
 	,__class__: brix.component.layout.LayoutBase
@@ -2207,16 +2206,14 @@ brix.component.navigation.ContextManager.prototype = $extend(brix.component.ui.D
 		if(this.hasContext(context)) {
 			HxOverrides.remove(this.currentContexts,context);
 			this.invalidate();
-		} else {
-		}
+		} else haxe.Log.trace("Warning: Could not remove the context \"" + context + "\" from the current context, because it is not in the currentContexts array.",{ fileName : "ContextManager.hx", lineNumber : 240, className : "brix.component.navigation.ContextManager", methodName : "removeContext"});
 	}
 	,addContext: function(context) {
 		if(!this.isContext(context)) throw "Error: unknown context \"" + context + "\". It should be defined in the \"" + "data-context-list" + "\" parameter of the Context component.";
 		if(!this.hasContext(context)) {
 			this.currentContexts.push(context);
 			this.invalidate();
-		} else {
-		}
+		} else haxe.Log.trace("Warning: Could not add the context \"" + context + "\" to the current context, because it is allready in the currentContexts array.",{ fileName : "ContextManager.hx", lineNumber : 222, className : "brix.component.navigation.ContextManager", methodName : "addContext"});
 	}
 	,setCurrentContexts: function(contextList) {
 		this.currentContexts = contextList;
@@ -2226,6 +2223,7 @@ brix.component.navigation.ContextManager.prototype = $extend(brix.component.ui.D
 	,invalidate: function() {
 		this.refresh();
 		this.isDirty = true;
+		haxe.Log.trace("dispatch change",{ fileName : "ContextManager.hx", lineNumber : 189, className : "brix.component.navigation.ContextManager", methodName : "invalidate"});
 		var event = js.Lib.document.createEvent("CustomEvent");
 		event.initCustomEvent("changeContextEvent",false,false,this.currentContexts);
 		this.rootElement.dispatchEvent(event);
@@ -3552,7 +3550,6 @@ brix.util.DomTools.embedScript = function(src) {
 	}
 	var node = js.Lib.document.createElement("script");
 	node.setAttribute("src",src);
-	node.setAttribute("type","text/javascript");
 	head.appendChild(node);
 	return node;
 }
@@ -3565,7 +3562,7 @@ brix.util.DomTools.setBaseTag = function(href) {
 	var baseNodes = js.Lib.document.getElementsByTagName("base");
 	href = brix.util.DomTools.rel2abs(href);
 	if(baseNodes.length > 0) {
-		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 561, className : "brix.util.DomTools", methodName : "setBaseTag"});
+		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 560, className : "brix.util.DomTools", methodName : "setBaseTag"});
 		baseNodes[0].setAttribute("href",href);
 	} else {
 		var node = js.Lib.document.createElement("base");
@@ -8069,7 +8066,7 @@ silex.file.FileModel.__super__ = silex.ModelBase;
 silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	onSaveSuccess: function() {
 		this.dispatchEvent(this.createEvent("onFileSaveSuccess"),this.debugInfo);
-		haxe.Log.trace("FILE SAVED",{ fileName : "FileModel.hx", lineNumber : 611, className : "silex.file.FileModel", methodName : "onSaveSuccess"});
+		haxe.Log.trace("FILE SAVED",{ fileName : "FileModel.hx", lineNumber : 614, className : "silex.file.FileModel", methodName : "onSaveSuccess"});
 		brix.component.interaction.NotificationManager.notifySuccess("File saved",this.currentData.name + " has been saved successfully.",this.currentData.viewHtmlDom);
 	}
 	,onSaveError: function(msg) {
@@ -8126,7 +8123,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		this.save(newName);
 	}
 	,onDeleteSuccess: function() {
-		haxe.Log.trace("FILE DELETED ",{ fileName : "FileModel.hx", lineNumber : 479, className : "silex.file.FileModel", methodName : "onDeleteSuccess"});
+		haxe.Log.trace("FILE DELETED ",{ fileName : "FileModel.hx", lineNumber : 482, className : "silex.file.FileModel", methodName : "onDeleteSuccess"});
 		this.create();
 	}
 	,trash: function(name) {
@@ -8138,7 +8135,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	,onError: function(msg) {
 		this.dispatchEvent(this.createEvent("onFileError"),this.debugInfo);
 		brix.component.interaction.NotificationManager.notifyError("Error","An error occured while loading the file \"" + this.currentData.name + "\" (" + msg + ")",this.currentData.viewHtmlDom);
-		haxe.Log.trace("An error occured while loading file (" + msg + ")",{ fileName : "FileModel.hx", lineNumber : 451, className : "silex.file.FileModel", methodName : "onError"});
+		haxe.Log.trace("An error occured while loading file (" + msg + ")",{ fileName : "FileModel.hx", lineNumber : 454, className : "silex.file.FileModel", methodName : "onError"});
 	}
 	,initBrixApplication: function() {
 		this.application = brix.core.Application.createApplication();
@@ -8148,8 +8145,8 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,this.currentData.headHtmlDom);
 		if(initialPageName != null) {
 			var page = brix.component.navigation.Page.getPageByName(initialPageName,this.application.id,this.currentData.viewHtmlDom);
-			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "FileModel.hx", lineNumber : 434, className : "silex.file.FileModel", methodName : "initBrixApplication"});
-		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "FileModel.hx", lineNumber : 438, className : "silex.file.FileModel", methodName : "initBrixApplication"});
+			if(page != null) silex.page.PageModel.getInstance().setSelectedItem(page); else haxe.Log.trace("Warning: could not resolve default page name (" + initialPageName + ")",{ fileName : "FileModel.hx", lineNumber : 437, className : "silex.file.FileModel", methodName : "initBrixApplication"});
+		} else haxe.Log.trace("Warning: no initial page found",{ fileName : "FileModel.hx", lineNumber : 441, className : "silex.file.FileModel", methodName : "initBrixApplication"});
 	}
 	,generateNewId: function() {
 		return silex.file.FileModel.nextId++ + "";
@@ -8159,7 +8156,7 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 		if(this.application == null) return;
 		if(modelDom.parentNode == null) {
 		} else if(this.application.getAssociatedComponents(modelDom,brix.component.ui.DisplayObject).length == 0) {
-			if(modelDom.nodeName.toLowerCase() == "div") modelDom.setAttribute("data-silex-component-id",this.generateNewId()); else {
+			if(modelDom.nodeName.toLowerCase() == "div") modelDom.setAttribute("data-silex-layer-id",this.generateNewId()); else {
 				var nodeName = modelDom.nodeName.toLowerCase();
 				if(nodeName == "img" || nodeName == "button" || nodeName == "video" || nodeName == "audio" || nodeName == "input") modelDom.setAttribute("data-silex-component-id",this.generateNewId());
 			}
@@ -8173,7 +8170,10 @@ silex.file.FileModel.prototype = $extend(silex.ModelBase.prototype,{
 	}
 	,prepareForEdit: function(modelDom) {
 		if(modelDom.nodeType != 1) return;
-		if(modelDom.parentNode == null) this.fixDomRoot(modelDom); else if(brix.util.DomTools.hasClass(modelDom.parentNode,"Layer")) modelDom.setAttribute("data-silex-component-id",this.generateNewId()); else if(brix.util.DomTools.hasClass(modelDom,"Layer")) modelDom.setAttribute("data-silex-layer-id",this.generateNewId()); else if(brix.util.DomTools.hasClass(modelDom,"Page")) {
+		if(modelDom.parentNode == null) this.fixDomRoot(modelDom); else if(brix.util.DomTools.hasClass(modelDom.parentNode,"Layer")) {
+			modelDom.setAttribute("data-silex-component-id",this.generateNewId());
+			if(brix.util.DomTools.hasClass(modelDom,"Layer")) throw "Error: the parent node of this layer is a layer";
+		} else if(brix.util.DomTools.hasClass(modelDom,"Layer")) modelDom.setAttribute("data-silex-layer-id",this.generateNewId()); else if(brix.util.DomTools.hasClass(modelDom,"Page")) {
 		}
 		var _g1 = 0, _g = modelDom.childNodes.length;
 		while(_g1 < _g) {

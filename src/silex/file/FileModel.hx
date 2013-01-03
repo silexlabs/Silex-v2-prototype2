@@ -355,6 +355,9 @@ else
 		else if (DomTools.hasClass(modelDom.parentNode, "Layer")){
 			// add the attribute data-silex-component-id to nodes which parent is a layer
 			modelDom.setAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, generateNewId());
+			if (DomTools.hasClass(modelDom, "Layer")){
+				throw("Error: the parent node of this layer is a layer");
+			}
 		}
 		// Layers
 		else if (DomTools.hasClass(modelDom, "Layer")){
@@ -388,7 +391,7 @@ else
 		else if (application.getAssociatedComponents(modelDom, DisplayObject).length == 0){		
 			if (modelDom.nodeName.toLowerCase() == "div"){
 				// add the attribute data-silex-component-id to nodes which parent is a layer
-				modelDom.setAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, generateNewId());
+				modelDom.setAttribute(LayerModel.LAYER_ID_ATTRIBUTE_NAME, generateNewId());
 			}
 			else{
 				var nodeName = modelDom.nodeName.toLowerCase();

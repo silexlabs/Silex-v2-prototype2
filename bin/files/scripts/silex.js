@@ -2304,7 +2304,6 @@ brix.util.DomTools.embedScript = function(src) {
 	}
 	var node = js.Lib.document.createElement("script");
 	node.setAttribute("src",src);
-	node.setAttribute("type","text/javascript");
 	head.appendChild(node);
 	return node;
 }
@@ -2317,7 +2316,7 @@ brix.util.DomTools.setBaseTag = function(href) {
 	var baseNodes = js.Lib.document.getElementsByTagName("base");
 	href = brix.util.DomTools.rel2abs(href);
 	if(baseNodes.length > 0) {
-		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 561, className : "brix.util.DomTools", methodName : "setBaseTag"});
+		haxe.Log.trace("Warning: base tag already set in the head section. Current value (\"" + baseNodes[0].getAttribute("href") + "\") will be replaced by \"" + href + "\"",{ fileName : "DomTools.hx", lineNumber : 560, className : "brix.util.DomTools", methodName : "setBaseTag"});
 		baseNodes[0].setAttribute("href",href);
 	} else {
 		var node = js.Lib.document.createElement("base");

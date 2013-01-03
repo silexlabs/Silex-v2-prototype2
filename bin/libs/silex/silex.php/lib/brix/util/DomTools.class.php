@@ -425,7 +425,6 @@ class brix_util_DomTools {
 		}
 		$node = cocktail_Lib::get_document()->createElement("script");
 		$node->setAttribute("src", $src);
-		$node->setAttribute("type", "text/javascript");
 		$head->appendChild($node);
 		{
 			$»tmp = $node;
