@@ -62,36 +62,41 @@ function getDropbox(){
 }
 function copySilexFiles(){
 	$rootFolder = dirname(__FILE__);
-	return createFolder('scripts')
-		&& putFile('scripts/loader.js', file_get_contents($rootFolder.'/../../files/scripts/loader.js'))
-		&& putFile('scripts/silex-builder.js', file_get_contents($rootFolder.'/../../files/scripts/silex-builder.js'))
-		&& putFile('scripts/silex.js', file_get_contents($rootFolder.'/../../files/scripts/silex.js'))
-		&& putFile('scripts/silex.swf', file_get_contents($rootFolder.'/../../files/scripts/silex.swf'))
-		&& putFile('scripts/swfobject.js', file_get_contents($rootFolder.'/../../files/scripts/swfobject.js'));
+	try {
+		return createFolder('scripts')
+			&& putFile('scripts/loader.js', file_get_contents($rootFolder.'/../../files/scripts/loader.js'))
+			&& putFile('scripts/silex-builder.js', file_get_contents($rootFolder.'/../../files/scripts/silex-builder.js'))
+			&& putFile('scripts/silex.js', file_get_contents($rootFolder.'/../../files/scripts/silex.js'))
+			&& putFile('scripts/silex.swf', file_get_contents($rootFolder.'/../../files/scripts/silex.swf'))
+			&& putFile('scripts/swfobject.js', file_get_contents($rootFolder.'/../../files/scripts/swfobject.js'));
+	} catch (Exception $e) {
+		return false;
+	}
 }
 function checkInstall(){
 	global $OAuth;
-	$res = getFile('scripts/loader.js');
+	$res = NULL;
+	try {
+		$res = getFile('scripts/loader.js');
+	} catch (Exception $e) {
+	}
 
 	// when app is not authorized, it will never pass here since Dropbox/OAuth/Consumer/ConsumerAbstract.php does exit at line 85
 	// so call the script checkInstall.php directly instead
 
 	if($res == NULL){
 		if (copySilexFiles() == false){
-
-			return Array("redirect" => $OAuth->getAuthoriseUrl());
-
-
+			return Array('redirect' => $OAuth->getAuthoriseUrl());
 			// reset
-			session_unset();
+/*			session_unset();
 			// retry
 			if (copySilexFiles() == false){
-				return Array("redirect" => $OAuth->getAuthoriseUrl());
+				return Array('redirect' => $OAuth->getAuthoriseUrl());
 			}
-		}
+*/		}
 	}
 	global $userID;
-	return Array("version" => "2.0", "latest_version" => "2.0", "debug" => $userID);
+	return Array('version' => '2.0', 'latest_version' => '2.0', 'debug' => $userID);
 }
 /**
  * Download a file and its metadata

@@ -251,12 +251,13 @@ class EditorBase extends DisplayObject, implements IGroupable
 	 * @param 	e 	CustomEvent with the PropertyData object in e.detail
 	 */
 	private function onPropertyChange(e:CustomEvent) {
+		trace("onPropertyChange "+propertyChangePending+" - "+e.detail.name+" - "+propertyName);
 		if (propertyChangePending)
 			return;
-		if (e.detail.name == propertyName){
+		if (e.detail.name == propertyName || propertyName == null){
 			// reset myself, another editor is taking care of the property
 			try{
-				reset();
+				refresh();
 			}
 			catch(e:Dynamic){
 				throw("Error in the implementation of the method reset: "+e);
@@ -264,7 +265,6 @@ class EditorBase extends DisplayObject, implements IGroupable
 		}
 		else{
 			// do nothing, I am not concerned
-			// refresh();
 		}
 	}
 	/**

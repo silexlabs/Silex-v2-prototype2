@@ -9,6 +9,7 @@ import silex.file.FileModel;
 import silex.layer.LayerModel;
 import silex.component.ComponentModel;
 import silex.property.PropertyModel;
+import silex.util.SilexTools;
 
 import brix.component.navigation.link.LinkBase;
 import brix.component.navigation.Page;
@@ -58,12 +59,6 @@ class PageModel extends ModelBase<Page>{
 	 */
 	public static inline var ON_LIST_CHANGE = "onPageListChange";
 	/**
-	 * Cleanup a name so that it can be used as a page name, i.e. class name
-	 */
-	static public function cleanupForPageName(name:String):String {
-		return name.toLowerCase().split(" ").join("");
-	}
-	/**
 	 * Models are singletons
 	 * Constructor is private
 	 */
@@ -90,7 +85,7 @@ class PageModel extends ModelBase<Page>{
 	public function addPage(name:String = ""){
 		// default value
 		if (name == "") name = getNewName();
-		var className = cleanupForPageName(name);
+		var className = SilexTools.cleanupName(name);
 		
 		// get the file model
 		var fileModel = FileModel.getInstance();
@@ -134,6 +129,9 @@ class PageModel extends ModelBase<Page>{
 
 		// open the new page
 		newPage.open(null, null, true, true);
+
+		// update selection
+		selectedItem = newPage;
 
 		// dispatch the change event
 		dispatchEvent(createEvent(ON_LIST_CHANGE, newPage), DEBUG_INFO);
@@ -223,6 +221,8 @@ class PageModel extends ModelBase<Page>{
 	public function renamePage(page:Page, newName:String){
 		// get the file model
 		var fileModel = FileModel.getInstance();
+		var className = SilexTools.cleanupName(newName);
+
 		
 		// get the view and model DOM
 		var viewHtmlDom = fileModel.currentData.viewHtmlDom;
@@ -237,18 +237,18 @@ class PageModel extends ModelBase<Page>{
 		for (idxLayerNode in 0...viewNodes.length){
 			var layerNode = viewNodes[0];
 			DomTools.removeClass(layerNode, page.name);
-			DomTools.addClass(layerNode, newName);
+			DomTools.addClass(layerNode, className);
 		}
 		// browse the layers and replace page name in the model
 		for (idxLayerNode in 0...modelNodes.length){
 			var layerNode = modelNodes[0];
 			DomTools.removeClass(layerNode, page.name);
-			DomTools.addClass(layerNode, newName);
+			DomTools.addClass(layerNode, className);
 		}
 		// update the initial page name if needed
 		var initialPageName = DomTools.getMeta(Page.CONFIG_INITIAL_PAGE_NAME, null, headHtmlDom);
 		if (initialPageName == page.name){
-			DomTools.setMeta(Page.CONFIG_INITIAL_PAGE_NAME, newName, null, headHtmlDom);
+			DomTools.setMeta(Page.CONFIG_INITIAL_PAGE_NAME, className, null, headHtmlDom);
 		}
 
 		// update the links
@@ -258,17 +258,23 @@ class PageModel extends ModelBase<Page>{
 		for (link in links){
 			trace("update link "+link);
 			if (link.linkName == page.name){
-				ComponentModel.getInstance().updateLink(link.rootElement, page.name, newName);
-				link.linkName = newName;
+				var linkText: String = "";
+				// replace text if it was not changed
+				if (SilexTools.cleanupName(link.rootElement.innerHTML) == page.name){
+					linkText = newName;
+				}
+				// update the link
+				ComponentModel.getInstance().updateLink(link.rootElement, page.name, className, linkText);
+ 				link.linkName = className;
 			}
 		}
 
 		// change the page name
 		var viewPageNode = DomTools.getElementsByAttribute(viewHtmlDom, "name", page.name)[0];
 		var modelPageNode = DomTools.getElementsByAttribute(modelHtmlDom, "name", page.name)[0];
-		viewPageNode.setAttribute("name", newName);
-		modelPageNode.setAttribute("name", newName);
-		page.setPageName(newName);
+		viewPageNode.setAttribute("name", className);
+		modelPageNode.setAttribute("name", className);
+		page.setPageName(className);
 
 		// refresh selection 
 		refresh();

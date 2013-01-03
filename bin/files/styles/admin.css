@@ -93,7 +93,9 @@ body{
 /* 	notification	*/
 /* **************** */
 .notification-zone{
-	display: none; /* in order to not load ::icon:: at start, this will be changed by javascript */
+
+/* in order to not load ::icon:: at start, this will be changed by javascript */
+/*	display: none; */
 }
 .notification-zone ul{
 	position: absolute;
@@ -504,11 +506,11 @@ opacity:1;
 .hover-marker{
 	z-index: 300000;
 	cursor: pointer;
-	background-color: rgba(80, 80, 80, 0.3);
+	background-color: rgba(80, 80, 80, 0.25);
 }
 .selection-marker{
 	z-index: 400000;
-	background-color: rgba(80, 80, 80, 0.3);
+	background-color: rgba(80, 80, 80, 0.25);
 	cursor: move;
 	opacity: 0.75 !important;
 }
@@ -548,7 +550,7 @@ box-shadow: inset 0px 0px 2px 2px #888;
 box-shadow: inset 0px 0px 2px 2px #888;
 }
 .selection-phantom{
-	background-color: rgba(80, 80, 80, 0.3);
+	background-color: rgba(80, 80, 80, 0.25);
 }
 .selection-marker .draggable-dragzone,
 .selection-layer-marker .draggable-dragzone{
@@ -556,18 +558,21 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	height: 100%;
 	position: absolute;
 }
-.selection-marker-delete,
-.selection-marker-edit-text,
-.selection-marker-edit-image,
-.selection-marker-edit-media {
-	width:27px;
-	height:27px;
-	margin:0;
+.selection-marker-ui:hover {
+	opacity: 1;
+}
+.selection-marker-ui {
+	width:22px;
+	height:22px;
+	margin: 0 5px;
 	padding:0;
 	position:absolute;
 	z-index:1000000;
 	cursor:pointer;
-	background-color: rgba(66, 66, 66, 0.7);
+	background-color: rgba(66, 66, 66, 0.85);
+	background-position: center;
+	border-radius: 0 0 3px 3px;
+	opacity: .5;
 }
 .selection-marker-delete {
 	background-image:url(../assets/admin/sv2-ico-delete.png);
@@ -575,22 +580,31 @@ box-shadow: inset 0px 0px 2px 2px #888;
 }
 .selection-marker-edit-text,
 .selection-marker-edit-image,
-.selection-marker-edit-media {
+.selection-marker-edit-media,
+.selection-marker-edit-layer {
 	background-image:url(../assets/admin/sv2-ico-edit.png);
-	right: 30px;
+	right: 23px;
 }
 
 .selection-marker-name  {
-	min-height:20px;
-	background-color: rgba(66, 66, 66, 0.7);
-	font-size:10px;
+	/* only 1 line, show dots if it overflows */
+	max-width: 95%; /* not 100% because of the left padding which makes it overflows on the left */
+	width: inherit;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	overflow: hidden;
+
+	font-size:11px;
 	color:#FFF;
-	z-index:500000;
-	position:absolute;
-	top:-20;
+	opacity: 1;
+	border-radius: 3px 3px 0 0;
+
+	/* position and size */	
+	height:16px;
+	bottom: 100%;
 	right:0;
-	padding:0 3px;
-	margin-left:1%;
+	padding: 2px 3px;
+	margin: 0;
 }
 
 /* **************** */
@@ -930,6 +944,16 @@ box-shadow: inset 0px 0px 2px 2px #888;
 	margin: 0;
 	padding: 0;
 	overflow: auto;
+	transition: height .2s linear 0s;;
+	-moz-transition: height .2s linear 0s;; /* Firefox 4 */
+	-webkit-transition: height .2s linear 0s;; /* Safari and Chrome */
+	-o-transition: height .2s linear 0s;; /* Opera */
+}
+.accordion-item-open{
+	height: 1000px;
+}
+.accordion-item-close{
+	height: 0 !important;
 }
 .silex-toolbox .LinkToPage{
 	margin:0;

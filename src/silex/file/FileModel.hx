@@ -12,6 +12,7 @@ import silex.property.PropertyModel;
 import silex.component.ComponentModel;
 import silex.layer.LayerModel;
 import silex.page.PageModel;
+import silex.util.SilexTools;
 
 import brix.core.Application;
 import brix.component.ui.DisplayObject;
@@ -301,11 +302,7 @@ else
 		dispatchEvent(createEvent(ON_LOAD_SUCCESS), debugInfo);
 
 		// refresh silex builder title
-		var title = initialDocumentTitle;
-		if (currentData.name != ""){
-			title = title + " (" + currentData.name + ")";
-		}
-		Lib.document.title = title;
+		updatePageTitle();
 
 		// refresh selection
 		refresh();
@@ -313,6 +310,21 @@ else
 		LayerModel.getInstance().refresh();
 		ComponentModel.getInstance().refresh();
 		PropertyModel.getInstance().refresh();
+	}
+	/**
+	 * Update page title to dsiplay the currently opened file
+	 * only for js, not implemented in cocktail
+	 */
+	public function updatePageTitle():Void{
+		// refresh silex builder title
+		#if js
+		// only for js, not cocktail
+		var title = initialDocumentTitle;
+		if (currentData.name != ""){
+			title = title + " (" + currentData.name + ")";
+		}
+		Lib.document.title = title;
+		#end
 	}
 	/**
 	 * Duplicate the loaded DOM
@@ -352,6 +364,9 @@ else
 		else if (DomTools.hasClass(modelDom.parentNode, "Layer")){
 			// add the attribute data-silex-component-id to nodes which parent is a layer
 			modelDom.setAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, generateNewId());
+			if (DomTools.hasClass(modelDom, "Layer")){
+				throw("Error: the parent node of this layer is a layer");
+			}
 		}
 		// Layers
 		else if (DomTools.hasClass(modelDom, "Layer")){
@@ -385,7 +400,7 @@ else
 		else if (application.getAssociatedComponents(modelDom, DisplayObject).length == 0){		
 			if (modelDom.nodeName.toLowerCase() == "div"){
 				// add the attribute data-silex-component-id to nodes which parent is a layer
-				modelDom.setAttribute(ComponentModel.COMPONENT_ID_ATTRIBUTE_NAME, generateNewId());
+				modelDom.setAttribute(LayerModel.LAYER_ID_ATTRIBUTE_NAME, generateNewId());
 			}
 			else{
 				var nodeName = modelDom.nodeName.toLowerCase();
@@ -436,7 +451,7 @@ else
 		}
 
 		// execute scripts
-		Interpreter.getInstance().execScriptTags(currentData.viewHtmlDom);
+//		Interpreter.getInstance().execScriptTags(currentData.viewHtmlDom);
 	}
 	/**
 	 * An error occured
@@ -506,7 +521,7 @@ else
 			NotificationManager.notifyError("Error", "I can not save the file because no file is loaded.", currentData.viewHtmlDom);
 			throw("Error: can not save the file because no file is loaded.");
 		}
-		currentData.name = newName;
+		currentData.name = SilexTools.cleanupName(newName);
 		changeBaseTag(newName);
 		save();
 	}
@@ -525,11 +540,15 @@ else
 			// handle a new publication
 			if (currentData.name == CREATION_TEMPLATE_FILE_NAME){
 				var newName = Lib.window.prompt("New name for your file?", "your-file-"+Math.round(Math.random()*100)+".html");
+				newName = SilexTools.cleanupName(newName);
 				if (newName != null && newName!=""){
 					currentData.name = newName;
 				}
 			}
 			tempName = currentData.name;
+		}
+		else{
+			tempName = SilexTools.cleanupName(tempName);
 		}
 		// reset model selection
 		// var pageModel = PageModel.getInstance();
@@ -559,7 +578,6 @@ else
 
 		// Start the saving process
 		fileService.save(tempName, currentData.rawHtml, onSaveSuccess, onSaveError);
-
 	}
 	
 	/**
@@ -607,5 +625,8 @@ else
 		dispatchEvent(createEvent(ON_SAVE_SUCCESS), debugInfo);
 		trace("FILE SAVED");
 		NotificationManager.notifySuccess("File saved", currentData.name+" has been saved successfully.", currentData.viewHtmlDom);
+
+		// refresh silex builder title
+		updatePageTitle();
 	}
 }

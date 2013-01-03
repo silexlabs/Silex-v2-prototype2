@@ -100,12 +100,33 @@ class InsertDropHandler extends DropHandlerBase{
 	 * Handle Draggable events
 	 */
 	override public function onDrop(e:Event) {
-		super.onDrop(e);
-
 		// retrieve a reference to the component or layer
 		var event:CustomEvent = cast(e);
 		var dropZone:DropZone = event.detail.dropZone;
 
+		super.onDrop(e);
+
+		// if no drop zone, then drop in the selected layer or 1st layer
+		if (dropZone == null 
+			&& !DomTools.hasClass(rootElement, LAYER_TYPE)){
+			var defaultContainer:HtmlDom = null;
+			if (LayerModel.getInstance().selectedItem != null){
+				defaultContainer = LayerModel.getInstance().selectedItem.rootElement;
+			}
+			else{
+				var nodes = Layer.getLayerNodes(PageModel.getInstance().selectedItem.name, FileModel.getInstance().application.id, FileModel.getInstance().currentData.viewHtmlDom);
+
+				if (nodes.length>0){
+					defaultContainer = nodes[0];
+				}
+			}
+			if (defaultContainer != null){
+				dropZone = {
+					position : 0,
+					parent : defaultContainer
+				};
+			}
+		}
 		// add the desired element
 		var element : HtmlDom;
 		if (dropZone != null){

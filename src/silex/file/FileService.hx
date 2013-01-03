@@ -15,7 +15,7 @@ typedef InstallStatus = {
 	#if silexDropboxMode
 		typedef FileService = silex.file.dropbox.FileService;
 	#else
-		typedef FileService = silex.file.server.FileService;
+		typedef FileService = silex.file.kcfinder.FileService;
 	#end
 #else
 	typedef FileService = silex.file.client.FileService;
