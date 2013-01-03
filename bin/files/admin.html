@@ -58,12 +58,11 @@
 		
 		
 		<SCRIPT type="text/javascript" src="scripts/silex-builder.js"></SCRIPT>
-		<SCRIPT data-app-key="hxo7uimig22bi2o" type="text/javascript" id="dropboxjs" src="https://www.dropbox.com/static/api/1/dropbox.js"></SCRIPT>
 		
 		<SCRIPT type="text/hscript">
 			//Lib.alert('test!');
-			FileModel.getInstance().load('theme1.html');
-			//MenuController.createFile();
+			//FileModel.getInstance().load('test.html');
+			MenuController.createFile();
 		</SCRIPT>
 	</HEAD>
 	
@@ -319,7 +318,7 @@
 						
 						<A class="Page" name="properties-tab" data-group-id="Group2">Properties</A>
 						<A href="#properties-tab" class="LinkToPage accordion-header" data-group-id="Group2">Properties</A>
-						<FORM class="Layer accordion-item properties-tab">
+						<FORM class="Layer accordion-item properties-tab" data-hide-start-style="accordion-item-open" data-show-end-style="accordion-item-open" data-hide-end-style="accordion-item-close" data-show-start-style="accordion-item-close">
 							<FIELDSET class="PropertyEditor" data-group-id="Group2">
 								<LEGEND>Attributes</LEGEND>
 								<DIV class="property-container">
@@ -423,7 +422,7 @@
 	                   	::foreach categories::
 							<A class="Page" name="::name::" data-group-id="Group2">::name::</A>
 	                        <A href="#::name::" class="LinkToPage accordion-header" data-group-id="Group2">::name::</A>
-	                        <FORM class="Layer accordion-item ::name::">
+	                        <FORM class="Layer accordion-item ::name::" data-hide-start-style="accordion-item-open" data-show-end-style="accordion-item-open" data-hide-end-style="accordion-item-close" data-show-start-style="accordion-item-close">
 		                       	::foreach groups::
 									<FIELDSET>
 										<LEGEND>::name::</LEGEND>
@@ -653,13 +652,15 @@
 					</DIV>
 					<DIV data-dropzones-class-name="Layer" class="selection-marker Draggable SelectionDropHandler" data-phantom-class-name="selection-phantom" data-group-id="Group4">
 						<DIV class="selection-ui-template">
-							::if (clientWidth &gt; 50)::
-								<DIV class="selection-marker-edit-text context-div"></DIV>
-								<DIV class="selection-marker-edit-image context-img"></DIV>
-								<DIV class="selection-marker-edit-media context-video context-sound"></DIV>
-		                    	<DIV class="selection-marker-delete"></DIV>
-	    	                    <DIV class="selection-marker-name">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</DIV>
-	                        ::end::
+							::if (clientWidth &gt; 100)::::if (clientHeight &gt; 50)::
+								<DIV class="selection-marker-ui selection-marker-edit-text context-div" title="Edit text."></DIV>
+								<DIV class="selection-marker-ui selection-marker-edit-image context-img" title=""></DIV>
+								<DIV class="selection-marker-ui selection-marker-edit-media context-video context-sound" title=""></DIV>
+		                    	<DIV class="selection-marker-ui selection-marker-delete" title=""></DIV>
+	    	                    ::if componentName::
+	    	                    	<DIV class="selection-marker-ui selection-marker-name" title="::componentName::::if layerName:: in ::layerName::::end::">[ ::if layerName::::layerName:: &gt; ::end::::if componentName::::componentName::::end:: ]</DIV>
+	    	                    ::end::
+	                        ::end::::end::
 						</DIV>
                         <DIV class="draggable-dragzone"></DIV>
 					</DIV>
@@ -667,8 +668,11 @@
 					</DIV>
 					<DIV data-dropzones-class-name="silex-view" class="selection-layer-marker Draggable SelectionDropHandler" data-phantom-class-name="master-phantom" data-group-id="Group4">
 						<DIV class="selection-ui-template">
-							<DIV class="selection-marker-delete"></DIV>
-							<DIV class="selection-marker-name">[ ::if layerName::::layerName::::end:: ]</DIV>
+							::if (clientWidth &gt; 100)::::if (clientHeight &gt; 50)::
+								<DIV class="selection-marker-ui selection-marker-edit-layer"></DIV>
+		                    	<DIV class="selection-marker-ui selection-marker-delete"></DIV>
+								<DIV class="selection-marker-ui selection-marker-name">[ ::if layerName::::layerName::::end:: ]</DIV>
+	                        ::end::::end::
 						</DIV>
 						<DIV class="draggable-dragzone"></DIV>
 					</DIV>

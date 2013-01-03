@@ -207,8 +207,9 @@ class ComponentModel extends ModelBase<HtmlDom>{
 	}
 	/**
 	 * update the link from the given component
+	 * replace the text if newLinkText is provided
 	 */
-	public function updateLink(htmlDom:HtmlDom, oldLink:String, newLink:String){
+	public function updateLink(htmlDom:HtmlDom, oldLink:String, newLink:String, newLinkText:String = ""){
 		// get the model
 		var propertyModel = PropertyModel.getInstance();
 
@@ -219,9 +220,11 @@ class ComponentModel extends ModelBase<HtmlDom>{
 			propertyModel.setAttribute(htmlDom, LinkBase.CONFIG_PAGE_NAME_DATA_ATTR, newLink);
 
 		// replace the text
-		htmlDom.innerHTML = StringTools.replace(htmlDom.innerHTML, oldLink, newLink);
-		var modelHtmlDom:HtmlDom = FileModel.getInstance().getModelFromView(htmlDom);
-		modelHtmlDom.innerHTML = StringTools.replace(modelHtmlDom.innerHTML, oldLink, newLink);
+		if (newLinkText != ""){
+			htmlDom.innerHTML = newLinkText;
+			var modelHtmlDom:HtmlDom = FileModel.getInstance().getModelFromView(htmlDom);
+			modelHtmlDom.innerHTML = newLinkText;
+		}
 
 		// delete the component instance
 		// TODO: remove from Brix

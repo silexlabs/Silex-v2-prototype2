@@ -9,7 +9,7 @@ import brix.component.navigation.Page;
 import brix.util.DomTools;
 
 import silex.file.FileModel;
-import silex.file.kcfinder.FileBrowser;
+import silex.file.FileBrowser;
 import silex.Silex;
 
 /**
@@ -21,6 +21,7 @@ class KCFinderDialog extends DialogBase
 	////////////////////////////////////////////////////////////////////////
 	// component methods and attributes
 	////////////////////////////////////////////////////////////////////////
+#if !silexDropboxMode
 	/**
 	 * Constructor
 	 * Define the callbacks
@@ -106,4 +107,5 @@ class KCFinderDialog extends DialogBase
 		// now do the default behavior
 		super.close();
 	}
+#end
 }

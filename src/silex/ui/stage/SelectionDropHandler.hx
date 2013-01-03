@@ -37,6 +37,10 @@ class SelectionDropHandler extends DropHandlerBase{
 	/**
 	 * class name expected for the button
 	 */
+	public static inline var EDIT_LAYER_BUTTON_CLASS_NAME:String = "selection-marker-edit-layer";
+	/**
+	 * class name expected for the button
+	 */
 	public static inline var EDIT_MEDIA_BUTTON_CLASS_NAME:String = "selection-marker-edit-media";
 	/**
 	 * class name expected for the button
@@ -141,20 +145,25 @@ class SelectionDropHandler extends DropHandlerBase{
 			e.preventDefault();
 			deleteSelection();
 		}
-		// edit component
+		// edit image
 		else if (DomTools.hasClass(e.target, EDIT_IMG_BUTTON_CLASS_NAME)){
 			e.preventDefault();
 			editImage();
 		}
-		// edit component
+		// edit video or sound
 		else if (DomTools.hasClass(e.target, EDIT_MEDIA_BUTTON_CLASS_NAME)){
 			e.preventDefault();
 			editMedia();
 		}
-		// edit component
+		// edit text
 		else if (DomTools.hasClass(e.target, EDIT_TEXT_BUTTON_CLASS_NAME)){
 			e.preventDefault();
 			editText();
+		}
+		// edit layer
+		else if (DomTools.hasClass(e.target, EDIT_LAYER_BUTTON_CLASS_NAME)){
+			e.preventDefault();
+			editLayer();
 		}
 	}
 	////////////////////////////////////////////////////////////////////////
@@ -182,6 +191,18 @@ class SelectionDropHandler extends DropHandlerBase{
 			if (confirm == true)
 				ComponentModel.getInstance().removeComponent(component);
 		}
+	}
+	/**
+	 * edit selection
+	 */
+	private function editLayer() {
+		var layer = LayerModel.getInstance().selectedItem;
+		if (layer == null){
+			throw("Error: no container selected.");
+		}
+		var element = layer.rootElement;
+		var cbk = callback(onBackgroundImageChosen, element);
+		FileBrowser.selectFile(cbk, brixInstanceId, null, "files/assets/");
 	}
 	/**
 	 * edit selection
@@ -220,6 +241,15 @@ class SelectionDropHandler extends DropHandlerBase{
 		// media, select multiple files
 		var cbk = callback(onMediaSourcesChosen, component);
 		FileBrowser.selectMultipleFiles(cbk, brixInstanceId, null, "files/assets/");
+	}
+	/**
+	 * callback for the FileBrowser
+	 */
+	private function onBackgroundImageChosen(component:HtmlDom, fileUrl:String){
+		// convert to relative
+		fileUrl = FileBrowser.getRelativeURLFromFileBrowser(fileUrl);
+		// apply change
+		PropertyModel.getInstance().setStyle(component, "backgroundImage", "url('" + fileUrl + "')");
 	}
 	/**
 	 * callback for the FileBrowser

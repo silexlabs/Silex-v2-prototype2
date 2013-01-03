@@ -58,7 +58,7 @@ class FileViewer extends DisplayObject{
 	 */
 	public function onFileChange(event:CustomEvent){
 		rootElement.innerHTML = "";
-		LayoutBase.redrawLayouts();
+		redrawLayouts();
 	}
 	/**
 	 * Callback for the event, dispatched when a new file is loaded
@@ -69,7 +69,13 @@ class FileViewer extends DisplayObject{
 		rootElement.innerHTML = "";
 		rootElement.appendChild(fileModel.currentData.viewHtmlDom);
 		rootElement.appendChild(fileModel.currentData.headHtmlDom);
-		LayoutBase.redrawLayouts();
+		redrawLayouts();
+	}
+	/**
+	 * Dispatch a redraw event for brix layouts
+	 */
+	public function redrawLayouts(){
+		
 	}
 	/**
 	 * Callback for the event dispatched when the page selection changes.

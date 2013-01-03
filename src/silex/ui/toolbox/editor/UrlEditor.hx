@@ -11,7 +11,7 @@ import brix.util.DomTools;
  * this editor handles single URL and multiple URL
  * This class handles the link with the FileBrowser
  * Editors are Brix components, in charge of editing the CSS types, 
- * This component ihandles boolean CSS properties. 
+ * This component handles URLs as CSS properties, for img tags, src tags, or background-image. 
  * @see 	silex.ui.toolbox.editor.EditorBase
  */
 class UrlEditor extends EditorBase

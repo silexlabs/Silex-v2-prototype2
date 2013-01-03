@@ -38,24 +38,40 @@ To read the license please visit http://www.gnu.org/copyleft/gpl.html
 
 ** to do **
 
-
 en cours
-* bug: pas de notif sous ff
+* remplacer silex-view par silex-body
+* cleanup Silex.hx : package core et split selon les options de config
+
 * erreurs dans filemodel => pas de display correct
 * ouvrir un fichier existant sur le serveur bug
 * pas besoin de silex-builder.js dans drobox
-
 * cleanup package ui (several single classes at root : script, SilexContextManager ...)
 
-!! * tester et commiter les nouveaux contexts et liens (based on events instead of reference)
-
 refactoring BRIX
+* suggerer compil cond dans le html?
 * enums for event.detail
 * no more static methods like openPage, use specialized version of Page and dispatch events
+  - Page
+  - notification
+* navigation
+  * declare Pages and NavigationGroups in the headers? use it for sitemap / seo with history api
+  * take history api out of the pages
 * templates http://www.silexlabs.org/groups/brix/contributors/forum/topic/haxe-templates/
+* layouts and redraw : have a queue of redraws? redraw children first?
+* replace getElementsByClassName by Application.getComponents
+* unload
+
 
 bugs
 * image without URL is too small and not visible
+
+
+ergo
+* https://github.com/silexlabs/Silex-v2.x/issues/36
+* https://github.com/silexlabs/Silex-v2.x/issues/37
+* https://github.com/silexlabs/Silex-v2.x/issues/38
+* https://github.com/silexlabs/Silex-v2.x/issues/43
+* https://github.com/silexlabs/Silex-v2.x/issues/45
 
 silex to do
 * remove all dropbox related (.htaccess...)
@@ -71,9 +87,6 @@ silex to do
 - display none
   => how to get it back??
 
-brix
-- IE and null in styles
-- replace getElementsByClassName by Application.getComponents
 
 
 silex v2 with dropbox

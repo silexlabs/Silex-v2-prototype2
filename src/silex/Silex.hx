@@ -80,27 +80,25 @@ class Silex {
 
 		// store the initial URL
 		initialBaseUrl = DomTools.getBaseUrl();
-
-#if silexBuilder
-		var fileService = new FileService();
-		fileService.checkInstall(onCheckInstall, onCheckInstallError);
-/*		var r = new haxe.Http("../libs/dropbox/checkInstall.php");
-		r.onError = onCheckInstallError;
-		r.onData = function(r) { init(); }
-		r.request(false);
-*/
-#else
-		if (Lib.document.body == null){
-			// the script has been loaded at start
-			Lib.window.onload = init;
-		}
-		else{
-			// the script has been loaded after the html page
-			init();
-		}
-#end
+		// 
+		startSilexInit();
 	}
 #if silexBuilder
+	/**
+	 * builder version
+	 * check the install is ok, may redirect
+	 * then call init()
+	 */
+	private static function startSilexInit() 
+	{
+		var fileService = new FileService();
+		fileService.checkInstall(onCheckInstall, onCheckInstallError);
+		#if silexDropboxMode
+			var element = DomTools.embedScript("https://www.dropbox.com/static/api/1/dropbox.js");
+			element.setAttribute("id", "dropboxjs");
+			element.setAttribute("data-app-key", "hxo7uimig22bi2o");
+		#end
+	}
 	private static function onCheckInstall(installStatus:InstallStatus){
 		trace("onCheckInstall return latest silex version: "+installStatus);
 		if (installStatus.redirect != null){
@@ -114,16 +112,46 @@ class Silex {
 	}
 	private static function onCheckInstallError(error:String){
 		trace("onCheckInstall error: "+error);
+	#if silexDropboxMode
 		untyped {
 			Lib.window.location = CHECK_INSTALL_SCRIPT;
 		}
+	#end
+	}
+#else
+	/**
+	 * player version
+	 * simply call call init()
+	 */
+	private static function startSilexInit() 
+	{
+		init();
 	}
 #end
 	/**
-	 * Init Silex app
+	 * call init() right now, or wait for the body to be ready
 	 */
-	static public function init(unused:Dynamic=null){
+	private static function init() 
+	{
+		if (Lib.document.body == null){
+			// the script has been loaded at start
+			Lib.window.onload = onLoad;
+		}
+		else{
+			// the script has been loaded after the html page
+			doInit();
+		}
+	}
+	static function onLoad(e:Event){
+		doInit();
+	}
+	/**
+	 * Init Silex app
+	 * Here, the body is ready but the file may not be attached yet (brix "embeded" mode)
+	 */
+	static public function doInit(){
 		trace("Hello Silex!");
+
 		// create a Brix app
 		var application = Application.createApplication();
 		application.initDom();
@@ -145,6 +173,7 @@ class Silex {
 			DomTools.setMeta(Page.CONFIG_INITIAL_PAGE_NAME, initialPageName);
 		}
 	#end
+
 		// init Brix components
 		application.initComponents();
 		application.attachBody();
