@@ -583,7 +583,7 @@ still missing:
 				</type>
 			</property>
 			<property>
-				<name>float</name>
+				<name>cssFloat</name>
 				<cssName>float</cssName>
 				<type>
 					<name>inherit</name>
