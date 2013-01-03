@@ -9,8 +9,8 @@
 	<defaultFile>admin.html</defaultFile>
 	<userFolder>files/</userFolder>
 	<!-- Drop box app -->
-	<key>3ctv3fqmbq2d65s</key>
-	<secret>pu5yslzs0po2qau</secret>
+	<key>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</key>
+	<secret>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</secret>
 	<!-- Drop box php lib (uses mysql) -->
 	<encrypter>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</encrypter>
 	<dbHost>localhost</dbHost>
