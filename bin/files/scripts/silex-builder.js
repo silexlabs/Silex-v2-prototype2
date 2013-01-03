@@ -7990,13 +7990,16 @@ silex.component.ComponentModel.getInstance = function() {
 }
 silex.component.ComponentModel.__super__ = silex.ModelBase;
 silex.component.ComponentModel.prototype = $extend(silex.ModelBase.prototype,{
-	updateLink: function(htmlDom,oldLink,newLink) {
+	updateLink: function(htmlDom,oldLink,newLink,newLinkText) {
+		if(newLinkText == null) newLinkText = "";
 		var propertyModel = silex.property.PropertyModel.getInstance();
 		if(propertyModel.getAttribute(htmlDom,"href") == oldLink) propertyModel.setAttribute(htmlDom,"href",newLink);
 		if(propertyModel.getAttribute(htmlDom,"data-href") == oldLink) propertyModel.setAttribute(htmlDom,"data-href",newLink);
-		htmlDom.innerHTML = StringTools.replace(htmlDom.innerHTML,oldLink,newLink);
-		var modelHtmlDom = silex.file.FileModel.getInstance().getModelFromView(htmlDom);
-		modelHtmlDom.innerHTML = StringTools.replace(modelHtmlDom.innerHTML,oldLink,newLink);
+		if(newLinkText != "") {
+			htmlDom.innerHTML = newLinkText;
+			var modelHtmlDom = silex.file.FileModel.getInstance().getModelFromView(htmlDom);
+			modelHtmlDom.innerHTML = newLinkText;
+		}
 	}
 	,resetLinkToPage: function(htmlDom) {
 		var propertyModel = silex.property.PropertyModel.getInstance();
@@ -8493,12 +8496,13 @@ silex.page.PageModel.getInstance = function() {
 	return silex.page.PageModel.instance;
 }
 silex.page.PageModel.cleanupForPageName = function(name) {
-	return name.toLowerCase().split(" ").join("");
+	return name.toLowerCase().split(" ").join("-");
 }
 silex.page.PageModel.__super__ = silex.ModelBase;
 silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 	renamePage: function(page,newName) {
 		var fileModel = silex.file.FileModel.getInstance();
+		var className = silex.page.PageModel.cleanupForPageName(newName);
 		var viewHtmlDom = fileModel.currentData.viewHtmlDom;
 		var modelHtmlDom = fileModel.currentData.modelHtmlDom;
 		var headHtmlDom = fileModel.currentData.headHtmlDom;
@@ -8509,33 +8513,35 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 			var idxLayerNode = _g1++;
 			var layerNode = viewNodes[0];
 			brix.util.DomTools.removeClass(layerNode,page.name);
-			brix.util.DomTools.addClass(layerNode,newName);
+			brix.util.DomTools.addClass(layerNode,className);
 		}
 		var _g1 = 0, _g = modelNodes.length;
 		while(_g1 < _g) {
 			var idxLayerNode = _g1++;
 			var layerNode = modelNodes[0];
 			brix.util.DomTools.removeClass(layerNode,page.name);
-			brix.util.DomTools.addClass(layerNode,newName);
+			brix.util.DomTools.addClass(layerNode,className);
 		}
 		var initialPageName = brix.util.DomTools.getMeta("initialPageName",null,headHtmlDom);
-		if(initialPageName == page.name) brix.util.DomTools.setMeta("initialPageName",newName,null,headHtmlDom);
+		if(initialPageName == page.name) brix.util.DomTools.setMeta("initialPageName",className,null,headHtmlDom);
 		var links = fileModel.application.getComponents(brix.component.navigation.link.LinkBase);
-		haxe.Log.trace("links: " + Std.string(links),{ fileName : "PageModel.hx", lineNumber : 257, className : "silex.page.PageModel", methodName : "renamePage"});
+		haxe.Log.trace("links: " + Std.string(links),{ fileName : "PageModel.hx", lineNumber : 262, className : "silex.page.PageModel", methodName : "renamePage"});
 		var $it0 = links.iterator();
 		while( $it0.hasNext() ) {
 			var link = $it0.next();
-			haxe.Log.trace("update link " + Std.string(link),{ fileName : "PageModel.hx", lineNumber : 259, className : "silex.page.PageModel", methodName : "renamePage"});
+			haxe.Log.trace("update link " + Std.string(link),{ fileName : "PageModel.hx", lineNumber : 264, className : "silex.page.PageModel", methodName : "renamePage"});
 			if(link.linkName == page.name) {
-				silex.component.ComponentModel.getInstance().updateLink(link.rootElement,page.name,newName);
-				link.linkName = newName;
+				var linkText = "";
+				if(silex.page.PageModel.cleanupForPageName(link.rootElement.innerHTML) == page.name) linkText = newName;
+				silex.component.ComponentModel.getInstance().updateLink(link.rootElement,page.name,className,linkText);
+				link.linkName = className;
 			}
 		}
 		var viewPageNode = brix.util.DomTools.getElementsByAttribute(viewHtmlDom,"name",page.name)[0];
 		var modelPageNode = brix.util.DomTools.getElementsByAttribute(modelHtmlDom,"name",page.name)[0];
-		viewPageNode.setAttribute("name",newName);
-		modelPageNode.setAttribute("name",newName);
-		page.setPageName(newName);
+		viewPageNode.setAttribute("name",className);
+		modelPageNode.setAttribute("name",className);
+		page.setPageName(className);
 		this.refresh();
 	}
 	,removePage: function(page) {
@@ -8601,6 +8607,7 @@ silex.page.PageModel.prototype = $extend(silex.ModelBase.prototype,{
 		silex.property.PropertyModel.getInstance().setProperty(textElement,"innerHTML",name);
 		silex.component.ComponentModel.getInstance().makeLinkToPage(textElement,className);
 		newPage.open(null,null,true,true);
+		this.setSelectedItem(newPage);
 		this.dispatchEvent(this.createEvent("onPageListChange",newPage),"PageModel class");
 	}
 	,setSelectedItem: function(item) {

@@ -70,7 +70,7 @@ ergo
 * https://github.com/silexlabs/Silex-v2.x/issues/36
 * https://github.com/silexlabs/Silex-v2.x/issues/37
 * https://github.com/silexlabs/Silex-v2.x/issues/38
-* 
+* https://github.com/silexlabs/Silex-v2.x/issues/43
 
 silex to do
 * remove all dropbox related (.htaccess...)
